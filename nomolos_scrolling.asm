@@ -214,6 +214,8 @@ clrmem:
   sta ScrollX
   lda #$00
   sta ScrollX+1
+  lda #$00
+  sta ColumnToUpdate
 
  ; Set basic PPU registers.  Load background from $0000,
 	; sprites from $1000, and the name table from $2000.
@@ -284,14 +286,14 @@ clrmem:
   lda #%00011110
   sta $2001
 
-;set play level state.
-  lda #<playLevelUpdate
+;set load level state.
+  lda #<loadLevelUpdate
   sta update
-  lda #>playLevelUpdate
+  lda #>loadLevelUpdate
   sta update+1
-  lda #<playLevelUpdatePPU
+  lda #<loadLevelUpdatePPU
   sta updatePPU
-  lda #>playLevelUpdatePPU
+  lda #>loadLevelUpdatePPU
   sta updatePPU+1
 
 loop:
@@ -322,6 +324,59 @@ playLevelUpdate:
 
   jsr getInput
   jsr decodeMap
+
+  jmp updateFinished
+
+loadLevelUpdate:
+
+  lda #$20
+  sta NametableToUpdate
+
+  lda ColumnToUpdate
+  lsr
+  tay
+  lda (LevelBaseAddress),y
+
+  ;store the meta meta tile index as a 16 bit number
+  sta MetaMetaTileAddress
+  lda #0
+  sta MetaMetaTileAddress+1
+
+  ;shift left this number by 4
+  ldx #4
+-
+  asl MetaMetaTileAddress
+  rol MetaMetaTileAddress+1
+  dex
+  bne -
+
+  ;now add MetaMetaTileTable to this number
+  clc
+	lda MetaMetaTileAddress
+	adc #<MetaMetaTileTable
+	sta MetaMetaTileAddress
+	lda MetaMetaTileAddress+1
+	adc #>MetaMetaTileTable
+	sta MetaMetaTileAddress+1
+
+  lda ColumnToUpdate
+  jsr updateColumn
+
+  inc ColumnToUpdate
+  inc ColumnToUpdate
+
+  lda ColumnToUpdate
+  cmp #30
+  bne +
+  lda #<playLevelUpdate
+  sta update
+  lda #>playLevelUpdate
+  sta update+1
+  lda #<playLevelUpdatePPU
+  sta updatePPU
+  lda #>playLevelUpdatePPU
+  sta updatePPU+1
++
 
   jmp updateFinished
 
@@ -680,6 +735,11 @@ playLevelUpdatePPU:
   jsr updateColumnPPU
   jsr updateAttributePPU
   jsr updateScrollPPU
+  jmp updatePPUFinished
+loadLevelUpdatePPU:
+  jsr updateColumnPPU
+  jsr updateAttributePPU
+  jsr updateScrollPPU       
   jmp updatePPUFinished
 
 updateScrollPPU:
