@@ -39,9 +39,6 @@
 
   .enum $0000
 
-buttonA:     .dsb 1
-vblankdone:  .dsb 1
-countDown:   .dsb 1
 b0:       .dsb 1
 b1:       .dsb 1
 b2:       .dsb 1
@@ -55,12 +52,17 @@ w3:       .dsw 1
 w4:       .dsw 1
 w5:       .dsw 1
 
+buttonA:     .dsb 1
+vblankdone:  .dsb 1
+countDown:   .dsb 1
+
 update:     .dsw 1
 updatePPU:  .dsw 1
 
-
-ScrollX:            .dsw 1
-LevelBaseAddress:   .dsw 1
+ScrollX:                      .dsw 1
+LevelBaseAddress:             .dsw 1
+MetaMetaTileTableBaseAddress: .dsw 1
+MetaTileTableBaseAddress      .dsw 1
 
 AttributeBuffer: .dsb 8
 AttributeColumnToUpdate: .dsb 1
@@ -197,6 +199,38 @@ clrmem:
 
   jsr loadpalette
 
+  ;set load level state.
+  lda #<Level
+  sta LevelBaseAddress
+  lda #>Level
+  sta LevelBaseAddress+1
+  lda #<MetaMetaTileTable
+  sta MetaMetaTileTableBaseAddress
+  lda #>MetaMetaTileTable
+  sta MetaMetaTileTableBaseAddress+1
+  lda #<MetaTileTable
+  sta MetaTileTableBaseAddress
+  lda #>MetaTileTable
+  sta MetaTileTableBaseAddress+1
+
+  lda #$00
+  sta ScrollX
+  lda #$00
+  sta ScrollX+1
+  lda #$00
+  sta ColumnToUpdate
+  lda #$03
+  sta countDown
+
+  lda #<loadLevelUpdate
+  sta update
+  lda #>loadLevelUpdate
+  sta update+1
+  lda #<loadLevelUpdatePPU
+  sta updatePPU
+  lda #>loadLevelUpdatePPU
+  sta updatePPU+1
+
 ;    +---------+----------------------------------------------------------+
 ;    | Address | Description                                              |
 ;    +---------+----------------------------------------------------------+
@@ -263,30 +297,6 @@ clrmem:
   lda #%00011110
   sta $2001
 
-  ;set load level state.
-  lda #<Level
-  sta LevelBaseAddress
-  lda #>Level
-  sta LevelBaseAddress+1
-
-  lda #$00
-  sta ScrollX
-  lda #$00
-  sta ScrollX+1
-  lda #$00
-  sta ColumnToUpdate
-  lda #$03
-  sta countDown
-
-  lda #<loadLevelUpdate
-  sta update
-  lda #>loadLevelUpdate
-  sta update+1
-  lda #<loadLevelUpdatePPU
-  sta updatePPU
-  lda #>loadLevelUpdatePPU
-  sta updatePPU+1
-
 loop:
 
   ;wait for vblank to complete
@@ -300,14 +310,14 @@ loop:
 updateFinished:
 
 ;the following loops are used to measure how much time we have left in the main loop.
-;  ldy #16       ;2
+;  ldy #19      ;2
 ;--
 ;  ldx #$ff      ;2
 ;-
 ;  dex           ;2 * 255
-;  bne -         ;3 * 255 + 2
-;  dey           ;2 * 16
-;  bne --        ;3 * 16 + 2
+;  bne -         ;3 * 254 + 2
+;  dey           ;2 * 19
+;  bne --        ;3 * 18 + 2
 
   jmp loop
 
@@ -344,10 +354,10 @@ loadLevelUpdate:
   ;now add MetaMetaTileTable to this number
   clc
 	lda w1
-	adc #<MetaMetaTileTable
+	adc MetaMetaTileTableBaseAddress
 	sta w1
 	lda w1+1
-	adc #>MetaMetaTileTable
+	adc MetaMetaTileTableBaseAddress+1
 	sta w1+1
 
   lda ColumnToUpdate
@@ -365,6 +375,7 @@ loadLevelUpdate:
   lda ColumnToUpdate
   cmp #30
   bne +
+  ;switch to play level state.
   lda #<playLevelUpdate
   sta update
   lda #>playLevelUpdate
@@ -432,7 +443,6 @@ decodeMap:
   sta w0+1
 
   ;calculate the nametable to draw the column into
-  clc
   eor #$01  ;flip the lowest bit to get the opposite nametable
   and #$01  ;grab just the lowest bit
   asl
@@ -440,32 +450,37 @@ decodeMap:
   ora #$20
   sta NametableToUpdate
 
-  ldx #4
--
+  ;shift right w0 by 4
+  lda w0
   lsr w0+1
-  ror w0
-  dex
-  bne -
+  ror
+  lsr w0+1
+  ror
+  lsr w0+1
+  ror
+  lsr w0+1
+  ror
+  sta w0
 
   ;At this point we should have the correct column for the leftmost column on the screen stored in w0.
   ;Add 16 to this number and we will have the column we wish to decode.
-  lda w0
+
   clc
+  lda w0
   adc #$10
   sta w0
-  bcc +
-  inc w0+1
-+
+  lda w0+1
+  adc #$00
+  sta w0+1
 
   ;now that we have the correct column, figure out what it is in "tile columns" for the PPU routine.
   ;load the column number
   lda w0
-;multiply it by two, this is the tile column
+  ;multiply it by two, this is the tile column
   asl
-;make sure it is from 0 to 31
+  ;make sure it is from 0 to 31
   and #$1f
   sta ColumnToUpdate
-
 
   ;w0 now has the column number we wish to decode.
   ;The upper byte now has the map offset * 256, and the lower byte has the offset into the map data from that point.
@@ -500,16 +515,20 @@ decodeMap:
   sta w0+1
 
   ;now shift left w0 by 4.
-  ldx #4
--
+  lda w0+1
   asl w0
-  rol w0+1
-  dex
-  bne -
+  rol ;w0+1
+  asl w0
+  rol ;w0+1
+  asl w0
+  rol ;w0+1
+  asl w0
+  rol ;w0+1
+  sta w0+1
 
-  lda #<MetaMetaTileTable
+  lda MetaMetaTileTableBaseAddress
   sta w1
-  lda #>MetaMetaTileTable
+  lda MetaMetaTileTableBaseAddress+1
   sta w1+1
 
   clc		    ; Clear the carry flag
@@ -519,12 +538,6 @@ decodeMap:
 	lda w0+1	; Load big end of number 1 into accumulator
 	adc w1+1	; Add with carry the big end of number 2
 	sta w1+1	; Store the big end of the result
-
-  ;at this point, w1 should have the meta meta tile address
-  ;lda w1
-  ;sta MetaMetaTileAddress
-  ;lda w1+1
-  ;sta MetaMetaTileAddress+1
 
   ;Load the meta meta tile address, and call the updateColumn routine to get that meta tile into the PPU buffers.
   jsr updateColumn
@@ -568,7 +581,7 @@ updateColumn:
   tay
 
   ;y has the index of the attribute field
-  lda MetaTileTable, y
+  lda (MetaTileTableBaseAddress), y
   ;now a has the attribute to write
 
   sta b1
@@ -579,16 +592,19 @@ updateColumn:
   ;let's not bother with the solid flag for now
   iny
   ;load the top left
-  lda MetaTileTable, y
+  lda (MetaTileTableBaseAddress), y
   sta MetaTileBuffer
   ;load the top right
-  lda MetaTileTable+1, y
+  iny
+  lda (MetaTileTableBaseAddress), y
   sta MetaTileBuffer+1
   ;load the bottm left tile
-  lda MetaTileTable+2, y
+  iny
+  lda (MetaTileTableBaseAddress), y
   sta MetaTileBuffer+2
   ;load the bottom right tile
-  lda MetaTileTable+3, y
+  iny
+  lda (MetaTileTableBaseAddress), y
   sta MetaTileBuffer+3
 
   ;figure out an offset into the column buffer
@@ -716,6 +732,16 @@ updatePPUFinished:
 
   lda #1
   sta vblankdone
+
+  ;the following loops are meant to measure how many cycles we have left to use for vblank
+;  ldy #20      ;2
+;--
+;  ldx #$ff      ;2
+;-
+;  dex           ;2 * 255
+;  bne -         ;3 * 254 + 2
+;  dey           ;2 * 19
+;  bne --        ;3 * 18 + 2
 
   plp
   pla
