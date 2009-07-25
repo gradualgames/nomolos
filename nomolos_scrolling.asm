@@ -42,6 +42,7 @@ lobyte:      .dsb 1
 hibyte:      .dsb 1
 buttonA:     .dsb 1
 vblankdone:  .dsb 1
+countDown:   .dsb 1
 b0:       .dsb 1
 b1:       .dsb 1
 b2:       .dsb 1
@@ -216,6 +217,8 @@ clrmem:
   sta ScrollX+1
   lda #$00
   sta ColumnToUpdate
+  lda #$0A
+  sta countDown
 
  ; Set basic PPU registers.  Load background from $0000,
 	; sprites from $1000, and the name table from $2000.
@@ -361,6 +364,12 @@ loadLevelUpdate:
 
   lda ColumnToUpdate
   jsr updateColumn
+
+  lda countDown
+  beq ++
+  dec countDown
+  bne +
+++
 
   inc ColumnToUpdate
   inc ColumnToUpdate
