@@ -66,7 +66,6 @@ AttributeBuffer: .dsb 8
 AttributeColumnToUpdate: .dsb 1
 
 ColumnTileBuffer: .dsb 60
-MetaMetaTileAddress: .dsw 1
 MetaTileBuffer: .dsb 4
 ColumnToUpdate: .dsb 1
 NametableToUpdate: .dsb 1
@@ -170,17 +169,17 @@ Level:
   .pad $C000
 
 reset:
-  sei    ; disable IRQs
-  cld    ; disable decimal mode
+  sei
+  cld
   ldx #$FF
-  txs    ; Set up stack
-  inx    ; now X = 0
-  stx $2001    ; disable rendering
+  txs
+  inx
+  stx $2001
 
--       ; First wait for vblank to make sure PPU is ready
+-
   bit $2002
   bpl -
--       ; Second wait for vblank, PPU is ready after this
+-
   bit $2002
   bpl -
 
@@ -197,9 +196,6 @@ clrmem:
   bne clrmem
 
   jsr loadpalette
-
- ; Set basic PPU registers.  Load background from $0000,
-	; sprites from $1000, and the name table from $2000.
 
 ;    +---------+----------------------------------------------------------+
 ;    | Address | Description                                              |
@@ -279,7 +275,7 @@ clrmem:
   sta ScrollX+1
   lda #$00
   sta ColumnToUpdate
-  lda #$0A
+  lda #$03
   sta countDown
 
   lda #<loadLevelUpdate
@@ -333,26 +329,26 @@ loadLevelUpdate:
   lda (LevelBaseAddress),y
 
   ;store the meta meta tile index as a 16 bit number
-  sta MetaMetaTileAddress
+  sta w1
   lda #0
-  sta MetaMetaTileAddress+1
+  sta w1+1
 
   ;shift left this number by 4
   ldx #4
 -
-  asl MetaMetaTileAddress
-  rol MetaMetaTileAddress+1
+  asl w1
+  rol w1+1
   dex
   bne -
 
   ;now add MetaMetaTileTable to this number
   clc
-	lda MetaMetaTileAddress
+	lda w1
 	adc #<MetaMetaTileTable
-	sta MetaMetaTileAddress
-	lda MetaMetaTileAddress+1
+	sta w1
+	lda w1+1
 	adc #>MetaMetaTileTable
-	sta MetaMetaTileAddress+1
+	sta w1+1
 
   lda ColumnToUpdate
   jsr updateColumn
@@ -435,10 +431,9 @@ decodeMap:
   lda ScrollX+1
   sta w0+1
 
-  ;the upper byte + 1 will cause the lowest bit of the upper byte to designate the nametable to which the column should be drawn.
-  ;this is because the upper byte = multiples of 256 pixels, so upper byte + 1 = next chunk of 256 pixels, or next nametable.
+  ;calculate the nametable to draw the column into
   clc
-  adc #$01  ;add one to the upper byte
+  eor #$01  ;flip the lowest bit to get the opposite nametable
   and #$01  ;grab just the lowest bit
   asl
   asl
@@ -526,10 +521,10 @@ decodeMap:
 	sta w1+1	; Store the big end of the result
 
   ;at this point, w1 should have the meta meta tile address
-  lda w1
-  sta MetaMetaTileAddress
-  lda w1+1
-  sta MetaMetaTileAddress+1
+  ;lda w1
+  ;sta MetaMetaTileAddress
+  ;lda w1+1
+  ;sta MetaMetaTileAddress+1
 
   ;Load the meta meta tile address, and call the updateColumn routine to get that meta tile into the PPU buffers.
   jsr updateColumn
@@ -564,7 +559,7 @@ updateColumn:
   sta b0
 
   ;indirectly load the meta tile number
-  lda (MetaMetaTileAddress),y
+  lda (w1),y
 
   asl
   asl
