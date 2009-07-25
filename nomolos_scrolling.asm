@@ -38,8 +38,7 @@
   .base $0000
 
   .enum $0000
-lobyte:      .dsb 1
-hibyte:      .dsb 1
+
 buttonA:     .dsb 1
 vblankdone:  .dsb 1
 countDown:   .dsb 1
@@ -59,16 +58,9 @@ w5:       .dsw 1
 update:     .dsw 1
 updatePPU:  .dsw 1
 
-CurrentColumnX:         .dsw 1
-ColumnOutsideOfWindowX:   .dsw 1
-ColumnOutsideOfWindow:    .dsb 1
-ColumnAddressInWorld:   .dsw 1
-CurrentWorldPage        .dsb 1
 
 ScrollX:            .dsw 1
-ScrollIncrement:    .dsb 1
 LevelBaseAddress:   .dsw 1
-LevelPages:         .dsb 1
 
 AttributeBuffer: .dsb 8
 AttributeColumnToUpdate: .dsb 1
@@ -206,20 +198,6 @@ clrmem:
 
   jsr loadpalette
 
-  lda #<Level
-  sta LevelBaseAddress
-  lda #>Level
-  sta LevelBaseAddress+1
-
-  lda #$00
-  sta ScrollX
-  lda #$00
-  sta ScrollX+1
-  lda #$00
-  sta ColumnToUpdate
-  lda #$0A
-  sta countDown
-
  ; Set basic PPU registers.  Load background from $0000,
 	; sprites from $1000, and the name table from $2000.
 
@@ -289,7 +267,21 @@ clrmem:
   lda #%00011110
   sta $2001
 
-;set load level state.
+  ;set load level state.
+  lda #<Level
+  sta LevelBaseAddress
+  lda #>Level
+  sta LevelBaseAddress+1
+
+  lda #$00
+  sta ScrollX
+  lda #$00
+  sta ScrollX+1
+  lda #$00
+  sta ColumnToUpdate
+  lda #$0A
+  sta countDown
+
   lda #<loadLevelUpdate
   sta update
   lda #>loadLevelUpdate
@@ -435,16 +427,16 @@ getInput:
 
 decodeMap:
 
-;Load the current scroll value. Shifting this 16 bit value right by 4 will produce the correct column number for the leftmost
-;column on the screen.
+  ;Load the current scroll value. Shifting this 16 bit value right by 4 will produce the correct column number for the leftmost
+  ;column on the screen.
 
   lda ScrollX
   sta w0
   lda ScrollX+1
   sta w0+1
 
-;the upper byte + 1 will cause the lowest bit of the upper byte to designate the nametable to which the column should be drawn.
-;this is because the upper byte = multiples of 256 pixels, so upper byte + 1 = next chunk of 256 pixels, or next nametable.
+  ;the upper byte + 1 will cause the lowest bit of the upper byte to designate the nametable to which the column should be drawn.
+  ;this is because the upper byte = multiples of 256 pixels, so upper byte + 1 = next chunk of 256 pixels, or next nametable.
   clc
   adc #$01  ;add one to the upper byte
   and #$01  ;grab just the lowest bit
@@ -460,8 +452,8 @@ decodeMap:
   dex
   bne -
 
-;At this point we should have the correct column for the leftmost column on the screen stored in w0.
-;Add 16 to this number and we will have the column we wish to decode.
+  ;At this point we should have the correct column for the leftmost column on the screen stored in w0.
+  ;Add 16 to this number and we will have the column we wish to decode.
   lda w0
   clc
   adc #$10
@@ -470,8 +462,8 @@ decodeMap:
   inc w0+1
 +
 
-;now that we have the correct column, figure out what it is in "tile columns" for the PPU routine.
-;load the column number
+  ;now that we have the correct column, figure out what it is in "tile columns" for the PPU routine.
+  ;load the column number
   lda w0
 ;multiply it by two, this is the tile column
   asl
@@ -480,9 +472,9 @@ decodeMap:
   sta ColumnToUpdate
 
 
-;w0 now has the column number we wish to decode.
-;The upper byte now has the map offset * 256, and the lower byte has the offset into the map data from that point.
-;LevelBaseAddress points to the current level. So load that address into w1, and add w0 to w1.
+  ;w0 now has the column number we wish to decode.
+  ;The upper byte now has the map offset * 256, and the lower byte has the offset into the map data from that point.
+  ;LevelBaseAddress points to the current level. So load that address into w1, and add w0 to w1.
 
   lda LevelBaseAddress
   sta w1
@@ -497,22 +489,22 @@ decodeMap:
 	adc w1+1	; Add with carry the big end of number 2
 	sta w1+1	; Store the big end of the result
 
-;at this point, w1 should now have the correct offset into the level.
+  ;at this point, w1 should now have the correct offset into the level.
 
   ldy #0
-;Load the value at the map offset value just calculated.
+  ;Load the value at the map offset value just calculated.
   lda (w1), y
-;we should now have a value from the map itself.
+  ;we should now have a value from the map itself.
 
-;Use this offset to figure out which meta meta tile to look at. In other words, load it into the low byte of a word,
-;then shift left the word by 4 to get the correct meta meta tile address.
+  ;Use this offset to figure out which meta meta tile to look at. In other words, load it into the low byte of a word,
+  ;then shift left the word by 4 to get the correct meta meta tile address.
 
-;store the meta meta tile offset
+  ;store the meta meta tile offset
   sta w0
   lda #0
   sta w0+1
 
-;now shift left w0 by 4.
+  ;now shift left w0 by 4.
   ldx #4
 -
   asl w0
@@ -539,7 +531,7 @@ decodeMap:
   lda w1+1
   sta MetaMetaTileAddress+1
 
-;Load the meta meta tile address, and call the updateColumn routine to get that meta tile into the PPU buffers.
+  ;Load the meta meta tile address, and call the updateColumn routine to get that meta tile into the PPU buffers.
   jsr updateColumn
 
   rts
@@ -551,10 +543,10 @@ decodeMap:
 ;two 30 tile columns.
 updateColumn:
 
-;we need to calculate what the AttributeColumnToUpdate is.
-;we know the ColumnToUpdate. that's 0-31.
-;if we shift this right, we get the meta tile column.
-;if we shift this right again, we get the attribute column to update.
+  ;we need to calculate what the AttributeColumnToUpdate is.
+  ;we know the ColumnToUpdate. that's 0-31.
+  ;if we shift this right, we get the meta tile column.
+  ;if we shift this right again, we get the attribute column to update.
   lda ColumnToUpdate
   lsr
   sta b2
