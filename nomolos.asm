@@ -656,32 +656,6 @@ drawMetaSprite:
 
   rts
 
-; Animations
-; NomolosWalkRight:
-;   .dw $0a
-;   .dw NomolosRight0
-;   .dw NomolosRight1
-;   .dw NomolosRight0
-;   .dw NomolosRight2
-;   .db $00
-
-
-;Draws a single animation based on its current state into the sprite buffer
-;assumes that the animation data located at w1 is formatted the following way:
-; .dsb currentFrameCountDown
-; .dsb currentFrame
-;RAM stuff used:
-;Temporary Parameters:
-;w0: The location of the animation to display
-;w1: The location of the animation data to read
-;b0: The x coordinate of where to put the animation
-;b1: The y coordinate of where to put the animation
-;b2: The mask to use for the frame counter. E.g. 0011 will count down every 4 frames.
-;Global Variables:
-drawAnimation:
-
-  rts
-
 updateSprites:
   lda #>(sprite)
   sta $4014    ; Jam page $200-$2FF into SPR-RAM
