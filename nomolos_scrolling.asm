@@ -53,25 +53,26 @@ w4:       .dsw 1
 w5:       .dsw 1
 
 buttonA:     .dsb 1
-vblankdone:  .dsb 1
+vblankDone:  .dsb 1
 countDown:   .dsb 1
 
 update:     .dsw 1
 updatePPU:  .dsw 1
 
-ScrollX:                      .dsw 1
-LevelBaseAddress:             .dsw 1
-MetaMetaTileTableBaseAddress: .dsw 1
-MetaTileTableBaseAddress      .dsw 1
+scrollX:                      .dsw 1
+levelBaseAddress:             .dsw 1
+metametaTileTableBaseAddress: .dsw 1
+metaTileTableBaseAddress      .dsw 1
 
-AttributeBuffer: .dsb 8
-AttributeColumnToUpdate: .dsb 1
+attributeBuffer: .dsb 8
+attributecolumnToUpdate: .dsb 1
 
-ColumnTileBuffer: .dsb 60
-MetaTileBuffer: .dsb 4
-ColumnToUpdate: .dsb 1
-NametableToUpdate: .dsb 1
+columnTileBuffer: .dsb 60
+metaTileBuffer: .dsb 4
+columnToUpdate: .dsb 1
+nametableToUpdate: .dsb 1
 
+spriteAddress: .dsb 1
   .enum $0200
 sprite: .dsb 256
   .ende
@@ -81,10 +82,12 @@ sprite: .dsb 256
 palette:
 
 ;Image Palette
-  .db $11,$15,$12,$03,$11,$19,$1a,$07,$00,$00,$00,$00,$00,$00,$00,$00
+  .db $21,$15,$12,$03,$11,$19,$1a,$07,$00,$00,$00,$00,$00,$00,$00,$00
 
 ;Sprite Palette
-  .db $21,$3f,$27,$2a,$21,$3f,$17,$28,$00,$00,$00,$00,$00,$00,$00,$00
+  .db $21,$0d,$27,$2a,$20,$0d,$07,$28,$00,$00,$00,$00,$00,$00,$00,$00
+
+
 
 MetaTileTable:
 MetaTile0:
@@ -168,6 +171,128 @@ Level:
   .db $00,$00,$00,$00,$17,$18,$18,$18,$18,$19,$00,$00,$1a,$09,$09,$09,$09,$09,$0a,$00,$17,$18,$18,$18,$18,$18,$19,$00,$00,$1b,$1b,$1b
   .db $1b,$1b,$1b,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$1c,$1d,$1e,$1f,$1f,$1e,$1d,$1c,$00,$00
 
+;Meta Sprite Table
+NomolosRight0:
+  .db $08
+  .db $00,$00,$00,$00
+  .db $00,$01,$00,$08
+  .db $08,$0d,$00,$00
+  .db $08,$0e,$00,$08
+  .db $10,$1d,$00,$00
+  .db $10,$1e,$00,$08
+  .db $18,$31,$00,$00
+  .db $18,$32,$00,$08
+NomolosRight1:
+  .db $08
+  .db $00,$02,$00,$00
+  .db $00,$03,$00,$08
+  .db $08,$0f,$00,$00
+  .db $08,$10,$00,$08
+  .db $10,$1f,$00,$00
+  .db $10,$20,$00,$08
+  .db $18,$33,$00,$00
+  .db $18,$34,$00,$08
+NomolosRight2:
+  .db $08
+  .db $00,$02,$00,$00
+  .db $00,$03,$00,$08
+  .db $08,$0f,$00,$00
+  .db $08,$10,$00,$08
+  .db $10,$21,$00,$00
+  .db $10,$22,$00,$08
+  .db $18,$35,$00,$00
+  .db $18,$36,$00,$08
+NomolosLeft0:
+  .db $08
+  .db $00,$04,$00,$00
+  .db $00,$05,$00,$08
+  .db $08,$11,$00,$00
+  .db $08,$12,$00,$08
+  .db $10,$23,$00,$00
+  .db $10,$24,$00,$08
+  .db $18,$37,$00,$00
+  .db $18,$38,$00,$08
+NomolosLeft1:
+  .db $08
+  .db $00,$06,$00,$00
+  .db $00,$07,$00,$08
+  .db $08,$13,$00,$00
+  .db $08,$14,$00,$08
+  .db $10,$25,$00,$00
+  .db $10,$26,$00,$08
+  .db $18,$39,$00,$00
+  .db $18,$3a,$00,$08
+NomolosLeft2:
+  .db $08
+  .db $00,$06,$00,$00
+  .db $00,$07,$00,$08
+  .db $08,$13,$00,$00
+  .db $08,$14,$00,$08
+  .db $10,$27,$00,$00
+  .db $10,$28,$00,$08
+  .db $18,$3b,$00,$00
+  .db $18,$3c,$00,$08
+Boj0:
+  .db $10
+  .db $00,$08,$01,$00
+  .db $00,$09,$01,$08
+  .db $00,$0a,$01,$10
+  .db $00,$08,$01,$18
+  .db $08,$15,$01,$00
+  .db $08,$16,$01,$08
+  .db $08,$17,$01,$10
+  .db $08,$18,$01,$18
+  .db $10,$29,$01,$00
+  .db $10,$2a,$01,$08
+  .db $10,$2b,$01,$10
+  .db $10,$2c,$01,$18
+  .db $18,$3d,$01,$00
+  .db $18,$3e,$01,$08
+  .db $18,$3f,$01,$10
+  .db $18,$40,$01,$18
+Boj1:
+  .db $10
+  .db $00,$08,$01,$00
+  .db $00,$0b,$01,$08
+  .db $00,$0c,$01,$10
+  .db $00,$08,$01,$18
+  .db $08,$19,$01,$00
+  .db $08,$1a,$01,$08
+  .db $08,$1b,$01,$10
+  .db $08,$1c,$01,$18
+  .db $10,$2d,$01,$00
+  .db $10,$2e,$01,$08
+  .db $10,$2f,$01,$10
+  .db $10,$30,$01,$18
+  .db $18,$41,$01,$00
+  .db $18,$42,$01,$08
+  .db $18,$43,$01,$10
+  .db $18,$44,$01,$18
+
+;Animations
+NomolosWalkRight:
+  .dw $0a
+  .dw NomolosRight0
+  .dw NomolosRight1
+  .dw NomolosRight0
+  .dw NomolosRight2
+  .db $00
+
+NomolosWalkLeft:
+  .dw $0a
+  .dw NomolosLeft0
+  .dw NomolosLeft1
+  .dw NomolosLeft0
+  .dw NomolosLeft2
+  .db $00
+
+BojWalk:
+  .dw $0a
+  .dw Boj0
+  .dw Boj1
+  .db $00
+
+
   .pad $C000
 
 reset:
@@ -185,7 +310,7 @@ reset:
   bit $2002
   bpl -
 
-clrmem:
+-
   lda #$00
   sta $0000, x
   sta $0100, x
@@ -195,30 +320,31 @@ clrmem:
   sta $0600, x
   sta $0700, x
   inx
-  bne clrmem
+  bne -
 
-  jsr loadpalette
+  jsr loadPalette
+  jsr clearSprites
 
   ;set load level state.
   lda #<Level
-  sta LevelBaseAddress
+  sta levelBaseAddress
   lda #>Level
-  sta LevelBaseAddress+1
+  sta levelBaseAddress+1
   lda #<MetaMetaTileTable
-  sta MetaMetaTileTableBaseAddress
+  sta metametaTileTableBaseAddress
   lda #>MetaMetaTileTable
-  sta MetaMetaTileTableBaseAddress+1
+  sta metametaTileTableBaseAddress+1
   lda #<MetaTileTable
-  sta MetaTileTableBaseAddress
+  sta metaTileTableBaseAddress
   lda #>MetaTileTable
-  sta MetaTileTableBaseAddress+1
+  sta metaTileTableBaseAddress+1
 
   lda #$00
-  sta ScrollX
+  sta scrollX
   lda #$00
-  sta ScrollX+1
+  sta scrollX+1
   lda #$00
-  sta ColumnToUpdate
+  sta columnToUpdate
   lda #$03
   sta countDown
 
@@ -301,8 +427,8 @@ loop:
 
   ;wait for vblank to complete
   lda #0
-  sta vblankdone
-- lda vblankdone
+  sta vblankDone
+- lda vblankDone
   beq -
 
   jmp (update)
@@ -323,6 +449,28 @@ updateFinished:
 
 playLevelUpdate:
 
+  lda #<NomolosRight0
+  sta w0
+  lda #>NomolosRight0
+  sta w0+1
+  lda #10
+  sta b0
+  lda #10
+  sta b1
+  lda #0
+  sta spriteAddress
+  jsr drawMetaSprite
+
+  lda #<Boj0
+  sta w0
+  lda #>Boj0
+  sta w0+1
+  lda #50
+  sta b0
+  lda #50
+  sta b1
+  jsr drawMetaSprite
+
   jsr getInput
   jsr decodeMap
 
@@ -331,12 +479,12 @@ playLevelUpdate:
 loadLevelUpdate:
 
   lda #$20
-  sta NametableToUpdate
+  sta nametableToUpdate
 
-  lda ColumnToUpdate
+  lda columnToUpdate
   lsr
   tay
-  lda (LevelBaseAddress),y
+  lda (levelBaseAddress),y
 
   ;store the meta meta tile index as a 16 bit number
   sta w1
@@ -354,13 +502,13 @@ loadLevelUpdate:
   ;now add MetaMetaTileTable to this number
   clc
 	lda w1
-	adc MetaMetaTileTableBaseAddress
+	adc metametaTileTableBaseAddress
 	sta w1
 	lda w1+1
-	adc MetaMetaTileTableBaseAddress+1
+	adc metametaTileTableBaseAddress+1
 	sta w1+1
 
-  lda ColumnToUpdate
+  lda columnToUpdate
   jsr updateColumn
 
   lda countDown
@@ -369,10 +517,10 @@ loadLevelUpdate:
   bne +
 ++
 
-  inc ColumnToUpdate
-  inc ColumnToUpdate
+  inc columnToUpdate
+  inc columnToUpdate
 
-  lda ColumnToUpdate
+  lda columnToUpdate
   cmp #30
   bne +
   ;switch to play level state.
@@ -388,7 +536,7 @@ loadLevelUpdate:
 
   jmp updateFinished
 
-loadpalette:
+loadPalette:
   lda #$3F
   ldx #$00
   sta $2006
@@ -397,6 +545,153 @@ loadpalette:
   sta $2007
   inx
   cpx #$20
+  bne -
+  rts
+
+; NomolosRight0:
+;  .db $08
+;  .db $00,$00,$00,$00
+;  .db $00,$01,$00,$08
+;  .db $08,$0d,$00,$00
+;  .db $08,$0e,$00,$08
+;  .db $10,$1d,$00,$00
+;  .db $10,$1e,$00,$08
+;  .db $18,$31,$00,$00
+;  .db $18,$32,$00,$08
+
+;       +-----------+-----------+-----+------------+
+;       | Sprite #0 | Sprite #1 | ... | Sprite #63 |
+;       +-+------+--+-----------+-----+------------+
+;         |      |   
+;         +------+----------+--------------------------------------+
+;         + Byte | Bits     | Description                          |
+;         +------+----------+--------------------------------------+
+;         |  0   | YYYYYYYY | Y Coordinate - 1. Consider the coor- |
+;         |      |          | dinate the upper-left corner of the  |
+;         |      |          | sprite itself.                       |
+;         |  1   | IIIIIIII | Tile Index #                         |
+;         |  2   | vhp000cc | Attributes                           |
+;         |      |          |   v = Vertical Flip   (1=Flip)       |
+;         |      |          |   h = Horizontal Flip (1=Flip)       |
+;         |      |          |   p = Background Priority            |
+;         |      |          |         0 = In front                 |
+;         |      |          |         1 = Behind                   |
+;         |      |          |   c = Upper two (2) bits of colour   |
+;         |  3   | XXXXXXXX | X Coordinate (upper-left corner)     |
+;         +------+----------+--------------------------------------+
+
+;Draws a single meta sprite into the sprite buffer
+;RAM stuff used:
+;Temporary Parameters:
+;w0: the location of the meta sprite to draw
+;b0: the x coordinate at which to draw the meta sprite
+;b1: the y coordinate at which to draw the meta sprite
+;Global Variables:
+;spriteAddress: the current sprite that will be overwritten in the sprite buffer
+drawMetaSprite:
+
+  ;load the number of sprite entries
+  ldy #0
+  lda (w0), y
+  ;multiply number of sprite entries * 4 bytes per entry
+  asl
+  asl
+  tay
+  ;y should now point to the last byte of the last sprite entry. we don't need to subtract 1 because of 
+  ;the # of sprite entries byte.
+
+  clc
+  adc spriteAddress
+
+  ;a now has spriteAddress + numberOfSpriteEntries * 4. put this in x for easy indexing into the sprite array
+  tax
+
+  ;move spriteAddress along so next call will put the next sprite later in the sprite buffer
+  sta spriteAddress
+
+  ;subtract one from x to point to the correct byte in the sprite array
+  dex
+
+-
+  ;load the x coordinate of the current sprite entry
+  lda (w0), y
+  clc
+  ;compute final x coordinate
+  adc b0
+  ;store x coordinate in the sprite array
+  sta sprite, x
+
+  ;decrement our indices
+  dex
+  dey
+
+  ;load the attribute value of the current sprite entry
+  lda (w0), y
+  sta sprite, x
+
+  ;decrement our indices
+  dex
+  dey
+
+  ;load the tile value of the current sprite entry
+  lda (w0), y
+  sta sprite, x
+
+  ;decrement our indices
+  dex
+  dey
+
+  ;load the y coordinate value of the current sprite entry
+  lda (w0), y
+  clc
+  ;compute final y coordinate
+  adc b1
+  ;store y coordinate in the sprite array
+  sta sprite, x
+
+  ;decrement our indices
+  dex
+  dey
+  bne -
+
+  rts
+
+; Animations
+; NomolosWalkRight:
+;   .dw $0a
+;   .dw NomolosRight0
+;   .dw NomolosRight1
+;   .dw NomolosRight0
+;   .dw NomolosRight2
+;   .db $00
+
+
+;Draws a single animation based on its current state into the sprite buffer
+;assumes that the animation data located at w1 is formatted the following way:
+; .dsb currentFrameCountDown
+; .dsb currentFrame
+;RAM stuff used:
+;Temporary Parameters:
+;w0: The location of the animation to display
+;w1: The location of the animation data to read
+;b0: The x coordinate of where to put the animation
+;b1: The y coordinate of where to put the animation
+;b2: The mask to use for the frame counter. E.g. 0011 will count down every 4 frames.
+;Global Variables:
+drawAnimation:
+
+  rts
+
+updateSprites:
+  lda #>(sprite)
+  sta $4014    ; Jam page $200-$2FF into SPR-RAM
+  rts
+
+clearSprites:
+  lda #$ff
+  ldx #$00
+- sta sprite, x
+  inx
   bne -
   rts
 
@@ -421,13 +716,13 @@ getInput:
   and #1
   beq ++
   ;yes
-  lda ScrollX
+  lda scrollX
   clc
   adc #2
   bcc +
-  inc ScrollX+1
+  inc scrollX+1
 +
-  sta ScrollX
+  sta scrollX
 ++
 
   rts
@@ -437,9 +732,9 @@ decodeMap:
   ;Load the current scroll value. Shifting this 16 bit value right by 4 will produce the correct column number for the leftmost
   ;column on the screen.
 
-  lda ScrollX
+  lda scrollX
   sta w0
-  lda ScrollX+1
+  lda scrollX+1
   sta w0+1
 
   ;calculate the nametable to draw the column into
@@ -448,7 +743,7 @@ decodeMap:
   asl
   asl
   ora #$20
-  sta NametableToUpdate
+  sta nametableToUpdate
 
   ;shift right w0 by 4
   lda w0
@@ -480,15 +775,15 @@ decodeMap:
   asl
   ;make sure it is from 0 to 31
   and #$1f
-  sta ColumnToUpdate
+  sta columnToUpdate
 
   ;w0 now has the column number we wish to decode.
   ;The upper byte now has the map offset * 256, and the lower byte has the offset into the map data from that point.
-  ;LevelBaseAddress points to the current level. So load that address into w1, and add w0 to w1.
+  ;levelBaseAddress points to the current level. So load that address into w1, and add w0 to w1.
 
-  lda LevelBaseAddress
+  lda levelBaseAddress
   sta w1
-  lda LevelBaseAddress+1
+  lda levelBaseAddress+1
   sta w1+1
 
   clc		    ; Clear the carry flag
@@ -526,9 +821,9 @@ decodeMap:
   rol ;w0+1
   sta w0+1
 
-  lda MetaMetaTileTableBaseAddress
+  lda metametaTileTableBaseAddress
   sta w1
-  lda MetaMetaTileTableBaseAddress+1
+  lda metametaTileTableBaseAddress+1
   sta w1+1
 
   clc		    ; Clear the carry flag
@@ -546,20 +841,20 @@ decodeMap:
 
 ;This routine decodes a single 1x15 meta-meta tile and places the proper
 ;name table tile numbers into two 30 byte buffers for use by updateColumnPPU
-;MetaMetaTileAddress: address of meta-meta tile to decode
-;ColumnTileBuffer: the buffer to which the meta-meta tile will be decoded. It will consist of
+;w1: address of meta-meta tile to decode
+;columnTileBuffer: the buffer to which the meta-meta tile will be decoded. It will consist of
 ;two 30 tile columns.
 updateColumn:
 
-  ;we need to calculate what the AttributeColumnToUpdate is.
-  ;we know the ColumnToUpdate. that's 0-31.
+  ;we need to calculate what the attributecolumnToUpdate is.
+  ;we know the columnToUpdate. that's 0-31.
   ;if we shift this right, we get the meta tile column.
   ;if we shift this right again, we get the attribute column to update.
-  lda ColumnToUpdate
+  lda columnToUpdate
   lsr
   sta b2
   lsr
-  sta AttributeColumnToUpdate
+  sta attributecolumnToUpdate
 
   ldy #0
   ldx #15
@@ -581,7 +876,7 @@ updateColumn:
   tay
 
   ;y has the index of the attribute field
-  lda (MetaTileTableBaseAddress), y
+  lda (metaTileTableBaseAddress), y
   ;now a has the attribute to write
 
   sta b1
@@ -592,20 +887,20 @@ updateColumn:
   ;let's not bother with the solid flag for now
   iny
   ;load the top left
-  lda (MetaTileTableBaseAddress), y
-  sta MetaTileBuffer
+  lda (metaTileTableBaseAddress), y
+  sta metaTileBuffer
   ;load the top right
   iny
-  lda (MetaTileTableBaseAddress), y
-  sta MetaTileBuffer+1
+  lda (metaTileTableBaseAddress), y
+  sta metaTileBuffer+1
   ;load the bottm left tile
   iny
-  lda (MetaTileTableBaseAddress), y
-  sta MetaTileBuffer+2
+  lda (metaTileTableBaseAddress), y
+  sta metaTileBuffer+2
   ;load the bottom right tile
   iny
-  lda (MetaTileTableBaseAddress), y
-  sta MetaTileBuffer+3
+  lda (metaTileTableBaseAddress), y
+  sta metaTileBuffer+3
 
   ;figure out an offset into the column buffer
   ;restore y but save it again
@@ -619,21 +914,21 @@ updateColumn:
 
   ;now y should have the offset into the column buffer
   ;load the top left tile
-  lda MetaTileBuffer
+  lda metaTileBuffer
   ;store it in left column
-  sta ColumnTileBuffer, y
+  sta columnTileBuffer, y
   ;load the top right tile
-  lda MetaTileBuffer+1
+  lda metaTileBuffer+1
   ;store it in the right column
-  sta ColumnTileBuffer+30, y
+  sta columnTileBuffer+30, y
   ;load the bottom left tile
-  lda MetaTileBuffer+2
+  lda metaTileBuffer+2
   ;store it in the left column
-  sta ColumnTileBuffer+1, y
+  sta columnTileBuffer+1, y
   ;load the bottom right tile
-  lda MetaTileBuffer+3
+  lda metaTileBuffer+3
   ;store it in the right column
-  sta ColumnTileBuffer+31, y
+  sta columnTileBuffer+31, y
 
   pla
   tay
@@ -704,10 +999,10 @@ rowBitWasZero:
 gotMask:
 
   ldy b0
-  lda AttributeBuffer, y
+  lda attributeBuffer, y
   and b5
   ora b1
-  sta AttributeBuffer, y
+  sta attributeBuffer, y
 
   pla
   tax
@@ -731,7 +1026,7 @@ vblank:
 updatePPUFinished:
 
   lda #1
-  sta vblankdone
+  sta vblankDone
 
   ;the following loops are meant to measure how many cycles we have left to use for vblank
 ;  ldy #20      ;2
@@ -754,11 +1049,13 @@ irq:
   rti
 
 playLevelUpdatePPU:
+  jsr updateSprites
   jsr updateColumnPPU
   jsr updateAttributePPU
   jsr updateScrollPPU
   jmp updatePPUFinished
 loadLevelUpdatePPU:
+  jsr updateSprites
   jsr updateColumnPPU
   jsr updateAttributePPU
   jsr updateScrollPPU       
@@ -766,13 +1063,13 @@ loadLevelUpdatePPU:
 
 updateScrollPPU:
 
-  lda NametableToUpdate
+  lda nametableToUpdate
   eor #$04
   sta $2006
   lda #$00
   sta $2006
 
-  lda ScrollX
+  lda scrollX
   sta $2005
   lda #0
   sta $2005
@@ -780,28 +1077,28 @@ updateScrollPPU:
   rts
 
 ;dumps two columns of tiles to the PPU
-;ColumnTileBuffer: the buffer containing both columns of tiles to write
-;ColumnToUpdate: the column to update
+;columnTileBuffer: the buffer containing both columns of tiles to write
+;columnToUpdate: the column to update
 updateColumnPPU:
 
-  lda NametableToUpdate
+  lda nametableToUpdate
   sta $2006
-  lda ColumnToUpdate
+  lda columnToUpdate
   sta $2006
 
   ldy #0
   ldx #30
 -
-  lda ColumnTileBuffer, y
+  lda columnTileBuffer, y
   sta $2007
 
   iny
   dex
   bne -
 
-  lda NametableToUpdate
+  lda nametableToUpdate
   sta $2006
-  lda ColumnToUpdate
+  lda columnToUpdate
   clc
   adc #1
   sta $2006
@@ -809,7 +1106,7 @@ updateColumnPPU:
   ldy #0
   ldx #30
 -
-  lda ColumnTileBuffer+30, y
+  lda columnTileBuffer+30, y
   sta $2007
 
   iny
@@ -821,58 +1118,58 @@ updateColumnPPU:
 updateAttributePPU:
 
 ;
-  lda NametableToUpdate
+  lda nametableToUpdate
   ora #$03
   sta $2006
   lda #%11000000
-  ora AttributeColumnToUpdate
+  ora attributecolumnToUpdate
   sta $2006
 
-  lda AttributeBuffer
+  lda attributeBuffer
   sta $2007
-  lda AttributeBuffer+4
+  lda attributeBuffer+4
   sta $2007
 
 ;
-  lda NametableToUpdate
+  lda nametableToUpdate
   ora #$03
   sta $2006
   lda #%11000000
-  ora AttributeColumnToUpdate
+  ora attributecolumnToUpdate
   ora #$08
   sta $2006
 
-  lda AttributeBuffer+1
+  lda attributeBuffer+1
   sta $2007
-  lda AttributeBuffer+5
+  lda attributeBuffer+5
   sta $2007
 
 ;
-  lda NametableToUpdate
+  lda nametableToUpdate
   ora #$03
   sta $2006
   lda #%11000000
-  ora AttributeColumnToUpdate
+  ora attributecolumnToUpdate
   ora #$10
   sta $2006
 
-  lda AttributeBuffer+2
+  lda attributeBuffer+2
   sta $2007
-  lda AttributeBuffer+6
+  lda attributeBuffer+6
   sta $2007
 
 ;
-  lda NametableToUpdate
+  lda nametableToUpdate
   ora #$03
   sta $2006
   lda #%11000000
-  ora AttributeColumnToUpdate
+  ora attributecolumnToUpdate
   ora #$18
   sta $2006
 
-  lda AttributeBuffer+3
+  lda attributeBuffer+3
   sta $2007
-  lda AttributeBuffer+7
+  lda attributeBuffer+7
   sta $2007
 
   rts
@@ -907,6 +1204,10 @@ updateAttributePPU:
   .db $c0,$98,$b0,$d0,$90,$98,$3c,$3e,$00,$00,$00,$20,$60,$60,$d8,$d0
   .db $00,$00,$01,$02,$04,$08,$10,$21,$00,$00,$00,$01,$03,$07,$0f,$1e
   .db $00,$80,$90,$b0,$d0,$90,$98,$3c,$00,$00,$00,$00,$20,$60,$60,$d8
+  .db $03,$19,$0d,$0b,$09,$19,$3c,$7c,$00,$00,$00,$04,$06,$06,$1b,$0b
+  .db $00,$80,$40,$20,$10,$08,$84,$06,$00,$00,$80,$c0,$e0,$f0,$78,$f8
+  .db $00,$01,$09,$0d,$0b,$09,$19,$3c,$00,$00,$00,$00,$04,$06,$06,$1b
+  .db $00,$00,$80,$40,$20,$10,$08,$84,$00,$00,$00,$80,$c0,$e0,$f0,$78
   .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
   .db $07,$1c,$2e,$5f,$8c,$c0,$c3,$c7,$00,$03,$1d,$32,$7f,$3f,$3c,$3b
   .db $e0,$38,$74,$fa,$31,$03,$c3,$e1,$00,$c0,$b8,$4c,$fe,$fc,$3c,$de
@@ -916,6 +1217,10 @@ updateAttributePPU:
   .db $1a,$06,$06,$02,$22,$24,$18,$10,$e4,$f8,$f8,$fc,$dc,$d8,$e0,$e0
   .db $60,$70,$40,$60,$70,$40,$20,$10,$1f,$0f,$3f,$1f,$0f,$3f,$1f,$0f
   .db $3e,$1a,$06,$06,$02,$22,$24,$18,$d0,$e4,$f8,$f8,$fc,$dc,$d8,$e0
+  .db $58,$60,$60,$40,$44,$24,$18,$08,$27,$1f,$1f,$3f,$3b,$1b,$07,$07
+  .db $0e,$02,$06,$0e,$02,$04,$08,$30,$f0,$fc,$f8,$f0,$fc,$f8,$f0,$c0
+  .db $7c,$58,$60,$60,$40,$44,$24,$18,$0b,$27,$1f,$1f,$3f,$3b,$1b,$07
+  .db $06,$0e,$02,$06,$0e,$02,$04,$08,$f8,$f0,$fc,$f8,$f0,$fc,$f8,$f0
   .db $00,$00,$00,$00,$00,$00,$01,$0e,$00,$00,$00,$00,$00,$00,$00,$01
   .db $6f,$24,$20,$23,$47,$80,$0c,$00,$14,$1b,$1f,$1c,$38,$7f,$f3,$ff
   .db $f2,$24,$04,$84,$b3,$00,$d8,$3e,$2c,$d8,$f8,$78,$4c,$ff,$27,$c1
@@ -930,6 +1235,12 @@ updateAttributePPU:
   .db $10,$e0,$e0,$10,$88,$44,$24,$24,$e0,$00,$00,$e0,$70,$b8,$d8,$d8
   .db $0c,$07,$07,$08,$10,$31,$22,$32,$03,$00,$00,$07,$0f,$0e,$1d,$0d
   .db $10,$e0,$e0,$10,$88,$04,$24,$44,$e0,$00,$00,$e0,$70,$f8,$d8,$b8
+  .db $07,$07,$08,$10,$22,$22,$22,$22,$00,$00,$07,$0f,$1d,$1d,$1d,$1d
+  .db $e0,$e0,$10,$08,$4c,$44,$4c,$44,$00,$00,$e0,$f0,$b0,$b8,$b0,$b8
+  .db $08,$07,$07,$08,$11,$22,$24,$24,$07,$00,$00,$07,$0e,$1d,$1b,$1b
+  .db $30,$e0,$e0,$10,$08,$0c,$44,$8c,$c0,$00,$00,$e0,$f0,$f0,$b8,$70
+  .db $08,$07,$07,$08,$11,$20,$24,$22,$07,$00,$00,$07,$0e,$1f,$1b,$1d
+  .db $30,$e0,$e0,$10,$08,$8c,$44,$4c,$c0,$00,$00,$e0,$f0,$70,$b8,$b0
   .db $10,$21,$4f,$48,$80,$90,$b2,$85,$0f,$1e,$30,$37,$7f,$6f,$4d,$78
   .db $78,$c1,$09,$c0,$d0,$50,$11,$18,$87,$3e,$f6,$3f,$2f,$af,$ee,$e7
   .db $01,$00,$80,$6c,$3c,$04,$82,$c0,$fe,$ff,$7f,$93,$c3,$fb,$7d,$3f
@@ -944,6 +1255,12 @@ updateAttributePPU:
   .db $c4,$04,$76,$09,$01,$e2,$24,$18,$38,$f8,$88,$f6,$fe,$1c,$18,$00
   .db $21,$30,$20,$20,$20,$43,$31,$0f,$1e,$0f,$1f,$1f,$1f,$3c,$0e,$00
   .db $84,$04,$06,$09,$11,$e2,$24,$18,$78,$f8,$f8,$f6,$ee,$1c,$18,$00
+  .db $21,$20,$10,$08,$07,$18,$20,$1f,$1e,$1f,$0f,$07,$00,$07,$1f,$00
+  .db $8c,$04,$08,$10,$e0,$20,$10,$e0,$70,$f8,$f0,$e0,$00,$c0,$e0,$00
+  .db $23,$20,$6e,$90,$80,$47,$24,$18,$1c,$1f,$11,$6f,$7f,$38,$18,$00
+  .db $04,$0c,$04,$08,$14,$e2,$4c,$f0,$f8,$f0,$f8,$f0,$e8,$1c,$30,$00
+  .db $21,$20,$60,$90,$88,$47,$24,$18,$1e,$1f,$1f,$6f,$77,$38,$18,$00
+  .db $84,$0c,$04,$04,$04,$c2,$8c,$f0,$78,$f0,$f8,$f8,$f8,$3c,$70,$00
   .db $98,$61,$06,$09,$09,$08,$08,$07,$60,$00,$01,$06,$06,$07,$07,$00
   .db $98,$18,$10,$13,$80,$e0,$01,$fe,$67,$e7,$ef,$ec,$7f,$1f,$fe,$00
   .db $40,$40,$30,$19,$09,$01,$80,$7f,$bf,$bf,$cf,$e6,$f6,$fe,$7f,$00
