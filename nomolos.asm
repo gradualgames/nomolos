@@ -54,7 +54,6 @@ w5:       .dsw 1
 
 buttonA:     .dsb 1
 vblankDone:  .dsb 1
-countDown:   .dsb 1
 
 update:     .dsw 1
 updatePPU:  .dsw 1
@@ -345,8 +344,6 @@ reset:
   sta scrollX+1
   lda #$00
   sta columnToUpdate
-  lda #$03
-  sta countDown
 
   lda #<loadLevelUpdate
   sta update
@@ -420,16 +417,12 @@ reset:
 ;    |         |           1 = Monochrome display                         |
 ;    +---------+----------------------------------------------------------+
 ;       76543210
-  lda #%00011110
+;  lda #%00011110
+;  sta $2001
+  lda #%00000000
   sta $2001
 
 loop:
-
-  ;wait for vblank to complete
-  lda #0
-  sta vblankDone
-- lda vblankDone
-  beq -
 
   jmp (update)
 
@@ -448,6 +441,12 @@ updateFinished:
   jmp loop
 
 playLevelUpdate:
+
+  ;wait for vblank to complete
+  lda #0
+  sta vblankDone
+- lda vblankDone
+  beq -
 
   lda #<NomolosRight0
   sta w0
@@ -511,16 +510,18 @@ loadLevelUpdate:
   lda columnToUpdate
   jsr updateColumn
 
-  lda countDown
-  beq ++
-  dec countDown
-  bne +
-++
+  ;rendering is off in this state, so we update the PPU
+  jsr updateSprites
+  jsr updateColumnPPU
+  jsr updateAttributePPU
+  jsr updateScrollPPU
 
+  ;move on to next column.
   inc columnToUpdate
   inc columnToUpdate
 
   lda columnToUpdate
+  ;have we updated all the columns on the screen yet?
   cmp #30
   bne +
   ;switch to play level state.
@@ -532,8 +533,10 @@ loadLevelUpdate:
   sta updatePPU
   lda #>playLevelUpdatePPU
   sta updatePPU+1
+  ;turn rendering on
+  lda #%00011110
+  sta $2001
 +
-
   jmp updateFinished
 
 loadPalette:
@@ -999,9 +1002,6 @@ vblank:
 
 updatePPUFinished:
 
-  lda #1
-  sta vblankDone
-
   ;the following loops are meant to measure how many cycles we have left to use for vblank
 ;  ldy #20      ;2
 ;--
@@ -1027,12 +1027,11 @@ playLevelUpdatePPU:
   jsr updateColumnPPU
   jsr updateAttributePPU
   jsr updateScrollPPU
+  lda #1
+  sta vblankDone
   jmp updatePPUFinished
+
 loadLevelUpdatePPU:
-  jsr updateSprites
-  jsr updateColumnPPU
-  jsr updateAttributePPU
-  jsr updateScrollPPU       
   jmp updatePPUFinished
 
 updateScrollPPU:
