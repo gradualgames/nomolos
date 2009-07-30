@@ -52,6 +52,8 @@ w3:       .dsw 1
 w4:       .dsw 1
 w5:       .dsw 1
 
+anim1:   .dsw 1
+
 buttonA:     .dsb 1
 vblankDone:  .dsb 1
 
@@ -270,7 +272,7 @@ Boj1:
 
 ;Animations
 NomolosWalkRight:
-  .dw $0a
+  .db $0a
   .dw NomolosRight0
   .dw NomolosRight1
   .dw NomolosRight0
@@ -278,7 +280,7 @@ NomolosWalkRight:
   .db $00
 
 NomolosWalkLeft:
-  .dw $0a
+  .db $0a
   .dw NomolosLeft0
   .dw NomolosLeft1
   .dw NomolosLeft0
@@ -286,7 +288,7 @@ NomolosWalkLeft:
   .db $00
 
 BojWalk:
-  .dw $0a
+  .db $0a
   .dw Boj0
   .dw Boj1
   .db $00
@@ -325,6 +327,11 @@ reset:
   jsr clearSprites
 
   ;set load level state.
+  lda #1
+  sta anim1
+  lda #0
+  sta anim1+1
+  
   lda #<Level
   sta levelBaseAddress
   lda #>Level
@@ -448,28 +455,57 @@ playLevelUpdate:
 - lda vblankDone
   beq -
 
-  lda #<NomolosRight0
-  sta w0
-  lda #>NomolosRight0
-  sta w0+1
-  lda #10
+  ;lda #<NomolosRight0
+  ;sta w0
+  ;lda #>NomolosRight0
+  ;sta w0+1
+  ;lda #10
+  ;sta b0
+  ;lda #10
+  ;sta b1
+  ;lda #0
+  ;sta spriteAddress
+  ; jsr drawMetaSprite
+
+  ;lda #<Boj0
+  ;sta w0
+  ;lda #>Boj0
+  ;sta w0+1
+  ;lda #50
+  ;sta b0
+  ;lda #50
+  ;sta b1
+  ;jsr drawMetaSprite
+
+
+;w1: Location of animation object
+;    assumes animation object is defined as:
+;    .dsb frameCountDown
+;    .dsb currentFrame
+;w2: Location of animation definition
+;    assumes animation definition is defined as:
+;    .db frameCountDownReset
+;    .dw frameAddress
+;    .dw frameAddress etc.
+;    .db $00
+;b0: x coordinate to display animation at
+;b1: y coordinate to display animation at  
+  
+  lda #<anim1
+  sta w1
+  lda #>anim1
+  sta w1+1
+  lda #<NomolosWalkRight
+  sta w2
+  lda #>NomolosWalkRight
+  sta w2+1
+  lda #50
   sta b0
-  lda #10
   sta b1
   lda #0
-  sta spriteAddress
-  jsr drawMetaSprite
-
-  lda #<Boj0
-  sta w0
-  lda #>Boj0
-  sta w0+1
-  lda #50
-  sta b0
-  lda #50
-  sta b1
-  jsr drawMetaSprite
-
+  sta spriteAddress  
+  jsr drawAnimation
+  
   jsr getInput
   jsr decodeMap
 
@@ -551,6 +587,80 @@ loadPalette:
   bne -
   rts
 
+;Updates a single animation. Assumes the animation at w1 has the following format:
+;RAM stuff used:
+;Temporary Parameters:
+;w1: Location of animation object
+;    assumes animation object is defined as:
+;    .dsb frameCountDown
+;    .dsb currentFrame
+;w2: Location of animation definition
+;    assumes animation definition is defined as:
+;    .db frameCountDownReset
+;    .dw frameAddress
+;    .dw frameAddress etc.
+;    .db $00
+;b0: x coordinate to display animation at
+;b1: y coordinate to display animation at
+;Global Variables:
+;Animations
+;NomolosWalkRight:
+;  .dw $0a
+;  .dw NomolosRight0
+;  .dw NomolosRight1
+;  .dw NomolosRight0
+;  .dw NomolosRight2
+;  .db $00
+drawAnimation:
+
+  ;get the frame count down of this animation object
+  ldy #0
+  lda (w1),y
+  ;decrement the frame count down
+  sec
+  sbc #1
+  sta (w1),y
+  ;if the frame count down hasn't reached zero, skip the frame update code
+  bne +
+  ;load frame count down reset value
+  ldy #0
+  lda (w2),y
+  ;reset the animation object's frame count down value
+  sta (w1),y
+  ;load the current frame
+  iny  
+  lda (w1),y
+  asl
+  tay
+  iny
+  ;load low byte of meta sprite address
+  lda (w2),y
+  ;if this byte is zero we want to reset the frame counter
+  beq ++
+  sta w0
+  iny
+  ;load high byte of meta sprite address
+  lda (w2),y
+  sta w0+1
+  ;display current frame
+  jsr drawMetaSprite
+  ;increment the frame counter
+  ldy #1
+  lda (w1),y
+  clc
+  adc #1
+  sta (w1),y
+  
++
+  
+  rts
+
+++
+  lda #0
+  ldy #1
+  sta (w1),y
+  rts
+  
 ; NomolosRight0:
 ;  .db $08
 ;  .db $00,$00,$00,$00
