@@ -288,7 +288,7 @@ NomolosWalkLeft:
   .db $00
 
 BojWalk:
-  .db $0a
+  .db $14
   .dw Boj0
   .dw Boj1
   .db $00
@@ -455,42 +455,6 @@ playLevelUpdate:
 - lda vblankDone
   beq -
 
-  ;lda #<NomolosRight0
-  ;sta w0
-  ;lda #>NomolosRight0
-  ;sta w0+1
-  ;lda #10
-  ;sta b0
-  ;lda #10
-  ;sta b1
-  ;lda #0
-  ;sta spriteAddress
-  ; jsr drawMetaSprite
-
-  ;lda #<Boj0
-  ;sta w0
-  ;lda #>Boj0
-  ;sta w0+1
-  ;lda #50
-  ;sta b0
-  ;lda #50
-  ;sta b1
-  ;jsr drawMetaSprite
-
-
-;w1: Location of animation object
-;    assumes animation object is defined as:
-;    .dsb frameCountDown
-;    .dsb currentFrame
-;w2: Location of animation definition
-;    assumes animation definition is defined as:
-;    .db frameCountDownReset
-;    .dw frameAddress
-;    .dw frameAddress etc.
-;    .db $00
-;b0: x coordinate to display animation at
-;b1: y coordinate to display animation at  
-  
   lda #<anim1
   sta w1
   lda #>anim1
@@ -499,12 +463,15 @@ playLevelUpdate:
   sta w2
   lda #>NomolosWalkRight
   sta w2+1
+  jsr updateAnimation
+
   lda #50
   sta b0
   sta b1
   lda #0
   sta spriteAddress  
   jsr drawAnimation
+
   
   jsr getInput
   jsr decodeMap
@@ -586,7 +553,29 @@ loadPalette:
   cpx #$20
   bne -
   rts
-
+  
+;draws an animation
+;w1: location of animation object
+;w2: location of animation definition  
+drawAnimation:
+  ;get the current frame of this animation object
+  ldy #1
+  lda (w1),y
+  asl
+  tay
+  iny
+  ;load low byte of meta sprite address
+  lda (w2),y
+  sta w0
+  iny
+  ;load high byte of meta sprite address
+  lda (w2),y
+  sta w0+1
+  ;display current frame
+  jsr drawMetaSprite
+  
+  rts
+  
 ;Updates a single animation. Assumes the animation at w1 has the following format:
 ;RAM stuff used:
 ;Temporary Parameters:
@@ -600,8 +589,6 @@ loadPalette:
 ;    .dw frameAddress
 ;    .dw frameAddress etc.
 ;    .db $00
-;b0: x coordinate to display animation at
-;b1: y coordinate to display animation at
 ;Global Variables:
 ;Animations
 ;NomolosWalkRight:
@@ -611,7 +598,7 @@ loadPalette:
 ;  .dw NomolosRight0
 ;  .dw NomolosRight2
 ;  .db $00
-drawAnimation:
+updateAnimation:
 
   ;get the frame count down of this animation object
   ldy #0
@@ -622,43 +609,27 @@ drawAnimation:
   sta (w1),y
   ;if the frame count down hasn't reached zero, skip the frame update code
   bne +
-  ;load frame count down reset value
+  ;reset the frame count value
   ldy #0
   lda (w2),y
-  ;reset the animation object's frame count down value
   sta (w1),y
-  ;load the current frame
-  iny  
-  lda (w1),y
-  asl
-  tay
+  
+  ;get the current frame number of this animation object
   iny
-  ;load low byte of meta sprite address
-  lda (w2),y
-  ;if this byte is zero we want to reset the frame counter
-  beq ++
-  sta w0
-  iny
-  ;load high byte of meta sprite address
-  lda (w2),y
-  sta w0+1
-  ;display current frame
-  jsr drawMetaSprite
-  ;increment the frame counter
-  ldy #1
   lda (w1),y
   clc
   adc #1
   sta (w1),y
-  
-+
-  
-  rts
-
-++
+  asl
+  tay
+  iny
+  lda (w2),y
+  ;if the byte is zero, we must reset the frame counter
+  bne +
   lda #0
   ldy #1
   sta (w1),y
++
   rts
   
 ; NomolosRight0:
