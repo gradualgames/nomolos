@@ -52,13 +52,18 @@ w3:       .dsw 1
 w4:       .dsw 1
 w5:       .dsw 1
 
-anim1:   .dsw 1
-
 buttonA:     .dsb 1
 vblankDone:  .dsb 1
 
 update:     .dsw 1
 updatePPU:  .dsw 1
+
+nomolosX: .dsw 1
+nomolosY: .dsb 1
+nomolosAnim: .dsw 1
+
+;bit 0: 1 = walking right, 0 = walking left
+nomolosState: .dsb 1
 
 scrollX:                      .dsw 1
 levelBaseAddress:             .dsw 1
@@ -328,9 +333,12 @@ reset:
 
   ;set load level state.
   lda #1
-  sta anim1
+  sta nomolosAnim
   lda #0
-  sta anim1+1
+  sta nomolosAnim+1
+  lda #1
+  ;Nomolos is walking left
+  sta nomolosState
   
   lda #<Level
   sta levelBaseAddress
@@ -455,27 +463,31 @@ playLevelUpdate:
 - lda vblankDone
   beq -
 
-  lda #<anim1
-  sta w1
-  lda #>anim1
-  sta w1+1
-  lda #<NomolosWalkRight
-  sta w2
-  lda #>NomolosWalkRight
-  sta w2+1
-  jsr updateAnimation
+;  lda #<nomolosAnim
+;  sta w1
+;  lda #>nomolosAnim
+;  sta w1+1
+;  lda #<NomolosWalkRight
+;  sta w2
+;  lda #>NomolosWalkRight
+;  sta w2+1
+;  jsr updateAnimation
 
-  lda #50
-  sta b0
-  sta b1
-  lda #0
-  sta spriteAddress  
-  jsr drawAnimation
+;  lda nomolosX
+;  sta b0
+;  lda nomolosY
+;  sta b1
+;  lda #0
+;  sta spriteAddress  
+;  jsr drawAnimation
 
   
   jsr getInput
   jsr decodeMap
-
+  lda #0
+  sta spriteAddress
+  jsr drawNomolos
+  
   jmp updateFinished
 
 loadLevelUpdate:
@@ -553,6 +565,38 @@ loadPalette:
   cpx #$20
   bne -
   rts
+
+drawNomolos:
+
+  lda #<nomolosAnim
+  sta w1
+  lda #>nomolosAnim
+  sta w1+1
+  
+  lda nomolosState
+  and #1
+  bne +
+  lda #<NomolosWalkRight
+  sta w2
+  lda #>NomolosWalkRight
+  sta w2+1
+  jmp ++
+ +
+  lda #<NomolosWalkLeft
+  sta w2
+  lda #>NomolosWalkLeft
+  sta w2+1
+++  
+  
+  jsr updateAnimation
+  
+  lda nomolosX
+  sta b0
+  lda nomolosY
+  sta b1
+  jsr drawAnimation
+
+  rts
   
 ;draws an animation
 ;w1: location of animation object
@@ -590,14 +634,6 @@ drawAnimation:
 ;    .dw frameAddress etc.
 ;    .db $00
 ;Global Variables:
-;Animations
-;NomolosWalkRight:
-;  .dw $0a
-;  .dw NomolosRight0
-;  .dw NomolosRight1
-;  .dw NomolosRight0
-;  .dw NomolosRight2
-;  .db $00
 updateAnimation:
 
   ;get the frame count down of this animation object
@@ -632,16 +668,6 @@ updateAnimation:
 +
   rts
   
-; NomolosRight0:
-;  .db $08
-;  .db $00,$00,$00,$00
-;  .db $00,$01,$00,$08
-;  .db $08,$0d,$00,$00
-;  .db $08,$0e,$00,$08
-;  .db $10,$1d,$00,$00
-;  .db $10,$1e,$00,$08
-;  .db $18,$31,$00,$00
-;  .db $18,$32,$00,$08
 
 ;       +-----------+-----------+-----+------------+
 ;       | Sprite #0 | Sprite #1 | ... | Sprite #63 |
@@ -765,24 +791,52 @@ getInput:
   lda $4016          ; Select does nothing
   lda $4016          ; Start does nothing
   lda $4016          ; Up
+  
+  and #1
+  beq +
+  dec nomolosY
++
+  
   lda $4016          ; Down
+  
+  and #1
+  beq +
+  inc nomolosY
++
   lda $4016          ; Left
 
+  ;is left button down?
+  and #1
+  beq +  
+  lda nomolosState
+  ora #1
+  sta nomolosState
+  sec
+  lda nomolosX
+  sbc #1   
+  sta nomolosX
+  lda nomolosX+1
+  sbc #0
+  sta nomolosX+1    
++
+  
   lda $4016          ; Right
 
   ;is right button down?
   and #1
-  beq ++
-  ;yes
-  lda scrollX
+  beq +
+  lda nomolosState
+  and #%11111110
+  sta nomolosState
   clc
-  adc #2
-  bcc +
-  inc scrollX+1
+  lda nomolosX
+  adc #1
+  sta nomolosX
+  lda nomolosX+1
+  adc #0
+  sta nomolosX+1
 +
-  sta scrollX
-++
-
+  
   rts
 
 decodeMap:
