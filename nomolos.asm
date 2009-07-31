@@ -464,29 +464,13 @@ playLevelUpdate:
   sta vblankDone
 - lda vblankDone
   beq -
-
-;  lda #<nomolosAnim
-;  sta w1
-;  lda #>nomolosAnim
-;  sta w1+1
-;  lda #<NomolosWalkRight
-;  sta w2
-;  lda #>NomolosWalkRight
-;  sta w2+1
-;  jsr updateAnimation
-
-;  lda nomolosX
-;  sta b0
-;  lda nomolosY
-;  sta b1
-;  lda #0
-;  sta spriteAddress  
-;  jsr drawAnimation
-
   
   jsr getInput
   jsr updateCamera
   jsr decodeMap
+  ;reset sprite address. This must be done before any sprites are
+  ;drawn to the sprite buffer. It gets pushed along as every sprite
+  ;is added.
   lda #0
   sta spriteAddress
   jsr drawNomolos
@@ -517,12 +501,12 @@ loadLevelUpdate:
 
   ;now add MetaMetaTileTable to this number
   clc
-	lda w1
-	adc metametaTileTableBaseAddress
-	sta w1
-	lda w1+1
-	adc metametaTileTableBaseAddress+1
-	sta w1+1
+  lda w1
+  adc metametaTileTableBaseAddress
+  sta w1
+  lda w1+1
+  adc metametaTileTableBaseAddress+1
+  sta w1+1
 
   lda columnToUpdate
   jsr updateColumn
@@ -584,11 +568,12 @@ updateCamera:
   lda nomolosY+1
   sta nomolosScreenY
 
-  ;compare nomolosScreenX to 150.
+  ;compare nomolosScreenX to middle of screen.
   lda nomolosScreenX
   cmp #128
   bne +
   
+  ;scroll the camera
   clc
   lda scrollX
   adc #1
