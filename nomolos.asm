@@ -485,12 +485,11 @@ playLevelUpdate:
 
   
   jsr getInput
-  jsr decodeMap
   jsr updateCamera
+  jsr decodeMap
   lda #0
   sta spriteAddress
   jsr drawNomolos
-  
   jmp updateFinished
 
 loadLevelUpdate:
