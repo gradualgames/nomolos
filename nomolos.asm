@@ -58,8 +58,10 @@ vblankDone:  .dsb 1
 update:     .dsw 1
 updatePPU:  .dsw 1
 
-nomolosX: .dsw 1
-nomolosY: .dsb 1
+nomolosX: .dsb 3  ;24 bit x (16 bit coord + 8 bit fine movement)
+nomolosY: .dsb 2  ;16 bit y (8 bit coord + 8 bit fine movement)
+nomolosScreenX: .dsb 1
+nomolosScreenY: .dsb 1
 nomolosAnim: .dsw 1
 
 ;bit 0: 1 = walking right, 0 = walking left
@@ -484,6 +486,7 @@ playLevelUpdate:
   
   jsr getInput
   jsr decodeMap
+  jsr updateCamera
   lda #0
   sta spriteAddress
   jsr drawNomolos
@@ -566,6 +569,39 @@ loadPalette:
   bne -
   rts
 
+;computes camera coordinates for Nomolos and all on screen game objects
+;also moves the camera in response to Nomolos' position
+updateCamera:
+
+  ;16 bit sub of NomolosX - ScrollX
+  sec
+  lda nomolosX+1 ;load low byte of 16 bit part of 24 bit X coord
+  sbc scrollX
+  sta nomolosScreenX
+  lda nomolosX+2
+  sbc scrollX+1
+  sta nomolosScreenX+1
+  
+  lda nomolosY+1
+  sta nomolosScreenY
+
+  ;compare nomolosScreenX to 150.
+  lda nomolosScreenX
+  cmp #128
+  bne +
+  
+  clc
+  lda scrollX
+  adc #1
+  sta scrollX
+  lda scrollX+1
+  adc #0
+  sta scrollX+1
+  
++
+  
+  rts
+  
 drawNomolos:
 
   lda #<nomolosAnim
@@ -590,9 +626,9 @@ drawNomolos:
   
   jsr updateAnimation
   
-  lda nomolosX
+  lda nomolosScreenX
   sta b0
-  lda nomolosY
+  lda nomolosScreenY
   sta b1
   jsr drawAnimation
 
@@ -794,14 +830,28 @@ getInput:
   
   and #1
   beq +
-  dec nomolosY
+  ;16 bit sub
+  lda nomolosY
+  sec
+  sbc #255
+  sta nomolosY
+  lda nomolosY+1
+  sbc #0
+  sta nomolosY+1
 +
   
   lda $4016          ; Down
   
   and #1
   beq +
-  inc nomolosY
+  ;16 bit add
+  lda nomolosY
+  clc
+  adc #255
+  sta nomolosY
+  lda nomolosY+1
+  adc #0
+  sta nomolosY+1
 +
   lda $4016          ; Left
 
@@ -811,13 +861,18 @@ getInput:
   lda nomolosState
   ora #1
   sta nomolosState
+  
+  ;24 bit Sub
   sec
   lda nomolosX
-  sbc #1   
+  sbc #255
   sta nomolosX
   lda nomolosX+1
   sbc #0
-  sta nomolosX+1    
+  sta nomolosX+1   
+  lda nomolosX+2
+  sbc #0
+  sta nomolosX+2
 +
   
   lda $4016          ; Right
@@ -828,13 +883,17 @@ getInput:
   lda nomolosState
   and #%11111110
   sta nomolosState
+  ;24 bit add
   clc
   lda nomolosX
-  adc #1
+  adc #255
   sta nomolosX
   lda nomolosX+1
   adc #0
   sta nomolosX+1
+  lda nomolosX+2
+  adc #0
+  sta nomolosX+2
 +
   
   rts
