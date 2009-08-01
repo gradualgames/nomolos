@@ -65,13 +65,13 @@ nomolosScreenX: .dsb 1
 nomolosScreenY: .dsb 1
 nomolosAnim: .dsw 1
 
-;bit 0: 1 = walking right, 0 = walking left
 nomolosWalkingRightAND EQU #%11111110
 nomolosWalkingLeftOR   EQU #%00000001
 nomolosMovingOffAND    EQU #%11111101
 nomolosMovingOnOR      EQU #%00000010
 nomolosState: .dsb 1
 
+scrollReact EQU 120
 scrollX:                      .dsw 1
 levelBaseAddress:             .dsw 1
 metametaTileTableBaseAddress: .dsw 1
@@ -344,13 +344,26 @@ reset:
   sta nomolosAnim
   lda #0
   sta nomolosAnim+1
-  lda #1
-  ;Nomolos is walking left
+  lda #0
+  and nomolosWalkingRightAND  
   sta nomolosState
   lda #0
   sta nomolosXSpeed
   lda #2
   sta nomolosXSpeed+1
+  
+  lda #0
+  sta nomolosX
+  lda #50
+  sta nomolosX+1
+  lda #0
+  sta nomolosX+2
+  
+  lda #0
+  sta nomolosY
+  lda #90
+  sta nomolosY+1
+    
   
   lda #<Level
   sta levelBaseAddress
@@ -581,13 +594,14 @@ updateCamera:
   ;compare nomolosScreenX to middle of screen.
   lda nomolosScreenX
   sec
-  sbc #128
+  sbc #scrollReact
   bmi +
     
   sta b0
   ;adjust nomolosScreenX based on difference with middle of screen.
   sec
-  sbc nomolosScreenX
+  lda nomolosScreenX
+  sbc b0
   sta nomolosScreenX
   ;scroll the camera
   clc
