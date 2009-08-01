@@ -1,4 +1,4 @@
-;File: nomolos_scrolling.asm
+;File: nomolos.asm
 ;Author: Derek Andrews
 
 ;    +--------+------+------------------------------------------+
