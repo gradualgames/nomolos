@@ -28,12 +28,12 @@
 ;    | ..-EOF |      | CHR-ROM pages (in ascending order).      |
 ;    +--------+------+------------------------------------------+
 
-.byte "NES",$1a        ;iNES header
-.byte $02 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
-.byte $01 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
-.byte $01 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #0 (NROM)
-.byte $00 ;            ;Rest of Mapper #2 bits (all 0)
-.byte 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
+.db "NES",$1a        ;iNES header
+.db $02 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
+.db $01 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
+.db $01 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #0 (NROM)
+.db $00 ;            ;Rest of Mapper #2 bits (all 0)
+.db 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
 
   .base $0000
 
