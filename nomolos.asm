@@ -60,11 +60,16 @@ updatePPU:  .dsw 1
 
 nomolosX: .dsb 3  ;24 bit x (16 bit coord + 8 bit fine movement)
 nomolosY: .dsb 2  ;16 bit y (8 bit coord + 8 bit fine movement)
+nomolosXSpeed: .dsw 1
 nomolosScreenX: .dsb 1
 nomolosScreenY: .dsb 1
 nomolosAnim: .dsw 1
 
 ;bit 0: 1 = walking right, 0 = walking left
+nomolosWalkingRightAND EQU #%11111110
+nomolosWalkingLeftOR   EQU #%00000001
+nomolosMovingOffAND    EQU #%11111101
+nomolosMovingOnOR      EQU #%00000010
 nomolosState: .dsb 1
 
 scrollX:                      .dsw 1
@@ -75,9 +80,9 @@ metaTileTableBaseAddress      .dsw 1
 attributeBuffer: .dsb 8
 attributecolumnToUpdate: .dsb 1
 
-columnTileBuffer: .dsb 60
-metaTileBuffer: .dsb 4
-columnToUpdate: .dsb 1
+columnTileBuffer:  .dsb 60
+metaTileBuffer:    .dsb 4
+columnToUpdate:    .dsb 1
 nametableToUpdate: .dsb 1
 
 spriteAddress: .dsb 1
@@ -278,8 +283,9 @@ Boj1:
   .db $18,$44,$01,$18
 
 ;Animations
+
 NomolosWalkRight:
-  .db $0a
+  .db $08
   .dw NomolosRight0
   .dw NomolosRight1
   .dw NomolosRight0
@@ -287,7 +293,7 @@ NomolosWalkRight:
   .db $00
 
 NomolosWalkLeft:
-  .db $0a
+  .db $08
   .dw NomolosLeft0
   .dw NomolosLeft1
   .dw NomolosLeft0
@@ -341,6 +347,10 @@ reset:
   lda #1
   ;Nomolos is walking left
   sta nomolosState
+  lda #0
+  sta nomolosXSpeed
+  lda #2
+  sta nomolosXSpeed+1
   
   lda #<Level
   sta levelBaseAddress
@@ -464,7 +474,7 @@ playLevelUpdate:
   sta vblankDone
 - lda vblankDone
   beq -
-  
+	
   jsr getInput
   jsr updateCamera
   jsr decodeMap
@@ -570,13 +580,19 @@ updateCamera:
 
   ;compare nomolosScreenX to middle of screen.
   lda nomolosScreenX
-  cmp #128
-  bne +
-  
+  sec
+  sbc #128
+  bmi +
+    
+  sta b0
+  ;adjust nomolosScreenX based on difference with middle of screen.
+  sec
+  sbc nomolosScreenX
+  sta nomolosScreenX
   ;scroll the camera
   clc
   lda scrollX
-  adc #1
+  adc b0
   sta scrollX
   lda scrollX+1
   adc #0
@@ -585,6 +601,31 @@ updateCamera:
 +
   
   rts
+  
+updateNomolosAnimation:
+
+  lda #<nomolosAnim
+  sta w1
+  lda #>nomolosAnim
+  sta w1+1
+  
+  lda nomolosState
+  and #1
+  bne +
+  lda #<NomolosWalkRight
+  sta w2
+  lda #>NomolosWalkRight
+  sta w2+1
+  jmp ++
+ +
+  lda #<NomolosWalkLeft
+  sta w2
+  lda #>NomolosWalkLeft
+  sta w2+1
+++  
+  jsr updateAnimation
+
+  rts  
   
 drawNomolos:
 
@@ -608,7 +649,7 @@ drawNomolos:
   sta w2+1
 ++  
   
-  jsr updateAnimation
+  ;jsr updateAnimation
   
   lda nomolosScreenX
   sta b0
@@ -801,6 +842,10 @@ clearSprites:
 
 getInput:
 
+  lda nomolosState
+  and nomolosMovingOffAND  ;state is not moving
+  sta nomolosState
+  
   lda #$01  ; strobe joypad
   sta $4016
   lda #$00
@@ -843,20 +888,24 @@ getInput:
   and #1
   beq +  
   lda nomolosState
-  ora #1
+  ora nomolosWalkingLeftOR
+  ora nomolosMovingOnOR
+  
   sta nomolosState
   
   ;24 bit Sub
   sec
   lda nomolosX
-  sbc #255
+  sbc nomolosXSpeed
   sta nomolosX
   lda nomolosX+1
-  sbc #0
+  sbc nomolosXSpeed+1
   sta nomolosX+1   
   lda nomolosX+2
   sbc #0
   sta nomolosX+2
+  
+  jsr updateNomolosAnimation
 +
   
   lda $4016          ; Right
@@ -865,19 +914,31 @@ getInput:
   and #1
   beq +
   lda nomolosState
-  and #%11111110
+  and nomolosWalkingRightAND ;state is walking right
+  ora nomolosMovingOnOR       ;state is moving
   sta nomolosState
   ;24 bit add
   clc
   lda nomolosX
-  adc #255
+  adc nomolosXSpeed
   sta nomolosX
   lda nomolosX+1
-  adc #0
+  adc nomolosXSpeed+1
   sta nomolosX+1
   lda nomolosX+2
   adc #0
   sta nomolosX+2
+  
+  jsr updateNomolosAnimation
++
+
+  lda nomolosState
+  and #2
+  bne +
+  lda #1
+  sta nomolosAnim
+  lda #0
+  sta nomolosAnim+1
 +
   
   rts
