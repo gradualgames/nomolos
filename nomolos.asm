@@ -88,7 +88,7 @@ spriteAddress: .dsb 1
   .ende
 
   .enum $0100
-stack:
+stack:  .dsb 256
   .ende
   
   .enum $0200
