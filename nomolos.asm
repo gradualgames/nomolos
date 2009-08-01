@@ -84,8 +84,13 @@ columnTileBuffer:  .dsb 60
 metaTileBuffer:    .dsb 4
 columnToUpdate:    .dsb 1
 nametableToUpdate: .dsb 1
-
 spriteAddress: .dsb 1
+  .ende
+
+  .enum $0100
+stack:
+  .ende
+  
   .enum $0200
 sprite: .dsb 256
   .ende
