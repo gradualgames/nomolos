@@ -32,6 +32,7 @@ stack:  .res 256
 sprite: .res 256
 
 .include "rom0.asm"
+.include "chrrom0.asm"
 .include "nomolosLogic.asm"
 .include "camera.asm"
 .include "map.asm"  
@@ -258,12 +259,9 @@ updatePPUFinished:
 
 irq:
   rti
-
-
   
 .segment "VECTORS"
   .word vblank
   .word reset
   .word irq
 
-.include "chrrom0.asm"
