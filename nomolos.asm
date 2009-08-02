@@ -1,319 +1,279 @@
-;File: nomolos.asm
-;Author: Derek Andrews
+.segment "HEADER"
+.byte "NES",$1a        ;iNES header
+.byte $02 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
+.byte $01 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
+.byte $01 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #0 (NROM)
+.byte $00 ;            ;Rest of Mapper #2 bits (all 0)
+.byte 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
 
-;    +--------+------+------------------------------------------+
-;    | Offset | Size | Content(s)                               |
-;    +--------+------+------------------------------------------+
-;    |   0    |  3   | 'NES'                                    |
-;    |   3    |  1   | $1A                                      |
-;    |   4    |  1   | 16K PRG-ROM page count                   |
-;    |   5    |  1   | 8K CHR-ROM page count                    |
-;    |   6    |  1   | ROM Control Byte #1                      |
-;    |        |      |   %####vTsM                              |
-;    |        |      |    |  ||||+- 0=Horizontal mirroring      |
-;    |        |      |    |  ||||   1=Vertical mirroring        |
-;    |        |      |    |  |||+-- 1=SRAM enabled              |
-;    |        |      |    |  ||+--- 1=512-byte trainer present  |
-;    |        |      |    |  |+---- 1=Four-screen mirroring     |
-;    |        |      |    |  |                                  |
-;    |        |      |    +--+----- Mapper # (lower 4-bits)     |
-;    |   7    |  1   | ROM Control Byte #2                      |
-;    |        |      |   %####0000                              |
-;    |        |      |    |  |                                  |
-;    |        |      |    +--+----- Mapper # (upper 4-bits)     |
-;    |  8-15  |  8   | $00                                      |
-;    | 16-..  |      | Actual 16K PRG-ROM pages (in linear      |
-;    |  ...   |      | order). If a trainer exists, it precedes |
-;    |  ...   |      | the first PRG-ROM page.                  |
-;    | ..-EOF |      | CHR-ROM pages (in ascending order).      |
-;    +--------+------+------------------------------------------+
+.segment "ZEROPAGE"
+b0:       .res 1
+b1:       .res 1
+b2:       .res 1
+b3:       .res 1
+b4:       .res 1
+b5:       .res 1
+w0:       .res 2
+w1:       .res 2
+w2:       .res 2
+w3:       .res 2
+w4:       .res 2
+w5:       .res 2
 
-.db "NES",$1a        ;iNES header
-.db $02 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
-.db $01 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
-.db $01 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #0 (NROM)
-.db $00 ;            ;Rest of Mapper #2 bits (all 0)
-.db 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
+buttonA:     .res 1
+vblankDone:  .res 1
 
-  .base $0000
+update:     .res 2
+updatePPU:  .res 2
 
-  .enum $0000
+nomolosX: .res 3  ;24 bit x (16 bit coord + 8 bit fine movement)
+nomolosY: .res 2  ;16 bit y (8 bit coord + 8 bit fine movement)
+nomolosXSpeed: .res 2
+nomolosScreenX: .res 1
+nomolosScreenY: .res 1
+nomolosAnim: .res 2
 
-b0:       .dsb 1
-b1:       .dsb 1
-b2:       .dsb 1
-b3:       .dsb 1
-b4:       .dsb 1
-b5:       .dsb 1
-w0:       .dsw 1
-w1:       .dsw 1
-w2:       .dsw 1
-w3:       .dsw 1
-w4:       .dsw 1
-w5:       .dsw 1
+nomolosWalkingRightAND = %11111110
+nomolosWalkingLeftOR   = %00000001
+nomolosMovingOffAND    = %11111101
+nomolosMovingOnOR      = %00000010
+nomolosState: .res 1
 
-buttonA:     .dsb 1
-vblankDone:  .dsb 1
+scrollReact = 120
+scrollX:                      .res 2
+levelBaseAddress:             .res 2
+metametaTileTableBaseAddress: .res 2
+metaTileTableBaseAddress:     .res 2
 
-update:     .dsw 1
-updatePPU:  .dsw 1
+attributeBuffer: .res 8
+attributecolumnToUpdate: .res 1
 
-nomolosX: .dsb 3  ;24 bit x (16 bit coord + 8 bit fine movement)
-nomolosY: .dsb 2  ;16 bit y (8 bit coord + 8 bit fine movement)
-nomolosXSpeed: .dsw 1
-nomolosScreenX: .dsb 1
-nomolosScreenY: .dsb 1
-nomolosAnim: .dsw 1
+columnTileBuffer:  .res 60
+metaTileBuffer:    .res 4
+columnToUpdate:    .res 1
+nametableToUpdate: .res 1
+spriteAddress: .res 1
 
-nomolosWalkingRightAND EQU #%11111110
-nomolosWalkingLeftOR   EQU #%00000001
-nomolosMovingOffAND    EQU #%11111101
-nomolosMovingOnOR      EQU #%00000010
-nomolosState: .dsb 1
-
-scrollReact EQU 120
-scrollX:                      .dsw 1
-levelBaseAddress:             .dsw 1
-metametaTileTableBaseAddress: .dsw 1
-metaTileTableBaseAddress      .dsw 1
-
-attributeBuffer: .dsb 8
-attributecolumnToUpdate: .dsb 1
-
-columnTileBuffer:  .dsb 60
-metaTileBuffer:    .dsb 4
-columnToUpdate:    .dsb 1
-nametableToUpdate: .dsb 1
-spriteAddress: .dsb 1
-  .ende
-
-  .enum $0100
-stack:  .dsb 256
-  .ende
+.segment "STACK"
+stack:  .res 256
   
-  .enum $0200
-sprite: .dsb 256
-  .ende
+.segment "RAM"
+sprite: .res 256
 
-  .base $8000
-
+.segment "RODATA"
 palette:
 
 ;Image Palette
-  .db $21,$15,$12,$03,$11,$19,$1a,$07,$00,$00,$00,$00,$00,$00,$00,$00
+  .byte $21,$15,$12,$03,$11,$19,$1a,$07,$00,$00,$00,$00,$00,$00,$00,$00
 
 ;Sprite Palette
-  .db $21,$0d,$27,$2a,$20,$0d,$07,$28,$00,$00,$00,$00,$00,$00,$00,$00
-
-
+  .byte $21,$0d,$27,$2a,$20,$0d,$07,$28,$00,$00,$00,$00,$00,$00,$00,$00
 
 MetaTileTable:
 MetaTile0:
-  .db $01,$00,$00,$00,$00,$00,$00,$00
+  .byte $01,$00,$00,$00,$00,$00,$00,$00
 MetaTile1:
-  .db $00,$00,$01,$01,$02,$02,$00,$00
+  .byte $00,$00,$01,$01,$02,$02,$00,$00
 MetaTile2:
-  .db $01,$00,$03,$01,$02,$02,$00,$00
+  .byte $01,$00,$03,$01,$02,$02,$00,$00
 MetaTile3:
-  .db $01,$00,$01,$01,$02,$02,$00,$00
+  .byte $01,$00,$01,$01,$02,$02,$00,$00
 MetaTile4:
-  .db $01,$00,$01,$04,$02,$02,$00,$00
+  .byte $01,$00,$01,$04,$02,$02,$00,$00
 MetaMetaTileTable:
 MetaMetaTile0:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile1:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$00,$03,$00
 MetaMetaTile2:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$00,$00,$03,$00
 MetaMetaTile3:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$00,$03,$00
 MetaMetaTile4:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$03,$00
 MetaMetaTile5:
-  .db $00,$00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile6:
-  .db $00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile7:
-  .db $00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$02,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$02,$00,$00,$00,$03,$00
 MetaMetaTile8:
-  .db $00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$03,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$03,$00,$00,$00,$03,$00
 MetaMetaTile9:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$00,$03,$00
 MetaMetaTile10:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$03,$00
 MetaMetaTile11:
-  .db $00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile12:
-  .db $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$00,$00,$00,$00,$03,$00
+  .byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$00,$00,$00,$00,$03,$00
 MetaMetaTile13:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$01,$01,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$01,$01,$03,$00
 MetaMetaTile14:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$03,$00,$03,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$03,$00,$03,$00,$03,$00
 MetaMetaTile15:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$04,$00,$04,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$04,$00,$04,$00,$03,$00
 MetaMetaTile16:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$02,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$02,$00,$00,$03,$00
 MetaMetaTile17:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$03,$00
 MetaMetaTile18:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$03,$00
 MetaMetaTile19:
-  .db $00,$00,$01,$01,$01,$01,$01,$01,$01,$01,$01,$00,$00,$00,$03,$00
+  .byte $00,$00,$01,$01,$01,$01,$01,$01,$01,$01,$01,$00,$00,$00,$03,$00
 MetaMetaTile20:
-  .db $00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile21:
-  .db $00,$00,$00,$00,$01,$00,$01,$01,$01,$01,$01,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$01,$00,$01,$01,$01,$01,$01,$00,$00,$00,$03,$00
 MetaMetaTile22:
-  .db $00,$00,$03,$03,$03,$03,$03,$03,$03,$00,$03,$00,$00,$00,$03,$00
+  .byte $00,$00,$03,$03,$03,$03,$03,$03,$03,$00,$03,$00,$00,$00,$03,$00
 MetaMetaTile23:
-  .db $00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile24:
-  .db $00,$00,$00,$00,$00,$00,$03,$00,$00,$00,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$03,$00,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile25:
-  .db $00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile26:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$03,$00
 MetaMetaTile27:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$03,$00
 MetaMetaTile28:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$03,$00
 MetaMetaTile29:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$03,$00
 MetaMetaTile30:
-  .db $00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$01,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$01,$00,$00,$03,$00
 MetaMetaTile31:
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$03,$00
 Level:
-  .db $00,$00,$00,$00,$00,$00,$00,$01,$02,$02,$02,$02,$03,$00,$00,$04,$04,$04,$04,$04,$00,$00,$05,$06,$07,$08,$09,$0a,$00,$00,$05,$06
-  .db $06,$0b,$00,$00,$0c,$00,$00,$0d,$0e,$0e,$0f,$00,$00,$10,$11,$11,$12,$00,$00,$00,$13,$14,$14,$14,$13,$00,$00,$00,$15,$00,$00,$16
-  .db $00,$00,$00,$00,$17,$18,$18,$18,$18,$19,$00,$00,$1a,$09,$09,$09,$09,$09,$0a,$00,$17,$18,$18,$18,$18,$18,$19,$00,$00,$1b,$1b,$1b
-  .db $1b,$1b,$1b,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$1c,$1d,$1e,$1f,$1f,$1e,$1d,$1c,$00,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$01,$02,$02,$02,$02,$03,$00,$00,$04,$04,$04,$04,$04,$00,$00,$05,$06,$07,$08,$09,$0a,$00,$00,$05,$06
+  .byte $06,$0b,$00,$00,$0c,$00,$00,$0d,$0e,$0e,$0f,$00,$00,$10,$11,$11,$12,$00,$00,$00,$13,$14,$14,$14,$13,$00,$00,$00,$15,$00,$00,$16
+  .byte $00,$00,$00,$00,$17,$18,$18,$18,$18,$19,$00,$00,$1a,$09,$09,$09,$09,$09,$0a,$00,$17,$18,$18,$18,$18,$18,$19,$00,$00,$1b,$1b,$1b
+  .byte $1b,$1b,$1b,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$1c,$1d,$1e,$1f,$1f,$1e,$1d,$1c,$00,$00
 
 ;Meta Sprite Table
 NomolosRight0:
-  .db $08
-  .db $00,$00,$00,$00
-  .db $00,$01,$00,$08
-  .db $08,$0d,$00,$00
-  .db $08,$0e,$00,$08
-  .db $10,$1d,$00,$00
-  .db $10,$1e,$00,$08
-  .db $18,$31,$00,$00
-  .db $18,$32,$00,$08
+  .byte $08
+  .byte $00,$00,$00,$00
+  .byte $00,$01,$00,$08
+  .byte $08,$0d,$00,$00
+  .byte $08,$0e,$00,$08
+  .byte $10,$1d,$00,$00
+  .byte $10,$1e,$00,$08
+  .byte $18,$31,$00,$00
+  .byte $18,$32,$00,$08
 NomolosRight1:
-  .db $08
-  .db $00,$02,$00,$00
-  .db $00,$03,$00,$08
-  .db $08,$0f,$00,$00
-  .db $08,$10,$00,$08
-  .db $10,$1f,$00,$00
-  .db $10,$20,$00,$08
-  .db $18,$33,$00,$00
-  .db $18,$34,$00,$08
+  .byte $08
+  .byte $00,$02,$00,$00
+  .byte $00,$03,$00,$08
+  .byte $08,$0f,$00,$00
+  .byte $08,$10,$00,$08
+  .byte $10,$1f,$00,$00
+  .byte $10,$20,$00,$08
+  .byte $18,$33,$00,$00
+  .byte $18,$34,$00,$08
 NomolosRight2:
-  .db $08
-  .db $00,$02,$00,$00
-  .db $00,$03,$00,$08
-  .db $08,$0f,$00,$00
-  .db $08,$10,$00,$08
-  .db $10,$21,$00,$00
-  .db $10,$22,$00,$08
-  .db $18,$35,$00,$00
-  .db $18,$36,$00,$08
+  .byte $08
+  .byte $00,$02,$00,$00
+  .byte $00,$03,$00,$08
+  .byte $08,$0f,$00,$00
+  .byte $08,$10,$00,$08
+  .byte $10,$21,$00,$00
+  .byte $10,$22,$00,$08
+  .byte $18,$35,$00,$00
+  .byte $18,$36,$00,$08
 NomolosLeft0:
-  .db $08
-  .db $00,$04,$00,$00
-  .db $00,$05,$00,$08
-  .db $08,$11,$00,$00
-  .db $08,$12,$00,$08
-  .db $10,$23,$00,$00
-  .db $10,$24,$00,$08
-  .db $18,$37,$00,$00
-  .db $18,$38,$00,$08
+  .byte $08
+  .byte $00,$04,$00,$00
+  .byte $00,$05,$00,$08
+  .byte $08,$11,$00,$00
+  .byte $08,$12,$00,$08
+  .byte $10,$23,$00,$00
+  .byte $10,$24,$00,$08
+  .byte $18,$37,$00,$00
+  .byte $18,$38,$00,$08
 NomolosLeft1:
-  .db $08
-  .db $00,$06,$00,$00
-  .db $00,$07,$00,$08
-  .db $08,$13,$00,$00
-  .db $08,$14,$00,$08
-  .db $10,$25,$00,$00
-  .db $10,$26,$00,$08
-  .db $18,$39,$00,$00
-  .db $18,$3a,$00,$08
+  .byte $08
+  .byte $00,$06,$00,$00
+  .byte $00,$07,$00,$08
+  .byte $08,$13,$00,$00
+  .byte $08,$14,$00,$08
+  .byte $10,$25,$00,$00
+  .byte $10,$26,$00,$08
+  .byte $18,$39,$00,$00
+  .byte $18,$3a,$00,$08
 NomolosLeft2:
-  .db $08
-  .db $00,$06,$00,$00
-  .db $00,$07,$00,$08
-  .db $08,$13,$00,$00
-  .db $08,$14,$00,$08
-  .db $10,$27,$00,$00
-  .db $10,$28,$00,$08
-  .db $18,$3b,$00,$00
-  .db $18,$3c,$00,$08
+  .byte $08
+  .byte $00,$06,$00,$00
+  .byte $00,$07,$00,$08
+  .byte $08,$13,$00,$00
+  .byte $08,$14,$00,$08
+  .byte $10,$27,$00,$00
+  .byte $10,$28,$00,$08
+  .byte $18,$3b,$00,$00
+  .byte $18,$3c,$00,$08
 Boj0:
-  .db $10
-  .db $00,$08,$01,$00
-  .db $00,$09,$01,$08
-  .db $00,$0a,$01,$10
-  .db $00,$08,$01,$18
-  .db $08,$15,$01,$00
-  .db $08,$16,$01,$08
-  .db $08,$17,$01,$10
-  .db $08,$18,$01,$18
-  .db $10,$29,$01,$00
-  .db $10,$2a,$01,$08
-  .db $10,$2b,$01,$10
-  .db $10,$2c,$01,$18
-  .db $18,$3d,$01,$00
-  .db $18,$3e,$01,$08
-  .db $18,$3f,$01,$10
-  .db $18,$40,$01,$18
+  .byte $10
+  .byte $00,$08,$01,$00
+  .byte $00,$09,$01,$08
+  .byte $00,$0a,$01,$10
+  .byte $00,$08,$01,$18
+  .byte $08,$15,$01,$00
+  .byte $08,$16,$01,$08
+  .byte $08,$17,$01,$10
+  .byte $08,$18,$01,$18
+  .byte $10,$29,$01,$00
+  .byte $10,$2a,$01,$08
+  .byte $10,$2b,$01,$10
+  .byte $10,$2c,$01,$18
+  .byte $18,$3d,$01,$00
+  .byte $18,$3e,$01,$08
+  .byte $18,$3f,$01,$10
+  .byte $18,$40,$01,$18
 Boj1:
-  .db $10
-  .db $00,$08,$01,$00
-  .db $00,$0b,$01,$08
-  .db $00,$0c,$01,$10
-  .db $00,$08,$01,$18
-  .db $08,$19,$01,$00
-  .db $08,$1a,$01,$08
-  .db $08,$1b,$01,$10
-  .db $08,$1c,$01,$18
-  .db $10,$2d,$01,$00
-  .db $10,$2e,$01,$08
-  .db $10,$2f,$01,$10
-  .db $10,$30,$01,$18
-  .db $18,$41,$01,$00
-  .db $18,$42,$01,$08
-  .db $18,$43,$01,$10
-  .db $18,$44,$01,$18
+  .byte $10
+  .byte $00,$08,$01,$00
+  .byte $00,$0b,$01,$08
+  .byte $00,$0c,$01,$10
+  .byte $00,$08,$01,$18
+  .byte $08,$19,$01,$00
+  .byte $08,$1a,$01,$08
+  .byte $08,$1b,$01,$10
+  .byte $08,$1c,$01,$18
+  .byte $10,$2d,$01,$00
+  .byte $10,$2e,$01,$08
+  .byte $10,$2f,$01,$10
+  .byte $10,$30,$01,$18
+  .byte $18,$41,$01,$00
+  .byte $18,$42,$01,$08
+  .byte $18,$43,$01,$10
+  .byte $18,$44,$01,$18
 
 ;Animations
 
 NomolosWalkRight:
-  .db $08
-  .dw NomolosRight0
-  .dw NomolosRight1
-  .dw NomolosRight0
-  .dw NomolosRight2
-  .db $00
+  .byte $08
+  .word NomolosRight0
+  .word NomolosRight1
+  .word NomolosRight0
+  .word NomolosRight2
+  .byte $00
 
 NomolosWalkLeft:
-  .db $08
-  .dw NomolosLeft0
-  .dw NomolosLeft1
-  .dw NomolosLeft0
-  .dw NomolosLeft2
-  .db $00
+  .byte $08
+  .word NomolosLeft0
+  .word NomolosLeft1
+  .word NomolosLeft0
+  .word NomolosLeft2
+  .byte $00
 
 BojWalk:
-  .db $14
-  .dw Boj0
-  .dw Boj1
-  .db $00
-
-
-  .pad $C000
-
+  .byte $14
+  .word Boj0
+  .word Boj1
+  .byte $00  
+  
+.segment "CODE"
 reset:
   sei
   cld
@@ -322,14 +282,14 @@ reset:
   inx
   stx $2001
 
--
+:
   bit $2002
-  bpl -
--
+  bpl :-
+:
   bit $2002
-  bpl -
+  bpl :-
 
--
+:
   lda #$00
   sta $0000, x
   sta $0100, x
@@ -339,7 +299,7 @@ reset:
   sta $0600, x
   sta $0700, x
   inx
-  bne -
+  bne :-
 
   jsr loadPalette
   jsr clearSprites
@@ -350,7 +310,7 @@ reset:
   lda #0
   sta nomolosAnim+1
   lda #0
-  and nomolosWalkingRightAND  
+  and #nomolosWalkingRightAND  
   sta nomolosState
   lda #0
   sta nomolosXSpeed
@@ -490,8 +450,8 @@ playLevelUpdate:
   ;wait for vblank to complete
   lda #0
   sta vblankDone
-- lda vblankDone
-  beq -
+: lda vblankDone
+  beq :-
 	
   jsr getInput
   jsr updateCamera
@@ -521,11 +481,11 @@ loadLevelUpdate:
 
   ;shift left this number by 4
   ldx #4
--
+:
   asl w1
   rol w1+1
   dex
-  bne -
+  bne :-
 
   ;now add MetaMetaTileTable to this number
   clc
@@ -552,7 +512,7 @@ loadLevelUpdate:
   lda columnToUpdate
   ;have we updated all the columns on the screen yet?
   cmp #30
-  bne +
+  bne :+
   ;switch to play level state.
   lda #<playLevelUpdate
   sta update
@@ -565,7 +525,7 @@ loadLevelUpdate:
   ;turn rendering on
   lda #%00011110
   sta $2001
-+
+:
   jmp updateFinished
 
 loadPalette:
@@ -573,11 +533,11 @@ loadPalette:
   ldx #$00
   sta $2006
   stx $2006
-- lda palette,x
+: lda palette,x
   sta $2007
   inx
   cpx #$20
-  bne -
+  bne :-
   rts
 
 ;computes camera coordinates for Nomolos and all on screen game objects
@@ -600,7 +560,7 @@ updateCamera:
   lda nomolosScreenX
   sec
   sbc #scrollReact
-  bmi +
+  bmi :+
     
   sta b0
   ;adjust nomolosScreenX based on difference with middle of screen.
@@ -617,7 +577,7 @@ updateCamera:
   adc #0
   sta scrollX+1
   
-+
+:
   
   rts
   
@@ -630,18 +590,18 @@ updateNomolosAnimation:
   
   lda nomolosState
   and #1
-  bne +
+  bne :+
   lda #<NomolosWalkRight
   sta w2
   lda #>NomolosWalkRight
   sta w2+1
-  jmp ++
- +
+  jmp :++
+:
   lda #<NomolosWalkLeft
   sta w2
   lda #>NomolosWalkLeft
   sta w2+1
-++  
+:  
   jsr updateAnimation
 
   rts  
@@ -655,18 +615,18 @@ drawNomolos:
   
   lda nomolosState
   and #1
-  bne +
+  bne :+
   lda #<NomolosWalkRight
   sta w2
   lda #>NomolosWalkRight
   sta w2+1
-  jmp ++
- +
+  jmp :++
+:
   lda #<NomolosWalkLeft
   sta w2
   lda #>NomolosWalkLeft
   sta w2+1
-++  
+:  
   
   ;jsr updateAnimation
   
@@ -709,10 +669,10 @@ drawAnimation:
 ;    .dsb currentFrame
 ;w2: Location of animation definition
 ;    assumes animation definition is defined as:
-;    .db frameCountDownReset
+;    .byte frameCountDownReset
 ;    .dw frameAddress
 ;    .dw frameAddress etc.
-;    .db $00
+;    .byte $00
 ;Global Variables:
 updateAnimation:
 
@@ -724,7 +684,7 @@ updateAnimation:
   sbc #1
   sta (w1),y
   ;if the frame count down hasn't reached zero, skip the frame update code
-  bne +
+  bne :+
   ;reset the frame count value
   ldy #0
   lda (w2),y
@@ -741,11 +701,11 @@ updateAnimation:
   iny
   lda (w2),y
   ;if the byte is zero, we must reset the frame counter
-  bne +
+  bne :+
   lda #0
   ldy #1
   sta (w1),y
-+
+:
   rts
   
 
@@ -802,7 +762,7 @@ drawMetaSprite:
   ;subtract one from x to point to the correct byte in the sprite array
   dex
 
--
+:
   ;load the x coordinate of the current sprite entry
   lda (w0), y
   clc
@@ -842,7 +802,7 @@ drawMetaSprite:
   ;decrement our indices
   dex
   dey
-  bne -
+  bne :-
 
   rts
 
@@ -854,15 +814,15 @@ updateSprites:
 clearSprites:
   lda #$ff
   ldx #$00
-- sta sprite, x
+: sta sprite, x
   inx
-  bne -
+  bne :-
   rts
 
 getInput:
 
   lda nomolosState
-  and nomolosMovingOffAND  ;state is not moving
+  and #nomolosMovingOffAND  ;state is not moving
   sta nomolosState
   
   lda #$01  ; strobe joypad
@@ -877,7 +837,7 @@ getInput:
   lda $4016          ; Up
   
   and #1
-  beq +
+  beq :+
   ;16 bit sub
   lda nomolosY
   sec
@@ -886,12 +846,12 @@ getInput:
   lda nomolosY+1
   sbc #0
   sta nomolosY+1
-+
+:
   
   lda $4016          ; Down
   
   and #1
-  beq +
+  beq :+
   ;16 bit add
   lda nomolosY
   clc
@@ -900,15 +860,15 @@ getInput:
   lda nomolosY+1
   adc #0
   sta nomolosY+1
-+
+:
   lda $4016          ; Left
 
   ;is left button down?
   and #1
-  beq +  
+  beq :+  
   lda nomolosState
-  ora nomolosWalkingLeftOR
-  ora nomolosMovingOnOR
+  ora #nomolosWalkingLeftOR
+  ora #nomolosMovingOnOR
   
   sta nomolosState
   
@@ -925,16 +885,16 @@ getInput:
   sta nomolosX+2
   
   jsr updateNomolosAnimation
-+
+:
   
   lda $4016          ; Right
 
   ;is right button down?
   and #1
-  beq +
+  beq :+
   lda nomolosState
-  and nomolosWalkingRightAND ;state is walking right
-  ora nomolosMovingOnOR       ;state is moving
+  and #nomolosWalkingRightAND ;state is walking right
+  ora #nomolosMovingOnOR       ;state is moving
   sta nomolosState
   ;24 bit add
   clc
@@ -949,16 +909,16 @@ getInput:
   sta nomolosX+2
   
   jsr updateNomolosAnimation
-+
+:
 
   lda nomolosState
   and #2
-  bne +
+  bne :+
   lda #1
   sta nomolosAnim
   lda #0
   sta nomolosAnim+1
-+
+:
   
   rts
 
@@ -1093,7 +1053,7 @@ updateColumn:
 
   ldy #0
   ldx #15
--
+:
   ;save y, we need it for indirect addressing again
   tya
   pha
@@ -1169,7 +1129,7 @@ updateColumn:
   tay
   iny
   dex
-  bne -
+  bne :-
 
   rts
 
@@ -1192,7 +1152,7 @@ updateAttribute:
   ;do the column test
   lda b2
   and #$01
-  beq +
+  beq :+
   ;row bit 1, column bit 1
   lda #%00111111
   sta b5
@@ -1200,7 +1160,7 @@ updateAttribute:
   ror b1
   ror b1
   jmp gotMask
-+
+:
   ;row bit 1, column bit 0
   lda #%11001111
   sta b5
@@ -1217,14 +1177,14 @@ rowBitWasZero:
   ;do the column test
   lda b2
   and #$01
-  beq +
+  beq :+
   ;row bit 0, column bit 1
   lda #%11110011
   sta b5
   rol b1
   rol b1
   jmp gotMask
-+
+:
   ;row bit 0, column bit 0
   lda #%11111100
   sta b5
@@ -1319,13 +1279,13 @@ updateColumnPPU:
 
   ldy #0
   ldx #30
--
+:
   lda columnTileBuffer, y
   sta $2007
 
   iny
   dex
-  bne -
+  bne :-
 
   lda nametableToUpdate
   sta $2006
@@ -1336,13 +1296,13 @@ updateColumnPPU:
 
   ldy #0
   ldx #30
--
+:
   lda columnTileBuffer+30, y
   sta $2007
 
   iny
   dex
-  bne -
+  bne :-
 
   rts
 
@@ -1404,101 +1364,91 @@ updateAttributePPU:
   sta $2007
 
   rts
+  
+.segment "VECTORS"
+  .word vblank
+  .word reset
+  .word irq
 
-
-
-
-
-  .pad $FFFA
-  .dw vblank
-  .dw reset
-  .dw irq
-
-;CHR-ROM
-
-  .base $0000
-
+.segment "CHRROM1"  
 ;Pattern Table
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
-  .db $88,$99,$33,$66,$44,$44,$cc,$33,$77,$66,$cc,$99,$bb,$bb,$33,$cc
-  .db $cc,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
-  .db $00,$01,$03,$06,$04,$44,$cc,$33,$03,$06,$0c,$19,$3b,$3b,$33,$cc
-  .db $80,$80,$30,$60,$44,$44,$cc,$33,$40,$60,$c0,$98,$b8,$ba,$33,$cc
-
-; Fill the rest of the first CHR-ROM block with zeroes.
-  .pad $1000
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+  .byte $88,$99,$33,$66,$44,$44,$cc,$33,$77,$66,$cc,$99,$bb,$bb,$33,$cc
+  .byte $cc,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
+  .byte $00,$01,$03,$06,$04,$44,$cc,$33,$03,$06,$0c,$19,$3b,$3b,$33,$cc
+  .byte $80,$80,$30,$60,$44,$44,$cc,$33,$40,$60,$c0,$98,$b8,$ba,$33,$cc
 
 ; Here begins the second 4K block.  The sprites get their data from this page.
 
+.segment "CHRROM2"
 ;Pattern Table
-  .db $00,$01,$02,$04,$08,$10,$21,$60,$00,$00,$01,$03,$07,$0f,$1e,$1f
-  .db $c0,$98,$b0,$d0,$90,$98,$3c,$3e,$00,$00,$00,$20,$60,$60,$d8,$d0
-  .db $00,$00,$01,$02,$04,$08,$10,$21,$00,$00,$00,$01,$03,$07,$0f,$1e
-  .db $00,$80,$90,$b0,$d0,$90,$98,$3c,$00,$00,$00,$00,$20,$60,$60,$d8
-  .db $03,$19,$0d,$0b,$09,$19,$3c,$7c,$00,$00,$00,$04,$06,$06,$1b,$0b
-  .db $00,$80,$40,$20,$10,$08,$84,$06,$00,$00,$80,$c0,$e0,$f0,$78,$f8
-  .db $00,$01,$09,$0d,$0b,$09,$19,$3c,$00,$00,$00,$00,$04,$06,$06,$1b
-  .db $00,$00,$80,$40,$20,$10,$08,$84,$00,$00,$00,$80,$c0,$e0,$f0,$78
-  .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
-  .db $07,$1c,$2e,$5f,$8c,$c0,$c3,$c7,$00,$03,$1d,$32,$7f,$3f,$3c,$3b
-  .db $e0,$38,$74,$fa,$31,$03,$c3,$e1,$00,$c0,$b8,$4c,$fe,$fc,$3c,$de
-  .db $07,$1c,$2e,$5f,$9e,$cc,$c3,$87,$00,$03,$1d,$32,$73,$3f,$3c,$7b
-  .db $e0,$38,$74,$fa,$79,$33,$c3,$e3,$00,$c0,$b8,$4c,$ce,$fc,$3c,$dc
-  .db $70,$40,$60,$70,$40,$20,$10,$0c,$0f,$3f,$1f,$0f,$3f,$1f,$0f,$03
-  .db $1a,$06,$06,$02,$22,$24,$18,$10,$e4,$f8,$f8,$fc,$dc,$d8,$e0,$e0
-  .db $60,$70,$40,$60,$70,$40,$20,$10,$1f,$0f,$3f,$1f,$0f,$3f,$1f,$0f
-  .db $3e,$1a,$06,$06,$02,$22,$24,$18,$d0,$e4,$f8,$f8,$fc,$dc,$d8,$e0
-  .db $58,$60,$60,$40,$44,$24,$18,$08,$27,$1f,$1f,$3f,$3b,$1b,$07,$07
-  .db $0e,$02,$06,$0e,$02,$04,$08,$30,$f0,$fc,$f8,$f0,$fc,$f8,$f0,$c0
-  .db $7c,$58,$60,$60,$40,$44,$24,$18,$0b,$27,$1f,$1f,$3f,$3b,$1b,$07
-  .db $06,$0e,$02,$06,$0e,$02,$04,$08,$f8,$f0,$fc,$f8,$f0,$fc,$f8,$f0
-  .db $00,$00,$00,$00,$00,$00,$01,$0e,$00,$00,$00,$00,$00,$00,$00,$01
-  .db $6f,$24,$20,$23,$47,$80,$0c,$00,$14,$1b,$1f,$1c,$38,$7f,$f3,$ff
-  .db $f2,$24,$04,$84,$b3,$00,$d8,$3e,$2c,$d8,$f8,$78,$4c,$ff,$27,$c1
-  .db $00,$06,$19,$21,$cd,$09,$09,$0a,$00,$00,$06,$1e,$32,$f6,$f6,$f4
-  .db $00,$60,$98,$84,$b3,$90,$90,$50,$00,$00,$60,$78,$4c,$6f,$6f,$2f
-  .db $4f,$24,$20,$21,$cd,$00,$1b,$7c,$34,$1b,$1f,$1e,$32,$ff,$e4,$83
-  .db $f6,$24,$04,$c4,$e2,$01,$30,$00,$28,$d8,$f8,$38,$1c,$fe,$cf,$ff
-  .db $00,$00,$00,$00,$00,$00,$80,$70,$00,$00,$00,$00,$00,$00,$00,$80
-  .db $07,$07,$08,$10,$32,$22,$32,$22,$00,$00,$07,$0f,$0d,$1d,$0d,$1d
-  .db $e0,$e0,$10,$08,$44,$44,$44,$44,$00,$00,$e0,$f0,$b8,$b8,$b8,$b8
-  .db $0c,$07,$07,$08,$10,$30,$22,$31,$03,$00,$00,$07,$0f,$0f,$1d,$0e
-  .db $10,$e0,$e0,$10,$88,$44,$24,$24,$e0,$00,$00,$e0,$70,$b8,$d8,$d8
-  .db $0c,$07,$07,$08,$10,$31,$22,$32,$03,$00,$00,$07,$0f,$0e,$1d,$0d
-  .db $10,$e0,$e0,$10,$88,$04,$24,$44,$e0,$00,$00,$e0,$70,$f8,$d8,$b8
-  .db $07,$07,$08,$10,$22,$22,$22,$22,$00,$00,$07,$0f,$1d,$1d,$1d,$1d
-  .db $e0,$e0,$10,$08,$4c,$44,$4c,$44,$00,$00,$e0,$f0,$b0,$b8,$b0,$b8
-  .db $08,$07,$07,$08,$11,$22,$24,$24,$07,$00,$00,$07,$0e,$1d,$1b,$1b
-  .db $30,$e0,$e0,$10,$08,$0c,$44,$8c,$c0,$00,$00,$e0,$f0,$f0,$b8,$70
-  .db $08,$07,$07,$08,$11,$20,$24,$22,$07,$00,$00,$07,$0e,$1f,$1b,$1d
-  .db $30,$e0,$e0,$10,$08,$8c,$44,$4c,$c0,$00,$00,$e0,$f0,$70,$b8,$b0
-  .db $10,$21,$4f,$48,$80,$90,$b2,$85,$0f,$1e,$30,$37,$7f,$6f,$4d,$78
-  .db $78,$c1,$09,$c0,$d0,$50,$11,$18,$87,$3e,$f6,$3f,$2f,$af,$ee,$e7
-  .db $01,$00,$80,$6c,$3c,$04,$82,$c0,$fe,$ff,$7f,$93,$c3,$fb,$7d,$3f
-  .db $82,$84,$88,$10,$20,$20,$20,$20,$7c,$78,$70,$e0,$c0,$c0,$c0,$c0
-  .db $41,$21,$11,$08,$04,$04,$04,$04,$3e,$1e,$0e,$07,$03,$03,$03,$03
-  .db $80,$00,$01,$36,$3c,$20,$41,$03,$7f,$ff,$fe,$c9,$c3,$df,$be,$fc
-  .db $1e,$83,$90,$03,$0b,$0a,$88,$18,$e1,$7c,$6f,$fc,$f4,$f5,$77,$e7
-  .db $08,$84,$f2,$12,$01,$09,$4d,$a1,$f0,$78,$0c,$ec,$fe,$f6,$b2,$1e
-  .db $31,$20,$10,$08,$07,$04,$08,$07,$0e,$1f,$0f,$07,$00,$03,$07,$00
-  .db $84,$04,$08,$10,$e0,$18,$04,$f8,$78,$f8,$f0,$e0,$00,$e0,$f8,$00
-  .db $20,$30,$20,$10,$28,$47,$32,$0f,$1f,$0f,$1f,$0f,$17,$38,$0c,$00
-  .db $c4,$04,$76,$09,$01,$e2,$24,$18,$38,$f8,$88,$f6,$fe,$1c,$18,$00
-  .db $21,$30,$20,$20,$20,$43,$31,$0f,$1e,$0f,$1f,$1f,$1f,$3c,$0e,$00
-  .db $84,$04,$06,$09,$11,$e2,$24,$18,$78,$f8,$f8,$f6,$ee,$1c,$18,$00
-  .db $21,$20,$10,$08,$07,$18,$20,$1f,$1e,$1f,$0f,$07,$00,$07,$1f,$00
-  .db $8c,$04,$08,$10,$e0,$20,$10,$e0,$70,$f8,$f0,$e0,$00,$c0,$e0,$00
-  .db $23,$20,$6e,$90,$80,$47,$24,$18,$1c,$1f,$11,$6f,$7f,$38,$18,$00
-  .db $04,$0c,$04,$08,$14,$e2,$4c,$f0,$f8,$f0,$f8,$f0,$e8,$1c,$30,$00
-  .db $21,$20,$60,$90,$88,$47,$24,$18,$1e,$1f,$1f,$6f,$77,$38,$18,$00
-  .db $84,$0c,$04,$04,$04,$c2,$8c,$f0,$78,$f0,$f8,$f8,$f8,$3c,$70,$00
-  .db $98,$61,$06,$09,$09,$08,$08,$07,$60,$00,$01,$06,$06,$07,$07,$00
-  .db $98,$18,$10,$13,$80,$e0,$01,$fe,$67,$e7,$ef,$ec,$7f,$1f,$fe,$00
-  .db $40,$40,$30,$19,$09,$01,$80,$7f,$bf,$bf,$cf,$e6,$f6,$fe,$7f,$00
-  .db $40,$80,$60,$10,$10,$10,$10,$e0,$80,$00,$80,$e0,$e0,$e0,$e0,$00
-  .db $02,$01,$06,$08,$08,$08,$08,$07,$01,$00,$01,$07,$07,$07,$07,$00
-  .db $02,$02,$0c,$98,$90,$80,$01,$fe,$fd,$fd,$f3,$67,$6f,$7f,$fe,$00
-  .db $19,$18,$08,$c8,$01,$07,$80,$7f,$e6,$e7,$f7,$37,$fe,$f8,$7f,$00
-  .db $19,$86,$60,$90,$90,$10,$10,$e0,$06,$00,$80,$60,$60,$e0,$e0,$00
+  .byte $00,$01,$02,$04,$08,$10,$21,$60,$00,$00,$01,$03,$07,$0f,$1e,$1f
+  .byte $c0,$98,$b0,$d0,$90,$98,$3c,$3e,$00,$00,$00,$20,$60,$60,$d8,$d0
+  .byte $00,$00,$01,$02,$04,$08,$10,$21,$00,$00,$00,$01,$03,$07,$0f,$1e
+  .byte $00,$80,$90,$b0,$d0,$90,$98,$3c,$00,$00,$00,$00,$20,$60,$60,$d8
+  .byte $03,$19,$0d,$0b,$09,$19,$3c,$7c,$00,$00,$00,$04,$06,$06,$1b,$0b
+  .byte $00,$80,$40,$20,$10,$08,$84,$06,$00,$00,$80,$c0,$e0,$f0,$78,$f8
+  .byte $00,$01,$09,$0d,$0b,$09,$19,$3c,$00,$00,$00,$00,$04,$06,$06,$1b
+  .byte $00,$00,$80,$40,$20,$10,$08,$84,$00,$00,$00,$80,$c0,$e0,$f0,$78
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+  .byte $07,$1c,$2e,$5f,$8c,$c0,$c3,$c7,$00,$03,$1d,$32,$7f,$3f,$3c,$3b
+  .byte $e0,$38,$74,$fa,$31,$03,$c3,$e1,$00,$c0,$b8,$4c,$fe,$fc,$3c,$de
+  .byte $07,$1c,$2e,$5f,$9e,$cc,$c3,$87,$00,$03,$1d,$32,$73,$3f,$3c,$7b
+  .byte $e0,$38,$74,$fa,$79,$33,$c3,$e3,$00,$c0,$b8,$4c,$ce,$fc,$3c,$dc
+  .byte $70,$40,$60,$70,$40,$20,$10,$0c,$0f,$3f,$1f,$0f,$3f,$1f,$0f,$03
+  .byte $1a,$06,$06,$02,$22,$24,$18,$10,$e4,$f8,$f8,$fc,$dc,$d8,$e0,$e0
+  .byte $60,$70,$40,$60,$70,$40,$20,$10,$1f,$0f,$3f,$1f,$0f,$3f,$1f,$0f
+  .byte $3e,$1a,$06,$06,$02,$22,$24,$18,$d0,$e4,$f8,$f8,$fc,$dc,$d8,$e0
+  .byte $58,$60,$60,$40,$44,$24,$18,$08,$27,$1f,$1f,$3f,$3b,$1b,$07,$07
+  .byte $0e,$02,$06,$0e,$02,$04,$08,$30,$f0,$fc,$f8,$f0,$fc,$f8,$f0,$c0
+  .byte $7c,$58,$60,$60,$40,$44,$24,$18,$0b,$27,$1f,$1f,$3f,$3b,$1b,$07
+  .byte $06,$0e,$02,$06,$0e,$02,$04,$08,$f8,$f0,$fc,$f8,$f0,$fc,$f8,$f0
+  .byte $00,$00,$00,$00,$00,$00,$01,$0e,$00,$00,$00,$00,$00,$00,$00,$01
+  .byte $6f,$24,$20,$23,$47,$80,$0c,$00,$14,$1b,$1f,$1c,$38,$7f,$f3,$ff
+  .byte $f2,$24,$04,$84,$b3,$00,$d8,$3e,$2c,$d8,$f8,$78,$4c,$ff,$27,$c1
+  .byte $00,$06,$19,$21,$cd,$09,$09,$0a,$00,$00,$06,$1e,$32,$f6,$f6,$f4
+  .byte $00,$60,$98,$84,$b3,$90,$90,$50,$00,$00,$60,$78,$4c,$6f,$6f,$2f
+  .byte $4f,$24,$20,$21,$cd,$00,$1b,$7c,$34,$1b,$1f,$1e,$32,$ff,$e4,$83
+  .byte $f6,$24,$04,$c4,$e2,$01,$30,$00,$28,$d8,$f8,$38,$1c,$fe,$cf,$ff
+  .byte $00,$00,$00,$00,$00,$00,$80,$70,$00,$00,$00,$00,$00,$00,$00,$80
+  .byte $07,$07,$08,$10,$32,$22,$32,$22,$00,$00,$07,$0f,$0d,$1d,$0d,$1d
+  .byte $e0,$e0,$10,$08,$44,$44,$44,$44,$00,$00,$e0,$f0,$b8,$b8,$b8,$b8
+  .byte $0c,$07,$07,$08,$10,$30,$22,$31,$03,$00,$00,$07,$0f,$0f,$1d,$0e
+  .byte $10,$e0,$e0,$10,$88,$44,$24,$24,$e0,$00,$00,$e0,$70,$b8,$d8,$d8
+  .byte $0c,$07,$07,$08,$10,$31,$22,$32,$03,$00,$00,$07,$0f,$0e,$1d,$0d
+  .byte $10,$e0,$e0,$10,$88,$04,$24,$44,$e0,$00,$00,$e0,$70,$f8,$d8,$b8
+  .byte $07,$07,$08,$10,$22,$22,$22,$22,$00,$00,$07,$0f,$1d,$1d,$1d,$1d
+  .byte $e0,$e0,$10,$08,$4c,$44,$4c,$44,$00,$00,$e0,$f0,$b0,$b8,$b0,$b8
+  .byte $08,$07,$07,$08,$11,$22,$24,$24,$07,$00,$00,$07,$0e,$1d,$1b,$1b
+  .byte $30,$e0,$e0,$10,$08,$0c,$44,$8c,$c0,$00,$00,$e0,$f0,$f0,$b8,$70
+  .byte $08,$07,$07,$08,$11,$20,$24,$22,$07,$00,$00,$07,$0e,$1f,$1b,$1d
+  .byte $30,$e0,$e0,$10,$08,$8c,$44,$4c,$c0,$00,$00,$e0,$f0,$70,$b8,$b0
+  .byte $10,$21,$4f,$48,$80,$90,$b2,$85,$0f,$1e,$30,$37,$7f,$6f,$4d,$78
+  .byte $78,$c1,$09,$c0,$d0,$50,$11,$18,$87,$3e,$f6,$3f,$2f,$af,$ee,$e7
+  .byte $01,$00,$80,$6c,$3c,$04,$82,$c0,$fe,$ff,$7f,$93,$c3,$fb,$7d,$3f
+  .byte $82,$84,$88,$10,$20,$20,$20,$20,$7c,$78,$70,$e0,$c0,$c0,$c0,$c0
+  .byte $41,$21,$11,$08,$04,$04,$04,$04,$3e,$1e,$0e,$07,$03,$03,$03,$03
+  .byte $80,$00,$01,$36,$3c,$20,$41,$03,$7f,$ff,$fe,$c9,$c3,$df,$be,$fc
+  .byte $1e,$83,$90,$03,$0b,$0a,$88,$18,$e1,$7c,$6f,$fc,$f4,$f5,$77,$e7
+  .byte $08,$84,$f2,$12,$01,$09,$4d,$a1,$f0,$78,$0c,$ec,$fe,$f6,$b2,$1e
+  .byte $31,$20,$10,$08,$07,$04,$08,$07,$0e,$1f,$0f,$07,$00,$03,$07,$00
+  .byte $84,$04,$08,$10,$e0,$18,$04,$f8,$78,$f8,$f0,$e0,$00,$e0,$f8,$00
+  .byte $20,$30,$20,$10,$28,$47,$32,$0f,$1f,$0f,$1f,$0f,$17,$38,$0c,$00
+  .byte $c4,$04,$76,$09,$01,$e2,$24,$18,$38,$f8,$88,$f6,$fe,$1c,$18,$00
+  .byte $21,$30,$20,$20,$20,$43,$31,$0f,$1e,$0f,$1f,$1f,$1f,$3c,$0e,$00
+  .byte $84,$04,$06,$09,$11,$e2,$24,$18,$78,$f8,$f8,$f6,$ee,$1c,$18,$00
+  .byte $21,$20,$10,$08,$07,$18,$20,$1f,$1e,$1f,$0f,$07,$00,$07,$1f,$00
+  .byte $8c,$04,$08,$10,$e0,$20,$10,$e0,$70,$f8,$f0,$e0,$00,$c0,$e0,$00
+  .byte $23,$20,$6e,$90,$80,$47,$24,$18,$1c,$1f,$11,$6f,$7f,$38,$18,$00
+  .byte $04,$0c,$04,$08,$14,$e2,$4c,$f0,$f8,$f0,$f8,$f0,$e8,$1c,$30,$00
+  .byte $21,$20,$60,$90,$88,$47,$24,$18,$1e,$1f,$1f,$6f,$77,$38,$18,$00
+  .byte $84,$0c,$04,$04,$04,$c2,$8c,$f0,$78,$f0,$f8,$f8,$f8,$3c,$70,$00
+  .byte $98,$61,$06,$09,$09,$08,$08,$07,$60,$00,$01,$06,$06,$07,$07,$00
+  .byte $98,$18,$10,$13,$80,$e0,$01,$fe,$67,$e7,$ef,$ec,$7f,$1f,$fe,$00
+  .byte $40,$40,$30,$19,$09,$01,$80,$7f,$bf,$bf,$cf,$e6,$f6,$fe,$7f,$00
+  .byte $40,$80,$60,$10,$10,$10,$10,$e0,$80,$00,$80,$e0,$e0,$e0,$e0,$00
+  .byte $02,$01,$06,$08,$08,$08,$08,$07,$01,$00,$01,$07,$07,$07,$07,$00
+  .byte $02,$02,$0c,$98,$90,$80,$01,$fe,$fd,$fd,$f3,$67,$6f,$7f,$fe,$00
+  .byte $19,$18,$08,$c8,$01,$07,$80,$7f,$e6,$e7,$f7,$37,$fe,$f8,$7f,$00
+  .byte $19,$86,$60,$90,$90,$10,$10,$e0,$06,$00,$80,$60,$60,$e0,$e0,$00
 
-  .pad $2000
