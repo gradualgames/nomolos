@@ -3,7 +3,7 @@
 .byte $02 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
 .byte $01 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
 .byte $01 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #0 (NROM)
-.byte $00 ;            ;Rest of Mapper #2 bits (all 0)
+.byte $00 ;            ;Rest of Mapper #0 bits (all 0)
 .byte 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
 
 .segment "ZEROPAGE"
@@ -32,7 +32,6 @@ stack:  .res 256
 sprite: .res 256
 
 .include "rom0.asm"
-
 .include "nomolosLogic.asm"
 .include "camera.asm"
 .include "map.asm"  
