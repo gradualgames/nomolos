@@ -1,3 +1,6 @@
+.segment "ZEROPAGE"
+spriteAddress: .res 1
+
 .segment "CODE"
 
 ;draws an animation

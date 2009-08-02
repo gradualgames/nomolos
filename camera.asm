@@ -1,3 +1,7 @@
+.segment "ZEROPAGE"
+scrollReact = 120
+scrollX:                      .res 2
+
 .segment "CODE"
 
 ;computes camera coordinates for Nomolos and all on screen game objects

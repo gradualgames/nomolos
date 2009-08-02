@@ -20,39 +20,10 @@ w3:       .res 2
 w4:       .res 2
 w5:       .res 2
 
-buttonA:     .res 1
 vblankDone:  .res 1
 
 update:     .res 2
 updatePPU:  .res 2
-
-nomolosX: .res 3  ;24 bit x (16 bit coord + 8 bit fine movement)
-nomolosY: .res 2  ;16 bit y (8 bit coord + 8 bit fine movement)
-nomolosXSpeed: .res 2
-nomolosScreenX: .res 1
-nomolosScreenY: .res 1
-nomolosAnim: .res 2
-
-nomolosWalkingRightAND = %11111110
-nomolosWalkingLeftOR   = %00000001
-nomolosMovingOffAND    = %11111101
-nomolosMovingOnOR      = %00000010
-nomolosState: .res 1
-
-scrollReact = 120
-scrollX:                      .res 2
-levelBaseAddress:             .res 2
-metametaTileTableBaseAddress: .res 2
-metaTileTableBaseAddress:     .res 2
-
-attributeBuffer: .res 8
-attributecolumnToUpdate: .res 1
-
-columnTileBuffer:  .res 60
-metaTileBuffer:    .res 4
-columnToUpdate:    .res 1
-nametableToUpdate: .res 1
-spriteAddress: .res 1
 
 .segment "STACK"
 stack:  .res 256
@@ -61,6 +32,13 @@ stack:  .res 256
 sprite: .res 256
 
 .include "rom0.asm"
+
+.include "nomolosLogic.asm"
+.include "camera.asm"
+.include "map.asm"  
+.include "sprite.asm"
+.include "loadLevelState.asm"
+.include "playLevelState.asm"
   
 .segment "CODE"
 reset:
@@ -234,12 +212,6 @@ updateFinished:
 
   jmp loop
 
-.include "loadLevelState.asm"
-.include "playLevelState.asm"
-.include "nomolosLogic.asm"
-.include "sprite.asm"
-.include "camera.asm"
-.include "map.asm"
 
 loadPalette:
   lda #$3F

@@ -1,3 +1,16 @@
+.segment "ZEROPAGE"
+levelBaseAddress:             .res 2
+metametaTileTableBaseAddress: .res 2
+metaTileTableBaseAddress:     .res 2
+
+attributeBuffer: .res 8
+attributecolumnToUpdate: .res 1
+
+columnTileBuffer:  .res 60
+metaTileBuffer:    .res 4
+columnToUpdate:    .res 1
+nametableToUpdate: .res 1
+
 .segment "CODE"
 
 decodeMap:

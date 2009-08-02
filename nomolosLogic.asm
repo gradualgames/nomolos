@@ -1,3 +1,17 @@
+.segment "ZEROPAGE"
+nomolosX: .res 3  ;24 bit x (16 bit coord + 8 bit fine movement)
+nomolosY: .res 2  ;16 bit y (8 bit coord + 8 bit fine movement)
+nomolosXSpeed: .res 2
+nomolosScreenX: .res 1
+nomolosScreenY: .res 1
+nomolosAnim: .res 2
+
+nomolosWalkingRightAND = %11111110
+nomolosWalkingLeftOR   = %00000001
+nomolosMovingOffAND    = %11111101
+nomolosMovingOnOR      = %00000010
+nomolosState: .res 1
+
 .segment "CODE"
 
 getInput:
