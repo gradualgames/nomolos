@@ -34,7 +34,6 @@ sprite: .res 256
 .include "rom0.asm"
 .include "chrrom0.asm"
 .include "nomolosLogic.asm"
-.include "camera.asm"
 .include "map.asm"  
 .include "sprite.asm"
 .include "loadLevelState.asm"
