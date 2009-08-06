@@ -55,7 +55,6 @@ nomolosAnim: .res 2
 
 nomolosState: .res 1
 
-
 scrollX:                      .res 2
 levelBaseAddress:             .res 2
 metametaTileTableBaseAddress: .res 2
@@ -76,14 +75,6 @@ stack:  .res 256
 .segment "RAM"
 sprite: .res 256
 
-;.include "rom0.asm"
-;.include "chrrom0.asm"
-;.include "nomolosLogic.asm"
-;.include "map.asm"  
-;.include "sprite.asm"
-;.include "loadLevelState.asm"
-;.include "playLevelState.asm"
-  
 .segment "CODE"
 reset:
   sei
