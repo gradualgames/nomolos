@@ -1,18 +1,22 @@
-.segment "ZEROPAGE"
-scrollReact = 120
-scrollX:                      .res 2
+.include "constants.asm"
 
-levelBaseAddress:             .res 2
-metametaTileTableBaseAddress: .res 2
-metaTileTableBaseAddress:     .res 2
+;global variables
+.importzp b0, b1, b2, b3, b4, b5, w0, w1
+.importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
+.importzp attributeBuffer, columnTileBuffer
+.importzp metaTileBuffer, metaTileTableBaseAddress
+.importzp attributeColumnToUpdate
+.importzp metametaTileTableBaseAddress
+.importzp levelBaseAddress, columnToUpdate, nametableToUpdate
+.importzp scrollX
 
-attributeBuffer: .res 8
-attributecolumnToUpdate: .res 1
-
-columnTileBuffer:  .res 60
-metaTileBuffer:    .res 4
-columnToUpdate:    .res 1
-nametableToUpdate: .res 1
+;map and camera interface
+.export updateCamera
+.export decodeMap
+.export updateColumn
+.export updateAttribute
+.export updateScrollPPU, updateColumnPPU
+.export updateAttributePPU
 
 .segment "CODE"
 
@@ -184,8 +188,9 @@ updateColumn:
   lsr
   sta b2
   lsr
-  sta attributecolumnToUpdate
+  sta attributeColumnToUpdate
 
+  ldy #0
   ldy #0
   ldx #15
 :
@@ -403,7 +408,7 @@ updateAttributePPU:
   ora #$03
   sta $2006
   lda #%11000000
-  ora attributecolumnToUpdate
+  ora attributeColumnToUpdate
   sta $2006
 
   lda attributeBuffer
@@ -416,7 +421,7 @@ updateAttributePPU:
   ora #$03
   sta $2006
   lda #%11000000
-  ora attributecolumnToUpdate
+  ora attributeColumnToUpdate
   ora #$08
   sta $2006
 
@@ -430,7 +435,7 @@ updateAttributePPU:
   ora #$03
   sta $2006
   lda #%11000000
-  ora attributecolumnToUpdate
+  ora attributeColumnToUpdate
   ora #$10
   sta $2006
 
@@ -444,7 +449,7 @@ updateAttributePPU:
   ora #$03
   sta $2006
   lda #%11000000
-  ora attributecolumnToUpdate
+  ora attributeColumnToUpdate
   ora #$18
   sta $2006
 

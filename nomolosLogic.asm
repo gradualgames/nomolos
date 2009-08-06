@@ -1,16 +1,18 @@
-.segment "ZEROPAGE"
-nomolosX: .res 3  ;24 bit x (16 bit coord + 8 bit fine movement)
-nomolosY: .res 2  ;16 bit y (8 bit coord + 8 bit fine movement)
-nomolosXSpeed: .res 2
-nomolosScreenX: .res 1
-nomolosScreenY: .res 1
-nomolosAnim: .res 2
+.include "constants.asm"
 
-nomolosWalkingRightAND = %11111110
-nomolosWalkingLeftOR   = %00000001
-nomolosMovingOffAND    = %11111101
-nomolosMovingOnOR      = %00000010
-nomolosState: .res 1
+;ROM labels
+.import NomolosWalkLeft, NomolosWalkRight
+
+;Sprite module labels
+.import drawAnimation, updateAnimation
+
+;global variables
+.importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
+.importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
+.importzp nomolosXSpeed, nomolosAnim, nomolosState
+
+;Nomolos interface
+.export getInput, drawNomolos
 
 .segment "CODE"
 

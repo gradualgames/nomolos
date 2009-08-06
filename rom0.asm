@@ -1,3 +1,6 @@
+.export palette, MetaTileTable, MetaMetaTileTable, NomolosWalkRight, NomolosWalkLeft
+.export Level
+
 .segment "RODATA"
 palette:
 

@@ -1,5 +1,10 @@
-.segment "ZEROPAGE"
-spriteAddress: .res 1
+;global variables
+.importzp b0, b1, w0, w1, w2
+.importzp spriteAddress
+.import sprite
+
+;sprite manipulation interface
+.export drawAnimation, updateAnimation, updateSprites, clearSprites
 
 .segment "CODE"
 

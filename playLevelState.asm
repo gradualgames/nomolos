@@ -1,3 +1,20 @@
+;state return labels
+.import updatePPUFinished, updateFinished
+;map drawing labels
+.import updateScrollPPU, updateAttributePPU
+.import updateColumnPPU
+;sprite drawing labels
+.import updateSprites, drawNomolos
+;camera labels
+.import decodeMap, updateCamera
+;nomolos logic labels
+.import getInput
+;global variables
+.importzp spriteAddress, vblankDone
+
+;play level state labels
+.export playLevelUpdate, playLevelUpdatePPU
+
 .segment "CODE"
 
 playLevelUpdate:

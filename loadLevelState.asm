@@ -1,3 +1,19 @@
+;state return labels
+.import updatePPUFinished, updateFinished
+;play level state
+.import playLevelUpdatePPU, playLevelUpdate
+;map update routines
+.import updateScrollPPU, updateColumnPPU, updateAttributePPU
+;sprite update routines
+.import updateSprites, clearSprites, updateColumn
+;global variables
+.importzp update, updatePPU
+.importzp w1, levelBaseAddress, columnToUpdate
+.importzp metametaTileTableBaseAddress, nametableToUpdate
+
+;load level state labels
+.export loadLevelUpdate, loadLevelUpdatePPU
+
 .segment "CODE"
 
 loadLevelUpdate:

@@ -1,3 +1,24 @@
+.include "constants.asm"
+
+;ROM labels
+.import palette, MetaTileTable, MetaMetaTileTable, Level
+
+;state labels
+.import loadLevelUpdatePPU, loadLevelUpdate, clearSprites
+
+;global variables/RAM labels
+.exportzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5, vblankDone, update
+.exportzp update, updatePPU, attributeBuffer, attributeColumnToUpdate
+.exportzp columnTileBuffer, columnToUpdate, nametableToUpdate
+.exportzp levelBaseAddress, metaTileBuffer, metaTileTableBaseAddress
+.exportzp metametaTileTableBaseAddress, nomolosAnim
+.exportzp nomolosScreenX, nomolosScreenY, nomolosState
+.exportzp nomolosX, nomolosY, nomolosXSpeed, scrollX, spriteAddress
+.export stack, sprite
+
+;update return labels
+.export updatePPUFinished, updateFinished
+
 .segment "HEADER"
 .byte "NES",$1a        ;iNES header
 .byte $02 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
@@ -5,7 +26,6 @@
 .byte $01 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #0 (NROM)
 .byte $00 ;            ;Rest of Mapper #0 bits (all 0)
 .byte 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
-
 .segment "ZEROPAGE"
 b0:       .res 1
 b1:       .res 1
@@ -20,10 +40,35 @@ w3:       .res 2
 w4:       .res 2
 w5:       .res 2
 
+buttonA:     .res 1
 vblankDone:  .res 1
 
 update:     .res 2
 updatePPU:  .res 2
+
+nomolosX: .res 3  ;24 bit x (16 bit coord + 8 bit fine movement)
+nomolosY: .res 2  ;16 bit y (8 bit coord + 8 bit fine movement)
+nomolosXSpeed: .res 2
+nomolosScreenX: .res 1
+nomolosScreenY: .res 1
+nomolosAnim: .res 2
+
+nomolosState: .res 1
+
+
+scrollX:                      .res 2
+levelBaseAddress:             .res 2
+metametaTileTableBaseAddress: .res 2
+metaTileTableBaseAddress:     .res 2
+
+attributeBuffer: .res 8
+attributeColumnToUpdate: .res 1
+
+columnTileBuffer:  .res 60
+metaTileBuffer:    .res 4
+columnToUpdate:    .res 1
+nametableToUpdate: .res 1
+spriteAddress: .res 1
 
 .segment "STACK"
 stack:  .res 256
@@ -31,13 +76,13 @@ stack:  .res 256
 .segment "RAM"
 sprite: .res 256
 
-.include "rom0.asm"
-.include "chrrom0.asm"
-.include "nomolosLogic.asm"
-.include "map.asm"  
-.include "sprite.asm"
-.include "loadLevelState.asm"
-.include "playLevelState.asm"
+;.include "rom0.asm"
+;.include "chrrom0.asm"
+;.include "nomolosLogic.asm"
+;.include "map.asm"  
+;.include "sprite.asm"
+;.include "loadLevelState.asm"
+;.include "playLevelState.asm"
   
 .segment "CODE"
 reset:
