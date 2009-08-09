@@ -63,9 +63,11 @@ loadLevelUpdate:
 
   lda columnToUpdate
   ;have we updated all the columns on the screen yet?
-  cmp #30
+  cmp #32
   bne :+
   ;switch to play level state.
+  lda #$24
+  sta nametableToUpdate  
   lda #<playLevelUpdate
   sta update
   lda #>playLevelUpdate
