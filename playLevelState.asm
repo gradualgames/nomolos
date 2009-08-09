@@ -24,7 +24,7 @@ playLevelUpdate:
   sta vblankDone
 : lda vblankDone
   beq :-
-	
+
   jsr getInput
   jsr updateCamera
   jsr decodeMap
