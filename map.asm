@@ -69,7 +69,7 @@ updateCamera:
 ;b0: 8 bit Y coordinate in the map
 ;outputs:
 ;the zero flag should be set if there is no collision, clear otherwise
-testMapCollision:
+.proc testMapCollision: absolute
 
   ;divide X coordinate by 16 to get column coordinate
   lda w0
@@ -147,6 +147,7 @@ testMapCollision:
   lda (metaTileTableBaseAddress), y
 
   rts
+.endproc
   
 decodeMap:
 

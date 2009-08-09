@@ -19,7 +19,7 @@
 
 .segment "CODE"
 
-getInput:
+.proc getInput: absolute
 
   lda nomolosState
   and #nomolosMovingOffAND  ;state is not moving
@@ -197,6 +197,7 @@ notRight:
 :
   
   rts
+.endproc
   
 updateNomolosAnimation:
 
