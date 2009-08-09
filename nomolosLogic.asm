@@ -6,6 +6,9 @@
 ;Sprite module labels
 .import drawAnimation, updateAnimation
 
+;Map module labels (for collision detection)
+.import testMapCollision
+
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
@@ -34,7 +37,8 @@ getInput:
   lda $4016          ; Up
   
   and #1
-  beq :+
+  beq notUp
+  
   ;16 bit sub
   lda nomolosY
   sec
@@ -43,12 +47,12 @@ getInput:
   lda nomolosY+1
   sbc #0
   sta nomolosY+1
-:
+notUp:
   
   lda $4016          ; Down
   
   and #1
-  beq :+
+  beq notDown
   ;16 bit add
   lda nomolosY
   clc
@@ -57,17 +61,49 @@ getInput:
   lda nomolosY+1
   adc #0
   sta nomolosY+1
-:
+notDown:
   lda $4016          ; Left
 
   ;is left button down?
   and #1
-  beq :+  
+  beq notLeft
   lda nomolosState
   ora #nomolosWalkingLeftOR
   ora #nomolosMovingOnOR
   
   sta nomolosState
+  
+  ;test collision with map
+  lda nomolosX+1
+  sta w0
+  lda nomolosX+2
+  sta w0+1
+  lda nomolosY+1
+  sta b0
+  jsr testMapCollision
+  bne notLeft
+  
+  lda nomolosX+1
+  sta w0
+  lda nomolosX+2
+  sta w0+1
+  lda nomolosY+1
+  clc
+  adc #$0f
+  sta b0
+  jsr testMapCollision
+  bne notLeft
+
+  lda nomolosX+1
+  sta w0
+  lda nomolosX+2
+  sta w0+1
+  lda nomolosY+1
+  clc 
+  adc #$1f
+  sta b0
+  jsr testMapCollision
+  bne notLeft
   
   ;24 bit Sub
   sec
@@ -82,17 +118,60 @@ getInput:
   sta nomolosX+2
   
   jsr updateNomolosAnimation
-:
+notLeft:
   
   lda $4016          ; Right
 
   ;is right button down?
   and #1
-  beq :+
+  beq notRight
   lda nomolosState
   and #nomolosWalkingRightAND ;state is walking right
   ora #nomolosMovingOnOR       ;state is moving
   sta nomolosState
+  
+  ;test collision with map
+  lda nomolosX+1
+  clc
+  adc #$0f
+  sta w0  
+  lda nomolosX+2
+  adc #$00
+  sta w0+1
+  lda nomolosY+1
+  sta b0
+  jsr testMapCollision
+  bne notRight
+  
+  ;lda nomolosX+1
+  lda nomolosX+1
+  clc
+  adc #$0f
+  sta w0  
+  lda nomolosX+2
+  adc #$00
+  sta w0+1
+  lda nomolosY+1
+  clc
+  adc #$0f
+  sta b0
+  jsr testMapCollision
+  bne notRight
+  
+  lda nomolosX+1
+  clc
+  adc #$0f
+  sta w0  
+  lda nomolosX+2
+  adc #$00
+  sta w0+1
+  lda nomolosY+1
+  clc
+  adc #$1f
+  sta b0
+  jsr testMapCollision
+  bne notRight
+  
   ;24 bit add
   clc
   lda nomolosX
@@ -106,7 +185,7 @@ getInput:
   sta nomolosX+2
   
   jsr updateNomolosAnimation
-:
+notRight:
 
   lda nomolosState
   and #2
@@ -118,7 +197,7 @@ getInput:
 :
   
   rts
-
+  
 updateNomolosAnimation:
 
   lda #<nomolosAnim

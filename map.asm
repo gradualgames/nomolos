@@ -1,7 +1,7 @@
 .include "constants.asm"
 
 ;global variables
-.importzp b0, b1, b2, b3, b4, b5, w0, w1
+.importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
 .importzp attributeBuffer, columnTileBuffer
 .importzp metaTileBuffer, metaTileTableBaseAddress
@@ -12,6 +12,7 @@
 
 ;map and camera interface
 .export updateCamera
+.export testMapCollision
 .export decodeMap
 .export updateColumn
 .export updateAttribute
@@ -61,6 +62,92 @@ updateCamera:
   
   rts
 
+;This routine checks for collision with the map. It takes in a 16 bit X
+;coordinate and an 8 bit Y coordinate.
+;parameters:
+;w0: 16 bit X coordinate in the map
+;b0: 8 bit Y coordinate in the map
+;outputs:
+;the zero flag should be set if there is no collision, clear otherwise
+testMapCollision:
+
+  ;divide X coordinate by 16 to get column coordinate
+  lda w0
+  lsr w0+1
+  ror
+  lsr w0+1
+  ror
+  lsr w0+1
+  ror
+  lsr w0+1
+  ror
+  sta w0
+  
+  ;add this value to the level base address and store it in w1
+  clc
+  lda levelBaseAddress  
+  adc w0
+  sta w1
+  lda levelBaseAddress+1
+  adc w0+1
+  sta w1+1
+  
+  ;now we have the exact offset in the level stored in w1
+  ldy #$00
+  ;load the meta tile column index
+  lda (w1),y
+  
+  sta w2
+  lda #0
+  sta w2+1
+  
+  ;now shift left w2 by 4 to get offset within the meta tile column table.
+  lda w2+1
+  asl w2
+  rol 
+  asl w2
+  rol 
+  asl w2
+  rol 
+  asl w2
+  rol 
+  sta w2+1
+  
+  ;add this value to the base address and store it in w3
+  clc
+  lda w2
+  adc metametaTileTableBaseAddress
+  sta w3
+  lda w2+1
+  adc metametaTileTableBaseAddress+1
+  sta w3+1
+  
+  ;now we have to figure out what row to look at
+  ;load the Y coordinate
+  lda b0  
+  ;divide it by 16 to get row
+  lsr
+  lsr
+  lsr
+  lsr
+  ;put the result in Y so we can look up a meta tile
+  tay
+  ;load the meta tile index
+  lda (w3),y
+  
+  ;multiply by 8 to get offset from meta tile table
+  asl
+  asl
+  asl
+  tay
+  
+  ;point to the "solid" attribute. This is the big finale of the collision routine.
+  iny
+  lda #1
+  lda (metaTileTableBaseAddress), y
+
+  rts
+  
 decodeMap:
 
   ;Load the current scroll value. Shifting this 16 bit value right by 4 will produce the correct column number for the leftmost
@@ -120,13 +207,13 @@ decodeMap:
   lda levelBaseAddress+1
   sta w1+1
 
-  clc		    ; Clear the carry flag
-	lda w0  	; Load little end of number 1 into accumulator register
-	adc w1  	; Add with carry the little end of number 2
-	sta w1  	; Store the little end of the result
-	lda w0+1	; Load big end of number 1 into accumulator
-	adc w1+1	; Add with carry the big end of number 2
-	sta w1+1	; Store the big end of the result
+  clc           ; Clear the carry flag
+  lda w0      ; Load little end of number 1 into accumulator register
+  adc w1      ; Add with carry the little end of number 2
+  sta w1      ; Store the little end of the result
+  lda w0+1    ; Load big end of number 1 into accumulator
+  adc w1+1    ; Add with carry the big end of number 2
+  sta w1+1    ; Store the big end of the result
 
   ;at this point, w1 should now have the correct offset into the level.
 
@@ -146,13 +233,13 @@ decodeMap:
   ;now shift left w0 by 4.
   lda w0+1
   asl w0
-  rol ;w0+1
+  rol 
   asl w0
-  rol ;w0+1
+  rol 
   asl w0
-  rol ;w0+1
+  rol 
   asl w0
-  rol ;w0+1
+  rol 
   sta w0+1
 
   lda metametaTileTableBaseAddress
@@ -160,13 +247,13 @@ decodeMap:
   lda metametaTileTableBaseAddress+1
   sta w1+1
 
-  clc		    ; Clear the carry flag
-	lda w0  	; Load little end of number 1 into accumulator register
-	adc w1  	; Add with carry the little end of number 2
-	sta w1  	; Store the little end of the result
-	lda w0+1	; Load big end of number 1 into accumulator
-	adc w1+1	; Add with carry the big end of number 2
-	sta w1+1	; Store the big end of the result
+  clc         ; Clear the carry flag
+  lda w0      ; Load little end of number 1 into accumulator register
+  adc w1      ; Add with carry the little end of number 2
+  sta w1      ; Store the little end of the result
+  lda w0+1    ; Load big end of number 1 into accumulator
+  adc w1+1    ; Add with carry the big end of number 2
+  sta w1+1    ; Store the big end of the result
 
   ;Load the meta meta tile address, and call the updateColumn routine to get that meta tile into the PPU buffers.
   jsr updateColumn
