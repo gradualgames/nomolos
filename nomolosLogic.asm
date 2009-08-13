@@ -1,5 +1,3 @@
-.include "constants.asm"
-
 ;ROM labels
 .import NomolosWalkLeft, NomolosWalkRight
 
@@ -13,29 +11,33 @@
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
 .importzp nomolosXSpeed, nomolosAnim, nomolosState
+.importzp controllerBuffer
 
 ;Nomolos interface
-.export getInput, drawNomolos
+.export updateNomolos, drawNomolos
 
 .segment "CODE"
 
-.proc getInput: absolute
+.include "constants.asm"
+
+.proc updateNomolos
 
   lda nomolosState
   and #nomolosMovingOffAND  ;state is not moving
   sta nomolosState
   
-  lda #$01  ; strobe joypad
-  sta $4016
-  lda #$00
-  sta $4016
+  ;lda #$01  ; strobe joypad
+  ;sta $4016
+  ;lda #$00
+  ;sta $4016
 
-  lda $4016  ; Is the A button down?
-  lda $4016  ; B does nothing
-  lda $4016          ; Select does nothing
-  lda $4016          ; Start does nothing
-  lda $4016          ; Up
+  ;lda $4016  ; Is the A button down?
+  ;lda $4016  ; B does nothing
+  ;lda $4016          ; Select does nothing
+  ;lda $4016          ; Start does nothing
+  ;lda $4016          ; Up
   
+  lda controllerBuffer+4 ;up
   and #1
   beq notUp
   
@@ -49,7 +51,7 @@
   sta nomolosY+1
 notUp:
   
-  lda $4016          ; Down
+  lda controllerBuffer+5 ;down
   
   and #1
   beq notDown
@@ -62,7 +64,7 @@ notUp:
   adc #0
   sta nomolosY+1
 notDown:
-  lda $4016          ; Left
+  lda controllerBuffer+6 ;Left
 
   ;is left button down?
   and #1
@@ -120,7 +122,7 @@ notDown:
   jsr updateNomolosAnimation
 notLeft:
   
-  lda $4016          ; Right
+  lda controllerBuffer+7 ; Right
 
   ;is right button down?
   and #1

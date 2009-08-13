@@ -1,5 +1,9 @@
+.segment "CODE"
+
 ;state return labels
 .import updatePPUFinished, updateFinished
+;input system labels
+.import readController
 ;map drawing labels
 .import updateScrollPPU, updateAttributePPU
 .import updateColumnPPU
@@ -8,14 +12,12 @@
 ;camera labels
 .import decodeMap, updateCamera
 ;nomolos logic labels
-.import getInput
+.import updateNomolos
 ;global variables
 .importzp spriteAddress, vblankDone
 
 ;play level state labels
 .export playLevelUpdate, playLevelUpdatePPU
-
-.segment "CODE"
 
 playLevelUpdate:
 
@@ -25,7 +27,8 @@ playLevelUpdate:
 : lda vblankDone
   beq :-
 
-  jsr getInput
+  jsr readController
+  jsr updateNomolos
   jsr updateCamera
   jsr decodeMap
   ;reset sprite address. This must be done before any sprites are

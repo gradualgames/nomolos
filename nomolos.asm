@@ -1,5 +1,3 @@
-.include "constants.asm"
-
 ;ROM labels
 .import palette, MetaTileTable, MetaMetaTileTable, Level
 
@@ -14,6 +12,7 @@
 .exportzp metametaTileTableBaseAddress, nomolosAnim
 .exportzp nomolosScreenX, nomolosScreenY, nomolosState
 .exportzp nomolosX, nomolosY, nomolosXSpeed, scrollX, spriteAddress
+.exportzp controllerBuffer
 .export stack, sprite
 
 ;update return labels
@@ -69,6 +68,8 @@ columnToUpdate:    .res 1
 nametableToUpdate: .res 1
 spriteAddress: .res 1
 
+controllerBuffer: .res 8
+
 .segment "STACK"
 stack:  .res 256
   
@@ -76,6 +77,9 @@ stack:  .res 256
 sprite: .res 256
 
 .segment "CODE"
+
+.include "constants.asm"
+
 reset:
   sei
   cld

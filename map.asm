@@ -1,5 +1,3 @@
-.include "constants.asm"
-
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
@@ -20,6 +18,8 @@
 .export updateAttributePPU
 
 .segment "CODE"
+
+.include "constants.asm"
 
 ;computes camera coordinates for Nomolos and all on screen game objects
 ;also moves the camera in response to Nomolos' position
