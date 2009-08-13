@@ -8,7 +8,8 @@ palette:
   .byte $21,$15,$12,$03,$11,$19,$1a,$07,$00,$00,$00,$00,$00,$00,$00,$00
 
 ;Sprite Palette
-  .byte $21,$0d,$27,$2a,$20,$0d,$07,$28,$00,$00,$00,$00,$00,$00,$00,$00
+;Palette
+  .byte $21,$0d,$27,$04,$20,$0d,$27,$10,$00,$00,$00,$00,$00,$00,$00,$00
 
 MetaTileTable:
 MetaTile0:
@@ -94,123 +95,81 @@ Level:
 
  
 ;Meta Sprite Table
-NomolosRight0:
+NomolosWalkRight0:
   .byte $08
   .byte $00,$00,$00,$00
-  .byte $00,$01,$00,$08
+  .byte $00,$01,$01,$08
   .byte $08,$0d,$00,$00
-  .byte $08,$0e,$00,$08
-  .byte $10,$1d,$00,$00
-  .byte $10,$1e,$00,$08
-  .byte $18,$31,$00,$00
-  .byte $18,$32,$00,$08
-NomolosRight1:
+  .byte $08,$0e,$01,$08
+  .byte $10,$19,$01,$00
+  .byte $10,$1a,$01,$08
+  .byte $18,$25,$01,$00
+  .byte $18,$26,$01,$08
+NomolosWalkRight1:
   .byte $08
   .byte $00,$02,$00,$00
-  .byte $00,$03,$00,$08
+  .byte $00,$03,$01,$08
   .byte $08,$0f,$00,$00
-  .byte $08,$10,$00,$08
-  .byte $10,$1f,$00,$00
-  .byte $10,$20,$00,$08
-  .byte $18,$33,$00,$00
-  .byte $18,$34,$00,$08
-NomolosRight2:
-  .byte $08
-  .byte $00,$02,$00,$00
-  .byte $00,$03,$00,$08
-  .byte $08,$0f,$00,$00
-  .byte $08,$10,$00,$08
-  .byte $10,$21,$00,$00
-  .byte $10,$22,$00,$08
-  .byte $18,$35,$00,$00
-  .byte $18,$36,$00,$08
-NomolosLeft0:
+  .byte $08,$10,$01,$08
+  .byte $10,$1b,$01,$00
+  .byte $10,$1c,$01,$08
+  .byte $18,$27,$01,$00
+  .byte $18,$28,$01,$08
+NomolosWalkRight2:
   .byte $08
   .byte $00,$04,$00,$00
-  .byte $00,$05,$00,$08
+  .byte $00,$05,$01,$08
   .byte $08,$11,$00,$00
-  .byte $08,$12,$00,$08
-  .byte $10,$23,$00,$00
-  .byte $10,$24,$00,$08
-  .byte $18,$37,$00,$00
-  .byte $18,$38,$00,$08
-NomolosLeft1:
+  .byte $08,$12,$01,$08
+  .byte $10,$1d,$01,$00
+  .byte $10,$1e,$01,$08
+  .byte $18,$29,$01,$00
+  .byte $18,$2a,$01,$08
+NomolosWalkLeft0:
   .byte $08
-  .byte $00,$06,$00,$00
+  .byte $00,$06,$01,$00
   .byte $00,$07,$00,$08
-  .byte $08,$13,$00,$00
+  .byte $08,$13,$01,$00
   .byte $08,$14,$00,$08
-  .byte $10,$25,$00,$00
-  .byte $10,$26,$00,$08
-  .byte $18,$39,$00,$00
-  .byte $18,$3a,$00,$08
-NomolosLeft2:
+  .byte $10,$1f,$01,$00
+  .byte $10,$20,$01,$08
+  .byte $18,$2b,$01,$00
+  .byte $18,$2c,$01,$08
+NomolosWalkLeft1:
   .byte $08
-  .byte $00,$06,$00,$00
-  .byte $00,$07,$00,$08
-  .byte $08,$13,$00,$00
-  .byte $08,$14,$00,$08
-  .byte $10,$27,$00,$00
-  .byte $10,$28,$00,$08
-  .byte $18,$3b,$00,$00
-  .byte $18,$3c,$00,$08
-Boj0:
-  .byte $10
   .byte $00,$08,$01,$00
-  .byte $00,$09,$01,$08
-  .byte $00,$0a,$01,$10
-  .byte $00,$08,$01,$18
+  .byte $00,$09,$00,$08
   .byte $08,$15,$01,$00
-  .byte $08,$16,$01,$08
-  .byte $08,$17,$01,$10
-  .byte $08,$18,$01,$18
-  .byte $10,$29,$01,$00
-  .byte $10,$2a,$01,$08
-  .byte $10,$2b,$01,$10
-  .byte $10,$2c,$01,$18
-  .byte $18,$3d,$01,$00
-  .byte $18,$3e,$01,$08
-  .byte $18,$3f,$01,$10
-  .byte $18,$40,$01,$18
-Boj1:
-  .byte $10
-  .byte $00,$08,$01,$00
-  .byte $00,$0b,$01,$08
-  .byte $00,$0c,$01,$10
-  .byte $00,$08,$01,$18
-  .byte $08,$19,$01,$00
-  .byte $08,$1a,$01,$08
-  .byte $08,$1b,$01,$10
-  .byte $08,$1c,$01,$18
-  .byte $10,$2d,$01,$00
-  .byte $10,$2e,$01,$08
-  .byte $10,$2f,$01,$10
-  .byte $10,$30,$01,$18
-  .byte $18,$41,$01,$00
-  .byte $18,$42,$01,$08
-  .byte $18,$43,$01,$10
-  .byte $18,$44,$01,$18
+  .byte $08,$16,$00,$08
+  .byte $10,$21,$01,$00
+  .byte $10,$22,$01,$08
+  .byte $18,$2d,$01,$00
+  .byte $18,$2e,$01,$08
+NomolosWalkLeft2:
+  .byte $08
+  .byte $00,$0a,$01,$00
+  .byte $00,$0b,$00,$08
+  .byte $08,$17,$01,$00
+  .byte $08,$18,$00,$08
+  .byte $10,$23,$01,$00
+  .byte $10,$24,$01,$08
+  .byte $18,$2f,$01,$00
+  .byte $18,$30,$01,$08
 
 ;Animations
-
 NomolosWalkRight:
-  .byte $08
-  .word NomolosRight0
-  .word NomolosRight1
-  .word NomolosRight0
-  .word NomolosRight2
+  .byte $0a
+  .word NomolosWalkRight0
+  .word NomolosWalkRight1
+  .word NomolosWalkRight0
+  .word NomolosWalkRight2
   .byte $00
 
 NomolosWalkLeft:
-  .byte $08
-  .word NomolosLeft0
-  .word NomolosLeft1
-  .word NomolosLeft0
-  .word NomolosLeft2
+  .byte $0a
+  .word NomolosWalkLeft2
+  .word NomolosWalkLeft1
+  .word NomolosWalkLeft2
+  .word NomolosWalkLeft0
   .byte $00
 
-BojWalk:
-  .byte $14
-  .word Boj0
-  .word Boj1
-  .byte $00  
