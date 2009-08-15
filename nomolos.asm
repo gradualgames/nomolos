@@ -131,7 +131,7 @@ reset:
   
   lda #0
   sta nomolosX
-  lda #50
+  lda #120
   sta nomolosX+1
   lda #0
   sta nomolosX+2

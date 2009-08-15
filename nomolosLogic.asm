@@ -25,6 +25,16 @@
   ; Is the jumping state off?
   ; Yes:
     ; Is the A button pressed?
+  lda controllerBuffer
+  and #1
+  beq AButtonNotPressed
+  
+  lda #$fa
+  sta nomolosYSpeed+1
+  lda #$00
+  sta nomolosYSpeed
+  
+AButtonNotPressed:
       ; Yes:
         ; Set Nomolos jumping state to ON.
         ; Set Nomolos vertical speed to -JUMPINGSTARTSPEED.
@@ -39,12 +49,55 @@
   ; No:
 nomolosYSpeedNegative:
     ; Is there a collision at NomolosY + NomolosHeight + NomolosVerticalSpeed?
+  lda nomolosY+1
+  clc
+  adc #nomolosHeight
+  adc nomolosYSpeed+1
+  sta b0
+  lda nomolosX+1
+  sta w0
+  lda nomolosX+2
+  sta w0+1
+  jsr testMapCollision
+  bne bottomCollision
+  
+  lda nomolosY+1
+  clc
+  adc #nomolosHeight
+  adc nomolosYSpeed+1
+  sta b0
+  lda nomolosX+1
+  clc
+  adc #$0f
+  sta w0
+  lda nomolosX+2
+  adc #0
+  sta w0+1
+  jsr testMapCollision
+  bne bottomCollision
+  
+  jmp noBottomCollision
+  
+bottomCollision:
+  
+  
       ; Yes:
-        ; NomolosVerticalSpeed >>= 1
+        ; NomolosVerticalSpeed = 0 - nomolosVerticalAcceleration
+  lda #$00
+  sta nomolosYSpeed
+  sta nomolosYSpeed+1
+  sec
+  lda nomolosYSpeed
+  sbc #nomolosVerticalAccelerationLo
+  sta nomolosYSpeed
+  lda nomolosYSpeed+1
+  sbc #nomolosVerticalAccelerationHi
+  sta nomolosYSpeed+1
         ; Is NomolosVerticalSpeed < NomolosVerticalAcceleration?
           ; Yes:
             ; Set Nomolos jumping state to OFF.
       ; No:
+noBottomCollision:
         ; Is NomolosVerticalSpeed > NOMOLOSVERTICALSPEEDMAX?
   lda nomolosYSpeed+1
   cmp #nomolosVerticalSpeedMax
