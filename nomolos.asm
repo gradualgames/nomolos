@@ -1,3 +1,5 @@
+.include "constants.asm"
+
 ;ROM labels
 .import palette, MetaTileTable, MetaMetaTileTable, Level
 
@@ -11,7 +13,7 @@
 .exportzp levelBaseAddress, metaTileBuffer, metaTileTableBaseAddress
 .exportzp metametaTileTableBaseAddress, nomolosAnim
 .exportzp nomolosScreenX, nomolosScreenY, nomolosState
-.exportzp nomolosX, nomolosY, nomolosXSpeed, scrollX, spriteAddress
+.exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, scrollX, spriteAddress
 .exportzp controllerBuffer
 .export stack, sprite
 
@@ -48,6 +50,7 @@ updatePPU:  .res 2
 nomolosX: .res 3  ;24 bit x (16 bit coord + 8 bit fine movement)
 nomolosY: .res 2  ;16 bit y (8 bit coord + 8 bit fine movement)
 nomolosXSpeed: .res 2
+nomolosYSpeed: .res 2
 nomolosScreenX: .res 1
 nomolosScreenY: .res 1
 nomolosAnim: .res 2
@@ -77,8 +80,6 @@ stack:  .res 256
 sprite: .res 256
 
 .segment "CODE"
-
-.include "constants.asm"
 
 reset:
   sei
@@ -122,6 +123,11 @@ reset:
   sta nomolosXSpeed
   lda #2
   sta nomolosXSpeed+1
+  lda #$00
+  sta nomolosYSpeed
+  lda #$01
+  sta nomolosYSpeed+1
+  
   
   lda #0
   sta nomolosX

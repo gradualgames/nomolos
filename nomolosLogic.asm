@@ -1,3 +1,5 @@
+.include "constants.asm"
+
 ;ROM labels
 .import NomolosWalkLeft, NomolosWalkRight
 
@@ -10,7 +12,7 @@
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
-.importzp nomolosXSpeed, nomolosAnim, nomolosState
+.importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState
 .importzp controllerBuffer
 
 ;Nomolos interface
@@ -18,9 +20,55 @@
 
 .segment "CODE"
 
-.include "constants.asm"
-
 .proc updateNomolos
+
+  ; Is the jumping state off?
+  ; Yes:
+    ; Is the A button pressed?
+      ; Yes:
+        ; Set Nomolos jumping state to ON.
+        ; Set Nomolos vertical speed to -JUMPINGSTARTSPEED.
+  
+  ; Is NomolosVerticalSpeed negative?
+  lda nomolosYSpeed+1
+  bpl nomolosYSpeedNegative
+  ; Yes:
+      ; Is there a collision at NomolosY + NomolosVerticalSpeed?
+        ; Yes:
+          ; Negate Nomolos vertical speed.
+  ; No:
+nomolosYSpeedNegative:
+    ; Is there a collision at NomolosY + NomolosHeight + NomolosVerticalSpeed?
+      ; Yes:
+        ; NomolosVerticalSpeed >>= 1
+        ; Is NomolosVerticalSpeed < NomolosVerticalAcceleration?
+          ; Yes:
+            ; Set Nomolos jumping state to OFF.
+      ; No:
+        ; Is NomolosVerticalSpeed > NOMOLOSVERTICALSPEEDMAX?
+  lda nomolosYSpeed+1
+  cmp #nomolosVerticalSpeedMax
+  bpl ySpeedGreaterThanMax
+          ; No:
+            ; NomolosVerticalSpeed += NomolosVerticalAcceleration
+  lda nomolosYSpeed
+  clc
+  adc #nomolosVerticalAccelerationLo
+  sta nomolosYSpeed
+  lda nomolosYSpeed+1
+  adc #nomolosVerticalAccelerationHi
+  sta nomolosYSpeed+1
+ySpeedGreaterThanMax:
+  
+            ; Set Nomolos jumping state to ON.
+  ; NomolosY = NomolosY + NomolosVerticalSpeed
+  lda nomolosY
+  clc
+  adc nomolosYSpeed
+  sta nomolosY
+  lda nomolosYSpeed+1
+  adc nomolosY+1
+  sta nomolosY+1
 
   lda nomolosState
   and #nomolosMovingOffAND  ;state is not moving
@@ -37,33 +85,33 @@
   ;lda $4016          ; Start does nothing
   ;lda $4016          ; Up
   
-  lda controllerBuffer+4 ;up
-  and #1
-  beq notUp
+  ; lda controllerBuffer+4 ;up
+  ; and #1
+  ; beq notUp
   
-  ;16 bit sub
-  lda nomolosY
-  sec
-  sbc #255
-  sta nomolosY
-  lda nomolosY+1
-  sbc #0
-  sta nomolosY+1
-notUp:
+  ; ;16 bit sub
+  ; lda nomolosY
+  ; sec
+  ; sbc #255
+  ; sta nomolosY
+  ; lda nomolosY+1
+  ; sbc #0
+  ; sta nomolosY+1
+; notUp:
   
-  lda controllerBuffer+5 ;down
+  ; lda controllerBuffer+5 ;down
   
-  and #1
-  beq notDown
-  ;16 bit add
-  lda nomolosY
-  clc
-  adc #255
-  sta nomolosY
-  lda nomolosY+1
-  adc #0
-  sta nomolosY+1
-notDown:
+  ; and #1
+  ; beq notDown
+  ; ;16 bit add
+  ; lda nomolosY
+  ; clc
+  ; adc #255
+  ; sta nomolosY
+  ; lda nomolosY+1
+  ; adc #0
+  ; sta nomolosY+1
+; notDown:
   lda controllerBuffer+6 ;Left
 
   ;is left button down?

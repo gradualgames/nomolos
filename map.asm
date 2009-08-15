@@ -1,3 +1,5 @@
+.include "constants.asm"
+
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
@@ -18,8 +20,6 @@
 .export updateAttributePPU
 
 .segment "CODE"
-
-.include "constants.asm"
 
 ;computes camera coordinates for Nomolos and all on screen game objects
 ;also moves the camera in response to Nomolos' position
@@ -69,7 +69,7 @@ updateCamera:
 ;b0: 8 bit Y coordinate in the map
 ;outputs:
 ;the zero flag should be set if there is no collision, clear otherwise
-.proc testMapCollision: absolute
+.proc testMapCollision
 
   ;divide X coordinate by 16 to get column coordinate
   lda w0
