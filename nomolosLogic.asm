@@ -23,17 +23,28 @@
 .proc updateNomolos
 
   ; Is the jumping state off?
+  lda nomolosState
+  and #nomolosJumpingOnOR ;keep only the jumping bit
+  lsr                    ;move the bit over
+  lsr
+  and #1                 ;test the bit
+  bne JumpingStateOn
   ; Yes:
     ; Is the A button pressed?
   lda controllerBuffer
   and #1
   beq AButtonNotPressed
   
-  lda #$fa
+  lda #$f9
   sta nomolosYSpeed+1
   lda #$00
   sta nomolosYSpeed
   
+  lda nomolosState
+  ora #nomolosJumpingOnOR
+  sta nomolosState
+  
+JumpingStateOn:
 AButtonNotPressed:
       ; Yes:
         ; Set Nomolos jumping state to ON.
@@ -93,6 +104,17 @@ bottomCollision:
   lda nomolosYSpeed+1
   sbc #nomolosVerticalAccelerationHi
   sta nomolosYSpeed+1
+  
+  
+  ;only turn off jumping if the A button is pressed
+  lda controllerBuffer
+  and #1
+  bne AButtonPressed2
+  lda nomolosState
+  and #nomolosJumpingOffAND
+  sta nomolosState
+AButtonPressed2:
+
         ; Is NomolosVerticalSpeed < NomolosVerticalAcceleration?
           ; Yes:
             ; Set Nomolos jumping state to OFF.
@@ -112,6 +134,7 @@ noBottomCollision:
   adc #nomolosVerticalAccelerationHi
   sta nomolosYSpeed+1
 ySpeedGreaterThanMax:
+  
   
             ; Set Nomolos jumping state to ON.
   ; NomolosY = NomolosY + NomolosVerticalSpeed
