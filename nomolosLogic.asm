@@ -27,7 +27,7 @@
   lda controllerBuffer
   and #1
   beq :+
-  lda #29
+  lda #0
   sta nomolosY+1  
   lda #0
   sta nomolosYSpeed
