@@ -23,6 +23,17 @@
 
 .proc updateNomolos
 
+;quick hack to put nomolos up high so we can examine falling.
+  lda controllerBuffer
+  and #1
+  beq :+
+  lda #29
+  sta nomolosY+1  
+  lda #0
+  sta nomolosYSpeed
+  sta nomolosYSpeed+1
+:
+
 ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
 ;  Yes:
 ;    calculate penetration distance and store it in abovePenetrationDistance
@@ -106,13 +117,14 @@ DoNotIncrementSpeed:
 ;            Is A button down?
 ;              Yes:
 ;                nomolosYSpeed = startJumpingSpeed (this is a negative value)             
-penetrationNotEqualToMax:
-  ;I want to skip the following code when result - nomolosYSpeed is negative
-;        Is result < nomolosYSpeed?
+penetrationNotEqualToMax:  
+;        Is result < nomolosYSpeed?  if result - nomolosYSpeed is negative, then this is true, so branch if positive.
   cmp nomolosYSpeed+1
   bpl penetrationNotLessThanYSpeed
 ;          Yes:
 ;            nomolosYSpeed = result
+  clc
+  adc #5  ;huh? why does this work?
   sta nomolosYSpeed+1
   lda #0
   sta nomolosYSpeed
