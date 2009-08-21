@@ -13,6 +13,7 @@
 .exportzp levelBaseAddress, metaTileBuffer, metaTileTableBaseAddress
 .exportzp metametaTileTableBaseAddress, nomolosAnim
 .exportzp nomolosScreenX, nomolosScreenY, nomolosState
+.exportzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, scrollX, spriteAddress
 .exportzp controllerBuffer
 .export stack, sprite
@@ -53,6 +54,8 @@ nomolosXSpeed: .res 2
 nomolosYSpeed: .res 2
 nomolosScreenX: .res 1
 nomolosScreenY: .res 1
+nomolosBelowPenetrationDistance: .res 1
+nomolosAbovePenetrationDistance: .res 1
 nomolosAnim: .res 2
 
 nomolosState: .res 1
@@ -125,7 +128,7 @@ reset:
   sta nomolosXSpeed+1
   lda #$00
   sta nomolosYSpeed
-  lda #$01
+  lda #$00
   sta nomolosYSpeed+1
   
   
