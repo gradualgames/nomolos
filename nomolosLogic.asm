@@ -127,29 +127,28 @@ penetrationNotEqualToMax:
 penetrationNotLessThanYSpeed:
 ;        ;if we reach here we know that Nomolos won't hit anything on the next iteration with the current
 ;        ;value of nomolosYSpeed
-  jmp skipNoBelowCollisionCode
+  jmp skipDisableJumpWhileFalling
 noBelowCollision2:
-;  No:
 
+  ;disable jump while falling
   lda nomolosState
   and #nomolosJumpingOffAND
   sta nomolosState
   
-skipNoBelowCollisionCode:
+skipDisableJumpWhileFalling:
 
   jmp skipYSpeedNegativeCode
 ySpeedNegative:
 
-
-
-
+  ;is jumping off?
   lda nomolosState
   and #nomolosJumpingTestAND
   lsr
   lsr
-  and #1
-  bne :+
+  and #1  ;if Z=true, this means the jumping state is off
+  bne :+  ;branch when Z is false, meaning skip when jumping state is on.
   
+  ;&& is the A button off?
   lda controllerBuffer
   and #1
   bne :+
@@ -157,6 +156,7 @@ ySpeedNegative:
   sta nomolosYSpeed
   sta nomolosYSpeed+1
   
+  ;&& is collision beneath?
   lda nomolosState
   and #nomolosBelowCollisionTestAND
   lsr
@@ -164,6 +164,7 @@ ySpeedNegative:
   lsr
   beq :+
   
+  ;reenable jumping if the A button is off, jumping is disabled and there's something beneath nomolos.
   lda nomolosState
   ora #nomolosJumpingOnOR
   sta nomolosState
@@ -214,6 +215,7 @@ jumpingDisabled:
   lsr
   lsr
   beq :+
+  ;reenable jumping if A button has been released and there is something beneath nomolos.
   lda nomolosState
   ora #nomolosJumpingOnOR
   sta nomolosState
