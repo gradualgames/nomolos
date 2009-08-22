@@ -167,7 +167,13 @@ jumpingDisabled:
   lda controllerBuffer
   and #1
   bne :+
-  ;yes so enable jumping
+  ;yes 
+  lda nomolosState
+  and #nomolosBelowCollisionTestAND
+  lsr
+  lsr
+  lsr
+  beq :+
   lda nomolosState
   ora #nomolosJumpingOnOR
   sta nomolosState
