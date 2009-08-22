@@ -129,7 +129,33 @@ penetrationNotLessThanYSpeed:
 ;        ;value of nomolosYSpeed
 noBelowCollision2:
 ;  No:
+
+  jmp skipYSpeedNegativeCode
 ySpeedNegative:
+
+
+
+
+  lda nomolosState
+  and #nomolosJumpingTestAND
+  lsr
+  lsr
+  and #1
+  bne :+
+  
+  lda controllerBuffer
+  and #1
+  bne :+
+  lda #0
+  sta nomolosYSpeed
+  sta nomolosYSpeed+1
+  
+  lda nomolosState
+  ora #nomolosJumpingOnOR
+  sta nomolosState
+:
+
+skipYSpeedNegativeCode:
  
   lda nomolosYSpeed+1
   bne :+
