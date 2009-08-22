@@ -23,18 +23,6 @@
 
 .proc updateNomolos
 
-;quick hack to put nomolos up high so we can examine falling.
-  lda controllerBuffer
-  and #1
-  beq :+
-  lda #30
-  sta nomolosY+1  
-  lda #0
-  sta nomolosYSpeed
-  lda #0
-  sta nomolosYSpeed+1
-:
-
 ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
 ;  Yes:
 ;    calculate penetration distance and store it in abovePenetrationDistance
@@ -132,7 +120,6 @@ penetrationNotEqualToMax:
 ;          Yes:
 ;            nomolosYSpeed = result
   clc
-  ;adc #5  ;huh? why does this work?
   adc #1
   sta nomolosYSpeed+1
   lda #0
@@ -143,6 +130,24 @@ penetrationNotLessThanYSpeed:
 noBelowCollision2:
 ;  No:
 ySpeedNegative:
+ 
+  lda nomolosYSpeed+1
+  bne :+
+  lda controllerBuffer
+  and #1
+  beq :+
+  lda nomolosState
+  and #nomolosBelowCollisionTestAND
+  lsr
+  lsr
+  lsr
+  beq :+
+  lda #$0a
+  sta nomolosYSpeed
+  lda #$f8
+  sta nomolosYSpeed+1
+:
+
 ;    Is nomolosState.TopCollision true?
 ;      Yes:
 ;        Calculate maxYCollisionDistance - abovePenetrationDistance
