@@ -151,6 +151,13 @@ ySpeedNegative:
   sta nomolosYSpeed+1
   
   lda nomolosState
+  and #nomolosBelowCollisionTestAND
+  lsr
+  lsr
+  lsr
+  beq :+
+  
+  lda nomolosState
   ora #nomolosJumpingOnOR
   sta nomolosState
 :
