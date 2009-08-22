@@ -133,6 +133,14 @@ ySpeedNegative:
  
   lda nomolosYSpeed+1
   bne :+
+  lda nomolosState
+  and #nomolosJumpingTestAND
+  lsr
+  lsr
+  and #1
+  beq jumpingDisabled
+  
+  ;Test if A button is down and collision is beneath nomolos.
   lda controllerBuffer
   and #1
   beq :+
@@ -142,11 +150,29 @@ ySpeedNegative:
   lsr
   lsr
   beq :+
+  ;A button was down, collision was beneath so start the jump and disable jumping for now.
   lda #$0a
   sta nomolosYSpeed
   lda #$f8
   sta nomolosYSpeed+1
+  
+  lda nomolosState
+  and #nomolosJumpingOffAND
+  sta nomolosState
 :
+
+jumpingDisabled:
+
+  ;jumping was disabled. is A button up?
+  lda controllerBuffer
+  and #1
+  bne :+
+  ;yes so enable jumping
+  lda nomolosState
+  ora #nomolosJumpingOnOR
+  sta nomolosState
+:
+  
 
 ;    Is nomolosState.TopCollision true?
 ;      Yes:

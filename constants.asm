@@ -6,6 +6,7 @@ nomolosMovingOnOR      =      %00000010
 
 nomolosJumpingOffAND   =      %11111011
 nomolosJumpingOnOR     =      %00000100
+nomolosJumpingTestAND  =      %00000100
 
 nomolosBelowCollisionOnOR =    %00001000
 nomolosBelowCollisionOffAND =  %11110111
