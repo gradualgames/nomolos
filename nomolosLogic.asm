@@ -127,8 +127,15 @@ penetrationNotEqualToMax:
 penetrationNotLessThanYSpeed:
 ;        ;if we reach here we know that Nomolos won't hit anything on the next iteration with the current
 ;        ;value of nomolosYSpeed
+  jmp skipNoBelowCollisionCode
 noBelowCollision2:
 ;  No:
+
+  lda nomolosState
+  and #nomolosJumpingOffAND
+  sta nomolosState
+  
+skipNoBelowCollisionCode:
 
   jmp skipYSpeedNegativeCode
 ySpeedNegative:
