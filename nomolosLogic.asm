@@ -27,10 +27,11 @@
   lda controllerBuffer
   and #1
   beq :+
-  lda #0
+  lda #30
   sta nomolosY+1  
   lda #0
   sta nomolosYSpeed
+  lda #0
   sta nomolosYSpeed+1
 :
 
@@ -49,15 +50,21 @@
   clc
   adc #nomolosHeight
   adc #nomolosVerticalSpeedMax
-  sta b0
+  adc #1
+  sta b0  
   jsr testMapCollision
   beq noBelowCollision  ;we want to skip the following code when there is not a collision
                         ;set = not collision, so we use beq
 ;  Yes:
 ;    calculate penetration distance and store it in belowPenetrationDistance
-  ;penetration distance would just be nomolosY+1 AND %00001111
+  ;penetration distance would just be nomolosY+1+height+speedmax AND %00001111
   lda nomolosY+1
+  clc
+  adc #nomolosHeight
+  adc #nomolosVerticalSpeedMax
+  adc #1
   and #penetrationCalculationMask
+  adc #1
   sta nomolosBelowPenetrationDistance
 ;    nomolosState is BottomCollision = true
   lda nomolosState
@@ -74,7 +81,7 @@ yesBelowCollision:
 ;
 ;;this is the falling code (also the slowing down while rising during a jump code)
 ;is nomolosYSpeed < nomolosVerticalSpeedMax?
-  lda #nomolosVerticalSpeedMax
+  lda #nomolosVerticalSpeedMax  
   sec
   sbc nomolosYSpeed+1
   ;we want to skip the following code if the result was positive
@@ -106,7 +113,7 @@ DoNotIncrementSpeed:
   beq noBelowCollision2
 ;      Yes:
 ;        Calculate maxYCollisionDistance - belowPenetrationDistance
-  lda #nomolosVerticalSpeedMax
+  lda #nomolosVerticalSpeedMax  
   sec
   sbc nomolosBelowPenetrationDistance
 ;        Is result = maxYCollisionDistance?
@@ -117,6 +124,7 @@ DoNotIncrementSpeed:
 ;            Is A button down?
 ;              Yes:
 ;                nomolosYSpeed = startJumpingSpeed (this is a negative value)             
+
 penetrationNotEqualToMax:  
 ;        Is result < nomolosYSpeed?  if result - nomolosYSpeed is negative, then this is true, so branch if positive.
   cmp nomolosYSpeed+1
@@ -124,7 +132,8 @@ penetrationNotEqualToMax:
 ;          Yes:
 ;            nomolosYSpeed = result
   clc
-  adc #5  ;huh? why does this work?
+  ;adc #5  ;huh? why does this work?
+  adc #1
   sta nomolosYSpeed+1
   lda #0
   sta nomolosYSpeed
@@ -165,6 +174,10 @@ ySpeedNegative:
   sta nomolosY+1
   
 
+  lda nomolosState  
+  and #nomolosMovingOffAND       ;state is moving
+  sta nomolosState
+  
   lda controllerBuffer+6 ;Left
 
   ;is left button down?

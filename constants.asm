@@ -17,7 +17,7 @@ nomolosAboveCollisionTestAND = %00010000
 
 nomolosVerticalAccelerationLo = $5a
 nomolosVerticalAccelerationHi = $00
-nomolosVerticalSpeedMax = $0b
+nomolosVerticalSpeedMax = $0a
 nomolosHeight = $20
 
 ;keeps the lowest 4 bits to get penetration distance from a y coordinate
