@@ -16,6 +16,17 @@ nomolosAboveCollisionOnOR =    %00010000
 nomolosAboveCollisionOffAND =  %11101111
 nomolosAboveCollisionTestAND = %00010000
 
+; f___8___0___a
+; 1111100000001010
+; 0000011111110101
+; 0000011111110110
+; 11111000
+; 00000111
+; 00001000
+
+nomolosStartJumpLo = $0a
+nomolosStartJumpHi = $f8
+nomolosStartJumpHiPos = $07
 nomolosVerticalAccelerationLo = $5a
 nomolosVerticalAccelerationHi = $00
 nomolosVerticalSpeedMax = $0a

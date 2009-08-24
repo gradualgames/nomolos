@@ -24,11 +24,39 @@
 .proc updateNomolos
 
 ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
+  lda nomolosX+1
+  sta w0
+  lda nomolosX+2
+  sta w0+1
+  lda nomolosY+1
+  clc
+  adc #nomolosStartJumpHi
+  sta b0
+  jsr testMapCollision
+  beq noAboveCollision
 ;  Yes:
 ;    calculate penetration distance and store it in abovePenetrationDistance
+  lda nomolosY+1
+  clc
+  adc #nomolosStartJumpHi
+  and #penetrationCalculationMask
+  sta nomolosAbovePenetrationDistance
+  ;lda #$10
+  ;sec
+  ;sbc nomolosAbovePenetrationDistance
+  ;sta nomolosAbovePenetrationDistance
 ;    nomolosState is TopCollision = true
+  lda nomolosState
+  ora #nomolosAboveCollisionOnOR
+  sta nomolosState
+  jmp skipNoAboveCollision
+noAboveCollision:
 ;  No:
 ;    nomolosState is TopCollision = false
+  lda nomolosState
+  and #nomolosAboveCollisionOffAND
+  sta nomolosState
+skipNoAboveCollision:
 ;Is there a collision below Nomolos? (NomolosY + NomolosHeight + maxYCollisionDistance)
   lda nomolosX+1
   sta w0
@@ -140,6 +168,39 @@ skipDisableJumpWhileFalling:
   jmp skipYSpeedNegativeCode
 ySpeedNegative:
 
+  ;is above collision true?
+  lda nomolosState
+  and #nomolosAboveCollisionTestAND
+  lsr
+  lsr
+  lsr
+  lsr
+  and #1   ;if the result of this instruction is 1, the zero flag will be false. if it is 0, zero flag will be true.
+           ;we want to skip if the zero flag is true, because that would mean there is no above collision.
+  beq noAboveCollision2
+  ;if we arrive here, there was a collision above nomolos and we must decide what to do about it.
+  lda #0
+  sta nomolosYSpeed
+  sta nomolosYSpeed+1
+  
+  ;disable jump while falling
+  lda nomolosState
+  and #nomolosJumpingOffAND
+  sta nomolosState
+  
+  
+  ;calculate nomolosStartJumpHiPos - nomolosAbovePenetrationDistance
+  ;lda #nomolosStartJumpHiPos
+  ;sec
+  ;sbc nomolosAbovePenetrationDistance
+  
+  
+  jmp skipNoAboveCollision2
+noAboveCollision2:
+  ;if we arrive here, there was no collision above nomolos.
+
+skipNoAboveCollision2:
+
   ;is jumping off?
   lda nomolosState
   and #nomolosJumpingTestAND
@@ -192,9 +253,9 @@ skipYSpeedNegativeCode:
   lsr
   beq :+
   ;A button was down, collision was beneath so start the jump and disable jumping for now.
-  lda #$0a
+  lda #nomolosStartJumpLo
   sta nomolosYSpeed
-  lda #$f8
+  lda #nomolosStartJumpHi
   sta nomolosYSpeed+1
   
   lda nomolosState
@@ -221,7 +282,7 @@ jumpingDisabled:
   sta nomolosState
 :
   
-
+  
 ;    Is nomolosState.TopCollision true?
 ;      Yes:
 ;        Calculate maxYCollisionDistance - abovePenetrationDistance
