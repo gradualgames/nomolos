@@ -195,11 +195,7 @@ DoNotIncrementSpeed:
 ;        Is result = maxYCollisionDistance?
   cmp #nomolosVerticalSpeedMax
   bne penetrationNotEqualToMax
-;          Yes:
-;            ;we know nomolos is standing squarely on a platform somewhere
-;            Is A button down?
-;              Yes:
-;                nomolosYSpeed = startJumpingSpeed (this is a negative value)             
+        
 
 penetrationNotEqualToMax:  
 ;        Is result < nomolosYSpeed?  if result - nomolosYSpeed is negative, then this is true, so branch if positive.
@@ -260,27 +256,11 @@ penetrationNotLessThanYSpeed2:
 
 skipPenetrationNotLessThanYSpeed2:
 
-     ; nomolosStartJumpHi is negative.
-     ; nomolosAbovePenetrationDistance is positive.
-     ; if we add these two, it is like subtracting from the absolute value of the start jump hi.
-     ; then, we want to know if  abs(result) > abs(nomolosYSpeed).
-     ; If that is true, we need to set the current speed equal to the result.
-     ; we know both result and nomolosYSpeed are negative, so how do we compare them?
-     ;  -1 compared to -2
-     ;  -1 - -2 = 1, result is positive, so we know -1 is > -2.
-     ; cmp -2
-     
-    
-  
-  
   
   ;disable jump while falling
   lda nomolosState
   and #nomolosJumpingOffAND
   sta nomolosState
-  
-
-  
   
   jmp skipNoAboveCollision2
 noAboveCollision2:
@@ -383,25 +363,7 @@ jumpingDisabled:
   sta nomolosState
 :
   
-  
-;    Is nomolosState.TopCollision true?
-;      Yes:
-;        Calculate maxYCollisionDistance - abovePenetrationDistance
-;        Is result = maxYCollisionDistance?
-;          Yes:
-;            ;nomolos bumped his head, stop his speed so falling will begin
-;            nomolosYSpeed = 0
-;        Is result < abs(nomolosYSpeed)? 
-;          Yes:
-;            ;on next iteration, nomolos will be right up against what he's headed towards          
-;            nomolosYSpeed = result
-;        ;if we reach here we know that Nomolos won't hit anything on the next iteration with the current
-;        ;value of nomolosYSpeed
-;        Is A button down?
-;          No:
-;            ;stop rising into the air
-;            nomolosYSpeed = 0
-;            
+ 
 ;;presumably if there is something directly above nomolos, or directly below nomolos, 
 ;;that will have been figured out before the following line occurs, and nomolosYSpeed
 ;;will have been modified accordingly.
@@ -472,6 +434,10 @@ jumpingDisabled:
   dec b0
   jsr testMapCollision
   bne notLeft
+  
+  ;also make certain nomolos can't walk past left part of screen
+  lda nomolosScreenX
+  beq notLeft
   
   ;24 bit Sub
   sec
