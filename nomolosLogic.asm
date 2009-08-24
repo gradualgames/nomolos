@@ -24,6 +24,7 @@
 .proc updateNomolos
 
 ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
+  ;top left
   lda nomolosX+1
   sta w0
   lda nomolosX+2
@@ -34,7 +35,35 @@
   adc #$ff
   sta b0
   jsr testMapCollision
-  beq noAboveCollision
+  beq noTopLeftCollision
+  
+  jmp yesAboveCollision
+  
+noTopLeftCollision:
+  
+  ;top right
+  lda nomolosX+1
+  clc
+  adc #$0f
+  sta w0
+  lda nomolosX+2
+  adc #$00
+  sta w0+1
+  lda nomolosY+1
+  clc
+  adc #nomolosStartJumpHi
+  adc #$ff
+  sta b0
+  jsr testMapCollision
+  beq noTopRightCollision
+  
+  jmp yesAboveCollision
+  
+noTopRightCollision:
+
+  jmp noAboveCollision
+  
+yesAboveCollision:
 ;  Yes:
 ;    calculate penetration distance and store it in abovePenetrationDistance
   lda nomolosY+1
@@ -60,6 +89,7 @@ noAboveCollision:
   sta nomolosState
 skipNoAboveCollision:
 ;Is there a collision below Nomolos? (NomolosY + NomolosHeight + maxYCollisionDistance)
+  ;bottom left
   lda nomolosX+1
   sta w0
   lda nomolosX+2
@@ -71,11 +101,39 @@ skipNoAboveCollision:
   adc #1
   sta b0  
   jsr testMapCollision
+  beq noBottomLeftCollision
+  
+  jmp yesBottomCollision
+  
+noBottomLeftCollision:
+  
+  ;bottom right
+  lda nomolosX+1
+  clc
+  adc #$0f
+  sta w0
+  lda nomolosX+2
+  adc #$00
+  sta w0+1
+  lda nomolosY+1
+  clc
+  adc #nomolosHeight
+  adc #nomolosVerticalSpeedMax
+  adc #1
+  sta b0  
+  jsr testMapCollision
+  beq noBottomRightCollision
+  
+  jmp yesBottomCollision
+  
+noBottomRightCollision:
+  
   beq noBelowCollision  ;we want to skip the following code when there is not a collision
                         ;set = not collision, so we use beq
 ;  Yes:
 ;    calculate penetration distance and store it in belowPenetrationDistance
   ;penetration distance would just be nomolosY+1+height+speedmax AND %00001111
+yesBottomCollision:
   lda nomolosY+1
   clc
   adc #nomolosHeight
@@ -374,8 +432,11 @@ jumpingDisabled:
   
   ;test collision with map
   lda nomolosX+1
+  sec
+  sbc #1
   sta w0
   lda nomolosX+2
+  sbc #0
   sta w0+1
   lda nomolosY+1
   sta b0
@@ -384,8 +445,11 @@ jumpingDisabled:
   bne notLeft
   
   lda nomolosX+1
+  sec
+  sbc #1
   sta w0
   lda nomolosX+2
+  sbc #0
   sta w0+1
   lda nomolosY+1
   clc
@@ -395,8 +459,11 @@ jumpingDisabled:
   bne notLeft
 
   lda nomolosX+1
+  sec
+  sbc #1
   sta w0
   lda nomolosX+2
+  sbc #0
   sta w0+1
   lda nomolosY+1
   clc 
@@ -434,7 +501,7 @@ notLeft:
   ;test collision with map
   lda nomolosX+1
   clc
-  adc #$0f
+  adc #$10
   sta w0  
   lda nomolosX+2
   adc #$00
@@ -448,7 +515,7 @@ notLeft:
   ;lda nomolosX+1
   lda nomolosX+1
   clc
-  adc #$0f
+  adc #$10
   sta w0  
   lda nomolosX+2
   adc #$00
@@ -462,7 +529,7 @@ notLeft:
   
   lda nomolosX+1
   clc
-  adc #$0f
+  adc #$10
   sta w0  
   lda nomolosX+2
   adc #$00
