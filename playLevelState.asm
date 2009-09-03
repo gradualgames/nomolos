@@ -9,6 +9,8 @@
 .import updateColumnPPU
 ;sprite drawing labels
 .import updateSprites, drawNomolos
+;entity update labels
+.import updateEntities
 ;camera labels
 .import decodeMap, updateCamera
 ;nomolos logic labels
@@ -29,6 +31,7 @@ playLevelUpdate:
 
   jsr readController
   jsr updateNomolos
+  jsr updateEntities
   jsr updateCamera
   jsr decodeMap
   ;reset sprite address. This must be done before any sprites are

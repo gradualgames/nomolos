@@ -1,3 +1,5 @@
+.import returnFromEntityUpdate
+
 .export palette, MetaTileTable, MetaMetaTileTable, NomolosWalkRight, NomolosWalkLeft
 .export Level
 
@@ -199,4 +201,18 @@ DeentleWalk:
   .word Deentle0
   .word Deentle1
   .byte $00
+  
+;Entities
+EntityDefinitionTable:
+DeentleEntity:
+  .word deentleUpdate
+  .byte %00000000
+  .byte $00  ;0
+  .byte $f0  ;-16
+  .byte $00  
+  .byte $00
+  .byte $00
+ 
+deentleUpdate:
 
+  jmp returnFromEntityUpdate
