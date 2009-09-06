@@ -89,10 +89,10 @@ sprite: .res 256
 ;.dsb index = definition index (this is a parameter)
 ;.dsw spawnPositionX = initialXOffset + x
 ;.dsb spawnPositionY = initialYOffset + y
+;.dsb positionXFine  = unknown, this is expected to be used (or not used) by the entity
 ;.dsw positionX      = x (this is a parameter)
-;.dsb positionXExtra 
+;.dsb positionYFine  = unknown, this is expected to be used (or not used) by the entity
 ;.dsb positionY      = y (this is a parameter)
-;.dsb positionYExtra
 ;.dsb state          = initialState
 ;.dsw animationObject  = unknown, this expected to be set by the entity
 ;.dsb 3 ;padding to 16 bytes

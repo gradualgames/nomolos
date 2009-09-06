@@ -35,10 +35,10 @@ initEntities:
 ;.dsb index = definition index (this is a parameter)
 ;.dsw spawnPositionX = initialXOffset + x
 ;.dsb spawnPositionY = initialYOffset + y
+;.dsb positionXFine  = unknown, this is expected to be used (or not used) by the entity
 ;.dsw positionX      = x (this is a parameter)
-;.dsb positionXExtra 
+;.dsb positionYFine  = unknown, this is expected to be used (or not used) by the entity
 ;.dsb positionY      = y (this is a parameter)
-;.dsb positionYExtra
 ;.dsb state          = initialState
 ;.dsw animationObject  = unknown, this expected to be set by the entity
 ;.dsb 3 ;padding to 16 bytes
@@ -51,33 +51,30 @@ initEntities:
 spawnEntity:
 
   ;start at the last entity
-  ldx #$0f
+  ldy #$0f
 :
-  txa
+  tya
   asl
   asl
   asl
   asl
-  tay
-  lda entityPool,y
-  beq :+  ;found a dead entity, jump out with current value of y
-  dex
+  tax
+  lda entityPool,x
+  beq :+  ;found a dead entity, jump out with current value of x
+  dey
   bpl :-
 :
-  ;when we get here we are pointing at a dead entity with y
+  ;when we get here we are pointing at a dead entity with x
   
   ;make the entity alive. ALIVE! MUA HUAH HAH HAH
   lda #$01
-  sta entityPool,y
+  sta entityPool,x
   
   ;point to the "index" field
-  iny
-  ;save off y into x, we're soon going to use y for looking things up in an entity def
-  tya
-  tax
+  inx
   ;store the kind of entity this is
   lda b0
-  sta entityPool,y
+  sta entityPool,x
   
   ;now that we know the kind of entity this is, we must look up
   ;the entity and pull out its initialXOffset and initialYOffset,
@@ -145,18 +142,37 @@ spawnEntity:
   lda b1
   sta entityPool,x
   
+  ;point to positionXFine
+  inx
+  lda #$00
+  sta entityPool,x
+  ;point to positionX
+  inx
+  lda w0
+  sta entityPool,x
+  inx
+  lda w0+1
+  sta entityPool,x
+  
+  ;point to positionYFine
+  inx
+  lda #$00
+  sta entityPool,x
+  ;point to positionY
+  inx
+  lda b1
+  sta entityPool,x
+  
   ;point to the initial state
   iny
   ;load initial state
-  lda (entityDefinitionTableBaseAddress),y
-  
+  lda (entityDefinitionTableBaseAddress),y  
   ;point to state variable in entity entry
   inx
   ;store the initial state there
   sta entityPool,X
   
-  
-  
-  
+  ;at this point the entity should be fully spawned and ready
+  ;to have its update routine called.
 
   rts
