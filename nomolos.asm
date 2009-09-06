@@ -1,7 +1,7 @@
 .include "constants.asm"
 
 ;ROM labels
-.import palette, MetaTileTable, MetaMetaTileTable, Level
+.import palette, MetaTileTable, MetaMetaTileTable, Level, EntityDefinitionTable
 
 ;state labels
 .import loadLevelUpdatePPU, loadLevelUpdate, clearSprites
@@ -11,12 +11,13 @@
 .exportzp update, updatePPU, attributeBuffer, attributeColumnToUpdate
 .exportzp columnTileBuffer, columnToUpdate, nametableToUpdate
 .exportzp levelBaseAddress, metaTileBuffer, metaTileTableBaseAddress
+.exportzp entityDefinitionTableBaseAddress
 .exportzp metametaTileTableBaseAddress, nomolosAnim
 .exportzp nomolosScreenX, nomolosScreenY, nomolosState
 .exportzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, scrollX, spriteAddress
 .exportzp controllerBuffer
-.export stack, sprite
+.export stack, sprite, entityPool
 
 ;update return labels
 .export updatePPUFinished, updateFinished
@@ -60,10 +61,11 @@ nomolosAnim: .res 2
 
 nomolosState: .res 1
 
-scrollX:                      .res 2
-levelBaseAddress:             .res 2
-metametaTileTableBaseAddress: .res 2
-metaTileTableBaseAddress:     .res 2
+scrollX:                           .res 2
+levelBaseAddress:                  .res 2
+metametaTileTableBaseAddress:      .res 2
+metaTileTableBaseAddress:          .res 2
+entityDefinitionTableBaseAddress:  .res 2
 
 attributeBuffer: .res 8
 attributeColumnToUpdate: .res 1
@@ -81,6 +83,21 @@ stack:  .res 256
   
 .segment "RAM"
 sprite: .res 256
+;The following is the entity pool. All entities are treated as chunks of
+;16 bytes from this pool with the following schema:
+;.dsb alive = 1
+;.dsb index = definition index (this is a parameter)
+;.dsw spawnPositionX = initialXOffset + x
+;.dsb spawnPositionY = initialYOffset + y
+;.dsw positionX      = x (this is a parameter)
+;.dsb positionXExtra 
+;.dsb positionY      = y (this is a parameter)
+;.dsb positionYExtra
+;.dsb state          = initialState
+;.dsw animationObject  = unknown, this expected to be set by the entity
+;.dsb 3 ;padding to 16 bytes
+
+entityPool: .res 256
 
 .segment "CODE"
 
@@ -157,6 +174,11 @@ reset:
   sta metaTileTableBaseAddress
   lda #>MetaTileTable
   sta metaTileTableBaseAddress+1
+  lda #<EntityDefinitionTable
+  sta entityDefinitionTableBaseAddress
+  lda #>EntityDefinitionTable
+  sta entityDefinitionTableBaseAddress+1
+  
 
   lda #$00
   sta scrollX

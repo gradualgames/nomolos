@@ -6,6 +6,8 @@
 .import updateScrollPPU, updateColumnPPU, updateAttributePPU
 ;sprite update routines
 .import updateSprites, clearSprites, updateColumn
+;entity routines
+.import initEntities
 ;global variables
 .importzp update, updatePPU
 .importzp w1, levelBaseAddress, columnToUpdate
@@ -66,6 +68,7 @@ loadLevelUpdate:
   cmp #32
   bne :+
   ;switch to play level state.
+  jsr initEntities  ;kill all entities
   lda #$24
   sta nametableToUpdate  
   lda #<playLevelUpdate

@@ -1,7 +1,7 @@
 .import returnFromEntityUpdate
 
 .export palette, MetaTileTable, MetaMetaTileTable, NomolosWalkRight, NomolosWalkLeft
-.export Level
+.export Level, EntityDefinitionTable
 
 .segment "RODATA"
 palette:
@@ -207,8 +207,8 @@ EntityDefinitionTable:
 DeentleEntity:
   .word deentleUpdate
   .byte %00000000
-  .byte $00  ;0
-  .byte $f0  ;-16
+  .byte $00  ;0  (this will be subtracted from spawnX)
+  .byte $10  ;16 (this will be subtracted from spawnY)
   .byte $00  
   .byte $00
   .byte $00
