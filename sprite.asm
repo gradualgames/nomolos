@@ -4,7 +4,7 @@
 .import sprite
 
 ;sprite manipulation interface
-.export drawAnimation, updateAnimation, updateSprites, clearSprites
+.export drawAnimation, updateAnimation, updateSprites, clearSprites, drawMetaSprite
 
 .segment "CODE"
 

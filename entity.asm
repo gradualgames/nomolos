@@ -6,8 +6,65 @@
 
 .segment "CODE"
 
+;This routine indirectly jumps to every update routine for every live entity.
+;The entities are expected to jump back to returnFromEntityUpdate when they
+;are finished.
 updateEntities:
+
+  ;start at last entity
+  ldy #$0f
+nextEntity:
+  ;save y 
+  tya  
+  pha
+  
+  ;multiply by 4 to get the entity RAM object offset
+  asl
+  asl
+  asl
+  asl
+  tax
+  lda entityPool,x
+  beq skipUpdate
+  ;if we arrive here, x points to a live entity
+  ;point to the entity index
+  inx
+  ;load the entity index
+  lda entityPool,x
+  ;multiply the entity index by 8
+  asl
+  asl
+  asl
+  tay
+  ;now y points to the entity definition
+  
+  ;load low byte of update routine
+  lda (entityDefinitionTableBaseAddress),y
+  ;might as well use w0..
+  sta w0
+  ;point to high byte of update routine
+  iny
+  ;load high byte of update routine
+  lda (entityDefinitionTableBaseAddress),y
+  ;put the high byte into w0
+  sta w0+1
+  ;the entity update routine must know the index of its RAM entry.
+  ;right now, x points to the entity RAM entry, +1 because of looking at index.
+  ;point to the beginning of the entity RAM entry
+  dex
+  ;jump to the entity update routine indirectly
+  jmp (w0)
 returnFromEntityUpdate:
+  ;entities are expected to return here.
+skipUpdate:
+  ;restore y
+  pla
+  tay
+  ;iterate to next entity
+  dey
+  bpl nextEntity
+
+
   rts
 
 ;This routine initializes the entity pool. All this

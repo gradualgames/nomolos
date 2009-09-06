@@ -69,6 +69,7 @@ loadLevelUpdate:
   bne :+
   ;switch to play level state.
   jsr initEntities  ;kill all entities
+  
   lda #$24
   sta nametableToUpdate  
   lda #<playLevelUpdate

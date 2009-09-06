@@ -1,4 +1,10 @@
+;zp variables
+.importzp b0, b1, w0
+
 .import returnFromEntityUpdate
+
+;sprite module
+.import drawMetaSprite
 
 .export palette, MetaTileTable, MetaMetaTileTable, NomolosWalkRight, NomolosWalkLeft
 .export Level, EntityDefinitionTable
@@ -213,6 +219,18 @@ DeentleEntity:
   .byte $00
   .byte $00
  
+
+;all entity routines expect that entityPool,x points to
+;the RAM entry for this particular update call.
 deentleUpdate:
+
+  lda #<Deentle0
+  sta w0
+  lda #>Deentle0
+  sta w0+1
+  lda #50
+  sta b0
+  sta b1
+  jsr drawMetaSprite
 
   jmp returnFromEntityUpdate

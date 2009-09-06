@@ -18,6 +18,10 @@
 ;global variables
 .importzp spriteAddress, vblankDone
 
+;temporary hack to test entity spawning
+.importzp b0, b1, w0, controllerBuffer
+.import spawnEntity
+
 ;play level state labels
 .export playLevelUpdate, playLevelUpdatePPU
 
@@ -30,15 +34,35 @@ playLevelUpdate:
   beq :-
 
   jsr readController
-  jsr updateNomolos
-  jsr updateEntities
-  jsr updateCamera
-  jsr decodeMap
+  
+  ;temporary hack to test entity spawning vvv
+  lda controllerBuffer+1
+  and #1
+  beq :+
+  
+;the following parameters are expected:
+;b0 = index of entity definition to spawn
+;w0 = positionX
+;b1 = positionY
+  lda #0
+  sta b0
+  sta w0
+  sta w0+1
+  sta b1
+  jsr spawnEntity
+:
+  ;temporary hack to test entity spawning ^^^
+  
   ;reset sprite address. This must be done before any sprites are
   ;drawn to the sprite buffer. It gets pushed along as every sprite
   ;is added.
   lda #0
   sta spriteAddress
+  
+  jsr updateNomolos
+  jsr updateEntities
+  jsr updateCamera
+  jsr decodeMap
   jsr drawNomolos
   jmp updateFinished
   
