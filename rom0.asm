@@ -1,7 +1,13 @@
 ;zp variables
 .importzp b0, b1, w0
 
+.import entityPool
+
+;entity module
 .import returnFromEntityUpdate
+
+;camera module
+.import cameraToScreenCoords
 
 ;sprite module
 .import drawMetaSprite
@@ -222,15 +228,45 @@ DeentleEntity:
 
 ;all entity routines expect that entityPool,x points to
 ;the RAM entry for this particular update call.
+;entity schema:
+;.dsb alive = 1
+;.dsb index = definition index (this is a parameter)
+;.dsw spawnPositionX = initialXOffset + x
+;.dsb spawnPositionY = initialYOffset + y
+;.dsb positionXFine  = unknown, this is expected to be used (or not used) by the entity
+;.dsw positionX      = x (this is a parameter)
+;.dsb positionYFine  = unknown, this is expected to be used (or not used) by the entity
+;.dsb positionY      = y (this is a parameter)
+;.dsb state          = initialState
+;.dsw animationObject  = unknown, this expected to be set by the entity
+;.dsb 3 ;padding to 16 bytes
 deentleUpdate:
+
+  ;get out low byte of positionX
+  lda entityPool+6,x
+  sta w0
+  ;get out high byte of positionX
+  lda entityPool+7,x
+  sta w0+1
+  lda entityPool+9,x
+  sta b0
+  jsr cameraToScreenCoords
+  
+  ;b1 is screen X, b0 is screen Y, draw meta sprite needs b0 = x, b1 = y so swap them.
+  lda b0
+  pha
+  lda b1
+  sta b0
+  pla
+  sta b1
 
   lda #<Deentle0
   sta w0
   lda #>Deentle0
   sta w0+1
-  lda #50
-  sta b0
-  sta b1
+  ;lda #50
+  ;sta b0  
+  ;sta b1
   jsr drawMetaSprite
 
   jmp returnFromEntityUpdate

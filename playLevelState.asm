@@ -48,7 +48,9 @@ playLevelUpdate:
 ;b1 = positionY
   lda #0
   sta b0
+  lda #150
   sta w0
+  lda #48
   sta w0+1
   sta b1
   jsr spawnEntity
