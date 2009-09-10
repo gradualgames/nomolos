@@ -11,8 +11,10 @@
 .import updateSprites, drawNomolos
 ;entity update labels
 .import updateEntities
+;map decoding labels
+.import decodeMap
 ;camera labels
-.import decodeMap, updateCamera
+.import updateCamera
 ;nomolos logic labels
 .import updateNomolos
 ;global variables
@@ -61,7 +63,7 @@ playLevelUpdate:
   
   jsr updateNomolos
   jsr updateEntities
-  jsr updateCamera
+  ;jsr updateCamera
   jsr decodeMap
   jsr drawNomolos
   jmp updateFinished

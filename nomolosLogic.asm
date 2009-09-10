@@ -9,6 +9,9 @@
 ;Map module labels (for collision detection)
 .import testMapCollision
 
+;Camera module labels
+.import updateCamera, cameraToScreenCoords
+
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
@@ -532,8 +535,30 @@ notRight:
   sta nomolosAnim+1
 :
   
+  ;compute screen coordinates from level coordinates
+  lda nomolosX+1
+  sta w0
+  lda nomolosX+2
+  sta w0+1
+  lda nomolosY+1
+  sta b0
+  jsr cameraToScreenCoords
+  lda b1
+  sta nomolosScreenX
+  lda b0
+  sta nomolosScreenY 
+
+  ;tell the camera to center itself on Nomolos
+  lda nomolosScreenX
+  sta b0
+  jsr updateCamera
+  lda b0
+  sta nomolosScreenX
+  
   rts
 .endproc
+  
+  
   
 updateNomolosAnimation:
 
@@ -584,10 +609,12 @@ drawNomolos:
   
   ;jsr updateAnimation
   
+
+  
   lda nomolosScreenX
   sta b0
   lda nomolosScreenY
   sta b1
   jsr drawAnimation
-
+  
   rts
