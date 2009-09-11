@@ -22,7 +22,7 @@ SRC_DIR          =
 # Files list
 MAIN_FILES		= nomolos
 CONFIG_FILE     = nomolos.cfg
-COMMON_FILES	= constants nomolosLogic rom0 chrrom0 loadLevelState playLevelState map camera sprite entity controller
+COMMON_FILES	= constants nomolosLogic rom0 chrrom0 loadLevelState playLevelState map camera sprite entity controller sound
 
 # Now create list with proper path
 FILELIST = $(addprefix $(SRC_DIR), $(MAIN_FILES)) \
