@@ -1,6 +1,6 @@
 .import entityPool
 
-.importzp b0, b1, w0, entityDefinitionTableBaseAddress
+.importzp b0, b1, b2, w0, entityDefinitionTableBaseAddress
 
 .export updateEntities, returnFromEntityUpdate, initEntities, spawnEntity
 
@@ -155,21 +155,19 @@ spawnEntity:
   iny
   iny
   
-  ;load the initial x offset
-  lda (entityDefinitionTableBaseAddress),y  
-  ;negate it
-  eor #$ff
-  clc 
-  adc #01
+  ;store the initial X offset in b2 for now
+  lda (entityDefinitionTableBaseAddress),y
+  sta b2
   
-  ;now add this to the low byte of the x parameter
-  clc
-  adc w0
-  sta w0   ;store result in low byte
-  lda #$ff ;load all 1's, since we negated our x offset
-  adc w0+1 ;add the upper byte of the x parameter
-  sta w0+1 ;store result in high byte of x parameter
-  
+  ;load the low byte of the x parameter, and do a 16 bit subtract from this
+  sec
+  lda w0
+  sbc b2
+  sta w0
+  lda w0+1
+  sbc #0
+  sta w0+1  
+
   ;now w0 should have the spawnPositionX value
   ;point to spawnPositionX. Load it with w0.
   inx
@@ -181,16 +179,14 @@ spawnEntity:
   
   ;point to initial y offset
   iny
-  ;load the initial y offset
+  ;load the initial y offset and store it in b2 for now
   lda (entityDefinitionTableBaseAddress),y
-  ;negate it
-  eor #$ff
-  clc
-  adc #01
+  sta b2
   
-  ;now add this to the y parameter (b1)
-  clc
-  adc b1
+  ;subtract this from the y parameter
+  sec
+  lda b1
+  sbc b2
   sta b1  ;store result in y parameter
   
   ;now b1 should have the spawnPositionY value

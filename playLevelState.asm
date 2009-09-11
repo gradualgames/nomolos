@@ -8,7 +8,7 @@
 .import updateScrollPPU, updateAttributePPU
 .import updateColumnPPU
 ;sprite drawing labels
-.import updateSprites, drawNomolos
+.import clearSprites, updateSprites, drawNomolos
 ;entity update labels
 .import updateEntities
 ;map decoding labels
@@ -50,8 +50,9 @@ playLevelUpdate:
   sta b0
   lda #150
   sta w0
-  lda #48
+  lda #0
   sta w0+1
+  lda #48
   sta b1
   jsr spawnEntity
 :
@@ -62,6 +63,7 @@ playLevelUpdate:
   ;is added.
   lda #0
   sta spriteAddress
+  jsr clearSprites
   
   jsr updateNomolos
   jsr updateEntities

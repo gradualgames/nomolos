@@ -2,7 +2,7 @@
 
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
 .importzp scrollX
-.importzp b0, b1, w0
+.importzp b0, b1, b2, w0
 
 .export updateCamera, cameraToScreenCoords
 
@@ -13,6 +13,7 @@
 ;expects: w0 is the x coordinate.
 ;         b0 is the y coordinate.
 ;outputs: b1 is the screen x coordinate.
+;         b2 is the high byte of the screen x coordinate
 ;         b0 is the screen y coordinate.
 cameraToScreenCoords:
 
@@ -20,6 +21,9 @@ cameraToScreenCoords:
   lda w0 ;load low byte of 16 bit X coord
   sbc scrollX
   sta b1
+  lda w0+1 ;load high byte of 16 bit x coord
+  sbc scrollX+1
+  sta b2
   
   rts
 

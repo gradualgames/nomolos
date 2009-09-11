@@ -218,9 +218,9 @@ DeentleWalk:
 EntityDefinitionTable:
 DeentleEntity:
   .word deentleUpdate
-  .byte %00000000
   .byte $00  ;0  (this will be subtracted from spawnX)
   .byte $10  ;16 (this will be subtracted from spawnY)
+  .byte %00000000
   .byte $00  
   .byte $00
   .byte $00
@@ -251,6 +251,7 @@ deentleUpdate:
   lda entityPool+9,x
   sta b0
   jsr cameraToScreenCoords
+  bne :+
   
   ;b1 is screen X, b0 is screen Y, draw meta sprite needs b0 = x, b1 = y so swap them.
   lda b0
@@ -268,5 +269,6 @@ deentleUpdate:
   ;sta b0  
   ;sta b1
   jsr drawMetaSprite
+:
 
   jmp returnFromEntityUpdate
