@@ -7,7 +7,10 @@
 .importzp attributeColumnToUpdate
 .importzp metametaTileTableBaseAddress
 .importzp levelBaseAddress, columnToUpdate, nametableToUpdate
-.importzp scrollX
+.importzp scrollX, nextScrollX
+
+;sound module
+.import lowc
 
 ;map and camera interface
 .export testMapCollision
@@ -108,15 +111,53 @@
   
 decodeMap:
 
+  ;load the current scroll value and subtract the next scroll value. only when this is 0 or positive do we continue.
+  lda scrollX
+  sec
+  sbc nextScrollX
+  sta w0
+  lda scrollX+1
+  sbc nextScrollX+1
+  sta w0+1
+  beq doDecode
+  bpl doDecode
+  
+  ;the result was negative, which means the scroll hasn't reached nextScrollX yet. Return.
+  rts
+  
+doDecode:
+  jsr lowc
+
   ;Load the current scroll value. Shifting this 16 bit value right by 4 will produce the correct column number for the leftmost
   ;column on the screen.
 
   lda scrollX
   sta w0
+  sta w2
   lda scrollX+1
   sta w0+1
+  sta w2+1
+  
+  ;calculate "the next" scrollX from the current scrollX value.
+  lda w2
+  ;cut off anything less than 16.
+  and #%11110000
+  ;do a 16 bit add of "16" to this "next" scrollX value.
+  clc
+  adc #$10
+  sta w2
+  lda w2+1
+  adc #0
+  sta w2+1
+  
+  ;transfer the computed next scrollX to our nextScrollX variable.
+  lda w2
+  sta nextScrollX
+  lda w2+1
+  sta nextScrollX+1
 
   ;calculate the nametable to draw the column into
+  lda scrollX+1
   eor #$01  ;flip the lowest bit to get the opposite nametable
   and #$01  ;grab just the lowest bit
   asl

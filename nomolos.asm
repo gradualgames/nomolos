@@ -18,7 +18,8 @@
 .exportzp metametaTileTableBaseAddress, nomolosAnim
 .exportzp nomolosScreenX, nomolosScreenY, nomolosState
 .exportzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
-.exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, scrollX, spriteAddress
+.exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, spriteAddress
+.exportzp scrollX, nextScrollX
 .exportzp controllerBuffer
 .export stack, sprite, entityPool
 
@@ -65,6 +66,7 @@ nomolosAnim: .res 2
 nomolosState: .res 1
 
 scrollX:                           .res 2
+nextScrollX:                       .res 2
 levelBaseAddress:                  .res 2
 metametaTileTableBaseAddress:      .res 2
 metaTileTableBaseAddress:          .res 2
@@ -136,6 +138,9 @@ reset:
   jsr clearSprites
 
   ;set load level state.
+  lda #0
+  sta nextScrollX
+  sta nextScrollX+1
   lda #1
   sta nomolosAnim
   lda #0
