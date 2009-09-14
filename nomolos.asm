@@ -6,6 +6,9 @@
 ;state labels
 .import loadLevelUpdatePPU, loadLevelUpdate, clearSprites
 
+;sound module
+.import initsound
+
 ;global variables/RAM labels
 .exportzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5, vblankDone, update
 .exportzp update, updatePPU, attributeBuffer, attributeColumnToUpdate
@@ -128,6 +131,7 @@ reset:
   inx
   bne :-
 
+  jsr initsound
   jsr loadPalette
   jsr clearSprites
 
