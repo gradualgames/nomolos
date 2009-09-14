@@ -6,6 +6,9 @@
 ;state labels
 .import loadLevelUpdatePPU, loadLevelUpdate, clearSprites
 
+;entity module
+.import initEntities
+
 ;sound module
 .import initsound
 
@@ -138,6 +141,7 @@ reset:
   jsr clearSprites
 
   ;set load level state.
+  jsr initEntities  ;kill all entities
   lda #0
   sta nextScrollX
   sta nextScrollX+1

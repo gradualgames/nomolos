@@ -7,10 +7,10 @@
 ;sprite update routines
 .import updateSprites, clearSprites, updateColumn
 ;entity routines
-.import initEntities
+.import initEntities, updateEntities
 ;global variables
 .importzp update, updatePPU
-.importzp w1, levelBaseAddress, columnToUpdate
+.importzp w1, w3, levelBaseAddress, columnToUpdate
 .importzp metametaTileTableBaseAddress, nametableToUpdate
 
 ;load level state labels
@@ -50,9 +50,21 @@ loadLevelUpdate:
   adc metametaTileTableBaseAddress+1
   sta w1+1
 
+  ;calculate spawnX
+  lda columnToUpdate
+  asl
+  asl
+  asl
+  sta w3 ;spawnX
+  lda #0
+  sta w3+1 ;spawnX+1
+  
   lda columnToUpdate
   jsr updateColumn
 
+  ;keep any new entities positioned where they need to be
+  jsr updateEntities
+  
   ;rendering is off in this state, so we update the PPU
   jsr updateSprites
   jsr updateColumnPPU
@@ -67,8 +79,7 @@ loadLevelUpdate:
   ;have we updated all the columns on the screen yet?
   cmp #32
   bne :+
-  ;switch to play level state.
-  jsr initEntities  ;kill all entities
+  ;switch to play level state.  
   
   lda #$24
   sta nametableToUpdate  
