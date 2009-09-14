@@ -107,6 +107,13 @@ initEntities:
 
 spawnEntity:
 
+  ;save regs
+  pha
+  txa
+  pha
+  tya 
+  pha
+
   ;start at the last entity
   ldy #$0f
 :
@@ -227,5 +234,12 @@ spawnEntity:
   
   ;at this point the entity should be fully spawned and ready
   ;to have its update routine called.
+  
+  ;restore regs
+  pla
+  tay
+  pla
+  tax
+  pla
 
   rts

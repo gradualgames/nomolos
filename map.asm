@@ -12,6 +12,9 @@
 ;sound module
 .import lowc
 
+;entity module
+.import spawnEntity
+
 ;map and camera interface
 .export testMapCollision
 .export decodeMap
@@ -134,9 +137,17 @@ doDecode:
   lda scrollX
   sta w0
   sta w2
+  sta w3 ;spawnX
   lda scrollX+1
   sta w0+1
   sta w2+1
+  sta w3+1 ;spawnX+1
+  
+  ;add 256 to w3 to get correct spawnX
+  lda w3+1
+  clc
+  adc #1
+  sta w3+1
   
   ;calculate "the next" scrollX from the current scrollX value.
   lda w2
@@ -281,6 +292,7 @@ updateColumn:
   ldx #15
 :
   ;save y, we need it for indirect addressing again
+  sty b4 ;spawnY
   tya
   pha
   sta b3 ;store the metatile row
@@ -322,7 +334,27 @@ updateColumn:
   iny
   lda (metaTileTableBaseAddress), y
   sta metaTileBuffer+3
-
+  ;load the entity number to spawn
+  iny
+  lda (metaTileTableBaseAddress), y
+  sec
+  sbc #1
+  bmi doNotSpawn
+  
+  sta b0
+  lda w3
+  sta w0
+  lda w3+1
+  sta w0+1
+  lda b4
+  asl
+  asl
+  asl
+  asl
+  sta b1
+  jsr spawnEntity
+doNotSpawn:
+  
   ;figure out an offset into the column buffer
   ;restore y but save it again
   pla
