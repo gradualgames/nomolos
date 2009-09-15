@@ -62,9 +62,6 @@ loadLevelUpdate:
   lda columnToUpdate
   jsr updateColumn
 
-  ;keep any new entities positioned where they need to be
-  jsr updateEntities
-  
   ;rendering is off in this state, so we update the PPU
   jsr updateSprites
   jsr updateColumnPPU
@@ -80,7 +77,8 @@ loadLevelUpdate:
   cmp #32
   bne :+
   ;switch to play level state.  
-  
+  ;keep any new entities positioned where they need to be
+  jsr updateEntities
   lda #$24
   sta nametableToUpdate  
   lda #<playLevelUpdate
