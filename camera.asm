@@ -1,4 +1,4 @@
-.include "constants.asm"
+.include "constants.inc"
 
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
 .importzp scrollX

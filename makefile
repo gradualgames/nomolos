@@ -1,55 +1,26 @@
-##########################################
-# CA65 releated                          #
-##########################################
-
-AS              = ca65
-LD              = ld65
+ASSEMBLER       = ca65
+LINKER          = ld65
 MAPFILE         = nomolos.map
 LSTFILE         = nomolos.lst
 DEBUGFILE       = nomolos.txt
-ASFLAGS         = -g -l -o
-LDFLAGS         = -m $(MAPFILE) --dbgfile $(DEBUGFILE) -o 
+ASSEMBLER_FLAGS = -g -l -o
+LINKER_FLAGS    = -m $(MAPFILE) --dbgfile $(DEBUGFILE) -o 
 CONFIG          = -C nomolos.cfg
-INCLUDEPATHLIST = -I./src
 
-##########################################
-# Project specific                       #
-##########################################
-
-# common directories
-SRC_DIR          = 
-
-# Files list
-MAIN_FILES      = nomolos
 CONFIG_FILE     = nomolos.cfg
-COMMON_FILES    = constants nomolosLogic rom0 chrrom0 loadLevelState playLevelState map camera sprite entity controller sound
+INCLUDE_FILES   = constants.inc
+SOURCE_FILES    = nomolos.asm nomolosLogic.asm rom0.asm chrrom0.asm loadLevelState.asm playLevelState.asm map.asm camera.asm sprite.asm entity.asm controller.asm sound.asm
+OBJECT_FILES    = nomolos.o nomolosLogic.o rom0.o chrrom0.o loadLevelState.o playLevelState.o map.o camera.o sprite.o entity.o controller.o sound.o
 
-# Now create list with proper path
-FILELIST = $(addprefix $(SRC_DIR), $(MAIN_FILES)) \
-           $(addprefix $(SRC_DIR), $(COMMON_FILES)) \
-
-# Then prepare sources files list
-SOURCES  = $(FILELIST:=.asm)
-OBJECTS  = $(FILELIST:=.o) 
-LISTS    = $(FILELIST:=.lst)
-
-# Name used for final results
 NES_FILE = nomolos.nes
 
-##########################################
-# Rules                                  #
-##########################################
+all: $(NES_FILE)
 
-all: $(SOURCES) $(NES_FILE)
+$(NES_FILE): $(OBJECT_FILES) $(CONFIG_FILE)
+	$(LINKER) $(CONFIG) $(OBJECT_FILES) $(LINKER_FLAGS) $(NES_FILE)
 
-# Linking nes file
-$(NES_FILE): $(OBJECTS)
-	$(LD) $(CONFIG) $(OBJECTS) $(LDFLAGS) $(NES_FILE)
+$(OBJECT_FILES): %.o : %.asm
+	$(ASSEMBLER) $< $(ASSEMBLER_FLAGS) $@
 
-# Assembling all objects
-$(OBJECTS): %.o : %.asm
-	$(AS) $< $(ASFLAGS) $@
-
-# Cleaning
 clean:
-	rm -f $(OBJECTS) $(NES_FILE) $(MAPFILE) $(LISTS) $(DEBUGFILE) *.nl
+	rm -f $(OBJECT_FILES) $(NES_FILE) $(MAPFILE) *.lst *.txt

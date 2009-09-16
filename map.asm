@@ -1,4 +1,4 @@
-.include "constants.asm"
+.include "constants.inc"
 
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3

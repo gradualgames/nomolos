@@ -1,4 +1,4 @@
-.include "constants.asm"
+.include "constants.inc"
 
 ;ROM labels
 .import palette, MetaTileTable, MetaMetaTileTable, Level, EntityDefinitionTable
