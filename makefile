@@ -26,4 +26,4 @@ $(OBJECT_FILES): %.o : %.asm $(INCLUDE_FILES)
 	$(ASSEMBLER) $< $(ASSEMBLER_FLAGS) $@
 
 clean:
-	rm -f $(OBJECT_FILES) $(NES_FILE) $(MAPFILE) *.lst *.txt
+	rm -f $(OBJECT_FILES) $(NES_FILE) $(MAPFILE) *.lst *.nl *.txt
