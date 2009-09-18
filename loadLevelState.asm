@@ -1,3 +1,5 @@
+.include "macros.inc"
+
 ;state return labels
 .import updatePPUFinished, updateFinished
 ;play level state
@@ -81,14 +83,9 @@ loadLevelUpdate:
   jsr updateEntities
   lda #$24
   sta nametableToUpdate  
-  lda #<playLevelUpdate
-  sta update
-  lda #>playLevelUpdate
-  sta update+1
-  lda #<playLevelUpdatePPU
-  sta updatePPU
-  lda #>playLevelUpdatePPU
-  sta updatePPU+1
+
+  switchState playLevelUpdate, playLevelUpdatePPU
+  
   ;turn rendering on
   lda #%00011110
   sta $2001

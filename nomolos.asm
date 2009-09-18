@@ -1,7 +1,14 @@
 .include "constants.inc"
+.include "macros.inc"
 
 ;ROM labels
 .import palette, MetaTileTable, MetaMetaTileTable, Level, EntityDefinitionTable
+
+;camera module
+.import resetCamera
+
+;nomolosLogic module
+.import initNomolos
 
 ;state labels
 .import loadLevelUpdatePPU, loadLevelUpdate, clearSprites
@@ -139,75 +146,11 @@ reset:
   jsr initsound
   jsr loadPalette
   jsr clearSprites
-
-  ;set load level state.
-  jsr initEntities  ;kill all entities
-  lda #0
-  sta nextScrollX
-  sta nextScrollX+1
-  lda #1
-  sta nomolosAnim
-  lda #0
-  sta nomolosAnim+1
-  lda #0
-  and #nomolosWalkingRightAND  
-  sta nomolosState
-  lda #0
-  sta nomolosXSpeed
-  lda #2
-  sta nomolosXSpeed+1
-  lda #$00
-  sta nomolosYSpeed
-  lda #$00
-  sta nomolosYSpeed+1
-  
-  
-  lda #0
-  sta nomolosX
-  lda #120
-  sta nomolosX+1
-  lda #0
-  sta nomolosX+2
-  
-  lda #0
-  sta nomolosY
-  lda #90
-  sta nomolosY+1
-    
-  
-  lda #<Level
-  sta levelBaseAddress
-  lda #>Level
-  sta levelBaseAddress+1
-  lda #<MetaMetaTileTable
-  sta metametaTileTableBaseAddress
-  lda #>MetaMetaTileTable
-  sta metametaTileTableBaseAddress+1
-  lda #<MetaTileTable
-  sta metaTileTableBaseAddress
-  lda #>MetaTileTable
-  sta metaTileTableBaseAddress+1
-  lda #<EntityDefinitionTable
-  sta entityDefinitionTableBaseAddress
-  lda #>EntityDefinitionTable
-  sta entityDefinitionTableBaseAddress+1
-  
-
-  lda #$00
-  sta scrollX
-  lda #$00
-  sta scrollX+1
-  lda #$00
-  sta columnToUpdate
-
-  lda #<loadLevelUpdate
-  sta update
-  lda #>loadLevelUpdate
-  sta update+1
-  lda #<loadLevelUpdatePPU
-  sta updatePPU
-  lda #>loadLevelUpdatePPU
-  sta updatePPU+1
+  jsr initEntities
+  jsr initNomolos  
+  jsr resetCamera  
+  loadLevel Level, MetaTileTable, MetaMetaTileTable, EntityDefinitionTable
+  switchState loadLevelUpdate, loadLevelUpdatePPU
 
 ;    +---------+----------------------------------------------------------+
 ;    | Address | Description                                              |
@@ -308,8 +251,6 @@ loadPalette:
   cpx #$20
   bne :-
   rts
-
-
 
 vblank:
 

@@ -20,9 +20,41 @@
 .importzp controllerBuffer
 
 ;Nomolos interface
-.export updateNomolos, drawNomolos
+.export initNomolos, updateNomolos, drawNomolos
 
 .segment "CODE"
+
+initNomolos:
+
+  lda #1
+  sta nomolosAnim
+  lda #0
+  sta nomolosAnim+1
+  lda #0
+  and #nomolosWalkingRightAND  
+  sta nomolosState
+  lda #0
+  sta nomolosXSpeed
+  lda #2
+  sta nomolosXSpeed+1
+  lda #$00
+  sta nomolosYSpeed
+  lda #$00
+  sta nomolosYSpeed+1  
+  
+  lda #0
+  sta nomolosX
+  lda #120
+  sta nomolosX+1
+  lda #0
+  sta nomolosX+2
+  
+  lda #0
+  sta nomolosY
+  lda #90
+  sta nomolosY+1
+
+  rts
 
 .proc updateNomolos
 

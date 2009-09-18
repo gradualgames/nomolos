@@ -7,7 +7,7 @@ LINKER          = ld65
 #Files
 NES_FILE        = nomolos.nes
 OBJECT_FILES    = nomolos.o nomolosLogic.o rom0.o chrrom0.o loadLevelState.o playLevelState.o map.o camera.o sprite.o entity.o controller.o sound.o
-INCLUDE_FILES   = constants.inc
+INCLUDE_FILES   = constants.inc macros.inc
 CONFIG_FILE     = nomolos.cfg
 MAPFILE         = nomolos.map
 LSTFILE         = nomolos.lst

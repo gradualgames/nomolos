@@ -1,3 +1,4 @@
+;Nomolos constants
 nomolosWalkingRightAND =      %11111110
 nomolosWalkingLeftOR   =      %00000001
 
@@ -15,14 +16,6 @@ nomolosBelowCollisionTestAND = %00001000
 nomolosAboveCollisionOnOR =    %00010000
 nomolosAboveCollisionOffAND =  %11101111
 nomolosAboveCollisionTestAND = %00010000
-
-; f___8___0___a
-; 1111100000001010
-; 0000011111110101
-; 0000011111110110
-; 11111000
-; 00000111
-; 00001000
 
 nomolosStartJumpLo = $0a
 nomolosStartJumpHi = $f8
