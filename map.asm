@@ -283,7 +283,7 @@ updateColumn:
   ;if we shift this right again, we get the attribute column to update.
   lda columnToUpdate
   lsr
-  sta b2
+  sta b2 ;metaTileColumn
   lsr
   sta attributeColumnToUpdate
 
@@ -339,9 +339,13 @@ updateColumn:
   lda (metaTileTableBaseAddress), y
   sec
   sbc #1
-  bmi doNotSpawn
-  
+  bmi doNotSpawn  
   sta b0
+  
+  ;save metaTileColumn, this is used by updateAttribute for the entire loop.
+  lda b2 ;metaTileColumn
+  pha
+  
   lda w3
   sta w0
   lda w3+1
@@ -353,6 +357,10 @@ updateColumn:
   asl
   sta b1
   jsr spawnEntity
+  
+  pla
+  sta b2 ;metaTileColumn
+  
 doNotSpawn:
   
   ;figure out an offset into the column buffer
