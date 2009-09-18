@@ -252,6 +252,27 @@ deentleUpdate:
   ;get out high byte of positionX
   lda entityPool+7,x
   sta w0+1
+  ;add 16 to positionX to get the right side of the Deentle
+  clc
+  lda w0
+  adc #$10
+  sta w0
+  lda w0+1
+  adc #$00
+  sta w0+1
+  
+  ;get out positionY
+  lda entityPool+9,x
+  sta b0
+  jsr cameraToScreenCoords
+  bne :+
+
+  ;get out low byte of positionX
+  lda entityPool+6,x
+  sta w0
+  ;get out high byte of positionX
+  lda entityPool+7,x
+  sta w0+1
   lda entityPool+9,x
   sta b0
   jsr cameraToScreenCoords
