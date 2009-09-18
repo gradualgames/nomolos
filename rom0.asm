@@ -309,9 +309,6 @@ deentleUpdate:
   sta w0
   lda #>Deentle0
   sta w0+1
-  ;lda #50
-  ;sta b0  
-  ;sta b1
   jsr drawMetaSprite
 :
 

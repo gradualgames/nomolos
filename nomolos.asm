@@ -227,15 +227,15 @@ loop:
 updateFinished:
 
 ;the following loops are used to measure how much time we have left in the main loop.
-;  ldy #17      ;2
+;  ldy #12      ;2
 ;:
 ;  ldx #$ff      ;2
 ;:
 ;  dex           ;2 * 255
 ;  bne :-         ;3 * 254 + 2
 ;  
-;  dey           ;2 * 17
-;  bne :--        ;3 * 16 + 2
+;  dey           ;2 * 12
+;  bne :--        ;3 * 11 + 2
 
   jmp loop
 
