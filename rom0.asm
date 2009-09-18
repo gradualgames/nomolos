@@ -265,6 +265,7 @@ deentleUpdate:
   lda entityPool+9,x
   sta b0
   jsr cameraToScreenCoords
+  bmi killOffscreenDeentle
   bne :+
 
   ;get out low byte of positionX
@@ -295,5 +296,12 @@ deentleUpdate:
   ;sta b1
   jsr drawMetaSprite
 :
+
+  jmp returnFromEntityUpdate
+  
+killOffscreenDeentle:
+
+  lda #0
+  sta entityPool,x
 
   jmp returnFromEntityUpdate
