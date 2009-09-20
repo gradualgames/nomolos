@@ -37,27 +37,6 @@ playLevelUpdate:
 
   jsr readController
   
-  ;temporary hack to test entity spawning vvv
-  lda controllerBuffer+1
-  and #1
-  beq :+
-  
-;the following parameters are expected:
-;b0 = index of entity definition to spawn
-;w0 = positionX
-;b1 = positionY
-  lda #0
-  sta b0
-  lda #150
-  sta w0
-  lda #0
-  sta w0+1
-  lda #48
-  sta b1
-  jsr spawnEntity
-:
-  ;temporary hack to test entity spawning ^^^
-  
   ;reset sprite address. This must be done before any sprites are
   ;drawn to the sprite buffer. It gets pushed along as every sprite
   ;is added.
