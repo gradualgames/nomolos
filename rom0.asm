@@ -1,5 +1,5 @@
 ;zp variables
-.importzp b0, b1, w0
+.importzp b0, b1, w0, w1, w2
 
 .import entityPool
 
@@ -10,7 +10,7 @@
 .import cameraToScreenCoords
 
 ;sprite module
-.import drawMetaSprite
+.import updateAnimation, drawAnimation, drawMetaSprite
 
 .export palette, MetaTileTable, MetaMetaTileTable, NomolosWalkRight, NomolosWalkLeft
 .export Level, EntityDefinitionTable
@@ -231,7 +231,7 @@ NomolosWalkLeft:
   .byte $00
 
 DeentleWalk:
-  .byte $0a
+  .byte $20
   .word Deentle0
   .word Deentle1
   .byte $00
@@ -279,6 +279,10 @@ deentleUpdate:
 deentle_initState:
 
   ;init code for animation, etc. goes here
+  lda #1
+  sta entityPool+11,x
+  lda #0
+  sta entityPool+12,x
   
   ;switch state to "run"
   lda #DEENTLE_RUNSTATE
@@ -327,11 +331,37 @@ deentle_runState:
   pla
   sta b1
 
-  lda #<Deentle0
-  sta w0
-  lda #>Deentle0
-  sta w0+1
-  jsr drawMetaSprite
+  ;load address of animation object into w1
+  lda #<(entityPool+11)
+  sta w1
+  lda #>(entityPool+11)
+  sta w1+1
+  
+  ;get the index into a
+  txa
+  clc
+  ;do a 16 bit add onto the address with this index
+  adc w1
+  sta w1
+  lda w1+1
+  adc #0
+  sta w1+1 
+  
+  ;lda #<(entityPool+11)  
+  ;sta w1
+  
+  ;lda #>(entityPool+11)
+  ;sta w1+1
+  ;load address of deentle animation definition into w2
+  lda #<DeentleWalk
+  sta w2
+  lda #>DeentleWalk
+  sta w2+1
+  jsr updateAnimation
+  
+  jsr drawAnimation
+  
+  ;jsr drawMetaSprite
 :
 
   jmp returnFromEntityUpdate
