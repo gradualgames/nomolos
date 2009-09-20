@@ -347,23 +347,14 @@ deentle_runState:
   adc #0
   sta w1+1 
   
-  ;lda #<(entityPool+11)  
-  ;sta w1
-  
-  ;lda #>(entityPool+11)
-  ;sta w1+1
   ;load address of deentle animation definition into w2
   lda #<DeentleWalk
   sta w2
   lda #>DeentleWalk
   sta w2+1
-  jsr updateAnimation
-  
+  jsr updateAnimation  
   jsr drawAnimation
-  
-  ;jsr drawMetaSprite
 :
-
   jmp returnFromEntityUpdate
   
 killOffscreenDeentle:
