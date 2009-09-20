@@ -264,7 +264,8 @@ DeentleEntity:
 ;13 .dsb 3 ;padding to 16 bytes
 
 DEENTLE_INITSTATE = 0
-DEENTLE_RUNSTATE = 1
+DEENTLE_MOVERIGHTSTATE = 1
+DEENTLE_MOVELEFTSTATE = 2
 
 deentleUpdate:
 
@@ -273,8 +274,10 @@ deentleUpdate:
   ;figure out what state to jump to
   cmp #DEENTLE_INITSTATE
   beq deentle_initState
-  cmp #DEENTLE_RUNSTATE
-  beq deentle_runState
+  cmp #DEENTLE_MOVERIGHTSTATE
+  beq deentle_moveRightState
+  cmp #DEENTLE_MOVELEFTSTATE
+  beq deentle_moveLeftState
 
 deentle_initState:
 
@@ -285,11 +288,92 @@ deentle_initState:
   sta entityPool+12,x
   
   ;switch state to "run"
-  lda #DEENTLE_RUNSTATE
+  lda #DEENTLE_MOVELEFTSTATE
   sta entityPool+10,x
   jmp returnFromEntityUpdate
 
-deentle_runState:
+deentle_moveRightState:
+
+  ;add 1 to PositionX
+  clc
+  lda entityPool+6,x
+  adc #1
+  sta entityPool+6,x
+  lda entityPool+7,x
+  adc #0
+  sta entityPool+7,x
+  
+  ;do PositionX - spawnPositionX
+  sec
+  lda entityPool+6,x
+  sbc entityPool+2,x
+  sta w0
+  lda entityPool+7,x
+  sbc entityPool+3,x
+  sta w0+1
+  
+  ;difference is in w0, subtract our desired delta distance from it
+  sec
+  lda w0
+  sbc #30
+  sta w0
+  lda w0+1
+  sbc #0
+  sta w0+1
+  bne dontSwitchToLeftState
+  
+  lda #DEENTLE_MOVELEFTSTATE
+  sta entityPool+10,x
+  
+dontSwitchToLeftState:
+
+  jsr deentle_draw
+
+  jmp returnFromEntityUpdate
+
+deentle_moveLeftState:
+
+  ;sub 1 from PositionX
+  sec
+  lda entityPool+6,x
+  sbc #1
+  sta entityPool+6,x
+  lda entityPool+7,x
+  sbc #0
+  sta entityPool+7,x
+  
+  ;do spawnPositionX - PositionX
+  sec
+  lda entityPool+2,x
+  sbc entityPool+6,x 
+  sta w0
+  lda entityPool+3,x
+  sbc entityPool+7,x 
+  sta w0+1
+  
+  ;difference is in w0, subtract our desired delta distance from it
+  sec
+  lda w0
+  sbc #30
+  sta w0
+  lda w0+1
+  sbc #0
+  sta w0+1
+  
+  bne dontSwitchToRightState
+  
+  lda #DEENTLE_MOVERIGHTSTATE
+  sta entityPool+10,x
+  
+dontSwitchToRightState:
+  
+
+  jsr deentle_draw
+
+  jmp returnFromEntityUpdate
+  
+deentle_draw:
+
   ;get out low byte of positionX
   lda entityPool+6,x
   sta w0
@@ -355,11 +439,12 @@ deentle_runState:
   jsr updateAnimation  
   jsr drawAnimation
 :
-  jmp returnFromEntityUpdate
+  rts
   
 killOffscreenDeentle:
 
   lda #0
   sta entityPool,x
 
-  jmp returnFromEntityUpdate
+  rts
+  
