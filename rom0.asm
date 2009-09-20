@@ -251,19 +251,41 @@ DeentleEntity:
 ;all entity routines expect that entityPool,x points to
 ;the RAM entry for this particular update call.
 ;entity schema:
-;.dsb alive = 1
-;.dsb index = definition index (this is a parameter)
-;.dsw spawnPositionX = initialXOffset + x
-;.dsb spawnPositionY = initialYOffset + y
-;.dsb positionXFine  = unknown, this is expected to be used (or not used) by the entity
-;.dsw positionX      = x (this is a parameter)
-;.dsb positionYFine  = unknown, this is expected to be used (or not used) by the entity
-;.dsb positionY      = y (this is a parameter)
-;.dsb state          = initialState
-;.dsw animationObject  = unknown, this expected to be set by the entity
-;.dsb 3 ;padding to 16 bytes
+;0  .dsb alive = 1
+;1  .dsb index = definition index (this is a parameter)
+;2  .dsw spawnPositionX = initialXOffset + x
+;4  .dsb spawnPositionY = initialYOffset + y
+;5  .dsb positionXFine  = unknown, this is expected to be used (or not used) by the entity
+;6  .dsw positionX      = x (this is a parameter)
+;8  .dsb positionYFine  = unknown, this is expected to be used (or not used) by the entity
+;9  .dsb positionY      = y (this is a parameter)
+;10 .dsb state          = initialState
+;11 .dsw animationObject  = unknown, this expected to be set by the entity
+;13 .dsb 3 ;padding to 16 bytes
+
+DEENTLE_INITSTATE = 0
+DEENTLE_RUNSTATE = 1
+
 deentleUpdate:
 
+  ;load current state
+  lda entityPool+10,x
+  ;figure out what state to jump to
+  cmp #DEENTLE_INITSTATE
+  beq deentle_initState
+  cmp #DEENTLE_RUNSTATE
+  beq deentle_runState
+
+deentle_initState:
+
+  ;init code for animation, etc. goes here
+  
+  ;switch state to "run"
+  lda #DEENTLE_RUNSTATE
+  sta entityPool+10,x
+  jmp returnFromEntityUpdate
+
+deentle_runState:
   ;get out low byte of positionX
   lda entityPool+6,x
   sta w0
