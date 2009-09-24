@@ -1,7 +1,7 @@
 .include "constants.inc"
 
 ;ROM labels
-.import NomolosWalkLeft, NomolosWalkRight
+.import NomolosWalk
 
 ;Sprite module labels
 .import drawAnimation, updateAnimation
@@ -602,15 +602,15 @@ updateNomolosAnimation:
   lda nomolosState
   and #1
   bne :+
-  lda #<NomolosWalkRight
+  lda #<NomolosWalk
   sta w2
-  lda #>NomolosWalkRight
+  lda #>NomolosWalk
   sta w2+1
   jmp :++
 :
-  lda #<NomolosWalkLeft
+  lda #<NomolosWalk
   sta w2
-  lda #>NomolosWalkLeft
+  lda #>NomolosWalk
   sta w2+1
 :  
   jsr updateAnimation
@@ -627,16 +627,20 @@ drawNomolos:
   lda nomolosState
   and #1
   bne :+
-  lda #<NomolosWalkRight
+  lda #<NomolosWalk
   sta w2
-  lda #>NomolosWalkRight
+  lda #>NomolosWalk
   sta w2+1
+  lda #%00000000
+  sta b2
   jmp :++
 :
-  lda #<NomolosWalkLeft
+  lda #<NomolosWalk
   sta w2
-  lda #>NomolosWalkLeft
+  lda #>NomolosWalk
   sta w2+1
+  lda #%01000000
+  sta b2
 :  
   
   ;jsr updateAnimation

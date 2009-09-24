@@ -1,5 +1,5 @@
 ;zp variables
-.importzp b0, b1, w0, w1, w2
+.importzp b0, b1, b2, w0, w1, w2
 
 .import entityPool
 
@@ -12,7 +12,7 @@
 ;sprite module
 .import updateAnimation, drawAnimation, drawMetaSprite
 
-.export palette, MetaTileTable, MetaMetaTileTable, NomolosWalkRight, NomolosWalkLeft
+.export palette, MetaTileTable, MetaMetaTileTable, NomolosWalk
 .export Level, EntityDefinitionTable
 
 .segment "RODATA"
@@ -23,7 +23,7 @@ palette:
 
 ;Sprite Palette
 ;Palette
-  .byte $21,$0d,$27,$14,$20,$0d,$27,$10,$00,$00,$00,$00,$00,$00,$00,$00
+  .byte $21,$0d,$27,$04,$20,$0d,$27,$10,$00,$00,$00,$00,$00,$00,$00,$00
 
 MetaTileTable:
 MetaTile0:
@@ -140,98 +140,60 @@ Level:
   .byte $25,$24,$24,$00,$00,$00,$26,$00,$00,$00,$00,$26,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$27,$28,$29,$2a,$2b,$29,$28,$27,$00,$00
  
 ;Meta Sprite Table
-NomolosWalkRight0:
+NomolosWalk0:
   .byte $08
-  .byte $00,$00,$00,$00
-  .byte $00,$01,$01,$08
-  .byte $08,$11,$00,$00
-  .byte $08,$12,$01,$08
-  .byte $10,$21,$01,$00
-  .byte $10,$22,$01,$08
-  .byte $18,$2d,$01,$00
-  .byte $18,$2e,$01,$08
-NomolosWalkRight1:
+  .byte $00,$00,$00,$00,$08
+  .byte $00,$01,$01,$08,$00
+  .byte $08,$0b,$00,$00,$08
+  .byte $08,$0c,$01,$08,$00
+  .byte $10,$15,$01,$00,$08
+  .byte $10,$16,$01,$08,$00
+  .byte $18,$1b,$01,$00,$08
+  .byte $18,$1c,$01,$08,$00
+NomolosWalk1:
   .byte $08
-  .byte $00,$02,$00,$00
-  .byte $00,$03,$01,$08
-  .byte $08,$13,$00,$00
-  .byte $08,$14,$01,$08
-  .byte $10,$23,$01,$00
-  .byte $10,$24,$01,$08
-  .byte $18,$2f,$01,$00
-  .byte $18,$30,$01,$08
-NomolosWalkRight2:
+  .byte $00,$02,$00,$00,$08
+  .byte $00,$03,$01,$08,$00
+  .byte $08,$0d,$00,$00,$08
+  .byte $08,$0e,$01,$08,$00
+  .byte $10,$17,$01,$00,$08
+  .byte $10,$18,$01,$08,$00
+  .byte $18,$1d,$01,$00,$08
+  .byte $18,$1e,$01,$08,$00
+NomolosWalk2:
   .byte $08
-  .byte $00,$04,$00,$00
-  .byte $00,$05,$01,$08
-  .byte $08,$15,$00,$00
-  .byte $08,$16,$01,$08
-  .byte $10,$25,$01,$00
-  .byte $10,$26,$01,$08
-  .byte $18,$31,$01,$00
-  .byte $18,$32,$01,$08
-NomolosWalkLeft0:
-  .byte $08
-  .byte $00,$06,$01,$00
-  .byte $00,$07,$00,$08
-  .byte $08,$17,$01,$00
-  .byte $08,$18,$00,$08
-  .byte $10,$27,$01,$00
-  .byte $10,$28,$01,$08
-  .byte $18,$33,$01,$00
-  .byte $18,$34,$01,$08
-NomolosWalkLeft1:
-  .byte $08
-  .byte $00,$08,$01,$00
-  .byte $00,$09,$00,$08
-  .byte $08,$19,$01,$00
-  .byte $08,$1a,$00,$08
-  .byte $10,$29,$01,$00
-  .byte $10,$2a,$01,$08
-  .byte $18,$35,$01,$00
-  .byte $18,$36,$01,$08
-NomolosWalkLeft2:
-  .byte $08
-  .byte $00,$0a,$01,$00
-  .byte $00,$0b,$00,$08
-  .byte $08,$1b,$01,$00
-  .byte $08,$1c,$00,$08
-  .byte $10,$2b,$01,$00
-  .byte $10,$2c,$01,$08
-  .byte $18,$37,$01,$00
-  .byte $18,$38,$01,$08
+  .byte $00,$04,$00,$00,$08
+  .byte $00,$05,$01,$08,$00
+  .byte $08,$0f,$00,$00,$08
+  .byte $08,$10,$01,$08,$00
+  .byte $10,$19,$01,$00,$08
+  .byte $10,$1a,$01,$08,$00
+  .byte $18,$1f,$01,$00,$08
+  .byte $18,$20,$01,$08,$00
 Deentle0:
   .byte $04
-  .byte $00,$0c,$01,$00
-  .byte $00,$0d,$01,$08
-  .byte $08,$1d,$01,$00
-  .byte $08,$1e,$01,$08
+  .byte $00,$06,$01,$00,$08
+  .byte $00,$07,$01,$08,$00
+  .byte $08,$11,$01,$00,$08
+  .byte $08,$12,$01,$08,$00
 Deentle1:
   .byte $04
-  .byte $00,$0e,$01,$00
-  .byte $00,$0f,$01,$08
-  .byte $08,$1f,$01,$00
-  .byte $08,$20,$01,$08
+  .byte $00,$08,$01,$00,$08
+  .byte $00,$09,$01,$08,$00
+  .byte $08,$13,$01,$00,$08
+  .byte $08,$14,$01,$08,$00
 
 ;Animations
-NomolosWalkRight:
+NomolosWalk:
   .byte $0a
-  .word NomolosWalkRight0
-  .word NomolosWalkRight1
-  .word NomolosWalkRight0
-  .word NomolosWalkRight2
-  .byte $00
-
-NomolosWalkLeft:
-  .byte $0a
-  .word NomolosWalkLeft2
-  .word NomolosWalkLeft1
-  .word NomolosWalkLeft2
-  .word NomolosWalkLeft0
+  .word NomolosWalk0
+  .word NomolosWalk1
+  .word NomolosWalk0
+  .word NomolosWalk2
   .byte $00
 
 DeentleWalk:
-  .byte $20
+  .byte $0a
   .word Deentle0
   .word Deentle1
   .byte $00
@@ -436,6 +398,8 @@ deentle_draw:
   sta w2
   lda #>DeentleWalk
   sta w2+1
+  lda #0
+  sta b2
   jsr updateAnimation  
   jsr drawAnimation
 :
