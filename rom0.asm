@@ -13,6 +13,7 @@
 .import updateAnimation, drawAnimation, drawMetaSprite
 
 .export palette, MetaTileTable, MetaMetaTileTable, NomolosWalk
+.export Heart0
 .export Level, EntityDefinitionTable
 
 .segment "RODATA"
@@ -144,44 +145,47 @@ NomolosWalk0:
   .byte $08
   .byte $00,$00,$00,$00,$08
   .byte $00,$01,$01,$08,$00
-  .byte $08,$0b,$00,$00,$08
-  .byte $08,$0c,$01,$08,$00
-  .byte $10,$15,$01,$00,$08
-  .byte $10,$16,$01,$08,$00
-  .byte $18,$1b,$01,$00,$08
-  .byte $18,$1c,$01,$08,$00
+  .byte $08,$0c,$00,$00,$08
+  .byte $08,$0d,$01,$08,$00
+  .byte $10,$16,$01,$00,$08
+  .byte $10,$17,$01,$08,$00
+  .byte $18,$1c,$01,$00,$08
+  .byte $18,$1d,$01,$08,$00
 NomolosWalk1:
   .byte $08
   .byte $00,$02,$00,$00,$08
   .byte $00,$03,$01,$08,$00
-  .byte $08,$0d,$00,$00,$08
-  .byte $08,$0e,$01,$08,$00
-  .byte $10,$17,$01,$00,$08
-  .byte $10,$18,$01,$08,$00
-  .byte $18,$1d,$01,$00,$08
-  .byte $18,$1e,$01,$08,$00
+  .byte $08,$0e,$00,$00,$08
+  .byte $08,$0f,$01,$08,$00
+  .byte $10,$18,$01,$00,$08
+  .byte $10,$19,$01,$08,$00
+  .byte $18,$1e,$01,$00,$08
+  .byte $18,$1f,$01,$08,$00
 NomolosWalk2:
   .byte $08
   .byte $00,$04,$00,$00,$08
   .byte $00,$05,$01,$08,$00
-  .byte $08,$0f,$00,$00,$08
-  .byte $08,$10,$01,$08,$00
-  .byte $10,$19,$01,$00,$08
-  .byte $10,$1a,$01,$08,$00
-  .byte $18,$1f,$01,$00,$08
-  .byte $18,$20,$01,$08,$00
+  .byte $08,$10,$00,$00,$08
+  .byte $08,$11,$01,$08,$00
+  .byte $10,$1a,$01,$00,$08
+  .byte $10,$1b,$01,$08,$00
+  .byte $18,$20,$01,$00,$08
+  .byte $18,$21,$01,$08,$00
 Deentle0:
   .byte $04
   .byte $00,$06,$01,$00,$08
   .byte $00,$07,$01,$08,$00
-  .byte $08,$11,$01,$00,$08
-  .byte $08,$12,$01,$08,$00
+  .byte $08,$12,$01,$00,$08
+  .byte $08,$13,$01,$08,$00
 Deentle1:
   .byte $04
   .byte $00,$08,$01,$00,$08
   .byte $00,$09,$01,$08,$00
-  .byte $08,$13,$01,$00,$08
-  .byte $08,$14,$01,$08,$00
+  .byte $08,$14,$01,$00,$08
+  .byte $08,$15,$01,$08,$00
+Heart0:
+  .byte $01
+  .byte $00,$0a,$00,$00,$00
 
 ;Animations
 NomolosWalk:
@@ -209,7 +213,6 @@ DeentleEntity:
   .byte $00
   .byte $00
  
-
 ;all entity routines expect that entityPool,x points to
 ;the RAM entry for this particular update call.
 ;entity schema:
