@@ -21,7 +21,7 @@
 ;nomolos logic labels
 .import updateNomolos, drawNomolos
 ;global variables
-.importzp spriteAddress, vblankDone
+.importzp spriteAddress, spriteAddressStart, vblankDone
 
 .importzp b0, b1, w0, controllerBuffer
 
@@ -41,7 +41,10 @@ playLevelUpdate:
   ;reset sprite address. This must be done before any sprites are
   ;drawn to the sprite buffer. It gets pushed along as every sprite
   ;is added.
-  lda #0
+  lda spriteAddressStart
+  clc
+  adc #32
+  sta spriteAddressStart
   sta spriteAddress
   jsr clearSprites
   
