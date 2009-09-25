@@ -38,14 +38,9 @@ playLevelUpdate:
 
   jsr readController
   
-  ;reset sprite address. This must be done before any sprites are
-  ;drawn to the sprite buffer. It gets pushed along as every sprite
-  ;is added.
-  lda spriteAddressStart
-  clc
-  adc #32
-  sta spriteAddressStart
-  sta spriteAddress
+  ;used to be resetting sprite address. By NOT resetting it,
+  ;we automatically implement sprite shuffling.
+  
   jsr clearSprites
   
   jsr updateNomolos

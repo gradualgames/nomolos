@@ -29,7 +29,6 @@
 .exportzp nomolosScreenX, nomolosScreenY, nomolosState
 .exportzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, spriteAddress
-.exportzp spriteAddressStart
 .exportzp scrollX, nextScrollX
 .exportzp controllerBuffer
 .export stack, sprite, entityPool
@@ -91,7 +90,6 @@ metaTileBuffer:    .res 4
 columnToUpdate:    .res 1
 nametableToUpdate: .res 1
 spriteAddress: .res 1
-spriteAddressStart: .res 1
 
 controllerBuffer: .res 8
 
