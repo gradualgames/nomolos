@@ -147,8 +147,6 @@ reset:
   jsr initsound
   jsr loadPalette
   jsr clearSprites
-  lda #0
-  sta spriteAddressStart
   jsr initEntities
   jsr initNomolos  
   jsr resetCamera  
