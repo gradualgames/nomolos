@@ -195,7 +195,7 @@ yesBelowCollision:
   lda #nomolosVerticalSpeedMax  
   sec
   sbc nomolosYSpeed+1
-  ;we want to skip the following code if the result was positive
+  ;we want to skip the following code if the result was negative
   bmi DoNotIncrementSpeed
 ;  Yes:
 ;    nomolosYSpeed = nomolosYSpeed + nomolosVerticalAcceleration
@@ -207,9 +207,9 @@ yesBelowCollision:
   adc #nomolosVerticalAccelerationHi
   sta nomolosYSpeed+1
 DoNotIncrementSpeed:
-;    
-;;now we have the tentative nomolosYSpeed. We now must find out if it is appropriate.
-;    
+    
+;now we have the tentative nomolosYSpeed. We now must find out if it is appropriate.
+    
 ;Is nomolosYSpeed positive?
   lda nomolosYSpeed+1
   bmi ySpeedNegative
@@ -248,16 +248,24 @@ penetrationNotLessThanYSpeed:
 ;        ;value of nomolosYSpeed
   jmp skipDisableJumpWhileFalling
 noBelowCollision2:
-
-  ;disable jump while falling
-  ;lda nomolosState
-  ;and #nomolosJumpingOffAND
-  ;sta nomolosState
   
 skipDisableJumpWhileFalling:
 
   jmp skipYSpeedNegativeCode
 ySpeedNegative:
+
+  ;is current state of A button released, and previous state of A button pressed?
+  lda controllerBuffer
+  and #%00000011
+  cmp #%00000010
+  bne dontStopRising
+  
+  ;yes, so stop rising into the air.
+  lda #0
+  sta nomolosYSpeed
+  sta nomolosYSpeed+1
+  
+dontStopRising:
 
   ;is above collision true?
   lda nomolosState
@@ -275,7 +283,6 @@ ySpeedNegative:
   lda #nomolosStartJumpHi
   clc
   adc nomolosAbovePenetrationDistance
-
   
 penetrationNotEqualToStartJumpHi:
   cmp nomolosYSpeed+1
@@ -293,17 +300,19 @@ skipYSpeedNegativeCode:
   lda nomolosYSpeed+1
   bne :+
   
-  ;Test if A button is down and collision is beneath nomolos.
+  ;Test if current state of A button is down and previous state is up. In other words,
+  ;AND with #%00000011, then test for equality to 1.
   lda controllerBuffer
-  and #1
-  beq :+
+  and #%00000011
+  cmp #1
+  bne :+
   lda nomolosState
   and #nomolosBelowCollisionTestAND
   lsr
   lsr
   lsr
   beq :+
-  ;A button was down, collision was beneath so start the jump and disable jumping for now.
+  ;A button was down, collision was beneath so start the jump
   
   ;but don't start the jump if there's a collision above!
   ;is above collision true?
@@ -322,31 +331,8 @@ skipYSpeedNegativeCode:
   lda #nomolosStartJumpHi
   sta nomolosYSpeed+1
   
-  ;lda nomolosState
-  ;and #nomolosJumpingOffAND
-  ;sta nomolosState
 :
 noAboveCollision3:
-
-;jumpingDisabled:
-
-  ;jumping was disabled. is A button up?
-  ;lda controllerBuffer
-  ;and #1
-  ;bne :+
-  ;yes 
-  ;lda nomolosState
-  ;and #nomolosBelowCollisionTestAND
-  ;lsr
-  ;lsr
-  ;lsr
-  ;beq :+
-  ;;reenable jumping if A button has been released and there is something beneath nomolos.
-  ;lda nomolosState
-  ;ora #nomolosJumpingOnOR
-  ;sta nomolosState
-;:
-  
  
 ;;presumably if there is something directly above nomolos, or directly below nomolos, 
 ;;that will have been figured out before the following line occurs, and nomolosYSpeed

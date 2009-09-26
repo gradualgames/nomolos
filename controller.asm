@@ -14,7 +14,7 @@
   lda $4016  ; Is the A button down?
   ;put button bit into carry
   ror 
-  ;put carry bit into controller buffer. use ror to keep
+  ;put carry bit into controller buffer. use rol to keep
   ;history of button presses.
   rol controllerBuffer
   lda $4016  ; B does nothing

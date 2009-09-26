@@ -5,9 +5,10 @@ nomolosWalkingLeftOR   =      %00000001
 nomolosMovingOffAND    =      %11111101
 nomolosMovingOnOR      =      %00000010
 
-nomolosJumpingOffAND   =      %11111011
-nomolosJumpingOnOR     =      %00000100
-nomolosJumpingTestAND  =      %00000100
+;removed due to improving/simplifying the jumping code
+;nomolosJumpingOffAND   =      %11111011
+;nomolosJumpingOnOR     =      %00000100
+;nomolosJumpingTestAND  =      %00000100
 
 nomolosBelowCollisionOnOR =    %00001000
 nomolosBelowCollisionOffAND =  %11110111
