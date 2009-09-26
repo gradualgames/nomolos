@@ -10,6 +10,10 @@ nomolosMovingOnOR      =      %00000010
 ;nomolosJumpingOnOR     =      %00000100
 ;nomolosJumpingTestAND  =      %00000100
 
+nomolosBlinkingOffAND   =      %11111011
+nomolosBlinkingOnOR     =      %00000100
+nomolosBlinkingTestAND  =      %00000100
+
 nomolosBelowCollisionOnOR =    %00001000
 nomolosBelowCollisionOffAND =  %11110111
 nomolosBelowCollisionTestAND = %00001000
@@ -18,6 +22,8 @@ nomolosAboveCollisionOnOR =    %00010000
 nomolosAboveCollisionOffAND =  %11101111
 nomolosAboveCollisionTestAND = %00010000
 
+nomolosHurtBounceLo = $0a
+nomolosHurtBounceHi = $fd
 nomolosStartJumpLo = $0a
 nomolosStartJumpHi = $f8
 nomolosStartJumpHiPos = $07

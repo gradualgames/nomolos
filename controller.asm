@@ -18,7 +18,10 @@
   ;history of button presses.
   rol controllerBuffer
   lda $4016  ; B does nothing
-  sta controllerBuffer+1
+  ;put button bit into carry
+  ror
+  ;rotate bit into controller buffer for history.
+  rol controllerBuffer+1
   lda $4016          ; Select does nothing
   sta controllerBuffer+2
   lda $4016          ; Start does nothing

@@ -19,7 +19,7 @@
 ;camera labels
 .import updateCamera
 ;nomolos logic labels
-.import updateNomolos, drawNomolos
+.import updateNomolos, drawNomolos, drawNomolosHearts
 ;global variables
 .importzp spriteAddress, spriteAddressStart, vblankDone
 
@@ -45,6 +45,7 @@ playLevelUpdate:
   
   jsr updateNomolos
   jsr drawNomolos
+  jsr drawNomolosHearts
   jsr updateEntities
   
   jsr decodeMap

@@ -16,11 +16,12 @@
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
 .importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
+.importzp nomolosBlinkCounter
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .importzp controllerBuffer
 
 ;Nomolos interface
-.export initNomolos, updateNomolos, drawNomolos
+.export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts
 
 .segment "CODE"
 
@@ -30,9 +31,12 @@ initNomolos:
   sta nomolosAnim
   lda #0
   sta nomolosAnim+1
+  
   lda #0
   and #nomolosWalkingRightAND  
+  ;ora #nomolosBlinkingOnOR
   sta nomolosState
+  
   lda #0
   sta nomolosXSpeed
   lda #2
@@ -59,7 +63,50 @@ initNomolos:
 
   rts
 
+;hurts Nomolos. It makes him bounce in the air a little bit, lose a heart,
+;and become invincible temporarily.
+hurtNomolos:
+
+  ;if blinking is on, skip this whole routine
+  lda nomolosState
+  and #nomolosBlinkingTestAND
+  lsr
+  lsr
+  bne :++
+
+  ;decrease nomolos' health.
+  lda nomolosHealth
+  beq :+
+  dec nomolosHealth
+:
+  
+  ;make nomolos bounce a little bit.
+  lda #nomolosHurtBounceLo
+  sta nomolosYSpeed
+  lda #nomolosHurtBounceHi
+  sta nomolosYSpeed+1
+  
+  ;turn on blinking
+  lda #$60
+  sta nomolosBlinkCounter
+  lda nomolosState
+  ora #nomolosBlinkingOnOR
+  sta nomolosState  
+  
+:
+
+  rts
+  
 .proc updateNomolos
+
+  ;vvv quick hack to test the hurt nomolos routine
+  lda controllerBuffer+1
+  and #%00000011
+  cmp #$01
+  bne :+
+  jsr hurtNomolos 
+:
+  ;^^^ quick hack to test the hurt nomolos routine
 
 ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
   ;top left
@@ -557,6 +604,19 @@ updateNomolosAnimation:
   
 drawNomolos:
 
+  lda nomolosState
+  and #nomolosBlinkingTestAND
+  lsr
+  lsr
+  beq :+
+  
+  ;check blink counter
+  lda nomolosBlinkCounter
+  and #%00000011
+  beq dontDrawNomolos
+  
+:
+
   lda #<nomolosAnim
   sta w1
   lda #>nomolosAnim
@@ -591,13 +651,22 @@ drawNomolos:
   sta b1
   jsr drawAnimation
   
-  jsr drawNomolosHearts
+dontDrawNomolos:
+
+  dec nomolosBlinkCounter
+  bne :+
+  
+  lda nomolosState
+  and #nomolosBlinkingOffAND
+  sta nomolosState
+:
   
   rts
   
 drawNomolosHearts:
 
   ldx nomolosHealth
+  beq :++
   
   lda #$10
   sta b0
@@ -614,5 +683,6 @@ drawNomolosHearts:
   sta b0
   dex  
   bne :-
+:
 
   rts
