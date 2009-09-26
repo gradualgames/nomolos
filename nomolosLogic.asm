@@ -250,9 +250,9 @@ penetrationNotLessThanYSpeed:
 noBelowCollision2:
 
   ;disable jump while falling
-  lda nomolosState
-  and #nomolosJumpingOffAND
-  sta nomolosState
+  ;lda nomolosState
+  ;and #nomolosJumpingOffAND
+  ;sta nomolosState
   
 skipDisableJumpWhileFalling:
 
@@ -284,65 +284,14 @@ penetrationNotEqualToStartJumpHi:
   sta nomolosYSpeed+1
   lda #0
   sta nomolosYSpeed
-  
-  jmp skipPenetrationNotLessThanYSpeed2
+
 penetrationNotLessThanYSpeed2:
-
-
-skipPenetrationNotLessThanYSpeed2:
-
-  
-  ;disable jump while falling
-  lda nomolosState
-  and #nomolosJumpingOffAND
-  sta nomolosState
-  
-  jmp skipNoAboveCollision2
 noAboveCollision2:
-  ;if we arrive here, there was no collision above nomolos.
-
-skipNoAboveCollision2:
-
-  ;is jumping off?
-  lda nomolosState
-  and #nomolosJumpingTestAND
-  lsr
-  lsr
-  and #1  ;if Z=true, this means the jumping state is off
-  bne :+  ;branch when Z is false, meaning skip when jumping state is on.
-  
-  ;&& is the A button off?
-  lda controllerBuffer
-  and #1
-  bne :+
-  lda #0
-  sta nomolosYSpeed
-  sta nomolosYSpeed+1
-  
-  ;&& is collision beneath?
-  lda nomolosState
-  and #nomolosBelowCollisionTestAND
-  lsr
-  lsr
-  lsr
-  beq :+
-  
-  ;reenable jumping if the A button is off, jumping is disabled and there's something beneath nomolos.
-  lda nomolosState
-  ora #nomolosJumpingOnOR
-  sta nomolosState
-:
 
 skipYSpeedNegativeCode:
  
   lda nomolosYSpeed+1
   bne :+
-  lda nomolosState
-  and #nomolosJumpingTestAND
-  lsr
-  lsr
-  and #1
-  beq jumpingDisabled
   
   ;Test if A button is down and collision is beneath nomolos.
   lda controllerBuffer
@@ -373,30 +322,30 @@ skipYSpeedNegativeCode:
   lda #nomolosStartJumpHi
   sta nomolosYSpeed+1
   
-  lda nomolosState
-  and #nomolosJumpingOffAND
-  sta nomolosState
+  ;lda nomolosState
+  ;and #nomolosJumpingOffAND
+  ;sta nomolosState
 :
 noAboveCollision3:
 
-jumpingDisabled:
+;jumpingDisabled:
 
   ;jumping was disabled. is A button up?
-  lda controllerBuffer
-  and #1
-  bne :+
+  ;lda controllerBuffer
+  ;and #1
+  ;bne :+
   ;yes 
-  lda nomolosState
-  and #nomolosBelowCollisionTestAND
-  lsr
-  lsr
-  lsr
-  beq :+
-  ;reenable jumping if A button has been released and there is something beneath nomolos.
-  lda nomolosState
-  ora #nomolosJumpingOnOR
-  sta nomolosState
-:
+  ;lda nomolosState
+  ;and #nomolosBelowCollisionTestAND
+  ;lsr
+  ;lsr
+  ;lsr
+  ;beq :+
+  ;;reenable jumping if A button has been released and there is something beneath nomolos.
+  ;lda nomolosState
+  ;ora #nomolosJumpingOnOR
+  ;sta nomolosState
+;:
   
  
 ;;presumably if there is something directly above nomolos, or directly below nomolos, 
