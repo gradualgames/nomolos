@@ -26,7 +26,7 @@
 .exportzp levelBaseAddress, metaTileBuffer, metaTileTableBaseAddress
 .exportzp entityDefinitionTableBaseAddress
 .exportzp metametaTileTableBaseAddress, nomolosAnim
-.exportzp nomolosScreenX, nomolosScreenY, nomolosState
+.exportzp nomolosScreenX, nomolosScreenY, nomolosState, nomolosHealth
 .exportzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, spriteAddress
 .exportzp scrollX, nextScrollX
@@ -74,6 +74,7 @@ nomolosAbovePenetrationDistance: .res 1
 nomolosAnim: .res 2
 
 nomolosState: .res 1
+nomolosHealth: .res 1
 
 scrollX:                           .res 2
 nextScrollX:                       .res 2

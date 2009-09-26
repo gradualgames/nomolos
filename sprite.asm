@@ -113,6 +113,10 @@ updateAnimation:
 ;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
 drawMetaSprite:
 
+  ;save regs
+  txa
+  pha
+
   ;get bits 6 and 7 of b2 into the V and N flags
   bit b2
   ;overflow flag is bit six, which is the horizontal flip bit. if overflow flag is set,
@@ -180,6 +184,10 @@ nextSpriteEntry:
   txa
   sta spriteAddress
   
+  ;restore regs
+  pla
+  tax
+  
   rts
   
 spriteIsFlipped:
@@ -241,69 +249,9 @@ nextSpriteEntry1:
   txa
   sta spriteAddress
 
-;  ;load the number of sprite entries
-;  ldy #0
-;  lda (w0), y
-;  ;multiply number of sprite entries * 4 bytes per entry
-;  asl
-;  asl
-;  tay
-;  ;y should now point to the last byte of the last sprite entry. we don't need to subtract 1 because of 
-;  ;the # of sprite entries byte.
-;
-;  clc
-;  adc spriteAddress
-;
-;  ;a now has spriteAddress + numberOfSpriteEntries * 4. put this in x for easy indexing into the sprite array
-;  tax
-;
-;  ;move spriteAddress along so next call will put the next sprite later in the sprite buffer
-;  sta spriteAddress
-;
-;  ;subtract one from x to point to the correct byte in the sprite array
-;  dex
-;
-;:
-;  ;load the x coordinate of the current sprite entry
-;  lda (w0), y
-;  clc
-;  ;compute final x coordinate
-;  adc b0
-;  ;store x coordinate in the sprite array
-;  sta sprite, x
-;
-;  ;decrement our indices
-;  dex
-;  dey
-;
-;  ;load the attribute value of the current sprite entry
-;  lda (w0), y
-;  sta sprite, x
-;
-;  ;decrement our indices
-;  dex
-;  dey
-;
-;  ;load the tile value of the current sprite entry
-;  lda (w0), y
-;  sta sprite, x
-;
-;  ;decrement our indices
-;  dex
-;  dey
-;
-;  ;load the y coordinate value of the current sprite entry
-;  lda (w0), y
-;  clc
-;  ;compute final y coordinate
-;  adc b1
-;  ;store y coordinate in the sprite array
-;  sta sprite, x
-;
-;  ;decrement our indices
-;  dex
-;  dey
-;  bne :-
+  ;restore regs
+  pla
+  tax
 
   rts
 

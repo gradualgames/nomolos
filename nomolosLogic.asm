@@ -1,10 +1,10 @@
 .include "constants.inc"
 
 ;ROM labels
-.import NomolosWalk
+.import NomolosWalk, Heart0
 
 ;Sprite module labels
-.import drawAnimation, updateAnimation
+.import drawMetaSprite, drawAnimation, updateAnimation
 
 ;Map module labels (for collision detection)
 .import testMapCollision
@@ -15,7 +15,7 @@
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
-.importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState
+.importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .importzp controllerBuffer
 
@@ -53,6 +53,9 @@ initNomolos:
   sta nomolosY
   lda #90
   sta nomolosY+1
+  
+  lda #3
+  sta nomolosHealth
 
   rts
 
@@ -588,4 +591,28 @@ drawNomolos:
   sta b1
   jsr drawAnimation
   
+  jsr drawNomolosHearts
+  
+  rts
+  
+drawNomolosHearts:
+
+  ldx nomolosHealth
+  
+  lda #$10
+  sta b0
+  sta b1
+  lda #<Heart0
+  sta w0
+  lda #>Heart0
+  sta w0+1
+:
+  jsr drawMetaSprite
+  lda b0
+  clc
+  adc #$08
+  sta b0
+  dex  
+  bne :-
+
   rts
