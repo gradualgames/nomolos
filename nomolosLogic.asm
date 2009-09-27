@@ -99,15 +99,6 @@ hurtNomolos:
   
 .proc updateNomolos
 
-  ;vvv quick hack to test the hurt nomolos routine
-  lda controllerBuffer+1
-  and #%00000011
-  cmp #$01
-  bne :+
-  jsr hurtNomolos 
-:
-  ;^^^ quick hack to test the hurt nomolos routine
-
 ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
   ;top left
   lda nomolosX+1

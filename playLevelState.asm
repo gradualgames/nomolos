@@ -49,24 +49,7 @@ playLevelUpdate:
   jsr updateEntities
   
   jsr decodeMap
-  
-  
-;  lda #16
-;  sta b0
-;  sta b1
-;  lda #<Heart0
-;  sta w0
-;  lda #>Heart0
-;  sta w0+1
-;  jsr drawMetaSprite
-;  lda #24
-;  sta b0
-;  jsr drawMetaSprite
-;  lda #32
-;  sta b0
-;  jsr drawMetaSprite
-  
-  
+    
   jmp updateFinished
   
 playLevelUpdatePPU:
