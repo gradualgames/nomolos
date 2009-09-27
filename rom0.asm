@@ -1,7 +1,16 @@
+.include "constants.inc"
+
 ;zp variables
-.importzp b0, b1, b2, w0, w1, w2
+.importzp b0, b1, b2, w0, w1, w2, w3
+.importzp nomolosScreenX, nomolosScreenY
 
 .import entityPool
+
+;geotests module
+.import rectInRect
+
+;nomolosLogic module
+.import hurtNomolos
 
 ;entity module
 .import returnFromEntityUpdate
@@ -337,6 +346,8 @@ dontSwitchToRightState:
 
   jmp returnFromEntityUpdate
   
+  rts
+  
 deentle_draw:
 
   ;get out low byte of positionX
@@ -359,7 +370,7 @@ deentle_draw:
   sta b0
   jsr cameraToScreenCoords
   bmi killOffscreenDeentle
-  bne :+
+  bne :++
 
   ;get out low byte of positionX
   lda entityPool+6,x
@@ -370,7 +381,7 @@ deentle_draw:
   lda entityPool+9,x
   sta b0
   jsr cameraToScreenCoords
-  bne :+
+  bne :++
   
   ;b1 is screen X, b0 is screen Y, draw meta sprite needs b0 = x, b1 = y so swap them.
   lda b0
@@ -379,6 +390,39 @@ deentle_draw:
   sta b0
   pla
   sta b1
+  
+  ;transfer Deentle rectangle to w0 = top left and w1 = bot right
+  lda b0
+  sta w0
+  clc
+  adc #$10
+  sta w1
+  lda b1
+  sta w0+1
+  clc
+  adc #$10
+  sta w1+1
+  
+  ;transfer Nomolos rectangle to w2 = top left and w3 = bot right
+  lda nomolosScreenX
+  sta w2
+  clc
+  adc #nomolosWidth
+  sta w3
+  lda nomolosScreenY
+  sta w2+1
+  clc
+  adc #nomolosHeight
+  sta w3+1
+  
+  jsr rectInRect
+  
+  bne :+
+  
+  jsr hurtNomolos
+  
+:
+  
 
   ;load address of animation object into w1
   lda #<(entityPool+11)

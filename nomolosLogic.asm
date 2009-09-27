@@ -21,7 +21,7 @@
 .importzp controllerBuffer
 
 ;Nomolos interface
-.export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts
+.export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts, hurtNomolos
 
 .segment "CODE"
 

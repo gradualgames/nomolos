@@ -30,6 +30,7 @@ nomolosStartJumpHiPos = $07
 nomolosVerticalAccelerationLo = $5a
 nomolosVerticalAccelerationHi = $00
 nomolosVerticalSpeedMax = $0a
+nomolosWidth = $10
 nomolosHeight = $20
 
 ;keeps the lowest 4 bits to get penetration distance from a y coordinate
