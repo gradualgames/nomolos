@@ -48,7 +48,7 @@ initNomolos:
   
   lda #0
   sta nomolosX
-  lda #120
+  lda #80
   sta nomolosX+1
   lda #0
   sta nomolosX+2
