@@ -11,20 +11,20 @@
   sta $4016
   lda #$00
   sta $4016
-  lda $4016  ; Is the A button down?
+  lda $4016  ; A 
   ;put button bit into carry
   ror 
   ;put carry bit into controller buffer. use rol to keep
   ;history of button presses.
   rol controllerBuffer
-  lda $4016  ; B does nothing
+  lda $4016  ; B 
   ;put button bit into carry
   ror
   ;rotate bit into controller buffer for history.
   rol controllerBuffer+1
-  lda $4016          ; Select does nothing
+  lda $4016          ; Select 
   sta controllerBuffer+2
-  lda $4016          ; Start does nothing
+  lda $4016          ; Start 
   sta controllerBuffer+3
   lda $4016          ; Up
   sta controllerBuffer+4

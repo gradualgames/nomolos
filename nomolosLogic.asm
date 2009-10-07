@@ -12,11 +12,14 @@
 ;Camera module labels
 .import updateCamera, cameraToScreenCoords
 
+;sound module labels
+.import lowc
+
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
 .importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
-.importzp nomolosBlinkCounter
+.importzp nomolosBlinkCounter, nomolosHitboxCounter
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .importzp controllerBuffer
 
@@ -60,6 +63,9 @@ initNomolos:
   
   lda #3
   sta nomolosHealth
+  
+  lda #0
+  sta nomolosHitboxCounter
 
   rts
 
@@ -97,7 +103,53 @@ hurtNomolos:
 
   rts
   
+;Causes the hit box to be activated for a few frames.
+nomolosAttack:
+
+  ;if attacking is on, skip this whole routine
+  lda nomolosState
+  and #nomolosAttackTestAND
+  bne :+
+
+  ;turn on the attack hit box
+  lda #$0a
+  sta nomolosHitboxCounter
+  lda nomolosState
+  ora #nomolosAttackOnOR
+  sta nomolosState
+:
+  
+  rts
+  
 .proc updateNomolos
+
+;Is the attack state on?
+  lda nomolosState
+  and #nomolosAttackTestAND
+  beq :+
+  ;attack state was on
+  
+  jsr lowc  ;quick hack to test hit box duration aurally
+  
+  dec nomolosHitboxCounter
+  bne :+
+  
+  ;set attack state to off
+  lda nomolosState
+  and #nomolosAttackOffAND
+  sta nomolosState
+:
+
+;Has the B button been hit?
+  lda controllerBuffer+1
+  and #%00000011
+  ;transition from off to on
+  cmp #%00000001
+  bne :+
+  ;B button has been hit, run the attack routine
+  ;jsr lowc
+  jsr nomolosAttack
+:
 
 ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
   ;top left

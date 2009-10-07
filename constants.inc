@@ -1,26 +1,25 @@
 ;Nomolos constants
-nomolosWalkingRightAND =      %11111110
-nomolosWalkingLeftOR   =      %00000001
+nomolosWalkingRightAND       = %11111110
+nomolosWalkingLeftOR         = %00000001
 
-nomolosMovingOffAND    =      %11111101
-nomolosMovingOnOR      =      %00000010
+nomolosMovingOffAND          = %11111101
+nomolosMovingOnOR            = %00000010
 
-;removed due to improving/simplifying the jumping code
-;nomolosJumpingOffAND   =      %11111011
-;nomolosJumpingOnOR     =      %00000100
-;nomolosJumpingTestAND  =      %00000100
+nomolosBlinkingOnOR          = %00000100
+nomolosBlinkingOffAND        = %11111011
+nomolosBlinkingTestAND       = %00000100
 
-nomolosBlinkingOffAND   =      %11111011
-nomolosBlinkingOnOR     =      %00000100
-nomolosBlinkingTestAND  =      %00000100
-
-nomolosBelowCollisionOnOR =    %00001000
-nomolosBelowCollisionOffAND =  %11110111
+nomolosBelowCollisionOnOR    = %00001000
+nomolosBelowCollisionOffAND  = %11110111
 nomolosBelowCollisionTestAND = %00001000
 
-nomolosAboveCollisionOnOR =    %00010000
-nomolosAboveCollisionOffAND =  %11101111
+nomolosAboveCollisionOnOR    = %00010000
+nomolosAboveCollisionOffAND  = %11101111
 nomolosAboveCollisionTestAND = %00010000
+
+nomolosAttackOnOR            = %00100000
+nomolosAttackOffAND          = %11011111
+nomolosAttackTestAND         = %00100000
 
 nomolosHurtBounceLo = $0a
 nomolosHurtBounceHi = $fd
