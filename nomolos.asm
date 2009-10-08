@@ -30,6 +30,7 @@
 .exportzp nomolosHealth, nomolosBlinkCounter, nomolosHitboxCounter
 .exportzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, spriteAddress
+.exportzp nomolosHitboxXOffset, nomolosHitboxYOffset
 .exportzp scrollX, nextScrollX
 .exportzp controllerBuffer
 .export stack, sprite, entityPool
@@ -70,6 +71,8 @@ nomolosXSpeed: .res 2
 nomolosYSpeed: .res 2
 nomolosScreenX: .res 1
 nomolosScreenY: .res 1
+nomolosHitboxXOffset: .res 1
+nomolosHitboxYOffset: .res 1
 nomolosBelowPenetrationDistance: .res 1
 nomolosAbovePenetrationDistance: .res 1
 nomolosAnim: .res 2

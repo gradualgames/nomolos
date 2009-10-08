@@ -3,6 +3,7 @@
 ;zp variables
 .importzp b0, b1, b2, w0, w1, w2, w3
 .importzp nomolosScreenX, nomolosScreenY, nomolosState
+.importzp nomolosHitboxXOffset, nomolosHitboxYOffset
 
 .import entityPool
 
@@ -447,7 +448,7 @@ deentleNotOffscreen2:
   ;transfer Nomolos rectangle to w2 = top left and w3 = bot right
   lda nomolosScreenX
   clc
-  adc #nomolosWidth ;slide rectangle over for hit box
+  adc nomolosHitboxXOffset ;slide rectangle over for hit box
   sta w2
   clc
   adc #nomolosWidth

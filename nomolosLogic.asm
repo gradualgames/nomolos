@@ -18,6 +18,7 @@
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
+.importzp nomolosHitboxXOffset, nomolosHitboxYOffset
 .importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
 .importzp nomolosBlinkCounter, nomolosHitboxCounter
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
@@ -66,6 +67,11 @@ initNomolos:
   
   lda #0
   sta nomolosHitboxCounter
+  
+  lda #16
+  sta nomolosHitboxXOffset
+  lda #0
+  sta nomolosHitboxYOffset
 
   rts
 
@@ -128,8 +134,6 @@ nomolosAttack:
   and #nomolosAttackTestAND
   beq :+
   ;attack state was on
-  
-  jsr lowc  ;quick hack to test hit box duration aurally
   
   dec nomolosHitboxCounter
   bne :+
@@ -674,6 +678,8 @@ drawNomolos:
   sta w2+1
   lda #%00000000
   sta b2
+  lda #$10
+  sta nomolosHitboxXOffset
   jmp :++
 :
   lda #<NomolosWalk
@@ -682,6 +688,8 @@ drawNomolos:
   sta w2+1
   lda #%01000000
   sta b2
+  lda #$f0
+  sta nomolosHitboxXOffset
 :  
   
   ;jsr updateAnimation
