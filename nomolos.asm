@@ -1,6 +1,5 @@
 .include "constants.inc"
 .include "macros.inc"
-.include "driver.s"
 
 ;ROM labels
 .import palette, MetaTileTable, MetaMetaTileTable, Level, EntityDefinitionTable
@@ -121,6 +120,8 @@ sprite: .res 256
 ;13 .dsb 3 ;padding to 16 bytes
 
 entityPool: .res 256
+
+.include "driver.s"
 
 .segment "CODE"
 
