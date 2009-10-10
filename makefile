@@ -26,7 +26,7 @@ LSTFILE         = nomolos.lst
 DEBUGFILE       = nomolos.txt
 
 #Switches
-ASSEMBLER_FLAGS = -g -l -o
+ASSEMBLER_FLAGS = -g -l --include-dir ft_driver -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAPFILE) --dbgfile $(DEBUGFILE) -o 
 
 #Rules

@@ -1,5 +1,6 @@
 .include "constants.inc"
 .include "macros.inc"
+.include "driver.s"
 
 ;ROM labels
 .import palette, MetaTileTable, MetaMetaTileTable, Level, EntityDefinitionTable
@@ -102,7 +103,7 @@ controllerBuffer: .res 8
 .segment "STACK"
 stack:  .res 256
   
-.segment "RAM"
+.segment "BSS"
 sprite: .res 256
 ;The following is the entity pool. All entities are treated as chunks of
 ;16 bytes from this pool with the following schema:
@@ -122,6 +123,9 @@ sprite: .res 256
 entityPool: .res 256
 
 .segment "CODE"
+
+musicData:
+.incbin "music.bin"
 
 reset:
   sei
@@ -227,6 +231,15 @@ reset:
   lda #%00000000
   sta $2001
 
+  lda #<musicData
+  sta ft_music_addr
+  lda #>musicData
+  sta ft_music_addr+1
+  
+  lda #0
+  ldx #0
+  jsr ft_music_init
+  
 loop:
 
   jmp (update)
@@ -267,10 +280,12 @@ vblank:
   tya
   pha
   php
-
+  
   jmp (updatePPU)
 
 updatePPUFinished:
+
+  jsr ft_music_play
 
   ;the following loops are meant to measure how many cycles we have left to use for vblank
 ;  ldy #20      ;2
