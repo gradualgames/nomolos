@@ -293,9 +293,10 @@ ft_periods_sawtooth:
 ; Example of including music follows
 ;
 
+; 10/11/09: Commented this out and moved it to my own ROM.
 ; The label that contains a pointer to the music data
-ft_music_addr:
-	.word * + 2					; This is the point where music data is stored, can be changed
+;ft_music_addr:
+;	.word * + 2					; This is the point where music data is stored, can be changed
 
 .ifdef INC_MUSIC
 	.incbin "music.bin"			; Music data

@@ -3,6 +3,7 @@
 
 ;ROM labels
 .import palette, MetaTileTable, MetaMetaTileTable, Level, EntityDefinitionTable
+.import ft_music_addr
 
 ;camera module
 .import resetCamera
@@ -121,12 +122,11 @@ sprite: .res 256
 
 entityPool: .res 256
 
+;FamiTracker driver must be included here so its variables come after the sprite
+;page and entity page. This avoids clobbering graphics/sound memory.
 .include "driver.s"
 
 .segment "CODE"
-
-musicData:
-.incbin "music.bin"
 
 reset:
   sei
@@ -232,11 +232,7 @@ reset:
   lda #%00000000
   sta $2001
 
-  lda #<musicData
-  sta ft_music_addr
-  lda #>musicData
-  sta ft_music_addr+1
-  
+  ;initialize music driver as NTSC and track #0.
   lda #0
   ldx #0
   jsr ft_music_init

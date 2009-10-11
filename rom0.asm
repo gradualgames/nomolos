@@ -25,8 +25,16 @@
 .export palette, MetaTileTable, MetaMetaTileTable, NomolosWalk
 .export Heart0
 .export Level, EntityDefinitionTable
+.export ft_music_addr
 
 .segment "RODATA"
+
+; The label that contains a pointer to the music data
+ft_music_addr:
+	.word * + 2					; This is the point where music data is stored, can be changed
+
+.incbin "music.bin"
+
 palette:
 
 ;Image Palette
