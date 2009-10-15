@@ -342,10 +342,10 @@ Heart:
 EntityDefinitionTable:
 DeentleEntity:
   .word deentleUpdate
-  .byte $00  ;0  (this will be subtracted from spawnX)
-  .byte $00  ;16 (this will be subtracted from spawnY)
+  .byte $00
+  .byte $00
   .byte %00000000
-  .byte $00  
+  .byte $00
   .byte $00
   .byte $00
  
