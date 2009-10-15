@@ -22,7 +22,8 @@
 ;sprite module
 .import updateAnimation, drawAnimation, drawMetaSprite
 
-.export palette, MetaTileTable, MetaMetaTileTable, NomolosWalk
+.export palette, MetaTileTable, MetaMetaTileTable
+.export NomolosWalk, NomolosWalkingOverlay
 .export Heart0
 .export Level, EntityDefinitionTable
 .export ft_music_addr
@@ -42,7 +43,7 @@ palette:
 
 ;Sprite Palette
 ;Palette
-  .byte $21,$0d,$27,$04,$20,$0d,$27,$10,$00,$00,$00,$00,$00,$00,$00,$00
+  .byte $21,$0d,$27,$10,$20,$04,$2a,$20,$20,$0d,$04,$20,$00,$00,$00,$00
 
 MetaTileTable:
 MetaTile0:
@@ -159,59 +160,171 @@ Level:
   .byte $25,$24,$24,$00,$00,$00,$26,$00,$00,$00,$00,$26,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$27,$28,$29,$2a,$2b,$29,$28,$27,$00,$00
  
 ;Meta Sprite Table
-NomolosWalk0:
+NomolosWalking0:
   .byte $08
   .byte $00,$00,$00,$00,$08
-  .byte $00,$01,$01,$08,$00
-  .byte $08,$0c,$00,$00,$08
-  .byte $08,$0d,$01,$08,$00
-  .byte $10,$16,$01,$00,$08
-  .byte $10,$17,$01,$08,$00
-  .byte $18,$1c,$01,$00,$08
-  .byte $18,$1d,$01,$08,$00
-NomolosWalk1:
+  .byte $00,$01,$00,$08,$00
+  .byte $08,$1a,$00,$00,$08
+  .byte $08,$1b,$00,$08,$00
+  .byte $10,$31,$00,$00,$08
+  .byte $10,$32,$00,$08,$00
+  .byte $18,$3f,$00,$00,$08
+  .byte $18,$40,$00,$08,$00
+NomolosWalking1:
   .byte $08
   .byte $00,$02,$00,$00,$08
-  .byte $00,$03,$01,$08,$00
-  .byte $08,$0e,$00,$00,$08
-  .byte $08,$0f,$01,$08,$00
-  .byte $10,$18,$01,$00,$08
-  .byte $10,$19,$01,$08,$00
-  .byte $18,$1e,$01,$00,$08
-  .byte $18,$1f,$01,$08,$00
-NomolosWalk2:
+  .byte $00,$03,$00,$08,$00
+  .byte $08,$1c,$02,$00,$08
+  .byte $08,$1d,$00,$08,$00
+  .byte $10,$33,$00,$00,$08
+  .byte $10,$34,$00,$08,$00
+  .byte $18,$41,$00,$00,$08
+  .byte $18,$42,$00,$08,$00
+NomolosWalking2:
+  .byte $08
+  .byte $00,$00,$00,$00,$08
+  .byte $00,$01,$00,$08,$00
+  .byte $08,$1a,$00,$00,$08
+  .byte $08,$1b,$00,$08,$00
+  .byte $10,$31,$00,$00,$08
+  .byte $10,$32,$00,$08,$00
+  .byte $18,$3f,$00,$00,$08
+  .byte $18,$40,$00,$08,$00
+NomolosWalking3:
   .byte $08
   .byte $00,$04,$00,$00,$08
-  .byte $00,$05,$01,$08,$00
-  .byte $08,$10,$00,$00,$08
-  .byte $08,$11,$01,$08,$00
-  .byte $10,$1a,$01,$00,$08
-  .byte $10,$1b,$01,$08,$00
-  .byte $18,$20,$01,$00,$08
-  .byte $18,$21,$01,$08,$00
+  .byte $00,$05,$00,$08,$00
+  .byte $08,$1e,$00,$00,$08
+  .byte $08,$1f,$00,$08,$00
+  .byte $10,$35,$00,$00,$08
+  .byte $10,$36,$00,$08,$00
+  .byte $18,$43,$00,$00,$08
+  .byte $18,$44,$00,$08,$00
+NomolosJumping0:
+  .byte $08
+  .byte $00,$06,$00,$00,$08
+  .byte $00,$07,$00,$08,$00
+  .byte $08,$20,$00,$00,$08
+  .byte $08,$21,$00,$08,$00
+  .byte $10,$37,$00,$00,$08
+  .byte $10,$38,$00,$08,$00
+  .byte $18,$45,$00,$00,$08
+  .byte $18,$46,$00,$08,$00
+NomolosFighting0:
+  .byte $08
+  .byte $00,$08,$00,$00,$08
+  .byte $00,$09,$00,$08,$00
+  .byte $08,$22,$00,$00,$08
+  .byte $08,$23,$00,$08,$00
+  .byte $10,$39,$00,$00,$08
+  .byte $10,$3a,$00,$08,$00
+  .byte $18,$47,$00,$00,$08
+  .byte $18,$48,$00,$08,$00
+NomolosFighting1:
+  .byte $08
+  .byte $00,$0a,$00,$00,$08
+  .byte $00,$0b,$00,$08,$00
+  .byte $08,$24,$00,$00,$08
+  .byte $08,$25,$00,$08,$00
+  .byte $10,$3b,$00,$00,$08
+  .byte $10,$3c,$00,$08,$00
+  .byte $18,$49,$00,$00,$08
+  .byte $18,$4a,$00,$08,$00
+NomolosWalkingOverlay0:
+  .byte $04
+  .byte $00,$0c,$02,$00,$08
+  .byte $00,$0d,$01,$08,$00
+  .byte $08,$26,$02,$00,$08
+  .byte $08,$27,$02,$08,$00
+NomolosWalkingOverlay1:
+  .byte $04
+  .byte $00,$0e,$02,$00,$08
+  .byte $00,$0f,$01,$08,$00
+  .byte $08,$28,$02,$00,$08
+  .byte $08,$29,$02,$08,$00
+NomolosWalkingOverlay2:
+  .byte $04
+  .byte $00,$0c,$02,$00,$08
+  .byte $00,$0d,$01,$08,$00
+  .byte $08,$26,$02,$00,$08
+  .byte $08,$27,$02,$08,$00
+NomolosWalkingOverlay3:
+  .byte $04
+  .byte $00,$0e,$02,$00,$08
+  .byte $00,$10,$01,$08,$00
+  .byte $08,$28,$02,$00,$08
+  .byte $08,$29,$02,$08,$00
+NomolosJumpingOverlay0:
+  .byte $04
+  .byte $00,$0c,$02,$00,$08
+  .byte $00,$11,$01,$08,$00
+  .byte $08,$26,$02,$00,$08
+  .byte $08,$27,$02,$08,$00
+NomolosFightingOverlay0:
+  .byte $04
+  .byte $00,$12,$01,$00,$08
+  .byte $00,$13,$01,$08,$00
+  .byte $08,$2a,$02,$00,$08
+  .byte $08,$2b,$02,$08,$00
+NomolosFightingOverlay1:
+  .byte $04
+  .byte $00,$14,$02,$00,$08
+  .byte $00,$15,$01,$08,$00
+  .byte $08,$2c,$02,$00,$08
+  .byte $08,$0d,$02,$08,$00
 Deentle0:
   .byte $04
-  .byte $00,$06,$01,$00,$08
-  .byte $00,$07,$01,$08,$00
-  .byte $08,$12,$01,$00,$08
-  .byte $08,$13,$01,$08,$00
+  .byte $00,$16,$00,$00,$08
+  .byte $00,$17,$00,$08,$00
+  .byte $08,$2d,$00,$00,$08
+  .byte $08,$2e,$00,$08,$00
 Deentle1:
   .byte $04
-  .byte $00,$08,$01,$00,$08
-  .byte $00,$09,$01,$08,$00
-  .byte $08,$14,$01,$00,$08
-  .byte $08,$15,$01,$08,$00
+  .byte $00,$18,$00,$00,$08
+  .byte $00,$19,$00,$08,$00
+  .byte $08,$2f,$00,$00,$08
+  .byte $08,$30,$00,$08,$00
 Heart0:
   .byte $01
-  .byte $00,$0a,$00,$00,$00
+  .byte $00,$3d,$02,$00,$00
 
 ;Animations
 NomolosWalk:
   .byte $0a
-  .word NomolosWalk0
-  .word NomolosWalk1
-  .word NomolosWalk0
-  .word NomolosWalk2
+  .word NomolosWalking0
+  .word NomolosWalking1
+  .word NomolosWalking2
+  .word NomolosWalking3
+  .byte $00
+
+NomolosJumping:
+  .byte $0a
+  .word NomolosJumping0
+  .byte $00
+
+NomolosFighting:
+  .byte $0a
+  .word NomolosFighting0
+  .word NomolosFighting1
+  .byte $00
+
+NomolosWalkingOverlay:
+  .byte $0a
+  .word NomolosWalkingOverlay0
+  .word NomolosWalkingOverlay1
+  .word NomolosWalkingOverlay2
+  .word NomolosWalkingOverlay3
+  .byte $00
+
+NomolosJumpingOverlay:
+  .byte $0a
+  .word NomolosJumpingOverlay0
+  .byte $00
+
+NomolosFightingOverlay:
+  .byte $0a
+  .word NomolosFightingOverlay0
+  .word NomolosFightingOverlay1
   .byte $00
 
 DeentleWalk:
@@ -219,7 +332,12 @@ DeentleWalk:
   .word Deentle0
   .word Deentle1
   .byte $00
-  
+
+Heart:
+  .byte $0a
+  .word Heart0
+  .byte $00
+ 
 ;Entities
 EntityDefinitionTable:
 DeentleEntity:

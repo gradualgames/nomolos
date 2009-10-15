@@ -1,7 +1,7 @@
 .include "constants.inc"
 
 ;ROM labels
-.import NomolosWalk, Heart0
+.import NomolosWalk, NomolosWalkingOverlay, Heart0
 
 ;Sprite module labels
 .import drawMetaSprite, drawAnimation, updateAnimation
@@ -672,35 +672,61 @@ drawNomolos:
   lda nomolosState
   and #1
   bne :+
-  lda #<NomolosWalk
+  lda #<NomolosWalkingOverlay
   sta w2
-  lda #>NomolosWalk
+  lda #>NomolosWalkingOverlay
   sta w2+1
   lda #%00000000
   sta b2
   lda #$10
   sta nomolosHitboxXOffset
-  jmp :++
-:
+  
+  lda nomolosScreenX
+  sta b0
+  lda nomolosScreenY
+  sta b1
+  inc b1
+  jsr drawAnimation
+  
   lda #<NomolosWalk
   sta w2
   lda #>NomolosWalk
+  sta w2+1
+  dec b1
+  jsr drawAnimation
+  
+  jmp :++
+:
+  lda #<NomolosWalkingOverlay
+  sta w2
+  lda #>NomolosWalkingOverlay
   sta w2+1
   lda #%01000000
   sta b2
   lda #$f0
   sta nomolosHitboxXOffset
+  
+  lda nomolosScreenX
+  sta b0
+  lda nomolosScreenY
+  sta b1
+  inc b1
+  jsr drawAnimation
+  
+  lda #<NomolosWalk
+  sta w2
+  lda #>NomolosWalk
+  sta w2+1
+  dec b1
+  jsr drawAnimation
+  
 :  
   
   ;jsr updateAnimation
   
 
   
-  lda nomolosScreenX
-  sta b0
-  lda nomolosScreenY
-  sta b1
-  jsr drawAnimation
+
   
 dontDrawNomolos:
 
