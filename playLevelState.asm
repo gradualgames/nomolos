@@ -37,9 +37,7 @@ playLevelUpdate:
   beq :-
 
   jsr readController
-  
-  ;used to be resetting sprite address. By NOT resetting it,
-  ;we automatically implement sprite shuffling.
+
   lda #0
   sta spriteAddress
   

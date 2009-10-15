@@ -685,14 +685,12 @@ drawNomolos:
   sta b0
   lda nomolosScreenY
   sta b1
-  inc b1
   jsr drawAnimation
   
   lda #<NomolosWalk
   sta w2
   lda #>NomolosWalk
   sta w2+1
-  dec b1
   jsr drawAnimation
   
   jmp :++
@@ -710,14 +708,12 @@ drawNomolos:
   sta b0
   lda nomolosScreenY
   sta b1
-  inc b1
   jsr drawAnimation
   
   lda #<NomolosWalk
   sta w2
   lda #>NomolosWalk
   sta w2+1
-  dec b1
   jsr drawAnimation
   
 :  
