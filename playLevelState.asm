@@ -37,9 +37,6 @@ playLevelUpdate:
   beq :-
 
   jsr readController
-
-  lda #0
-  sta spriteAddress
   
   jsr clearSprites
   

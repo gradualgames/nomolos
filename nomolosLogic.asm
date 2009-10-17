@@ -1,7 +1,7 @@
 .include "constants.inc"
 
 ;ROM labels
-.import NomolosWalk, NomolosWalkingOverlay, Heart0
+.import NomolosWalk, NomolosWalkOverlay, Heart0
 
 ;Sprite module labels
 .import drawMetaSprite, drawAnimation, updateAnimation
@@ -672,9 +672,9 @@ drawNomolos:
   lda nomolosState
   and #1
   bne :+
-  lda #<NomolosWalkingOverlay
+  lda #<NomolosWalkOverlay
   sta w2
-  lda #>NomolosWalkingOverlay
+  lda #>NomolosWalkOverlay
   sta w2+1
   lda #%00000000
   sta b2
@@ -695,9 +695,9 @@ drawNomolos:
   
   jmp :++
 :
-  lda #<NomolosWalkingOverlay
+  lda #<NomolosWalkOverlay
   sta w2
-  lda #>NomolosWalkingOverlay
+  lda #>NomolosWalkOverlay
   sta w2+1
   lda #%01000000
   sta b2
