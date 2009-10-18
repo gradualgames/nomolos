@@ -2,6 +2,7 @@
 
 ;ROM labels
 .import NomolosWalk, NomolosWalkOverlay, Heart0
+.import NomolosJump, NomolosJumpOverlay
 
 ;Sprite module labels
 .import drawMetaSprite, drawAnimation, updateAnimation
@@ -133,6 +134,14 @@ skipAttack:
 .endproc
   
 .proc updateNomolos
+
+  dec nomolosBlinkCounter
+  bne skipBlinkReset
+  
+  lda nomolosState
+  and #nomolosBlinkingOffAND
+  sta nomolosState
+skipBlinkReset:
 
 ;Is the attack state on?
   lda nomolosState
@@ -667,9 +676,69 @@ skipAnimReset:
   ;check blink counter
   lda nomolosBlinkCounter
   and #%00000011
-  beq dontDrawNomolos
+  bne skipReturn
+  rts
+skipReturn:
   
 skipBlinkCheck:
+
+  ;we need to test two cases to know if nomolos is jumping,
+  ;in order to cover the case where he is motionless for a
+  ;split second at the top of an arc.
+  ;test if there is anything below nomolos. If there is nothing,
+  ;we skip the Y speed test becase we know he should be drawn 
+  ;jumping.
+  lda nomolosState
+  and #nomolosBelowCollisionTestAND
+  lsr
+  lsr
+  lsr
+  beq skipYSpeedTest
+
+  ;check whether Nomolos is moving vertically
+  lda nomolosYSpeed+1
+  beq skipDrawNomolosJumping
+skipYSpeedTest:
+  
+  lda #1
+  sta nomolosAnim
+  lda #0
+  sta nomolosAnim+1
+  
+  lda #<nomolosAnim
+  sta w1
+  lda #>nomolosAnim
+  sta w1+1
+  
+  lda #<NomolosJump
+  sta w2
+  lda #>NomolosJump
+  sta w2+1
+  
+  ;get the direction bit into bit 6 of b2 for horiz flip
+  lda nomolosState
+  and #1
+  ror
+  ror
+  ror
+  sta b2
+  
+  lda nomolosScreenX
+  sta b0
+  lda nomolosScreenY
+  sta b1
+  
+  jsr drawAnimation
+  
+  lda #<NomolosJumpOverlay
+  sta w2
+  lda #>NomolosJumpOverlay
+  sta w2+1
+  
+  jsr drawAnimation
+  
+  jmp dontDrawNomolos
+skipDrawNomolosJumping:
 
   lda #<nomolosAnim
   sta w1
@@ -727,14 +796,6 @@ skipNomolosWalkingLeft:
   
 dontDrawNomolos:
 
-  dec nomolosBlinkCounter
-  bne skipBlinkReset
-  
-  lda nomolosState
-  and #nomolosBlinkingOffAND
-  sta nomolosState
-skipBlinkReset:
-  
   rts
   
 .endproc

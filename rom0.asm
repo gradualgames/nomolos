@@ -23,7 +23,7 @@
 .import updateAnimation, drawAnimation, drawMetaSprite
 
 .export palette, MetaTileTable, MetaMetaTileTable
-.export NomolosWalk, NomolosWalkOverlay
+.export NomolosWalk, NomolosWalkOverlay, NomolosJump, NomolosJumpOverlay
 .export Heart0
 .export Level, EntityDefinitionTable
 .export ft_music_addr
