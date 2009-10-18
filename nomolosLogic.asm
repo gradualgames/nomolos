@@ -137,6 +137,13 @@ skipAttack:
   
 .proc updateNomolos
 
+  ;************************************************************
+  ;Update counters for temporary invincibility and for attack
+  ;hit box. Call attack routine if B transitions from off to
+  ;on.
+  ;************************************************************
+
+  ;Update blink counter and reset if zero
   dec nomolosBlinkCounter
   bne skipBlinkReset
   
@@ -145,7 +152,7 @@ skipAttack:
   sta nomolosState
 skipBlinkReset:
 
-;Is the attack state on?
+  ;Update hitbox counter if attack state on
   lda nomolosState
   and #nomolosAttackTestAND
   beq skipAttackUpdate
@@ -163,18 +170,20 @@ skipBlinkReset:
   resetAnim nomolosAnim
 skipAttackUpdate:
 
-;Has the B button been hit?
+  ;Run attack routine if B transitions from off to on
   lda controllerBuffer+1
   and #%00000011
-  ;transition from off to on
+  ;test for transition from off to on
   cmp #%00000001
   bne skipAttack
-  ;B button has been hit, run the attack routine
-  ;jsr lowc
   jsr nomolosAttack
 skipAttack:
 
-;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
+  ;************************************************************
+  ;Test for collisions above and below Nomolos.
+  ;************************************************************
+  
+  ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
   ;top left
   lda nomolosX+1
   sta w0
@@ -192,6 +201,7 @@ skipAttack:
   
 noTopLeftCollision:
   
+  ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
   ;top right
   lda nomolosX+1
   clc
@@ -215,8 +225,9 @@ noTopRightCollision:
   jmp noAboveCollision
   
 yesAboveCollision:
-;  Yes:
-;    calculate penetration distance and store it in abovePenetrationDistance
+  ;There was an above collision:
+  ;Calculate penetration distance and store it in abovePenetrationDistance.
+  ;Set above collision flag.
   lda nomolosY+1
   clc
   adc #nomolosStartJumpHi
@@ -227,19 +238,19 @@ yesAboveCollision:
   sbc nomolosAbovePenetrationDistance
   sbc #1
   sta nomolosAbovePenetrationDistance
-;    nomolosState is TopCollision = true
   lda nomolosState
   ora #nomolosAboveCollisionOnOR
   sta nomolosState
   jmp skipNoAboveCollision
 noAboveCollision:
-;  No:
-;    nomolosState is TopCollision = false
+  ;There was no above collision.
+  ;Clear above collision flag.
   lda nomolosState
   and #nomolosAboveCollisionOffAND
   sta nomolosState
 skipNoAboveCollision:
-;Is there a collision below Nomolos? (NomolosY + NomolosHeight + maxYCollisionDistance)
+  ;Is there a collision below Nomolos?
+  ;(NomolosY + NomolosHeight + maxYCollisionDistance)
   ;bottom left
   lda nomolosX+1
   sta w0
@@ -258,6 +269,8 @@ skipNoAboveCollision:
   
 noBottomLeftCollision:
   
+  ;Is there a collision below Nomolos?
+  ;(NomolosY + NomolosHeight + maxYCollisionDistance)
   ;bottom right
   lda nomolosX+1
   clc
@@ -281,10 +294,11 @@ noBottomRightCollision:
   
   beq noBelowCollision  ;we want to skip the following code when there is not a collision
                         ;set = not collision, so we use beq
-;  Yes:
-;    calculate penetration distance and store it in belowPenetrationDistance
-  ;penetration distance would just be nomolosY+1+height+speedmax AND %00001111
+
 yesBottomCollision:
+  ;There was a below collision:
+  ;Calculate penetration distance and store it in belowPenetrationDistance.
+  ;Set below collision flag.
   lda nomolosY+1
   clc
   adc #nomolosHeight
@@ -293,28 +307,30 @@ yesBottomCollision:
   and #penetrationCalculationMask
   adc #1
   sta nomolosBelowPenetrationDistance
-;    nomolosState is BottomCollision = true
   lda nomolosState
   ora #nomolosBelowCollisionOnOR
   sta nomolosState
   jmp yesBelowCollision
-;  No:
 noBelowCollision:
-;    nomolosState is BottomCollision = false
+  ;There was no below collision.
+  ;Clear below collision flag.
   lda nomolosState
   and #nomolosBelowCollisionOffAND
   sta nomolosState
 yesBelowCollision:
-;
-;;this is the falling code (also the slowing down while rising during a jump code)
-;is nomolosYSpeed < nomolosVerticalSpeedMax?
+
+  ;************************************************************
+  ;Make gravity act on Nomolos.
+  ;************************************************************
+
+  ;Compare vertical speed max to current vertical speed.
   lda #nomolosVerticalSpeedMax  
   sec
   sbc nomolosYSpeed+1
   ;we want to skip the following code if the result was negative
   bmi DoNotIncrementSpeed
-;  Yes:
-;    nomolosYSpeed = nomolosYSpeed + nomolosVerticalAcceleration
+  ;Yes:
+  ;  nomolosYSpeed = nomolosYSpeed + nomolosVerticalAcceleration
   lda nomolosYSpeed
   clc
   adc #nomolosVerticalAccelerationLo
@@ -324,51 +340,49 @@ yesBelowCollision:
   sta nomolosYSpeed+1
 DoNotIncrementSpeed:
     
-;now we have the tentative nomolosYSpeed. We now must find out if it is appropriate.
-    
-;Is nomolosYSpeed positive?
+  ;************************************************************
+  ;Find out if the newly calculated vertical speed would make
+  ;Nomolos cut into a tile and modify it accordingly.
+  ;************************************************************
+
+  ;Test sign of vertical speed so we know what direction we may
+  ;need to modify it.
   lda nomolosYSpeed+1
   bmi ySpeedNegative
-;  Yes:    
-;    Is nomolosState.BotCollision true?
+  ;Vertical speed was positive.
+  ;Test for a below collision.
   lda nomolosState
   and #nomolosBelowCollisionTestAND
   lsr
   lsr
   lsr
-  ;we want to skip the following code if BotCollision is false. BotCollision is false corresponds to zero flag = true
-  beq noBelowCollision2
-;      Yes:
-;        Calculate maxYCollisionDistance - belowPenetrationDistance
+  beq @noBelowCollision
+  ;There was a below collision. 
+  ;Compare max vertical speed to below penetration distance.
   lda #nomolosVerticalSpeedMax  
   sec
   sbc nomolosBelowPenetrationDistance
-;        Is result = maxYCollisionDistance?
-  cmp #nomolosVerticalSpeedMax
-  bne penetrationNotEqualToMax
-        
-
-penetrationNotEqualToMax:  
-;        Is result < nomolosYSpeed?  if result - nomolosYSpeed is negative, then this is true, so branch if positive.
+  ;Determine if the penetration is less than the calculated
+  ;vertical speed.
   cmp nomolosYSpeed+1
-  bpl penetrationNotLessThanYSpeed
-;          Yes:
-;            nomolosYSpeed = result
+  bpl @penetrationNotLessThanYSpeed
+  ;Penetration was less than the calculated vertical speed,
+  ;so modify the vertical speed to be equal to the penetration
+  ;distance.
   clc
   adc #1
   sta nomolosYSpeed+1
   lda #0
   sta nomolosYSpeed
-penetrationNotLessThanYSpeed:
-;        ;if we reach here we know that Nomolos won't hit anything on the next iteration with the current
-;        ;value of nomolosYSpeed
-  jmp skipDisableJumpWhileFalling
-noBelowCollision2:
-  
-skipDisableJumpWhileFalling:
+@penetrationNotLessThanYSpeed:
+  ;Penetration was greater than the calculated vertical speed,
+  ;so we do not need to modify the vertical speed.
+@noBelowCollision:
 
   jmp skipYSpeedNegativeCode
 ySpeedNegative:
+  ;Vertical speed was negative.
+  ;Test A for on to off transition, stop rising if true.
 
   ;is current state of A button released, and previous state of A button pressed?
   lda controllerBuffer
@@ -383,36 +397,42 @@ ySpeedNegative:
   
 dontStopRising:
 
-  ;is above collision true?
+  ;Test for an above collision.
   lda nomolosState
   and #nomolosAboveCollisionTestAND
   lsr
   lsr
   lsr
   lsr
-  and #1   ;if the result of this instruction is 1, the zero flag will be false. if it is 0, zero flag will be true.
-           ;we want to skip if the zero flag is true, because that would mean there is no above collision.
-  beq noAboveCollision2
-  ;if we arrive here, there was a collision above nomolos and we must decide what to do about it.
+  and #1   
+  beq @noAboveCollision
+  ;There was a collision above Nomolos.
   
-  ;calculate nomolosStartJumpHiPos + nomolosAbovePenetrationDistance
+  ;Compare start jump speed to above penetration distance.
+  ;Start jump speed is negative so we add it to above penetration distance.
   lda #nomolosStartJumpHi
   clc
   adc nomolosAbovePenetrationDistance
-  
-penetrationNotEqualToStartJumpHi:
   cmp nomolosYSpeed+1
-  bmi penetrationNotLessThanYSpeed2
-  ;penetration is less than y speed, so set y speed to nomolosStartJumpHiPos
+  bmi @penetrationNotLessThanYSpeed
+  ;Vertical speed is greater than the penetration, so we must stop rising
+  ;into the air.
   sta nomolosYSpeed+1
   lda #0
   sta nomolosYSpeed
 
-penetrationNotLessThanYSpeed2:
-noAboveCollision2:
-
+@penetrationNotLessThanYSpeed:
+@noAboveCollision:
 skipYSpeedNegativeCode:
- 
+  ;Vertical speed is less than the penetration, so we don't need to do
+  ;anything else. 
+  
+  ;************************************************************
+  ;Test A button for off-to-on transition and start the jump
+  ;into the air if so.
+  ;************************************************************
+
+  ;Test vertical speed. Skip A button test if is nonzero.
   lda nomolosYSpeed+1
   bne skipButtonATest
   
@@ -438,22 +458,20 @@ skipYSpeedNegativeCode:
   lsr
   lsr
   lsr
-  and #1   ;if the result of this instruction is 1, the zero flag will be false. if it is 0, zero flag will be true.
-           ;we want to skip if the zero flag is true, because that would mean there is no above collision.
-  bne noAboveCollision3
+  and #1          
+  bne @noAboveCollision
   
   lda #nomolosStartJumpLo
   sta nomolosYSpeed
   lda #nomolosStartJumpHi
   sta nomolosYSpeed+1
   
+@noAboveCollision:
 skipButtonATest:
-noAboveCollision3:
  
-;;presumably if there is something directly above nomolos, or directly below nomolos, 
-;;that will have been figured out before the following line occurs, and nomolosYSpeed
-;;will have been modified accordingly.
-;nomolosY = nomolosY + nomolosYSpeed
+  ;************************************************************
+  ;Move vertical position according to vertical speed.
+  ;************************************************************
   clc
   lda nomolosY  
   adc nomolosYSpeed
@@ -461,11 +479,13 @@ noAboveCollision3:
   lda nomolosY+1
   adc nomolosYSpeed+1
   sta nomolosY+1
-  
 
-  lda nomolosState  
-  and #nomolosMovingOffAND       ;state is moving
-  sta nomolosState
+  ;************************************************************
+  ;Test left and right buttons. Test for collision to the left
+  ;and to the right. Move if there is room. Reset animation
+  ;according to whether fighting state is off and on-to-off 
+  ;transition is true.
+  ;************************************************************
 
   ;is nomolos fighting? skip this animation reset code if so
   lda nomolosState
@@ -636,10 +656,12 @@ notLeft:
   adc #0
   sta nomolosX+2
   
-  ;jsr updateNomolosAnimation
 notRight:
 
-  ;compute screen coordinates from level coordinates
+  ;************************************************************
+  ;Compute screen coordinates from level coordinates.
+  ;************************************************************
+
   lda nomolosX+1
   sta w0
   lda nomolosX+2
@@ -652,13 +674,18 @@ notRight:
   lda b0
   sta nomolosScreenY 
 
-  ;tell the camera to center itself on Nomolos
+  ;************************************************************
+  ;Move camera to center itself on Nomolos.
+  ;************************************************************
   lda nomolosScreenX
   sta b0
   jsr updateCamera
   lda b0
   sta nomolosScreenX
   
+  ;************************************************************
+  ;Update Nomolos' animation object.
+  ;************************************************************
   jsr updateNomolosAnimation
   
   rts
