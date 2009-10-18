@@ -15,6 +15,11 @@ drawAnimation:
   ;get the current frame of this animation object
   ldy #1
   lda (w1),y
+  ;check if animation is in start state, load frame 0 if so.
+  cmp #$ff
+  bne :+
+  lda #0
+:
   asl
   tay
   iny
@@ -54,7 +59,7 @@ updateAnimation:
   sbc #1
   sta (w1),y
   ;if the frame count down hasn't reached zero, skip the frame update code
-  bne :+
+  bne skipFrameUpdate
   ;reset the frame count value
   ldy #0
   lda (w2),y
@@ -71,11 +76,11 @@ updateAnimation:
   iny
   lda (w2),y
   ;if the byte is zero, we must reset the frame counter
-  bne :+
+  bne skipFrameUpdate
   lda #0
   ldy #1
   sta (w1),y
-:
+skipFrameUpdate:
   rts
   
 

@@ -305,8 +305,8 @@ NomolosJump:
 
 NomolosFight:
   .byte $0a
-  .word NomolosFight1
-  .word NomolosFight0  
+  .word NomolosFight0
+  .word NomolosFight1  
   .byte $00
 
 NomolosWalkOverlay:
@@ -324,8 +324,8 @@ NomolosJumpOverlay:
 
 NomolosFightOverlay:
   .byte $0a
-  .word NomolosFightOverlay1
   .word NomolosFightOverlay0
+  .word NomolosFightOverlay1
   .byte $00
 
 DeentleWalk:

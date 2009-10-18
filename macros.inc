@@ -35,7 +35,7 @@
 
   lda #$01
   sta animAddr
-  lda #$00
+  lda #$ff
   sta animAddr+1
 
 .endmacro
