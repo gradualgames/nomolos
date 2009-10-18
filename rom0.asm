@@ -24,7 +24,7 @@
 
 .export palette, MetaTileTable, MetaMetaTileTable
 .export NomolosWalk, NomolosWalkOverlay, NomolosJump, NomolosJumpOverlay
-.export NomolosFight, NomolosFightOverlay
+.export NomolosFight, NomolosFightOverlay, NomolosSlash0
 .export Heart0
 .export Level, EntityDefinitionTable
 .export ft_music_addr
@@ -44,7 +44,7 @@ palette:
 
 ;Sprite Palette
 ;Palette
-  .byte $21,$0d,$27,$10,$20,$04,$2a,$20,$20,$0d,$04,$20,$00,$00,$00,$00
+  .byte $21,$0d,$27,$10,$21,$0d,$04,$20,$21,$04,$2a,$20,$21,$20,$20,$20
 
 MetaTileTable:
 MetaTile0:
@@ -165,129 +165,133 @@ NomolosWalk0:
   .byte $08
   .byte $00,$00,$00,$00,$08
   .byte $00,$01,$00,$08,$00
-  .byte $08,$1a,$00,$00,$08
-  .byte $08,$1b,$00,$08,$00
-  .byte $10,$31,$00,$00,$08
-  .byte $10,$32,$00,$08,$00
-  .byte $18,$3f,$00,$00,$08
-  .byte $18,$40,$00,$08,$00
+  .byte $08,$19,$00,$00,$08
+  .byte $08,$1a,$00,$08,$00
+  .byte $10,$2e,$00,$00,$08
+  .byte $10,$2f,$00,$08,$00
+  .byte $18,$3b,$00,$00,$08
+  .byte $18,$3c,$00,$08,$00
 NomolosWalk1:
   .byte $08
   .byte $00,$02,$00,$00,$08
   .byte $00,$03,$00,$08,$00
-  .byte $08,$1c,$02,$00,$08
-  .byte $08,$1d,$00,$08,$00
-  .byte $10,$33,$00,$00,$08
-  .byte $10,$34,$00,$08,$00
-  .byte $18,$41,$00,$00,$08
-  .byte $18,$42,$00,$08,$00
+  .byte $08,$1b,$00,$00,$08
+  .byte $08,$1c,$00,$08,$00
+  .byte $10,$30,$00,$00,$08
+  .byte $10,$31,$00,$08,$00
+  .byte $18,$3d,$00,$00,$08
+  .byte $18,$3e,$00,$08,$00
 NomolosWalk2:
   .byte $08
-  .byte $00,$00,$00,$00,$08
+  .byte $00,$04,$00,$00,$08
   .byte $00,$01,$00,$08,$00
-  .byte $08,$1a,$00,$00,$08
-  .byte $08,$1b,$00,$08,$00
-  .byte $10,$31,$00,$00,$08
-  .byte $10,$32,$00,$08,$00
-  .byte $18,$3f,$00,$00,$08
-  .byte $18,$40,$00,$08,$00
+  .byte $08,$19,$00,$00,$08
+  .byte $08,$1a,$00,$08,$00
+  .byte $10,$2e,$00,$00,$08
+  .byte $10,$2f,$00,$08,$00
+  .byte $18,$3b,$00,$00,$08
+  .byte $18,$3c,$00,$08,$00
 NomolosWalk3:
   .byte $08
-  .byte $00,$04,$00,$00,$08
-  .byte $00,$05,$00,$08,$00
-  .byte $08,$1e,$00,$00,$08
-  .byte $08,$1f,$00,$08,$00
-  .byte $10,$35,$00,$00,$08
-  .byte $10,$36,$00,$08,$00
-  .byte $18,$43,$00,$00,$08
-  .byte $18,$44,$00,$08,$00
+  .byte $00,$05,$00,$00,$08
+  .byte $00,$06,$00,$08,$00
+  .byte $08,$1d,$00,$00,$08
+  .byte $08,$1e,$00,$08,$00
+  .byte $10,$32,$00,$00,$08
+  .byte $10,$33,$00,$08,$00
+  .byte $18,$3f,$00,$00,$08
+  .byte $18,$40,$00,$08,$00
 NomolosJump0:
   .byte $08
-  .byte $00,$06,$00,$00,$08
-  .byte $00,$07,$00,$08,$00
-  .byte $08,$20,$00,$00,$08
-  .byte $08,$21,$00,$08,$00
-  .byte $10,$37,$00,$00,$08
-  .byte $10,$38,$00,$08,$00
-  .byte $18,$45,$00,$00,$08
-  .byte $18,$46,$00,$08,$00
+  .byte $00,$07,$00,$00,$08
+  .byte $00,$08,$00,$08,$00
+  .byte $08,$1f,$00,$00,$08
+  .byte $08,$20,$00,$08,$00
+  .byte $10,$34,$00,$00,$08
+  .byte $10,$35,$00,$08,$00
+  .byte $18,$41,$00,$00,$08
+  .byte $18,$42,$00,$08,$00
 NomolosFight0:
   .byte $08
-  .byte $00,$08,$00,$00,$08
-  .byte $00,$09,$00,$08,$00
-  .byte $08,$22,$00,$00,$08
-  .byte $08,$23,$00,$08,$00
-  .byte $10,$39,$00,$00,$08
-  .byte $10,$3a,$00,$08,$00
-  .byte $18,$47,$00,$00,$08
-  .byte $18,$48,$00,$08,$00
+  .byte $00,$09,$00,$00,$08
+  .byte $00,$0a,$00,$08,$00
+  .byte $08,$21,$00,$00,$08
+  .byte $08,$22,$00,$08,$00
+  .byte $10,$36,$00,$00,$08
+  .byte $10,$37,$00,$08,$00
+  .byte $18,$43,$00,$00,$08
+  .byte $18,$44,$00,$08,$00
 NomolosFight1:
   .byte $08
-  .byte $00,$0a,$00,$00,$08
-  .byte $00,$0b,$00,$08,$00
-  .byte $08,$24,$00,$00,$08
-  .byte $08,$25,$00,$08,$00
-  .byte $10,$3b,$00,$00,$08
-  .byte $10,$3c,$00,$08,$00
-  .byte $18,$49,$00,$00,$08
-  .byte $18,$4a,$00,$08,$00
+  .byte $00,$0b,$00,$00,$08
+  .byte $00,$0c,$00,$08,$00
+  .byte $08,$23,$00,$00,$08
+  .byte $08,$24,$00,$08,$00
+  .byte $10,$38,$00,$00,$08
+  .byte $10,$39,$00,$08,$00
+  .byte $18,$45,$00,$00,$08
+  .byte $18,$46,$00,$08,$00
+NomolosSlash0:
+  .byte $02
+  .byte $08,$25,$03,$00,$08
+  .byte $10,$3a,$03,$00,$08
+Heart0:
+  .byte $01
+  .byte $00,$0e,$01,$00,$00
 NomolosWalkOverlay0:
   .byte $04
-  .byte $01,$0c,$02,$00,$08
-  .byte $01,$0d,$01,$08,$00
+  .byte $01,$0f,$02,$00,$08
+  .byte $01,$10,$02,$08,$00
   .byte $09,$26,$02,$00,$08
   .byte $09,$27,$02,$08,$00
 NomolosWalkOverlay1:
   .byte $04
-  .byte $01,$0e,$02,$00,$08
-  .byte $01,$0f,$01,$08,$00
+  .byte $01,$11,$02,$00,$08
+  .byte $01,$12,$02,$08,$00
   .byte $09,$28,$02,$00,$08
   .byte $09,$29,$02,$08,$00
 NomolosWalkOverlay2:
   .byte $04
-  .byte $01,$0c,$02,$00,$08
-  .byte $01,$0d,$01,$08,$00
+  .byte $01,$0f,$02,$00,$08
+  .byte $01,$10,$02,$08,$00
   .byte $09,$26,$02,$00,$08
   .byte $09,$27,$02,$08,$00
 NomolosWalkOverlay3:
   .byte $04
-  .byte $01,$0e,$02,$00,$08
-  .byte $01,$10,$01,$08,$00
+  .byte $01,$11,$02,$00,$08
+  .byte $01,$13,$02,$08,$00
   .byte $09,$28,$02,$00,$08
   .byte $09,$29,$02,$08,$00
 NomolosJumpOverlay0:
   .byte $04
-  .byte $01,$0c,$02,$00,$08
-  .byte $01,$11,$01,$08,$00
+  .byte $01,$0f,$02,$00,$08
+  .byte $01,$14,$02,$08,$00
   .byte $09,$26,$02,$00,$08
   .byte $09,$27,$02,$08,$00
 NomolosFightOverlay0:
   .byte $04
-  .byte $01,$12,$01,$00,$08
-  .byte $01,$13,$01,$08,$00
+  .byte $01,$15,$02,$00,$08
+  .byte $01,$16,$02,$08,$00
   .byte $09,$2a,$02,$00,$08
   .byte $09,$2b,$02,$08,$00
 NomolosFightOverlay1:
   .byte $04
-  .byte $01,$14,$02,$00,$08
-  .byte $01,$15,$01,$08,$00
+  .byte $01,$17,$02,$00,$08
+  .byte $01,$18,$02,$08,$00
   .byte $09,$2c,$02,$00,$08
-  .byte $09,$0d,$02,$08,$00
-DeentleWalk0:
+  .byte $09,$2d,$02,$08,$00
+Deentle0:
   .byte $04
-  .byte $00,$16,$00,$00,$08
-  .byte $00,$17,$00,$08,$00
-  .byte $08,$2d,$00,$00,$08
-  .byte $08,$2e,$00,$08,$00
-DeentleWalk1:
+  .byte $00,$47,$00,$00,$08
+  .byte $00,$48,$00,$08,$00
+  .byte $08,$4b,$00,$00,$08
+  .byte $08,$4c,$00,$08,$00
+Deentle1:
   .byte $04
-  .byte $00,$18,$00,$00,$08
-  .byte $00,$19,$00,$08,$00
-  .byte $08,$2f,$00,$00,$08
-  .byte $08,$30,$00,$08,$00
-Heart0:
-  .byte $01
-  .byte $00,$3d,$02,$00,$00
+  .byte $00,$49,$00,$00,$08
+  .byte $00,$4a,$00,$08,$00
+  .byte $08,$4d,$00,$00,$08
+  .byte $08,$4e,$00,$08,$00
 
 ;Animations
 NomolosWalk:
@@ -304,9 +308,19 @@ NomolosJump:
   .byte $00
 
 NomolosFight:
-  .byte $0a
+  .byte $06
   .word NomolosFight0
-  .word NomolosFight1  
+  .word NomolosFight1
+  .byte $00
+
+NomolosSlash:
+  .byte $0a
+  .word NomolosSlash0
+  .byte $00
+
+Heart:
+  .byte $0a
+  .word Heart0
   .byte $00
 
 NomolosWalkOverlay:
@@ -330,13 +344,8 @@ NomolosFightOverlay:
 
 DeentleWalk:
   .byte $0a
-  .word DeentleWalk0
-  .word DeentleWalk1
-  .byte $00
-
-Heart:
-  .byte $0a
-  .word Heart0
+  .word Deentle0
+  .word Deentle1
   .byte $00
  
 ;Entities

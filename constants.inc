@@ -32,6 +32,8 @@ nomolosVerticalAccelerationHi = $00
 nomolosVerticalSpeedMax = $0a
 nomolosWidth = $10
 nomolosHeight = $20
+nomolosHitboxWidth = $08
+nomolosHitboxHeight = $20
 
 ;keeps the lowest 4 bits to get penetration distance from a y coordinate
 penetrationCalculationMask = %00001111

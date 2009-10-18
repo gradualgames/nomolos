@@ -5,6 +5,7 @@
 .import NomolosWalk, NomolosWalkOverlay, Heart0
 .import NomolosJump, NomolosJumpOverlay
 .import NomolosFight, NomolosFightOverlay
+.import NomolosSlash0
 
 ;Sprite module labels
 .import drawMetaSprite, drawAnimation, updateAnimation
@@ -121,7 +122,7 @@ skipHurt:
   bne skipAttack
 
   ;turn on the attack hit box
-  lda #$14
+  lda #$0c
   sta nomolosHitboxCounter
   lda nomolosState
   ora #nomolosAttackOnOR
@@ -732,11 +733,11 @@ skipUpdateNomolosMoving:
   lda nomolosState
   and #1
   beq @skipNomolosFacingLeft
-  lda #$f8
+  lda #$f0
   sta nomolosHitboxXOffset
   jmp @skipNomolosFacingRight
 @skipNomolosFacingLeft:
-  lda #$08
+  lda #$10
   sta nomolosHitboxXOffset
 @skipNomolosFacingRight:
 
@@ -792,6 +793,30 @@ skipBlinkCheck:
   sta w2+1
   
   jsr drawAnimation
+  
+  lda #<NomolosSlash0
+  sta w0
+  lda #>NomolosSlash0
+  sta w0+1
+  
+;Temporary Parameters:
+;w0: the location of the meta sprite to draw
+;b0: the x coordinate at which to draw the meta sprite
+;b1: the y coordinate at which to draw the meta sprite
+;b2: extra bits to OR into the sprite attributes
+;    (presumably %01000000 to flip horiz)
+;Global Variables:
+;spriteAddress: the current sprite that will be overwritten in the sprite buffer
+;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
+
+  lda nomolosScreenX
+  clc
+  adc nomolosHitboxXOffset
+  sta b0
+  lda nomolosScreenY
+  sta b1
+  
+  jsr drawMetaSprite
   
   rts
   
