@@ -1,5 +1,6 @@
 .include "constants.inc"
 .include "macros.inc"
+.include "flags.inc"
 
 ;ROM labels
 .import palette, MetaTileTable, MetaMetaTileTable, Level, EntityDefinitionTable
@@ -233,26 +234,17 @@ reset:
   sta $2001
 
   ;initialize music driver as NTSC and track #0.
+.if .defined(MUSIC_ENABLE)
   lda #0
   ldx #0
   jsr ft_music_init
+.endif
   
 loop:
 
   jmp (update)
 
 updateFinished:
-
-;the following loops are used to measure how much time we have left in the main loop.
-;  ldy #12      ;2
-;:
-;  ldx #$ff      ;2
-;:
-;  dex           ;2 * 255
-;  bne :-         ;3 * 254 + 2
-;  
-;  dey           ;2 * 12
-;  bne :--        ;3 * 11 + 2
 
   jmp loop
 
@@ -282,17 +274,9 @@ vblank:
 
 updatePPUFinished:
 
+  .ifdef MUSIC_ENABLE
   jsr ft_music_play
-
-  ;the following loops are meant to measure how many cycles we have left to use for vblank
-;  ldy #20      ;2
-;--
-;  ldx #$ff      ;2
-;-
-;  dex           ;2 * 255
-;  bne -         ;3 * 254 + 2
-;  dey           ;2 * 19
-;  bne --        ;3 * 18 + 2
+  .endif
 
   plp
   pla

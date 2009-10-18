@@ -1,4 +1,4 @@
-.segment "CODE"
+.include "flags.inc"
 
 ;rom labels
 .import Heart0
@@ -28,6 +28,8 @@
 ;play level state labels
 .export playLevelUpdate, playLevelUpdatePPU
 
+.segment "CODE"
+
 playLevelUpdate:
 
   ;wait for vblank to complete
@@ -36,6 +38,12 @@ playLevelUpdate:
 : lda vblankDone
   beq :-
 
+  ;turn monochrome bit on
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  lda #%00011111
+  sta $2001
+  .endif
+  
   jsr readController
   
   jsr clearSprites
@@ -46,6 +54,12 @@ playLevelUpdate:
   jsr updateEntities
   
   jsr decodeMap
+    
+  ;turn monochrome bit off
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  lda #%00011110
+  sta $2001
+  .endif
     
   jmp updateFinished
   

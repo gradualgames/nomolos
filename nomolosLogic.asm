@@ -29,7 +29,7 @@
 
 .segment "CODE"
 
-initNomolos:
+.proc initNomolos
 
   lda #1
   sta nomolosAnim
@@ -38,7 +38,6 @@ initNomolos:
   
   lda #0
   and #nomolosWalkingRightAND  
-  ;ora #nomolosBlinkingOnOR
   sta nomolosState
   
   lda #0
@@ -74,23 +73,25 @@ initNomolos:
   sta nomolosHitboxYOffset
 
   rts
+  
+.endproc
 
 ;hurts Nomolos. It makes him bounce in the air a little bit, lose a heart,
 ;and become invincible temporarily.
-hurtNomolos:
+.proc hurtNomolos
 
   ;if blinking is on, skip this whole routine
   lda nomolosState
   and #nomolosBlinkingTestAND
   lsr
   lsr
-  bne :++
+  bne skipHurt
 
   ;decrease nomolos' health.
   lda nomolosHealth
-  beq :+
+  beq skipDecreaseHealth
   dec nomolosHealth
-:
+skipDecreaseHealth:
   
   ;make nomolos bounce a little bit.
   lda #nomolosHurtBounceLo
@@ -105,17 +106,19 @@ hurtNomolos:
   ora #nomolosBlinkingOnOR
   sta nomolosState  
   
-:
+skipHurt:
 
   rts
   
+.endproc
+  
 ;Causes the hit box to be activated for a few frames.
-nomolosAttack:
+.proc nomolosAttack
 
   ;if attacking is on, skip this whole routine
   lda nomolosState
   and #nomolosAttackTestAND
-  bne :+
+  bne skipAttack
 
   ;turn on the attack hit box
   lda #$0a
@@ -123,37 +126,39 @@ nomolosAttack:
   lda nomolosState
   ora #nomolosAttackOnOR
   sta nomolosState
-:
+skipAttack:
   
   rts
+  
+.endproc
   
 .proc updateNomolos
 
 ;Is the attack state on?
   lda nomolosState
   and #nomolosAttackTestAND
-  beq :+
+  beq skipAttackUpdate
   ;attack state was on
   
   dec nomolosHitboxCounter
-  bne :+
+  bne skipAttackUpdate
   
   ;set attack state to off
   lda nomolosState
   and #nomolosAttackOffAND
   sta nomolosState
-:
+skipAttackUpdate:
 
 ;Has the B button been hit?
   lda controllerBuffer+1
   and #%00000011
   ;transition from off to on
   cmp #%00000001
-  bne :+
+  bne skipAttack
   ;B button has been hit, run the attack routine
   ;jsr lowc
   jsr nomolosAttack
-:
+skipAttack:
 
 ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
   ;top left
@@ -395,20 +400,20 @@ noAboveCollision2:
 skipYSpeedNegativeCode:
  
   lda nomolosYSpeed+1
-  bne :+
+  bne skipButtonATest
   
   ;Test if current state of A button is down and previous state is up. In other words,
   ;AND with #%00000011, then test for equality to 1.
   lda controllerBuffer
   and #%00000011
   cmp #1
-  bne :+
+  bne skipButtonATest
   lda nomolosState
   and #nomolosBelowCollisionTestAND
   lsr
   lsr
   lsr
-  beq :+
+  beq skipButtonATest
   ;A button was down, collision was beneath so start the jump
   
   ;but don't start the jump if there's a collision above!
@@ -428,7 +433,7 @@ skipYSpeedNegativeCode:
   lda #nomolosStartJumpHi
   sta nomolosYSpeed+1
   
-:
+skipButtonATest:
 noAboveCollision3:
  
 ;;presumably if there is something directly above nomolos, or directly below nomolos, 
@@ -592,12 +597,12 @@ notRight:
 
   lda nomolosState
   and #2
-  bne :+
+  bne skipAnimReset
   lda #1
   sta nomolosAnim
   lda #0
   sta nomolosAnim+1
-:
+skipAnimReset:
   
   ;compute screen coordinates from level coordinates
   lda nomolosX+1
@@ -622,47 +627,49 @@ notRight:
   rts
 .endproc
   
-  
-  
-updateNomolosAnimation:
+.proc updateNomolosAnimation
 
   lda #<nomolosAnim
   sta w1
   lda #>nomolosAnim
   sta w1+1
   
-  lda nomolosState
-  and #1
-  bne :+
+;this block doesn't need to be here since we flip the animation
+;in the drawNomolos routine.
+;  lda nomolosState
+;  and #1
+;  bne :+
+;  lda #<NomolosWalk
+;  sta w2
+;  lda #>NomolosWalk
+;  sta w2+1
+;  jmp :++
+;:
   lda #<NomolosWalk
   sta w2
   lda #>NomolosWalk
   sta w2+1
-  jmp :++
-:
-  lda #<NomolosWalk
-  sta w2
-  lda #>NomolosWalk
-  sta w2+1
-:  
+;:  
   jsr updateAnimation
 
   rts  
   
-drawNomolos:
+.endproc
+  
+.proc drawNomolos
 
   lda nomolosState
   and #nomolosBlinkingTestAND
   lsr
   lsr
-  beq :+
+  beq skipBlinkCheck
   
   ;check blink counter
   lda nomolosBlinkCounter
   and #%00000011
   beq dontDrawNomolos
   
-:
+skipBlinkCheck:
 
   lda #<nomolosAnim
   sta w1
@@ -671,7 +678,7 @@ drawNomolos:
   
   lda nomolosState
   and #1
-  bne :+
+  bne skipNomolosWalkingRight
   lda #<NomolosWalkOverlay
   sta w2
   lda #>NomolosWalkOverlay
@@ -693,8 +700,8 @@ drawNomolos:
   sta w2+1
   jsr drawAnimation
   
-  jmp :++
-:
+  jmp skipNomolosWalkingLeft
+skipNomolosWalkingRight:
   lda #<NomolosWalkOverlay
   sta w2
   lda #>NomolosWalkOverlay
@@ -716,30 +723,26 @@ drawNomolos:
   sta w2+1
   jsr drawAnimation
   
-:  
-  
-  ;jsr updateAnimation
-  
-
-  
-
+skipNomolosWalkingLeft:
   
 dontDrawNomolos:
 
   dec nomolosBlinkCounter
-  bne :+
+  bne skipBlinkReset
   
   lda nomolosState
   and #nomolosBlinkingOffAND
   sta nomolosState
-:
+skipBlinkReset:
   
   rts
   
-drawNomolosHearts:
+.endproc
+  
+.proc drawNomolosHearts
 
   ldx nomolosHealth
-  beq :++
+  beq skipDrawHearts
   
   lda #$10
   sta b0
@@ -748,14 +751,16 @@ drawNomolosHearts:
   sta w0
   lda #>Heart0
   sta w0+1
-:
+drawNextHeart:
   jsr drawMetaSprite
   lda b0
   clc
   adc #$08
   sta b0
   dex  
-  bne :-
-:
+  bne drawNextHeart
+skipDrawHearts:
 
   rts
+  
+.endproc

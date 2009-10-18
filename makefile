@@ -6,20 +6,21 @@ LINKER          = ld65
 
 #Files
 NES_FILE        = nomolos.nes
-OBJECT_FILES    = nomolos.o \
-                  nomolosLogic.o \
-                  rom0.o \
-                  chrrom0.o \
-                  loadLevelState.o \
-                  playLevelState.o \
-                  map.o \
-                  camera.o \
-                  sprite.o \
-                  entity.o \
-                  controller.o \
-                  sound.o \
-                  geotests.o
-INCLUDE_FILES   = constants.inc macros.inc
+FILES           = nomolos \
+                  nomolosLogic \
+                  rom0 \
+                  chrrom0 \
+                  loadLevelState \
+                  playLevelState \
+                  map \
+                  camera \
+                  sprite \
+                  entity \
+                  controller \
+                  sound \
+                  geotests
+OBJECT_FILES    = $(addsuffix .o, $(FILES))
+INCLUDE_FILES   = constants.inc macros.inc flags.inc
 CONFIG_FILE     = nomolos.cfg
 MAPFILE         = nomolos.map
 LSTFILE         = nomolos.lst
