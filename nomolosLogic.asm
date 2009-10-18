@@ -69,7 +69,7 @@
   lda #0
   sta nomolosHitboxCounter
   
-  lda #16
+  lda #0
   sta nomolosHitboxXOffset
   lda #0
   sta nomolosHitboxYOffset
@@ -123,7 +123,7 @@ skipHurt:
   bne skipAttack
 
   ;turn on the attack hit box
-  lda #30
+  lda #$14
   sta nomolosHitboxCounter
   lda nomolosState
   ora #nomolosAttackOnOR
@@ -475,6 +475,10 @@ noAboveCollision3:
   and #nomolosMovingOffAND       ;state is moving
   sta nomolosState
 
+  ;is nomolos fighting? skip this animation reset code if so
+  lda nomolosState
+  and #nomolosAttackTestAND
+  bne @skipResetAnim
   ;is there an on to off transition on the left button?
   lda controllerBuffer+6
   and #%00000011
@@ -562,6 +566,10 @@ noAboveCollision3:
   ;jsr updateNomolosAnimation
 notLeft:
   
+  ;is nomolos fighting? skip this animation reset code if so
+  lda nomolosState
+  and #nomolosAttackTestAND
+  bne @skipResetAnim
   ;is there an on to off transition on the right button?
   lda controllerBuffer+7
   and #%00000011
@@ -645,14 +653,6 @@ notLeft:
   ;jsr updateNomolosAnimation
 notRight:
 
-;  and #nomolosMovingTestAND
-;  bne skipAnimReset
-;  lda #1
-;  sta nomolosAnim
-;  lda #0
-;  sta nomolosAnim+1
-;skipAnimReset:
-  
   ;compute screen coordinates from level coordinates
   lda nomolosX+1
   sta w0
@@ -717,6 +717,17 @@ skipUpdateNomolosMoving:
 .proc drawNomolos
 
   lda nomolosState
+  and #1
+  beq @skipNomolosFacingLeft
+  lda #$f8
+  sta nomolosHitboxXOffset
+  jmp @skipNomolosFacingRight
+@skipNomolosFacingLeft:
+  lda #$08
+  sta nomolosHitboxXOffset
+@skipNomolosFacingRight:
+
+  lda nomolosState
   and #nomolosBlinkingTestAND
   lsr
   lsr
@@ -754,13 +765,6 @@ skipBlinkCheck:
   ror
   ror
   sta b2
-  
-  beq skipNomolosFacingLeft
-  lda #$f8
-  sta nomolosHitboxXOffset
-skipNomolosFacingLeft:
-  lda #$08
-  sta nomolosHitboxXOffset
   
   lda nomolosScreenX
   sta b0
