@@ -733,7 +733,7 @@ skipUpdateNomolosMoving:
   lda nomolosState
   and #1
   beq @skipNomolosFacingLeft
-  lda #$f0
+  lda #$f8
   sta nomolosHitboxXOffset
   jmp @skipNomolosFacingRight
 @skipNomolosFacingLeft:

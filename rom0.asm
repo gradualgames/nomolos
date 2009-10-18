@@ -233,8 +233,8 @@ NomolosFight1:
   .byte $18,$46,$00,$08,$00
 NomolosSlash0:
   .byte $02
-  .byte $08,$25,$03,$00,$08
-  .byte $10,$3a,$03,$00,$08
+  .byte $08,$25,$03,$00,$00
+  .byte $10,$3a,$03,$00,$00
 Heart0:
   .byte $01
   .byte $00,$0e,$01,$00,$00
@@ -586,13 +586,13 @@ deentleNotOffscreen2:
   clc
   adc nomolosHitboxXOffset ;slide rectangle over for hit box
   sta w2
-  clc
-  adc #nomolosWidth
+  ;clc
+  adc #nomolosHitboxWidth
   sta w3
   lda nomolosScreenY
   sta w2+1
   clc
-  adc #nomolosHeight
+  adc #nomolosHitboxHeight
   sta w3+1
   
   jsr rectInRect
