@@ -30,3 +30,12 @@
   lda #>entityDefinitionTableAddr
   sta entityDefinitionTableBaseAddress+1
 .endmacro
+
+.macro resetAnim animAddr
+
+  lda #$01
+  sta animAddr
+  lda #$00
+  sta animAddr+1
+
+.endmacro

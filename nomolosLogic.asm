@@ -1,4 +1,5 @@
 .include "constants.inc"
+.include "macros.inc"
 
 ;ROM labels
 .import NomolosWalk, NomolosWalkOverlay, Heart0
@@ -33,10 +34,7 @@
 
 .proc initNomolos
 
-  lda #1
-  sta nomolosAnim
-  lda #0
-  sta nomolosAnim+1
+  resetAnim nomolosAnim
   
   lda #0
   and #nomolosWalkingRightAND  
@@ -130,10 +128,7 @@ skipHurt:
   sta nomolosState
   
   ;reset animation
-  lda #1
-  sta nomolosAnim
-  lda #0
-  sta nomolosAnim+1
+  resetAnim nomolosAnim
 skipAttack:
   
   rts
@@ -165,10 +160,7 @@ skipBlinkReset:
   sta nomolosState
   
   ;reset animation object
-  lda #1
-  sta nomolosAnim
-  lda #0
-  sta nomolosAnim+1
+  resetAnim nomolosAnim
 skipAttackUpdate:
 
 ;Has the B button been hit?
@@ -484,10 +476,7 @@ noAboveCollision3:
   and #%00000011
   cmp #%00000010
   bne @skipResetAnim
-  lda #1
-  sta nomolosAnim
-  lda #0
-  sta nomolosAnim+1
+  resetAnim nomolosAnim
   lda nomolosState
   and #nomolosMovingOffAND       ;state not moving
   sta nomolosState
@@ -575,10 +564,7 @@ notLeft:
   and #%00000011
   cmp #%00000010
   bne @skipResetAnim
-  lda #1
-  sta nomolosAnim
-  lda #0
-  sta nomolosAnim+1
+  resetAnim nomolosAnim
   lda nomolosState
   and #nomolosMovingOffAND       ;state not moving
   sta nomolosState
@@ -802,10 +788,7 @@ skipDrawNomolosFighting:
   beq skipDrawNomolosJumping
 skipYSpeedTest:
   
-  lda #1
-  sta nomolosAnim
-  lda #0
-  sta nomolosAnim+1
+  resetAnim nomolosAnim
   
   lda #<nomolosAnim
   sta w1
