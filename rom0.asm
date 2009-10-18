@@ -24,6 +24,7 @@
 
 .export palette, MetaTileTable, MetaMetaTileTable
 .export NomolosWalk, NomolosWalkOverlay, NomolosJump, NomolosJumpOverlay
+.export NomolosFight, NomolosFightOverlay
 .export Heart0
 .export Level, EntityDefinitionTable
 .export ft_music_addr
@@ -304,8 +305,8 @@ NomolosJump:
 
 NomolosFight:
   .byte $0a
-  .word NomolosFight0
   .word NomolosFight1
+  .word NomolosFight0  
   .byte $00
 
 NomolosWalkOverlay:
@@ -323,8 +324,8 @@ NomolosJumpOverlay:
 
 NomolosFightOverlay:
   .byte $0a
-  .word NomolosFightOverlay0
   .word NomolosFightOverlay1
+  .word NomolosFightOverlay0
   .byte $00
 
 DeentleWalk:

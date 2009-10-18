@@ -3,6 +3,7 @@
 ;ROM labels
 .import NomolosWalk, NomolosWalkOverlay, Heart0
 .import NomolosJump, NomolosJumpOverlay
+.import NomolosFight, NomolosFightOverlay
 
 ;Sprite module labels
 .import drawMetaSprite, drawAnimation, updateAnimation
@@ -122,11 +123,17 @@ skipHurt:
   bne skipAttack
 
   ;turn on the attack hit box
-  lda #$0a
+  lda #30
   sta nomolosHitboxCounter
   lda nomolosState
   ora #nomolosAttackOnOR
   sta nomolosState
+  
+  ;reset animation
+  lda #1
+  sta nomolosAnim
+  lda #0
+  sta nomolosAnim+1
 skipAttack:
   
   rts
@@ -156,6 +163,12 @@ skipBlinkReset:
   lda nomolosState
   and #nomolosAttackOffAND
   sta nomolosState
+  
+  ;reset animation object
+  lda #1
+  sta nomolosAnim
+  lda #0
+  sta nomolosAnim+1
 skipAttackUpdate:
 
 ;Has the B button been hit?
@@ -461,6 +474,20 @@ noAboveCollision3:
   lda nomolosState  
   and #nomolosMovingOffAND       ;state is moving
   sta nomolosState
+
+  ;is there an on to off transition on the left button?
+  lda controllerBuffer+6
+  and #%00000011
+  cmp #%00000010
+  bne @skipResetAnim
+  lda #1
+  sta nomolosAnim
+  lda #0
+  sta nomolosAnim+1
+  lda nomolosState
+  and #nomolosMovingOffAND       ;state not moving
+  sta nomolosState
+@skipResetAnim:
   
   lda controllerBuffer+6 ;Left
 
@@ -532,8 +559,22 @@ noAboveCollision3:
   sbc #0
   sta nomolosX+2
   
-  jsr updateNomolosAnimation
+  ;jsr updateNomolosAnimation
 notLeft:
+  
+  ;is there an on to off transition on the right button?
+  lda controllerBuffer+7
+  and #%00000011
+  cmp #%00000010
+  bne @skipResetAnim
+  lda #1
+  sta nomolosAnim
+  lda #0
+  sta nomolosAnim+1
+  lda nomolosState
+  and #nomolosMovingOffAND       ;state not moving
+  sta nomolosState
+@skipResetAnim:
   
   lda controllerBuffer+7 ; Right
 
@@ -601,17 +642,16 @@ notLeft:
   adc #0
   sta nomolosX+2
   
-  jsr updateNomolosAnimation
+  ;jsr updateNomolosAnimation
 notRight:
 
-  lda nomolosState
-  and #2
-  bne skipAnimReset
-  lda #1
-  sta nomolosAnim
-  lda #0
-  sta nomolosAnim+1
-skipAnimReset:
+;  and #nomolosMovingTestAND
+;  bne skipAnimReset
+;  lda #1
+;  sta nomolosAnim
+;  lda #0
+;  sta nomolosAnim+1
+;skipAnimReset:
   
   ;compute screen coordinates from level coordinates
   lda nomolosX+1
@@ -633,6 +673,8 @@ skipAnimReset:
   lda b0
   sta nomolosScreenX
   
+  jsr updateNomolosAnimation
+  
   rts
 .endproc
   
@@ -642,24 +684,31 @@ skipAnimReset:
   sta w1
   lda #>nomolosAnim
   sta w1+1
+
+  lda nomolosState
+  and #nomolosAttackTestAND
+  beq skipUpdateNomolosFighting
   
-;this block doesn't need to be here since we flip the animation
-;in the drawNomolos routine.
-;  lda nomolosState
-;  and #1
-;  bne :+
-;  lda #<NomolosWalk
-;  sta w2
-;  lda #>NomolosWalk
-;  sta w2+1
-;  jmp :++
-;:
+  lda #<NomolosFight
+  sta w2
+  lda #>NomolosFight
+  sta w2+1
+  
+  jsr updateAnimation
+  
+  rts
+skipUpdateNomolosFighting:
+  
+  lda nomolosState
+  and #nomolosMovingTestAND
+  beq skipUpdateNomolosMoving
   lda #<NomolosWalk
   sta w2
   lda #>NomolosWalk
   sta w2+1
-;:  
+ 
   jsr updateAnimation
+skipUpdateNomolosMoving:
 
   rts  
   
@@ -681,6 +730,55 @@ skipAnimReset:
 skipReturn:
   
 skipBlinkCheck:
+
+  ;test if nomolos is fighting. if he is, always draw him fighting
+  ;regardless of whether he is in the air.
+  lda nomolosState
+  and #nomolosAttackTestAND
+  beq skipDrawNomolosFighting
+  
+  lda #<nomolosAnim
+  sta w1
+  lda #>nomolosAnim
+  sta w1+1
+  
+  lda #<NomolosFight
+  sta w2
+  lda #>NomolosFight
+  sta w2+1
+  
+  ;get the direction bit into bit 6 of b2 for horiz flip
+  lda nomolosState
+  and #1
+  ror
+  ror
+  ror
+  sta b2
+  
+  beq skipNomolosFacingLeft
+  lda #$f8
+  sta nomolosHitboxXOffset
+skipNomolosFacingLeft:
+  lda #$08
+  sta nomolosHitboxXOffset
+  
+  lda nomolosScreenX
+  sta b0
+  lda nomolosScreenY
+  sta b1
+  
+  jsr drawAnimation
+  
+  lda #<NomolosFightOverlay
+  sta w2
+  lda #>NomolosFightOverlay
+  sta w2+1
+  
+  jsr drawAnimation
+  
+  rts
+  
+skipDrawNomolosFighting:
 
   ;we need to test two cases to know if nomolos is jumping,
   ;in order to cover the case where he is motionless for a
@@ -737,7 +835,7 @@ skipYSpeedTest:
   
   jsr drawAnimation
   
-  jmp dontDrawNomolos
+  rts
 skipDrawNomolosJumping:
 
   lda #<nomolosAnim
@@ -754,8 +852,6 @@ skipDrawNomolosJumping:
   sta w2+1
   lda #%00000000
   sta b2
-  lda #$10
-  sta nomolosHitboxXOffset
   
   lda nomolosScreenX
   sta b0
@@ -777,9 +873,7 @@ skipNomolosWalkingRight:
   sta w2+1
   lda #%01000000
   sta b2
-  lda #$f0
-  sta nomolosHitboxXOffset
-  
+
   lda nomolosScreenX
   sta b0
   lda nomolosScreenY

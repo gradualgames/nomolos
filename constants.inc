@@ -4,6 +4,7 @@ nomolosWalkingLeftOR         = %00000001
 
 nomolosMovingOffAND          = %11111101
 nomolosMovingOnOR            = %00000010
+nomolosMovingTestAND         = %00000010
 
 nomolosBlinkingOnOR          = %00000100
 nomolosBlinkingOffAND        = %11111011

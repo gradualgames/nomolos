@@ -18,9 +18,7 @@
   ;history of button presses.
   rol controllerBuffer
   lda $4016  ; B 
-  ;put button bit into carry
   ror
-  ;rotate bit into controller buffer for history.
   rol controllerBuffer+1
   lda $4016          ; Select 
   sta controllerBuffer+2
@@ -31,8 +29,10 @@
   lda $4016          ; Down
   sta controllerBuffer+5
   lda $4016          ; Left 
-  sta controllerBuffer+6
+  ror
+  rol controllerBuffer+6
   lda $4016          ; Right  
-  sta controllerBuffer+7
+  ror
+  rol controllerBuffer+7
   rts
 .endproc
