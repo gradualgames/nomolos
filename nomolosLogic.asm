@@ -488,10 +488,6 @@ skipButtonATest:
   ;transition is true.
   ;************************************************************
 
-  ;is nomolos fighting? skip this animation reset code if so
-  lda nomolosState
-  and #nomolosAttackTestAND
-  bne @skipResetAnim
   ;is there an on to off transition on the left button?
   lda controllerBuffer+6
   and #%00000011
@@ -576,10 +572,6 @@ skipButtonATest:
   ;jsr updateNomolosAnimation
 notLeft:
   
-  ;is nomolos fighting? skip this animation reset code if so
-  lda nomolosState
-  and #nomolosAttackTestAND
-  bne @skipResetAnim
   ;is there an on to off transition on the right button?
   lda controllerBuffer+7
   and #%00000011
