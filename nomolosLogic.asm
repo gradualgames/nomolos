@@ -791,16 +791,6 @@ skipBlinkCheck:
   lda #>NomolosSlash0
   sta w0+1
   
-;Temporary Parameters:
-;w0: the location of the meta sprite to draw
-;b0: the x coordinate at which to draw the meta sprite
-;b1: the y coordinate at which to draw the meta sprite
-;b2: extra bits to OR into the sprite attributes
-;    (presumably %01000000 to flip horiz)
-;Global Variables:
-;spriteAddress: the current sprite that will be overwritten in the sprite buffer
-;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
-
   lda nomolosScreenX
   clc
   adc nomolosHitboxXOffset
