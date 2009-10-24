@@ -492,7 +492,7 @@ skipButtonATest:
   and #%00000011
   cmp #%00000010
   bne @skipResetAnim
-  resetAnim nomolosAnim
+  ;resetAnim nomolosAnim
   lda nomolosState
   and #nomolosMovingOffAND       ;state not moving
   sta nomolosState
@@ -576,7 +576,7 @@ notLeft:
   and #%00000011
   cmp #%00000010
   bne @skipResetAnim
-  resetAnim nomolosAnim
+  ;resetAnim nomolosAnim
   lda nomolosState
   and #nomolosMovingOffAND       ;state not moving
   sta nomolosState
