@@ -5,7 +5,6 @@
 .import NomolosWalk, NomolosWalkOverlay, Heart0
 .import NomolosJump, NomolosJumpOverlay
 .import NomolosFight, NomolosFightOverlay
-.import NomolosSlash0
 
 ;Sprite module labels
 .import drawMetaSprite, drawAnimation, updateAnimation
@@ -785,20 +784,6 @@ skipBlinkCheck:
   sta w2+1
   
   jsr drawAnimation
-  
-  lda #<NomolosSlash0
-  sta w0
-  lda #>NomolosSlash0
-  sta w0+1
-  
-  lda nomolosScreenX
-  clc
-  adc nomolosHitboxXOffset
-  sta b0
-  lda nomolosScreenY
-  sta b1
-  
-  jsr drawMetaSprite
   
   rts
   
