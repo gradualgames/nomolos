@@ -491,12 +491,19 @@ skipButtonATest:
   lda controllerBuffer+6
   and #%00000011
   cmp #%00000010
+  bne @skipMoveOff
+  
+  lda nomolosState
+  ;if attack is on, do not reset the animation
+  and #nomolosAttackTestAND
   bne @skipResetAnim
-  ;resetAnim nomolosAnim
+  resetAnim nomolosAnim
+@skipResetAnim:
+
   lda nomolosState
   and #nomolosMovingOffAND       ;state not moving
   sta nomolosState
-@skipResetAnim:
+@skipMoveOff:
   
   lda controllerBuffer+6 ;Left
 
@@ -575,12 +582,19 @@ notLeft:
   lda controllerBuffer+7
   and #%00000011
   cmp #%00000010
+  bne @skipMoveOff
+  
+  lda nomolosState
+  ;if attack is on, do not reset the animation
+  and #nomolosAttackTestAND
   bne @skipResetAnim
-  ;resetAnim nomolosAnim
+  resetAnim nomolosAnim
+@skipResetAnim:
+
   lda nomolosState
   and #nomolosMovingOffAND       ;state not moving
   sta nomolosState
-@skipResetAnim:
+@skipMoveOff:
   
   lda controllerBuffer+7 ; Right
 
