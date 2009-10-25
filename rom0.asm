@@ -28,6 +28,7 @@
 .export Heart0
 .export Level, EntityDefinitionTable
 .export ft_music_addr
+.export attackSound
 
 .segment "RODATA"
 
@@ -326,6 +327,31 @@ DeentleWalk:
   .word Deentle0
   .word Deentle1
   .byte $00
+ 
+attackSound:
+  .byte $0E
+  .byte $07
+  .byte $0F
+  .byte $f8
+  .byte $0C
+  .byte %00110000
+  .byte $0C
+  .byte %00110010
+  .byte $0C
+  .byte %00110100
+  .byte $0C
+  .byte %00110110
+  .byte $0C
+  .byte %00111000
+  .byte $0C
+  .byte %00111010
+  .byte $0C
+  .byte %00111100
+  .byte $0C
+  .byte %00111110
+  .byte $0C
+  .byte %00110000
+  .byte $ff
  
 ;Entities
 EntityDefinitionTable:

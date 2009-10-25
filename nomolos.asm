@@ -19,7 +19,7 @@
 .import initEntities
 
 ;sound module
-.import initsound
+.import initsound, playSound
 
 ;global variables/RAM labels
 .exportzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5, vblankDone, update
@@ -35,6 +35,7 @@
 .exportzp nomolosHitboxXOffset, nomolosHitboxYOffset
 .exportzp scrollX, nextScrollX
 .exportzp controllerBuffer
+.exportzp soundAddr, soundOff
 .export stack, sprite, entityPool
 
 ;update return labels
@@ -100,6 +101,9 @@ nametableToUpdate: .res 1
 spriteAddress: .res 1
 
 controllerBuffer: .res 8
+
+soundAddr: .res 2
+soundOff: .res 1
 
 .segment "STACK"
 stack:  .res 256
@@ -277,6 +281,7 @@ updatePPUFinished:
   .ifdef MUSIC_ENABLE
   jsr ft_music_play
   .endif
+  jsr playSound
 
   plp
   pla

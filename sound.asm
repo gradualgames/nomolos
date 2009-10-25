@@ -1,8 +1,46 @@
+.importzp soundAddr, soundOff
+
 .export initsound, lowc
+.export playSound
 
 .segment "CODE"
 
-initsound:
+blankSound:
+  .byte $ff
+
+.proc playSound
+
+  ;load current sound offset
+  ldy soundOff
+  ;load x with the offset from $4000
+  lda (soundAddr),y
+  tax
+  ;see if we're at the end of the sound
+  cpx #$ff
+  ;quit if so
+  beq soundDone
+  ;if it wasn't -1, we have a register offset.
+
+  ;point to the next byte
+  iny
+
+  ;grab the value
+  lda (soundAddr),y
+
+  ;stuff the value into the sound register
+  sta $4000,x
+
+  ;point to the next entry in the sound
+  iny
+  sty soundOff
+
+soundDone:
+
+  rts
+  
+.endproc
+
+.proc initsound
         ; initialize sound hardware
   lda #$01
   sta $4015
@@ -10,9 +48,19 @@ initsound:
   sta $4001
   lda #$40
   sta $4017
+  
+  ;make sure the sound effect system is playing nothing at first
+  lda #<blankSound
+  sta soundAddr
+  lda #>blankSound
+  sta soundAddr+1
+  lda #$00
+  sta soundOff
   rts
   
-lowc:
+.endproc
+  
+.proc lowc
   pha
   lda #$84
   sta $4000
@@ -22,3 +70,5 @@ lowc:
   sta $4003
   pla
   rts
+  
+.endproc

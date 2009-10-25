@@ -5,6 +5,7 @@
 .import NomolosWalk, NomolosWalkOverlay, Heart0
 .import NomolosJump, NomolosJumpOverlay
 .import NomolosFight, NomolosFightOverlay
+.import attackSound
 
 ;Sprite module labels
 .import drawMetaSprite, drawAnimation, updateAnimation
@@ -16,7 +17,7 @@
 .import updateCamera, cameraToScreenCoords
 
 ;sound module labels
-.import lowc
+.import lowc, playSound
 
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
@@ -26,6 +27,7 @@
 .importzp nomolosBlinkCounter, nomolosHitboxCounter
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .importzp controllerBuffer
+.importzp soundAddr, soundOff
 
 ;Nomolos interface
 .export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts, hurtNomolos
@@ -120,6 +122,14 @@ skipHurt:
   and #nomolosAttackTestAND
   bne skipAttack
 
+  ;play an attack sound
+  lda #<attackSound
+  sta soundAddr
+  lda #>attackSound
+  sta soundAddr+1
+  lda #$00
+  sta soundOff
+  
   ;turn on the attack hit box
   lda #$0c
   sta nomolosHitboxCounter
