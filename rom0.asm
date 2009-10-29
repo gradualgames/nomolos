@@ -1,9 +1,11 @@
 .include "constants.inc"
+.include "macros.inc"
 
 ;zp variables
 .importzp b0, b1, b2, w0, w1, w2, w3
 .importzp nomolosScreenX, nomolosScreenY, nomolosState
 .importzp nomolosHitboxXOffset, nomolosHitboxYOffset
+.importzp soundAddr, soundOff
 
 .import entityPool
 
@@ -14,13 +16,16 @@
 .import hurtNomolos
 
 ;entity module
-.import returnFromEntityUpdate
+.import returnFromEntityUpdate, spawnEntity
 
 ;camera module
 .import cameraToScreenCoords
 
 ;sprite module
 .import updateAnimation, drawAnimation, drawMetaSprite
+
+;sound module
+.import lowc
 
 .export palette, MetaTileTable, MetaMetaTileTable
 .export NomolosWalk, NomolosWalkOverlay, NomolosJump, NomolosJumpOverlay
@@ -277,6 +282,24 @@ Deentle1:
   .byte $00,$4c,$00,$08,$00
   .byte $08,$55,$00,$00,$08
   .byte $08,$56,$00,$08,$00
+Explosion0:
+  .byte $04
+  .byte $00,$4d,$01,$00,$08
+  .byte $00,$4e,$01,$08,$00
+  .byte $08,$57,$01,$00,$08
+  .byte $08,$58,$01,$08,$00
+Explosion1:
+  .byte $04
+  .byte $00,$4f,$01,$00,$08
+  .byte $00,$50,$01,$08,$00
+  .byte $08,$59,$01,$00,$08
+  .byte $08,$5a,$01,$08,$00
+Explosion2:
+  .byte $04
+  .byte $00,$51,$01,$00,$08
+  .byte $00,$52,$01,$08,$00
+  .byte $08,$5b,$01,$00,$08
+  .byte $08,$5c,$01,$08,$00
 
 ;Animations
 NomolosWalk:
@@ -327,6 +350,13 @@ DeentleWalk:
   .word Deentle0
   .word Deentle1
   .byte $00
+
+Explosion:
+  .byte $02
+  .word Explosion0
+  .word Explosion1
+  .word Explosion2
+  .byte $00
  
 attackSound:
   .byte $0E
@@ -353,6 +383,31 @@ attackSound:
   .byte %00110000
   .byte $ff
  
+explodeSound:
+  .byte $0E
+  .byte $0a
+  .byte $0F
+  .byte $f8  
+  .byte $0C
+  .byte %00111110
+  .byte $0C
+  .byte %00111100
+  .byte $0C
+  .byte %00111010
+  .byte $0C
+  .byte %00111000
+  .byte $0C
+  .byte %00110110
+  .byte $0C
+  .byte %00110100
+  .byte $0C
+  .byte %00110010
+  .byte $0C
+  .byte %00110000
+  .byte $0C
+  .byte %00110000
+  .byte $ff
+ 
 ;Entities
 EntityDefinitionTable:
 DeentleEntity:
@@ -363,6 +418,16 @@ DeentleEntity:
   .byte $00
   .byte $00
   .byte $00
+ExplosionEntity:
+  .word explosionUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+
+
  
 ;all entity routines expect that entityPool,x points to
 ;the RAM entry for this particular update call.
@@ -378,6 +443,95 @@ DeentleEntity:
 ;10 .dsb state          = initialState
 ;11 .dsw animationObject  = unknown, this expected to be set by the entity
 ;13 .dsb 3 ;padding to 16 bytes
+
+EXPLOSION_INITSTATE = 0
+EXPLOSION_EXPLODESTATE = 1
+
+explosionUpdate:
+
+  lda entityPool+10,x
+  cmp #EXPLOSION_INITSTATE
+  beq explosionInit
+  cmp #EXPLOSION_EXPLODESTATE
+  beq explosionExplode
+  
+explosionInit:
+
+  ;reset the explosion animation object
+  lda #$01
+  sta entityPool+11,x
+  lda #$ff
+  sta entityPool+12,x
+  
+  ;set state to explode
+  lda #EXPLOSION_EXPLODESTATE
+  sta entityPool+10,x
+  
+  jmp returnFromEntityUpdate
+  
+explosionExplode:
+
+  ;get out low byte of positionX
+  lda entityPool+6,x
+  sta w0
+  ;get out high byte of positionX
+  lda entityPool+7,x
+  sta w0+1
+  
+  ;get out positionY
+  lda entityPool+9,x
+  sta b0
+  jsr cameraToScreenCoords
+  bne explosionDie
+  
+  ;b1 is screen X, b0 is screen Y, draw meta sprite needs b0 = x, b1 = y so swap them.
+  lda b0
+  pha
+  lda b1
+  sta b0
+  pla
+  sta b1
+  
+  ;load address of animation object into w1
+  lda #<(entityPool+11)
+  sta w1
+  lda #>(entityPool+11)
+  sta w1+1
+  
+  ;get the index into a
+  txa
+  clc
+  ;do a 16 bit add onto the address with this index
+  adc w1
+  sta w1
+  lda w1+1
+  adc #0
+  sta w1+1 
+  
+  lda #<Explosion
+  sta w2
+  lda #>Explosion
+  sta w2+1
+  jsr updateAnimation  
+  
+  jsr drawAnimation
+  
+  lda entityPool+12,x
+  cmp #2
+  bne @skipFrameCounterTest
+  lda entityPool+11,x
+  cmp #1
+  beq explosionDie
+@skipFrameCounterTest:
+
+  jmp returnFromEntityUpdate
+  
+explosionDie:
+
+  lda #0
+  sta entityPool,x
+
+  jmp returnFromEntityUpdate
 
 DEENTLE_INITSTATE = 0
 DEENTLE_MOVERIGHTSTATE = 1
@@ -604,6 +758,14 @@ deentleNotOffscreen2:
   
   bne nomolosNotAttacking
   
+  ;play an explode sound
+  lda #<explodeSound
+  sta soundAddr
+  lda #>explodeSound
+  sta soundAddr+1
+  lda #0
+  sta soundOff
+  
   jmp killDeentle
   
 nomolosNotAttacking:
@@ -638,8 +800,30 @@ deentleOffscreen:
   
 killDeentle:
 
+  ;make it dead
   lda #0
   sta entityPool,x
+  
+  ;spawn an explosion entity
+;the following parameters are expected:
+;b0 = index of entity definition to spawn
+;w0 = positionX
+;b1 = positionY
+  lda #1
+  sta b0
+
+  ;get out low byte of positionX
+  lda entityPool+6,x
+  sta w0
+  ;get out high byte of positionX
+  lda entityPool+7,x
+  sta w0+1
+  
+  ;get out positionY
+  lda entityPool+9,x
+  sta b1
+  
+  jsr spawnEntity
 
   rts
   
