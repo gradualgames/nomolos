@@ -480,17 +480,9 @@ explosionExplode:
   
   ;get out positionY
   lda entityPool+9,x
-  sta b0
+  sta b1
   jsr cameraToScreenCoords
   bne explosionDie
-  
-  ;b1 is screen X, b0 is screen Y, draw meta sprite needs b0 = x, b1 = y so swap them.
-  lda b0
-  pha
-  lda b1
-  sta b0
-  pla
-  sta b1
   
   ;load address of animation object into w1
   lda #<(entityPool+11)
@@ -663,7 +655,7 @@ deentle_draw:
   
   ;get out positionY
   lda entityPool+9,x
-  sta b0
+  sta b1
   jsr cameraToScreenCoords
   bpl dontKillDeentle 
   jmp killDeentle
@@ -678,20 +670,13 @@ deentleNotOffscreen1:
   ;get out high byte of positionX
   lda entityPool+7,x
   sta w0+1
+  ;get positionY
   lda entityPool+9,x
-  sta b0
+  sta b1
   jsr cameraToScreenCoords
   beq deentleNotOffscreen2
   jmp deentleOffscreen
 deentleNotOffscreen2:
-  
-  ;b1 is screen X, b0 is screen Y, draw meta sprite needs b0 = x, b1 = y so swap them.
-  lda b0
-  pha
-  lda b1
-  sta b0
-  pla
-  sta b1
   
   ;transfer Deentle rectangle to w0 = top left and w1 = bot right
   lda b0

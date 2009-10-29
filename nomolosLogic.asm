@@ -723,11 +723,11 @@ notRight:
   lda nomolosX+2
   sta w0+1
   lda nomolosY+1
-  sta b0
+  sta b1
   jsr cameraToScreenCoords
-  lda b1
-  sta nomolosScreenX
   lda b0
+  sta nomolosScreenX
+  lda b1
   sta nomolosScreenY 
 
   ;************************************************************
