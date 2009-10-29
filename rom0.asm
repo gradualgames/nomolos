@@ -33,7 +33,7 @@
 .export Heart0
 .export Level, EntityDefinitionTable
 .export ft_music_addr
-.export attackSound
+.export attackSound, hitSound
 
 .segment "RODATA"
 
@@ -383,7 +383,7 @@ attackSound:
   .byte %00110000
   .byte $ff
  
-explodeSound:
+hitSound:
   .byte $0E
   .byte $0a
   .byte $0F
@@ -760,9 +760,9 @@ deentleNotOffscreen2:
   bne nomolosNotAttacking
   
   ;play an explode sound
-  lda #<explodeSound
+  lda #<hitSound
   sta soundAddr
-  lda #>explodeSound
+  lda #>hitSound
   sta soundAddr+1
   lda #0
   sta soundOff

@@ -5,7 +5,7 @@
 .import NomolosWalk, NomolosWalkOverlay, Heart0
 .import NomolosJump, NomolosJumpOverlay
 .import NomolosFight, NomolosFightOverlay
-.import attackSound
+.import attackSound, hitSound
 
 ;Sprite module labels
 .import drawMetaSprite, drawAnimation, updateAnimation
@@ -108,6 +108,14 @@ skipDecreaseHealth:
   lda nomolosState
   ora #nomolosBlinkingOnOR
   sta nomolosState  
+  
+  ;play a hit sound
+  lda #<hitSound
+  sta soundAddr
+  lda #>hitSound
+  sta soundAddr+1
+  lda #0
+  sta soundOff
   
 skipHurt:
 
