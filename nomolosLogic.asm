@@ -31,6 +31,7 @@
 
 ;Nomolos interface
 .export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts, hurtNomolos
+.export nomolosDeadly
 
 .segment "CODE"
 
@@ -143,6 +144,37 @@ skipAttack:
   
   rts
   
+.endproc
+  
+;tests nomolos' state and animation and returns whether he is currently deadly.
+;This routine should be used by entities to determine if they ought to be damaged
+;by Nomolos' hit box.
+;zero flag set = nomolos is not deadly
+;zero flag clear = nomolos is deadly.
+.proc nomolosDeadly
+
+  lda nomolosState
+  and #nomolosAttackTestAND
+  beq @nomolosNotAttacking
+  
+  ;load current frame
+  lda nomolosAnim+1
+  cmp #0
+  beq @nomolosPawNotExtended
+  
+  ;we know his paw is extended here, clear zero flag
+  lda #1
+  
+  rts
+  
+@nomolosPawNotExtended:
+  
+@nomolosNotAttacking:
+
+  lda #0
+
+  rts
+
 .endproc
   
 .proc updateNomolos

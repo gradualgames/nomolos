@@ -13,7 +13,7 @@
 .import rectInRect
 
 ;nomolosLogic module
-.import hurtNomolos
+.import hurtNomolos, nomolosDeadly
 
 ;entity module
 .import returnFromEntityUpdate, spawnEntity
@@ -724,8 +724,9 @@ deentleNotOffscreen2:
   jsr hurtNomolos
   
 :
-  lda nomolosState
-  and #nomolosAttackTestAND
+  jsr nomolosDeadly
+  ;lda nomolosState
+  ;and #nomolosAttackTestAND
   beq nomolosNotAttacking
   
   ;transfer Deentle rectangle to w0 = top left and w1 = bot right
