@@ -435,7 +435,14 @@ ExplosionEntity:
   .byte $00
   .byte $00
   .byte $00
-
+MouseEntity:
+  .word mouseUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
 
  
 ;all entity routines expect that entityPool,x points to
@@ -452,6 +459,78 @@ ExplosionEntity:
 ;10 .dsb state          = initialState
 ;11 .dsw animationObject  = unknown, this expected to be set by the entity
 ;13 .dsb 3 ;padding to 16 bytes
+
+MOUSE_INITSTATE = 0
+MOUSE_SITTHERESTATE = 1
+
+mouseUpdate:
+
+  lda entityPool+10,x
+  cmp #MOUSE_INITSTATE
+  beq mouseInit
+  cmp #MOUSE_SITTHERESTATE
+  beq mouseSitThere
+
+mouseInit:
+
+  ;reset the explosion animation object
+  lda #$01
+  sta entityPool+11,x
+  lda #$ff
+  sta entityPool+12,x
+  
+  lda #MOUSE_SITTHERESTATE
+  sta entityPool+10,x
+
+  jmp returnFromEntityUpdate
+  
+mouseSitThere:
+
+  ;get out low byte of positionX
+  lda entityPool+6,x
+  sta w0
+  ;get out high byte of positionX
+  lda entityPool+7,x
+  sta w0+1
+  
+  ;get out positionY
+  lda entityPool+9,x
+  sta b1
+  jsr cameraToScreenCoords
+  bne mouseDie
+  
+  ;load address of animation object into w1
+  lda #<(entityPool+11)
+  sta w1
+  lda #>(entityPool+11)
+  sta w1+1
+  
+  ;get the index into a
+  txa
+  clc
+  ;do a 16 bit add onto the address with this index
+  adc w1
+  sta w1
+  lda w1+1
+  adc #0
+  sta w1+1 
+  
+  lda #<Mouse
+  sta w2
+  lda #>Mouse
+  sta w2+1
+  jsr updateAnimation  
+  
+  jsr drawAnimation
+  
+  jmp returnFromEntityUpdate
+  
+mouseDie:
+
+  lda #0
+  sta entityPool,x
+
+  jmp returnFromEntityUpdate
 
 EXPLOSION_INITSTATE = 0
 EXPLOSION_EXPLODESTATE = 1
@@ -719,8 +798,6 @@ deentleNotOffscreen2:
   
 :
   jsr nomolosDeadly
-  ;lda nomolosState
-  ;and #nomolosAttackTestAND
   beq nomolosNotAttacking
   
   ;transfer Deentle rectangle to w0 = top left and w1 = bot right
@@ -804,7 +881,7 @@ killDeentle:
 ;b0 = index of entity definition to spawn
 ;w0 = positionX
 ;b1 = positionY
-  lda #1
+  lda #2
   sta b0
 
   ;get out low byte of positionX
