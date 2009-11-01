@@ -31,7 +31,7 @@
 
 ;Nomolos interface
 .export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts, hurtNomolos
-.export nomolosDeadly
+.export nomolosDeadly, addNomolosHealth
 
 .segment "CODE"
 
@@ -77,6 +77,18 @@
 
   rts
   
+.endproc
+
+;adds health to Nomolos. The accumulator is assumed to contain the
+;number of hearts to add on to his health.
+.proc addNomolosHealth
+
+  clc
+  adc nomolosHealth
+  sta nomolosHealth
+
+  rts
+
 .endproc
 
 ;hurts Nomolos. It makes him bounce in the air a little bit, lose a heart,

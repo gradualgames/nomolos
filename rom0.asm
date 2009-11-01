@@ -13,7 +13,7 @@
 .import rectInRect
 
 ;nomolosLogic module
-.import hurtNomolos, nomolosDeadly
+.import hurtNomolos, nomolosDeadly, addNomolosHealth
 
 ;entity module
 .import returnFromEntityUpdate, spawnEntity
@@ -71,6 +71,8 @@ MetaTile7:
   .byte $01,$00,$01,$04,$02,$02,$00,$00
 MetaTile8:
   .byte $01,$00,$00,$00,$00,$00,$01,$00
+MetaTile9:
+  .byte $01,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTileTable:
 MetaMetaTile0:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00
@@ -115,7 +117,7 @@ MetaMetaTile19:
 MetaMetaTile20:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$02,$00,$00,$03,$00
 MetaMetaTile21:
-  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00,$09,$03,$00
 MetaMetaTile22:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$08,$03,$00,$00,$03,$00
 MetaMetaTile23:
@@ -137,7 +139,7 @@ MetaMetaTile30:
 MetaMetaTile31:
   .byte $00,$00,$00,$00,$00,$08,$03,$00,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile32:
-  .byte $00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$09,$04,$00,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile33:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$02,$00,$00,$00,$03,$00
 MetaMetaTile34:
@@ -145,27 +147,31 @@ MetaMetaTile34:
 MetaMetaTile35:
   .byte $00,$00,$00,$00,$00,$08,$03,$00,$00,$00,$00,$00,$00,$08,$03,$00
 MetaMetaTile36:
-  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile37:
-  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$08,$01,$01,$01,$01,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$03,$00
 MetaMetaTile38:
-  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$08,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$08,$01,$01,$01,$01,$03,$00
 MetaMetaTile39:
-  .byte $00,$00,$00,$00,$00,$00,$00,$00,$08,$01,$00,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$08,$03,$00
 MetaMetaTile40:
-  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$09,$03,$00
 MetaMetaTile41:
-  .byte $00,$00,$00,$00,$00,$08,$01,$00,$00,$00,$00,$01,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$08,$01,$00,$00,$00,$00,$03,$00
 MetaMetaTile42:
-  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$08,$01,$00,$00,$03,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$03,$00
 MetaMetaTile43:
+  .byte $00,$00,$00,$00,$00,$08,$01,$00,$00,$00,$00,$01,$00,$00,$03,$00
+MetaMetaTile44:
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$08,$01,$00,$00,$03,$00
+MetaMetaTile45:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$03,$00
 Level:
   .byte $00,$00,$00,$00,$00,$00,$00,$01,$02,$02,$03,$02,$04,$00,$00,$05,$05,$05,$06,$05,$00,$00,$07,$08,$09,$0a,$0b,$0c,$00,$00,$07,$08
   .byte $0d,$0e,$00,$00,$0f,$00,$00,$10,$11,$12,$13,$00,$00,$14,$15,$16,$17,$00,$00,$00,$18,$19,$1a,$19,$18,$00,$00,$00,$1b,$00,$00,$1c
-  .byte $00,$00,$00,$00,$1d,$1e,$1e,$1f,$1e,$20,$00,$00,$21,$0b,$0b,$22,$0b,$0b,$0c,$00,$1d,$1e,$1e,$23,$1e,$1e,$20,$00,$00,$24,$24,$24
-  .byte $25,$24,$24,$00,$00,$00,$26,$00,$00,$00,$00,$26,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$27,$28,$29,$2a,$2b,$29,$28,$27,$00,$00
-
+  .byte $00,$00,$00,$00,$1d,$1e,$1e,$1f,$1e,$20,$00,$00,$21,$0b,$0b,$22,$0b,$0b,$0c,$00,$1d,$1e,$1e,$23,$1e,$1e,$24,$00,$00,$25,$25,$25
+  .byte $26,$25,$25,$00,$00,$00,$27,$00,$00,$00,$00,$27,$00,$00,$00,$00,$00,$28,$00,$00,$00,$00,$29,$2a,$2b,$2c,$2d,$2b,$2a,$29,$00,$00
+  
 ;Meta Sprite Table
 NomolosWalk0:
   .byte $08
@@ -419,6 +425,7 @@ hitSound:
  
 ;Entities
 EntityDefinitionTable:
+DeentleIndex = 0
 DeentleEntity:
   .word deentleUpdate
   .byte $00
@@ -427,6 +434,7 @@ DeentleEntity:
   .byte $00
   .byte $00
   .byte $00
+ExplosionIndex = 1
 ExplosionEntity:
   .word explosionUpdate
   .byte $00
@@ -435,6 +443,7 @@ ExplosionEntity:
   .byte $00
   .byte $00
   .byte $00
+MouseIndex = 2
 MouseEntity:
   .word mouseUpdate
   .byte $00
@@ -498,6 +507,40 @@ mouseSitThere:
   sta b1
   jsr cameraToScreenCoords
   bne mouseDie
+  
+  ;transfer Mouse rectangle to w0 = top left and w1 = bot right
+  lda b0
+  sta w0
+  clc
+  adc #$10
+  sta w1
+  lda b1
+  sta w0+1
+  clc
+  adc #$10
+  sta w1+1
+  
+  ;transfer Nomolos rectangle to w2 = top left and w3 = bot right
+  lda nomolosScreenX
+  sta w2
+  clc
+  adc #nomolosWidth
+  sta w3
+  lda nomolosScreenY
+  sta w2+1
+  clc
+  adc #nomolosHeight
+  sta w3+1
+  
+  jsr rectInRect
+  
+  bne @notTouching
+  
+  lda #1
+  jsr addNomolosHealth
+  jmp mouseDie
+  
+@notTouching:
   
   ;load address of animation object into w1
   lda #<(entityPool+11)
@@ -881,7 +924,7 @@ killDeentle:
 ;b0 = index of entity definition to spawn
 ;w0 = positionX
 ;b1 = positionY
-  lda #2
+  lda #ExplosionIndex
   sta b0
 
   ;get out low byte of positionX
