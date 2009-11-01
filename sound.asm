@@ -1,3 +1,8 @@
+.include "constants.inc"
+
+;famitracker labels
+.import ft_enable_channel, ft_disable_channel
+
 .importzp soundAddr, soundOff
 
 .export initsound, lowc
@@ -12,21 +17,58 @@ blankSound:
 
   ;load current sound offset
   ldy soundOff
-  ;load x with the offset from $4000
+  ;load x with the offset from $4000 (or famitracker channel command)
   lda (soundAddr),y
+  
   tax
   ;see if we're at the end of the sound
   cpx #$ff
   ;quit if so
   beq soundDone
-  ;if it wasn't -1, we have a register offset.
+  ;if it wasn't -1, we have a register offset or a command.
+  
+  ;test for "disable famitracker channel" command, which is defined as $20
+  cmp #DISABLE_FAMITRACKER_CHANNEL
+  bne @notDisable
+  
+  ;point to the next byte
+  iny
+  
+  ;grab the value
+  lda (soundAddr),y
+  tax
+  jsr ft_disable_channel
+  
+  ;point to the next entry in the sound
+  iny
+  sty soundOff
+  
+  jmp soundDone
+@notDisable:
+  cmp #ENABLE_FAMITRACKER_CHANNEL
+  bne @notEnable
+  
+  ;point to the next byte
+  iny
+  
+  ;grab the value
+  lda (soundAddr),y
+  tax
+  jsr ft_enable_channel
+  
+  ;point to the next entry in the sound
+  iny
+  sty soundOff
+  
+  jmp soundDone
+@notEnable:
 
   ;point to the next byte
   iny
 
   ;grab the value
   lda (soundAddr),y
-
+  
   ;stuff the value into the sound register
   sta $4000,x
 

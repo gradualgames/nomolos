@@ -130,6 +130,7 @@ entityPool: .res 256
 ;FamiTracker driver must be included here so its variables come after the sprite
 ;page and entity page. This avoids clobbering graphics/sound memory.
 .include "driver.s"
+.export ft_enable_channel, ft_disable_channel
 
 .segment "CODE"
 

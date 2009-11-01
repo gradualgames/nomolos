@@ -1,3 +1,7 @@
+;Sound constants
+DISABLE_FAMITRACKER_CHANNEL = $20
+ENABLE_FAMITRACKER_CHANNEL = $21
+
 ;Nomolos constants
 nomolosWalkingRightAND       = %11111110
 nomolosWalkingLeftOR         = %00000001

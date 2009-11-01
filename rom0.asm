@@ -422,6 +422,27 @@ hitSound:
   .byte $0C
   .byte %00110000
   .byte $ff
+
+getHealthSound:
+  .byte DISABLE_FAMITRACKER_CHANNEL
+  .byte $01 
+  .byte $04
+  .byte $84
+  .byte $05
+  .byte %00000000
+  .byte $07
+  .byte %00001000
+  .byte $06
+  .byte %11111111
+  .byte $06
+  .byte %10111111
+  .byte $06
+  .byte %01111111
+  .byte $06
+  .byte %00111111  
+  .byte ENABLE_FAMITRACKER_CHANNEL
+  .byte $01
+  .byte $ff
  
 ;Entities
 EntityDefinitionTable:
@@ -538,6 +559,14 @@ mouseSitThere:
   
   lda #1
   jsr addNomolosHealth
+  
+  lda #<getHealthSound
+  sta soundAddr
+  lda #>getHealthSound
+  sta soundAddr+1
+  lda #0
+  sta soundOff
+  
   jmp mouseDie
   
 @notTouching:
