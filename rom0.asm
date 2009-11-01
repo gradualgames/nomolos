@@ -949,10 +949,6 @@ killDeentle:
   sta entityPool,x
   
   ;spawn an explosion entity
-;the following parameters are expected:
-;b0 = index of entity definition to spawn
-;w0 = positionX
-;b1 = positionY
   lda #ExplosionIndex
   sta b0
 
