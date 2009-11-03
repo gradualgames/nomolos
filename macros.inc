@@ -39,3 +39,15 @@
   sta animAddr+1
 
 .endmacro
+
+.macro playSound sAddr
+
+  jsr finishSound
+  lda #<sAddr
+  sta soundAddr
+  lda #>sAddr
+  sta soundAddr+1
+  lda #$00
+  sta soundOff
+
+.endmacro

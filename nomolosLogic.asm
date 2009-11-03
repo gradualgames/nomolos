@@ -17,7 +17,7 @@
 .import updateCamera, cameraToScreenCoords
 
 ;sound module labels
-.import lowc, playSound
+.import lowc, playSound, finishSound
 
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
@@ -144,12 +144,7 @@ skipHurt:
   bne skipAttack
 
   ;play an attack sound
-  lda #<attackSound
-  sta soundAddr
-  lda #>attackSound
-  sta soundAddr+1
-  lda #$00
-  sta soundOff
+  playSound attackSound
   
   ;turn on the attack hit box
   lda #$0c

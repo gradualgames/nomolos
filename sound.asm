@@ -6,13 +6,58 @@
 .importzp soundAddr, soundOff
 
 .export initsound, lowc
-.export playSound
+.export playSound, finishSound
 
 .segment "CODE"
 
 blankSound:
   .byte $ff
 
+;fast forwards to the end of the current sound to ensure channel enable/disable commands
+;are read before the next sound is played.
+.proc finishSound
+
+  ;save x (entities use this)
+  txa
+  pha
+
+  ;load current sound offset
+  ldy soundOff
+keepFinishing:
+  ;load command
+  lda (soundAddr),y
+  ;at end?
+  cmp #$ff
+  beq soundFinished
+  ;is this an enable command? Make sure to run it
+  cmp #ENABLE_FAMITRACKER_CHANNEL
+  bne enableCommandNotFoundYet
+  ;move on to channel value
+  iny
+  lda (soundAddr),y
+  ;re-enable that channel
+  tax
+  jsr ft_enable_channel
+  
+enableCommandNotFoundYet:
+
+  ;move on to next entry
+  iny
+  ;keep looking for channel enable commands
+  jmp keepFinishing
+  
+soundFinished:
+
+  sty soundOff
+
+  ;restore x (entities use this)
+  pla
+  tax
+  
+  rts
+
+.endproc
+  
 .proc playSound
 
   ;load current sound offset

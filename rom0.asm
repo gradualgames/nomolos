@@ -25,7 +25,7 @@
 .import updateAnimation, drawAnimation, drawMetaSprite
 
 ;sound module
-.import lowc
+.import lowc, finishSound
 
 .export palette, MetaTileTable, MetaMetaTileTable
 .export NomolosWalk, NomolosWalkOverlay, NomolosJump, NomolosJumpOverlay
@@ -560,12 +560,7 @@ mouseSitThere:
   lda #1
   jsr addNomolosHealth
   
-  lda #<getHealthSound
-  sta soundAddr
-  lda #>getHealthSound
-  sta soundAddr+1
-  lda #0
-  sta soundOff
+  playSound getHealthSound
   
   jmp mouseDie
   
@@ -903,12 +898,7 @@ deentleNotOffscreen2:
   bne nomolosNotAttacking
   
   ;play an explode sound
-  lda #<hitSound
-  sta soundAddr
-  lda #>hitSound
-  sta soundAddr+1
-  lda #0
-  sta soundOff
+  playSound hitSound
   
   jmp killDeentle
   
