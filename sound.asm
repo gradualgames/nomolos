@@ -3,10 +3,10 @@
 ;famitracker labels
 .import ft_enable_channel, ft_disable_channel
 
-.importzp soundAddr, soundOff
+.importzp soundAddr, soundOff, w0
 
 .export initsound, lowc
-.export playSound, finishSound
+.export loadSound, playSound, finishSound
 
 .segment "CODE"
 
@@ -125,6 +125,23 @@ soundDone:
 
   rts
   
+.endproc
+
+;finishes the current sound if there is one and
+;loads a new sound into the sound address.
+;w0 = address of sound to load
+.proc loadSound
+
+  jsr finishSound
+  lda w0
+  sta soundAddr
+  lda w0+1
+  sta soundAddr+1
+  lda #0
+  sta soundOff  
+
+  rts
+
 .endproc
 
 .proc initsound

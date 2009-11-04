@@ -14,7 +14,7 @@
 .import updateCamera, cameraToScreenCoords
 
 ;sound module labels
-.import lowc, playSound, finishSound
+.import lowc, loadSound, playSound, finishSound
 
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
@@ -120,7 +120,11 @@ skipDecreaseHealth:
   sta nomolosState  
   
   ;play a hit sound
-  playSound hitSound
+  lda #<hitSound
+  sta w0
+  lda #>hitSound
+  sta w0+1
+  jsr loadSound
   
 skipHurt:
 
@@ -137,7 +141,11 @@ skipHurt:
   bne skipAttack
 
   ;play an attack sound
-  playSound attackSound
+  lda #<attackSound
+  sta w0
+  lda #>attackSound
+  sta w0+1
+  jsr loadSound
   
   ;turn on the attack hit box
   lda #$0c
