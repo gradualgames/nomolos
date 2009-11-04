@@ -122,12 +122,7 @@ skipDecreaseHealth:
   sta nomolosState  
   
   ;play a hit sound
-  lda #<hitSound
-  sta soundAddr
-  lda #>hitSound
-  sta soundAddr+1
-  lda #0
-  sta soundOff
+  playSound hitSound
   
 skipHurt:
 
