@@ -28,10 +28,7 @@
 .import lowc, finishSound
 
 .export palette, MetaTileTable, MetaMetaTileTable
-.export NomolosWalk, NomolosWalkOverlay, NomolosJump, NomolosJumpOverlay
-.export NomolosFight, NomolosFightOverlay
 .export NomolosDefinitionTable
-.export Heart0
 .export Level, EntityDefinitionTable
 .export ft_music_addr
 .export attackSound, hitSound
