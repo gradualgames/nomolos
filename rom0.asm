@@ -30,6 +30,7 @@
 .export palette, MetaTileTable, MetaMetaTileTable
 .export NomolosWalk, NomolosWalkOverlay, NomolosJump, NomolosJumpOverlay
 .export NomolosFight, NomolosFightOverlay
+.export NomolosDefinitionTable
 .export Heart0
 .export Level, EntityDefinitionTable
 .export ft_music_addr
@@ -373,6 +374,16 @@ Mouse:
   .word Mouse0
   .byte $00
 
+;Nomolos definition table
+NomolosDefinitionTable:
+  .word NomolosWalk            ;0
+  .word NomolosWalkOverlay     ;2 
+  .word NomolosJump            ;4
+  .word NomolosJumpOverlay     ;6
+  .word NomolosFight           ;8
+  .word NomolosFightOverlay    ;10
+  .word Heart0                 ;12
+  
 attackSound:
   .byte $0E
   .byte $07

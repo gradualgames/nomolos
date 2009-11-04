@@ -2,9 +2,6 @@
 .include "macros.inc"
 
 ;ROM labels
-.import NomolosWalk, NomolosWalkOverlay, Heart0
-.import NomolosJump, NomolosJumpOverlay
-.import NomolosFight, NomolosFightOverlay
 .import attackSound, hitSound
 
 ;Sprite module labels
@@ -26,6 +23,7 @@
 .importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
 .importzp nomolosBlinkCounter, nomolosHitboxCounter
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
+.importzp nomolosDefinitionTableBaseAddress
 .importzp controllerBuffer
 .importzp soundAddr, soundOff
 
@@ -760,9 +758,11 @@ notRight:
   and #nomolosAttackTestAND
   beq skipUpdateNomolosFighting
   
-  lda #<NomolosFight
+  ldy #8
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2
-  lda #>NomolosFight
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2+1
   
   jsr updateAnimation
@@ -773,9 +773,11 @@ skipUpdateNomolosFighting:
   lda nomolosState
   and #nomolosMovingTestAND
   beq skipUpdateNomolosMoving
-  lda #<NomolosWalk
+  ldy #0
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2
-  lda #>NomolosWalk
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2+1
  
   jsr updateAnimation
@@ -824,9 +826,11 @@ skipBlinkCheck:
   lda #>nomolosAnim
   sta w1+1
   
-  lda #<NomolosFight
+  ldy #8
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2
-  lda #>NomolosFight
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2+1
   
   ;get the direction bit into bit 6 of b2 for horiz flip
@@ -844,9 +848,11 @@ skipBlinkCheck:
   
   jsr drawAnimation
   
-  lda #<NomolosFightOverlay
+  ldy #10
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2
-  lda #>NomolosFightOverlay
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2+1
   
   jsr drawAnimation
@@ -880,9 +886,11 @@ skipYSpeedTest:
   lda #>nomolosAnim
   sta w1+1
   
-  lda #<NomolosJump
+  ldy #4
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2
-  lda #>NomolosJump
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2+1
   
   ;get the direction bit into bit 6 of b2 for horiz flip
@@ -900,9 +908,11 @@ skipYSpeedTest:
   
   jsr drawAnimation
   
-  lda #<NomolosJumpOverlay
+  ldy #6
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2
-  lda #>NomolosJumpOverlay
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2+1
   
   jsr drawAnimation
@@ -918,9 +928,11 @@ skipDrawNomolosJumping:
   lda nomolosState
   and #1
   bne skipNomolosWalkingRight
-  lda #<NomolosWalkOverlay
+  ldy #2
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2
-  lda #>NomolosWalkOverlay
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2+1
   lda #%00000000
   sta b2
@@ -931,17 +943,22 @@ skipDrawNomolosJumping:
   sta b1
   jsr drawAnimation
   
-  lda #<NomolosWalk
+  ldy #0
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2
-  lda #>NomolosWalk
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2+1
+  
   jsr drawAnimation
   
   jmp skipNomolosWalkingLeft
 skipNomolosWalkingRight:
-  lda #<NomolosWalkOverlay
+  ldy #2
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2
-  lda #>NomolosWalkOverlay
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2+1
   lda #%01000000
   sta b2
@@ -952,9 +969,11 @@ skipNomolosWalkingRight:
   sta b1
   jsr drawAnimation
   
-  lda #<NomolosWalk
+  ldy #0
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2
-  lda #>NomolosWalk
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w2+1
   jsr drawAnimation
   
@@ -974,9 +993,11 @@ dontDrawNomolos:
   lda #$10
   sta b0
   sta b1
-  lda #<Heart0
+  ldy #12
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w0
-  lda #>Heart0
+  iny
+  lda (nomolosDefinitionTableBaseAddress),y
   sta w0+1
 drawNextHeart:
   jsr drawMetaSprite

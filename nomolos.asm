@@ -4,6 +4,7 @@
 
 ;ROM labels
 .import palette, MetaTileTable, MetaMetaTileTable, Level, EntityDefinitionTable
+.import NomolosDefinitionTable
 .import ft_music_addr
 
 ;camera module
@@ -26,7 +27,7 @@
 .exportzp update, updatePPU, attributeBuffer, attributeColumnToUpdate
 .exportzp columnTileBuffer, columnToUpdate, nametableToUpdate
 .exportzp levelBaseAddress, metaTileBuffer, metaTileTableBaseAddress
-.exportzp entityDefinitionTableBaseAddress
+.exportzp entityDefinitionTableBaseAddress, nomolosDefinitionTableBaseAddress
 .exportzp metametaTileTableBaseAddress, nomolosAnim
 .exportzp nomolosScreenX, nomolosScreenY, nomolosState
 .exportzp nomolosHealth, nomolosBlinkCounter, nomolosHitboxCounter
@@ -90,6 +91,7 @@ levelBaseAddress:                  .res 2
 metametaTileTableBaseAddress:      .res 2
 metaTileTableBaseAddress:          .res 2
 entityDefinitionTableBaseAddress:  .res 2
+nomolosDefinitionTableBaseAddress: .res 2
 
 attributeBuffer: .res 8
 attributeColumnToUpdate: .res 1
@@ -167,7 +169,7 @@ reset:
   jsr initEntities
   jsr initNomolos  
   jsr resetCamera  
-  loadLevel Level, MetaTileTable, MetaMetaTileTable, EntityDefinitionTable
+  loadLevel Level, MetaTileTable, MetaMetaTileTable, EntityDefinitionTable, NomolosDefinitionTable
   switchState loadLevelUpdate, loadLevelUpdatePPU
 
 ;    +---------+----------------------------------------------------------+

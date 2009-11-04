@@ -12,7 +12,7 @@
 .endmacro
 
 ;Loads the addresses of level data 
-.macro loadLevel levelAddr, metaTileTableAddr, metaMetaTileTableAddr, entityDefinitionTableAddr
+.macro loadLevel levelAddr, metaTileTableAddr, metaMetaTileTableAddr, entityDefinitionTableAddr, nomolosDefinitionTableAddr
   lda #<levelAddr
   sta levelBaseAddress
   lda #>levelAddr
@@ -29,6 +29,10 @@
   sta entityDefinitionTableBaseAddress
   lda #>entityDefinitionTableAddr
   sta entityDefinitionTableBaseAddress+1
+  lda #<nomolosDefinitionTableAddr
+  sta nomolosDefinitionTableBaseAddress
+  lda #>nomolosDefinitionTableAddr
+  sta nomolosDefinitionTableBaseAddress+1
 .endmacro
 
 .macro resetAnim animAddr
