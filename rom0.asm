@@ -28,10 +28,9 @@
 .import lowc, loadSound, finishSound
 
 .export palette, MetaTileTable, MetaMetaTileTable
-.export NomolosDefinitionTable
+.export ROMDefinitionTable
 .export Level, EntityDefinitionTable
 .export ft_music_addr
-.export attackSound, hitSound
 
 .segment "RODATA"
 
@@ -371,8 +370,8 @@ Mouse:
   .word Mouse0
   .byte $00
 
-;Nomolos definition table
-NomolosDefinitionTable:
+;ROM definition table
+ROMDefinitionTable:
   .word NomolosWalk            ;0
   .word NomolosWalkOverlay     ;2 
   .word NomolosJump            ;4
@@ -380,6 +379,8 @@ NomolosDefinitionTable:
   .word NomolosFight           ;8
   .word NomolosFightOverlay    ;10
   .word Heart0                 ;12
+  .word attackSound            ;14
+  .word hitSound               ;16
   
 attackSound:
   .byte $0E

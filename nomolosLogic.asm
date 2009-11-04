@@ -1,9 +1,6 @@
 .include "constants.inc"
 .include "macros.inc"
 
-;ROM labels
-.import attackSound, hitSound
-
 ;Sprite module labels
 .import drawMetaSprite, drawAnimation, updateAnimation
 
@@ -23,7 +20,7 @@
 .importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
 .importzp nomolosBlinkCounter, nomolosHitboxCounter
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
-.importzp nomolosDefinitionTableBaseAddress
+.importzp romDefinitionTableBaseAddress
 .importzp controllerBuffer
 .importzp soundAddr, soundOff
 
@@ -120,9 +117,11 @@ skipDecreaseHealth:
   sta nomolosState  
   
   ;play a hit sound
-  lda #<hitSound
+  ldy #16
+  lda (romDefinitionTableBaseAddress),y
   sta w0
-  lda #>hitSound
+  iny
+  lda (romDefinitionTableBaseAddress),y
   sta w0+1
   jsr loadSound
   
@@ -141,9 +140,11 @@ skipHurt:
   bne skipAttack
 
   ;play an attack sound
-  lda #<attackSound
+  ldy #14
+  lda (romDefinitionTableBaseAddress),y
   sta w0
-  lda #>attackSound
+  iny
+  lda (romDefinitionTableBaseAddress),y
   sta w0+1
   jsr loadSound
   
@@ -767,10 +768,10 @@ notRight:
   beq skipUpdateNomolosFighting
   
   ldy #8
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
   jsr updateAnimation
@@ -782,10 +783,10 @@ skipUpdateNomolosFighting:
   and #nomolosMovingTestAND
   beq skipUpdateNomolosMoving
   ldy #0
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2+1
  
   jsr updateAnimation
@@ -835,10 +836,10 @@ skipBlinkCheck:
   sta w1+1
   
   ldy #8
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
   ;get the direction bit into bit 6 of b2 for horiz flip
@@ -857,10 +858,10 @@ skipBlinkCheck:
   jsr drawAnimation
   
   ldy #10
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
   jsr drawAnimation
@@ -895,10 +896,10 @@ skipYSpeedTest:
   sta w1+1
   
   ldy #4
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
   ;get the direction bit into bit 6 of b2 for horiz flip
@@ -917,10 +918,10 @@ skipYSpeedTest:
   jsr drawAnimation
   
   ldy #6
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
   jsr drawAnimation
@@ -937,10 +938,10 @@ skipDrawNomolosJumping:
   and #1
   bne skipNomolosWalkingRight
   ldy #2
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2+1
   lda #%00000000
   sta b2
@@ -952,10 +953,10 @@ skipDrawNomolosJumping:
   jsr drawAnimation
   
   ldy #0
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
   jsr drawAnimation
@@ -963,10 +964,10 @@ skipDrawNomolosJumping:
   jmp skipNomolosWalkingLeft
 skipNomolosWalkingRight:
   ldy #2
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2+1
   lda #%01000000
   sta b2
@@ -978,10 +979,10 @@ skipNomolosWalkingRight:
   jsr drawAnimation
   
   ldy #0
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w2+1
   jsr drawAnimation
   
@@ -1002,10 +1003,10 @@ dontDrawNomolos:
   sta b0
   sta b1
   ldy #12
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w0
   iny
-  lda (nomolosDefinitionTableBaseAddress),y
+  lda (romDefinitionTableBaseAddress),y
   sta w0+1
 drawNextHeart:
   jsr drawMetaSprite
