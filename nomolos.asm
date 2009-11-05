@@ -3,7 +3,7 @@
 .include "flags.inc"
 
 ;ROM labels
-.import palette, MetaTileTable, MetaMetaTileTable, Level, EntityDefinitionTable
+
 .import ROMDefinitionTable
 .import ft_music_addr
 
@@ -163,13 +163,13 @@ reset:
   inx
   bne :-
 
+  loadLevel ROMDefinitionTable
   jsr initsound
   jsr loadPalette
   jsr clearSprites
   jsr initEntities
   jsr initNomolos  
   jsr resetCamera  
-  loadLevel Level, MetaTileTable, MetaMetaTileTable, EntityDefinitionTable, ROMDefinitionTable
   switchState loadLevelUpdate, loadLevelUpdatePPU
 
 ;    +---------+----------------------------------------------------------+
@@ -255,15 +255,22 @@ updateFinished:
 
   jmp loop
 
-
 loadPalette:
+  ldy #18
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+  ldy #0
   lda #$3F
   ldx #$00
   sta $2006
   stx $2006
-: lda palette,x
+: lda (w0),y
   sta $2007
   inx
+  iny
   cpx #$20
   bne :-
   rts

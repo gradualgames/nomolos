@@ -27,9 +27,7 @@
 ;sound module
 .import lowc, loadSound, finishSound
 
-.export palette, MetaTileTable, MetaMetaTileTable
 .export ROMDefinitionTable
-.export Level, EntityDefinitionTable
 .export ft_music_addr
 
 .segment "RODATA"
@@ -39,6 +37,23 @@ ft_music_addr:
 	.word * + 2					; This is the point where music data is stored, can be changed
 
 .incbin "music.bin"
+
+;ROM definition table
+ROMDefinitionTable:
+  .word NomolosWalk            ;0
+  .word NomolosWalkOverlay     ;2 
+  .word NomolosJump            ;4
+  .word NomolosJumpOverlay     ;6
+  .word NomolosFight           ;8
+  .word NomolosFightOverlay    ;10
+  .word Heart0                 ;12
+  .word attackSound            ;14
+  .word hitSound               ;16
+  .word palette                ;18
+  .word MetaTileTable          ;20
+  .word MetaMetaTileTable      ;22
+  .word Level                  ;24
+  .word EntityDefinitionTable  ;26
 
 palette:
 
@@ -370,18 +385,7 @@ Mouse:
   .word Mouse0
   .byte $00
 
-;ROM definition table
-ROMDefinitionTable:
-  .word NomolosWalk            ;0
-  .word NomolosWalkOverlay     ;2 
-  .word NomolosJump            ;4
-  .word NomolosJumpOverlay     ;6
-  .word NomolosFight           ;8
-  .word NomolosFightOverlay    ;10
-  .word Heart0                 ;12
-  .word attackSound            ;14
-  .word hitSound               ;16
-  
+ 
 attackSound:
   .byte $0E
   .byte $07
