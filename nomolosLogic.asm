@@ -1,5 +1,6 @@
 .include "constants.inc"
 .include "macros.inc"
+.include "structs.inc"
 
 ;Sprite module labels
 .import drawMetaSprite, drawAnimation, updateAnimation
@@ -117,7 +118,7 @@ skipDecreaseHealth:
   sta nomolosState  
   
   ;play a hit sound
-  ldy #16
+  ldy #ROMDefinitionTableStruct::hitSound
   lda (romDefinitionTableBaseAddress),y
   sta w0
   iny
@@ -140,7 +141,7 @@ skipHurt:
   bne skipAttack
 
   ;play an attack sound
-  ldy #14
+  ldy #ROMDefinitionTableStruct::attackSound
   lda (romDefinitionTableBaseAddress),y
   sta w0
   iny
@@ -767,7 +768,7 @@ notRight:
   and #nomolosAttackTestAND
   beq skipUpdateNomolosFighting
   
-  ldy #8
+  ldy #ROMDefinitionTableStruct::NomolosFight
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
@@ -782,7 +783,7 @@ skipUpdateNomolosFighting:
   lda nomolosState
   and #nomolosMovingTestAND
   beq skipUpdateNomolosMoving
-  ldy #0
+  ldy #ROMDefinitionTableStruct::NomolosWalk
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
@@ -835,7 +836,7 @@ skipBlinkCheck:
   lda #>nomolosAnim
   sta w1+1
   
-  ldy #8
+  ldy #ROMDefinitionTableStruct::NomolosFight
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
@@ -857,7 +858,7 @@ skipBlinkCheck:
   
   jsr drawAnimation
   
-  ldy #10
+  ldy #ROMDefinitionTableStruct::NomolosFightOverlay
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
@@ -895,7 +896,7 @@ skipYSpeedTest:
   lda #>nomolosAnim
   sta w1+1
   
-  ldy #4
+  ldy #ROMDefinitionTableStruct::NomolosJump
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
@@ -917,7 +918,7 @@ skipYSpeedTest:
   
   jsr drawAnimation
   
-  ldy #6
+  ldy #ROMDefinitionTableStruct::NomolosJumpOverlay
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
@@ -937,7 +938,7 @@ skipDrawNomolosJumping:
   lda nomolosState
   and #1
   bne skipNomolosWalkingRight
-  ldy #2
+  ldy #ROMDefinitionTableStruct::NomolosWalkOverlay
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
@@ -952,7 +953,7 @@ skipDrawNomolosJumping:
   sta b1
   jsr drawAnimation
   
-  ldy #0
+  ldy #ROMDefinitionTableStruct::NomolosWalk
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
@@ -963,7 +964,7 @@ skipDrawNomolosJumping:
   
   jmp skipNomolosWalkingLeft
 skipNomolosWalkingRight:
-  ldy #2
+  ldy #ROMDefinitionTableStruct::NomolosWalkOverlay
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
@@ -978,7 +979,7 @@ skipNomolosWalkingRight:
   sta b1
   jsr drawAnimation
   
-  ldy #0
+  ldy #ROMDefinitionTableStruct::NomolosWalk
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny
@@ -1002,7 +1003,7 @@ dontDrawNomolos:
   lda #$10
   sta b0
   sta b1
-  ldy #12
+  ldy #ROMDefinitionTableStruct::Heart0
   lda (romDefinitionTableBaseAddress),y
   sta w0
   iny

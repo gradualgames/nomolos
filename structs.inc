@@ -1,18 +1,5 @@
-;The following is the entity pool. All entities are treated as chunks of
-;16 bytes from this pool with the following schema:
-;entity schema:
-;0  .dsb alive = 1
-;1  .dsb index = definition index (this is a parameter)
-;2  .dsw spawnPositionX = initialXOffset + x
-;4  .dsb spawnPositionY = initialYOffset + y
-;5  .dsb positionXFine  = unknown, this is expected to be used (or not used) by the entity
-;6  .dsw positionX      = x (this is a parameter)
-;8  .dsb positionYFine  = unknown, this is expected to be used (or not used) by the entity
-;9  .dsb positionY      = y (this is a parameter)
-;10 .dsb state          = initialState
-;11 .dsw animationObject  = unknown, this expected to be set by the entity
-;13 .dsb 3 ;padding to 16 bytes
-
+.ifndef STRUCTS_INC
+STRUCTS_INC = 1
 
 .struct entityRAM
   alive .byte
@@ -27,3 +14,22 @@
   animationObject .word
   extra .byte 3
 .endstruct
+
+.struct ROMDefinitionTableStruct
+  NomolosWalk .word
+  NomolosWalkOverlay .word
+  NomolosJump .word
+  NomolosJumpOverlay .word
+  NomolosFight .word
+  NomolosFightOverlay .word
+  Heart0 .word
+  attackSound .word
+  hitSound .word
+  palette .word
+  MetaTileTable .word
+  MetaMetaTileTable .word
+  Level .word
+  EntityDefinitionTable .word
+.endstruct
+
+.endif

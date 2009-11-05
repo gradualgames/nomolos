@@ -1,3 +1,6 @@
+.ifndef CONSTANTS_INC
+CONSTANTS_INC = 1
+
 ;Sound constants
 DISABLE_FAMITRACKER_CHANNEL = $20
 ENABLE_FAMITRACKER_CHANNEL = $21
@@ -43,3 +46,5 @@ nomolosHitboxHeight = $20
 penetrationCalculationMask = %00001111
 
 scrollReact = 120
+
+.endif
