@@ -1,5 +1,6 @@
 .include "constants.inc"
 .include "macros.inc"
+.include "structs.inc"
 
 ;zp variables
 .importzp b0, b1, b2, w0, w1, w2, w3
@@ -508,7 +509,7 @@ MOUSE_SITTHERESTATE = 1
 
 mouseUpdate:
 
-  lda entityPool+10,x
+  lda entityPool+entityRAM::state,x
   cmp #MOUSE_INITSTATE
   beq mouseInit
   cmp #MOUSE_SITTHERESTATE
@@ -518,26 +519,26 @@ mouseInit:
 
   ;reset the explosion animation object
   lda #$01
-  sta entityPool+11,x
+  sta entityPool+entityRAM::animationObject,x
   lda #$ff
-  sta entityPool+12,x
+  sta entityPool+entityRAM::animationObject+1,x
   
   lda #MOUSE_SITTHERESTATE
-  sta entityPool+10,x
+  sta entityPool+entityRAM::state,x
 
   jmp returnFromEntityUpdate
   
 mouseSitThere:
 
   ;get out low byte of positionX
-  lda entityPool+6,x
+  lda entityPool+entityRAM::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entityPool+7,x
+  lda entityPool+entityRAM::positionX+1,x
   sta w0+1
   
   ;get out positionY
-  lda entityPool+9,x
+  lda entityPool+entityRAM::positionY,x
   sta b1
   jsr cameraToScreenCoords
   bne mouseDie
@@ -585,9 +586,9 @@ mouseSitThere:
 @notTouching:
   
   ;load address of animation object into w1
-  lda #<(entityPool+11)
+  lda #<(entityPool+entityRAM::animationObject)
   sta w1
-  lda #>(entityPool+11)
+  lda #>(entityPool+entityRAM::animationObject)
   sta w1+1
   
   ;get the index into a
@@ -613,7 +614,7 @@ mouseSitThere:
 mouseDie:
 
   lda #0
-  sta entityPool,x
+  sta entityPool+entityRAM::alive,x
 
   jmp returnFromEntityUpdate
 
@@ -622,7 +623,7 @@ EXPLOSION_EXPLODESTATE = 1
 
 explosionUpdate:
 
-  lda entityPool+10,x
+  lda entityPool+entityRAM::state,x
   cmp #EXPLOSION_INITSTATE
   beq explosionInit
   cmp #EXPLOSION_EXPLODESTATE
@@ -632,35 +633,35 @@ explosionInit:
 
   ;reset the explosion animation object
   lda #$01
-  sta entityPool+11,x
+  sta entityPool+entityRAM::animationObject,x
   lda #$ff
-  sta entityPool+12,x
+  sta entityPool+entityRAM::animationObject+1,x
   
   ;set state to explode
   lda #EXPLOSION_EXPLODESTATE
-  sta entityPool+10,x
+  sta entityPool+entityRAM::state,x
   
   jmp returnFromEntityUpdate
   
 explosionExplode:
 
   ;get out low byte of positionX
-  lda entityPool+6,x
+  lda entityPool+entityRAM::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entityPool+7,x
+  lda entityPool+entityRAM::positionX+1,x
   sta w0+1
   
   ;get out positionY
-  lda entityPool+9,x
+  lda entityPool+entityRAM::positionY,x
   sta b1
   jsr cameraToScreenCoords
   bne explosionDie
   
   ;load address of animation object into w1
-  lda #<(entityPool+11)
+  lda #<(entityPool+entityRAM::animationObject)
   sta w1
-  lda #>(entityPool+11)
+  lda #>(entityPool+entityRAM::animationObject)
   sta w1+1
   
   ;get the index into a
@@ -681,10 +682,10 @@ explosionExplode:
   
   jsr drawAnimation
   
-  lda entityPool+12,x
+  lda entityPool+entityRAM::animationObject+1,x
   cmp #2
   bne @skipFrameCounterTest
-  lda entityPool+11,x
+  lda entityPool+entityRAM::animationObject,x
   cmp #1
   beq explosionDie
 @skipFrameCounterTest:
@@ -694,7 +695,7 @@ explosionExplode:
 explosionDie:
 
   lda #0
-  sta entityPool,x
+  sta entityPool+entityRAM::alive,x
 
   jmp returnFromEntityUpdate
 
@@ -705,7 +706,7 @@ DEENTLE_MOVELEFTSTATE = 2
 deentleUpdate:
 
   ;load current state
-  lda entityPool+10,x
+  lda entityPool+entityRAM::state,x
   ;figure out what state to jump to
   cmp #DEENTLE_INITSTATE
   beq deentle_initState
@@ -718,33 +719,33 @@ deentle_initState:
 
   ;init code for animation, etc. goes here
   lda #1
-  sta entityPool+11,x
+  sta entityPool+entityRAM::animationObject,x
   lda #0
-  sta entityPool+12,x
+  sta entityPool+entityRAM::animationObject+1,x
   
   ;switch state to "run"
   lda #DEENTLE_MOVELEFTSTATE
-  sta entityPool+10,x
+  sta entityPool+entityRAM::state,x
   jmp returnFromEntityUpdate
 
 deentle_moveRightState:
 
   ;add 1 to PositionX
   clc
-  lda entityPool+6,x
+  lda entityPool+entityRAM::positionX,x
   adc #1
-  sta entityPool+6,x
-  lda entityPool+7,x
+  sta entityPool+entityRAM::positionX,x
+  lda entityPool+entityRAM::positionX+1,x
   adc #0
-  sta entityPool+7,x
+  sta entityPool+entityRAM::positionX+1,x
   
   ;do PositionX - spawnPositionX
   sec
-  lda entityPool+6,x
-  sbc entityPool+2,x
+  lda entityPool+entityRAM::positionX,x
+  sbc entityPool+entityRAM::spawnPositionX,x
   sta w0
-  lda entityPool+7,x
-  sbc entityPool+3,x
+  lda entityPool+entityRAM::positionX+1,x
+  sbc entityPool+entityRAM::spawnPositionX+1,x
   sta w0+1
   
   ;difference is in w0, subtract our desired delta distance from it
@@ -758,7 +759,7 @@ deentle_moveRightState:
   bne dontSwitchToLeftState
   
   lda #DEENTLE_MOVELEFTSTATE
-  sta entityPool+10,x
+  sta entityPool+entityRAM::state,x
   
 dontSwitchToLeftState:
 
@@ -770,20 +771,20 @@ deentle_moveLeftState:
 
   ;sub 1 from PositionX
   sec
-  lda entityPool+6,x
+  lda entityPool+entityRAM::positionX,x
   sbc #1
-  sta entityPool+6,x
-  lda entityPool+7,x
+  sta entityPool+entityRAM::positionX,x
+  lda entityPool+entityRAM::positionX+1,x
   sbc #0
-  sta entityPool+7,x
+  sta entityPool+entityRAM::positionX+1,x
   
   ;do spawnPositionX - PositionX
   sec
-  lda entityPool+2,x
-  sbc entityPool+6,x 
+  lda entityPool+entityRAM::spawnPositionX,x
+  sbc entityPool+entityRAM::positionX,x 
   sta w0
-  lda entityPool+3,x
-  sbc entityPool+7,x 
+  lda entityPool+entityRAM::spawnPositionX+1,x
+  sbc entityPool+entityRAM::positionX+1,x 
   sta w0+1
   
   ;difference is in w0, subtract our desired delta distance from it
@@ -798,7 +799,7 @@ deentle_moveLeftState:
   bne dontSwitchToRightState
   
   lda #DEENTLE_MOVERIGHTSTATE
-  sta entityPool+10,x
+  sta entityPool+entityRAM::state,x
   
 dontSwitchToRightState:
   
@@ -812,10 +813,10 @@ dontSwitchToRightState:
 deentle_draw:
 
   ;get out low byte of positionX
-  lda entityPool+6,x
+  lda entityPool+entityRAM::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entityPool+7,x
+  lda entityPool+entityRAM::positionX+1,x
   sta w0+1
   ;add 16 to positionX to get the right side of the Deentle
   clc
@@ -827,7 +828,7 @@ deentle_draw:
   sta w0+1
   
   ;get out positionY
-  lda entityPool+9,x
+  lda entityPool+entityRAM::positionY,x
   sta b1
   jsr cameraToScreenCoords
   bpl dontKillDeentle 
@@ -838,13 +839,13 @@ dontKillDeentle:
 deentleNotOffscreen1:
 
   ;get out low byte of positionX
-  lda entityPool+6,x
+  lda entityPool+entityRAM::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entityPool+7,x
+  lda entityPool+entityRAM::positionX+1,x
   sta w0+1
   ;get positionY
-  lda entityPool+9,x
+  lda entityPool+entityRAM::positionY,x
   sta b1
   jsr cameraToScreenCoords
   beq deentleNotOffscreen2
@@ -927,9 +928,9 @@ deentleNotOffscreen2:
 nomolosNotAttacking:
 
   ;load address of animation object into w1
-  lda #<(entityPool+11)
+  lda #<(entityPool+entityRAM::animationObject)
   sta w1
-  lda #>(entityPool+11)
+  lda #>(entityPool+entityRAM::animationObject)
   sta w1+1
   
   ;get the index into a
@@ -958,21 +959,21 @@ killDeentle:
 
   ;make it dead
   lda #0
-  sta entityPool,x
+  sta entityPool+entityRAM::alive,x
   
   ;spawn an explosion entity
   lda #ExplosionIndex
   sta b0
 
   ;get out low byte of positionX
-  lda entityPool+6,x
+  lda entityPool+entityRAM::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entityPool+7,x
+  lda entityPool+entityRAM::positionX+1,x
   sta w0+1
   
   ;get out positionY
-  lda entityPool+9,x
+  lda entityPool+entityRAM::positionY,x
   sta b1
   
   jsr spawnEntity

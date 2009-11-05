@@ -20,7 +20,7 @@ FILES           = nomolos \
                   sound \
                   geotests
 OBJECT_FILES    = $(addsuffix .o, $(FILES))
-INCLUDE_FILES   = constants.inc macros.inc flags.inc
+INCLUDE_FILES   = constants.inc macros.inc flags.inc structs.inc
 CONFIG_FILE     = nomolos.cfg
 MAPFILE         = nomolos.map
 LSTFILE         = nomolos.lst
