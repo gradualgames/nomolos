@@ -1,3 +1,5 @@
+.include "structs.inc"
+
 .import entityPool
 
 .importzp b0, b1, b2, w0, entityDefinitionTableBaseAddress
@@ -24,13 +26,12 @@ nextEntity:
   asl
   asl
   tax
-  lda entityPool,x
+  lda entityPool+entityRAM::alive,x
   beq skipUpdate
   ;if we arrive here, x points to a live entity
-  ;point to the entity index
-  inx
+
   ;load the entity index
-  lda entityPool,x
+  lda entityPool+entityRAM::index,x
   ;multiply the entity index by 8
   asl
   asl
@@ -48,10 +49,7 @@ nextEntity:
   lda (entityDefinitionTableBaseAddress),y
   ;put the high byte into w0
   sta w0+1
-  ;the entity update routine must know the index of its RAM entry.
-  ;right now, x points to the entity RAM entry, +1 because of looking at index.
-  ;point to the beginning of the entity RAM entry
-  dex
+
   ;jump to the entity update routine indirectly
   jmp (w0)
 returnFromEntityUpdate:
@@ -80,25 +78,14 @@ initEntities:
   asl
   tay
   lda #$00
-  sta entityPool, y
+  sta entityPool+entityRAM::alive, y
   dex
   bpl :-
   rts
   
 ;This routine spawns a single entity. It works by first searching
 ;for the first "dead" entity in the entityPool. When it finds this
-;dead entity, it fills it according to the following schema:
-;.dsb alive = 1
-;.dsb index = definition index (this is a parameter)
-;.dsw spawnPositionX = initialXOffset + x
-;.dsb spawnPositionY = initialYOffset + y
-;.dsb positionXFine  = unknown, this is expected to be used (or not used) by the entity
-;.dsw positionX      = x (this is a parameter)
-;.dsb positionYFine  = unknown, this is expected to be used (or not used) by the entity
-;.dsb positionY      = y (this is a parameter)
-;.dsb state          = initialState
-;.dsw animationObject  = unknown, this expected to be set by the entity
-;.dsb 3 ;padding to 16 bytes
+;dead entity, it fills it according to the entityRAM struct.
 
 ;the following parameters are expected:
 ;b0 = index of entity definition to spawn
@@ -123,7 +110,7 @@ spawnEntity:
   asl
   asl
   tax
-  lda entityPool,x
+  lda entityPool+entityRAM::alive,x
   beq :+  ;found a dead entity, jump out with current value of x
   dey
   bpl :-
@@ -132,24 +119,15 @@ spawnEntity:
   
   ;make the entity alive. ALIVE! MUA HUAH HAH HAH
   lda #$01
-  sta entityPool,x
+  sta entityPool+entityRAM::alive,x
   
-  ;point to the "index" field
-  inx
   ;store the kind of entity this is
   lda b0
-  sta entityPool,x
+  sta entityPool+entityRAM::index,x
   
   ;now that we know the kind of entity this is, we must look up
   ;the entity and pull out its initialXOffset and initialYOffset,
   ;add these to the input parameters, and store them in positionX and positionY.
-  
-  ;the entity definition schema is as follows:
-  ;.dw UpdateRoutine
-  ;.db initialXOffset ;XOffset from parent meta-tile
-  ;.db initialYOffset ;YOffset from parent meta-tile
-  ;.db initialState   ;intended to trigger UpdateRoutine to put the enemy into its
-  ;                   ;initial state.
   
   ;a holds the entity index, so multiply it by 8 to get an entity offset
   asl
@@ -176,15 +154,12 @@ spawnEntity:
   sta w0+1  
 
   ;now w0 should have the spawnPositionX value
-  ;point to spawnPositionX. Load it with w0.
-  inx
   lda w0
-  sta entityPool,x
-  inx
+  sta entityPool+entityRAM::spawnPositionX,x
   lda w0+1
-  sta entityPool,x
+  sta entityPool+entityRAM::spawnPositionX+1,x
   
-  ;point to initial y offset
+  ;load initial y offset
   iny
   ;load the initial y offset and store it in b2 for now
   lda (entityDefinitionTableBaseAddress),y
@@ -197,40 +172,32 @@ spawnEntity:
   sta b1  ;store result in y parameter
   
   ;now b1 should have the spawnPositionY value
-  ;point to spawnPositionY. Load it with b1.
-  inx
   lda b1
-  sta entityPool,x
+  sta entityPool+entityRAM::spawnPositionY,x
   
-  ;point to positionXFine
-  inx
+  ;load positionXFine
   lda #$00
-  sta entityPool,x
-  ;point to positionX
-  inx
+  sta entityPool+entityRAM::positionXFine,x
+  ;load positionX
   lda w0
-  sta entityPool,x
-  inx
+  sta entityPool+entityRAM::positionX,x
   lda w0+1
-  sta entityPool,x
+  sta entityPool+entityRAM::positionX+1,x
   
-  ;point to positionYFine
-  inx
+  ;load positionYFine
   lda #$00
-  sta entityPool,x
-  ;point to positionY
-  inx
+  sta entityPool+entityRAM::positionYFine,x
+  ;load positionY
   lda b1
-  sta entityPool,x
+  sta entityPool+entityRAM::positionY,x
   
   ;point to the initial state
   iny
   ;load initial state
   lda (entityDefinitionTableBaseAddress),y  
   ;point to state variable in entity entry
-  inx
   ;store the initial state there
-  sta entityPool,X
+  sta entityPool+entityRAM::state,x
   
   ;at this point the entity should be fully spawned and ready
   ;to have its update routine called.
