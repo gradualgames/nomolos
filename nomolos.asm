@@ -45,9 +45,9 @@
 
 .segment "HEADER"
 .byte "NES",$1a        ;iNES header
-.byte $02 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
+.byte $04 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
 .byte $01 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
-.byte $01 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #0 (NROM)
+.byte $11 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #1 (MMC1)
 .byte $00 ;            ;Rest of Mapper #0 bits (all 0)
 .byte 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
 .segment "ZEROPAGE"
@@ -150,6 +150,62 @@ reset:
   inx
   bne :-
 
+  ; initialize the MMC1 mapper...
+  ;reset the PRG rom control register...
+  lda #%10000000
+  sta $8000
+
+;  $8000-9FFF:  [...C PSMM]
+;    C = CHR Mode (0=8k mode, 1=4k mode)
+;    P = PRG Size (0=32k mode, 1=16k mode)
+;    S = Slot select:
+;        0 = $C000 swappable, $8000 fixed to page $00 (mode A)
+;        1 = $8000 swappable, $C000 fixed to page $0F (mode B)
+;        This bit is ignored when 'P' is clear (32k mode)
+;    M = Mirroring control:
+;        %00 = 1ScA
+;        %01 = 1ScB
+;        %10 = Vert
+;        %11 = Horz  
+  lda #%00011110
+  sta $8000
+  lsr
+  sta $8000
+  lsr
+  sta $8000
+  lsr
+  sta $8000
+  lsr
+  sta $8000
+
+  ;reset the first CHR rom control register
+  lda #%10000000
+  sta $A000
+
+  ;reset the second CHR rom control register, then load bank 1 from $1000?
+  lda #%10000000
+  sta $C000
+  lda #$01
+  sta $C000
+  sta $C000
+  sta $C000
+  sta $C000
+  sta $C000
+  
+  ;reset the PRG rom control register, then load bank 0
+  lda #%10000000
+  sta $E000
+  lda #%00000000
+  sta $E000
+  lsr
+  sta $E000
+  lsr
+  sta $E000
+  lsr
+  sta $E000
+  lsr
+  sta $E000  
+  
   loadLevel ROMDefinitionTable
   jsr initsound
   jsr loadPalette
