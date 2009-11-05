@@ -1,2 +1,7 @@
+.ifndef FLAGS_INC
+FLAGS_INC = 1
+
 MUSIC_ENABLE = 1
 ;DISPLAY_FRAME_CPU_USAGE = 1
+
+.endif

@@ -1,6 +1,7 @@
 .include "constants.inc"
 .include "macros.inc"
 .include "flags.inc"
+.include "structs.inc"
 
 ;ROM labels
 
@@ -242,7 +243,7 @@ updateFinished:
   jmp loop
 
 loadPalette:
-  ldy #18
+  ldy #ROMDefinitionTableStruct::palette
   lda (romDefinitionTableBaseAddress),y
   sta w0
   iny
