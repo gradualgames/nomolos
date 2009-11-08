@@ -31,7 +31,7 @@
 .export ROMDefinitionTable1
 ;.export ft_music_addr
 
-.segment "RODATA"
+.segment "ROM1"
 
 ; The label that contains a pointer to the music data
 ;ft_music_addr:
