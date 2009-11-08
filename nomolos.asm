@@ -5,7 +5,8 @@
 
 ;ROM labels
 
-.import ROMDefinitionTable
+.import ROMDefinitionTable0
+.import ROMDefinitionTable1
 .import ft_music_addr
 
 ;camera module
@@ -206,7 +207,7 @@ reset:
   lsr
   sta $E000  
   
-  loadLevel ROMDefinitionTable
+  loadLevel ROMDefinitionTable0
   jsr initsound
   jsr loadPalette
   jsr clearSprites

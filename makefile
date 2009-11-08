@@ -9,7 +9,9 @@ NES_FILE        = nomolos.nes
 FILES           = nomolos \
                   nomolosLogic \
                   rom0 \
+                  rom1 \
                   chrrom0 \
+                  chrrom1 \
                   loadLevelState \
                   playLevelState \
                   map \
