@@ -207,7 +207,7 @@ reset:
   lsr
   sta $E000  
   
-  loadLevel ROMDefinitionTable0
+  loadLevel ROMDefinitionTable1
   jsr initsound
   jsr loadPalette
   jsr clearSprites
