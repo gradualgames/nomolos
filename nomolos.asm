@@ -4,10 +4,8 @@
 .include "structs.inc"
 
 ;ROM labels
-
 .import ROMDefinitionTable0
 .import ROMDefinitionTable1
-.import ft_music_addr
 
 ;camera module
 .import resetCamera
@@ -109,6 +107,8 @@ controllerBuffer: .res 8
 soundAddr: .res 2
 soundOff: .res 1
 
+ft_music_addr: .res 2
+
 .segment "STACK"
 stack:  .res 256
   
@@ -207,7 +207,7 @@ reset:
   lsr
   sta $E000  
   
-  loadLevel ROMDefinitionTable0
+  loadLevel ROMDefinitionTable1
   jsr initsound
   jsr loadPalette
   jsr clearSprites

@@ -29,12 +29,10 @@
 .import lowc, loadSound, finishSound
 
 .export ROMDefinitionTable0
-.export ft_music_addr
 
 .segment "ROM0"
 
 ; The label that contains a pointer to the music data
-ft_music_addr:
 	.word music					; This is the point where music data is stored, can be changed
 
 music:
@@ -56,6 +54,7 @@ ROMDefinitionTable0:
   .word MetaMetaTileTable      ;22
   .word Level                  ;24
   .word EntityDefinitionTable  ;26
+  .word music                  ;28
 
 palette:
 

@@ -52,6 +52,13 @@ MACROS_INC = 1
   iny
   lda (romDefinitionTableBaseAddress),y
   sta entityDefinitionTableBaseAddress+1
+  
+  ldy #ROMDefinitionTableStruct::music
+  lda (romDefinitionTableBaseAddress),y
+  sta ft_music_addr
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta ft_music_addr+1
 
 .endmacro
 

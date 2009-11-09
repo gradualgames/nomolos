@@ -30,6 +30,7 @@ STRUCTS_INC = 1
   MetaMetaTileTable .word
   Level .word
   EntityDefinitionTable .word
+  music .word
 .endstruct
 
 .endif
