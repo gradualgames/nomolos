@@ -182,7 +182,7 @@ reset:
   ;reset the first CHR rom control register
   lda #%10000000
   sta $A000
-  lda #%00000010
+  lda #%00000000
   sta $A000
   lsr
   sta $A000
@@ -196,7 +196,7 @@ reset:
   ;reset the PRG rom control register, then load bank 0
   lda #%10000000
   sta $E000
-  lda #%00000001
+  lda #%00000000
   sta $E000
   lsr
   sta $E000
