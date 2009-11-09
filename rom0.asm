@@ -35,8 +35,9 @@
 
 ; The label that contains a pointer to the music data
 ft_music_addr:
-	.word * + 2					; This is the point where music data is stored, can be changed
+	.word music					; This is the point where music data is stored, can be changed
 
+music:
 .incbin "music.bin"
 
 ;ROM definition table
