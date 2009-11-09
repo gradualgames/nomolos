@@ -98,16 +98,36 @@
   ;load the meta tile index
   lda (w3),y
   
-  ;multiply by 8 to get offset from meta tile table
-  asl
-  asl
-  asl
-  tay
+  ;get this meta tile number into a 16 bit situation so we can multiply it by 8
+  sta w2
+  lda #0
+  sta w2+1
+  
+  ;now shift left w2 by 3 to get offset within the meta tile table.
+  lda w2+1
+  asl w2
+  rol 
+  asl w2
+  rol 
+  asl w2
+  rol 
+  sta w2+1
+  
+  ;add metaTileTableBaseAddress to w2
+  clc
+  lda w2
+  adc metaTileTableBaseAddress
+  sta w2
+  lda w2+1
+  adc metaTileTableBaseAddress+1
+  sta w2+1
+  
+  ldy #0
   
   ;point to the "solid" attribute. This is the big finale of the collision routine.
   iny
   lda #1
-  lda (metaTileTableBaseAddress), y
+  lda (w2), y
 
   rts
 .endproc
@@ -290,7 +310,7 @@ updateColumn:
   ldy #0
   ldy #0
   ldx #15
-:
+nextTile:
   ;save y, we need it for indirect addressing again
   sty b4 ;spawnY
   tya
@@ -302,14 +322,34 @@ updateColumn:
   ;indirectly load the meta tile number
   lda (w1),y
 
-  asl
-  asl
-  asl
-  ;use this offset as an index
-  tay
+  ;get this meta tile number into a 16 bit situation so we can multiply it by 8
+  sta w2
+  lda #0
+  sta w2+1
+  
+  ;now shift left w2 by 3 to get offset within the meta tile table.
+  lda w2+1
+  asl w2
+  rol 
+  asl w2
+  rol 
+  asl w2
+  rol 
+  sta w2+1
+  
+  ;add metaTileTableBaseAddress to w2
+  clc
+  lda w2
+  adc metaTileTableBaseAddress
+  sta w2
+  lda w2+1
+  adc metaTileTableBaseAddress+1
+  sta w2+1
+  
+  ldy #0
 
   ;y has the index of the attribute field
-  lda (metaTileTableBaseAddress), y
+  lda (w2), y
   ;now a has the attribute to write
 
   sta b1
@@ -320,23 +360,23 @@ updateColumn:
   ;let's not bother with the solid flag for now
   iny
   ;load the top left
-  lda (metaTileTableBaseAddress), y
+  lda (w2), y
   sta metaTileBuffer
   ;load the top right
   iny
-  lda (metaTileTableBaseAddress), y
+  lda (w2), y
   sta metaTileBuffer+1
   ;load the bottm left tile
   iny
-  lda (metaTileTableBaseAddress), y
+  lda (w2), y
   sta metaTileBuffer+2
   ;load the bottom right tile
   iny
-  lda (metaTileTableBaseAddress), y
+  lda (w2), y
   sta metaTileBuffer+3
   ;load the entity number to spawn
   iny
-  lda (metaTileTableBaseAddress), y
+  lda (w2), y
   sec
   sbc #1
   bmi doNotSpawn  
@@ -395,7 +435,9 @@ doNotSpawn:
   tay
   iny
   dex
-  bne :-
+  beq @skipNextTile
+  jmp nextTile
+@skipNextTile:
 
   rts
 
