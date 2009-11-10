@@ -32,9 +32,6 @@
 
 .segment "ROM1"
 
-; The label that contains a pointer to the music data
-	.word music					; This is the point where music data is stored, can be changed
-
 music:
 .incbin "music.bin"
 

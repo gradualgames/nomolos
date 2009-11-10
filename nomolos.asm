@@ -155,7 +155,6 @@ reset:
   ;reset the PRG rom control register...
   lda #%10000000
   sta $8000
-
 ;  $8000-9FFF:  [...C PSMM]
 ;    C = CHR Mode (0=8k mode, 1=4k mode)
 ;    P = PRG Size (0=32k mode, 1=16k mode)
@@ -168,7 +167,7 @@ reset:
 ;        %01 = 1ScB
 ;        %10 = Vert
 ;        %11 = Horz  
-  lda #%00001110
+  lda #%00011110
   sta $8000
   lsr
   sta $8000
@@ -179,9 +178,7 @@ reset:
   lsr
   sta $8000
 
-  ;reset the first CHR rom control register
-  lda #%10000000
-  sta $A000
+  ;load CHR bank 0 into $0000
   lda #%00000000
   sta $A000
   lsr
@@ -193,9 +190,19 @@ reset:
   lsr
   sta $A000
   
-  ;reset the PRG rom control register, then load bank 0
-  lda #%10000000
-  sta $E000
+  ;load CHR bank 1 into $1000
+  lda #%00000001
+  sta $C000
+  lsr
+  sta $C000
+  lsr
+  sta $C000
+  lsr
+  sta $C000
+  lsr
+  sta $C000
+  
+  ;load PRG bank 0 into $8000
   lda #%00000000
   sta $E000
   lsr
@@ -207,7 +214,7 @@ reset:
   lsr
   sta $E000  
   
-  loadLevel ROMDefinitionTable1
+  loadLevel ROMDefinitionTable0
   jsr initsound
   jsr loadPalette
   jsr clearSprites

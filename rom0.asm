@@ -32,8 +32,8 @@
 
 .segment "ROM0"
 
-; The label that contains a pointer to the music data
-	.word music					; This is the point where music data is stored, can be changed
+;the following line causes nomolos to not be able to walk when uncommented. WHAT!?!?!?
+;.word music
 
 music:
 .incbin "music.bin"
