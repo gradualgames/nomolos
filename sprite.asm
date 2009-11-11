@@ -73,6 +73,11 @@ updateAnimation:
   sta (w1),y
   asl
   tay
+  ;move to second byte for end-of-animation marker. The high byte of meta sprite
+  ;addresses can never be zero---this is why we do this. If we checked the first
+  ;of two bytes, we could accidentally find zero in a meta sprite address and
+  ;think this is the end of the animation!
+  iny
   iny
   lda (w2),y
   ;if the byte is zero, we must reset the frame counter

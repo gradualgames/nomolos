@@ -32,9 +32,6 @@
 
 .segment "ROM0"
 
-;the following line causes nomolos to not be able to walk when uncommented. WHAT!?!?!?
-;.word music
-
 music:
 .incbin "music.bin"
 
@@ -328,18 +325,18 @@ NomolosWalk:
   .word NomolosWalk1
   .word NomolosWalk0
   .word NomolosWalk2
-  .byte $00
+  .word $0000
 
 NomolosJump:
   .byte $0a
   .word NomolosJump0
-  .byte $00
+  .word $0000
 
 NomolosFight:
   .byte $06
   .word NomolosFight0
   .word NomolosFight1
-  .byte $00
+  .word $0000
 
 NomolosWalkOverlay:
   .byte $0a
@@ -347,42 +344,41 @@ NomolosWalkOverlay:
   .word NomolosWalkOverlay1
   .word NomolosWalkOverlay0
   .word NomolosWalkOverlay2
-  .byte $00
+  .word $0000
 
 NomolosJumpOverlay:
   .byte $0a
   .word NomolosJumpOverlay0
-  .byte $00
+  .word $0000
 
 NomolosFightOverlay:
   .byte $0a
   .word NomolosFightOverlay0
   .word NomolosFightOverlay1
-  .byte $00
+  .word $0000
 
 Heart:
   .byte $0a
   .word Heart0
-  .byte $00
+  .word $0000
 
 DeentleWalk:
   .byte $0a
   .word Deentle0
   .word Deentle1
-  .byte $00
+  .word $0000
 
 Explosion:
   .byte $02
   .word Explosion0
   .word Explosion1
   .word Explosion2
-  .byte $00
+  .word $0000
 
 Mouse:
   .byte $0a
   .word Mouse0
-  .byte $00
-
+  .word $0000
  
 attackSound:
   .byte $0E
