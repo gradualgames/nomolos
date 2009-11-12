@@ -146,17 +146,17 @@ reset:
   bit $2002
   bpl :-
 
-:
-  lda #$00
-  sta $0000, x
-  sta $0100, x
-  sta $0200, x
-  sta $0400, x
-  sta $0500, x
-  sta $0600, x
-  sta $0700, x
-  inx
-  bne :-
+;:
+;  lda #$00
+;  sta $0000, x
+;  sta $0100, x
+;  sta $0200, x
+;  sta $0400, x
+;  sta $0500, x
+;  sta $0600, x
+;  sta $0700, x
+;  inx
+;  bne :-
 
   ; initialize the MMC1 mapper...
   ;reset the PRG rom control register...
