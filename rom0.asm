@@ -13,12 +13,13 @@
 .importzp metametaTileTableBaseAddress
 .importzp levelBaseAddress
 .importzp romDefinitionTableBaseAddress
+.importzp spriteAddress
 
 ;famitracker
 .importzp ft_music_addr
-.import var_Pattern_Pos
-.import var_Current_Frame
-
+.import ft_music_init
+.import ft_music_play
+.import ft_disable_channel
 
 .import entityPool
 
@@ -27,6 +28,7 @@
 
 ;main module
 .import loadPalette
+.import updateFinished
 
 ;load level state labels
 .import loadLevelUpdate, loadLevelUpdatePPU
@@ -79,7 +81,7 @@ palette:
 
 ;Image Palette
 ;Palette
-  .byte $21,$28,$18,$08,$11,$19,$2a,$0b,$11,$0d,$07,$28,$00,$00,$00,$00
+  .byte $21,$28,$18,$08,$21,$19,$2a,$0b,$21,$0d,$07,$28,$21,$00,$00,$00
 
 ;Sprite Palette
 ;Palette
@@ -559,11 +561,25 @@ skipJmpExitDie:
   jmp notTouching
 skipJmpNotTouching:
   
-  lda #<getHealthSound
-  sta w0
-  lda #>getHealthSound
-  sta w0+1
-  jsr loadSound
+  lda #0
+  ldx #0
+  jsr ft_music_init
+
+  lda #%10001100
+  sta $2000
+  lda #%00000000
+  sta $2001
+  
+  loadLevel ROMDefinitionTable0
+  jsr initsound
+  jsr loadPalette
+  jsr clearSprites
+  jsr initEntities
+  jsr initNomolos  
+  jsr resetCamera  
+  switchState loadLevelUpdate, loadLevelUpdatePPU
+  
+  jmp updateFinished
     
   jmp exitDie
   

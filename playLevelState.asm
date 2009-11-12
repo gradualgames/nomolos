@@ -64,6 +64,7 @@ playLevelUpdate:
   jmp updateFinished
   
 playLevelUpdatePPU:
+
   jsr updateSprites
   jsr updateColumnPPU
   jsr updateAttributePPU

@@ -125,9 +125,7 @@ entityPool: .res 256
 ;page and entity page. This avoids clobbering graphics/sound memory.
 .include "driver.s"
 .export ft_enable_channel, ft_disable_channel
-.export ft_music_init
-.export var_Pattern_Pos
-.export var_Current_Frame
+.export ft_music_init, ft_music_play
 
 .segment "CODE"
 
@@ -146,17 +144,25 @@ reset:
   bit $2002
   bpl :-
 
-;:
-;  lda #$00
-;  sta $0000, x
-;  sta $0100, x
-;  sta $0200, x
-;  sta $0400, x
-;  sta $0500, x
-;  sta $0600, x
-;  sta $0700, x
-;  inx
-;  bne :-
+:
+  lda #$00
+  ;sta $0000, x
+  ;sta $0100, x
+  ;sta $0200, x
+  sta $0400, x
+  ;sta $0500, x
+  ;sta $0600, x
+  ;sta $0700, x
+  inx
+  bne :-
+
+  lda #$00
+  sta spriteAddress
+  
+  ldx #17
+: sta ft_music_addr,x
+  dex
+  bne :-
 
   ; initialize the MMC1 mapper...
   ;reset the PRG rom control register...
@@ -322,9 +328,10 @@ loadPalette:
   sta w0+1
   ldy #0
   lda #$3F
-  ldx #$00
   sta $2006
-  stx $2006
+  lda #$00
+  sta $2006  
+  ldx #$00
 : lda (w0),y
   sta $2007
   inx
