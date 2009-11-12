@@ -7,26 +7,48 @@
 .importzp nomolosScreenX, nomolosScreenY, nomolosState
 .importzp nomolosHitboxXOffset, nomolosHitboxYOffset
 .importzp soundAddr, soundOff
+.importzp update, updatePPU
+.importzp entityDefinitionTableBaseAddress
+.importzp metaTileTableBaseAddress
+.importzp metametaTileTableBaseAddress
+.importzp levelBaseAddress
+.importzp romDefinitionTableBaseAddress
+
+;famitracker
+.importzp ft_music_addr
+.import var_Pattern_Pos
+.import var_Current_Frame
+
 
 .import entityPool
+
+;ROM1
+.import ROMDefinitionTable1
+
+;main module
+.import loadPalette
+
+;load level state labels
+.import loadLevelUpdate, loadLevelUpdatePPU
 
 ;geotests module
 .import rectInRect
 
 ;nomolosLogic module
-.import hurtNomolos, nomolosDeadly, addNomolosHealth
+.import initNomolos, hurtNomolos, nomolosDeadly, addNomolosHealth
 
 ;entity module
-.import returnFromEntityUpdate, spawnEntity
+.import initEntities, returnFromEntityUpdate, spawnEntity
 
 ;camera module
-.import cameraToScreenCoords
+.import resetCamera, cameraToScreenCoords
 
 ;sprite module
-.import updateAnimation, drawAnimation, drawMetaSprite
+.import clearSprites, updateAnimation, drawAnimation, drawMetaSprite
 
 ;sound module
-.import lowc, loadSound, finishSound
+.import initsound, lowc, loadSound, finishSound
+
 
 .export ROMDefinitionTable0
 
@@ -492,25 +514,68 @@ ExitLevelEntity:
   
 exitLevelUpdate:
 
+  ;get out low byte of positionX
+  lda entityPool+entityRAM::positionX,x
+  sta w0
+  ;get out high byte of positionX
+  lda entityPool+entityRAM::positionX+1,x
+  sta w0+1
+  
+  ;get out positionY
+  lda entityPool+entityRAM::positionY,x
+  sta b1
+  jsr cameraToScreenCoords
+  beq skipJmpExitDie
+  jmp exitDie
+skipJmpExitDie:
+  
+  ;transfer entity rectangle to w0 = top left and w1 = bot right
+  lda b0
+  sta w0
+  clc
+  adc #$10
+  sta w1
+  lda b1
+  sta w0+1
+  clc
+  adc #$10
+  sta w1+1
+  
+  ;transfer Nomolos rectangle to w2 = top left and w3 = bot right
+  lda nomolosScreenX
+  sta w2
+  clc
+  adc #nomolosWidth
+  sta w3
+  lda nomolosScreenY
+  sta w2+1
+  clc
+  adc #nomolosHeight
+  sta w3+1
+  
+  jsr rectInRect
+  
+  beq skipJmpNotTouching
+  jmp notTouching
+skipJmpNotTouching:
+  
+  lda #<getHealthSound
+  sta w0
+  lda #>getHealthSound
+  sta w0+1
+  jsr loadSound
+    
+  jmp exitDie
+  
+notTouching:
+
+  jmp returnFromEntityUpdate
+
+exitDie:
   lda #0
   sta entityPool+entityRAM::alive,x
   jmp returnFromEntityUpdate
  
-;all entity routines expect that entityPool,x points to
-;the RAM entry for this particular update call.
-;entity schema:
-;0  .dsb alive = 1
-;1  .dsb index = definition index (this is a parameter)
-;2  .dsw spawnPositionX = initialXOffset + x
-;4  .dsb spawnPositionY = initialYOffset + y
-;5  .dsb positionXFine  = unknown, this is expected to be used (or not used) by the entity
-;6  .dsw positionX      = x (this is a parameter)
-;8  .dsb positionYFine  = unknown, this is expected to be used (or not used) by the entity
-;9  .dsb positionY      = y (this is a parameter)
-;10 .dsb state          = initialState
-;11 .dsw animationObject  = unknown, this expected to be set by the entity
-;13 .dsb 3 ;padding to 16 bytes
-
 MOUSE_INITSTATE = 0
 MOUSE_SITTHERESTATE = 1
 

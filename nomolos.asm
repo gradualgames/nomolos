@@ -37,7 +37,11 @@
 .exportzp scrollX, nextScrollX
 .exportzp controllerBuffer
 .exportzp soundAddr, soundOff
+.exportzp ft_music_addr
 .export stack, sprite, entityPool
+
+;misc
+.export loadPalette
 
 ;update return labels
 .export updatePPUFinished, updateFinished
@@ -121,6 +125,9 @@ entityPool: .res 256
 ;page and entity page. This avoids clobbering graphics/sound memory.
 .include "driver.s"
 .export ft_enable_channel, ft_disable_channel
+.export ft_music_init
+.export var_Pattern_Pos
+.export var_Current_Frame
 
 .segment "CODE"
 

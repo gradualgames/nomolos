@@ -87,6 +87,8 @@ loadLevelUpdate:
   switchState playLevelUpdate, playLevelUpdatePPU
   
   ;turn rendering on
+  lda #%10001100
+  sta $2000
   lda #%00011110
   sta $2001
 :
