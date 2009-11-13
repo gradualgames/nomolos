@@ -477,6 +477,15 @@ getHealthSound:
  
 ;Entities
 EntityDefinitionTable:
+ExitLevelEntityIndex = 3
+ExitLevelEntity:
+  .word exitLevelUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
 DeentleIndex = 0
 DeentleEntity:
   .word deentleUpdate
@@ -504,15 +513,7 @@ MouseEntity:
   .byte $00
   .byte $00
   .byte $00
-ExitLevelEntityIndex = 3
-ExitLevelEntity:
-  .word exitLevelUpdate
-  .byte $00
-  .byte $f9
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
+
   
 exitLevelUpdate:
 
@@ -565,14 +566,65 @@ skipJmpNotTouching:
   ldx #0
   jsr ft_music_init
 
-  lda #%10001100
+  lda #%10000000
   sta $2000
   lda #%00000000
   sta $2001
   
   loadLevel ROMDefinitionTable0
   jsr initsound
-  jsr loadPalette
+
+
+  lda #$3F
+  sta $2006
+  lda #$00
+  sta $2006  
+
+;Image Palette
+;Palette
+  ;.byte $21,$28,$18,$08,$21,$19,$2a,$0b,$21,$0d,$07,$28,$21,$00,$00,$00
+
+;Sprite Palette
+;Palette;
+  ;.byte $21,$0d,$27,$10,$21,$27,$20,$0d,$21,$0d,$00,$04,$21,$04,$2a,$20
+  
+  lda #$21
+  sta $2007
+  lda #$28
+  sta $2007
+  lda #$18
+  sta $2007
+  lda #$08
+  sta $2007
+  
+  lda #$21
+  sta $2007
+  lda #$19
+  sta $2007
+  lda #$2a
+  sta $2007
+  lda #$0b
+  sta $2007
+  
+  lda #$21
+  sta $2007
+  lda #$0d
+  sta $2007
+  lda #$07
+  sta $2007
+  lda #$28
+  sta $2007
+  
+  lda #$21
+  sta $2007
+  lda #$00
+  sta $2007
+  lda #$00
+  sta $2007
+  lda #$00
+  sta $2007
+
+  
   jsr clearSprites
   jsr initEntities
   jsr initNomolos  
