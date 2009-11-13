@@ -566,69 +566,25 @@ skipJmpNotTouching:
   ldx #0
   jsr ft_music_init
 
-  lda #%10000000
+  ;turn off inc32 so palette can load correctly
+  lda #%00001000
   sta $2000
+  ;turn off graphics
   lda #%00000000
   sta $2001
   
   loadLevel ROMDefinitionTable0
   jsr initsound
-
-
-  lda #$3F
-  sta $2006
-  lda #$00
-  sta $2006  
-
-;Image Palette
-;Palette
-  ;.byte $21,$28,$18,$08,$21,$19,$2a,$0b,$21,$0d,$07,$28,$21,$00,$00,$00
-
-;Sprite Palette
-;Palette;
-  ;.byte $21,$0d,$27,$10,$21,$27,$20,$0d,$21,$0d,$00,$04,$21,$04,$2a,$20
-  
-  lda #$21
-  sta $2007
-  lda #$28
-  sta $2007
-  lda #$18
-  sta $2007
-  lda #$08
-  sta $2007
-  
-  lda #$21
-  sta $2007
-  lda #$19
-  sta $2007
-  lda #$2a
-  sta $2007
-  lda #$0b
-  sta $2007
-  
-  lda #$21
-  sta $2007
-  lda #$0d
-  sta $2007
-  lda #$07
-  sta $2007
-  lda #$28
-  sta $2007
-  
-  lda #$21
-  sta $2007
-  lda #$00
-  sta $2007
-  lda #$00
-  sta $2007
-  lda #$00
-  sta $2007
-
-  
+  jsr loadPalette
   jsr clearSprites
   jsr initEntities
   jsr initNomolos  
   jsr resetCamera  
+  
+  ;turn inc32 back on so the load level state works properly
+  lda #%10001100
+  sta $2000
+  
   switchState loadLevelUpdate, loadLevelUpdatePPU
   
   jmp updateFinished
