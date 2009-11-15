@@ -28,7 +28,7 @@
 
 ;main module
 .import loadPalette
-.import updateFinished
+.import loadLevel
 
 ;load level state labels
 .import loadLevelUpdate, loadLevelUpdatePPU
@@ -477,15 +477,6 @@ getHealthSound:
  
 ;Entities
 EntityDefinitionTable:
-ExitLevelEntityIndex = 3
-ExitLevelEntity:
-  .word exitLevelUpdate
-  .byte $00
-  .byte $f9
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
 DeentleIndex = 0
 DeentleEntity:
   .word deentleUpdate
@@ -513,7 +504,15 @@ MouseEntity:
   .byte $00
   .byte $00
   .byte $00
-
+ExitLevelEntityIndex = 3
+ExitLevelEntity:
+  .word exitLevelUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
   
 exitLevelUpdate:
 
@@ -562,32 +561,17 @@ skipJmpExitDie:
   jmp notTouching
 skipJmpNotTouching:
   
-  lda #0
-  ldx #0
-  jsr ft_music_init
-
-  ;turn off inc32 so palette can load correctly
-  lda #%00001000
-  sta $2000
-  ;turn off graphics
-  lda #%00000000
-  sta $2001
-  
-  loadLevel ROMDefinitionTable0
-  jsr initsound
-  jsr loadPalette
-  jsr clearSprites
-  jsr initEntities
-  jsr initNomolos  
-  jsr resetCamera  
-  
-  ;turn inc32 back on so the load level state works properly
-  lda #%10001100
-  sta $2000
-  
-  switchState loadLevelUpdate, loadLevelUpdatePPU
-  
-  jmp updateFinished
+  lda #<ROMDefinitionTable1
+  sta w0
+  lda #>ROMDefinitionTable1
+  sta w0+1
+  lda #2
+  sta b0
+  lda #3
+  sta b1
+  lda #1
+  sta b2
+  jmp loadLevel
     
   jmp exitDie
   

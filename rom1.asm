@@ -33,7 +33,7 @@
 .segment "ROM1"
 
 music:
-.incbin "music.bin"
+.incbin "music1.bin"
 
 ;ROM definition table
 ROMDefinitionTable1:

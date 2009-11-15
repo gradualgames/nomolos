@@ -41,7 +41,7 @@
 .export stack, sprite, entityPool
 
 ;misc
-.export loadPalette
+.export loadPalette, loadLevel
 
 ;update return labels
 .export updatePPUFinished, updateFinished
@@ -191,125 +191,17 @@ reset:
   lsr
   sta $8000
 
-  ;load CHR bank 0 into $0000
-  lda #%00000000
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  
-  ;load CHR bank 1 into $1000
-  lda #%00000001
-  sta $C000
-  lsr
-  sta $C000
-  lsr
-  sta $C000
-  lsr
-  sta $C000
-  lsr
-  sta $C000
-  
-  ;load PRG bank 0 into $8000
-  lda #%00000000
-  sta $E000
-  lsr
-  sta $E000
-  lsr
-  sta $E000
-  lsr
-  sta $E000
-  lsr
-  sta $E000  
-  
-  loadLevel ROMDefinitionTable0
-  jsr initsound
-  jsr loadPalette
-  jsr clearSprites
-  jsr initEntities
-  jsr initNomolos  
-  jsr resetCamera  
-  switchState loadLevelUpdate, loadLevelUpdatePPU
-
-;    +---------+----------------------------------------------------------+
-;    | Address | Description                                              |
-;    +---------+----------------------------------------------------------+
-;    |  $2000  | PPU Control Register #1 (W)                              |
-;    |         |                                                          |
-;    |         |    D7: Execute NMI on VBlank                             |
-;    |         |           0 = Disabled                                   |
-;    |         |           1 = Enabled                                    |
-;    |         |    D6: PPU Master/Slave Selection --+                    |
-;    |         |           0 = Master                +-- UNUSED           |
-;    |         |           1 = Slave               --+                    |
-;    |         |    D5: Sprite Size                                       |
-;    |         |           0 = 8x8                                        |
-;    |         |           1 = 8x16                                       |
-;    |         |    D4: Background Pattern Table Address                  |
-;    |         |           0 = $0000 (VRAM)                               |
-;    |         |           1 = $1000 (VRAM)                               |
-;    |         |    D3: Sprite Pattern Table Address                      |
-;    |         |           0 = $0000 (VRAM)                               |
-;    |         |           1 = $1000 (VRAM)                               |
-;    |         |    D2: PPU Address Increment                             |
-;    |         |           0 = Increment by 1                             |
-;    |         |           1 = Increment by 32                            |
-;    |         | D1-D0: Name Table Address                                |
-;    |         |         00 = $2000 (VRAM)                                |
-;    |         |         01 = $2400 (VRAM)                                |
-;    |         |         10 = $2800 (VRAM)                                |
-;    |         |         11 = $2C00 (VRAM)                                |
-;    +---------+----------------------------------------------------------+
-;       76543210
-  lda #%10001100
-  sta $2000
-
-;    +---------+----------------------------------------------------------+
-;    |  $2001  | PPU Control Register #2 (W)                              |
-;    |         |                                                          |
-;    |         | D7-D5: Full Background Colour (when D0 == 1)             |
-;    |         |         000 = None  +------------+                       |
-;    |         |         001 = Green              | NOTE: Do not use more |
-;    |         |         010 = Blue               |       than one type   |
-;    |         |         100 = Red   +------------+                       |
-;    |         | D7-D5: Colour Intensity (when D0 == 0)                   |
-;    |         |         000 = None            +--+                       |
-;    |         |         001 = Intensify green    | NOTE: Do not use more |
-;    |         |         010 = Intensify blue     |       than one type   |
-;    |         |         100 = Intensify red   +--+                       |
-;    |         |    D4: Sprite Visibility                                 |
-;    |         |           0 = Sprites not displayed                      |
-;    |         |           1 = Sprites visible                            |
-;    |         |    D3: Background Visibility                             |
-;    |         |           0 = Background not displayed                   |
-;    |         |           1 = Background visible                         |
-;    |         |    D2: Sprite Clipping                                   |
-;    |         |           0 = Sprites invisible in left 8-pixel column   |
-;    |         |           1 = No clipping                                |
-;    |         |    D1: Background Clipping                               |
-;    |         |           0 = BG invisible in left 8-pixel column        |
-;    |         |           1 = No clipping                                |
-;    |         |    D0: Display Type                                      |
-;    |         |           0 = Colour display                             |
-;    |         |           1 = Monochrome display                         |
-;    +---------+----------------------------------------------------------+
-;       76543210
-;  lda #%00011110
-;  sta $2001
-  lda #%00000000
-  sta $2001
-
-  ;initialize music driver as NTSC and track #0.
-.if .defined(MUSIC_ENABLE)
   lda #0
-  ldx #0
-  jsr ft_music_init
-.endif
+  sta b0
+  lda #1
+  sta b1
+  lda #0
+  sta b2
+  lda #<ROMDefinitionTable0
+  sta w0
+  lda #>ROMDefinitionTable0
+  sta w0+1
+  jmp loadLevel
   
 loop:
 
@@ -319,6 +211,116 @@ updateFinished:
 
   jmp loop
 
+;loads a new level based on a rom definition table address.
+;w0 - the address of the rom definition table to use
+;b0 - the first chr rom bank.
+;b1 - the second chr rom bank.
+;b2 - the prg rom bank.
+.proc loadLevel
+
+  ;load CHR bank into $0000
+  lda b0
+  sta $A000
+  lsr
+  sta $A000
+  lsr
+  sta $A000
+  lsr
+  sta $A000
+  lsr
+  sta $A000
+  
+  ;load CHR bank into $1000
+  lda b1
+  sta $C000
+  lsr
+  sta $C000
+  lsr
+  sta $C000
+  lsr
+  sta $C000
+  lsr
+  sta $C000
+  
+  ;load PRG bank into $8000
+  lda b2
+  sta $E000
+  lsr
+  sta $E000
+  lsr
+  sta $E000
+  lsr
+  sta $E000
+  lsr
+  sta $E000  
+
+  lda w0
+  sta romDefinitionTableBaseAddress
+  lda w0+1
+  sta romDefinitionTableBaseAddress+1
+
+  ldy #ROMDefinitionTableStruct::Level
+  lda (romDefinitionTableBaseAddress),y
+  sta levelBaseAddress
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta levelBaseAddress+1
+
+  ldy #ROMDefinitionTableStruct::MetaMetaTileTable
+  lda (romDefinitionTableBaseAddress),y
+  sta metametaTileTableBaseAddress
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta metametaTileTableBaseAddress+1
+
+  ldy #ROMDefinitionTableStruct::MetaTileTable
+  lda (romDefinitionTableBaseAddress),y
+  sta metaTileTableBaseAddress
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta metaTileTableBaseAddress+1
+  
+  ldy #ROMDefinitionTableStruct::EntityDefinitionTable
+  lda (romDefinitionTableBaseAddress),y
+  sta entityDefinitionTableBaseAddress
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta entityDefinitionTableBaseAddress+1
+  
+  ldy #ROMDefinitionTableStruct::music
+  lda (romDefinitionTableBaseAddress),y
+  sta ft_music_addr
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta ft_music_addr+1
+
+  lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
+  sta $2000
+  
+  lda #%00000000
+  sta $2001
+  
+  jsr initsound
+  jsr loadPalette
+  jsr clearSprites
+  jsr initEntities
+  jsr initNomolos  
+  jsr resetCamera  
+  switchState loadLevelUpdate, loadLevelUpdatePPU
+
+  lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
+  sta $2000
+  
+  ;initialize music driver as NTSC and track #0.
+.if .defined(MUSIC_ENABLE)
+  lda #0
+  ldx #0
+  jsr ft_music_init
+.endif
+  
+  jmp updateFinished
+.endproc
+  
 loadPalette:
   ldy #ROMDefinitionTableStruct::palette
   lda (romDefinitionTableBaseAddress),y
