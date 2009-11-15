@@ -10,6 +10,12 @@
 
 .import entityPool
 
+;main module
+.import loadLevel
+
+;ROM labels
+.import ROMDefinitionTable0
+
 ;geotests module
 .import rectInRect
 
@@ -170,6 +176,10 @@ MetaTile51:
   .byte $03,$00,$7b,$7c,$82,$83,$01,$00
 MetaTile52:
   .byte $01,$00,$58,$59,$61,$62,$01,$00
+MetaTile53:
+  .byte $01,$00,$44,$45,$44,$50,$04,$00
+MetaTile54:
+  .byte $01,$00,$58,$59,$61,$62,$03,$00
 MetaMetaTileTable:
 MetaMetaTile0:
   .byte $25,$25,$25,$25,$25,$25,$25,$25,$25,$25,$25,$25,$25,$29,$31,$00
@@ -218,7 +228,7 @@ MetaMetaTile21:
 MetaMetaTile22:
   .byte $00,$00,$00,$00,$00,$08,$0d,$14,$14,$1b,$21,$00,$00,$00,$31,$00
 MetaMetaTile23:
-  .byte $00,$00,$00,$00,$00,$09,$0e,$15,$15,$1c,$22,$00,$00,$00,$31,$00
+  .byte $00,$00,$00,$00,$00,$09,$0e,$15,$15,$36,$22,$00,$00,$00,$31,$00
 MetaMetaTile24:
   .byte $00,$00,$00,$00,$00,$0a,$0f,$16,$16,$1d,$23,$00,$00,$00,$31,$00
 MetaMetaTile25:
@@ -253,11 +263,17 @@ MetaMetaTile39:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$24,$31,$00
 MetaMetaTile40:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$33,$31,$00
+MetaMetaTile41:
+  .byte $14,$14,$14,$14,$14,$14,$14,$14,$14,$14,$14,$14,$14,$14,$31,$00
+MetaMetaTile42:
+  .byte $15,$15,$15,$15,$15,$15,$15,$15,$15,$15,$15,$15,$15,$15,$31,$00
+MetaMetaTile43:
+  .byte $35,$35,$35,$35,$35,$35,$35,$35,$35,$35,$35,$35,$35,$35,$31,$00
 Level:
   .byte $00,$01,$02,$03,$04,$05,$06,$07,$03,$08,$09,$09,$0a,$09,$09,$0b,$03,$03,$03,$0c,$0d,$0e,$0f,$10,$03,$03,$03,$03,$11,$12,$12,$13
   .byte $12,$12,$14,$03,$03,$03,$03,$15,$16,$17,$18,$19,$03,$15,$16,$17,$18,$19,$03,$15,$16,$17,$18,$19,$03,$1a,$1b,$1c,$1d,$03,$03,$03
   .byte $11,$12,$12,$13,$12,$12,$14,$03,$03,$03,$03,$08,$09,$09,$0a,$09,$09,$09,$0b,$03,$03,$03,$00,$01,$01,$01,$02,$03,$03,$03,$03,$03
-  .byte $03,$1e,$1f,$20,$21,$22,$03,$03,$03,$23,$24,$25,$26,$27,$03,$28,$03,$00,$01,$02,$03,$03,$03,$00,$01,$02,$03,$03,$03,$03,$03,$03
+  .byte $03,$1e,$1f,$20,$21,$22,$03,$03,$03,$23,$24,$25,$26,$27,$03,$28,$03,$00,$01,$02,$29,$2a,$2b,$00,$01,$02,$03,$03,$03,$03,$03,$03
   
 ;Meta Sprite Table
 NomolosWalk0:
@@ -572,25 +588,74 @@ ExitLevelEntity:
   
 exitLevelUpdate:
 
+  ;get out low byte of positionX
+  lda entityPool+entityRAM::positionX,x
+  sta w0
+  ;get out high byte of positionX
+  lda entityPool+entityRAM::positionX+1,x
+  sta w0+1
+  
+  ;get out positionY
+  lda entityPool+entityRAM::positionY,x
+  sta b1
+  jsr cameraToScreenCoords
+  beq skipJmpExitDie
+  jmp exitDie
+skipJmpExitDie:
+  
+  ;transfer entity rectangle to w0 = top left and w1 = bot right
+  lda b0
+  sta w0
+  clc
+  adc #$10
+  sta w1
+  lda b1
+  sta w0+1
+  clc
+  adc #$10
+  sta w1+1
+  
+  ;transfer Nomolos rectangle to w2 = top left and w3 = bot right
+  lda nomolosScreenX
+  sta w2
+  clc
+  adc #nomolosWidth
+  sta w3
+  lda nomolosScreenY
+  sta w2+1
+  clc
+  adc #nomolosHeight
+  sta w3+1
+  
+  jsr rectInRect
+  
+  beq skipJmpNotTouching
+  jmp notTouching
+skipJmpNotTouching:
+  
+  lda #<ROMDefinitionTable0
+  sta w0
+  lda #>ROMDefinitionTable0
+  sta w0+1
+  lda #0
+  sta b0
+  lda #1
+  sta b1
+  lda #0
+  sta b2
+  jmp loadLevel
+    
+  jmp exitDie
+  
+notTouching:
+
+  jmp returnFromEntityUpdate
+
+exitDie:
   lda #0
   sta entityPool+entityRAM::alive,x
   jmp returnFromEntityUpdate
  
-;all entity routines expect that entityPool,x points to
-;the RAM entry for this particular update call.
-;entity schema:
-;0  .dsb alive = 1
-;1  .dsb index = definition index (this is a parameter)
-;2  .dsw spawnPositionX = initialXOffset + x
-;4  .dsb spawnPositionY = initialYOffset + y
-;5  .dsb positionXFine  = unknown, this is expected to be used (or not used) by the entity
-;6  .dsw positionX      = x (this is a parameter)
-;8  .dsb positionYFine  = unknown, this is expected to be used (or not used) by the entity
-;9  .dsb positionY      = y (this is a parameter)
-;10 .dsb state          = initialState
-;11 .dsw animationObject  = unknown, this expected to be set by the entity
-;13 .dsb 3 ;padding to 16 bytes
-
 MOUSE_INITSTATE = 0
 MOUSE_SITTHERESTATE = 1
 
