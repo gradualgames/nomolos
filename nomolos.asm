@@ -129,40 +129,7 @@ entityPool: .res 256
 
 .segment "CODE"
 
-reset:
-  sei
-  cld
-  ldx #$FF
-  txs
-  inx
-  stx $2001
-
-:
-  bit $2002
-  bpl :-
-:
-  bit $2002
-  bpl :-
-
-:
-  lda #$00
-  ;sta $0000, x
-  ;sta $0100, x
-  ;sta $0200, x
-  sta $0400, x
-  ;sta $0500, x
-  ;sta $0600, x
-  ;sta $0700, x
-  inx
-  bne :-
-
-  lda #$00
-  sta spriteAddress
-  
-  ldx #17
-: sta ft_music_addr,x
-  dex
-  bne :-
+.macro initMMC1
 
   ; initialize the MMC1 mapper...
   ;reset the PRG rom control register...
@@ -190,6 +157,48 @@ reset:
   sta $8000
   lsr
   sta $8000
+
+.endmacro
+  
+.macro initNES
+
+  sei
+  cld
+  ldx #$FF
+  txs
+  inx
+  stx $2001
+
+:
+  bit $2002
+  bpl :-
+:
+  bit $2002
+  bpl :-
+
+.endmacro
+
+.macro clearRAM
+
+  lda #$00
+:
+  sta $0000, x
+  sta $0100, x
+  sta $0200, x
+  sta $0300, x
+  sta $0400, x
+  sta $0500, x
+  sta $0600, x
+  sta $0700, x
+  inx
+  bne :-
+
+.endmacro
+
+reset:
+  initNES
+  clearRAM
+  initMMC1
 
   lda #0
   sta b0
