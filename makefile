@@ -26,7 +26,13 @@ FILES           = nomolos \
                   geotests
 OBJECT_FILES    = $(addsuffix .o, $(FILES))
 LST_FILES = $(addsuffix .lst, $(FILES))
-INCLUDE_FILES   = constants.inc macros.inc flags.inc structs.inc
+INCLUDE_FILES   = constants.inc \
+                  macros.inc \
+                  flags.inc \
+                  structs.inc \
+                  mouse.inc \
+                  explosion.inc \
+                  deentle.inc
 CONFIG_FILE     = nomolos.cfg
 MAPFILE         = nomolos.map
 LSTFILE         = nomolos.lst
