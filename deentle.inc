@@ -22,7 +22,7 @@ deentle_initState:
   ;init code for animation, etc. goes here
   lda #1
   sta entityPool+entityRAM::animationObject,x
-  lda #0
+  lda #$ff
   sta entityPool+entityRAM::animationObject+1,x
   
   ;switch state to "run"

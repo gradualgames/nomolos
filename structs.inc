@@ -1,6 +1,11 @@
 .ifndef STRUCTS_INC
 STRUCTS_INC = 1
 
+.struct animation
+  frameCountDown .byte
+  currentFrame .byte
+.endstruct
+
 .struct entityRAM
   alive .byte
   index .byte

@@ -1,3 +1,5 @@
+.include "structs.inc"
+
 ;global variables
 .importzp b0, b1, b2, b3, w0, w1, w2
 .importzp spriteAddress
@@ -13,7 +15,7 @@
 ;w2: location of animation definition  
 drawAnimation:
   ;get the current frame of this animation object
-  ldy #1
+  ldy #animation::currentFrame
   lda (w1),y
   ;check if animation is in start state, load frame 0 if so.
   cmp #$ff
@@ -52,7 +54,7 @@ drawAnimation:
 updateAnimation:
 
   ;get the frame count down of this animation object
-  ldy #0
+  ldy #animation::frameCountDown
   lda (w1),y
   ;decrement the frame count down
   sec
@@ -61,12 +63,12 @@ updateAnimation:
   ;if the frame count down hasn't reached zero, skip the frame update code
   bne skipFrameUpdate
   ;reset the frame count value
-  ldy #0
+  ldy #animation::frameCountDown
   lda (w2),y
   sta (w1),y
   
   ;get the current frame number of this animation object
-  iny
+  ldy #animation::currentFrame
   lda (w1),y
   clc
   adc #1
@@ -83,7 +85,7 @@ updateAnimation:
   ;if the byte is zero, we must reset the frame counter
   bne skipFrameUpdate
   lda #0
-  ldy #1
+  ldy #animation::currentFrame
   sta (w1),y
 skipFrameUpdate:
   rts
