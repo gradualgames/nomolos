@@ -16,52 +16,6 @@ MACROS_INC = 1
   sta updatePPU+1
 .endmacro
 
-;Loads the addresses of level data 
-.macro loadLevel romDefinitionTableAddr
-
-
-  lda #<romDefinitionTableAddr
-  sta romDefinitionTableBaseAddress
-  lda #>romDefinitionTableAddr
-  sta romDefinitionTableBaseAddress+1
-
-  ldy #ROMDefinitionTableStruct::Level
-  lda (romDefinitionTableBaseAddress),y
-  sta levelBaseAddress
-  iny
-  lda (romDefinitionTableBaseAddress),y
-  sta levelBaseAddress+1
-
-  ldy #ROMDefinitionTableStruct::MetaMetaTileTable
-  lda (romDefinitionTableBaseAddress),y
-  sta metametaTileTableBaseAddress
-  iny
-  lda (romDefinitionTableBaseAddress),y
-  sta metametaTileTableBaseAddress+1
-
-  ldy #ROMDefinitionTableStruct::MetaTileTable
-  lda (romDefinitionTableBaseAddress),y
-  sta metaTileTableBaseAddress
-  iny
-  lda (romDefinitionTableBaseAddress),y
-  sta metaTileTableBaseAddress+1
-  
-  ldy #ROMDefinitionTableStruct::EntityDefinitionTable
-  lda (romDefinitionTableBaseAddress),y
-  sta entityDefinitionTableBaseAddress
-  iny
-  lda (romDefinitionTableBaseAddress),y
-  sta entityDefinitionTableBaseAddress+1
-  
-  ldy #ROMDefinitionTableStruct::music
-  lda (romDefinitionTableBaseAddress),y
-  sta ft_music_addr
-  iny
-  lda (romDefinitionTableBaseAddress),y
-  sta ft_music_addr+1
-
-.endmacro
-
 .macro resetAnim animAddr
 
   lda #$01
