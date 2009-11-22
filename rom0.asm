@@ -7,13 +7,7 @@
 .importzp nomolosScreenX, nomolosScreenY, nomolosState
 .importzp nomolosHitboxXOffset, nomolosHitboxYOffset
 .importzp soundAddr, soundOff
-.importzp update, updatePPU
-.importzp entityDefinitionTableBaseAddress
-.importzp metaTileTableBaseAddress
-.importzp metametaTileTableBaseAddress
-.importzp levelBaseAddress
-.importzp romDefinitionTableBaseAddress
-.importzp spriteAddress
+.importzp stateControl
 
 ;famitracker
 .importzp ft_music_addr
@@ -25,10 +19,6 @@
 
 ;ROM1
 .import ROMDefinitionTable1
-
-;main module
-.import loadPalette
-.import loadLevel
 
 ;load level state labels
 .import loadLevelUpdate, loadLevelUpdatePPU
@@ -564,16 +554,17 @@ skipJmpExitDie:
 skipJmpNotTouching:
   
   lda #<ROMDefinitionTable1
-  sta w0
+  sta stateControl+playLevelStateControl::romDefinitionTable
   lda #>ROMDefinitionTable1
-  sta w0+1
+  sta stateControl+playLevelStateControl::romDefinitionTable+1
   lda #2
-  sta b0
+  sta stateControl+playLevelStateControl::bgChrBank
   lda #3
-  sta b1
+  sta stateControl+playLevelStateControl::sprChrBank
   lda #1
-  sta b2
-  jmp loadLevel
+  sta stateControl+playLevelStateControl::prgBank
+  lda #PLAYLEVELSTATE_SWITCHLEVEL
+  sta stateControl+playLevelStateControl::state
     
   jmp exitDie
   

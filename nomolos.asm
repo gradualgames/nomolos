@@ -23,7 +23,8 @@
 .import initsound, playSound
 
 ;global variables/RAM labels
-.exportzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5, vblankDone, update
+.exportzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5, vblankDone
+.exportzp stateControl
 .exportzp update, updatePPU, attributeBuffer, attributeColumnToUpdate
 .exportzp columnTileBuffer, columnToUpdate, nametableToUpdate
 .exportzp levelBaseAddress, metaTileBuffer, metaTileTableBaseAddress
@@ -72,6 +73,7 @@ vblankDone:  .res 1
 
 update:     .res 2
 updatePPU:  .res 2
+stateControl: .res 16
 
 nomolosX: .res 3  ;24 bit x (16 bit coord + 8 bit fine movement)
 nomolosY: .res 2  ;16 bit y (8 bit coord + 8 bit fine movement)

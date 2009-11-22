@@ -1,5 +1,6 @@
 .include "macros.inc"
 .include "constants.inc"
+.include "structs.inc"
 
 ;state return labels
 .import updatePPUFinished, updateFinished
@@ -12,7 +13,7 @@
 ;entity routines
 .import initEntities, updateEntities
 ;global variables
-.importzp update, updatePPU
+.importzp update, updatePPU, stateControl
 .importzp w1, w3, levelBaseAddress, columnToUpdate
 .importzp metametaTileTableBaseAddress, nametableToUpdate
 
@@ -85,6 +86,9 @@ loadLevelUpdate:
   lda #$24
   sta nametableToUpdate  
 
+  lda #PLAYLEVELSTATE_KEEPPLAYING
+  sta stateControl+playLevelStateControl::state
+  
   switchState playLevelUpdate, playLevelUpdatePPU
   
   ;turn rendering on

@@ -7,6 +7,7 @@
 .importzp nomolosScreenX, nomolosScreenY, nomolosState
 .importzp nomolosHitboxXOffset, nomolosHitboxYOffset
 .importzp soundAddr, soundOff
+.importzp stateControl
 
 .import entityPool
 
@@ -634,17 +635,18 @@ skipJmpExitDie:
 skipJmpNotTouching:
   
   lda #<ROMDefinitionTable0
-  sta w0
+  sta stateControl+playLevelStateControl::romDefinitionTable
   lda #>ROMDefinitionTable0
-  sta w0+1
+  sta stateControl+playLevelStateControl::romDefinitionTable+1
   lda #0
-  sta b0
+  sta stateControl+playLevelStateControl::bgChrBank
   lda #1
-  sta b1
+  sta stateControl+playLevelStateControl::sprChrBank
   lda #0
-  sta b2
-  jmp loadLevel
-    
+  sta stateControl+playLevelStateControl::prgBank
+  lda #PLAYLEVELSTATE_SWITCHLEVEL
+  sta stateControl+playLevelStateControl::state
+  
   jmp exitDie
   
 notTouching:

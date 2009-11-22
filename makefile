@@ -34,20 +34,18 @@ INCLUDE_FILES   = constants.inc \
                   explosion.inc \
                   deentle.inc
 CONFIG_FILE     = nomolos.cfg
-MAPFILE         = nomolos.map
-LSTFILE         = nomolos.lst
-DEBUGFILE       = nomolos.txt
+MAP_FILE         = nomolos.map
 
 #Switches
 ASSEMBLER_FLAGS = -g -l --include-dir ft_driver -o
-LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAPFILE) --dbgfile $(DEBUGFILE) -o 
+LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) -o 
 NAMELIST_GENERATOR_FLAGS = -nl ram ZEROPAGE 0000 \
                            -nl ram STACK 0100 \
                            -nl ram BSS 0200 \
                            -nl 0 ROM0 8000 \
                            -nl 1 ROM1 8000 \
                            -nl 3 CODE C000 \
-                           -map $(MAPFILE) \
+                           -map $(MAP_FILE) \
                            $(addprefix -lst ,$(LST_FILES))
 
 #Rules
@@ -66,4 +64,4 @@ $(OBJECT_FILES): %.o : %.asm $(INCLUDE_FILES)
 
 #Rule for cleaning the build
 clean:
-	rm -f $(OBJECT_FILES) $(NES_FILE) $(MAPFILE) *.lst *.nl *.txt
+	rm -f $(OBJECT_FILES) $(NES_FILE) $(MAP_FILE) $(LST_FILES) *.nl
