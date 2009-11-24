@@ -1,7 +1,7 @@
 #Makefile for Nomolos
 
 #Utility programs
-NAMELIST_GENERATOR = Ca65LstToNl
+NAMELIST_GENERATOR = nlgen
 
 #CA65 programs
 ASSEMBLER       = ca65
@@ -50,13 +50,16 @@ NAMELIST_GENERATOR_FLAGS = -nl ram ZEROPAGE 0000 \
 
 #Rules
 
-#Rule for making everything!
+#Rule for making the NES rom.
 all: $(NES_FILE)
+
+#Rule for making the NES rom and generating debug files for FCEUXDSP
+debug: $(NES_FILE)
+	$(NAMELIST_GENERATOR) $(NAMELIST_GENERATOR_FLAGS)
 
 #Rule for linking the final NES rom
 $(NES_FILE): $(OBJECT_FILES) $(CONFIG_FILE)
 	$(LINKER) $(OBJECT_FILES) $(LINKER_FLAGS) $(NES_FILE)
-	$(NAMELIST_GENERATOR) $(NAMELIST_GENERATOR_FLAGS)
 
 #Rule for assembling all the object files from source files
 $(OBJECT_FILES): %.o : %.asm $(INCLUDE_FILES)
