@@ -39,7 +39,8 @@ MAP_FILE         = nomolos.map
 #Switches
 ASSEMBLER_FLAGS = -g -l --include-dir ft_driver -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) -o 
-NAMELIST_GENERATOR_FLAGS = -nl ram ZEROPAGE 0000 \
+NAMELIST_GENERATOR_FLAGS = -o nomolos \
+                           -nl ram ZEROPAGE 0000 \
                            -nl ram STACK 0100 \
                            -nl ram BSS 0200 \
                            -nl 0 ROM0 8000 \
