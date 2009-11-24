@@ -8,7 +8,8 @@ ASSEMBLER       = ca65
 LINKER          = ld65
 
 #Files
-NES_FILE        = nomolos.nes
+OUTPUT_NAME     = nomolos
+NES_FILE        = $(OUTPUT_NAME).nes
 FILES           = nomolos \
                   nomolosLogic \
                   rom0 \
@@ -33,13 +34,13 @@ INCLUDE_FILES   = constants.inc \
                   mouse.inc \
                   explosion.inc \
                   deentle.inc
-CONFIG_FILE     = nomolos.cfg
-MAP_FILE         = nomolos.map
+CONFIG_FILE     = $(OUTPUT_NAME).cfg
+MAP_FILE         = $(OUTPUT_NAME).map
 
 #Switches
 ASSEMBLER_FLAGS = -g -l --include-dir ft_driver -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) -o 
-NAMELIST_GENERATOR_FLAGS = -o nomolos \
+NAMELIST_GENERATOR_FLAGS = -o $(NES_FILE) \
                            -nl ram ZEROPAGE 0000 \
                            -nl ram STACK 0100 \
                            -nl ram BSS 0200 \
