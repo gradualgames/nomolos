@@ -50,7 +50,7 @@ NAMELIST_GENERATOR_FLAGS = -nl ram ZEROPAGE 0000 \
 
 #Rules
 
-#Rule for making the NES rom.
+#Rule for making the NES rom
 all: $(NES_FILE)
 
 #Rule for making the NES rom and generating debug files for FCEUXDSP
