@@ -32,6 +32,7 @@
 ;b0: 8 bit Y coordinate in the map
 ;outputs:
 ;the zero flag should be set if there is no collision, clear otherwise
+;b0: whether or not the collision was with a "hurt" tile.
 .proc testMapCollision
 
   ;divide X coordinate by 16 to get column coordinate
@@ -123,6 +124,11 @@
   sta w2+1
   
   ldy #0
+  
+  ;point to the "hurt" attribute. Store this in b0.
+  iny
+  lda (w2),y
+  sta b0
   
   ;point to the "solid" attribute. This is the big finale of the collision routine.
   iny
@@ -356,6 +362,8 @@ nextTile:
 
   jsr updateAttribute
 
+  iny
+  ;let's not bother with the hurt flag for now
   iny
   ;let's not bother with the solid flag for now
   iny

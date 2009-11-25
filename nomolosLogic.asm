@@ -286,6 +286,14 @@ noTopRightCollision:
   
 yesAboveCollision:
   ;There was an above collision:
+  ;load "hurt" result of map collision test
+  lda b0
+  beq @skipSetHurt
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+@skipSetHurt:
+ 
   ;Calculate penetration distance and store it in abovePenetrationDistance.
   ;Set above collision flag.
   lda nomolosY+1
@@ -357,6 +365,14 @@ noBottomRightCollision:
 
 yesBottomCollision:
   ;There was a below collision:
+  ;load "hurt" result of map collision test
+  lda b0
+  beq @skipSetHurt
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+@skipSetHurt:
+  
   ;Calculate penetration distance and store it in belowPenetrationDistance.
   ;Set below collision flag.
   lda nomolosY+1
@@ -723,6 +739,18 @@ notLeft:
   sta nomolosX+2
   
 notRight:
+
+  ;************************************************************
+  ;Load result of "hurt by map" flag and hurt nomolos if true.
+  ;************************************************************
+  lda nomolosState
+  and #nomolosHurtByMapTestAND
+  beq @notHurtByMap
+  lda nomolosState
+  and #nomolosHurtByMapOffAND
+  sta nomolosState
+  jsr hurtNomolos
+@notHurtByMap:
 
   ;************************************************************
   ;Compute screen coordinates from level coordinates.
