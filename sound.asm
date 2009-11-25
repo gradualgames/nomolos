@@ -35,6 +35,8 @@ keepFinishing:
   ;move on to channel value
   iny
   lda (soundAddr),y
+  ;move back to command index
+  dey
   ;re-enable that channel
   tax
   jsr ft_enable_channel
@@ -42,6 +44,7 @@ keepFinishing:
 enableCommandNotFoundYet:
 
   ;move on to next entry
+  iny
   iny
   ;keep looking for channel enable commands
   jmp keepFinishing
