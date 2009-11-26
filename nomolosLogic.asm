@@ -198,6 +198,18 @@ skipAttack:
 .proc updateNomolos
 
   ;************************************************************
+  ;Load result of "hurt by map" flag and hurt nomolos if true.
+  ;************************************************************
+  lda nomolosState
+  and #nomolosHurtByMapTestAND
+  beq @notHurtByMap
+  lda nomolosState
+  and #nomolosHurtByMapOffAND
+  sta nomolosState
+  jsr hurtNomolos
+@notHurtByMap:
+
+  ;************************************************************
   ;Update counters for temporary invincibility and for attack
   ;hit box. Call attack routine if B transitions from off to
   ;on.
@@ -739,18 +751,6 @@ notLeft:
   sta nomolosX+2
   
 notRight:
-
-  ;************************************************************
-  ;Load result of "hurt by map" flag and hurt nomolos if true.
-  ;************************************************************
-  lda nomolosState
-  and #nomolosHurtByMapTestAND
-  beq @notHurtByMap
-  lda nomolosState
-  and #nomolosHurtByMapOffAND
-  sta nomolosState
-  jsr hurtNomolos
-@notHurtByMap:
 
   ;************************************************************
   ;Compute screen coordinates from level coordinates.
