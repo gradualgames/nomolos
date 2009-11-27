@@ -129,13 +129,6 @@ drawMetaSprite:
   txa
   pha
 
-  ;get bits 6 and 7 of b2 into the V and N flags
-  bit b2
-  ;overflow flag is bit six, which is the horizontal flip bit. if overflow flag is set,
-  ;skip the non flipped code
-  bvs spriteIsFlipped
-  ;sprite is not flipped here
-  
   ;load the number of sprite entries
   ldy #0
   lda (w0),y
@@ -171,21 +164,38 @@ nextSpriteEntry:
   ora b2
   sta sprite,x
   
+  ;test to see if sprite is flipped.
+  bit b2
+  bvs @spriteIsFlipped
+  
   ;point to the non flipped x coordinate
   iny
-  inx
-  ;load the x coordinate offset
+  lda (w0),y
+  ;add the x coordinate parameter
+  clc
+  adc b0  
+  jmp spriteNotFlipped  
+  
+@spriteIsFlipped:
+  
+  ;point to the flipped x coordinate
+  iny
+  iny
   lda (w0),y
   ;add the x coordinate parameter
   clc
   adc b0
+  ;step y back so we can advance to the next entry in a uniform way
+  dey
+  
+spriteNotFlipped:
+  
+  ;store result in sprite
+  inx
   sta sprite,x
-  
-  ;skip the flipped x coordinate
-  iny
-  ;inx
-  
+    
   ;point to the next sprite entry
+  iny
   iny
   inx
   
@@ -200,71 +210,6 @@ nextSpriteEntry:
   pla
   tax
   
-  rts
-  
-spriteIsFlipped:
-
-  ;load the number of sprite entries
-  ldy #0
-  lda (w0),y
-  sta b3
-  
-  ;we want to start writing to the sprite buffer at spriteAddress
-  ldx spriteAddress
-  
-  ;point to the first sprite entry, this is the y coordinate
-  iny    
-  
-nextSpriteEntry1:
-  
-  ;load the y coordinate from the meta sprite
-  lda (w0),y
-  ;add the y coordinate parameter
-  clc
-  adc b1
-  sta sprite, x
-  
-  ;point to the tile index
-  iny
-  inx
-  ;copy it over
-  lda (w0),y
-  sta sprite, x
-  
-  ;point to the sprite attribute
-  iny
-  inx
-  ;copy it over but OR in b2
-  lda (w0),y
-  ora b2
-  sta sprite,x
-  
-  ;point to the flipped x coordinate
-  iny
-  iny
-  inx
-  ;load the x coordinate offset
-  lda (w0),y
-  ;add the x coordinate parameter
-  clc
-  adc b0
-  sta sprite,x
-  
-  ;point to the next sprite entry
-  iny
-  inx
-  
-  ;decrement the sprite entry counter
-  dec b3
-  bne nextSpriteEntry1
-  
-  txa
-  sta spriteAddress
-
-  ;restore regs
-  pla
-  tax
-
   rts
 
 updateSprites:
