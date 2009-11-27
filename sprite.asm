@@ -171,9 +171,6 @@ nextSpriteEntry:
   ;point to the non flipped x coordinate
   iny
   lda (w0),y
-  ;add the x coordinate parameter
-  clc
-  adc b0  
   jmp spriteNotFlipped  
   
 @spriteIsFlipped:
@@ -182,13 +179,14 @@ nextSpriteEntry:
   iny
   iny
   lda (w0),y
-  ;add the x coordinate parameter
-  clc
-  adc b0
   ;step y back so we can advance to the next entry in a uniform way
   dey
   
 spriteNotFlipped:
+  
+  ;add the x coordinate paramter
+  clc
+  adc b0
   
   ;store result in sprite
   inx
