@@ -319,10 +319,9 @@ yesAboveCollision:
   adc #nomolosStartJumpHi
   and #penetrationCalculationMask
   sta nomolosAbovePenetrationDistance
-  lda #$10
+  lda #$0f  ;we subtract the above penetration distance from the height of a tile.
   sec
   sbc nomolosAbovePenetrationDistance
-  sbc #1
   sta nomolosAbovePenetrationDistance
   lda nomolosState
   ora #nomolosAboveCollisionOnOR
