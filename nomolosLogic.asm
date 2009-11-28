@@ -266,7 +266,6 @@ skipAttack:
   lda nomolosY+1
   clc
   adc #nomolosStartJumpHi
-  adc #$ff
   sta w1
   lda nomolosY+2
   adc #$ff
@@ -290,7 +289,6 @@ noTopLeftCollision:
   lda nomolosY+1
   clc
   adc #nomolosStartJumpHi
-  adc #$ff
   sta w1
   lda nomolosY+2
   adc #$ff
@@ -346,9 +344,7 @@ skipNoAboveCollision:
   sta w0+1
   lda nomolosY+1
   clc
-  adc #nomolosHeight
-  adc #nomolosVerticalSpeedMax
-  adc #1
+  adc #(nomolosHeight+nomolosVerticalSpeedMax+1)
   sta w1
   lda nomolosY+2
   adc #0
@@ -372,9 +368,7 @@ noBottomLeftCollision:
   sta w0+1
   lda nomolosY+1
   clc
-  adc #nomolosHeight
-  adc #nomolosVerticalSpeedMax
-  adc #1
+  adc #(nomolosHeight+nomolosVerticalSpeedMax+1)
   sta w1
   lda nomolosY+2
   adc #0
@@ -639,8 +633,9 @@ noSignExtend:
   sbc #0
   sta w0+1
   lda nomolosY+1
+  clc
+  adc #1
   sta w1
-  inc w1
   lda nomolosY+2
   adc #0
   sta w1+1
@@ -673,9 +668,8 @@ noSignExtend:
   sta w0+1
   lda nomolosY+1
   clc 
-  adc #$1f
+  adc #$1e
   sta w1
-  dec w1
   lda nomolosY+2
   adc #0
   sta w1+1
@@ -738,8 +732,9 @@ notLeft:
   adc #$00
   sta w0+1
   lda nomolosY+1
-  sta w1
-  inc w1
+  clc
+  adc #1
+  sta w1  
   lda nomolosY+2
   adc #0
   sta w1+1
@@ -773,9 +768,8 @@ notLeft:
   sta w0+1
   lda nomolosY+1
   clc
-  adc #$1f
+  adc #$1e
   sta w1
-  dec w1
   lda nomolosY+2
   adc #0
   sta w1+1
