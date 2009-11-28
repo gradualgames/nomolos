@@ -76,7 +76,7 @@ updatePPU:  .res 2
 stateControl: .res 16
 
 nomolosX: .res 3  ;24 bit x (16 bit coord + 8 bit fine movement)
-nomolosY: .res 2  ;16 bit y (8 bit coord + 8 bit fine movement)
+nomolosY: .res 3  ;24 bit y (16 bit coord + 8 bit fine movement)
 nomolosXSpeed: .res 2
 nomolosYSpeed: .res 2
 nomolosScreenX: .res 1

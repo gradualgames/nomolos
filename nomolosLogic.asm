@@ -59,6 +59,8 @@
   sta nomolosY
   lda #90
   sta nomolosY+1
+  lda #0
+  sta nomolosY+2
   
   lda #3
   sta nomolosHealth
@@ -265,7 +267,10 @@ skipAttack:
   clc
   adc #nomolosStartJumpHi
   adc #$ff
-  sta b0
+  sta w1
+  lda nomolosY+2
+  adc #$ff
+  sta w1+1
   jsr testMapCollision
   beq noTopLeftCollision
   
@@ -286,7 +291,10 @@ noTopLeftCollision:
   clc
   adc #nomolosStartJumpHi
   adc #$ff
-  sta b0
+  sta w1
+  lda nomolosY+2
+  adc #$ff
+  sta w1+1
   jsr testMapCollision
   beq noTopRightCollision
   
@@ -341,7 +349,10 @@ skipNoAboveCollision:
   adc #nomolosHeight
   adc #nomolosVerticalSpeedMax
   adc #1
-  sta b0  
+  sta w1
+  lda nomolosY+2
+  adc #0
+  sta w1+1
   jsr testMapCollision
   beq noBottomLeftCollision
   
@@ -364,7 +375,10 @@ noBottomLeftCollision:
   adc #nomolosHeight
   adc #nomolosVerticalSpeedMax
   adc #1
-  sta b0  
+  sta w1
+  lda nomolosY+2
+  adc #0
+  sta w1+1
   jsr testMapCollision
   beq noBottomRightCollision
   
@@ -567,7 +581,19 @@ skipButtonATest:
   lda nomolosY+1
   adc nomolosYSpeed+1
   sta nomolosY+1
+  lda nomolosYSpeed+1
+  bmi @signExtend
+  lda nomolosY+2
+  adc #0
+  sta nomolosY+2
+  jmp noSignExtend
+@signExtend:
+  lda nomolosY+2
+  adc #$ff
+  sta nomolosY+2
+noSignExtend:
 
+  
   ;************************************************************
   ;Test left and right buttons. Test for collision to the left
   ;and to the right. Move if there is room. Reset animation
@@ -613,8 +639,11 @@ skipButtonATest:
   sbc #0
   sta w0+1
   lda nomolosY+1
-  sta b0
-  inc b0
+  sta w1
+  inc w1
+  lda nomolosY+2
+  adc #0
+  sta w1+1
   jsr testMapCollision
   bne notLeft
   
@@ -628,7 +657,10 @@ skipButtonATest:
   lda nomolosY+1
   clc
   adc #$0f
-  sta b0
+  sta w1
+  lda nomolosY+2
+  adc #0
+  sta w1+1
   jsr testMapCollision
   bne notLeft
 
@@ -642,8 +674,11 @@ skipButtonATest:
   lda nomolosY+1
   clc 
   adc #$1f
-  sta b0
-  dec b0
+  sta w1
+  dec w1
+  lda nomolosY+2
+  adc #0
+  sta w1+1
   jsr testMapCollision
   bne notLeft
   
@@ -703,8 +738,11 @@ notLeft:
   adc #$00
   sta w0+1
   lda nomolosY+1
-  sta b0
-  inc b0
+  sta w1
+  inc w1
+  lda nomolosY+2
+  adc #0
+  sta w1+1
   jsr testMapCollision
   bne notRight
   
@@ -719,7 +757,10 @@ notLeft:
   lda nomolosY+1
   clc
   adc #$0f
-  sta b0
+  sta w1
+  lda nomolosY+2
+  adc #0
+  sta w1+1
   jsr testMapCollision
   bne notRight
   
@@ -733,8 +774,11 @@ notLeft:
   lda nomolosY+1
   clc
   adc #$1f
-  sta b0
-  dec b0
+  sta w1
+  dec w1
+  lda nomolosY+2
+  adc #0
+  sta w1+1
   jsr testMapCollision
   bne notRight
   

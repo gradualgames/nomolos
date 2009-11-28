@@ -1,7 +1,7 @@
 .include "constants.inc"
 
 ;global variables
-.importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3
+.importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4
 .importzp attributeBuffer, columnTileBuffer
 .importzp metaTileBuffer, metaTileTableBaseAddress
 .importzp attributeColumnToUpdate
@@ -26,10 +26,10 @@
 .segment "CODE"
 
 ;This routine checks for collision with the map. It takes in a 16 bit X
-;coordinate and an 8 bit Y coordinate.
+;coordinate and a 16 bit Y coordinate.
 ;parameters:
 ;w0: 16 bit X coordinate in the map
-;b0: 8 bit Y coordinate in the map
+;w1: 16 bit Y coordinate in the map
 ;outputs:
 ;the zero flag should be set if there is no collision, clear otherwise
 ;b0: whether or not the collision was with a "hurt" tile.
@@ -47,93 +47,108 @@
   ror
   sta w0
   
-  ;add this value to the level base address and store it in w1
+  ;add this value to the level base address and store it in w2
   clc
   lda levelBaseAddress  
   adc w0
-  sta w1
+  sta w2
   lda levelBaseAddress+1
   adc w0+1
-  sta w1+1
+  sta w2+1
   
-  ;now we have the exact offset in the level stored in w1
+  ;now we have the exact offset in the level stored in w2
   ldy #$00
   ;load the meta tile column index
-  lda (w1),y
+  lda (w2),y
   
-  sta w2
-  lda #0
-  sta w2+1
-  
-  ;now shift left w2 by 4 to get offset within the meta tile column table.
-  lda w2+1
-  asl w2
-  rol 
-  asl w2
-  rol 
-  asl w2
-  rol 
-  asl w2
-  rol 
-  sta w2+1
-  
-  ;add this value to the base address and store it in w3
-  clc
-  lda w2
-  adc metametaTileTableBaseAddress
   sta w3
-  lda w2+1
-  adc metametaTileTableBaseAddress+1
+  lda #0
   sta w3+1
   
-  ;now we have to figure out what row to look at
+  ;now shift left w2 by 4 to get offset within the meta tile column table.
+  lda w3+1
+  asl w3
+  rol 
+  asl w3
+  rol 
+  asl w3
+  rol 
+  asl w3
+  rol 
+  sta w3+1
+  
+  ;add this value to the base address and store it in w4
+  clc
+  lda w3
+  adc metametaTileTableBaseAddress
+  sta w4
+  lda w3+1
+  adc metametaTileTableBaseAddress+1
+  sta w4+1
+  
+  ;now we have to figure out what row to look at.
+  ;load the high byte of the Y coordinate...if this is nonzero, we're outside the visible map.
+  lda w1+1
+  beq @insideScreen
+  ;being outside the map means the map didn't hurt Nomolos.
+  lda #0
+  sta b0
+  ;being outside the map also means no collision.
+  lda #0
+  rts
+@insideScreen:
   ;load the Y coordinate
-  lda b0  
   ;divide it by 16 to get row
-  lsr
-  lsr
-  lsr
-  lsr
+  lda w1
+  lsr w1+1
+  ror
+  lsr w1+1
+  ror
+  lsr w1+1
+  ror
+  lsr w1+1
+  ror
+  sta w1
   ;put the result in Y so we can look up a meta tile
   tay
   ;load the meta tile index
-  lda (w3),y
+  lda (w4),y
   
   ;get this meta tile number into a 16 bit situation so we can multiply it by 8
-  sta w2
+  sta w3
   lda #0
-  sta w2+1
+  sta w3+1
   
   ;now shift left w2 by 3 to get offset within the meta tile table.
-  lda w2+1
-  asl w2
+  lda w3+1
+  asl w3
   rol 
-  asl w2
+  asl w3
   rol 
-  asl w2
+  asl w3
   rol 
-  sta w2+1
+  sta w3+1
   
   ;add metaTileTableBaseAddress to w2
   clc
-  lda w2
+  lda w3
   adc metaTileTableBaseAddress
-  sta w2
-  lda w2+1
+  sta w3
+  lda w3+1
   adc metaTileTableBaseAddress+1
-  sta w2+1
+  sta w3+1
   
   ldy #0
   
   ;point to the "hurt" attribute. Store this in b0.
   iny
-  lda (w2),y
+  lda (w3),y
   sta b0
   
   ;point to the "solid" attribute. This is the big finale of the collision routine.
   iny
   lda #1
-  lda (w2), y
+  lda (w3), y
 
   rts
 .endproc
