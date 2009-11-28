@@ -344,7 +344,7 @@ skipNoAboveCollision:
   sta w0+1
   lda nomolosY+1
   clc
-  adc #(nomolosHeight+nomolosVerticalSpeedMax+1)
+  adc #(nomolosHeight+nomolosVerticalSpeedMax)
   sta w1
   lda nomolosY+2
   adc #0
@@ -368,7 +368,7 @@ noBottomLeftCollision:
   sta w0+1
   lda nomolosY+1
   clc
-  adc #(nomolosHeight+nomolosVerticalSpeedMax+1)
+  adc #(nomolosHeight+nomolosVerticalSpeedMax)
   sta w1
   lda nomolosY+2
   adc #0
@@ -397,11 +397,8 @@ yesBottomCollision:
   ;Set below collision flag.
   lda nomolosY+1
   clc
-  adc #nomolosHeight
-  adc #nomolosVerticalSpeedMax
-  adc #1
+  adc #(nomolosHeight+nomolosVerticalSpeedMax+2)
   and #penetrationCalculationMask
-  adc #1
   sta nomolosBelowPenetrationDistance
   lda nomolosState
   ora #nomolosBelowCollisionOnOR
