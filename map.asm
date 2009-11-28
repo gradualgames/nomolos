@@ -65,7 +65,7 @@
   lda #0
   sta w3+1
   
-  ;now shift left w2 by 4 to get offset within the meta tile column table.
+  ;now shift left w3 by 4 to get offset within the meta tile column table.
   lda w3+1
   asl w3
   rol 
@@ -119,7 +119,7 @@
   lda #0
   sta w3+1
   
-  ;now shift left w2 by 3 to get offset within the meta tile table.
+  ;now shift left w3 by 3 to get offset within the meta tile table.
   lda w3+1
   asl w3
   rol 
@@ -129,7 +129,7 @@
   rol 
   sta w3+1
   
-  ;add metaTileTableBaseAddress to w2
+  ;add metaTileTableBaseAddress to w3
   clc
   lda w3
   adc metaTileTableBaseAddress
