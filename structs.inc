@@ -25,10 +25,10 @@ PLAYLEVELSTATE_SWITCHLEVEL = %00000001
   positionXFine .byte
   positionX .word
   positionYFine .byte
-  positionY .byte
+  positionY .word
   state .byte
   animationObject .word
-  extra .byte 3
+  extra .byte 2
 .endstruct
 
 .struct ROMDefinitionTableStruct

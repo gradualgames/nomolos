@@ -45,7 +45,9 @@ mouseSitThere:
   
   ;get out positionY
   lda entityPool+entityRAM::positionY,x
-  sta b1
+  sta w1
+  lda entityPool+entityRAM::positionY+1,x
+  sta w1+1
   jsr cameraToScreenCoords
   beq @skipMouseOffScreen
   jmp mouseOffScreen
@@ -60,36 +62,38 @@ mouseSitThere:
   
   ;get out positionY
   lda entityPool+entityRAM::positionY,x
-  sta b1
+  sta w1
+  lda entityPool+entityRAM::positionY+1,x
+  sta w1+1
   jsr cameraToScreenCoords
   
   beq @skipMouseDie
   jmp mouseDie
 @skipMouseDie:
   
-  ;transfer Mouse rectangle to w0 = top left and w1 = bot right
-  lda b0
-  sta w0
-  clc
-  adc #$10
-  sta w1
-  lda b1
-  sta w0+1
-  clc
-  adc #$10
-  sta w1+1
-  
-  ;transfer Nomolos rectangle to w2 = top left and w3 = bot right
-  lda nomolosScreenX
+  ;transfer Mouse rectangle to w2 = top left and w3 = bot right
+  lda w0
   sta w2
   clc
-  adc #nomolosWidth
+  adc #$10
   sta w3
-  lda nomolosScreenY
+  lda w1
   sta w2+1
   clc
-  adc #nomolosHeight
+  adc #$10
   sta w3+1
+  
+  ;transfer Nomolos rectangle to w4 = top left and w5 = bot right
+  lda nomolosScreenX
+  sta w4
+  clc
+  adc #nomolosWidth
+  sta w5
+  lda nomolosScreenY
+  sta w4+1
+  clc
+  adc #nomolosHeight
+  sta w5+1
   
   jsr rectInRect
   
@@ -108,6 +112,13 @@ mouseSitThere:
   jmp mouseDie
   
 @notTouching:
+
+  lda w0
+  sta b0
+  lda w1
+  sta b1
+  lda #0
+  sta b2
   
   ;load address of animation object into w1
   lda #<(entityPool+entityRAM::animationObject)

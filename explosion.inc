@@ -37,9 +37,16 @@ explosionExplode:
   
   ;get out positionY
   lda entityPool+entityRAM::positionY,x
-  sta b1
+  sta w1
+  lda entityPool+entityRAM::positionY+1,x
+  sta w1+1
   jsr cameraToScreenCoords
   bne explosionDie
+  
+  lda w0
+  sta b0
+  lda w1
+  sta b1
   
   ;load address of animation object into w1
   lda #<(entityPool+entityRAM::animationObject)

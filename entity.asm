@@ -190,6 +190,8 @@ spawnEntity:
   ;load positionY
   lda b1
   sta entityPool+entityRAM::positionY,x
+  lda #0
+  sta entityPool+entityRAM::positionY+1,x
   
   ;point to the initial state
   iny

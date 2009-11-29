@@ -1,4 +1,4 @@
-.importzp w0, w1, w2, w3
+.importzp w0, w1, w2, w3, w4, w5
 
 .export rectInRect
 
@@ -6,50 +6,50 @@
 
 ;tests one rectangle for whether it intersects another.
 ;rectangle A:
-;w0 - top left x, y
-;w1 - bot right x, y
-;rectangle B:
 ;w2 - top left x, y
 ;w3 - bot right x, y
+;rectangle B:
+;w4 - top left x, y
+;w5 - bot right x, y
 ;outputs:
 ;Z - true = intersection, false = no intersection
 rectInRect:
 
   ;load bottom of rectA
-  lda w1+1
+  lda w3+1
   sec
   ;subtract top of rectB
-  sbc w2+1
+  sbc w4+1
   bpl :+ 
   ;clear zero flag
   lda #$ff
   rts
 :
   ;load top of rectA
-  lda w0+1
+  lda w2+1
   sec
   ;subtract bottom of rectB
-  sbc w3+1
+  sbc w5+1
   bmi :+
   ;clear zero flag
   lda #$ff
   rts
 :
   ;load right of rectA
-  lda w1
+  lda w3
   sec
   ;subtract left of rectB
-  sbc w2
+  sbc w4
   bpl :+
   ;clear zero flag
   lda #$ff
   rts
 :
   ;load left of rectA
-  lda w0
+  lda w2
   sec
   ;subtract right of rectB
-  sbc w3
+  sbc w5
   bmi :+
   lda #$ff
   rts

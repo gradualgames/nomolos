@@ -3,7 +3,7 @@
 .include "structs.inc"
 
 ;zp variables
-.importzp b0, b1, b2, w0, w1, w2, w3
+.importzp b0, b1, b2, w0, w1, w2, w3, w4, w5
 .importzp nomolosScreenX, nomolosScreenY, nomolosState
 .importzp nomolosHitboxXOffset, nomolosHitboxYOffset
 .importzp soundAddr, soundOff
@@ -539,35 +539,37 @@ exitLevelUpdate:
   
   ;get out positionY
   lda entityPool+entityRAM::positionY,x
-  sta b1
+  sta w1
+  lda entityPool+entityRAM::positionY+1,x
+  sta w1+1
   jsr cameraToScreenCoords
   beq skipJmpExitDie
   jmp exitDie
 skipJmpExitDie:
   
-  ;transfer entity rectangle to w0 = top left and w1 = bot right
-  lda b0
-  sta w0
-  clc
-  adc #$10
-  sta w1
-  lda b1
-  sta w0+1
-  clc
-  adc #$10
-  sta w1+1
-  
-  ;transfer Nomolos rectangle to w2 = top left and w3 = bot right
-  lda nomolosScreenX
+  ;transfer entity rectangle to w2 = top left and w3 = bot right
+  lda w0
   sta w2
   clc
-  adc #nomolosWidth
+  adc #$10
   sta w3
-  lda nomolosScreenY
+  lda w1
   sta w2+1
   clc
-  adc #nomolosHeight
+  adc #$10
   sta w3+1
+  
+  ;transfer Nomolos rectangle to w4 = top left and w5 = bot right
+  lda nomolosScreenX
+  sta w4
+  clc
+  adc #nomolosWidth
+  sta w5
+  lda nomolosScreenY
+  sta w4+1
+  clc
+  adc #nomolosHeight
+  sta w5+1
   
   jsr rectInRect
   

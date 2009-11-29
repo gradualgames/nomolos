@@ -2,7 +2,7 @@
 
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
 .importzp scrollX, nextScrollX, columnToUpdate
-.importzp b0, b1, b2, w0
+.importzp b0, b1, b2, b3, w0, w1
 
 .export resetCamera, updateCamera, cameraToScreenCoords
 
@@ -11,19 +11,20 @@
 ;computes screen coordinates based on a 16 bit X coordinate
 ;and an 8 bit Y coordinate.
 ;expects: w0 is the x coordinate.
-;         b1 is the y coordinate.
-;outputs: b0 is the screen x coordinate.
-;         b2 is the high byte of the screen x coordinate
-;         b1 is the screen y coordinate.
+;         w1 is the y coordinate.
+;outputs: <w0 is the screen x coordinate.
+;         <w1 is the screen y coordinate.
 cameraToScreenCoords:
 
+  ;subtract scrollX from the input X coordinate
   sec
   lda w0 ;load low byte of 16 bit X coord
   sbc scrollX
-  sta b0
+  sta w0
   lda w0+1 ;load high byte of 16 bit x coord
   sbc scrollX+1
-  sta b2
+  sta w0+1
+  ;do nothing to y coordinate since camera never moves from 0 vertically
   
   rts
 

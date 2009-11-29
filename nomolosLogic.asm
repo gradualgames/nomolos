@@ -795,12 +795,18 @@ notRight:
   lda nomolosX+2
   sta w0+1
   lda nomolosY+1
-  sta b1
+  sta w1
+  lda nomolosY+2
+  sta w1+1
   jsr cameraToScreenCoords
-  lda b0
+  lda w0
   sta nomolosScreenX
-  lda b1
+  lda w0+1
+  sta nomolosScreenX+1
+  lda w1
   sta nomolosScreenY 
+  lda w1+1
+  sta nomolosScreenY+1
 
   ;************************************************************
   ;Move camera to center itself on Nomolos.

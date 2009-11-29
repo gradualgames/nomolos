@@ -79,8 +79,8 @@ nomolosX: .res 3  ;24 bit x (16 bit coord + 8 bit fine movement)
 nomolosY: .res 3  ;24 bit y (16 bit coord + 8 bit fine movement)
 nomolosXSpeed: .res 2
 nomolosYSpeed: .res 2
-nomolosScreenX: .res 1
-nomolosScreenY: .res 1
+nomolosScreenX: .res 2
+nomolosScreenY: .res 2
 nomolosHitboxXOffset: .res 1
 nomolosHitboxYOffset: .res 1
 nomolosBelowPenetrationDistance: .res 1
