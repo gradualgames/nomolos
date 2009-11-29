@@ -158,6 +158,11 @@ deentleNotOffscreen1:
   jmp deentleOffscreen
 deentleNotOffscreen2:
   
+  lda w0
+  sta b0
+  lda w1
+  sta b1
+  
   ;transfer Deentle rectangle to w2 = top left and w3 = bot right
   lda w0
   sta w2
@@ -232,11 +237,6 @@ deentleNotOffscreen2:
   jmp killDeentle
   
 nomolosNotAttacking:
-
-  lda w0
-  sta b0
-  lda w1
-  sta b1
 
   ;load address of animation object into w1
   lda #<(entityPool+entityRAM::animationObject)
