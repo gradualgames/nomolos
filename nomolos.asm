@@ -23,7 +23,8 @@
 .import initsound, playSound
 
 ;global variables/RAM labels
-.exportzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5, vblankDone
+.exportzp b0, b1, b2, b3, b4, b5, b6, b7, b8, b9
+.exportzp w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, vblankDone
 .exportzp stateControl
 .exportzp update, updatePPU, attributeBuffer, attributeColumnToUpdate
 .exportzp columnTileBuffer, columnToUpdate, nametableToUpdate
@@ -61,12 +62,20 @@ b2:       .res 1
 b3:       .res 1
 b4:       .res 1
 b5:       .res 1
+b6:       .res 1
+b7:       .res 1
+b8:       .res 1
+b9:       .res 1
 w0:       .res 2
 w1:       .res 2
 w2:       .res 2
 w3:       .res 2
 w4:       .res 2
 w5:       .res 2
+w6:       .res 2
+w7:       .res 2
+w8:       .res 2
+w9:       .res 2
 
 buttonA:     .res 1
 vblankDone:  .res 1

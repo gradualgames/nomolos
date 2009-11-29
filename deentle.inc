@@ -163,31 +163,35 @@ deentleNotOffscreen2:
   lda w1
   sta b1
   
-  ;transfer Deentle rectangle to w2 = top left and w3 = bot right
+  ;transfer Deentle rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda w0
   sta w2
-  clc
-  adc #$10
-  sta w3
-  lda w1
+  lda w0+1
   sta w2+1
-  clc
-  adc #$10
+  lda w1
+  sta w3
+  lda w1+1
   sta w3+1
+  lda #$10
+  sta b2
+  lda #$10
+  sta b3
   
-  ;transfer Nomolos rectangle to w4 = top left and w5 = bot right
+  ;transfer Nomolos rectangle to w4 = left and w5 = top and b4 = width and b5 = height
   lda nomolosScreenX
   sta w4
-  clc
-  adc #nomolosWidth
-  sta w5
-  lda nomolosScreenY
+  lda nomolosScreenX+1
   sta w4+1
-  clc
-  adc #nomolosHeight
+  lda nomolosScreenY
+  sta w5
+  lda nomolosScreenY+1
   sta w5+1
-  
-  jsr rectInRect
+  lda #nomolosWidth
+  sta b4
+  lda #nomolosHeight
+  sta b5
+
+  jsr rectInRect16
   
   bne :+
   

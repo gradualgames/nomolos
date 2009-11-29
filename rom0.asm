@@ -3,7 +3,7 @@
 .include "structs.inc"
 
 ;zp variables
-.importzp b0, b1, b2, w0, w1, w2, w3, w4, w5
+.importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosScreenX, nomolosScreenY, nomolosState
 .importzp nomolosHitboxXOffset, nomolosHitboxYOffset
 .importzp soundAddr, soundOff
@@ -24,7 +24,7 @@
 .import loadLevelUpdate, loadLevelUpdatePPU
 
 ;geotests module
-.import rectInRect
+.import rectInRect, rectInRect16
 
 ;nomolosLogic module
 .import initNomolos, hurtNomolos, nomolosDeadly, addNomolosHealth
