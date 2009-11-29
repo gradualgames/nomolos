@@ -34,33 +34,6 @@ rectInRect16:
   adc #0
   sta w7+1
   
-  ;compute right of rectangle A
-  clc
-  lda w2
-  adc b2
-  sta w6
-  lda w2+1
-  adc #0
-  sta w6+1
-  
-  ;compute bottom of rectangle B
-  clc
-  lda w5
-  adc b5
-  sta w9
-  lda w5+1
-  adc #0
-  sta w9+1
-  
-  ;compute right of rectangle B
-  clc
-  lda w4
-  adc b4
-  sta w8
-  lda w4+1
-  adc #0
-  sta w8+1
-  
   ;load bottom of rectA (w7)
   ;subtract top of rectB (w5)
   sec
@@ -73,6 +46,16 @@ rectInRect16:
   lda #$ff
   rts
 :
+
+  ;compute bottom of rectangle B
+  clc
+  lda w5
+  adc b5
+  sta w9
+  lda w5+1
+  adc #0
+  sta w9+1
+
   ;load top of rectA (w3)
   ;subtract bottom of rectB (w9)
   sec
@@ -85,6 +68,16 @@ rectInRect16:
   lda #$ff
   rts
 :
+
+  ;compute right of rectangle A
+  clc
+  lda w2
+  adc b2
+  sta w6
+  lda w2+1
+  adc #0
+  sta w6+1
+
   ;load right of rectA (w6)
   ;subtract left of rectB (w4)
   sec
@@ -97,6 +90,16 @@ rectInRect16:
   lda #$ff
   rts
 :
+
+  ;compute right of rectangle B
+  clc
+  lda w4
+  adc b4
+  sta w8
+  lda w4+1
+  adc #0
+  sta w8+1
+
   ;load left of rectA (w2)
   ;subtract right of rectB (w8)
   sec
