@@ -201,33 +201,31 @@ deentleNotOffscreen2:
   jsr nomolosDeadly
   beq nomolosNotAttacking
   
-  ;transfer Deentle rectangle to w2 = top left and w3 = bot right
+  ;transfer Deentle rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda w0
   sta w2
-  clc
-  adc #$10
-  sta w3
-  lda w1
+  lda w0+1
   sta w2+1
-  clc
-  adc #$10
+  lda w1
+  sta w3
+  lda w1+1
   sta w3+1
+  lda #$10
+  sta b2
+  lda #$10
+  sta b3
   
-  ;transfer Nomolos rectangle to w4 = top left and w4 = bot right
-  lda nomolosScreenX
-  clc
-  adc nomolosHitboxXOffset ;slide rectangle over for hit box
+  ;transfer Hitbox rectangle to w4 = left and w5 = top and b4 = width and b5 = height
+  lda nomolosHitboxX
   sta w4
-  ;clc
-  adc #nomolosHitboxWidth
-  sta w5
-  lda nomolosScreenY
+  lda nomolosHitboxX+1
   sta w4+1
-  clc
-  adc #nomolosHitboxHeight
-  sta w5+1
-  
-  jsr rectInRect
+  lda #nomolosHitboxWidth
+  sta b4
+  lda #nomolosHitboxHeight
+  sta b5
+    
+  jsr rectInRect16
   
   bne nomolosNotAttacking
   

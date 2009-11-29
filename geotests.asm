@@ -114,17 +114,6 @@ rectInRect16:
 
   rts
 
-;// check if 2 rectangles intersect
-;inline bool RectRectIntersection(const fRECT& rect1, const fRECT& rect2)
-;{
-;	if(rectA.bottom < rectB.top)		return false;
-;	if(rectA.top > rectB.bottom)		return false;
-;	if(rectA.right < rectB.left)		return false;
-;	if(rectA.left > rectB.right)		return false;;;;;
-;
-;	return true;
-;}
-  
 ;tests one rectangle for whether it intersects another.
 ;rectangle A:
 ;w2 - top left x, y

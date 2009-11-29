@@ -17,7 +17,7 @@
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
-.importzp nomolosHitboxXOffset, nomolosHitboxYOffset
+.importzp nomolosHitboxX, nomolosHitboxY
 .importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
 .importzp nomolosBlinkCounter, nomolosHitboxCounter
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
@@ -69,9 +69,11 @@
   sta nomolosHitboxCounter
   
   lda #0
-  sta nomolosHitboxXOffset
+  sta nomolosHitboxX
+  sta nomolosHitboxX+1
   lda #0
-  sta nomolosHitboxYOffset
+  sta nomolosHitboxY
+  sta nomolosHitboxY+1
 
   rts
   
@@ -870,12 +872,36 @@ skipUpdateNomolosMoving:
   lda nomolosState
   and #1
   beq @skipNomolosFacingLeft
-  lda #$f4
-  sta nomolosHitboxXOffset
+  
+  clc
+  lda nomolosScreenX
+  adc #$f4
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$ff
+  sta nomolosHitboxX+1
+  
+  lda nomolosScreenY
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  sta nomolosHitboxY+1
+
   jmp @skipNomolosFacingRight
 @skipNomolosFacingLeft:
-  lda #$10
-  sta nomolosHitboxXOffset
+
+  clc
+  lda nomolosScreenX
+  adc #$10
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$00
+  sta nomolosHitboxX+1
+
+  lda nomolosScreenY
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  sta nomolosHitboxY+1
+
 @skipNomolosFacingRight:
 
   lda nomolosState
