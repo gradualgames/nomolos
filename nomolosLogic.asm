@@ -1097,6 +1097,8 @@ dontDrawNomolos:
   lda #$10
   sta b0
   sta b1
+  lda #0
+  sta b2
   ldy #ROMDefinitionTableStruct::Heart0
   lda (romDefinitionTableBaseAddress),y
   sta w0
