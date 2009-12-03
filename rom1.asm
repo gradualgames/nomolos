@@ -602,7 +602,7 @@ exitLevelUpdate:
   lda entityPool+entityRAM::positionY+1,x
   sta w1+1
   jsr cameraToScreenCoords
-  beq skipJmpExitDie
+  bpl skipJmpExitDie
   jmp exitDie
 skipJmpExitDie:
   
