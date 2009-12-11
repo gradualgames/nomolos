@@ -1,14 +1,42 @@
 .include "structs.inc"
 
 ;global variables
-.importzp b0, b1, b2, b3, w0, w1, w2
+.importzp b0, b1, b2, b3, b4, w0, w1, w2, w3, w4, w5
 .importzp spriteAddress
 .import sprite
 
 ;sprite manipulation interface
-.export drawAnimation, updateAnimation, updateSprites, clearSprites, drawMetaSprite
+.export drawAnimation, drawAnimation16, updateAnimation, updateSprites, clearSprites
+.export drawMetaSprite, drawMetaSprite16
 
 .segment "CODE"
+
+;draws an animation and expects to be passed parameters that drawMetaSprite16 will use also
+;w1: location of animation object
+;w2: location of animation definition  
+drawAnimation16:
+  ;get the current frame of this animation object
+  ldy #animation::currentFrame
+  lda (w1),y
+  ;check if animation is in start state, load frame 0 if so.
+  cmp #$ff
+  bne :+
+  lda #0
+:
+  asl
+  tay
+  iny
+  ;load low byte of meta sprite address
+  lda (w2),y
+  sta w0
+  iny
+  ;load high byte of meta sprite address
+  lda (w2),y
+  sta w0+1
+  ;display current frame
+  jsr drawMetaSprite16
+  
+  rts
 
 ;draws an animation
 ;w1: location of animation object
@@ -90,7 +118,340 @@ updateAnimation:
 skipFrameUpdate:
   rts
   
+;Draws a meta sprite at 16 bit screen X and Y. Also, it will
+;clip individual sprites if they are off of the screen.
+;Temporary Parameters:
+;w0: the location of the meta sprite to draw
+;w3: the 16 bit x coordinate at which to draw the sprite
+;w4: the 16 bit y coordinate at which to draw the sprite
+;b2: extra bits to OR into the sprite attribute
+;    (presumably %01000000 to flip horiz)
+;Global Variables:
+;spriteAddress: the current sprite that will be overwritten in the sprite buffer
+;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
+;b4: temporarily stores x offset
+;w5: temporarily stores whether the x coordinate (low byte) and y coordinate (high byte)
+; are onscreen.
+.proc drawMetaSprite16
 
+  ;save regs
+  txa
+  pha
+  
+  ;****************************************************************************
+  ;test the high byte of the x coordinate for onscreen or offscreen
+  ;****************************************************************************
+  lda w3+1
+  beq xOnScreen
+  bpl xOffScreenPositive
+  bmi xOffScreenNegative
+  
+xOnScreen:
+  lda #$01
+  sta w5
+  jmp xHighByteTestDone  
+
+xOffScreenPositive:
+
+  ;we already know the x coordinate is positive. But if it is not 1 (the screen immediately
+  ;out of view), it is much too far away to be visible. Exit the routine if so.
+
+  cmp #$01
+  beq @xCoordinateNotTooFar
+  
+  ;restore regs and return from routine; we know the sprite is too far off the screen to consider.
+  pla
+  tax
+  rts
+  
+@xCoordinateNotTooFar:
+
+  ;x is off the screen but not too far that the sprite might not be visible
+  lda #$00
+  sta w5
+  jmp xHighByteTestDone
+  
+xOffScreenNegative:
+
+  ;we already know the x coordinate is negative. But if it is not -1 (the screen immediately 
+  ;out of view), it is much too far away to be visible. Exit the routine if so.
+
+  cmp #$ff
+  beq @xCoordinateNotTooFar
+  
+  ;restore regs and return from routine; we know the sprite is too far off the screen to consider.
+  pla
+  tax
+  rts
+  
+@xCoordinateNotTooFar:
+
+  ;x is off screen but not too far that the sprite might not be visible
+  lda #$00
+  sta w5  
+  
+xHighByteTestDone:
+  
+  ;****************************************************************************
+  ;test the high byte of the y coordinate for onscreen or offscreen
+  ;****************************************************************************
+  lda w4+1
+  beq yOnScreen
+  bpl yOffScreenPositive
+  bmi yOffScreenNegative
+  
+yOnScreen:
+  lda #$01
+  sta w5+1
+  jmp yHighByteTestDone  
+
+yOffScreenPositive:
+
+  ;we already know the y coordinate is positive. But if it is not 1 (the screen immediately
+  ;out of view), it is much too far away to be visible. Exit the routine if so.
+
+  cmp #$01
+  beq @yCoordinateNotTooFar
+  
+  ;restore regs and return from routine; we know the sprite is too far off the screen to consider.
+  pla
+  tax
+  rts
+  
+@yCoordinateNotTooFar:
+
+  ;y is off the screen but not too far that the sprite might not be visible
+  lda #$00
+  sta w5+1
+  jmp yHighByteTestDone
+  
+yOffScreenNegative:
+
+  ;we already know the y coordinate is negative. But if it is not -1 (the screen immediately 
+  ;out of view), it is much too far away to be visible. Exit the routine if so.
+
+  cmp #$ff
+  beq @yCoordinateNotTooFar
+  
+  ;restore regs and return from routine; we know the sprite is too far off the screen to consider.
+  pla
+  tax
+  rts
+  
+@yCoordinateNotTooFar:
+
+  ;y is off screen but not too far that the sprite might not be visible
+  lda #$00
+  sta w5+1
+  
+yHighByteTestDone:
+
+  ;at this point, w5 knows whether the x coordinate and y coordinates are on or off screen.
+  ;now we will start rendering the sprite, and each time we add an offset we will compute whether
+  ;it is on or offscreen.
+  
+  ;load the number of sprite entries
+  ldy #0
+  lda (w0),y
+  sta b3
+  
+  ;we want to start writing to the sprite buffer at spriteAddress
+  ldx spriteAddress
+  
+  ;point to the first sprite entry, this is the y coordinate
+  iny    
+  
+;sprite entry loop
+nextSpriteEntry:
+
+  ;save the "onscreen" flags for x and y
+  lda w5
+  pha
+  lda w5+1
+  pha
+  
+  ;****************************************************************************
+  ;Load the Y coordinate offset, add it to low byte of input Y coordinate,
+  ;test for wraparound.
+  ;****************************************************************************
+  
+  ;load the y coordinate offset
+  lda (w0),y
+  ;test the sign
+  bmi testNegativeWraparoundY
+testPositiveWraparoundY:
+  
+  ;add the low byte of the y coordinate
+  clc
+  adc w4
+  bcc wrapAroundTestDoneY
+  ;carry was set, there was positive wraparound
+  ;negate the onscreen flag for the y coordinate
+  pha
+  lda w5+1
+  eor #$01
+  sta w5+1
+  pla
+  
+  jmp wrapAroundTestDoneY
+testNegativeWraparoundY:
+
+  ;add the low byte of the y coordinate, known to be negative
+  sec
+  adc w4
+  bcs wrapAroundTestDoneY
+  ;carry was clear, there was negative wraparound
+  ;negate the onscreen flag for the y coordinate
+  pha
+  lda w5+1
+  eor #$01
+  sta w5+1
+  pla
+
+wrapAroundTestDoneY:
+
+  ;temporarily store the calculated y coordinate in the sprite, we
+  ;will determine if it is onscreen and clip it later
+  sta sprite+spriteStruct::ycoord,x
+  
+  ;****************************************************************************
+  ;Load Tile number of sprite
+  ;****************************************************************************
+  
+  ;move on to the tile number
+  iny
+  
+  ;copy the tile number into the sprite
+  lda (w0),y
+  sta sprite+spriteStruct::tile,x
+  
+  ;****************************************************************************
+  ;Load Attribute of sprite
+  ;****************************************************************************
+  
+  ;move on to the attribute  
+  iny
+  ;copy it over but OR in b2
+  lda (w0),y
+  ora b2
+  sta sprite+spriteStruct::attribute,x
+  
+  ;****************************************************************************
+  ;Load flipped or non flipped x offset
+  ;****************************************************************************
+
+  ;test to see if sprite is flipped.
+  bit b2
+  bvs @spriteIsFlipped
+  
+  ;point to the non flipped x offset
+  iny
+  lda (w0),y
+  sta b4
+  jmp spriteNotFlipped  
+  
+@spriteIsFlipped:
+  
+  ;point to the flipped x offset
+  iny
+  iny
+  lda (w0),y
+  sta b4
+  ;step y back so we can advance to the next entry in a uniform way
+  dey
+  
+spriteNotFlipped:
+  
+  ;****************************************************************************
+  ;Load the X coordinate offset, add it to low byte of input X coordinate,
+  ;test for wraparound.
+  ;****************************************************************************
+  
+  ;at this point we've loaded the x offset
+  ;test the sign
+  lda b4
+  bmi testNegativeWraparoundX
+testPositiveWraparoundX:
+  
+  ;add the low byte of the x coordinate
+  clc
+  adc w3
+  bcc wrapAroundTestDoneX
+  ;carry was set, there was positive wraparound
+  ;negate the onscreen flag for the x coordinate
+  pha
+  lda w5
+  eor #$01
+  sta w5
+  pla
+  
+  jmp wrapAroundTestDoneX
+testNegativeWraparoundX:
+
+  ;add the low byte of the x coordinate, known to be negative
+  sec
+  adc w3
+  bcs wrapAroundTestDoneX
+  ;carry was clear, there was negative wraparound
+  ;negate the onscreen flag for the x coordinate
+  pha
+  lda w5
+  eor #$01
+  sta w5
+  pla
+
+wrapAroundTestDoneX:
+
+  ;temporarily store the calculated x coordinate in the sprite, we
+  ;will determine if it is onscreen and clip it later
+  sta sprite+spriteStruct::xcoord,x
+  
+  ;****************************************************************************
+  ;Load the two "onscreen" flags, and them together to see if sprite should be
+  ;clipped or not
+  ;****************************************************************************
+  lda w5
+  and w5+1
+  bne @spriteOnScreen
+  
+  ;clip the sprite by setting both of its coordinates to the invisible coordinate
+  lda #$ff
+  sta sprite+spriteStruct::ycoord,x
+  sta sprite+spriteStruct::xcoord,x
+  
+@spriteOnScreen:
+  
+  ;move on to the next sprite entry
+  iny
+  iny
+  
+  ;restore the "onscreen" flags for x and y
+  pla
+  sta w5+1
+  pla
+  sta w5
+
+  ;move on to next sprite entry
+  inx
+  inx
+  inx
+  inx
+  
+  dec b3
+  beq skipNextSpriteEntry
+  jmp nextSpriteEntry
+skipNextSpriteEntry:
+  
+  ;set spriteAddress to current value of x, this is the next sprite
+  stx spriteAddress
+  
+  ;restore regs
+  pla
+  tax
+
+  rts
+.endproc
+  
 ;       +-----------+-----------+-----+------------+
 ;       | Sprite #0 | Sprite #1 | ... | Sprite #63 |
 ;       +-+------+--+-----------+-----+------------+

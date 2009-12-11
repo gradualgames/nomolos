@@ -44,6 +44,9 @@
 
 .export ROMDefinitionTable0
 
+;temporary
+.export NomolosWalk0
+
 .segment "ROM0"
 
 music:

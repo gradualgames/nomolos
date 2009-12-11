@@ -3,7 +3,7 @@
 .include "structs.inc"
 
 ;Sprite module labels
-.import drawMetaSprite, drawAnimation, updateAnimation
+.import drawMetaSprite, drawMetaSprite16, drawAnimation, drawAnimation16, updateAnimation
 
 ;Map module labels (for collision detection)
 .import testMapCollision
@@ -946,11 +946,15 @@ skipBlinkCheck:
   sta b2
   
   lda nomolosScreenX
-  sta b0
+  sta w3
+  lda nomolosScreenX+1
+  sta w3+1
   lda nomolosScreenY
-  sta b1
+  sta w4
+  lda nomolosScreenY+1
+  sta w4+1
   
-  jsr drawAnimation
+  jsr drawAnimation16
   
   ldy #ROMDefinitionTableStruct::NomolosFightOverlay
   lda (romDefinitionTableBaseAddress),y
@@ -959,7 +963,7 @@ skipBlinkCheck:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr drawAnimation
+  jsr drawAnimation16
   
   rts
   
@@ -1006,11 +1010,15 @@ skipYSpeedTest:
   sta b2
   
   lda nomolosScreenX
-  sta b0
+  sta w3
+  lda nomolosScreenX+1
+  sta w3+1
   lda nomolosScreenY
-  sta b1
+  sta w4
+  lda nomolosScreenY+1
+  sta w4+1
   
-  jsr drawAnimation
+  jsr drawAnimation16
   
   ldy #ROMDefinitionTableStruct::NomolosJumpOverlay
   lda (romDefinitionTableBaseAddress),y
@@ -1019,7 +1027,7 @@ skipYSpeedTest:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr drawAnimation
+  jsr drawAnimation16
   
   rts
 skipDrawNomolosJumping:
@@ -1042,10 +1050,14 @@ skipDrawNomolosJumping:
   sta b2
   
   lda nomolosScreenX
-  sta b0
+  sta w3
+  lda nomolosScreenX+1
+  sta w3+1
   lda nomolosScreenY
-  sta b1
-  jsr drawAnimation
+  sta w4
+  lda nomolosScreenY+1
+  sta w4+1
+  jsr drawAnimation16
   
   ldy #ROMDefinitionTableStruct::NomolosWalk
   lda (romDefinitionTableBaseAddress),y
@@ -1054,7 +1066,7 @@ skipDrawNomolosJumping:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr drawAnimation
+  jsr drawAnimation16
   
   jmp skipNomolosWalkingLeft
 skipNomolosWalkingRight:
@@ -1068,10 +1080,14 @@ skipNomolosWalkingRight:
   sta b2
 
   lda nomolosScreenX
-  sta b0
+  sta w3
+  lda nomolosScreenX+1
+  sta w3+1
   lda nomolosScreenY
-  sta b1
-  jsr drawAnimation
+  sta w4
+  lda nomolosScreenY+1
+  sta w4+1
+  jsr drawAnimation16
   
   ldy #ROMDefinitionTableStruct::NomolosWalk
   lda (romDefinitionTableBaseAddress),y
@@ -1079,7 +1095,7 @@ skipNomolosWalkingRight:
   iny
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
-  jsr drawAnimation
+  jsr drawAnimation16
   
 skipNomolosWalkingLeft:
   
@@ -1089,8 +1105,10 @@ dontDrawNomolos:
   
 .endproc
   
+.import NomolosWalk0
+  
 .proc drawNomolosHearts
-
+  
   ldx nomolosHealth
   beq skipDrawHearts
   

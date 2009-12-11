@@ -4,6 +4,13 @@ STRUCTS_INC = 1
 PLAYLEVELSTATE_KEEPPLAYING = %00000000
 PLAYLEVELSTATE_SWITCHLEVEL = %00000001
   
+.struct spriteStruct
+  ycoord .byte
+  tile .byte
+  attribute .byte
+  xcoord .byte
+.endstruct
+  
 .struct playLevelStateControl
   state .byte                ;flags for whether to switch to a different level
   romDefinitionTable .word   ;location of rom definition table for next level
