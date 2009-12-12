@@ -33,7 +33,12 @@
 ;outputs:
 ;the zero flag should be set if there is no collision, clear otherwise
 ;b0: whether or not the collision was with a "hurt" tile.
+;b1: whether or not the collision was with a "solid" tile.
 .proc testMapCollision
+
+  lda #0
+  sta b0
+  sta b1
 
   ;divide X coordinate by 16 to get column coordinate
   lda w0
@@ -149,6 +154,7 @@
   iny
   lda #1
   lda (w3), y
+  sta b1
 
   rts
 .endproc

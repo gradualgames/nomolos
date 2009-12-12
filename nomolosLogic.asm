@@ -273,6 +273,14 @@ skipAttack:
   adc #$ff
   sta w1+1
   jsr testMapCollision
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
+  lda b1
   beq noTopLeftCollision
   
   jmp yesAboveCollision
@@ -296,6 +304,14 @@ noTopLeftCollision:
   adc #$ff
   sta w1+1
   jsr testMapCollision
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
+  lda b1
   beq noTopRightCollision
   
   jmp yesAboveCollision
@@ -306,13 +322,6 @@ noTopRightCollision:
   
 yesAboveCollision:
   ;There was an above collision:
-  ;load "hurt" result of map collision test
-  lda b0
-  beq @skipSetHurt
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-@skipSetHurt:
  
   ;Calculate penetration distance and store it in abovePenetrationDistance.
   ;Set above collision flag.
@@ -351,6 +360,14 @@ skipNoAboveCollision:
   adc #0
   sta w1+1
   jsr testMapCollision
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
+  lda b1
   beq noBottomLeftCollision
   
   jmp yesBottomCollision
@@ -375,6 +392,14 @@ noBottomLeftCollision:
   adc #0
   sta w1+1
   jsr testMapCollision
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
+  lda b1
   beq noBottomRightCollision
   
   jmp yesBottomCollision
@@ -386,13 +411,6 @@ noBottomRightCollision:
 
 yesBottomCollision:
   ;There was a below collision:
-  ;load "hurt" result of map collision test
-  lda b0
-  beq @skipSetHurt
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-@skipSetHurt:
   
   ;Calculate penetration distance and store it in belowPenetrationDistance.
   ;Set below collision flag.
@@ -615,7 +633,9 @@ noSignExtend:
 
   ;is left button down?
   and #1
-  beq notLeft
+  bne skipJmpNotLeft
+  jmp notLeft
+skipJmpNotLeft:
   lda nomolosState
   ora #nomolosWalkingLeftOR
   ora #nomolosMovingOnOR
@@ -638,6 +658,7 @@ noSignExtend:
   adc #0
   sta w1+1
   jsr testMapCollision
+  lda b1
   bne notLeft
   
   lda nomolosX+1
@@ -655,6 +676,7 @@ noSignExtend:
   adc #0
   sta w1+1
   jsr testMapCollision
+  lda b1
   bne notLeft
 
   lda nomolosX+1
@@ -672,6 +694,7 @@ noSignExtend:
   adc #0
   sta w1+1
   jsr testMapCollision
+  lda b1
   bne notLeft
   
   ;also make certain nomolos can't walk past left part of screen
@@ -737,6 +760,7 @@ notLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
+  lda b1
   bne notRight
   
   ;lda nomolosX+1
@@ -755,6 +779,7 @@ notLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
+  lda b1
   bne notRight
   
   lda nomolosX+1
@@ -772,6 +797,7 @@ notLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
+  lda b1
   bne notRight
   
   ;24 bit add
