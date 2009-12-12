@@ -220,6 +220,19 @@ yOffScreenPositive:
   
 @yCoordinateNotTooFar:
 
+  ;test the low byte of the y coordinate, make sure it is positive. if it is negative the sprite
+  ;is too far away.
+  lda w4
+  bpl @yCoordinateNotTooFar2
+  
+  ;restore regs and return from routine; we know the sprite is too far off the screen to consider.
+  pla
+  tax
+  rts
+  
+@yCoordinateNotTooFar2:
+
+
   ;y is off the screen but not too far that the sprite might not be visible
   lda #$00
   sta w5+1
