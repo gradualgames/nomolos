@@ -199,6 +199,10 @@ skipAttack:
 
 .endproc
   
+.proc loadHurtResult
+
+.endproc
+  
 .proc updateNomolos
 
   ;************************************************************
@@ -658,6 +662,13 @@ skipJmpNotLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
   lda b1
   bne notLeft
   
@@ -676,6 +687,13 @@ skipJmpNotLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
   lda b1
   bne notLeft
 
@@ -694,6 +712,13 @@ skipJmpNotLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
   lda b1
   bne notLeft
   
@@ -738,7 +763,9 @@ notLeft:
 
   ;is right button down?
   and #1
-  beq notRight
+  bne skipJmpNotRight
+  jmp notRight
+skipJmpNotRight:
   lda nomolosState
   and #nomolosWalkingRightAND ;state is walking right
   ora #nomolosMovingOnOR       ;state is moving
@@ -760,6 +787,13 @@ notLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
   lda b1
   bne notRight
   
@@ -779,6 +813,13 @@ notLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
   lda b1
   bne notRight
   
@@ -797,6 +838,13 @@ notLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
   lda b1
   bne notRight
   
