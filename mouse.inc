@@ -34,42 +34,38 @@ mouseSitThere:
   lda entityPool+entityRAM::positionX+1,x
   sta w0+1
   
-  ;add 16 to positionX  
-  clc
-  lda w0
-  adc #$10
-  sta w0
-  lda w0+1
-  adc #0
-  sta w0+1
-  
   ;get out positionY
   lda entityPool+entityRAM::positionY,x
   sta w1
   lda entityPool+entityRAM::positionY+1,x
   sta w1+1
   jsr cameraToScreenCoords
-  beq @skipMouseOffScreen
-  jmp mouseOffScreen
-@skipMouseOffScreen:
 
-  ;get out low byte of positionX
-  lda entityPool+entityRAM::positionX,x
-  sta w0
-  ;get out high byte of positionX
-  lda entityPool+entityRAM::positionX+1,x
-  sta w0+1
+  ;save screen coordinates for use later
+  lda w0
+  pha
+  lda w0+1
+  pha
+  lda w1
+  pha
+  lda w1+1
+  pha
   
-  ;get out positionY
-  lda entityPool+entityRAM::positionY,x
-  sta w1
-  lda entityPool+entityRAM::positionY+1,x
-  sta w1+1
-  jsr cameraToScreenCoords
+  ;test x coordinate for whether the item should die.
+  sec
+  lda #$f0
+  sbc w0
+  lda #$ff
+  sbc w0+1
+  bmi mouseOnScreen
   
-  beq @skipMouseDie
+  pla
+  pla
+  pla
+  pla
   jmp mouseDie
-@skipMouseDie:
+  
+mouseOnScreen:
   
   ;transfer Mouse rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda w0
@@ -113,6 +109,12 @@ mouseSitThere:
   sta w0+1
   jsr loadSound
   
+  ;restore stack from saving coordinates earlier
+  pla
+  pla
+  pla
+  pla
+  
   jmp mouseDie
   
 @notTouching:
@@ -146,7 +148,17 @@ mouseSitThere:
   sta w2+1
   jsr updateAnimation  
   
-  jsr drawAnimation
+  ;restore and use screen coordinates
+  pla
+  sta w4+1
+  pla
+  sta w4
+  pla 
+  sta w3+1
+  pla
+  sta w3
+  
+  jsr drawAnimation16
   
 mouseOffScreen:
   

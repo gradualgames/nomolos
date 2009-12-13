@@ -41,12 +41,16 @@ explosionExplode:
   lda entityPool+entityRAM::positionY+1,x
   sta w1+1
   jsr cameraToScreenCoords
-  bne explosionDie
-  
+
+  ;store screen coordinates
   lda w0
-  sta b0
+  sta w3
+  lda w0+1
+  sta w3+1
   lda w1
-  sta b1
+  sta w4
+  lda w1+1
+  sta w4+1
   
   ;load address of animation object into w1
   lda #<(entityPool+entityRAM::animationObject)
@@ -70,7 +74,7 @@ explosionExplode:
   sta w2+1
   jsr updateAnimation  
   
-  jsr drawAnimation
+  jsr drawAnimation16
   
   lda entityPool+entityRAM::animationObject+1,x
   cmp #2

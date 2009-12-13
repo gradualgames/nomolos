@@ -36,7 +36,7 @@
 .import resetCamera, cameraToScreenCoords
 
 ;sprite module
-.import clearSprites, updateAnimation, drawAnimation, drawMetaSprite
+.import clearSprites, updateAnimation, drawAnimation, drawAnimation16, drawMetaSprite
 
 ;sound module
 .import initsound, lowc, loadSound, finishSound

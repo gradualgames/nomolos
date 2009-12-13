@@ -30,7 +30,7 @@
 .import cameraToScreenCoords
 
 ;sprite module
-.import updateAnimation, drawAnimation, drawMetaSprite
+.import updateAnimation, drawAnimation, drawAnimation16, drawMetaSprite
 
 ;sound module
 .import lowc, loadSound, finishSound

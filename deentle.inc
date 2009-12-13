@@ -120,14 +120,6 @@ deentle_draw:
   ;get out high byte of positionX
   lda entityPool+entityRAM::positionX+1,x
   sta w0+1
-  ;add 16 to positionX to get the right side of the Deentle
-  clc
-  lda w0
-  adc #$10
-  sta w0
-  lda w0+1
-  adc #$00
-  sta w0+1
   
   ;get out positionY
   lda entityPool+entityRAM::positionY,x
@@ -135,33 +127,35 @@ deentle_draw:
   lda entityPool+entityRAM::positionY+1,x
   sta w1+1
   jsr cameraToScreenCoords
-  bpl dontKillDeentle 
-  jmp killDeentle
-dontKillDeentle:
-  beq deentleNotOffscreen1
-  jmp deentleOffscreen
-deentleNotOffscreen1:
 
-  ;get out low byte of positionX
-  lda entityPool+entityRAM::positionX,x
-  sta w0
-  ;get out high byte of positionX
-  lda entityPool+entityRAM::positionX+1,x
-  sta w0+1
-  ;get positionY
-  lda entityPool+entityRAM::positionY,x
-  sta w1
-  lda entityPool+entityRAM::positionY+1,x
-  sta w1+1
-  jsr cameraToScreenCoords
-  beq deentleNotOffscreen2
-  jmp deentleOffscreen
-deentleNotOffscreen2:
-  
+  ;save the calculated screen coordinates for later when we draw the deentle
   lda w0
-  sta b0
+  pha
+  lda w0+1
+  pha
   lda w1
-  sta b1
+  pha
+  lda w1+1
+  pha
+  
+  ;test the x coordinate for whether it is a certain distance off screen. compare it
+  ;to -32.
+  ;-32 - -40 = 8. positive = offscreen, die. negative = onscreen, do not die.
+  sec
+  lda #$e0
+  sbc w0
+  lda #$ff
+  sbc w0+1
+  bmi deentleOnScreen
+  
+  pla
+  pla
+  pla
+  pla
+  
+  jmp killDeentle
+  
+deentleOnScreen:  
   
   ;transfer Deentle rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda w0
@@ -236,6 +230,12 @@ deentleNotOffscreen2:
   sta w0+1
   jsr loadSound
   
+  ;restore the stack from earlier when we stored off the screen coords
+  pla
+  pla
+  pla
+  pla
+  
   jmp killDeentle
   
 nomolosNotAttacking:
@@ -265,7 +265,17 @@ nomolosNotAttacking:
   sta b2
   jsr updateAnimation  
   
-  jsr drawAnimation
+  ;restore the screen coordinates
+  pla
+  sta w4+1
+  pla
+  sta w4
+  pla
+  sta w3+1
+  pla
+  sta w3
+  
+  jsr drawAnimation16
 deentleOffscreen:
   rts
   
