@@ -18,16 +18,21 @@
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
 .importzp nomolosHitboxX, nomolosHitboxY
+.importzp nomolosScaredyCatX, nomolosScaredyCatY
 .importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
 .importzp nomolosBlinkCounter, nomolosHitboxCounter
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .importzp romDefinitionTableBaseAddress
 .importzp controllerBuffer
 .importzp soundAddr, soundOff
+.importzp stateControl
 
 ;Nomolos interface
 .export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts, hurtNomolos
 .export nomolosDeadly, addNomolosHealth
+
+;ROM symbols (temporary)
+.import ROMDefinitionTable0
 
 .segment "CODE"
 
@@ -106,6 +111,11 @@
   lda nomolosHealth
   beq skipDecreaseHealth
   dec nomolosHealth
+  bne nomolosNotDead
+  ;on the instant that nomolos dies, we want him to die. 
+  jsr nomolosDie
+  
+nomolosNotDead:
 skipDecreaseHealth:
   
   ;make nomolos bounce a little bit.
@@ -134,6 +144,31 @@ skipHurt:
 
   rts
   
+.endproc
+  
+;sets the nomolos dying state bit and sets coordinates for the scaredy cat graphic.
+.proc nomolosDie
+
+  ;make nomolos die.
+  lda nomolosState
+  ora #nomolosDyingOnOR
+  sta nomolosState
+  
+  ;transfer current screen coordinates to scaredy cat coordinates. These coordinates
+  ;are located in the same place in memory as the hit box, since we will not need the
+  ;hit box while in dying state.
+  lda nomolosScreenX
+  sta nomolosScaredyCatX
+  lda nomolosScreenX+1
+  sta nomolosScaredyCatX+1
+  
+  lda nomolosScreenY
+  sta nomolosScaredyCatY
+  lda nomolosScreenY+1
+  sta nomolosScaredyCatY+1
+
+  rts
+
 .endproc
   
 ;Causes the hit box to be activated for a few frames.
@@ -206,6 +241,58 @@ skipAttack:
 .proc updateNomolos
 
   ;************************************************************
+  ;Load "nomolos dying" flag and update associated variables if
+  ;true. Move scaredy cat graphic upwards and clear buttons 
+  ;that we do not want to respond to when dying is true.
+  ;************************************************************
+  lda nomolosState
+  and #nomolosDyingTestAND
+  beq nomolosNotDying
+  
+  ;move scaredy cat graphic upwards.
+  sec
+  lda nomolosScaredyCatY
+  sbc #$03
+  sta nomolosScaredyCatY
+  lda nomolosScaredyCatY+1
+  sbc #$00
+  sta nomolosScaredyCatY+1
+  
+  ;when the scaredy cat Y reaches a certain coordinate off the screen,
+  ;we want to transition out of this level and to an appropriate "level in"
+  ;state. For now, we will just re-load the current level.
+  cmp #$fe
+  bpl scaredyCatStillRising
+  
+  lda #<ROMDefinitionTable0
+  sta stateControl+playLevelStateControl::romDefinitionTable
+  lda #>ROMDefinitionTable0
+  sta stateControl+playLevelStateControl::romDefinitionTable+1
+  lda #0
+  sta stateControl+playLevelStateControl::bgChrBank
+  lda #1
+  sta stateControl+playLevelStateControl::sprChrBank
+  lda #0
+  sta stateControl+playLevelStateControl::prgBank
+  lda #PLAYLEVELSTATE_SWITCHLEVEL
+  sta stateControl+playLevelStateControl::state
+  
+scaredyCatStillRising:
+  
+  ;clear buttons we don't want to respond to during dying state.
+  lda #0
+  sta controllerBuffer+buttons::_a
+  sta controllerBuffer+buttons::_b
+  sta controllerBuffer+buttons::_left
+  sta controllerBuffer+buttons::_right
+  
+  ;we continue from here because we want to keep updating Nomolos'
+  ;coordinates. They are used for the slumped armor so it can fall
+  ;while Nomolos leaps off the screen in terror.
+  
+nomolosNotDying:
+
+  ;************************************************************
   ;Load result of "hurt by map" flag and hurt nomolos if true.
   ;************************************************************
   lda nomolosState
@@ -251,7 +338,7 @@ skipBlinkReset:
 skipAttackUpdate:
 
   ;Run attack routine if B transitions from off to on
-  lda controllerBuffer+1
+  lda controllerBuffer+buttons::_b
   and #%00000011
   ;test for transition from off to on
   cmp #%00000001
@@ -501,7 +588,7 @@ ySpeedNegative:
   ;Test A for on to off transition, stop rising if true.
 
   ;is current state of A button released, and previous state of A button pressed?
-  lda controllerBuffer
+  lda controllerBuffer+buttons::_a
   and #%00000011
   cmp #%00000010
   bne dontStopRising
@@ -554,7 +641,7 @@ skipYSpeedNegativeCode:
   
   ;Test if current state of A button is down and previous state is up. In other words,
   ;AND with #%00000011, then test for equality to 1.
-  lda controllerBuffer
+  lda controllerBuffer+buttons::_a
   and #%00000011
   cmp #1
   bne skipButtonATest
@@ -616,7 +703,7 @@ noSignExtend:
   ;************************************************************
 
   ;is there an on to off transition on the left button?
-  lda controllerBuffer+6
+  lda controllerBuffer+buttons::_left
   and #%00000011
   cmp #%00000010
   bne @skipMoveOff
@@ -633,7 +720,7 @@ noSignExtend:
   sta nomolosState
 @skipMoveOff:
   
-  lda controllerBuffer+6 ;Left
+  lda controllerBuffer+buttons::_left ;Left
 
   ;is left button down?
   and #1
@@ -742,7 +829,7 @@ skipJmpNotLeft:
 notLeft:
   
   ;is there an on to off transition on the right button?
-  lda controllerBuffer+7
+  lda controllerBuffer+buttons::_right
   and #%00000011
   cmp #%00000010
   bne @skipMoveOff
@@ -759,7 +846,7 @@ notLeft:
   sta nomolosState
 @skipMoveOff:
   
-  lda controllerBuffer+7 ; Right
+  lda controllerBuffer+buttons::_right ; Right
 
   ;is right button down?
   and #1
@@ -941,7 +1028,79 @@ skipUpdateNomolosMoving:
   
 .endproc
   
+;draws nomolos based on his current state.
 .proc drawNomolos
+
+  lda nomolosState
+  and #nomolosDyingTestAND
+  beq nomolosNotDying
+  
+  ;if we're in dying state, we will only ever draw the slumped armor and the scaredy cat graphic and return.
+  ldy #ROMDefinitionTableStruct::SlumpedArmor
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+  
+  ;get Nomolos' screen coordinates.
+  lda nomolosScreenX
+  sta w3
+  lda nomolosScreenX+1
+  sta w3+1
+  lda nomolosScreenY
+  sta w4
+  lda nomolosScreenY+1
+  sta w4+1
+  
+  lda #0
+  sta b2
+  
+  ;draw the slumped armor
+  jsr drawMetaSprite16  
+  
+  ldy #ROMDefinitionTableStruct::SlumpedArmorOverlay
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+  
+  ;draw the slumped armor overlay
+  jsr drawMetaSprite16
+  
+  ldy #ROMDefinitionTableStruct::ScaredyCat
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+  
+  ;get Nomolos' screen coordinates.
+  lda nomolosScaredyCatX
+  sta w3
+  lda nomolosScaredyCatX+1
+  sta w3+1
+  lda nomolosScaredyCatY
+  sta w4
+  lda nomolosScaredyCatY+1
+  sta w4+1
+  
+  ;draw the scaredy cat
+  jsr drawMetaSprite16
+  
+  ldy #ROMDefinitionTableStruct::ScaredyCatOverlay
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+  
+  ;draw the scaredy cat overlay
+  jsr drawMetaSprite16
+  
+  rts
+nomolosNotDying:
 
   lda nomolosState
   and #1

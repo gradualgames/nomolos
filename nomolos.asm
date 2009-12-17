@@ -36,6 +36,7 @@
 .exportzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, spriteAddress
 .exportzp nomolosHitboxX, nomolosHitboxY
+.exportzp nomolosScaredyCatX, nomolosScaredyCatY
 .exportzp scrollX, nextScrollX
 .exportzp controllerBuffer
 .exportzp soundAddr, soundOff
@@ -77,7 +78,6 @@ w7:       .res 2
 w8:       .res 2
 w9:       .res 2
 
-buttonA:     .res 1
 vblankDone:  .res 1
 
 update:     .res 2
@@ -92,6 +92,10 @@ nomolosScreenX: .res 2
 nomolosScreenY: .res 2
 nomolosHitboxX: .res 2
 nomolosHitboxY: .res 2
+;the following two variables occupy the same location as the hit box, because
+;the hit box will not be used while nomolos is dying.
+nomolosScaredyCatX = nomolosHitboxX
+nomolosScaredyCatY = nomolosHitboxY
 nomolosBelowPenetrationDistance: .res 1
 nomolosAbovePenetrationDistance: .res 1
 nomolosAnim: .res 2

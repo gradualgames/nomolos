@@ -4,6 +4,17 @@ STRUCTS_INC = 1
 PLAYLEVELSTATE_KEEPPLAYING = %00000000
 PLAYLEVELSTATE_SWITCHLEVEL = %00000001
   
+.struct buttons
+  _a       .byte
+  _b       .byte
+  _select  .byte
+  _start   .byte
+  _up      .byte
+  _down    .byte
+  _left    .byte
+  _right   .byte
+.endstruct
+  
 .struct spriteStruct
   ycoord .byte
   tile .byte
@@ -45,6 +56,10 @@ PLAYLEVELSTATE_SWITCHLEVEL = %00000001
   NomolosJumpOverlay .word
   NomolosFight .word
   NomolosFightOverlay .word
+  SlumpedArmor .word
+  SlumpedArmorOverlay .word
+  ScaredyCat .word
+  ScaredyCatOverlay .word
   Heart0 .word
   attackSound .word
   hitSound .word

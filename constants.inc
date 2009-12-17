@@ -56,6 +56,10 @@ nomolosHurtByMapOnOR         = %01000000
 nomolosHurtByMapOffAND       = %10111111
 nomolosHurtByMapTestAND      = %01000000
 
+nomolosDyingOnOR             = %10000000
+nomolosDyingOffAND           = %01111111
+nomolosDyingTestAND          = %10000000
+
 nomolosHurtBounceLo = $0a
 nomolosHurtBounceHi = $fd
 nomolosStartJumpLo = $0a

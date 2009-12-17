@@ -54,21 +54,25 @@ music:
 
 ;ROM definition table
 ROMDefinitionTable0:
-  .word NomolosWalk            ;0
-  .word NomolosWalkOverlay     ;2 
-  .word NomolosJump            ;4
-  .word NomolosJumpOverlay     ;6
-  .word NomolosFight           ;8
-  .word NomolosFightOverlay    ;10
-  .word Heart0                 ;12
-  .word attackSound            ;14
-  .word hitSound               ;16
-  .word palette                ;18
-  .word MetaTileTable          ;20
-  .word MetaMetaTileTable      ;22
-  .word Level                  ;24
-  .word EntityDefinitionTable  ;26
-  .word music                  ;28
+  .word NomolosWalk            
+  .word NomolosWalkOverlay     
+  .word NomolosJump            
+  .word NomolosJumpOverlay     
+  .word NomolosFight           
+  .word NomolosFightOverlay    
+  .word SlumpedArmor0           
+  .word SlumpedArmorOverlay0
+  .word ScardyCat0
+  .word ScardyCatOverlay0
+  .word Heart0                 
+  .word attackSound            
+  .word hitSound               
+  .word palette                
+  .word MetaTileTable          
+  .word MetaMetaTileTable      
+  .word Level                  
+  .word EntityDefinitionTable  
+  .word music                  
 
 palette:
 
@@ -360,16 +364,16 @@ Mouse0:
   .byte $00,$54,$00,$08,$00
 SlumpedArmor0:
   .byte $06
-  .byte $00,$62,$01,$00,$08
-  .byte $00,$63,$01,$08,$00
-  .byte $08,$68,$00,$00,$08
-  .byte $08,$69,$00,$08,$00
-  .byte $10,$6e,$00,$00,$08
-  .byte $10,$6f,$00,$08,$00
+  .byte $08,$62,$01,$00,$08
+  .byte $08,$63,$01,$08,$00
+  .byte $10,$68,$00,$00,$08
+  .byte $10,$69,$00,$08,$00
+  .byte $18,$6e,$00,$00,$08
+  .byte $18,$6f,$00,$08,$00
 SlumpedArmorOverlay0:
   .byte $02
-  .byte $00,$61,$02,$00,$00
-  .byte $08,$67,$02,$00,$00
+  .byte $08,$61,$02,$00,$00
+  .byte $10,$67,$02,$00,$00
 ScardyCat0:
   .byte $08
   .byte $00,$55,$01,$00,$08
@@ -382,10 +386,10 @@ ScardyCat0:
   .byte $18,$71,$01,$08,$00
 ScardyCatOverlay0:
   .byte $04
-  .byte $00,$66,$02,$00,$08
-  .byte $00,$2b,$02,$08,$00
-  .byte $08,$6c,$02,$00,$08
-  .byte $08,$6d,$02,$08,$00
+  .byte $08,$66,$02,$00,$08
+  .byte $08,$2b,$02,$08,$00
+  .byte $10,$6c,$02,$00,$08
+  .byte $10,$6d,$02,$08,$00
 
 ;Animations
 NomolosWalk:
