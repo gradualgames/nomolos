@@ -44,7 +44,7 @@
 .export stack, sprite, entityPool
 
 ;misc
-.export loadPalette, loadLevel
+.export loadPalette, loadLevel, displayString
 
 ;update return labels
 .export updatePPUFinished, updateFinished
@@ -344,6 +344,26 @@ updateFinished:
   
   jmp updateFinished
 .endproc
+  
+;assumes VRAM is already pointing to where the text should start
+;assumes w0 contains address of string to draw
+displayString:
+  ;load number of characters in string
+  ldy #0
+  lda (w0),y
+  tax
+  iny
+:
+  ;load character
+  lda (w0),y
+  ;write it to nametable
+  sta $2007
+  iny
+
+  dex
+  bne :-
+
+  rts
   
 loadPalette:
   ldy #ROMDefinitionTableStruct::palette

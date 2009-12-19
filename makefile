@@ -16,6 +16,7 @@ FILES           = nomolos \
                   rom1 \
                   chrrom0 \
                   chrrom1 \
+                  chrrom2 \
                   loadLevelState \
                   playLevelState \
                   map \
