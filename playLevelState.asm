@@ -1,11 +1,14 @@
 .include "flags.inc"
 .include "structs.inc"
+.include "macros.inc"
 
 ;rom labels
 .import Heart0
 
 .import loadLevel
 
+;level out state labels
+.import levelOutUpdate, levelOutPPUUpdate
 ;state return labels
 .import updatePPUFinished, updateFinished
 ;input system labels
@@ -24,6 +27,7 @@
 ;nomolos logic labels
 .import updateNomolos, drawNomolos, drawNomolosHearts
 ;global variables
+.importzp update, updatePPU
 .importzp spriteAddress, spriteAddressStart, vblankDone
 .importzp stateControl
 .importzp b0, b1, b2, w0, controllerBuffer
@@ -60,14 +64,13 @@ playLevelUpdate:
     
   lda stateControl+playLevelStateControl::state
   cmp #PLAYLEVELSTATE_SWITCHLEVEL
-  bne @skipSwitchLevel
+  beq switchLevel
+  cmp #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
+  beq switchToLevelOutState
   
-  ;load state control information to switch to a different level
-;loads a new level based on a rom definition table address.
-;w0 - the address of the rom definition table to use
-;b0 - the first chr rom bank.
-;b1 - the second chr rom bank.
-;b2 - the prg rom bank.
+  jmp stateCommandComplete
+  
+switchLevel:
   lda stateControl+playLevelStateControl::romDefinitionTable
   sta w0
   lda stateControl+playLevelStateControl::romDefinitionTable+1
@@ -80,7 +83,11 @@ playLevelUpdate:
   sta b2
   jmp loadLevel
   
-@skipSwitchLevel:
+switchToLevelOutState:
+
+  switchState levelOutUpdate, levelOutPPUUpdate
+  
+stateCommandComplete:
     
   ;turn monochrome bit off
   .ifdef DISPLAY_FRAME_CPU_USAGE

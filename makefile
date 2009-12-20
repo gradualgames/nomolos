@@ -19,6 +19,7 @@ FILES           = nomolos \
                   chrrom2 \
                   loadLevelState \
                   playLevelState \
+                  levelOutState \
                   map \
                   camera \
                   sprite \
