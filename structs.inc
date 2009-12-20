@@ -1,10 +1,7 @@
 .ifndef STRUCTS_INC
 STRUCTS_INC = 1
 
-PLAYLEVELSTATE_KEEPPLAYING =           %00000000
-PLAYLEVELSTATE_SWITCHLEVEL =           %00000001
-PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000010
-  
+
 .struct buttons
   _a       .byte
   _b       .byte
@@ -23,12 +20,23 @@ PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000010
   xcoord .byte
 .endstruct
   
+PLAYLEVELSTATE_KEEPPLAYING =           %00000000
+PLAYLEVELSTATE_SWITCHLEVEL =           %00000001
+PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000010
+  
 .struct playLevelStateControl
   state .byte                ;flags for whether to switch to a different level
   romDefinitionTable .word   ;location of rom definition table for next level
   bgChrBank .byte            ;location of background chr rom bank
   sprChrBank .byte           ;location of sprite chr rom bank
   prgBank .byte              ;location of prg rom bank at $8000
+.endstruct
+
+LEVELOUTSTATE_INIT =    %00000000
+LEVELOUTSTATE_FADEOUT = %00000001
+
+.struct levelOutStateControl
+  state .byte
 .endstruct
 
 .struct animation

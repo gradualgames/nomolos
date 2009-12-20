@@ -40,6 +40,7 @@
 .exportzp scrollX, nextScrollX
 .exportzp controllerBuffer
 .exportzp soundAddr, soundOff
+.exportzp paletteStep, frameCounter
 .exportzp ft_music_addr
 .export stack, sprite, entityPool
 
@@ -77,6 +78,8 @@ w6:       .res 2
 w7:       .res 2
 w8:       .res 2
 w9:       .res 2
+
+
 
 vblankDone:  .res 1
 
@@ -125,6 +128,9 @@ controllerBuffer: .res 8
 
 soundAddr: .res 2
 soundOff: .res 1
+
+paletteStep: .res 1
+frameCounter: .res 1
 
 ft_music_addr: .res 2
 

@@ -85,6 +85,8 @@ switchLevel:
   
 switchToLevelOutState:
 
+  lda #LEVELOUTSTATE_INIT
+  sta stateControl+levelOutStateControl::state
   switchState levelOutUpdate, levelOutPPUUpdate
   
 stateCommandComplete:
