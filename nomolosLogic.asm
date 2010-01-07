@@ -264,19 +264,6 @@ skipAttack:
   cmp #$fe
   bpl scaredyCatStillRising
   
-;  lda #<ROMDefinitionTable0
-;  sta stateControl+playLevelStateControl::romDefinitionTable
-;  lda #>ROMDefinitionTable0
-;  sta stateControl+playLevelStateControl::romDefinitionTable+1
-;  lda #0
-;  sta stateControl+playLevelStateControl::bgChrBank
-;  lda #1
-;  sta stateControl+playLevelStateControl::sprChrBank
-;  lda #0
-;  sta stateControl+playLevelStateControl::prgBank
-;  lda #PLAYLEVELSTATE_SWITCHLEVEL
-;  sta stateControl+playLevelStateControl::state
-
   lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
   sta stateControl+playLevelStateControl::state
   

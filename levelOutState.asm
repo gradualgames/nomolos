@@ -1,14 +1,19 @@
 .include "structs.inc"
 .include "constants.inc"
+.include "macros.inc"
 
 ;zeropage variables
 .importzp w0, scrollX, nametableToUpdate
 .importzp paletteStep, frameCounter
 .importzp stateControl
 .importzp romDefinitionTableBaseAddress
+.importzp update, updatePPU
 
 ;state return labels
 .import updatePPUFinished, updateFinished
+
+;level in state labels
+.import levelInUpdate, levelInPPUUpdate
 
 .export levelOutUpdate, levelOutPPUUpdate
 
@@ -58,7 +63,15 @@ levelOutStateFadeOut:
   lda paletteStep
   cmp #6
   bmi :+ 
+  
+  ;this is the end condition of the fade out. Instead of skipping the step
+  ;we want to actually switch to the level in state.
+  
+  lda #LEVELINSTATE_INIT
+  sta stateControl+levelOutStateControl::state
+  switchState levelInUpdate, levelInPPUUpdate
   jmp skipIncPaletteStep
+
 :
   
   inc paletteStep
@@ -124,43 +137,6 @@ paletteEntryLessThan16:
   jmp stateCommandComplete
   
 stepGreaterThanOrEqualToFour:
-  
-  ;cmp #4
-  ;beq dropOutAllButOneColorToBlack
-  ;cmp #5
-  ;beq dropOutAllColorsToBlack
-  
-;dropOutAllButOneColorToBlack:
-;  
-;  ;drop out all but one color (in each 4 color palette) to black
-;  ldy #ROMDefinitionTableStruct::palette
-;  lda (romDefinitionTableBaseAddress),y
-;  sta w0
-;  iny
-;  lda (romDefinitionTableBaseAddress),y
-;  sta w0+1
-;  ldy #0
-;  lda #$3F
-;  sta $2006
-;  lda #$00
-;  sta $2006  
-;  ldx #$00
-;: 
-;  txa
-;  and #$03
-;  beq writeNormalColor
-;  lda #$3f
-;  sta $2007
-;  jmp skipWriteNormalColor
-;writeNormalColor:
-;  lda $2007
-;skipWriteNormalColor:  
-;  inx
-;  iny
-;  cpx #$20
-;  bne :-
-;  
-;  jmp stateCommandComplete
   
 dropOutAllColorsToBlack:
   ;drop out all colors to black

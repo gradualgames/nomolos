@@ -1,6 +1,10 @@
 .ifndef STRUCTS_INC
 STRUCTS_INC = 1
 
+.struct fontSet
+  chrRomBank .byte
+  digitTable .byte 10
+.endstruct
 
 .struct buttons
   _a       .byte
@@ -36,6 +40,13 @@ LEVELOUTSTATE_INIT =    %00000000
 LEVELOUTSTATE_FADEOUT = %00000001
 
 .struct levelOutStateControl
+  state .byte
+.endstruct
+
+LEVELINSTATE_INIT = %00000000
+LEVELINSTATE_RUN =  %00000001
+
+.struct levelInStateControl
   state .byte
 .endstruct
 

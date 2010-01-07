@@ -20,6 +20,7 @@ FILES           = nomolos \
                   loadLevelState \
                   playLevelState \
                   levelOutState \
+                  levelInState \
                   map \
                   camera \
                   sprite \

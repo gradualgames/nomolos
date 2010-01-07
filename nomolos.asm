@@ -350,7 +350,13 @@ updateFinished:
   
   jmp updateFinished
 .endproc
-  
+
+FontSet1:
+  .byte $04 
+;0123456789
+DigitTable:
+  .byte $0a,$35,$36,$37,$38,$39,$3a,$3b,$3c,$3d,$3e
+
 ;assumes VRAM is already pointing to where the text should start
 ;assumes w0 contains address of string to draw
 displayString:
