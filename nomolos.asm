@@ -25,6 +25,7 @@
 ;global variables/RAM labels
 .exportzp b0, b1, b2, b3, b4, b5, b6, b7, b8, b9
 .exportzp w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, vblankDone
+.exportzp stringBuffer
 .exportzp stateControl
 .exportzp update, updatePPU, attributeBuffer, attributeColumnToUpdate
 .exportzp columnTileBuffer, columnToUpdate, nametableToUpdate
@@ -45,10 +46,10 @@
 .export stack, sprite, entityPool
 
 ;misc
-.export loadPalette, loadLevel, displayString
+.export loadPalette, loadLevel, displayString, createDecimalString
 
 ;misc data
-.export font1
+.export font1, powerTable
 
 ;update return labels
 .export updatePPUFinished, updateFinished
@@ -82,7 +83,7 @@ w7:       .res 2
 w8:       .res 2
 w9:       .res 2
 
-
+stringBuffer: .res 8
 
 vblankDone:  .res 1
 
@@ -371,7 +372,143 @@ font1:
   .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
   .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
 
+powerTable:
+  .byte 100, 10, 1
   
+  ;some sort of odd alignment issue occurs without the following byte.
+  ;at least, I can't see the createDecimalString procedure without it
+  ;in FCEUXDSP =)
+  .byte $00
+  
+;Creates a decimal string based on a digit table and a power table
+;and an input 8 bit value.
+;Input:
+; b0 - Value to create decimal string from
+; w0 - Address of digit table
+; w1 - Address of power table
+; w2 - Address of destination buffer
+;Output:
+; w2 - Contains a string displayable by displayString
+;Temporary:
+; b1 - current power
+; b2 - current digit
+; b3 - index in dest buffer
+; b4 - whether a nonzero digit has been encountered yet.
+.proc createDecimalString
+ 
+  ;digit count
+  lda #0
+  sta b5
+ 
+  ;look at first power
+  ldy #0
+  
+  ;dest buffer index is zero
+  lda #1
+  sta b3
+ 
+  ;nonzero digit has not been encountered, so false
+  lda #0
+  sta b4
+  
+  lda b0
+  bne skipSetEncounteredFlag
+  lda #1
+  sta b4
+  ;look at last power because the input value is zero
+  ldy #2
+skipSetEncounteredFlag:
+ 
+nextPower:
+  
+  ;load power from power table
+  lda (w1),y
+  sta b1
+  
+  ;our current digit starts at 0
+  lda #0
+  sta b2
+
+  ;load input value
+  lda b0
+subtractPowerLoop:
+  
+  ;subtract current power
+  sec
+  sbc b1
+  bmi doneWithCurrentPower
+  
+  ;we successfully subtracted the power (non negative result), so we increment our current digit.
+  inc b2
+  
+  jmp subtractPowerLoop
+  
+doneWithCurrentPower:
+
+  lda b2
+  beq noNonZeroDigitsEncounteredYet
+  ;we know a digit is nonzero so b4 should be true now
+  lda #1
+  sta b4
+noNonZeroDigitsEncounteredYet:
+
+  ;we want to know how many times we subtracted the current power. we know from b2. want to subtract
+  ;b2 * current power from the original value. 
+  lda b0
+  ldx b2
+  
+removePowerLoop:
+  cpx #0
+  beq exitRemovePowerLoop
+  sec
+  sbc b1
+  dex
+  jmp removePowerLoop
+exitRemovePowerLoop:
+  sta b0
+
+  ;store y
+  tya
+  pha
+  
+  lda b4
+  ;as long as this is zero, we want to skip writing a digit to the dest. buffer.
+  beq skipUpperZeroDigit
+  
+  ;look up current digit in digit table and store it in destination buffer
+  
+  ;load y with the current digit
+  ldy b2
+  ;load the tile number out of the digit table
+  lda (w0),y
+  ;store the tile number in the destination buffer
+  ldy b3
+  sta (w2),y
+  ;move on to next digit
+  inc b3
+  
+skipUpperZeroDigit:
+  
+  ;restore y
+  pla
+  tay
+  
+  ;move on to next power
+  iny
+  
+  cpy #3
+  bne nextPower
+ 
+  ;(b3-1) is digit count. store this at the beginning of dest buffer.
+  ldy #0
+  dec b3
+  lda b3
+  sta (w2),y
+ 
+  rts
+  
+.endproc
+ 
 ;assumes VRAM is already pointing to where the text should start
 ;assumes w0 contains address of string to draw
 displayString:

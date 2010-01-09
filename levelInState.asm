@@ -2,16 +2,17 @@
 .include "constants.inc"
 
 ;main module imports
-.import displayString
+.import displayString, createDecimalString
 .import loadPalette
-.import font1
+.import font1, powerTable
 
 ;sprite module imports
 .import clearSprites, updateSprites
 
 ;zeropage labels
-.importzp w0
+.importzp b0, b1, b2, b3, w0, w1, w2
 .importzp stateControl
+.importzp stringBuffer
 
 ;state return labels
 .import updatePPUFinished, updateFinished
@@ -113,15 +114,46 @@ levelInStateRun:
   lsr
   sta $A000
   
+;Creates a decimal string based on a digit table and a power table
+;and an input 8 bit value.
+;Input:
+; b0 - Value to create decimal string from
+; w0 - Address of digit table
+; w1 - Address of power table
+; w2 - Address of destination buffer
+;Output:
+; w2 - Contains a string displayable by displayString
+;Temporary:
+; b1 - current power
+; b2 - current digit
+; b3 - index in dest buffer
+
+  lda #27
+  sta b0
+  lda #<(font1+font::digitTable)
+  sta w0
+  lda #>(font1+font::digitTable)
+  sta w0+1
+  lda #<powerTable
+  sta w1
+  lda #>powerTable
+  sta w1+1
+  lda #<stringBuffer
+  sta w2
+  lda #>stringBuffer
+  sta w2+1
+  
+  jsr createDecimalString
+  
   ;now let's write a string!
   lda #$20
   ora #$0a
   sta $2006
   lda #$0c
   sta $2006
-  lda #<GameOver
+  lda #<stringBuffer
   sta w0
-  lda #>GameOver
+  lda #>stringBuffer
   sta w0+1
   jsr displayString
   
