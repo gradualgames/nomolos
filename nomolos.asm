@@ -47,13 +47,16 @@
 ;misc
 .export loadPalette, loadLevel, displayString
 
+;misc data
+.export font1
+
 ;update return labels
 .export updatePPUFinished, updateFinished
 
 .segment "HEADER"
 .byte "NES",$1a        ;iNES header
 .byte $04 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
-.byte $02 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
+.byte $03 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
 .byte $11 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #1 (MMC1)
 .byte $00 ;            ;Rest of Mapper #0 bits (all 0)
 .byte 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
@@ -331,6 +334,14 @@ updateFinished:
   sta $2001
   
   jsr initsound
+  
+  ldy #ROMDefinitionTableStruct::palette
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+
   jsr loadPalette
   jsr clearSprites
   jsr initEntities
@@ -351,12 +362,16 @@ updateFinished:
   jmp updateFinished
 .endproc
 
-FontSet1:
-  .byte $04 
-;0123456789
-DigitTable:
-  .byte $0a,$35,$36,$37,$38,$39,$3a,$3b,$3c,$3d,$3e
+font1:
+;chr rom bank
+  .byte $04
+;digit table
+  .byte $35,$36,$37,$38,$39,$3a,$3b,$3c,$3d,$3e
+;palette
+  .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
+  .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
 
+  
 ;assumes VRAM is already pointing to where the text should start
 ;assumes w0 contains address of string to draw
 displayString:
@@ -377,13 +392,8 @@ displayString:
 
   rts
   
+;expects w0 to have address of palette
 loadPalette:
-  ldy #ROMDefinitionTableStruct::palette
-  lda (romDefinitionTableBaseAddress),y
-  sta w0
-  iny
-  lda (romDefinitionTableBaseAddress),y
-  sta w0+1
   ldy #0
   lda #$3F
   sta $2006

@@ -1,9 +1,10 @@
 .ifndef STRUCTS_INC
 STRUCTS_INC = 1
 
-.struct fontSet
+.struct font
   chrRomBank .byte
   digitTable .byte 10
+  palette .byte 32
 .endstruct
 
 .struct buttons
@@ -45,6 +46,7 @@ LEVELOUTSTATE_FADEOUT = %00000001
 
 LEVELINSTATE_INIT = %00000000
 LEVELINSTATE_RUN =  %00000001
+LEVELINSTATE_DONE = %00000010
 
 .struct levelInStateControl
   state .byte
