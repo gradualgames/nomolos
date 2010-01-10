@@ -1,6 +1,13 @@
 .ifndef STRUCTS_INC
 STRUCTS_INC = 1
 
+.struct level
+  bgChrRomBank .byte
+  sprChrRomBank .byte
+  prgRomBank .byte
+  romDefinitionTable .word
+.endstruct
+
 .struct font
   chrRomBank .byte
   digitTable .byte 10
@@ -91,6 +98,7 @@ LEVELINSTATE_DONE = %00000010
   Level .word
   EntityDefinitionTable .word
   music .word
+  LevelTitle .word
 .endstruct
 
 .endif

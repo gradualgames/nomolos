@@ -38,6 +38,7 @@
 .exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, spriteAddress
 .exportzp nomolosHitboxX, nomolosHitboxY
 .exportzp nomolosScaredyCatX, nomolosScaredyCatY
+.exportzp nomolosLives
 .exportzp scrollX, nextScrollX
 .exportzp controllerBuffer
 .exportzp soundAddr, soundOff
@@ -49,7 +50,7 @@
 .export loadPalette, loadLevel, clearNametable, displayString, createDecimalString
 
 ;misc data
-.export font1, powerTable
+.export font1, powerTable, livesRemaining
 
 ;update return labels
 .export updatePPUFinished, updateFinished
@@ -110,6 +111,7 @@ nomolosBlinkCounter: .res 1
 nomolosHitboxCounter: .res 1
 nomolosState: .res 1
 nomolosHealth: .res 1
+nomolosLives: .res 1
 
 scrollX:                           .res 2
 nextScrollX:                       .res 2
@@ -221,6 +223,10 @@ reset:
   clearRAM
   initMMC1
 
+  ;start out Nomolos with 3 lives.
+  lda #3
+  sta nomolosLives
+  
   lda #0
   sta b0
   lda #1
@@ -359,23 +365,6 @@ updateFinished:
   jmp updateFinished
 .endproc
 
-font1:
-;chr rom bank
-  .byte $04
-;digit table
-  .byte $35,$36,$37,$38,$39,$3a,$3b,$3c,$3d,$3e
-;palette
-  .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
-  .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
-
-powerTable:
-  .byte 100, 10, 1
-  
-  ;some sort of odd alignment issue occurs without the following byte.
-  ;at least, I can't see the createDecimalString procedure without it
-  ;in FCEUXDSP =)
-  .byte $00
-  
 ;Creates a decimal string based on a digit table and a power table
 ;and an input 8 bit value.
 ;Input:
@@ -607,6 +596,30 @@ updatePPUFinished:
 
 irq:
   rti
+  
+;level definitions
+LevelDefinitionTable:
+Level1:
+  .byte $00, $01, $00
+  .word ROMDefinitionTable0
+Level2:
+  .byte $02, $03, $01
+  .word ROMDefinitionTable1
+  
+;miscellaneous data
+font1:
+  .byte $04
+  .byte $35,$36,$37,$38,$39,$3a,$3b,$3c,$3d,$3e
+  .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
+  .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
+
+;table of decimal powers for creating decimal strings from 8 bit numbers
+powerTable:
+  .byte 100, 10, 1
+  
+;Lives...
+livesRemaining:
+  .byte $08,$26,$08,$15,$04,$12,$3f,$3f,$3f
   
 .segment "VECTORS"
   .word vblank

@@ -42,6 +42,11 @@
 music:
 .incbin "music1.bin"
 
+;Level 2
+Level2Title:
+  .byte $07,$26,$04,$15,$04,$0b,$1a,$37
+
+
 ;ROM definition table
 ROMDefinitionTable1:
   .word NomolosWalk           
@@ -63,6 +68,7 @@ ROMDefinitionTable1:
   .word Level                 
   .word EntityDefinitionTable 
   .word music                 
+  .word Level2Title
   
 palette:
 

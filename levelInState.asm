@@ -5,7 +5,7 @@
 ;main module imports
 .import displayString, createDecimalString
 .import loadPalette, clearNametable
-.import font1, powerTable
+.import font1, powerTable, livesRemaining
 
 ;sprite module imports
 .import clearSprites, updateSprites
@@ -14,6 +14,8 @@
 .importzp b0, b1, b2, b3, w0, w1, w2
 .importzp stateControl
 .importzp stringBuffer
+.importzp romDefinitionTableBaseAddress
+.importzp nomolosLives
 
 ;state return labels
 .import updatePPUFinished, updateFinished
@@ -95,7 +97,36 @@ levelInStateRun:
   lsr
   sta $A000
   
-  lda #27
+  ;now let's write a string!
+  lda #$20
+  ;at location 13, 10
+  ora #%00000001
+  sta $2006
+  lda #%10101010
+  sta $2006
+  ldy #ROMDefinitionTableStruct::LevelTitle
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+  jsr displayString
+  
+  ;display lives remaining string
+  lda #$20
+  ;at location 14, 10
+  ora #%00000001
+  sta $2006
+  lda #%11001010
+  sta $2006
+  lda #<livesRemaining
+  sta w0
+  lda #>livesRemaining
+  sta w0+1
+  jsr displayString
+  
+  ;create decimal string for nomolosLives variable
+  lda nomolosLives
   sta b0
   lda #<(font1+font::digitTable)
   sta w0
@@ -112,19 +143,14 @@ levelInStateRun:
   
   jsr createDecimalString
   
-  ;now let's write a string!
-  lda #$20
-  ora #$0a
-  sta $2006
-  lda #$0c
-  sta $2006
+  ;now display the string right where we are in VRAM (at the end of "Lives...")
   lda #<stringBuffer
   sta w0
   lda #>stringBuffer
   sta w0+1
-  jsr displayString
   
- 
+  jsr displayString
+
   ;turn sprite and background visibility on
   lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
