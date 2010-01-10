@@ -46,7 +46,7 @@
 .export stack, sprite, entityPool
 
 ;misc
-.export loadPalette, loadLevel, displayString, createDecimalString
+.export loadPalette, loadLevel, clearNametable, displayString, createDecimalString
 
 ;misc data
 .export font1, powerTable
@@ -194,12 +194,8 @@ entityPool: .res 256
   inx
   stx $2001
 
-:
-  bit $2002
-  bpl :-
-:
-  bit $2002
-  bpl :-
+  waitVBlank
+  waitVBlank
 
 .endmacro
 
@@ -524,6 +520,45 @@ displayString:
   sta $2007
   iny
 
+  dex
+  bne :-
+
+  rts
+  
+;expects VRAM to already be pointing to the nametable we want to clear.
+;input: b0 - value to clear nametable with
+;       b1 - value to clear attribute table with
+clearNametable:
+
+  ;clear the nametable
+  lda #$20
+  sta $2006
+  lda #$00
+  sta $2006
+  
+  ;clear nametable. First we write three groups of 256 tiles, then one group of 192,
+  ;adding up to 960 total tiles in the nametable.
+  ldy #3  
+  lda b0
+:
+  ldx #0
+: sta $2007
+  dex
+  bne :-
+  dey 
+  bne :--
+  
+  ;clear last 192 tiles of nametable.
+  ldx #192
+: sta $2007
+  dex
+  bne :-
+  
+  ;next write will be to attribute table, where there are 64 bytes.
+  ;clear them all to 0.
+  ldx #64
+  lda b1
+: sta $2007
   dex
   bne :-
 

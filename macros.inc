@@ -3,6 +3,14 @@ MACROS_INC = 1
 
 .include "structs.inc"
 
+.macro waitVBlank
+
+:
+  bit $2002
+  bpl :-
+
+.endmacro
+  
 ;Switches state so the main loop and vblank indirectly jump to different places.
 ;Assumes availability of zp variables update and updatePPU.
 .macro switchState updateAddr, updatePPUAddr

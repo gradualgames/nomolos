@@ -1,9 +1,10 @@
 .include "structs.inc"
 .include "constants.inc"
+.include "macros.inc"
 
 ;main module imports
 .import displayString, createDecimalString
-.import loadPalette
+.import loadPalette, clearNametable
 .import font1, powerTable
 
 ;sprite module imports
@@ -69,32 +70,12 @@ levelInStateRun:
   lda #$00
   sta $2006
   
-  ;clear nametable. First we write three groups of 256 tiles, then one group of 192,
-  ;adding up to 960 total tiles in the nametable.
-  ldy #3  
-  lda #26   ;26 is a black tile in font1.
-:
-  ldx #0
-: sta $2007
-  dex
-  bne :-
-  dey 
-  bne :--
-  
-  ;clear last 192 tiles of nametable.
-  ldx #192
-: sta $2007
-  dex
-  bne :-
-  
-  ;next write will be to attribute table, where there are 64 bytes.
-  ;clear them all to 0.
-  ldx #64
+  lda #26
+  sta b0
   lda #0
-: sta $2007
-  dex
-  bne :-
-
+  sta b1
+  jsr clearNametable  
+  
   ;now that nametable is clear, load the new palette.
   lda #<(font1+font::palette)
   sta w0
@@ -157,9 +138,17 @@ levelInStateRun:
   sta w0+1
   jsr displayString
   
+  lda #0
+  sta $2005
+  sta $2005
+  
   ;turn sprite and background visibility on
   lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
+  
+  ;wait for vblank so when we turn graphics back on we don't get ugly scrambling =)
+  waitVBlank
+  
   lda #( ( 1 << PPU1_SPRITE_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
   sta $2001
   
@@ -176,8 +165,8 @@ stateCommandComplete:
 
 levelInPPUUpdate:
 
-  lda #0
-  sta $2005
-  sta $2005
+  ;lda #0
+  ;sta $2005
+  ;sta $2005
 
   jmp updatePPUFinished
