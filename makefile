@@ -36,7 +36,8 @@ INCLUDE_FILES   = constants.inc \
                   structs.inc \
                   mouse.inc \
                   explosion.inc \
-                  deentle.inc
+                  deentle.inc \
+                  exitentity.inc
 CONFIG_FILE     = $(OUTPUT_NAME).cfg
 MAP_FILE         = $(OUTPUT_NAME).map
 

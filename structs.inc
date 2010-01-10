@@ -38,10 +38,7 @@ PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000010
   
 .struct playLevelStateControl
   state .byte                ;flags for whether to switch to a different level
-  romDefinitionTable .word   ;location of rom definition table for next level
-  bgChrBank .byte            ;location of background chr rom bank
-  sprChrBank .byte           ;location of sprite chr rom bank
-  prgBank .byte              ;location of prg rom bank at $8000
+  levelNum .byte             ;index of level to load
 .endstruct
 
 LEVELOUTSTATE_INIT =    %00000000
@@ -99,6 +96,7 @@ LEVELINSTATE_DONE = %00000010
   EntityDefinitionTable .word
   music .word
   LevelTitle .word
+  NextLevel .byte
 .endstruct
 
 .endif

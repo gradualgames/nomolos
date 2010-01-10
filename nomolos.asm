@@ -227,16 +227,8 @@ reset:
   lda #3
   sta nomolosLives
   
+  ;load level 0
   lda #0
-  sta b0
-  lda #1
-  sta b1
-  lda #0
-  sta b2
-  lda #<ROMDefinitionTable0
-  sta w0
-  lda #>ROMDefinitionTable0
-  sta w0+1
   jmp loadLevel
   
 loop:
@@ -248,14 +240,18 @@ updateFinished:
   jmp loop
 
 ;loads a new level based on a rom definition table address.
-;w0 - the address of the rom definition table to use
-;b0 - the first chr rom bank.
-;b1 - the second chr rom bank.
-;b2 - the prg rom bank.
+;accumulator - the level index
 .proc loadLevel
 
+  ;multiply accumulator by 8
+  asl
+  asl
+  asl
+  ;transfer to x for indexing
+  tax
+  
   ;load CHR bank into $0000
-  lda b0
+  lda LevelDefinitionTable+level::bgChrRomBank,x
   sta $A000
   lsr
   sta $A000
@@ -267,7 +263,7 @@ updateFinished:
   sta $A000
   
   ;load CHR bank into $1000
-  lda b1
+  lda LevelDefinitionTable+level::sprChrRomBank,x
   sta $C000
   lsr
   sta $C000
@@ -279,7 +275,7 @@ updateFinished:
   sta $C000
   
   ;load PRG bank into $8000
-  lda b2
+  lda LevelDefinitionTable+level::prgRomBank,x
   sta $E000
   lsr
   sta $E000
@@ -290,9 +286,9 @@ updateFinished:
   lsr
   sta $E000  
 
-  lda w0
+  lda LevelDefinitionTable+level::romDefinitionTable,x
   sta romDefinitionTableBaseAddress
-  lda w0+1
+  lda LevelDefinitionTable+level::romDefinitionTable+1,x
   sta romDefinitionTableBaseAddress+1
 
   ldy #ROMDefinitionTableStruct::Level
@@ -602,9 +598,11 @@ LevelDefinitionTable:
 Level1:
   .byte $00, $01, $00
   .word ROMDefinitionTable0
+  .byte $00, $00, $00  ;pad to 8 bytes. this may be used eventually anyway (music track for example)
 Level2:
   .byte $02, $03, $01
   .word ROMDefinitionTable1
+  .byte $00, $00, $00
   
 ;miscellaneous data
 font1:

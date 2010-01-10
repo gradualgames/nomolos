@@ -71,16 +71,7 @@ playLevelUpdate:
   jmp stateCommandComplete
   
 switchLevel:
-  lda stateControl+playLevelStateControl::romDefinitionTable
-  sta w0
-  lda stateControl+playLevelStateControl::romDefinitionTable+1
-  sta w0+1
-  lda stateControl+playLevelStateControl::bgChrBank
-  sta b0
-  lda stateControl+playLevelStateControl::sprChrBank
-  sta b1
-  lda stateControl+playLevelStateControl::prgBank
-  sta b2
+  lda stateControl+playLevelStateControl::levelNum
   jmp loadLevel
   
 switchToLevelOutState:
