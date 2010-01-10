@@ -95,20 +95,6 @@ levelInStateRun:
   lsr
   sta $A000
   
-;Creates a decimal string based on a digit table and a power table
-;and an input 8 bit value.
-;Input:
-; b0 - Value to create decimal string from
-; w0 - Address of digit table
-; w1 - Address of power table
-; w2 - Address of destination buffer
-;Output:
-; w2 - Contains a string displayable by displayString
-;Temporary:
-; b1 - current power
-; b2 - current digit
-; b3 - index in dest buffer
-
   lda #27
   sta b0
   lda #<(font1+font::digitTable)
