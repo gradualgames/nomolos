@@ -250,6 +250,17 @@ updateFinished:
   ;transfer to x for indexing
   tax
   
+  ;wait for vblank so we can turn off graphics, switch chr banks without graphical glitches
+  waitVBlank
+
+  ;turn off NMI, inc32 (for loading palette)
+  lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
+  sta $2000
+  
+  ;turn off sprites and bg
+  lda #( ( 0 << PPU1_SPRITE_VISIBILITY ) | ( 0 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
+  sta $2001
+  
   ;load CHR bank into $0000
   lda LevelDefinitionTable+level::bgChrRomBank,x
   sta $A000
@@ -325,14 +336,6 @@ updateFinished:
   iny
   lda (romDefinitionTableBaseAddress),y
   sta ft_music_addr+1
-
-  ;turn off NMI, inc32 (for loading palette)
-  lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
-  sta $2000
-  
-  ;turn off sprites and bg
-  lda #( ( 0 << PPU1_SPRITE_VISIBILITY ) | ( 0 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
-  sta $2001
   
   jsr initsound
   
@@ -348,6 +351,10 @@ updateFinished:
   jsr initEntities
   jsr initNomolos  
   jsr resetCamera  
+  
+  lda #LOADLEVELSTATE_INIT
+  sta stateControl+loadLevelStateControl::state
+  
   switchState loadLevelUpdate, loadLevelUpdatePPU
 
   ;turn on inc32

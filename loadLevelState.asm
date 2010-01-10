@@ -24,11 +24,22 @@
 
 loadLevelUpdate:
 
-  lda columnToUpdate
-  cmp #32
-  bne :+
-  jmp updateFinished
-:
+  lda stateControl+loadLevelStateControl::state
+  cmp #LOADLEVELSTATE_INIT
+  beq loadLevelStateInit
+  cmp #LOADLEVELSTATE_LOAD
+  beq loadLevelStateLoad
+  cmp #LOADLEVELSTATE_DONE
+  beq loadLevelStateDone
+  
+loadLevelStateInit:
+
+  lda #LOADLEVELSTATE_LOAD
+  sta stateControl+loadLevelStateControl::state
+  
+  jmp stateSwitchComplete
+  
+loadLevelStateLoad:
 
   lda #$20
   sta nametableToUpdate
@@ -86,6 +97,16 @@ loadLevelUpdate:
   ;have we updated all the columns on the screen yet?
   cmp #32
   bne :+
+  
+  lda #LOADLEVELSTATE_DONE
+  sta stateControl+playLevelStateControl::state
+  
+:
+  
+  jmp stateSwitchComplete
+
+loadLevelStateDone:
+
   ;switch to play level state.  
   ;keep any new entities positioned where they need to be
   jsr updateEntities
@@ -96,15 +117,20 @@ loadLevelUpdate:
   sta stateControl+playLevelStateControl::state
   
   switchState playLevelUpdate, playLevelUpdatePPU
-    
+      
+  waitVBlank
+      
   ;turn rendering on
   lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
    
   lda #( ( 1 << PPU1_SPRITE_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
   sta $2001
+
+  jmp stateSwitchComplete
   
-:
+stateSwitchComplete:
+
   jmp updateFinished
   
 loadLevelUpdatePPU:
