@@ -151,10 +151,6 @@ levelInStateRun:
   
   jsr displayString
 
-  ;turn sprite and background visibility on
-  lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
-  sta $2000
-  
   ;wait for vblank so when we turn graphics back on we don't get ugly scrambling =)
   waitVBlank
   
@@ -163,6 +159,10 @@ levelInStateRun:
   sta $2005
   sta $2005
   
+  ;turn on NMI
+  lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
+  sta $2000
+  ;turn sprite and background visibility on
   lda #( ( 1 << PPU1_SPRITE_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
   sta $2001
   

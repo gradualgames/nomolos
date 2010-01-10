@@ -326,10 +326,12 @@ updateFinished:
   lda (romDefinitionTableBaseAddress),y
   sta ft_music_addr+1
 
-  lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
+  ;turn off NMI, inc32 (for loading palette)
+  lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
   
-  lda #%00000000
+  ;turn off sprites and bg
+  lda #( ( 0 << PPU1_SPRITE_VISIBILITY ) | ( 0 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
   sta $2001
   
   jsr initsound
@@ -348,7 +350,8 @@ updateFinished:
   jsr resetCamera  
   switchState loadLevelUpdate, loadLevelUpdatePPU
 
-  lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
+  ;turn on inc32
+  lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
   
   ;initialize music driver as NTSC and track #0.

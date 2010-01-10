@@ -24,6 +24,12 @@
 
 loadLevelUpdate:
 
+  lda columnToUpdate
+  cmp #32
+  bne :+
+  jmp updateFinished
+:
+
   lda #$20
   sta nametableToUpdate
 
@@ -75,7 +81,7 @@ loadLevelUpdate:
   ;move on to next column.
   inc columnToUpdate
   inc columnToUpdate
-
+  
   lda columnToUpdate
   ;have we updated all the columns on the screen yet?
   cmp #32
@@ -90,12 +96,14 @@ loadLevelUpdate:
   sta stateControl+playLevelStateControl::state
   
   switchState playLevelUpdate, playLevelUpdatePPU
-  
+    
   ;turn rendering on
   lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
+   
   lda #( ( 1 << PPU1_SPRITE_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
   sta $2001
+  
 :
   jmp updateFinished
   
