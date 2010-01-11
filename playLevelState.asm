@@ -5,7 +5,8 @@
 ;rom labels
 .import Heart0
 
-.import loadLevel
+;load level state labels
+.import loadLevelUpdate, loadLevelUpdatePPU
 
 ;level out state labels
 .import levelOutUpdate, levelOutPPUUpdate
@@ -72,7 +73,13 @@ playLevelUpdate:
   
 switchLevel:
   lda stateControl+playLevelStateControl::levelNum
-  jmp loadLevel
+  sta stateControl+loadLevelStateControl::levelToLoad
+  lda #LOADLEVELSTATE_INIT
+  sta stateControl+loadLevelStateControl::state
+  
+  switchState loadLevelUpdate, loadLevelUpdatePPU
+  
+  jmp stateCommandComplete
   
 switchToLevelOutState:
 

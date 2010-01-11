@@ -1,7 +1,19 @@
 .include "macros.inc"
 .include "constants.inc"
 .include "structs.inc"
+.include "flags.inc"
 
+;famitracker module
+.import ft_music_init
+;sound module
+.import initsound
+;main module
+.import loadPalette
+.import LevelDefinitionTable
+;camera module
+.import resetCamera
+;nomolos logic module
+.import initNomolos
 ;state return labels
 .import updatePPUFinished, updateFinished
 ;play level state
@@ -14,8 +26,12 @@
 .import initEntities, updateEntities
 ;global variables
 .importzp update, updatePPU, stateControl
-.importzp w1, w3, levelBaseAddress, columnToUpdate
+.importzp w0, w1, w3, levelBaseAddress, columnToUpdate
 .importzp metametaTileTableBaseAddress, nametableToUpdate
+.importzp entityDefinitionTableBaseAddress
+.importzp metaTileTableBaseAddress
+.importzp romDefinitionTableBaseAddress
+.importzp ft_music_addr
 
 ;load level state labels
 .export loadLevelUpdate, loadLevelUpdatePPU
@@ -28,12 +44,137 @@ loadLevelUpdate:
   cmp #LOADLEVELSTATE_INIT
   beq loadLevelStateInit
   cmp #LOADLEVELSTATE_LOAD
-  beq loadLevelStateLoad
+  bne :+
+  jmp loadLevelStateLoad
+:
   cmp #LOADLEVELSTATE_DONE
-  beq loadLevelStateDone
+  bne :+
+  jmp loadLevelStateDone
+:
   
 loadLevelStateInit:
 
+  lda stateControl+loadLevelStateControl::levelToLoad
+  ;multiply accumulator by 8
+  asl
+  asl
+  asl
+  ;transfer to x for indexing
+  tax
+  
+  ;wait for vblank so we can turn off graphics, switch chr banks without graphical glitches
+  waitVBlank
+
+  ;turn off NMI, inc32 (for loading palette)
+  lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
+  sta $2000
+  
+  ;turn off sprites and bg
+  lda #( ( 0 << PPU1_SPRITE_VISIBILITY ) | ( 0 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
+  sta $2001
+  
+  ;load CHR bank into $0000
+  lda LevelDefinitionTable+level::bgChrRomBank,x
+  sta $A000
+  lsr
+  sta $A000
+  lsr
+  sta $A000
+  lsr
+  sta $A000
+  lsr
+  sta $A000
+  
+  ;load CHR bank into $1000
+  lda LevelDefinitionTable+level::sprChrRomBank,x
+  sta $C000
+  lsr
+  sta $C000
+  lsr
+  sta $C000
+  lsr
+  sta $C000
+  lsr
+  sta $C000
+  
+  ;load PRG bank into $8000
+  lda LevelDefinitionTable+level::prgRomBank,x
+  sta $E000
+  lsr
+  sta $E000
+  lsr
+  sta $E000
+  lsr
+  sta $E000
+  lsr
+  sta $E000  
+
+  lda LevelDefinitionTable+level::romDefinitionTable,x
+  sta romDefinitionTableBaseAddress
+  lda LevelDefinitionTable+level::romDefinitionTable+1,x
+  sta romDefinitionTableBaseAddress+1
+
+  ldy #ROMDefinitionTableStruct::Level
+  lda (romDefinitionTableBaseAddress),y
+  sta levelBaseAddress
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta levelBaseAddress+1
+
+  ldy #ROMDefinitionTableStruct::MetaMetaTileTable
+  lda (romDefinitionTableBaseAddress),y
+  sta metametaTileTableBaseAddress
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta metametaTileTableBaseAddress+1
+
+  ldy #ROMDefinitionTableStruct::MetaTileTable
+  lda (romDefinitionTableBaseAddress),y
+  sta metaTileTableBaseAddress
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta metaTileTableBaseAddress+1
+  
+  ldy #ROMDefinitionTableStruct::EntityDefinitionTable
+  lda (romDefinitionTableBaseAddress),y
+  sta entityDefinitionTableBaseAddress
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta entityDefinitionTableBaseAddress+1
+  
+  ldy #ROMDefinitionTableStruct::music
+  lda (romDefinitionTableBaseAddress),y
+  sta ft_music_addr
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta ft_music_addr+1
+  
+  jsr initsound
+  
+  ldy #ROMDefinitionTableStruct::palette
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+
+  jsr loadPalette
+  jsr clearSprites
+  jsr initEntities
+  jsr initNomolos  
+  jsr resetCamera  
+
+  ;turn on inc32
+  lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
+  sta $2000
+  
+  ;initialize music driver as NTSC and track #0.
+.if .defined(MUSIC_ENABLE)
+  lda #0
+  ldx #0
+  jsr ft_music_init
+.endif
+  
   lda #LOADLEVELSTATE_LOAD
   sta stateControl+loadLevelStateControl::state
   

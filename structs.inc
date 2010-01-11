@@ -38,6 +38,7 @@ LOADLEVELSTATE_DONE = %00000010
   
 .struct loadLevelStateControl
   state .byte
+  levelToLoad .byte
 .endstruct
   
 PLAYLEVELSTATE_KEEPPLAYING =           %00000000
