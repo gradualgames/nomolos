@@ -59,7 +59,7 @@
 .segment "HEADER"
 .byte "NES",$1a        ;iNES header
 .byte $04 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
-.byte $03 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
+.byte $04 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
 .byte $11 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #1 (MMC1)
 .byte $00 ;            ;Rest of Mapper #0 bits (all 0)
 .byte 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
