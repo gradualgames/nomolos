@@ -9,6 +9,7 @@
 .importzp soundAddr, soundOff
 .importzp stateControl
 .importzp romDefinitionTableBaseAddress
+.importzp currentLevel
 
 ;famitracker
 .importzp ft_music_addr
@@ -53,10 +54,6 @@
 music:
 .incbin "music.bin"
 
-;Level 1
-Level1Title:
-  .byte $07,$26,$04,$15,$04,$0b,$1a,$36
-
 ;ROM definition table
 ROMDefinitionTable0:
   .word NomolosWalk            
@@ -78,7 +75,6 @@ ROMDefinitionTable0:
   .word Level                  
   .word EntityDefinitionTable  
   .word music                  
-  .word Level1Title
   .byte $01
 
 palette:

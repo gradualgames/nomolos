@@ -51,10 +51,15 @@ skipJmpExitDie:
   jmp notTouching
 skipJmpNotTouching:
   
+  ;ldy #ROMDefinitionTableStruct::NextLevel
+  ;lda (romDefinitionTableBaseAddress),y
+  ;sta stateControl+playLevelStateControl::levelNum
+  ;lda #PLAYLEVELSTATE_SWITCHLEVEL
+  ;sta stateControl+playLevelStateControl::state
   ldy #ROMDefinitionTableStruct::NextLevel
   lda (romDefinitionTableBaseAddress),y
-  sta stateControl+playLevelStateControl::levelNum
-  lda #PLAYLEVELSTATE_SWITCHLEVEL
+  sta currentLevel
+  lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
   sta stateControl+playLevelStateControl::state
     
   jmp exitDie

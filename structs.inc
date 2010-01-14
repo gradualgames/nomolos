@@ -104,7 +104,6 @@ LEVELINSTATE_DONE = %00000010
   Level .word
   EntityDefinitionTable .word
   music .word
-  LevelTitle .word
   NextLevel .byte
 .endstruct
 

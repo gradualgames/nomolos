@@ -20,6 +20,7 @@
 .importzp nomolosHitboxX, nomolosHitboxY
 .importzp nomolosScaredyCatX, nomolosScaredyCatY
 .importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
+.importzp nomolosLives
 .importzp nomolosBlinkCounter, nomolosHitboxCounter
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .importzp romDefinitionTableBaseAddress
@@ -148,6 +149,12 @@ skipHurt:
   
 ;sets the nomolos dying state bit and sets coordinates for the scaredy cat graphic.
 .proc nomolosDie
+
+  ;decrease Nomolos' lives
+  lda nomolosLives
+  beq :+
+  dec nomolosLives
+:
 
   ;make nomolos die.
   lda nomolosState

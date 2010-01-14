@@ -15,6 +15,7 @@
 
 ;state labels
 .import loadLevelUpdatePPU, loadLevelUpdate, clearSprites
+.import levelInUpdate, levelInPPUUpdate
 
 ;entity module
 .import initEntities
@@ -31,8 +32,9 @@
 .exportzp columnTileBuffer, columnToUpdate, nametableToUpdate
 .exportzp levelBaseAddress, metaTileBuffer, metaTileTableBaseAddress
 .exportzp entityDefinitionTableBaseAddress, romDefinitionTableBaseAddress
-.exportzp metametaTileTableBaseAddress, nomolosAnim
-.exportzp nomolosScreenX, nomolosScreenY, nomolosState
+.exportzp metametaTileTableBaseAddress
+.exportzp currentLevel
+.exportzp nomolosAnim, nomolosScreenX, nomolosScreenY, nomolosState
 .exportzp nomolosHealth, nomolosBlinkCounter, nomolosHitboxCounter
 .exportzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, spriteAddress
@@ -50,7 +52,7 @@
 .export loadPalette, clearNametable, displayString, createDecimalString
 
 ;misc data
-.export font1, powerTable, livesRemaining
+.export font1, powerTable, livesString, levelString
 .export LevelDefinitionTable
 
 ;update return labels
@@ -121,6 +123,7 @@ metametaTileTableBaseAddress:      .res 2
 metaTileTableBaseAddress:          .res 2
 entityDefinitionTableBaseAddress:  .res 2
 romDefinitionTableBaseAddress: .res 2
+currentLevel:                      .res 1
 
 attributeBuffer: .res 8
 attributeColumnToUpdate: .res 1
@@ -136,10 +139,11 @@ controllerBuffer: .res 8
 soundAddr: .res 2
 soundOff: .res 1
 
+ft_music_addr: .res 2
+
+;variables specific to level out state
 paletteStep: .res 1
 frameCounter: .res 1
-
-ft_music_addr: .res 2
 
 .segment "STACK"
 stack:  .res 256
@@ -228,13 +232,12 @@ reset:
   lda #3
   sta nomolosLives
   
-  ;load level 0
+  ;set current level and switch to "level in" state
   lda #0
-  sta stateControl+loadLevelStateControl::levelToLoad
-  lda #LOADLEVELSTATE_INIT
-  sta stateControl+loadLevelStateControl::state
-  
-  switchState loadLevelUpdate, loadLevelUpdatePPU
+  sta currentLevel
+  lda #LEVELINSTATE_INIT
+  sta stateControl+levelOutStateControl::state
+  switchState levelInUpdate, levelInPPUUpdate
   
 loop:
 
@@ -498,9 +501,11 @@ font1:
 powerTable:
   .byte 100, 10, 1
   
-;Lives...
-livesRemaining:
-  .byte $08,$26,$08,$15,$04,$12,$3f,$3f,$3f
+levelString:
+  .byte $06,$26,$04,$15,$04,$0b,$1a
+
+livesString:
+  .byte $06,$26,$08,$15,$04,$12,$1a
   
 .segment "VECTORS"
   .word vblank

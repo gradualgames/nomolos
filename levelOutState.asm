@@ -39,6 +39,8 @@ levelOutStateInit:
 
   lda #5
   sta frameCounter
+  lda #0
+  sta paletteStep
   lda #LEVELOUTSTATE_FADEOUT
   sta stateControl+levelOutStateControl::state
   

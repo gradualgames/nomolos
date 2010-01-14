@@ -2,20 +2,26 @@
 .include "constants.inc"
 .include "macros.inc"
 
+;load level state imports
+.import loadLevelUpdatePPU, loadLevelUpdate
+
 ;main module imports
 .import displayString, createDecimalString
 .import loadPalette, clearNametable
-.import font1, powerTable, livesRemaining
+.import font1, powerTable, livesString, levelString
 
 ;sprite module imports
 .import clearSprites, updateSprites
 
 ;zeropage labels
 .importzp b0, b1, b2, b3, w0, w1, w2
+.importzp update, updatePPU
 .importzp stateControl
 .importzp stringBuffer
 .importzp romDefinitionTableBaseAddress
 .importzp nomolosLives
+.importzp currentLevel
+.importzp frameCounter
 
 ;state return labels
 .import updatePPUFinished, updateFinished
@@ -97,6 +103,27 @@ levelInStateRun:
   lsr
   sta $A000
   
+  ;create decimal string for currentLevel variable
+  lda currentLevel
+  ;add one to level so level 0 is displayed as level 1, etc.
+  clc
+  adc #1
+  sta b0
+  lda #<(font1+font::digitTable)
+  sta w0
+  lda #>(font1+font::digitTable)
+  sta w0+1
+  lda #<powerTable
+  sta w1
+  lda #>powerTable
+  sta w1+1
+  lda #<stringBuffer
+  sta w2
+  lda #>stringBuffer
+  sta w2+1
+  
+  jsr createDecimalString
+  
   ;now let's write a string!
   lda #$20
   ;at location 13, 10
@@ -104,13 +131,28 @@ levelInStateRun:
   sta $2006
   lda #%10101010
   sta $2006
-  ldy #ROMDefinitionTableStruct::LevelTitle
-  lda (romDefinitionTableBaseAddress),y
+  
+  lda #<levelString
   sta w0
-  iny
-  lda (romDefinitionTableBaseAddress),y
+  lda #>levelString
   sta w0+1
+  
   jsr displayString
+  
+  lda #<stringBuffer
+  sta w0
+  lda #>stringBuffer
+  sta w0+1
+  
+  jsr displayString
+  
+  ;ldy #ROMDefinitionTableStruct::LevelTitle
+  ;lda (romDefinitionTableBaseAddress),y
+  ;sta w0
+  ;iny
+  ;lda (romDefinitionTableBaseAddress),y
+  ;sta w0+1
+  ;jsr displayString
   
   ;display lives remaining string
   lda #$20
@@ -119,9 +161,9 @@ levelInStateRun:
   sta $2006
   lda #%11001010
   sta $2006
-  lda #<livesRemaining
+  lda #<livesString
   sta w0
-  lda #>livesRemaining
+  lda #>livesString
   sta w0+1
   jsr displayString
   
@@ -166,6 +208,9 @@ levelInStateRun:
   lda #( ( 1 << PPU1_SPRITE_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
   sta $2001
   
+  lda #200
+  sta frameCounter
+  
   lda #LEVELINSTATE_DONE
   sta stateControl+levelInStateControl::state
   
@@ -173,10 +218,23 @@ levelInStateRun:
 
 levelInStateDone:
   
+  lda frameCounter
+  bne stateCommandComplete
+  
+  ;load current level
+  lda currentLevel
+  sta stateControl+loadLevelStateControl::levelToLoad
+  lda #LOADLEVELSTATE_INIT
+  sta stateControl+loadLevelStateControl::state
+  
+  switchState loadLevelUpdate, loadLevelUpdatePPU
+  
 stateCommandComplete:
 
   jmp updateFinished
 
 levelInPPUUpdate:
+
+  dec frameCounter
 
   jmp updatePPUFinished
