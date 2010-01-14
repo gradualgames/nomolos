@@ -1,4 +1,4 @@
-.segment "CHRROM1_BG"
+.segment "CHRROM1_LEVEL2_BG"
 
 ;Pattern Table
   .byte $1f,$ff,$ff,$ff,$ef,$ff,$fe,$fe,$00,$00,$00,$00,$00,$00,$00,$00
@@ -196,7 +196,7 @@
   .byte $1f,$1f,$1f,$0f,$87,$c3,$f1,$e0,$1c,$18,$1c,$0e,$07,$03,$01,$00
   .byte $fa,$fb,$fb,$f7,$ef,$df,$bf,$7f,$18,$08,$18,$30,$60,$c0,$80,$00
 
-.segment "CHRROM1_SPR"
+.segment "CHRROM1_LEVEL2_SPR"
 
 ;Pattern Table
   .byte $02,$0f,$17,$27,$27,$4f,$9f,$9f,$02,$0d,$14,$25,$27,$4f,$9f,$9e

@@ -1,4 +1,4 @@
-.segment "CHRROM0_BG"  
+.segment "CHRROM0_LEVEL1_BG"  
 ;Pattern Table
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
   .byte $88,$99,$33,$66,$44,$44,$cc,$33,$77,$66,$cc,$99,$bb,$bb,$33,$cc
@@ -15,7 +15,7 @@
 
 ; Here begins the second 4K block.  The sprites get their data from this page.
 
-.segment "CHRROM0_SPR"
+.segment "CHRROM0_LEVEL1_SPR"
 
 ;Pattern Table
   .byte $02,$0f,$17,$27,$27,$4f,$9f,$9f,$02,$0d,$14,$25,$27,$4f,$9f,$9e
