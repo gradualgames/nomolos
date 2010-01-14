@@ -15,7 +15,7 @@
 .import updatePPUFinished, updateFinished
 
 ;level in state labels
-.import levelInUpdate, levelInPPUUpdate
+.import titleStateUpdate, titleStateUpdatePPU
 
 ;zeropage labels
 .importzp b0, b1, w0
@@ -134,16 +134,10 @@ gameOverStateDone:
   lda frameCounter
   bne stateCommandComplete
 
-  ;reset lives left to starting lives constant
-  lda #nomolosStartingLives
-  sta nomolosLives
-  lda #startingLevel
-  sta currentLevel
-  
-  ;switch to level in state
-  lda #LEVELINSTATE_INIT
-  sta stateControl+levelInStateControl::state
-  switchState levelInUpdate, levelInPPUUpdate
+  ;switch to title state
+  lda #TITLESTATE_INIT
+  sta stateControl+titleStateControl::state
+  switchState titleStateUpdate, titleStateUpdatePPU
   
   jmp stateCommandComplete
   

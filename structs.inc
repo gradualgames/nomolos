@@ -73,6 +73,14 @@ GAMEOVERSTATE_DONE = %00000010
   state .byte
 .endstruct
 
+TITLESTATE_INIT = %00000000
+TITLESTATE_RUN =  %00000001
+TITLESTATE_DONE = %00000010
+
+.struct titleStateControl
+  state .byte
+.endstruct
+
 .struct animation
   frameCountDown .byte
   currentFrame .byte

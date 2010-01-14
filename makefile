@@ -17,11 +17,13 @@ FILES           = nomolos \
                   chrrom0 \
                   chrrom1 \
                   chrrom2 \
+                  chrrom3 \
                   loadLevelState \
                   playLevelState \
                   levelOutState \
                   levelInState \
                   gameOverState \
+                  titleState \
                   map \
                   camera \
                   sprite \
