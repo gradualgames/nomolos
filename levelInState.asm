@@ -30,10 +30,6 @@
 
 .segment "CODE"
 
-;GAME OVER
-GameOver:
-  .byte $09,$21,$1b,$27,$1f,$1a,$29,$30,$1f,$2c
-
 levelInUpdate:
 
   lda stateControl+levelInStateControl::state
@@ -145,14 +141,6 @@ levelInStateRun:
   sta w0+1
   
   jsr displayString
-  
-  ;ldy #ROMDefinitionTableStruct::LevelTitle
-  ;lda (romDefinitionTableBaseAddress),y
-  ;sta w0
-  ;iny
-  ;lda (romDefinitionTableBaseAddress),y
-  ;sta w0+1
-  ;jsr displayString
   
   ;display lives remaining string
   lda #$20

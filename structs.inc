@@ -65,6 +65,14 @@ LEVELINSTATE_DONE = %00000010
   state .byte
 .endstruct
 
+GAMEOVERSTATE_INIT = %00000000
+GAMEOVERSTATE_RUN  = %00000001
+GAMEOVERSTATE_DONE = %00000010
+
+.struct gameOverStateControl
+  state .byte
+.endstruct
+
 .struct animation
   frameCountDown .byte
   currentFrame .byte

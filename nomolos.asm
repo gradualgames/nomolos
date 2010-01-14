@@ -52,7 +52,8 @@
 .export loadPalette, clearNametable, displayString, createDecimalString
 
 ;misc data
-.export font1, powerTable, livesString, levelString
+.export font1, powerTable
+.export livesString, levelString, gameOverString
 .export LevelDefinitionTable
 
 ;update return labels
@@ -507,8 +508,10 @@ levelString:
 livesString:
   .byte $06,$26,$08,$15,$04,$12,$1a
   
+gameOverString:
+  .byte $09,$21,$1b,$27,$1f,$1a,$29,$30,$1f,$2c
+  
 .segment "VECTORS"
   .word vblank
   .word reset
   .word irq
-

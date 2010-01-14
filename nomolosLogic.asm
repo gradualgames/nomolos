@@ -151,10 +151,7 @@ skipHurt:
 .proc nomolosDie
 
   ;decrease Nomolos' lives
-  lda nomolosLives
-  beq :+
   dec nomolosLives
-:
 
   ;make nomolos die.
   lda nomolosState

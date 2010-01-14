@@ -8,9 +8,13 @@
 .importzp stateControl
 .importzp romDefinitionTableBaseAddress
 .importzp update, updatePPU
+.importzp nomolosLives
 
 ;state return labels
 .import updatePPUFinished, updateFinished
+
+;game over state labels
+.import gameOverUpdate, gameOverUpdatePPU
 
 ;level in state labels
 .import levelInUpdate, levelInPPUUpdate
@@ -69,9 +73,20 @@ levelOutStateFadeOut:
   ;this is the end condition of the fade out. Instead of skipping the step
   ;we want to actually switch to the level in state.
   
+  lda nomolosLives
+  
+  bmi livesNegativeMeansGameOver
+  
   lda #LEVELINSTATE_INIT
   sta stateControl+levelOutStateControl::state
   switchState levelInUpdate, levelInPPUUpdate
+  jmp skipIncPaletteStep
+  
+livesNegativeMeansGameOver:
+
+  lda #GAMEOVERSTATE_INIT
+  sta stateControl+gameOverStateControl::state
+  switchState gameOverUpdate, gameOverUpdatePPU
   jmp skipIncPaletteStep
 
 :
