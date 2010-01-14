@@ -230,11 +230,11 @@ reset:
   initMMC1
 
   ;start out Nomolos with 3 lives.
-  lda #3
+  lda #nomolosStartingLives
   sta nomolosLives
   
   ;set current level and switch to "level in" state
-  lda #0
+  lda #startingLevel
   sta currentLevel
   lda #LEVELINSTATE_INIT
   sta stateControl+levelOutStateControl::state

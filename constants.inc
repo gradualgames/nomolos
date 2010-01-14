@@ -60,6 +60,7 @@ nomolosDyingOnOR             = %10000000
 nomolosDyingOffAND           = %01111111
 nomolosDyingTestAND          = %10000000
 
+nomolosStartingLives = $03
 nomolosHurtBounceLo = $0a
 nomolosHurtBounceHi = $fd
 nomolosStartJumpLo = $0a
@@ -72,6 +73,8 @@ nomolosWidth = $10
 nomolosHeight = $20
 nomolosHitboxWidth = $0c
 nomolosHitboxHeight = $20
+
+startingLevel = $00
 
 ;keeps the lowest 4 bits to get penetration distance from a y coordinate
 penetrationCalculationMask = %00001111

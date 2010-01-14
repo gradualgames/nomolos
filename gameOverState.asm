@@ -14,9 +14,16 @@
 ;state return labels
 .import updatePPUFinished, updateFinished
 
+;level in state labels
+.import levelInUpdate, levelInPPUUpdate
+
 ;zeropage labels
 .importzp b0, b1, w0
 .importzp stateControl
+.importzp frameCounter
+.importzp update, updatePPU
+.importzp currentLevel
+.importzp nomolosLives
 
 .export gameOverUpdate, gameOverUpdatePPU
 
@@ -117,10 +124,27 @@ gameOverStateRun:
   lda #GAMEOVERSTATE_DONE
   sta stateControl+gameOverStateControl::state
 
+  lda #200
+  sta frameCounter
+  
   jmp stateCommandComplete
   
 gameOverStateDone:
 
+  lda frameCounter
+  bne stateCommandComplete
+
+  ;reset lives left to starting lives constant
+  lda #nomolosStartingLives
+  sta nomolosLives
+  lda #startingLevel
+  sta currentLevel
+  
+  ;switch to level in state
+  lda #LEVELINSTATE_INIT
+  sta stateControl+levelInStateControl::state
+  switchState levelInUpdate, levelInPPUUpdate
+  
   jmp stateCommandComplete
   
 stateCommandComplete:
@@ -128,5 +152,7 @@ stateCommandComplete:
   jmp updateFinished
 
 gameOverUpdatePPU:
+
+  dec frameCounter
 
   jmp updatePPUFinished
