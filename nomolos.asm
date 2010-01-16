@@ -54,6 +54,7 @@
 .export displayString, createDecimalString
 
 ;misc data
+.export haltmusic
 .export font1, powerTable
 .export livesString, levelString, gameOverString
 .export LevelDefinitionTable
@@ -505,6 +506,9 @@ Level2:
   .byte $00, $00, $00
   
 ;miscellaneous data
+haltmusic:
+.incbin "haltmusic.bin"
+
 font1:
   .byte $04
   .byte $35,$36,$37,$38,$39,$3a,$3b,$3c,$3d,$3e

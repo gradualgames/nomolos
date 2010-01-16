@@ -1,6 +1,10 @@
 .include "structs.inc"
 .include "constants.inc"
 .include "macros.inc"
+.include "flags.inc"
+
+;famitracker imports
+.import ft_music_init
 
 ;load level state imports
 .import loadLevelUpdatePPU, loadLevelUpdate
@@ -9,6 +13,7 @@
 .import displayString, createDecimalString
 .import loadPalette, clearNametable
 .import font1, powerTable, livesString, levelString
+.import haltmusic
 
 ;sprite module imports
 .import clearSprites, updateSprites
@@ -22,6 +27,7 @@
 .importzp nomolosLives
 .importzp currentLevel
 .importzp frameCounter
+.importzp ft_music_addr
 
 ;state return labels
 .import updatePPUFinished, updateFinished
@@ -183,6 +189,17 @@ levelInStateRun:
 
   ;wait for vblank so when we turn graphics back on we don't get ugly scrambling =)
   waitVBlank
+  
+  ;turn off music by playing track #0 of haltmusic  
+.if .defined(MUSIC_ENABLE)
+  lda #<haltmusic
+  sta ft_music_addr
+  lda #>haltmusic
+  sta ft_music_addr+1
+  lda #0
+  ldx #0
+  jsr ft_music_init
+.endif  
   
   ;reset scroll
   lda #0

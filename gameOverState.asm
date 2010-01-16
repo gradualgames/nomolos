@@ -1,12 +1,16 @@
 .include "structs.inc"
 .include "constants.inc"
 .include "macros.inc"
+.include "flags.inc"
+
+;famitracker module
+.import ft_music_init
 
 ;main module
 .import clearNametable, loadPalette, displayString
 
 ;main module misc data
-.import font1, gameOverString
+.import font1, gameOverString, haltmusic
 
 ;sprite module
 .import clearSprites, updateSprites
@@ -24,6 +28,7 @@
 .importzp update, updatePPU
 .importzp currentLevel
 .importzp nomolosLives
+.importzp ft_music_addr
 
 .export gameOverUpdate, gameOverUpdatePPU
 
@@ -108,6 +113,17 @@ gameOverStateRun:
 
   ;wait for vblank so when we turn graphics back on we don't get ugly scrambling =)
   waitVBlank
+  
+  ;turn off music by playing track #0 of haltmusic  
+.if .defined(MUSIC_ENABLE)
+  lda #<haltmusic
+  sta ft_music_addr
+  lda #>haltmusic
+  sta ft_music_addr+1
+  lda #0
+  ldx #0
+  jsr ft_music_init
+.endif  
   
   ;reset scroll
   lda #0
