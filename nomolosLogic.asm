@@ -1,6 +1,7 @@
 .include "constants.inc"
 .include "macros.inc"
 .include "structs.inc"
+.include "flags.inc"
 
 ;Sprite module labels
 .import drawMetaSprite, drawMetaSprite16, drawAnimation, drawAnimation16, updateAnimation
@@ -13,6 +14,9 @@
 
 ;sound module labels
 .import lowc, loadSound, playSound, finishSound
+
+;famitracker module
+.import ft_music_init
 
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
@@ -170,6 +174,13 @@ skipHurt:
   sta nomolosScaredyCatY
   lda nomolosScreenY+1
   sta nomolosScaredyCatY+1
+  
+  ;tell famitracker to play the die sound
+.if .defined(MUSIC_ENABLE)
+  lda #2
+  ldx #0
+  jsr ft_music_init
+.endif  
 
   rts
 
