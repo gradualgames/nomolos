@@ -1,6 +1,7 @@
 .include "constants.inc"
 .include "macros.inc"
 .include "structs.inc"
+.include "flags.inc"
 
 ;zp variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
@@ -21,6 +22,9 @@
 
 ;ROM1
 .import ROMDefinitionTable1
+
+;main module
+.import haltmusic
 
 ;load level state labels
 .import loadLevelUpdate, loadLevelUpdatePPU

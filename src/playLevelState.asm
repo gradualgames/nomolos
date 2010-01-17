@@ -4,10 +4,12 @@
 
 ;rom labels
 .import Heart0
-
+;famitracker module
+.import ft_music_play
 ;load level state labels
 .import loadLevelUpdate, loadLevelUpdatePPU
-
+;sound module
+.import playSound
 ;level out state labels
 .import levelOutUpdate, levelOutPPUUpdate
 ;state return labels
@@ -103,6 +105,12 @@ playLevelUpdatePPU:
   jsr updateColumnPPU
   jsr updateAttributePPU
   jsr updateScrollPPU
+  
+  .ifdef MUSIC_ENABLE
+  jsr ft_music_play
+  .endif
+  jsr playSound
+  
   lda #1
   sta vblankDone
   jmp updatePPUFinished  

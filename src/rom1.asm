@@ -1,6 +1,7 @@
 .include "constants.inc"
 .include "macros.inc"
 .include "structs.inc"
+.include "flags.inc"
 
 ;zp variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
@@ -13,8 +14,15 @@
 
 .import entityPool
 
+;famitracker
+.importzp ft_music_addr
+.import ft_music_init
+.import ft_music_play
+.import ft_disable_channel
+
 ;main module
 .import loadLevel
+.import haltmusic
 
 ;ROM labels
 .import ROMDefinitionTable0

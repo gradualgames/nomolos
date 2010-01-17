@@ -510,11 +510,6 @@ vblank:
 
 updatePPUFinished:
 
-  .ifdef MUSIC_ENABLE
-  jsr ft_music_play
-  .endif
-  jsr playSound
-
   plp
   pla
   tay
