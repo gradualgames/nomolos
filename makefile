@@ -7,6 +7,11 @@ NAMELIST_GENERATOR = nlgen
 ASSEMBLER       = ca65
 LINKER          = ld65
 
+#directories
+SRC_DIR     = src
+INCLUDE_DIR = include
+BIN_DIR     = bin
+
 #Files
 OUTPUT_NAME     = nomolos
 NES_FILE        = $(OUTPUT_NAME).nes
@@ -31,21 +36,21 @@ FILES           = nomolos \
                   controller \
                   sound \
                   geotests
-OBJECT_FILES    = $(addsuffix .o, $(FILES))
-LST_FILES = $(addsuffix .lst, $(FILES))
-INCLUDE_FILES   = constants.inc \
+OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))
+LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
+INCLUDE_FILES   = $(addprefix $(INCLUDE_DIR)/,constants.inc \
                   macros.inc \
                   flags.inc \
                   structs.inc \
                   mouse.inc \
                   explosion.inc \
                   deentle.inc \
-                  exitentity.inc
+                  exitentity.inc)
 CONFIG_FILE     = $(OUTPUT_NAME).cfg
 MAP_FILE         = $(OUTPUT_NAME).map
 
 #Switches
-ASSEMBLER_FLAGS = -g -l --include-dir ft_driver -o
+ASSEMBLER_FLAGS = -g -l -I include -I ft_driver -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) -o 
 NAMELIST_GENERATOR_FLAGS = -o $(NES_FILE) \
                            -nl ram ZEROPAGE 0000 \
@@ -71,7 +76,7 @@ $(NES_FILE): $(OBJECT_FILES) $(CONFIG_FILE)
 	$(LINKER) $(OBJECT_FILES) $(LINKER_FLAGS) $(NES_FILE)
 
 #Rule for assembling all the object files from source files
-$(OBJECT_FILES): %.o : %.asm $(INCLUDE_FILES)
+$(OBJECT_FILES): $(BIN_DIR)/%.o : $(SRC_DIR)/%.asm $(INCLUDE_FILES)
 	$(ASSEMBLER) $< $(ASSEMBLER_FLAGS) $@
 
 #Rule for cleaning the build
