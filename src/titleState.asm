@@ -6,9 +6,9 @@
 .import readController
 
 ;main module labels
-.import titlePalette, titleNametable
-.import titleChrRomBank
+.import titleDef
 .import loadNametable, loadPalette
+.import loadChr, bankswitch
 
 ;sprite module
 .import clearSprites, updateSprites
@@ -20,7 +20,7 @@
 .import updatePPUFinished, updateFinished
 
 ;zeropage labels
-.importzp w0
+.importzp b0, w0
 .importzp stateControl
 .importzp controllerBuffer
 .importzp currentLevel
@@ -69,28 +69,28 @@ titleStateRun:
   sta $2006
   lda #$00
   sta $2006
-  lda #<titleNametable
+  lda titleDef+title::nametableAddress
   sta w0
-  lda #>titleNametable
+  lda titleDef+title::nametableAddress+1
   sta w0+1
   jsr loadNametable
   
-  ;now switch to the chr bank of the title screen.
-  lda titleChrRomBank
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
+  ;now switch to the prg bank containing the chr data of the title screen.
+  lda titleDef+title::chrPrgRomBank
+  sta b0
+  jsr bankswitch
+  
+  ;now load the chr data
+  lda titleDef+title::chrAddress
+  sta w0
+  lda titleDef+title::chrAddress+1
+  sta w0+1
+  jsr loadChr
   
   ;now that nametable loaded, load the new palette.
-  lda #<titlePalette
+  lda titleDef+title::paletteAddress
   sta w0
-  lda #>titlePalette
+  lda titleDef+title::paletteAddress+1
   sta w0+1
   jsr loadPalette
   

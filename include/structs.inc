@@ -1,15 +1,23 @@
 .ifndef STRUCTS_INC
 STRUCTS_INC = 1
 
+.struct title
+  paletteAddress .word
+  nametableAddress .word
+  chrAddress .word
+  chrPrgRomBank .byte
+.endstruct
+
 .struct level
-  bgChrRomBank .byte
-  sprChrRomBank .byte
+  chrAddress .word
+  chrPrgRomBank .byte
   prgRomBank .byte
   romDefinitionTable .word
 .endstruct
 
 .struct font
-  chrRomBank .byte
+  chrAddress .word
+  chrPrgRomBank .byte
   digitTable .byte 10
   palette .byte 32
 .endstruct

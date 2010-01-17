@@ -7,7 +7,7 @@
 .import ft_music_init
 
 ;main module
-.import clearNametable, loadPalette, displayString
+.import clearNametable, loadPalette, displayString, loadChr, bankswitch
 
 ;main module misc data
 .import font1, gameOverString, haltmusic
@@ -86,17 +86,17 @@ gameOverStateRun:
   sta w0+1
   jsr loadPalette
   
-  ;now switch to the chr bank of fontset 1.
-  lda font1+font::chrRomBank
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
+  ;switch to PRG block containing font1
+  lda font1+font::chrPrgRomBank
+  sta b0
+  jsr bankswitch
+  
+  ;load chr data
+  lda font1+font::chrAddress
+  sta w0
+  lda font1+font::chrAddress+1
+  sta w0+1
+  jsr loadChr
 
   ;display GAME OVER string
   lda #$20

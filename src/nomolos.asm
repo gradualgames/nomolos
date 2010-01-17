@@ -7,6 +7,11 @@
 .import ROMDefinitionTable0
 .import ROMDefinitionTable1
 
+.import Level1Chr
+.import Level2Chr
+.import TitleChr
+.import Font0Chr
+
 ;camera module
 .import resetCamera
 
@@ -50,24 +55,25 @@
 .export stack, sprite, entityPool
 
 ;misc
+.export bankswitch, loadChr
 .export loadPalette, loadNametable, clearNametable
 .export displayString, createDecimalString
 
 ;misc data
-.export haltmusic
+.export banktable, haltmusic
 .export font1, powerTable
 .export livesString, levelString, gameOverString
 .export LevelDefinitionTable
-.export titlePalette, titleNametable, titleChrRomBank
+.export titleDef
 
 ;update return labels
 .export updatePPUFinished, updateFinished
 
 .segment "HEADER"
 .byte "NES",$1a        ;iNES header
-.byte $04 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
-.byte $04 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
-.byte $11 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #1 (MMC1)
+.byte $08 ;            ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
+.byte $00 ;            ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
+.byte $21 ;            ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #2 (UnROM)
 .byte $00 ;            ;Rest of Mapper #0 bits (all 0)
 .byte 0,0,0,0,0,0,0,0  ; pad header to 16 bytes
 .segment "ZEROPAGE"
@@ -166,37 +172,7 @@ entityPool: .res 256
 
 .segment "CODE"
 
-.macro initMMC1
-
-  ; initialize the MMC1 mapper...
-  ;reset the PRG rom control register...
-  lda #%10000000
-  sta $8000
-;  $8000-9FFF:  [...C PSMM]
-;    C = CHR Mode (0=8k mode, 1=4k mode)
-;    P = PRG Size (0=32k mode, 1=16k mode)
-;    S = Slot select:
-;        0 = $C000 swappable, $8000 fixed to page $00 (mode A)
-;        1 = $8000 swappable, $C000 fixed to page $0F (mode B)
-;        This bit is ignored when 'P' is clear (32k mode)
-;    M = Mirroring control:
-;        %00 = 1ScA
-;        %01 = 1ScB
-;        %10 = Vert
-;        %11 = Horz  
-  lda #%00011110
-  sta $8000
-  lsr
-  sta $8000
-  lsr
-  sta $8000
-  lsr
-  sta $8000
-  lsr
-  sta $8000
-
-.endmacro
-  
+ 
 .macro initNES
 
   sei
@@ -231,7 +207,6 @@ entityPool: .res 256
 reset:
   initNES
   clearRAM
-  initMMC1
 
   lda #TITLESTATE_INIT
   sta stateControl+titleStateControl::state
@@ -245,6 +220,20 @@ updateFinished:
 
   jmp loop
 
+;bankswitches using UnROM.
+;b0 - the bank to switch to
+bankswitch:
+  txa
+  pha
+
+  ldx b0
+  lda banktable,x        ;read a byte from the banktable
+  sta banktable,x        ;and write it back, switching banks at $8000
+ 
+  pla
+  tax 
+  rts
+  
 ;Creates a decimal string based on a digit table and a power table
 ;and an input 8 bit value.
 ;Input:
@@ -394,6 +383,48 @@ displayString:
 
   rts
   
+;loads 8k of chr data into VRAM starting at address $0000
+;expects w0 to have address of chr data to load.
+;uses w1 to count how much data has been shoveled
+loadChr:
+  ;start at $0000 in VRAM
+  lda #$00
+  sta $2006
+  sta $2006
+  ;count from 0
+  lda #0
+  sta w1
+  sta w1+1
+  ldy #0
+  
+loadChrLoop:
+  ;load a byte from the chr data
+  lda (w0),y
+  ;stuff it into vram
+  sta $2007
+  ;move the address along
+  clc
+  lda w0
+  adc #1
+  sta w0
+  lda w0+1
+  adc #0
+  sta w0+1
+  ;count the data
+  clc
+  lda w1
+  adc #1
+  sta w1
+  lda w1+1
+  adc #0
+  sta w1+1
+  
+  ;have we reached 8kb of data?
+  cmp #$20
+  bne loadChrLoop
+
+  rts
+  
 ;loads a nametable and attribute table located at address in w0
 ;assumes VRAM points to the nametable that is to be loaded
 loadNametable:
@@ -497,19 +528,27 @@ irq:
 ;level definitions
 LevelDefinitionTable:
 Level1:
-  .byte $00, $01, $00
+  .word Level1Chr  ;location of chr data
+  .byte $03        ;prg bank where data resides
+  .byte $00        ;prg bank where code/additional data resides
   .word ROMDefinitionTable0
-  .byte $00, $00, $00  ;pad to 8 bytes. this may be used eventually anyway (music track for example)
+  .byte $00, $00  ;pad to 8 bytes. this may be used eventually anyway (music track for example)
 Level2:
-  .byte $02, $03, $01
+  .word Level2Chr
+  .byte $03       
+  .byte $01
   .word ROMDefinitionTable1
-  .byte $00, $00, $00
+  .byte $00, $00
   
 ;miscellaneous data
+banktable:
+  .byte $00, $01, $02, $03, $04, $05, $06, $07
+
 haltmusic:
 .incbin "haltmusic.bin"
 
 font1:
+  .word Font0Chr
   .byte $04
   .byte $35,$36,$37,$38,$39,$3a,$3b,$3c,$3d,$3e
   .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
@@ -528,8 +567,11 @@ livesString:
 gameOverString:
   .byte $09,$21,$1b,$27,$1f,$1a,$29,$30,$1f,$2c
   
-titleChrRomBank:
-  .byte $06
+titleDef:
+  .word titlePalette
+  .word titleNametable
+  .word TitleChr
+  .byte $04
   
 titlePalette:
 ;Palette

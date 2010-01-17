@@ -10,6 +10,7 @@
 .import loadLevelUpdatePPU, loadLevelUpdate
 
 ;main module imports
+.import loadChr, bankswitch
 .import displayString, createDecimalString
 .import loadPalette, clearNametable
 .import font1, powerTable, livesString, levelString
@@ -93,17 +94,17 @@ levelInStateRun:
   sta w0+1
   jsr loadPalette
   
-  ;now switch to the chr bank of fontset 1.
-  lda font1+font::chrRomBank
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
+  ;switch to PRG block containing font1
+  lda font1+font::chrPrgRomBank
+  sta b0
+  jsr bankswitch
+  
+  ;load chr data
+  lda font1+font::chrAddress
+  sta w0
+  lda font1+font::chrAddress+1
+  sta w0+1
+  jsr loadChr
   
   ;create decimal string for currentLevel variable
   lda currentLevel

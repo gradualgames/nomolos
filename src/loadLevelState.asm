@@ -8,7 +8,8 @@
 ;sound module
 .import initsound
 ;main module
-.import loadPalette
+.import bankswitch
+.import loadPalette, loadChr
 .import LevelDefinitionTable
 ;camera module
 .import resetCamera
@@ -26,7 +27,7 @@
 .import initEntities, updateEntities
 ;global variables
 .importzp update, updatePPU, stateControl
-.importzp w0, w1, w3, levelBaseAddress, columnToUpdate
+.importzp b0, w0, w1, w3, levelBaseAddress, columnToUpdate
 .importzp metametaTileTableBaseAddress, nametableToUpdate
 .importzp entityDefinitionTableBaseAddress
 .importzp metaTileTableBaseAddress
@@ -74,40 +75,27 @@ loadLevelStateInit:
   sta $2001
   
   ;load CHR bank into $0000
-  lda LevelDefinitionTable+level::bgChrRomBank,x
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
-  lsr
-  sta $A000
   
-  ;load CHR bank into $1000
-  lda LevelDefinitionTable+level::sprChrRomBank,x
-  sta $C000
-  lsr
-  sta $C000
-  lsr
-  sta $C000
-  lsr
-  sta $C000
-  lsr
-  sta $C000
+  ;first bank switch to the PRG rom bank containing the level's chr data
+  lda LevelDefinitionTable+level::chrPrgRomBank,x
+  sta b0
+  jsr bankswitch
+  
+  ;now load the address of the chr data from the level definition table
+  lda LevelDefinitionTable+level::chrAddress,x
+  sta w0
+  inx
+  lda LevelDefinitionTable+level::chrAddress,x
+  dex
+  sta w0+1
+  
+  ;load the chr data into vram
+  jsr loadChr
   
   ;load PRG bank into $8000
   lda LevelDefinitionTable+level::prgRomBank,x
-  sta $E000
-  lsr
-  sta $E000
-  lsr
-  sta $E000
-  lsr
-  sta $E000
-  lsr
-  sta $E000  
+  sta b0
+  jsr bankswitch
 
   lda LevelDefinitionTable+level::romDefinitionTable,x
   sta romDefinitionTableBaseAddress
