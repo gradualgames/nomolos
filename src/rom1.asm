@@ -7,6 +7,7 @@
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosScreenX, nomolosScreenY, nomolosState
 .importzp nomolosHitboxX, nomolosHitboxY
+.importzp nomolosLives
 .importzp soundAddr, soundOff
 .importzp stateControl
 .importzp romDefinitionTableBaseAddress
@@ -41,6 +42,7 @@
 
 ;sprite module
 .import updateAnimation, drawAnimation, drawAnimation16, drawMetaSprite
+.import drawMetaSprite16
 
 ;sound module
 .import lowc, loadSound, finishSound
@@ -521,7 +523,13 @@ NomolosFightOverlay1:
   .byte $01,$16,$01,$08,$00
   .byte $09,$29,$01,$00,$08
   .byte $09,$2a,$01,$08,$00
-
+OneUp0:
+  .byte $04
+  .byte $00,$3d,$00,$00,$08
+  .byte $00,$3d,$00,$08,$00
+  .byte $08,$4d,$02,$00,$08
+  .byte $08,$4e,$02,$08,$00
+  
 ;Animations
 NomolosWalk:
   .byte $0a
@@ -655,6 +663,35 @@ getHealthSound:
   .byte $01
   .byte $ff
  
+getOneUpSound:
+  .byte DISABLE_FAMITRACKER_CHANNEL
+  .byte $01 
+  .byte $04
+  .byte $84
+  .byte $05
+  .byte %00000000
+  .byte $07
+  .byte %00001000
+  .byte $06
+  .byte %11111111
+  .byte $06
+  .byte %10111111
+  .byte $06
+  .byte %01111111
+  .byte $06
+  .byte %00111111  
+  .byte $06
+  .byte %11111111
+  .byte $06
+  .byte %10111111
+  .byte $06
+  .byte %01111111
+  .byte $06
+  .byte %00111111  
+  .byte ENABLE_FAMITRACKER_CHANNEL
+  .byte $01
+  .byte $ff
+ 
 ;Entities
 EntityDefinitionTable:
 DeentleIndex = 0
@@ -693,7 +730,17 @@ ExitLevelEntity:
   .byte $00
   .byte $00
   .byte $00
+OneUpEntityIndex = 4
+OneUpEntity:
+  .word oneUpUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
  
+.include "oneup.inc"
 .include "exitentity.inc"
 .include "mouse.inc"
 .include "explosion.inc"
