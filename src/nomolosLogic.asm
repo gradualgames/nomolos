@@ -36,9 +36,6 @@
 .export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts, hurtNomolos
 .export nomolosDeadly, addNomolosHealth
 
-;ROM symbols (temporary)
-.import ROMDefinitionTable0
-
 .segment "CODE"
 
 .proc initNomolos
@@ -255,6 +252,24 @@ skipAttack:
   
 .proc updateNomolos
 
+  ;************************************************************
+  ;Load NomolosY coordinate and test to see if he is off screen
+  ;to the bottom. If he is, he should die.
+  ;************************************************************
+  lda nomolosY+2
+  cmp #1
+  bne @nomolosNotDead
+  dec nomolosLives
+  ;tell famitracker to play the die sound
+.if .defined(MUSIC_ENABLE)
+  lda #2
+  ldx #0
+  jsr ft_music_init
+.endif  
+  lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
+  sta stateControl+playLevelStateControl::state
+@nomolosNotDead:
+  
   ;************************************************************
   ;Load "nomolos dying" flag and update associated variables if
   ;true. Move scaredy cat graphic upwards and clear buttons 

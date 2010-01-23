@@ -1,6 +1,10 @@
 .include "structs.inc"
 .include "constants.inc"
 .include "macros.inc"
+.include "flags.inc"
+
+;famitracker module
+.import ft_music_play
 
 ;zeropage variables
 .importzp w0, scrollX, nametableToUpdate
@@ -182,5 +186,9 @@ stateCommandComplete:
   sta $2005
   lda #0
   sta $2005
+  
+  .ifdef MUSIC_ENABLE
+  jsr ft_music_play
+  .endif
 
   jmp updatePPUFinished
