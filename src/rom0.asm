@@ -35,6 +35,7 @@
 
 ;nomolosLogic module
 .import initNomolos, hurtNomolos, nomolosDeadly, addNomolosHealth
+.import addNomolosLife
 
 ;entity module
 .import initEntities, returnFromEntityUpdate, spawnEntity

@@ -34,7 +34,7 @@
 
 ;Nomolos interface
 .export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts, hurtNomolos
-.export nomolosDeadly, addNomolosHealth
+.export nomolosDeadly, addNomolosHealth, addNomolosLife
 
 .segment "CODE"
 
@@ -84,6 +84,22 @@
 
   rts
   
+.endproc
+
+;adds a life to Nomolos. The accumulator is assumed to contain the
+;number of lives to add.
+.proc addNomolosLife
+
+  clc
+  adc nomolosLives
+  sta nomolosLives
+  
+  cmp #maxLives  
+  bmi :+
+  lda #maxLives
+  sta nomolosLives
+:
+
 .endproc
 
 ;adds health to Nomolos. The accumulator is assumed to contain the
