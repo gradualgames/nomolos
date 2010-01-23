@@ -56,7 +56,7 @@
 .segment "ROM0"
 
 music:
-.incbin "music.bin"
+.incbin "data/music.bin"
 
 ;ROM definition table
 ROMDefinitionTable0:

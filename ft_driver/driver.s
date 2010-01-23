@@ -268,11 +268,11 @@ ft_channel_mask:
 
 .ifdef PAL_PERIOD_TABLE
 ft_notes_pal:							; Note frequencies for PAL (remove this if you don't need PAL support)
-	.incbin "freq_pal.bin"
+	.incbin "data/freq_pal.bin"
 .endif
 .ifdef NTSC_PERIOD_TABLE
 ft_notes_ntsc:							; Note frequencies for NTSC (remove this if you don't need NTSC support)
-	.incbin "freq_ntsc.bin"
+	.incbin "data/freq_ntsc.bin"
 .endif
 ft_sine:								; Sine table used by vibrato and tremolo
 	.byte $00, $00, $02, $05, $0A, $0F, $16, $1D

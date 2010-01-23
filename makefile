@@ -82,4 +82,4 @@ $(OBJECT_FILES): $(BIN_DIR)/%.o : $(SRC_DIR)/%.asm $(INCLUDE_FILES)
 
 #Rule for cleaning the build
 clean:
-	rm -f $(OBJECT_FILES) $(NES_FILE) $(MAP_FILE) $(LST_FILES) *.nl
+	rm -f $(OBJECT_FILES) $(NES_FILE) $(MAP_FILE) $(LST_FILES) $(DEBUG_FILE) *.nl

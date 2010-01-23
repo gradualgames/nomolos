@@ -540,7 +540,7 @@ banktable:
   .byte $00, $01, $02, $03, $04, $05, $06, $07
 
 haltmusic:
-.incbin "haltmusic.bin"
+.incbin "data/haltmusic.bin"
 
 font1:
   .word Font0Chr
