@@ -75,6 +75,7 @@ nomolosHitboxWidth = $0c
 nomolosHitboxHeight = $20
 
 startingLevel = $00
+maxHealth = 3
 
 ;keeps the lowest 4 bits to get penetration distance from a y coordinate
 penetrationCalculationMask = %00001111

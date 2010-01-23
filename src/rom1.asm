@@ -32,7 +32,8 @@
 .import rectInRect, rectInRect16
 
 ;nomolosLogic module
-.import hurtNomolos, nomolosDeadly, addNomolosHealth
+.import hurtNomolos, nomolosDeadly
+.import addNomolosHealth
 
 ;entity module
 .import returnFromEntityUpdate, spawnEntity

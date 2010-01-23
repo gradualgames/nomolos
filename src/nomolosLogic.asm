@@ -93,6 +93,13 @@
   clc
   adc nomolosHealth
   sta nomolosHealth
+  
+  cmp #maxHealth  ;if result is negative, that means nomolosHealth - maxHealth was negative, which means we're less than maxHealth
+                  ;negative is less, positive is more
+  bmi :+
+  lda #maxHealth
+  sta nomolosHealth
+:
 
   rts
 
@@ -248,6 +255,15 @@ skipAttack:
   
 .proc loadHurtResult
 
+  ;load "hurt" result of map collision test
+  lda b0
+  beq :+
+  lda nomolosState
+  ora #nomolosHurtByMapOnOR
+  sta nomolosState
+:
+  rts
+
 .endproc
   
 .proc updateNomolos
@@ -384,13 +400,7 @@ skipAttack:
   adc #$ff
   sta w1+1
   jsr testMapCollision
-  ;load "hurt" result of map collision test
-  lda b0
-  beq :+
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-:
+  jsr loadHurtResult
   lda b1
   beq noTopLeftCollision
   
@@ -415,13 +425,7 @@ noTopLeftCollision:
   adc #$ff
   sta w1+1
   jsr testMapCollision
-  ;load "hurt" result of map collision test
-  lda b0
-  beq :+
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-:
+  jsr loadHurtResult
   lda b1
   beq noTopRightCollision
   
@@ -471,13 +475,7 @@ skipNoAboveCollision:
   adc #0
   sta w1+1
   jsr testMapCollision
-  ;load "hurt" result of map collision test
-  lda b0
-  beq :+
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-:
+  jsr loadHurtResult
   lda b1
   beq noBottomLeftCollision
   
@@ -503,13 +501,7 @@ noBottomLeftCollision:
   adc #0
   sta w1+1
   jsr testMapCollision
-  ;load "hurt" result of map collision test
-  lda b0
-  beq :+
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-:
+  jsr loadHurtResult
   lda b1
   beq noBottomRightCollision
   
@@ -769,13 +761,7 @@ skipJmpNotLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
-  ;load "hurt" result of map collision test
-  lda b0
-  beq :+
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-:
+  jsr loadHurtResult
   lda b1
   bne notLeft
   
@@ -794,13 +780,7 @@ skipJmpNotLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
-  ;load "hurt" result of map collision test
-  lda b0
-  beq :+
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-:
+  jsr loadHurtResult
   lda b1
   bne notLeft
 
@@ -819,13 +799,7 @@ skipJmpNotLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
-  ;load "hurt" result of map collision test
-  lda b0
-  beq :+
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-:
+  jsr loadHurtResult
   lda b1
   bne notLeft
   
@@ -894,13 +868,7 @@ skipJmpNotRight:
   adc #0
   sta w1+1
   jsr testMapCollision
-  ;load "hurt" result of map collision test
-  lda b0
-  beq :+
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-:
+  jsr loadHurtResult
   lda b1
   bne notRight
   
@@ -920,13 +888,7 @@ skipJmpNotRight:
   adc #0
   sta w1+1
   jsr testMapCollision
-  ;load "hurt" result of map collision test
-  lda b0
-  beq :+
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-:
+  jsr loadHurtResult
   lda b1
   bne notRight
   
@@ -945,13 +907,7 @@ skipJmpNotRight:
   adc #0
   sta w1+1
   jsr testMapCollision
-  ;load "hurt" result of map collision test
-  lda b0
-  beq :+
-  lda nomolosState
-  ora #nomolosHurtByMapOnOR
-  sta nomolosState
-:
+  jsr loadHurtResult
   lda b1
   bne notRight
   
