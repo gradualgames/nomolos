@@ -41,6 +41,7 @@
 .exportzp metametaTileTableBaseAddress
 .exportzp currentLevel
 .exportzp nomolosAnim, nomolosScreenX, nomolosScreenY, nomolosState
+.exportzp nomolosSubState
 .exportzp nomolosHealth, nomolosBlinkCounter, nomolosHitboxCounter
 .exportzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
 .exportzp nomolosX, nomolosY, nomolosXSpeed, nomolosYSpeed, spriteAddress
@@ -124,6 +125,7 @@ nomolosAnim: .res 2
 nomolosBlinkCounter: .res 1
 nomolosHitboxCounter: .res 1
 nomolosState: .res 1
+nomolosSubState: .res 1
 nomolosHealth: .res 1
 nomolosLives: .res 1
 

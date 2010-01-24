@@ -24,6 +24,7 @@
 .importzp nomolosHitboxX, nomolosHitboxY
 .importzp nomolosScaredyCatX, nomolosScaredyCatY
 .importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
+.importzp nomolosSubState
 .importzp nomolosLives
 .importzp nomolosBlinkCounter, nomolosHitboxCounter
 .importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
@@ -31,6 +32,7 @@
 .importzp controllerBuffer
 .importzp soundAddr, soundOff
 .importzp stateControl
+.importzp frameCounter
 
 ;Nomolos interface
 .export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts, hurtNomolos
@@ -138,7 +140,7 @@
   dec nomolosHealth
   bne nomolosNotDead
   ;on the instant that nomolos dies, we want him to die. 
-  jsr nomolosDie
+  jsr nomolosAttackedDie
   
 nomolosNotDead:
 skipDecreaseHealth:
@@ -170,9 +172,48 @@ skipHurt:
   rts
   
 .endproc
+
+  
+;sets the nomolos dying state bit, and the sub state bit that represents "falling"
+.proc nomolosFallDie
+
+  ;make certain we're not already dying...
+  lda nomolosState
+  and #nomolosDyingTestAND
+  bne alreadyDying
+
+  ;decrease Nomolos' lives
+  dec nomolosLives
+  
+  ;make nomolos die.
+  lda nomolosState
+  ora #nomolosDyingOnOR
+  sta nomolosState
+  
+  ;make sure all following logic knows that this is death by falling.
+  lda nomolosSubState
+  and #nomolosFellDyingAND
+  sta nomolosSubState
+  
+  ;store a frame counter value so we can pause a bit before transitioning to level out
+  lda #200
+  sta frameCounter
+  
+  ;tell famitracker to play the die sound
+.if .defined(MUSIC_ENABLE)
+  lda #2
+  ldx #0
+  jsr ft_music_init
+.endif  
+
+alreadyDying:
+
+  rts
+  
+.endproc
   
 ;sets the nomolos dying state bit and sets coordinates for the scaredy cat graphic.
-.proc nomolosDie
+.proc nomolosAttackedDie
 
   ;decrease Nomolos' lives
   dec nomolosLives
@@ -181,6 +222,11 @@ skipHurt:
   lda nomolosState
   ora #nomolosDyingOnOR
   sta nomolosState
+  
+  ;make sure all following logic knows that this is death by being attacked
+  lda nomolosSubState
+  ora #nomolosAttackedDyingOR
+  sta nomolosSubState
   
   ;transfer current screen coordinates to scaredy cat coordinates. These coordinates
   ;are located in the same place in memory as the hit box, since we will not need the
@@ -291,15 +337,7 @@ skipAttack:
   lda nomolosY+2
   cmp #1
   bne @nomolosNotDead
-  dec nomolosLives
-  ;tell famitracker to play the die sound
-.if .defined(MUSIC_ENABLE)
-  lda #2
-  ldx #0
-  jsr ft_music_init
-.endif  
-  lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
-  sta stateControl+playLevelStateControl::state
+  jsr nomolosFallDie
 @nomolosNotDead:
   
   ;************************************************************
@@ -310,6 +348,10 @@ skipAttack:
   lda nomolosState
   and #nomolosDyingTestAND
   beq nomolosNotDying
+  
+  lda nomolosSubState
+  and #nomolosAttackedDyingTestAND
+  beq nomolosNotAttackedDying
   
   ;move scaredy cat graphic upwards.
   sec
@@ -337,6 +379,18 @@ scaredyCatStillRising:
   sta controllerBuffer+buttons::_b
   sta controllerBuffer+buttons::_left
   sta controllerBuffer+buttons::_right
+  
+  jmp nomolosNotDying
+  
+nomolosNotAttackedDying:
+  
+  dec frameCounter
+  bne skipLevelOutState
+  
+  lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
+  sta stateControl+playLevelStateControl::state
+  
+skipLevelOutState:
   
   ;we continue from here because we want to keep updating Nomolos'
   ;coordinates. They are used for the slumped armor so it can fall
@@ -1027,6 +1081,10 @@ skipUpdateNomolosMoving:
   and #nomolosDyingTestAND
   beq nomolosNotDying
   
+  lda nomolosSubState
+  and #nomolosAttackedDyingTestAND
+  beq nomolosNotAttackedDying
+  
   ;if we're in dying state, we will only ever draw the slumped armor and the scaredy cat graphic and return.
   ldy #ROMDefinitionTableStruct::SlumpedArmor
   lda (romDefinitionTableBaseAddress),y
@@ -1090,6 +1148,8 @@ skipUpdateNomolosMoving:
   
   ;draw the scaredy cat overlay
   jsr drawMetaSprite16
+  
+nomolosNotAttackedDying:
   
   rts
 nomolosNotDying:

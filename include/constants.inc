@@ -28,7 +28,7 @@ PPU1_DISPLAY_TYPE = 0
 DISABLE_FAMITRACKER_CHANNEL = $20
 ENABLE_FAMITRACKER_CHANNEL = $21
 
-;Nomolos constants
+;Nomolos state constants
 nomolosWalkingRightAND       = %11111110
 nomolosWalkingLeftOR         = %00000001
 
@@ -60,6 +60,12 @@ nomolosDyingOnOR             = %10000000
 nomolosDyingOffAND           = %01111111
 nomolosDyingTestAND          = %10000000
 
+;nomolos sub-state constants
+nomolosAttackedDyingOR      = %00000001
+nomolosAttackedDyingTestAND = %00000001
+
+nomolosFellDyingAND        = %11111110
+
 nomolosStartingLives = $03
 nomolosHurtBounceLo = $0a
 nomolosHurtBounceHi = $fd
@@ -74,7 +80,7 @@ nomolosHeight = $20
 nomolosHitboxWidth = $0c
 nomolosHitboxHeight = $20
 
-startingLevel = $00
+startingLevel = $01
 maxHealth = 3
 maxLives = 20
 
