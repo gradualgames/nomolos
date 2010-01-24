@@ -416,7 +416,59 @@ OneUp0:
   .byte $00,$3d,$00,$08,$00
   .byte $08,$4d,$02,$00,$08
   .byte $08,$4e,$02,$08,$00
-  
+NomolosUseFlail0:
+  .byte $0c
+  .byte $00,$09,$02,$00,$10
+  .byte $00,$0a,$00,$08,$08
+  .byte $00,$0b,$00,$10,$00
+  .byte $08,$20,$02,$00,$10
+  .byte $08,$21,$00,$08,$08
+  .byte $08,$22,$00,$10,$00
+  .byte $10,$33,$02,$00,$10
+  .byte $10,$34,$02,$08,$08
+  .byte $10,$35,$02,$10,$00
+  .byte $18,$46,$02,$00,$10
+  .byte $18,$47,$02,$08,$08
+  .byte $18,$48,$02,$10,$00
+NomolosUseFlail1:
+  .byte $0c
+  .byte $00,$0c,$02,$00,$10
+  .byte $00,$0a,$00,$08,$08
+  .byte $00,$0b,$00,$10,$00
+  .byte $08,$23,$02,$00,$10
+  .byte $08,$21,$00,$08,$08
+  .byte $08,$22,$00,$10,$00
+  .byte $10,$36,$02,$00,$10
+  .byte $10,$37,$02,$08,$08
+  .byte $10,$38,$02,$10,$00
+  .byte $18,$49,$02,$00,$10
+  .byte $18,$4a,$02,$08,$08
+  .byte $18,$4b,$02,$10,$00
+FlailBall0:
+  .byte $01
+  .byte $f0,$3a,$02,$f0,$00
+FlailBall1:
+  .byte $01
+  .byte $f0,$3a,$02,$00,$00
+FlailBall2:
+  .byte $01
+  .byte $f0,$3a,$02,$10,$00
+FlailBall3:
+  .byte $01
+  .byte $00,$3a,$02,$28,$00
+FlailBall4:
+  .byte $01
+  .byte $10,$3a,$02,$10,$00
+FlailBall5:
+  .byte $01
+  .byte $10,$3a,$02,$00,$00
+FlailBall6:
+  .byte $01
+  .byte $10,$3a,$02,$f0,$00
+FlailBall7:
+  .byte $01
+  .byte $00,$3a,$02,$d8,$00
+
 ;Animations
 NomolosWalk:
   .byte $0a
@@ -477,6 +529,24 @@ NomolosFightOverlay:
   .byte $06
   .word NomolosFightOverlay0
   .word NomolosFightOverlay1
+  .word $0000
+
+NomolosUseFlail:
+  .byte $0a
+  .word NomolosUseFlail0
+  .word NomolosUseFlail1
+  .word $0000
+
+FlailBall:
+  .byte $0a
+  .word FlailBall0
+  .word FlailBall1
+  .word FlailBall2
+  .word FlailBall3
+  .word FlailBall4
+  .word FlailBall5
+  .word FlailBall6
+  .word FlailBall7
   .word $0000
 
 attackSound:
