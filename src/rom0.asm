@@ -69,6 +69,8 @@ ROMDefinitionTable0:
   .word NomolosJumpOverlay     
   .word NomolosFight           
   .word NomolosFightOverlay    
+  .word NomolosUseFlail
+  .word NomolosFlailOverlay
   .word SlumpedArmor0           
   .word SlumpedArmorOverlay0
   .word ScardyCat0
@@ -468,6 +470,12 @@ FlailBall6:
 FlailBall7:
   .byte $01
   .byte $00,$3a,$02,$d8,$00
+NomolosFlailOverlay0:
+  .byte $04
+  .byte $00,$13,$01,$08,$08
+  .byte $00,$14,$01,$10,$00
+  .byte $08,$17,$00,$08,$08
+  .byte $08,$28,$01,$10,$00
 
 ;Animations
 NomolosWalk:
@@ -547,6 +555,11 @@ FlailBall:
   .word FlailBall5
   .word FlailBall6
   .word FlailBall7
+  .word $0000
+
+NomolosFlailOverlay:
+  .byte $0a
+  .word NomolosFlailOverlay0
   .word $0000
 
 attackSound:

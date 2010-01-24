@@ -84,7 +84,7 @@ nomolosHeight = $20
 nomolosHitboxWidth = $0c
 nomolosHitboxHeight = $20
 
-startingLevel = $01
+startingLevel = $00
 maxHealth = 3
 maxLives = 20
 
