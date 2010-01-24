@@ -260,6 +260,13 @@ alreadyDying:
   and #nomolosAttackTestAND
   bne skipAttack
 
+  lda nomolosSubState
+  and #nomolosAttackTestMask
+  cmp #nomolosAttackSword
+  beq nomolosAttackSwordBranch
+  
+nomolosAttackSwordBranch:
+  
   ;play an attack sound
   ldy #ROMDefinitionTableStruct::attackSound
   lda (romDefinitionTableBaseAddress),y
@@ -278,6 +285,10 @@ alreadyDying:
   
   ;reset animation
   resetAnim nomolosAnim
+  
+  jmp attackSwitchDone
+  
+attackSwitchDone:
 skipAttack:
   
   rts
@@ -293,21 +304,31 @@ skipAttack:
 
   lda nomolosState
   and #nomolosAttackTestAND
-  beq @nomolosNotAttacking
+  beq nomolosNotAttacking
   
+  lda nomolosSubState
+  and #nomolosAttackTestMask
+  cmp #nomolosAttackSword
+  beq nomolosAttackSwordBranch
+  
+nomolosAttackSwordBranch:
   ;load current frame
   lda nomolosAnim+1
   cmp #0
-  beq @nomolosPawNotExtended
+  beq nomolosPawNotExtended
   
   ;we know his paw is extended here, clear zero flag
   lda #1
   
   rts
   
-@nomolosPawNotExtended:
+nomolosPawNotExtended:
   
-@nomolosNotAttacking:
+  jmp attackSwitchDone
+  
+attackSwitchDone:
+  
+nomolosNotAttacking:
 
   lda #0
 
@@ -431,6 +452,12 @@ skipBlinkReset:
   beq skipAttackUpdate
   ;attack state was on
   
+  lda nomolosSubState
+  and #nomolosAttackTestMask
+  cmp #nomolosAttackSword
+  beq nomolosAttackSwordBranch
+  
+nomolosAttackSwordBranch:
   dec nomolosHitboxCounter
   bne skipAttackUpdate
   
@@ -450,6 +477,9 @@ skipAttackUpdate:
   cmp #%00000001
   bne skipAttack
   jsr nomolosAttack
+  
+  jmp attackSwitchDone
+attackSwitchDone:
 skipAttack:
 
   ;************************************************************
@@ -1045,6 +1075,12 @@ notRight:
   and #nomolosAttackTestAND
   beq skipUpdateNomolosFighting
   
+  lda nomolosSubState
+  and #nomolosAttackTestMask
+  cmp #nomolosAttackSword
+  beq nomolosAttackSwordBranch
+  
+nomolosAttackSwordBranch:
   ldy #ROMDefinitionTableStruct::NomolosFight
   lda (romDefinitionTableBaseAddress),y
   sta w2
@@ -1054,6 +1090,8 @@ notRight:
   
   jsr updateAnimation
   
+  jmp attackSwitchDone
+attackSwitchDone:
   rts
 skipUpdateNomolosFighting:
   
@@ -1156,7 +1194,7 @@ nomolosNotDying:
 
   lda nomolosState
   and #1
-  beq @skipNomolosFacingLeft
+  beq skipNomolosFacingLeft
   
   clc
   lda nomolosScreenX
@@ -1171,8 +1209,8 @@ nomolosNotDying:
   lda nomolosScreenY+1
   sta nomolosHitboxY+1
 
-  jmp @skipNomolosFacingRight
-@skipNomolosFacingLeft:
+  jmp skipNomolosFacingRight
+skipNomolosFacingLeft:
 
   clc
   lda nomolosScreenX
@@ -1187,7 +1225,7 @@ nomolosNotDying:
   lda nomolosScreenY+1
   sta nomolosHitboxY+1
 
-@skipNomolosFacingRight:
+skipNomolosFacingRight:
 
   lda nomolosState
   and #nomolosBlinkingTestAND
@@ -1210,6 +1248,12 @@ skipBlinkCheck:
   and #nomolosAttackTestAND
   beq skipDrawNomolosFighting
   
+  lda nomolosSubState
+  and #nomolosAttackTestMask
+  cmp #nomolosAttackSword
+  beq nomolosAttackSwordBranch
+  
+nomolosAttackSwordBranch:
   lda #<nomolosAnim
   sta w1
   lda #>nomolosAnim
@@ -1223,6 +1267,7 @@ skipBlinkCheck:
   sta w2+1
   
   ;get the direction bit into bit 6 of b2 for horiz flip
+  clc
   lda nomolosState
   and #1
   ror
@@ -1249,6 +1294,10 @@ skipBlinkCheck:
   sta w2+1
   
   jsr drawAnimation16
+  
+  jmp attackSwitchDone
+  
+attackSwitchDone:
   
   rts
   

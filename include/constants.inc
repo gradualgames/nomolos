@@ -63,8 +63,12 @@ nomolosDyingTestAND          = %10000000
 ;nomolos sub-state constants
 nomolosAttackedDyingOR      = %00000001
 nomolosAttackedDyingTestAND = %00000001
-
 nomolosFellDyingAND        = %11111110
+
+nomolosAttackTestMask  = %11111001
+nomolosAttackSword     = %00000000
+nomolosAttackFlail     = %00000010
+;nomolosAttackCrossbow = %00000100
 
 nomolosStartingLives = $03
 nomolosHurtBounceLo = $0a
