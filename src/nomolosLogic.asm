@@ -267,6 +267,9 @@ alreadyDying:
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
+  cmp #nomolosAttackFlail
+  beq nomolosAttackFlailBranch
+  jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
   
@@ -291,6 +294,27 @@ nomolosAttackSwordBranch:
   
   jmp attackSwitchDone
   
+nomolosAttackFlailBranch:
+
+  ;play an attack sound
+  ldy #ROMDefinitionTableStruct::attackSound
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+  jsr loadSound
+  
+  ;turn on the attack hit box
+  lda #$0c
+  sta nomolosHitboxCounter
+  lda nomolosState
+  ora #nomolosAttackOnOR
+  sta nomolosState
+  
+  ;reset animation
+  resetAnim nomolosAnim
+  
 attackSwitchDone:
 skipAttack:
   
@@ -313,6 +337,7 @@ skipAttack:
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
+  jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
   ;load current frame
@@ -459,6 +484,7 @@ skipBlinkReset:
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
+  jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
   lda nomolosState
@@ -513,10 +539,12 @@ skipAttackUpdate:
   and #%00000011
   ;test for transition from off to on
   cmp #%00000001
-  bne skipAttack
+  bne :+
   jsr nomolosAttack
-  
+:
+
   jmp attackSwitchDone
+  
 attackSwitchDone:
 skipAttack:
 
@@ -1117,6 +1145,7 @@ notRight:
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
+  jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
   ldy #ROMDefinitionTableStruct::NomolosFight
