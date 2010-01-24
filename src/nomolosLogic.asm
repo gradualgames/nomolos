@@ -458,6 +458,41 @@ skipBlinkReset:
   beq nomolosAttackSwordBranch
   
 nomolosAttackSwordBranch:
+  lda nomolosState
+  and #1
+  beq skipNomolosFacingLeft
+  
+  clc
+  lda nomolosScreenX
+  adc #$f4
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$ff
+  sta nomolosHitboxX+1
+  
+  lda nomolosScreenY
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  sta nomolosHitboxY+1
+
+  jmp skipNomolosFacingRight
+skipNomolosFacingLeft:
+
+  clc
+  lda nomolosScreenX
+  adc #$10
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$00
+  sta nomolosHitboxX+1
+
+  lda nomolosScreenY
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  sta nomolosHitboxY+1
+
+skipNomolosFacingRight:
+
   dec nomolosHitboxCounter
   bne skipAttackUpdate
   
@@ -1191,41 +1226,6 @@ nomolosNotAttackedDying:
   
   rts
 nomolosNotDying:
-
-  lda nomolosState
-  and #1
-  beq skipNomolosFacingLeft
-  
-  clc
-  lda nomolosScreenX
-  adc #$f4
-  sta nomolosHitboxX
-  lda nomolosScreenX+1
-  adc #$ff
-  sta nomolosHitboxX+1
-  
-  lda nomolosScreenY
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
-  sta nomolosHitboxY+1
-
-  jmp skipNomolosFacingRight
-skipNomolosFacingLeft:
-
-  clc
-  lda nomolosScreenX
-  adc #$10
-  sta nomolosHitboxX
-  lda nomolosScreenX+1
-  adc #$00
-  sta nomolosHitboxX+1
-
-  lda nomolosScreenY
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
-  sta nomolosHitboxY+1
-
-skipNomolosFacingRight:
 
   lda nomolosState
   and #nomolosBlinkingTestAND
