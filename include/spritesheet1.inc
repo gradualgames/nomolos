@@ -206,28 +206,28 @@ NomolosUseFlail1:
   .byte $18,$4b,$02,$10,$f8
 FlailBall0:
   .byte $01
-  .byte $f0,$3a,$02,$f0,$00
+  .byte $f0,$3a,$02,$ea,$16
 FlailBall1:
   .byte $01
   .byte $f0,$3a,$02,$00,$00
 FlailBall2:
   .byte $01
-  .byte $f0,$3a,$02,$10,$00
+  .byte $f0,$3a,$02,$16,$ea
 FlailBall3:
   .byte $01
-  .byte $00,$3a,$02,$28,$00
+  .byte $00,$3a,$02,$28,$d8
 FlailBall4:
   .byte $01
-  .byte $10,$3a,$02,$10,$00
+  .byte $10,$3a,$02,$16,$ea
 FlailBall5:
   .byte $01
   .byte $10,$3a,$02,$00,$00
 FlailBall6:
   .byte $01
-  .byte $10,$3a,$02,$f0,$00
+  .byte $10,$3a,$02,$ea,$16
 FlailBall7:
   .byte $01
-  .byte $00,$3a,$02,$d8,$00
+  .byte $00,$3a,$02,$d8,$28
 NomolosFlailOverlay0:
   .byte $04
   .byte $01,$13,$01,$03,$05
@@ -304,7 +304,7 @@ NomolosUseFlail:
   .word $0000
 
 FlailBall:
-  .byte $0a
+  .byte $01
   .word FlailBall0
   .word FlailBall1
   .word FlailBall2

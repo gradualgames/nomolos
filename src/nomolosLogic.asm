@@ -24,6 +24,7 @@
 .importzp nomolosHitboxX, nomolosHitboxY
 .importzp nomolosScaredyCatX, nomolosScaredyCatY
 .importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
+.importzp nomolosWeaponAnim
 .importzp nomolosSubState
 .importzp nomolosLives
 .importzp nomolosBlinkCounter, nomolosHitboxCounter
@@ -44,8 +45,8 @@
 
   resetAnim nomolosAnim
   
-  lda #nomolosAttackFlail
-  sta nomolosSubState
+  ;lda #nomolosAttackFlail
+  ;sta nomolosSubState
   
   lda #0
   and #nomolosWalkingRightAND  
@@ -315,6 +316,9 @@ nomolosAttackFlailBranch:
   
   ;reset animation
   resetAnim nomolosAnim
+  
+  ;reset weapon animation
+  resetAnim nomolosWeaponAnim
   
 attackSwitchDone:
 skipAttack:
@@ -1241,6 +1245,20 @@ nomolosAttackFlailBranch:
   
   jsr updateAnimation
   
+  lda #<nomolosWeaponAnim
+  sta w1
+  lda #>nomolosWeaponAnim
+  sta w1+1
+
+  ldy #ROMDefinitionTableStruct::FlailBall
+  lda (romDefinitionTableBaseAddress),y
+  sta w2
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w2+1
+  
+  jsr updateAnimation
+  
 attackSwitchDone:
   rts
 skipUpdateNomolosFighting:
@@ -1298,6 +1316,20 @@ skipUpdateNomolosMoving:
   jsr drawAnimation16
   
   ldy #ROMDefinitionTableStruct::NomolosFlailOverlay
+  lda (romDefinitionTableBaseAddress),y
+  sta w2
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w2+1
+  
+  jsr drawAnimation16
+  
+  lda #<nomolosWeaponAnim
+  sta w1
+  lda #>nomolosWeaponAnim
+  sta w1+1
+  
+  ldy #ROMDefinitionTableStruct::FlailBall
   lda (romDefinitionTableBaseAddress),y
   sta w2
   iny

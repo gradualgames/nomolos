@@ -65,6 +65,7 @@ ROMDefinitionTable1:
   .word NomolosFightOverlay   
   .word NomolosUseFlail
   .word NomolosFlailOverlay
+  .word FlailBall
   .word SlumpedArmor0         
   .word SlumpedArmorOverlay0
   .word ScardyCat0

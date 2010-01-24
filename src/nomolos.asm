@@ -40,6 +40,7 @@
 .exportzp entityDefinitionTableBaseAddress, romDefinitionTableBaseAddress
 .exportzp metametaTileTableBaseAddress
 .exportzp currentLevel
+.exportzp nomolosWeaponAnim
 .exportzp nomolosAnim, nomolosScreenX, nomolosScreenY, nomolosState
 .exportzp nomolosSubState
 .exportzp nomolosHealth, nomolosBlinkCounter, nomolosHitboxCounter
@@ -122,6 +123,7 @@ nomolosScaredyCatY = nomolosHitboxY
 nomolosBelowPenetrationDistance: .res 1
 nomolosAbovePenetrationDistance: .res 1
 nomolosAnim: .res 2
+nomolosWeaponAnim: .res 2
 nomolosBlinkCounter: .res 1
 nomolosHitboxCounter: .res 1
 nomolosState: .res 1
