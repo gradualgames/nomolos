@@ -402,7 +402,7 @@ testPositiveWraparoundX:
 testNegativeWraparoundX:
 
   ;add the low byte of the x coordinate, known to be negative
-  sec
+  clc
   adc w3
   bcs wrapAroundTestDoneX
   ;carry was clear, there was negative wraparound

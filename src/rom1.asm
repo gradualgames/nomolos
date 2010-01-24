@@ -674,6 +674,7 @@ FlailBall:
 NomolosFlailOverlay:
   .byte $0a
   .word NomolosFlailOverlay0
+  .word NomolosFlailOverlay0
   .word $0000
 
 attackSound:

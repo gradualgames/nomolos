@@ -44,6 +44,9 @@
 
   resetAnim nomolosAnim
   
+  ;lda #nomolosAttackFlail
+  ;sta nomolosSubState
+  
   lda #0
   and #nomolosWalkingRightAND  
   sta nomolosState
@@ -1147,6 +1150,101 @@ skipUpdateNomolosMoving:
   
 .endproc
   
+.proc drawAttackFlail
+
+  ;draw the flail animation and flail ball animation here
+  lda #<nomolosAnim
+  sta w1
+  lda #>nomolosAnim
+  sta w1+1
+  
+  ldy #ROMDefinitionTableStruct::NomolosFlail
+  lda (romDefinitionTableBaseAddress),y
+  sta w2
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w2+1
+  
+  ;get the direction bit into bit 6 of b2 for horiz flip
+  clc
+  lda nomolosState
+  and #1
+  ror
+  ror
+  ror
+  sta b2
+  
+  lda nomolosScreenX
+  sta w3
+  lda nomolosScreenX+1
+  sta w3+1
+  lda nomolosScreenY
+  sta w4
+  lda nomolosScreenY+1
+  sta w4+1
+  
+  jsr drawAnimation16
+  
+  ldy #ROMDefinitionTableStruct::NomolosFlailOverlay
+  lda (romDefinitionTableBaseAddress),y
+  sta w2
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w2+1
+  
+  jsr drawAnimation16
+  
+  rts
+
+.endproc
+  
+.proc drawAttackSword
+
+  lda #<nomolosAnim
+  sta w1
+  lda #>nomolosAnim
+  sta w1+1
+  
+  ldy #ROMDefinitionTableStruct::NomolosFight
+  lda (romDefinitionTableBaseAddress),y
+  sta w2
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w2+1
+  
+  ;get the direction bit into bit 6 of b2 for horiz flip
+  clc
+  lda nomolosState
+  and #1
+  ror
+  ror
+  ror
+  sta b2
+  
+  lda nomolosScreenX
+  sta w3
+  lda nomolosScreenX+1
+  sta w3+1
+  lda nomolosScreenY
+  sta w4
+  lda nomolosScreenY+1
+  sta w4+1
+  
+  jsr drawAnimation16
+  
+  ldy #ROMDefinitionTableStruct::NomolosFightOverlay
+  lda (romDefinitionTableBaseAddress),y
+  sta w2
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w2+1
+  
+  jsr drawAnimation16
+  
+  rts
+
+.endproc
+  
 ;draws nomolos based on his current state.
 .proc drawNomolos
 
@@ -1252,48 +1350,18 @@ skipBlinkCheck:
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
+  cmp #nomolosAttackFlail
+  beq nomolosAttackFlailBranch
+  
+nomolosAttackFlailBranch:
+
+  jsr drawAttackFlail
+
+  jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
-  lda #<nomolosAnim
-  sta w1
-  lda #>nomolosAnim
-  sta w1+1
-  
-  ldy #ROMDefinitionTableStruct::NomolosFight
-  lda (romDefinitionTableBaseAddress),y
-  sta w2
-  iny
-  lda (romDefinitionTableBaseAddress),y
-  sta w2+1
-  
-  ;get the direction bit into bit 6 of b2 for horiz flip
-  clc
-  lda nomolosState
-  and #1
-  ror
-  ror
-  ror
-  sta b2
-  
-  lda nomolosScreenX
-  sta w3
-  lda nomolosScreenX+1
-  sta w3+1
-  lda nomolosScreenY
-  sta w4
-  lda nomolosScreenY+1
-  sta w4+1
-  
-  jsr drawAnimation16
-  
-  ldy #ROMDefinitionTableStruct::NomolosFightOverlay
-  lda (romDefinitionTableBaseAddress),y
-  sta w2
-  iny
-  lda (romDefinitionTableBaseAddress),y
-  sta w2+1
-  
-  jsr drawAnimation16
+
+  jsr drawAttackSword
   
   jmp attackSwitchDone
   
