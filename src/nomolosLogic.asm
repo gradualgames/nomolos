@@ -44,8 +44,8 @@
 
   resetAnim nomolosAnim
   
-  ;lda #nomolosAttackFlail
-  ;sta nomolosSubState
+  lda #nomolosAttackFlail
+  sta nomolosSubState
   
   lda #0
   and #nomolosWalkingRightAND  
@@ -104,6 +104,7 @@
   lda #maxLives
   sta nomolosLives
 :
+  rts
 
 .endproc
 
@@ -377,6 +378,112 @@ nomolosNotAttacking:
 
 .endproc
   
+.proc updateSwordAttack
+
+  lda nomolosState
+  and #1
+  beq skipNomolosFacingLeft
+  
+  clc
+  lda nomolosScreenX
+  adc #$f4
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$ff
+  sta nomolosHitboxX+1
+  
+  lda nomolosScreenY
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  sta nomolosHitboxY+1
+
+  jmp skipNomolosFacingRight
+skipNomolosFacingLeft:
+
+  clc
+  lda nomolosScreenX
+  adc #$10
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$00
+  sta nomolosHitboxX+1
+
+  lda nomolosScreenY
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  sta nomolosHitboxY+1
+
+skipNomolosFacingRight:
+
+  dec nomolosHitboxCounter
+  bne skipAttackUpdate
+  
+  ;set attack state to off
+  lda nomolosState
+  and #nomolosAttackOffAND
+  sta nomolosState
+  
+  ;reset animation object
+  resetAnim nomolosAnim
+skipAttackUpdate:
+
+  rts
+
+.endproc
+  
+.proc updateFlailAttack
+
+  lda nomolosState
+  and #1
+  beq skipNomolosFacingLeft
+  
+  clc
+  lda nomolosScreenX
+  adc #$f4
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$ff
+  sta nomolosHitboxX+1
+  
+  lda nomolosScreenY
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  sta nomolosHitboxY+1
+
+  jmp skipNomolosFacingRight
+skipNomolosFacingLeft:
+
+  clc
+  lda nomolosScreenX
+  adc #$10
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$00
+  sta nomolosHitboxX+1
+
+  lda nomolosScreenY
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  sta nomolosHitboxY+1
+
+skipNomolosFacingRight:
+
+  dec nomolosHitboxCounter
+  bne skipAttackUpdate
+  
+  ;set attack state to off
+  lda nomolosState
+  and #nomolosAttackOffAND
+  sta nomolosState
+  
+  ;reset animation object
+  resetAnim nomolosAnim
+skipAttackUpdate:
+
+  rts
+
+.endproc
+  
 .proc updateNomolos
 
   ;************************************************************
@@ -477,62 +584,29 @@ skipBlinkReset:
   ;Update hitbox counter if attack state on
   lda nomolosState
   and #nomolosAttackTestAND
-  beq skipAttackUpdate
+  beq skipAttack
   ;attack state was on
   
   lda nomolosSubState
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
+  cmp #nomolosAttackFlail
+  beq nomolosAttackFlailBranch
   jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
-  lda nomolosState
-  and #1
-  beq skipNomolosFacingLeft
+
+  jsr updateSwordAttack
+
+  jmp attackSwitchDone
   
-  clc
-  lda nomolosScreenX
-  adc #$f4
-  sta nomolosHitboxX
-  lda nomolosScreenX+1
-  adc #$ff
-  sta nomolosHitboxX+1
+nomolosAttackFlailBranch:
+
+  jsr updateFlailAttack
   
-  lda nomolosScreenY
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
-  sta nomolosHitboxY+1
-
-  jmp skipNomolosFacingRight
-skipNomolosFacingLeft:
-
-  clc
-  lda nomolosScreenX
-  adc #$10
-  sta nomolosHitboxX
-  lda nomolosScreenX+1
-  adc #$00
-  sta nomolosHitboxX+1
-
-  lda nomolosScreenY
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
-  sta nomolosHitboxY+1
-
-skipNomolosFacingRight:
-
-  dec nomolosHitboxCounter
-  bne skipAttackUpdate
-  
-  ;set attack state to off
-  lda nomolosState
-  and #nomolosAttackOffAND
-  sta nomolosState
-  
-  ;reset animation object
-  resetAnim nomolosAnim
-skipAttackUpdate:
+attackSwitchDone:
+skipAttack:
 
   ;Run attack routine if B transitions from off to on
   lda controllerBuffer+buttons::_b
@@ -542,11 +616,6 @@ skipAttackUpdate:
   bne :+
   jsr nomolosAttack
 :
-
-  jmp attackSwitchDone
-  
-attackSwitchDone:
-skipAttack:
 
   ;************************************************************
   ;Test for collisions above and below Nomolos.
@@ -1145,6 +1214,8 @@ notRight:
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
+  cmp #nomolosAttackFlail
+  beq nomolosAttackFlailBranch
   jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
@@ -1158,6 +1229,18 @@ nomolosAttackSwordBranch:
   jsr updateAnimation
   
   jmp attackSwitchDone
+  
+nomolosAttackFlailBranch:
+
+  ldy #ROMDefinitionTableStruct::NomolosFlail
+  lda (romDefinitionTableBaseAddress),y
+  sta w2
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w2+1
+  
+  jsr updateAnimation
+  
 attackSwitchDone:
   rts
 skipUpdateNomolosFighting:

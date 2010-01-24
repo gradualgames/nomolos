@@ -234,7 +234,7 @@ NomolosFlailOverlay0:
   .byte $01,$14,$01,$0b,$fd
   .byte $09,$17,$00,$03,$05
   .byte $09,$28,$01,$0b,$fd
-  
+
 ;Animations
 NomolosWalk:
   .byte $0a
@@ -298,7 +298,7 @@ NomolosFightOverlay:
   .word $0000
 
 NomolosUseFlail:
-  .byte $0a
+  .byte $06
   .word NomolosUseFlail0
   .word NomolosUseFlail1
   .word $0000
@@ -316,7 +316,8 @@ FlailBall:
   .word $0000
 
 NomolosFlailOverlay:
-  .byte $0a
+  .byte $06
   .word NomolosFlailOverlay0
   .word NomolosFlailOverlay0
   .word $0000
+
