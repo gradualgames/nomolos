@@ -209,7 +209,7 @@ FlailBall0:
   .byte $f0,$3a,$02,$ea,$16
 FlailBall1:
   .byte $01
-  .byte $f0,$3a,$02,$00,$00
+  .byte $ec,$3a,$02,$00,$00
 FlailBall2:
   .byte $01
   .byte $f0,$3a,$02,$16,$ea
@@ -221,7 +221,7 @@ FlailBall4:
   .byte $10,$3a,$02,$16,$ea
 FlailBall5:
   .byte $01
-  .byte $10,$3a,$02,$00,$00
+  .byte $14,$3a,$02,$00,$00
 FlailBall6:
   .byte $01
   .byte $10,$3a,$02,$ea,$16
@@ -234,6 +234,10 @@ NomolosFlailOverlay0:
   .byte $01,$14,$01,$0b,$fd
   .byte $09,$17,$00,$03,$05
   .byte $09,$28,$01,$0b,$fd
+FlailItem0:
+  .byte $02
+  .byte $00,$3b,$02,$00,$08
+  .byte $00,$3c,$02,$08,$00
 
 ;Animations
 NomolosWalk:
@@ -319,5 +323,10 @@ NomolosFlailOverlay:
   .byte $06
   .word NomolosFlailOverlay0
   .word NomolosFlailOverlay0
+  .word $0000
+
+FlailItem:
+  .byte $0a
+  .word FlailItem0
   .word $0000
 

@@ -51,7 +51,7 @@ MAP_FILE         = $(OUTPUT_NAME).map
 DEBUG_FILE      = $(OUTPUT_NAME).txt
 
 #Switches
-ASSEMBLER_FLAGS = -g -l -I include -I ft_driver -o
+ASSEMBLER_FLAGS = -g -l -I include -I include/entities -I include/spritesheets -I ft_driver -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) --dbgfile $(DEBUG_FILE) -o
 NAMELIST_GENERATOR_FLAGS = -o $(NES_FILE) \
                            -nl ram ZEROPAGE 0000 \
@@ -77,7 +77,7 @@ $(NES_FILE): $(OBJECT_FILES) $(CONFIG_FILE)
 	$(LINKER) $(OBJECT_FILES) $(LINKER_FLAGS) $(NES_FILE)
 
 #Rule for assembling all the object files from source files
-$(OBJECT_FILES): $(BIN_DIR)/%.o : $(SRC_DIR)/%.asm $(INCLUDE_FILES)
+$(OBJECT_FILES): $(BIN_DIR)/%.o : $(SRC_DIR)/%.asm
 	$(ASSEMBLER) $< $(ASSEMBLER_FLAGS) $@
 
 #Rule for cleaning the build

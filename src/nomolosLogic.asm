@@ -45,8 +45,8 @@
 
   resetAnim nomolosAnim
   
-  ;lda #nomolosAttackFlail
-  ;sta nomolosSubState
+  lda #nomolosAttackSword
+  sta nomolosSubState
   
   lda #0
   and #nomolosWalkingRightAND  
@@ -342,6 +342,8 @@ skipAttack:
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
+  cmp #nomolosAttackFlail
+  beq nomolosAttackFlailBranch
   jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
@@ -358,6 +360,13 @@ nomolosAttackSwordBranch:
 nomolosPawNotExtended:
   
   jmp attackSwitchDone
+  
+nomolosAttackFlailBranch:
+
+  ;lets just say he's always deadly
+  lda #1
+  
+  rts
   
 attackSwitchDone:
   
@@ -437,13 +446,13 @@ skipAttackUpdate:
   
 .proc updateFlailAttack
 
-  lda nomolosState
+  lda nomolosHitboxCounter
   and #1
   beq skipNomolosFacingLeft
   
   clc
   lda nomolosScreenX
-  adc #$f4
+  adc #$e0
   sta nomolosHitboxX
   lda nomolosScreenX+1
   adc #$ff
@@ -459,7 +468,7 @@ skipNomolosFacingLeft:
 
   clc
   lda nomolosScreenX
-  adc #$10
+  adc #$20
   sta nomolosHitboxX
   lda nomolosScreenX+1
   adc #$00

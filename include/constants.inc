@@ -66,6 +66,7 @@ nomolosAttackedDyingTestAND = %00000001
 nomolosFellDyingAND        = %11111110
 
 nomolosAttackTestMask  = %00000110
+nomolosAttackSetMask   = %11111001
 nomolosAttackSword     = %00000000
 nomolosAttackFlail     = %00000010
 ;nomolosAttackCrossbow = %00000100
