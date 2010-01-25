@@ -44,9 +44,7 @@
 .proc initNomolos
 
   resetAnim nomolosAnim
-  
-  lda #nomolosAttackSword
-  sta nomolosSubState
+  resetAnim nomolosWeaponAnim
   
   lda #0
   and #nomolosWalkingRightAND  
@@ -187,6 +185,11 @@ skipHurt:
   and #nomolosDyingTestAND
   bne alreadyDying
 
+  ;lose special weapon if any
+  lda nomolosSubState
+  and #nomolosAttackSetMask
+  sta nomolosSubState
+  
   ;decrease Nomolos' lives
   dec nomolosLives
   
@@ -223,6 +226,11 @@ alreadyDying:
   ;decrease Nomolos' lives
   dec nomolosLives
 
+  ;lose special weapon if any
+  lda nomolosSubState
+  and #nomolosAttackSetMask
+  sta nomolosSubState
+  
   ;make nomolos die.
   lda nomolosState
   ora #nomolosDyingOnOR
