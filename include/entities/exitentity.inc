@@ -72,9 +72,9 @@ skipJmpNotTouching:
   
 notTouching:
 
-  jmp returnFromEntityUpdate
+  rts
 
 exitDie:
   lda #0
   sta entityPool+entityRAM::alive,x
-  jmp returnFromEntityUpdate
+  rts

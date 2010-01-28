@@ -24,7 +24,7 @@ explosionInit:
   lda #EXPLOSION_EXPLODESTATE
   sta entityPool+entityRAM::state,x
   
-  jmp returnFromEntityUpdate
+  rts
   
 explosionExplode:
 
@@ -84,13 +84,13 @@ explosionExplode:
   beq explosionDie
 @skipFrameCounterTest:
 
-  jmp returnFromEntityUpdate
+  rts
   
 explosionDie:
 
   lda #0
   sta entityPool+entityRAM::alive,x
 
-  jmp returnFromEntityUpdate
+  rts
   
 .endif

@@ -461,7 +461,7 @@ getOneUpSound:
 EntityDefinitionTable:
 DeentleIndex = 0
 DeentleEntity:
-  .word deentleUpdate
+  .word deentleUpdate-1
   .byte $00
   .byte $00
   .byte %00000000
@@ -470,7 +470,7 @@ DeentleEntity:
   .byte $00
 ExplosionIndex = 1
 ExplosionEntity:
-  .word explosionUpdate
+  .word explosionUpdate-1
   .byte $00
   .byte $00
   .byte %00000000
@@ -479,7 +479,7 @@ ExplosionEntity:
   .byte $00
 MouseIndex = 2
 MouseEntity:
-  .word mouseUpdate
+  .word mouseUpdate-1
   .byte $00
   .byte $f9
   .byte %00000000
@@ -488,7 +488,7 @@ MouseEntity:
   .byte $00
 ExitLevelEntityIndex = 3
 ExitLevelEntity:
-  .word exitLevelUpdate
+  .word exitLevelUpdate-1
   .byte $00
   .byte $f9
   .byte %00000000
@@ -497,16 +497,16 @@ ExitLevelEntity:
   .byte $00
 OneUpEntityIndex = 4
 OneUpEntity:
-  .word oneUpUpdate
+  .word oneUpUpdate-1
   .byte $00
   .byte $00
   .byte %00000000
   .byte $00
   .byte $00
   .byte $00
- 
+  
 .include "oneup.inc"
 .include "exitentity.inc"
 .include "mouse.inc"
-.include "explosion.inc"
+.include "explosion.inc"  
 .include "deentle.inc"

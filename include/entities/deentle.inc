@@ -28,7 +28,7 @@ deentle_initState:
   ;switch state to "run"
   lda #DEENTLE_MOVELEFTSTATE
   sta entityPool+entityRAM::state,x
-  jmp returnFromEntityUpdate
+  rts
 
 deentle_moveRightState:
 
@@ -67,7 +67,7 @@ dontSwitchToLeftState:
 
   jsr deentle_draw
 
-  jmp returnFromEntityUpdate
+  rts
 
 deentle_moveLeftState:
 
@@ -108,7 +108,7 @@ dontSwitchToRightState:
 
   jsr deentle_draw
 
-  jmp returnFromEntityUpdate
+  rts
   
   rts
   

@@ -23,7 +23,7 @@ mouseInit:
   lda #MOUSE_SITTHERESTATE
   sta entityPool+entityRAM::state,x
 
-  jmp returnFromEntityUpdate
+  rts
   
 mouseSitThere:
 
@@ -162,13 +162,13 @@ mouseOnScreen:
   
 mouseOffScreen:
   
-  jmp returnFromEntityUpdate
+  rts
   
 mouseDie:
 
   lda #0
   sta entityPool+entityRAM::alive,x
 
-  jmp returnFromEntityUpdate
+  rts
   
 .endif

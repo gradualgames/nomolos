@@ -96,12 +96,12 @@ notTouching:
   
   jsr drawMetaSprite16
   
-  jmp returnFromEntityUpdate
+  rts
 
 oneUpDie:
 
   lda #0
   sta entityPool+entityRAM::alive,x
-  jmp returnFromEntityUpdate
+  rts
   
 .endproc

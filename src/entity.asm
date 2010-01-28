@@ -1,10 +1,11 @@
 .include "structs.inc"
 
+.import indirectJsr
 .import entityPool
 
 .importzp b0, b1, b2, w0, entityDefinitionTableBaseAddress
 
-.export updateEntities, returnFromEntityUpdate, initEntities, spawnEntity
+.export updateEntities, initEntities, spawnEntity
 
 .segment "CODE"
 
@@ -51,8 +52,8 @@ nextEntity:
   sta w0+1
 
   ;jump to the entity update routine indirectly
-  jmp (w0)
-returnFromEntityUpdate:
+  jsr indirectJsr
+  
   ;entities are expected to return here.
 skipUpdate:
   ;restore y

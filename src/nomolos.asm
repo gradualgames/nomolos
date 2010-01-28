@@ -57,6 +57,7 @@
 .export stack, sprite, entityPool
 
 ;misc
+.export indirectJsr
 .export bankswitch, loadChr
 .export loadPalette, loadNametable, clearNametable
 .export displayString, createDecimalString
@@ -224,6 +225,38 @@ updateFinished:
 
   jmp loop
 
+vblank:
+
+  pha
+  txa
+  pha
+  tya
+  pha
+  php
+  
+  jmp (updatePPU)
+
+updatePPUFinished:
+
+  plp
+  pla
+  tay
+  pla
+  tax
+  pla
+
+irq:
+  rti
+  
+;uses the RTS trick to indirectly jump to an address located in w0.
+indirectJsr:
+  lda w0+1    ;RTS will expect the low byte to be popped first,
+              ;so we need to push the high byte first
+  pha
+  lda w0      ;push the low byte
+  pha
+  rts         ;this rts will launch our indirect subroutine call.
+  
 ;bankswitches using UnROM.
 ;b0 - the bank to switch to
 bankswitch:
@@ -501,29 +534,6 @@ loadPalette:
   bne :-
   rts
 
-vblank:
-
-  pha
-  txa
-  pha
-  tya
-  pha
-  php
-  
-  jmp (updatePPU)
-
-updatePPUFinished:
-
-  plp
-  pla
-  tay
-  pla
-  tax
-  pla
-
-irq:
-  rti
-  
 ;level definitions
 LevelDefinitionTable:
 Level1:
