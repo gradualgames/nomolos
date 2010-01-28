@@ -380,7 +380,7 @@ getFlailItemSound:
 EntityDefinitionTable:
 DeentleIndex = 0
 DeentleEntity:
-  .word deentleUpdate-1
+  .word deentleUpdate
   .byte $00
   .byte $00
   .byte %00000000
@@ -389,7 +389,7 @@ DeentleEntity:
   .byte $00
 ExplosionIndex = 1
 ExplosionEntity:
-  .word explosionUpdate-1
+  .word explosionUpdate
   .byte $00
   .byte $00
   .byte %00000000
@@ -398,7 +398,7 @@ ExplosionEntity:
   .byte $00
 MouseIndex = 2
 MouseEntity:
-  .word mouseUpdate-1
+  .word mouseUpdate
   .byte $00
   .byte $f9
   .byte %00000000
@@ -407,7 +407,7 @@ MouseEntity:
   .byte $00
 ExitLevelEntityIndex = 3
 ExitLevelEntity:
-  .word exitLevelUpdate-1
+  .word exitLevelUpdate
   .byte $00
   .byte $f9
   .byte %00000000
@@ -416,7 +416,7 @@ ExitLevelEntity:
   .byte $00
 OneUpEntityIndex = 4
 OneUpEntity:
-  .word oneUpUpdate-1
+  .word oneUpUpdate
   .byte $00
   .byte $00
   .byte %00000000
@@ -425,7 +425,7 @@ OneUpEntity:
   .byte $00
 FlailItemEntityIndex = 4
 FlailItemEntity:
-  .word flailItemUpdate-1
+  .word flailItemUpdate
   .byte $00
   .byte $f9
   .byte %00000000

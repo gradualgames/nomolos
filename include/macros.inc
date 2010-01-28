@@ -36,17 +36,9 @@ MACROS_INC = 1
 
 .macro indirectJsr address
 
-  lda #>(*+12)
-  pha
-  lda #<(*+9)
-  pha
-  
-  lda address+1
-  pha
-  lda address
-  pha
-  
-  rts ;indirectly call the update
+  jmp *+6
+  jmp (address)
+  jsr *-3
 
 .endmacro
 
@@ -61,13 +53,13 @@ MACROS_INC = 1
 ;Switches state so the main loop and vblank indirectly jump to different places.
 ;Assumes availability of zp variables update and updatePPU.
 .macro switchState updateAddr, updatePPUAddr
-  lda #<(updateAddr-1)
+  lda #<(updateAddr)
   sta update
-  lda #>(updateAddr-1)
+  lda #>(updateAddr)
   sta update+1
-  lda #<(updatePPUAddr-1)
+  lda #<(updatePPUAddr)
   sta updatePPU
-  lda #>(updatePPUAddr-1)
+  lda #>(updatePPUAddr)
   sta updatePPU+1
 .endmacro
 
