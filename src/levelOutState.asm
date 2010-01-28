@@ -14,9 +14,6 @@
 .importzp update, updatePPU
 .importzp nomolosLives
 
-;state return labels
-.import updatePPUFinished, updateFinished
-
 ;game over state labels
 .import gameOverUpdate, gameOverUpdatePPU
 
@@ -29,7 +26,7 @@
 
 levelOutUpdate:
 
-  jmp updateFinished
+  rts
   
 levelOutPPUUpdate:
 
@@ -191,4 +188,5 @@ stateCommandComplete:
   jsr ft_music_play
   .endif
 
-  jmp updatePPUFinished
+  rts
+  

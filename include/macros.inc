@@ -3,6 +3,53 @@ MACROS_INC = 1
 
 .include "structs.inc"
 
+.macro initNES
+
+  sei
+  cld
+  ldx #$FF
+  txs
+  inx
+  stx $2001
+
+  waitVBlank
+  waitVBlank
+
+.endmacro
+
+.macro clearRAM
+
+  lda #$00
+:
+  sta $0000, x
+  sta $0100, x
+  sta $0200, x
+  sta $0300, x
+  sta $0400, x
+  sta $0500, x
+  sta $0600, x
+  sta $0700, x
+  inx
+  bne :-
+
+.endmacro
+
+.macro indirectJsr address
+
+  lda #>(*+12)
+  pha
+  lda #<(*+9)
+  pha
+  
+  lda address+1
+  pha
+  lda address
+  pha
+  
+  rts ;indirectly call the update
+
+.endmacro
+
 .macro waitVBlank
 
 :
@@ -14,13 +61,13 @@ MACROS_INC = 1
 ;Switches state so the main loop and vblank indirectly jump to different places.
 ;Assumes availability of zp variables update and updatePPU.
 .macro switchState updateAddr, updatePPUAddr
-  lda #<updateAddr
+  lda #<(updateAddr-1)
   sta update
-  lda #>updateAddr
+  lda #>(updateAddr-1)
   sta update+1
-  lda #<updatePPUAddr
+  lda #<(updatePPUAddr-1)
   sta updatePPU
-  lda #>updatePPUAddr
+  lda #>(updatePPUAddr-1)
   sta updatePPU+1
 .endmacro
 

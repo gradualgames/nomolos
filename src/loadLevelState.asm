@@ -15,8 +15,6 @@
 .import resetCamera
 ;nomolos logic module
 .import initNomolos
-;state return labels
-.import updatePPUFinished, updateFinished
 ;play level state
 .import playLevelUpdatePPU, playLevelUpdate
 ;map update routines
@@ -260,7 +258,7 @@ loadLevelStateDone:
   
 stateSwitchComplete:
 
-  jmp updateFinished
+  rts
   
 loadLevelUpdatePPU:
-  jmp updatePPUFinished  
+  rts  

@@ -15,9 +15,6 @@
 ;sprite module
 .import clearSprites, updateSprites
 
-;state return labels
-.import updatePPUFinished, updateFinished
-
 ;level in state labels
 .import titleStateUpdate, titleStateUpdatePPU
 
@@ -159,10 +156,11 @@ gameOverStateDone:
   
 stateCommandComplete:
 
-  jmp updateFinished
+  rts
 
 gameOverUpdatePPU:
 
   dec frameCounter
 
-  jmp updatePPUFinished
+  rts
+  

@@ -16,9 +16,6 @@
 ;level in state labels
 .import levelInUpdate, levelInPPUUpdate
 
-;state return labels
-.import updatePPUFinished, updateFinished
-
 ;zeropage labels
 .importzp b0, w0
 .importzp stateControl
@@ -138,8 +135,9 @@ titleStateDone:
   
 stateCommandComplete:
 
-  jmp updateFinished
+  rts
   
 titleStateUpdatePPU:
 
-  jmp updatePPUFinished
+  rts
+  

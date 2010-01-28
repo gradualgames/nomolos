@@ -12,8 +12,6 @@
 .import playSound
 ;level out state labels
 .import levelOutUpdate, levelOutPPUUpdate
-;state return labels
-.import updatePPUFinished, updateFinished
 ;input system labels
 .import readController
 ;map drawing labels
@@ -97,7 +95,7 @@ stateCommandComplete:
   sta $2001
   .endif
     
-  jmp updateFinished
+  rts
   
 playLevelUpdatePPU:
 
@@ -113,4 +111,5 @@ playLevelUpdatePPU:
   
   lda #1
   sta vblankDone
-  jmp updatePPUFinished  
+  rts
+  

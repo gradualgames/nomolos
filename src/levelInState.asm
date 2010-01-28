@@ -226,10 +226,11 @@ levelInStateDone:
   
 stateCommandComplete:
 
-  jmp updateFinished
+  rts
 
 levelInPPUUpdate:
 
   dec frameCounter
 
-  jmp updatePPUFinished
+  rts
+  

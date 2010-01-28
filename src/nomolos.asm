@@ -57,7 +57,6 @@
 .export stack, sprite, entityPool
 
 ;misc
-.export indirectJsr
 .export bankswitch, loadChr
 .export loadPalette, loadNametable, clearNametable
 .export displayString, createDecimalString
@@ -68,9 +67,6 @@
 .export livesString, levelString, gameOverString
 .export LevelDefinitionTable
 .export titleDef
-
-;update return labels
-.export updatePPUFinished, updateFinished
 
 .segment "HEADER"
 .byte "NES",$1a        ;iNES header
@@ -177,38 +173,6 @@ entityPool: .res 256
 
 .segment "CODE"
 
- 
-.macro initNES
-
-  sei
-  cld
-  ldx #$FF
-  txs
-  inx
-  stx $2001
-
-  waitVBlank
-  waitVBlank
-
-.endmacro
-
-.macro clearRAM
-
-  lda #$00
-:
-  sta $0000, x
-  sta $0100, x
-  sta $0200, x
-  sta $0300, x
-  sta $0400, x
-  sta $0500, x
-  sta $0600, x
-  sta $0700, x
-  inx
-  bne :-
-
-.endmacro
-
 reset:
   initNES
   clearRAM
@@ -219,10 +183,8 @@ reset:
   
 loop:
 
-  jmp (update)
-
-updateFinished:
-
+  indirectJsr update
+  
   jmp loop
 
 vblank:
@@ -234,9 +196,7 @@ vblank:
   pha
   php
   
-  jmp (updatePPU)
-
-updatePPUFinished:
+  indirectJsr updatePPU
 
   plp
   pla
@@ -247,15 +207,6 @@ updatePPUFinished:
 
 irq:
   rti
-  
-;uses the RTS trick to indirectly jump to an address located in w0.
-indirectJsr:
-  lda w0+1    ;RTS will expect the low byte to be popped first,
-              ;so we need to push the high byte first
-  pha
-  lda w0      ;push the low byte
-  pha
-  rts         ;this rts will launch our indirect subroutine call.
   
 ;bankswitches using UnROM.
 ;b0 - the bank to switch to

@@ -1,6 +1,6 @@
 .include "structs.inc"
+.include "macros.inc"
 
-.import indirectJsr
 .import entityPool
 
 .importzp b0, b1, b2, w0, entityDefinitionTableBaseAddress
@@ -52,7 +52,7 @@ nextEntity:
   sta w0+1
 
   ;jump to the entity update routine indirectly
-  jsr indirectJsr
+  indirectJsr w0
   
   ;entities are expected to return here.
 skipUpdate:
