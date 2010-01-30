@@ -56,13 +56,11 @@
 ;temporary
 .export NomolosWalk0
 
-.segment "ROM0"
-
-music:
-.incbin "data/music.bin"
-
+.segment "CODE"
 ;ROM definition table
 ROMDefinitionTable0:
+  .byte $00
+  .byte $00
   .word NomolosWalk            
   .word NomolosWalkOverlay     
   .word NomolosJump            
@@ -86,6 +84,69 @@ ROMDefinitionTable0:
   .word EntityDefinitionTable  
   .word music                  
   .byte $01
+
+;Entities
+EntityDefinitionTable:
+DeentleIndex = 0
+DeentleEntity:
+  .word deentleUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+ExplosionIndex = 1
+ExplosionEntity:
+  .word explosionUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+MouseIndex = 2
+MouseEntity:
+  .word mouseUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+ExitLevelEntityIndex = 3
+ExitLevelEntity:
+  .word exitLevelUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+OneUpEntityIndex = 4
+OneUpEntity:
+  .word oneUpUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+FlailItemEntityIndex = 4
+FlailItemEntity:
+  .word flailItemUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+  
+.segment "ROM0"
+
+music:
+.incbin "data/music.bin"
+
 
 palette:
 
@@ -376,63 +437,6 @@ getFlailItemSound:
   .byte $01
   .byte $ff
  
-;Entities
-EntityDefinitionTable:
-DeentleIndex = 0
-DeentleEntity:
-  .word deentleUpdate
-  .byte $00
-  .byte $00
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-ExplosionIndex = 1
-ExplosionEntity:
-  .word explosionUpdate
-  .byte $00
-  .byte $00
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-MouseIndex = 2
-MouseEntity:
-  .word mouseUpdate
-  .byte $00
-  .byte $f9
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-ExitLevelEntityIndex = 3
-ExitLevelEntity:
-  .word exitLevelUpdate
-  .byte $00
-  .byte $f9
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-OneUpEntityIndex = 4
-OneUpEntity:
-  .word oneUpUpdate
-  .byte $00
-  .byte $00
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-FlailItemEntityIndex = 4
-FlailItemEntity:
-  .word flailItemUpdate
-  .byte $00
-  .byte $f9
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-  
 .include "oneup.inc"
 .include "exitentity.inc"
 .include "mouse.inc"

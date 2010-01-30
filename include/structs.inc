@@ -109,6 +109,8 @@ TITLESTATE_DONE = %00000010
 .endstruct
 
 .struct ROMDefinitionTableStruct
+  NomolosAndEntityBank .byte
+  LevelAndMusicBank .byte
   NomolosWalk .word
   NomolosWalkOverlay .word
   NomolosJump .word

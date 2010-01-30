@@ -2,6 +2,8 @@
 .include "structs.inc"
 .include "macros.inc"
 
+;main module
+.import bankswitch
 ;rom labels
 .import Heart0
 ;famitracker module
@@ -32,6 +34,7 @@
 .importzp spriteAddress, spriteAddressStart, vblankDone
 .importzp stateControl
 .importzp b0, b1, b2, w0, controllerBuffer
+.importzp romDefinitionTableBaseAddress
 
 ;play level state labels
 .export playLevelUpdate, playLevelUpdatePPU
@@ -56,10 +59,22 @@ playLevelUpdate:
   
   jsr clearSprites
   
+  ;switch to the actor and entity bank
+  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
+  
   jsr updateNomolos
   jsr drawNomolos
   jsr drawNomolosHearts
   jsr updateEntities
+  
+  ;switch to the level and music bank
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
   
   jsr decodeMap
     
@@ -105,6 +120,12 @@ playLevelUpdatePPU:
   jsr updateScrollPPU
   
   .ifdef MUSIC_ENABLE
+  ;switch to the level and music bank
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
+  
   jsr ft_music_play
   .endif
   jsr playSound

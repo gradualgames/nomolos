@@ -6,6 +6,7 @@
 ;zp variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosScreenX, nomolosScreenY, nomolosState
+.importzp nomolosSubState
 .importzp nomolosHitboxX, nomolosHitboxY
 .importzp nomolosLives
 .importzp soundAddr, soundOff
@@ -50,13 +51,12 @@
 
 .export ROMDefinitionTable1
 
-.segment "ROM1"
-
-music:
-.incbin "data/music1.bin"
+.segment "CODE"
 
 ;ROM definition table
 ROMDefinitionTable1:
+  .byte $01
+  .byte $01
   .word NomolosWalk           
   .word NomolosWalkOverlay    
   .word NomolosJump           
@@ -80,7 +80,69 @@ ROMDefinitionTable1:
   .word EntityDefinitionTable 
   .word music                 
   .byte $00
+
+;Entities
+EntityDefinitionTable:
+DeentleIndex = 0
+DeentleEntity:
+  .word deentleUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+ExplosionIndex = 1
+ExplosionEntity:
+  .word explosionUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+MouseIndex = 2
+MouseEntity:
+  .word mouseUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+ExitLevelEntityIndex = 3
+ExitLevelEntity:
+  .word exitLevelUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+OneUpEntityIndex = 4
+OneUpEntity:
+  .word oneUpUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+FlailItemEntityIndex = 4
+FlailItemEntity:
+  .word flailItemUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
   
+.segment "ROM1"
+
+music:
+.incbin "data/music1.bin"
+
 palette:
 
 ;Image Palette
@@ -457,56 +519,38 @@ getOneUpSound:
   .byte $01
   .byte $ff
  
-;Entities
-EntityDefinitionTable:
-DeentleIndex = 0
-DeentleEntity:
-  .word deentleUpdate
-  .byte $00
-  .byte $00
+getFlailItemSound:
+  .byte DISABLE_FAMITRACKER_CHANNEL
+  .byte $01 
+  .byte $04
+  .byte $84
+  .byte $05
   .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-ExplosionIndex = 1
-ExplosionEntity:
-  .word explosionUpdate
-  .byte $00
-  .byte $00
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-MouseIndex = 2
-MouseEntity:
-  .word mouseUpdate
-  .byte $00
-  .byte $f9
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-ExitLevelEntityIndex = 3
-ExitLevelEntity:
-  .word exitLevelUpdate
-  .byte $00
-  .byte $f9
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-OneUpEntityIndex = 4
-OneUpEntity:
-  .word oneUpUpdate
-  .byte $00
-  .byte $00
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-  
+  .byte $07
+  .byte %00001000
+  .byte $06
+  .byte %11111111
+  .byte $06
+  .byte %10111111
+  .byte $06
+  .byte %01111111
+  .byte $06
+  .byte %00111111  
+  .byte $06
+  .byte %11111111
+  .byte $06
+  .byte %10111111
+  .byte $06
+  .byte %01111111
+  .byte $06
+  .byte %00111111  
+  .byte ENABLE_FAMITRACKER_CHANNEL
+  .byte $01
+  .byte $ff
+ 
 .include "oneup.inc"
 .include "exitentity.inc"
 .include "mouse.inc"
 .include "explosion.inc"  
 .include "deentle.inc"
+.include "flailitem.inc"
