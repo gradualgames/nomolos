@@ -4,6 +4,7 @@ EXPLOSION_INC = 1
 EXPLOSION_INITSTATE = 0
 EXPLOSION_EXPLODESTATE = 1
 
+.export explosionUpdate
 explosionUpdate:
 
   lda entityPool+entityRAM::state,x

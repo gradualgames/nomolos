@@ -4,6 +4,7 @@ MOUSE_INC = 1
 MOUSE_INITSTATE = 0
 MOUSE_SITTHERESTATE = 1
 
+.export mouseUpdate
 mouseUpdate:
 
   lda entityPool+entityRAM::state,x

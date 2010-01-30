@@ -5,6 +5,7 @@ DEENTLE_INITSTATE = 0
 DEENTLE_MOVERIGHTSTATE = 1
 DEENTLE_MOVELEFTSTATE = 2
 
+.export deentleUpdate
 deentleUpdate:
 
   ;load current state

@@ -3,9 +3,73 @@
 .include "flags.inc"
 .include "structs.inc"
 
+;labels from sprite sheet
+.import NomolosWalk0
+.import NomolosWalk1
+.import NomolosWalk2
+.import NomolosJump0
+.import NomolosWalkOverlay0
+.import NomolosWalkOverlay1
+.import NomolosWalkOverlay2
+.import NomolosJumpOverlay0
+.import Heart0
+.import Deentle0
+.import Deentle1
+.import Explosion0
+.import Explosion1
+.import Explosion2
+.import Mouse0
+.import SlumpedArmor0
+.import SlumpedArmorOverlay0
+.import ScardyCat0
+.import ScardyCatOverlay0
+.import NomolosFight0
+.import NomolosFight1
+.import NomolosFightOverlay0
+.import NomolosFightOverlay1
+.import OneUp0
+.import NomolosUseFlail0
+.import NomolosUseFlail1
+.import FlailBall0
+.import FlailBall1
+.import FlailBall2
+.import FlailBall3
+.import FlailBall4
+.import FlailBall5
+.import FlailBall6
+.import FlailBall7
+.import NomolosFlailOverlay0
+.import FlailItem0
+
+
+.import NomolosWalk
+.import NomolosJump
+.import NomolosWalkOverlay
+.import NomolosJumpOverlay
+.import Heart
+.import DeentleWalk
+.import Explosion
+.import Mouse
+.import NomolosFight
+.import NomolosFightOverlay
+.import NomolosUseFlail
+.import FlailBall
+.import NomolosFlailOverlay
+.import FlailItem
+
+.import flailItemUpdate
+.import oneUpUpdate
+.import mouseUpdate
+.import explosionUpdate
+.import deentleUpdate
+.import exitLevelUpdate
+.import hitSound
+.import attackSound
+
+.import level1palette, level1MetaTileTable, level1MetaMetaTileTable, level1Level, level1music
+.import level2palette, level2MetaTileTable, level2MetaMetaTileTable, level2Level, level2music
+
 ;ROM labels
-.import ROMDefinitionTable0
-.import ROMDefinitionTable1
 
 .import Level1Chr
 .import Level2Chr
@@ -32,6 +96,7 @@
 ;global variables/RAM labels
 .exportzp b0, b1, b2, b3, b4, b5, b6, b7, b8, b9
 .exportzp w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, vblankDone
+.exportzp currentBank
 .exportzp stringBuffer
 .exportzp stateControl
 .exportzp update, updatePPU, attributeBuffer, attributeColumnToUpdate
@@ -96,6 +161,8 @@ w6:       .res 2
 w7:       .res 2
 w8:       .res 2
 w9:       .res 2
+
+currentBank: .res 1
 
 stringBuffer: .res 8
 
@@ -223,6 +290,7 @@ bankswitch:
   ldx b0
   lda banktable,x        ;read a byte from the banktable
   sta banktable,x        ;and write it back, switching banks at $8000
+  sta currentBank        ;store off the current bank
  
   pla
   tax 
@@ -491,6 +559,113 @@ loadPalette:
   bne :-
   rts
 
+;ROM definition table
+ROMDefinitionTable0:
+  .byte $02
+  .byte $00
+  .word NomolosWalk            
+  .word NomolosWalkOverlay     
+  .word NomolosJump            
+  .word NomolosJumpOverlay     
+  .word NomolosFight           
+  .word NomolosFightOverlay    
+  .word NomolosUseFlail
+  .word NomolosFlailOverlay
+  .word FlailBall
+  .word SlumpedArmor0           
+  .word SlumpedArmorOverlay0
+  .word ScardyCat0
+  .word ScardyCatOverlay0
+  .word Heart0                 
+  .word attackSound            
+  .word hitSound               
+  .word level1palette                
+  .word level1MetaTileTable          
+  .word level1MetaMetaTileTable      
+  .word level1Level                  
+  .word EntityDefinitionTable  
+  .word level1music                  
+  .byte $01
+
+;ROM definition table
+ROMDefinitionTable1:
+  .byte $02
+  .byte $01
+  .word NomolosWalk           
+  .word NomolosWalkOverlay    
+  .word NomolosJump           
+  .word NomolosJumpOverlay    
+  .word NomolosFight          
+  .word NomolosFightOverlay   
+  .word NomolosUseFlail
+  .word NomolosFlailOverlay
+  .word FlailBall
+  .word SlumpedArmor0         
+  .word SlumpedArmorOverlay0
+  .word ScardyCat0
+  .word ScardyCatOverlay0
+  .word Heart0                
+  .word attackSound           
+  .word hitSound              
+  .word level2palette               
+  .word level2MetaTileTable         
+  .word level2MetaMetaTileTable     
+  .word level2Level                 
+  .word EntityDefinitionTable 
+  .word level2music                 
+  .byte $00
+  
+;Entities
+EntityDefinitionTable:
+DeentleEntity:
+  .word deentleUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+ExplosionEntity:
+  .word explosionUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+MouseEntity:
+  .word mouseUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+ExitLevelEntity:
+  .word exitLevelUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+OneUpEntity:
+  .word oneUpUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+FlailItemEntity:
+  .word flailItemUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+  
 ;level definitions
 LevelDefinitionTable:
 Level1:

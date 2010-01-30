@@ -1,8 +1,13 @@
 .include "constants.inc"
+.include "structs.inc"
 
 ;famitracker labels
+.import bankswitch
 .import ft_enable_channel, ft_disable_channel
 
+.importzp b0
+.importzp currentBank
+.importzp romDefinitionTableBaseAddress
 .importzp soundAddr, soundOff, w0
 
 .export initsound, lowc
@@ -135,6 +140,13 @@ soundDone:
 ;w0 = address of sound to load
 .proc loadSound
 
+  lda currentBank
+  pha
+  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
+
   jsr finishSound
   lda w0
   sta soundAddr
@@ -142,6 +154,10 @@ soundDone:
   sta soundAddr+1
   lda #0
   sta soundOff  
+  
+  pla
+  sta b0
+  jsr bankswitch
 
   rts
 

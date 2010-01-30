@@ -30,6 +30,7 @@
 ;nomolos logic labels
 .import updateNomolos, drawNomolos, drawNomolosHearts
 ;global variables
+.importzp currentBank
 .importzp update, updatePPU
 .importzp spriteAddress, spriteAddressStart, vblankDone
 .importzp stateControl
@@ -121,13 +122,18 @@ playLevelUpdatePPU:
   
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  ;ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  ;lda (romDefinitionTableBaseAddress),y
+  ;sta b0
+  jsr ft_music_play
+
+  .endif
+  
+  ;switch to the nomolos and entity (and sound effects) bank
+  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
   lda (romDefinitionTableBaseAddress),y
   sta b0
   jsr bankswitch
-  
-  jsr ft_music_play
-  .endif
   jsr playSound
   
   lda #1

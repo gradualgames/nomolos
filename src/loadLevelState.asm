@@ -236,7 +236,19 @@ loadLevelStateDone:
 
   ;switch to play level state.  
   ;keep any new entities positioned where they need to be
+  ;switch to the actor and entity bank
+  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
+  
   jsr updateEntities
+  
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
+  
   lda #$24
   sta nametableToUpdate  
 

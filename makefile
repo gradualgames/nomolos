@@ -19,6 +19,7 @@ FILES           = nomolos \
                   nomolosLogic \
                   rom0 \
                   rom1 \
+                  rom2 \
                   chrrom0 \
                   chrrom1 \
                   chrrom2 \

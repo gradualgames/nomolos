@@ -3,6 +3,8 @@
 .include "structs.inc"
 .include "flags.inc"
 
+.import bankswitch
+
 ;Sprite module labels
 .import drawMetaSprite, drawMetaSprite16, drawAnimation, drawAnimation16, updateAnimation
 
@@ -19,6 +21,7 @@
 .import ft_music_init
 
 ;global variables
+.importzp currentBank
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
 .importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
 .importzp nomolosHitboxX, nomolosHitboxY
@@ -506,6 +509,17 @@ skipAttackUpdate:
 .endproc
   
 .proc updateNomolos
+
+  ;make sure to swap to the bank containing the level and music data first
+  ;save current bank number
+  lda currentBank
+  pha
+  
+  ;switch to the PRG bank containing level data
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
 
   ;************************************************************
   ;Load NomolosY coordinate and test to see if he is off screen
@@ -1211,6 +1225,13 @@ notRight:
   jsr updateCamera
   lda b0
   sta nomolosScreenX
+  
+  ;make sure to swap to the bank containing the level and music data first
+  ;save current bank number
+  pla
+  sta b0
+  jsr bankswitch
+
   
   ;************************************************************
   ;Update Nomolos' animation object.

@@ -1,6 +1,15 @@
 .ifndef CONSTANTS_INC
 CONSTANTS_INC = 1
 
+;entity indices
+DeentleIndex = 0
+ExplosionIndex = 1
+MouseIndex = 2
+ExitLevelEntityIndex = 3
+OneUpEntityIndex = 4
+FlailItemEntityIndex = 4
+
+
 ;bit positions for PPU control register $2000
 PPU0_EXECUTE_NMI = 7
 PPU0_MASTER_SLAVE = 6
@@ -85,7 +94,7 @@ nomolosHeight = $20
 nomolosHitboxWidth = $0c
 nomolosHitboxHeight = $20
 
-startingLevel = $00
+startingLevel = $01
 maxHealth = 3
 maxLives = 20
 

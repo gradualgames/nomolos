@@ -1,3 +1,4 @@
+.export flailItemUpdate
 .proc flailItemUpdate
 
   ;get out low byte of positionX

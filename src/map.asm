@@ -1,4 +1,5 @@
 .include "constants.inc"
+.include "structs.inc"
 
 ;global variables
 .importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4
@@ -8,6 +9,10 @@
 .importzp metametaTileTableBaseAddress
 .importzp levelBaseAddress, columnToUpdate, nametableToUpdate
 .importzp scrollX, nextScrollX
+.importzp romDefinitionTableBaseAddress
+.importzp currentBank
+
+.import bankswitch
 
 ;sound module
 .import lowc
@@ -100,6 +105,7 @@
   sta b0
   ;being outside the map also means no collision.
   lda #0
+  
   rts
 @insideScreen:
   ;load the Y coordinate

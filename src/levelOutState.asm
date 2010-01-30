@@ -3,10 +3,13 @@
 .include "macros.inc"
 .include "flags.inc"
 
+.import bankswitch
+
 ;famitracker module
 .import ft_music_play
 
 ;zeropage variables
+.importzp b0
 .importzp w0, scrollX, nametableToUpdate
 .importzp paletteStep, frameCounter
 .importzp stateControl

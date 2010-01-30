@@ -1,3 +1,4 @@
+.export exitLevelUpdate
 exitLevelUpdate:
 
   ;get out low byte of positionX

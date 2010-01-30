@@ -1,3 +1,4 @@
+.export oneUpUpdate
 .proc oneUpUpdate
 
   ;get out low byte of positionX

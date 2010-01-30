@@ -50,105 +50,14 @@
 ;sound module
 .import initsound, lowc, loadSound, finishSound
 
+.export level1palette, level1MetaTileTable, level1MetaMetaTileTable, level1Level, level1music
 
-.export ROMDefinitionTable0
-
-;temporary
-.export NomolosWalk0
-
-.segment "CODE"
-;ROM definition table
-ROMDefinitionTable0:
-  .byte $00
-  .byte $00
-  .word NomolosWalk            
-  .word NomolosWalkOverlay     
-  .word NomolosJump            
-  .word NomolosJumpOverlay     
-  .word NomolosFight           
-  .word NomolosFightOverlay    
-  .word NomolosUseFlail
-  .word NomolosFlailOverlay
-  .word FlailBall
-  .word SlumpedArmor0           
-  .word SlumpedArmorOverlay0
-  .word ScardyCat0
-  .word ScardyCatOverlay0
-  .word Heart0                 
-  .word attackSound            
-  .word hitSound               
-  .word palette                
-  .word MetaTileTable          
-  .word MetaMetaTileTable      
-  .word Level                  
-  .word EntityDefinitionTable  
-  .word music                  
-  .byte $01
-
-;Entities
-EntityDefinitionTable:
-DeentleIndex = 0
-DeentleEntity:
-  .word deentleUpdate
-  .byte $00
-  .byte $00
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-ExplosionIndex = 1
-ExplosionEntity:
-  .word explosionUpdate
-  .byte $00
-  .byte $00
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-MouseIndex = 2
-MouseEntity:
-  .word mouseUpdate
-  .byte $00
-  .byte $f9
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-ExitLevelEntityIndex = 3
-ExitLevelEntity:
-  .word exitLevelUpdate
-  .byte $00
-  .byte $f9
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-OneUpEntityIndex = 4
-OneUpEntity:
-  .word oneUpUpdate
-  .byte $00
-  .byte $00
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-FlailItemEntityIndex = 4
-FlailItemEntity:
-  .word flailItemUpdate
-  .byte $00
-  .byte $f9
-  .byte %00000000
-  .byte $00
-  .byte $00
-  .byte $00
-  
 .segment "ROM0"
 
-music:
+level1music:
 .incbin "data/music.bin"
 
-
-palette:
+level1palette:
 
 ;Image Palette
 ;Palette
@@ -158,7 +67,7 @@ palette:
 ;Palette
   .byte $21,$0d,$20,$27,$21,$04,$2a,$0d,$21,$0d,$27,$10,$21,$21,$21,$21
 
-MetaTileTable:
+level1MetaTileTable:
 MetaTile0:
   .byte $02,$00,$00,$00,$00,$00,$00,$00
 MetaTile1:
@@ -191,7 +100,7 @@ MetaTile14:
   .byte $02,$00,$00,$00,$00,$00,$00,$05
 MetaTile15:
   .byte $02,$00,$00,$00,$00,$00,$00,$06
-MetaMetaTileTable:
+level1MetaMetaTileTable:
 MetaMetaTile0:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00
 MetaMetaTile1:
@@ -300,147 +209,9 @@ MetaMetaTile52:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$09,$03,$00
 MetaMetaTile53:
   .byte $0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0a,$0b,$03,$00
-Level:
+level1Level:
   .byte $00,$00,$00,$00,$00,$00,$00,$01,$02,$02,$03,$02,$04,$05,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0e,$0f,$10,$11,$12,$00,$00,$13,$14
   .byte $15,$16,$00,$00,$17,$00,$18,$19,$1a,$1b,$1c,$00,$00,$1d,$1e,$1f,$20,$00,$00,$00,$21,$22,$23,$22,$21,$00,$00,$00,$24,$00,$00,$25
   .byte $00,$00,$00,$00,$26,$27,$28,$29,$28,$2a,$00,$00,$2b,$2c,$2c,$2d,$2c,$2c,$12,$00,$2e,$28,$28,$2f,$28,$28,$30,$00,$00,$31,$31,$31
   .byte $32,$31,$31,$00,$00,$00,$33,$00,$00,$00,$00,$33,$00,$00,$00,$00,$00,$34,$00,$00,$00,$00,$00,$00,$35,$00,$00,$00,$00,$00,$00,$00
-  
-.include "spritesheet1.inc"
-  
-attackSound:
-  .byte $0E
-  .byte $07
-  .byte $0F
-  .byte $f8
-  .byte $0C
-  .byte %00110000
-  .byte $0C
-  .byte %00110010
-  .byte $0C
-  .byte %00110100
-  .byte $0C
-  .byte %00110110
-  .byte $0C
-  .byte %00111000
-  .byte $0C
-  .byte %00111010
-  .byte $0C
-  .byte %00111100
-  .byte $0C
-  .byte %00111110
-  .byte $0C
-  .byte %00110000
-  .byte $ff
- 
-hitSound:
-  .byte $0E
-  .byte $0a
-  .byte $0F
-  .byte $f8  
-  .byte $0C
-  .byte %00111110
-  .byte $0C
-  .byte %00111100
-  .byte $0C
-  .byte %00111010
-  .byte $0C
-  .byte %00111000
-  .byte $0C
-  .byte %00110110
-  .byte $0C
-  .byte %00110100
-  .byte $0C
-  .byte %00110010
-  .byte $0C
-  .byte %00110000
-  .byte $0C
-  .byte %00110000
-  .byte $ff
-
-getHealthSound:
-  .byte DISABLE_FAMITRACKER_CHANNEL
-  .byte $01 
-  .byte $04
-  .byte $84
-  .byte $05
-  .byte %00000000
-  .byte $07
-  .byte %00001000
-  .byte $06
-  .byte %11111111
-  .byte $06
-  .byte %10111111
-  .byte $06
-  .byte %01111111
-  .byte $06
-  .byte %00111111  
-  .byte ENABLE_FAMITRACKER_CHANNEL
-  .byte $01
-  .byte $ff
-  
-getOneUpSound:
-  .byte DISABLE_FAMITRACKER_CHANNEL
-  .byte $01 
-  .byte $04
-  .byte $84
-  .byte $05
-  .byte %00000000
-  .byte $07
-  .byte %00001000
-  .byte $06
-  .byte %11111111
-  .byte $06
-  .byte %10111111
-  .byte $06
-  .byte %01111111
-  .byte $06
-  .byte %00111111  
-  .byte $06
-  .byte %11111111
-  .byte $06
-  .byte %10111111
-  .byte $06
-  .byte %01111111
-  .byte $06
-  .byte %00111111  
-  .byte ENABLE_FAMITRACKER_CHANNEL
-  .byte $01
-  .byte $ff
-  
-getFlailItemSound:
-  .byte DISABLE_FAMITRACKER_CHANNEL
-  .byte $01 
-  .byte $04
-  .byte $84
-  .byte $05
-  .byte %00000000
-  .byte $07
-  .byte %00001000
-  .byte $06
-  .byte %11111111
-  .byte $06
-  .byte %10111111
-  .byte $06
-  .byte %01111111
-  .byte $06
-  .byte %00111111  
-  .byte $06
-  .byte %11111111
-  .byte $06
-  .byte %10111111
-  .byte $06
-  .byte %01111111
-  .byte $06
-  .byte %00111111  
-  .byte ENABLE_FAMITRACKER_CHANNEL
-  .byte $01
-  .byte $ff
- 
-.include "oneup.inc"
-.include "exitentity.inc"
-.include "mouse.inc"
-.include "explosion.inc"  
-.include "deentle.inc"
-.include "flailitem.inc"
   
