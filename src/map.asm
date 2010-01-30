@@ -145,6 +145,12 @@
   
 .export decodeMap
 .proc decodeMap
+  ;switch to the level and music bank
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
+
   ;load the current scroll value and subtract the next scroll value. only when this is 0 or positive do we continue.
   lda scrollX
   sec

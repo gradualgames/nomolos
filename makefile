@@ -42,20 +42,19 @@ FILES           = nomolos \
                   miscdata
 OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))
 LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
-INCLUDE_FILES   = $(addprefix $(INCLUDE_DIR)/,constants.inc \
-                  macros.inc \
-                  flags.inc \
-                  structs.inc \
-                  mouse.inc \
-                  explosion.inc \
-                  deentle.inc \
-                  exitentity.inc)
 CONFIG_FILE     = $(OUTPUT_NAME).cfg
 MAP_FILE         = $(OUTPUT_NAME).map
 DEBUG_FILE      = $(OUTPUT_NAME).txt
 
 #Switches
-ASSEMBLER_FLAGS = -g -l -I include -I include/entities -I include/spritesheets -I ft_driver -o
+INCLUDE_FLAGS = -I include \
+                -I include/modules \
+                -I include/entities \
+                -I include/data/spritesheets \
+                -I include/data/levels \
+                -I include/data/misc \
+                -I include/ft_driver
+ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) --dbgfile $(DEBUG_FILE) -o
 NAMELIST_GENERATOR_FLAGS = -o $(NES_FILE) \
                            -nl ram ZEROPAGE 0000 \

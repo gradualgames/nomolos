@@ -500,11 +500,6 @@ skipAttackUpdate:
 .export updateNomolos
 .proc updateNomolos
 
-  ;make sure to swap to the bank containing the level and music data first
-  ;save current bank number
-  lda currentBank
-  pha
-  
   ;switch to the PRG bank containing level data
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
@@ -1216,12 +1211,11 @@ notRight:
   lda b0
   sta nomolosScreenX
   
-  ;make sure to swap to the bank containing the level and music data first
-  ;save current bank number
-  pla
+  ;switch to the actor and entity bank
+  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
+  lda (romDefinitionTableBaseAddress),y
   sta b0
   jsr bankswitch
-
   
   ;************************************************************
   ;Update Nomolos' animation object.

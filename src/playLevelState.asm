@@ -41,22 +41,10 @@
   
   jsr clearSprites
   
-  ;switch to the actor and entity bank
-  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
-  lda (romDefinitionTableBaseAddress),y
-  sta b0
-  jsr bankswitch
-  
   jsr updateNomolos
   jsr drawNomolos
   jsr drawNomolosHearts
   jsr updateEntities
-  
-  ;switch to the level and music bank
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (romDefinitionTableBaseAddress),y
-  sta b0
-  jsr bankswitch
   
   jsr decodeMap
     
@@ -110,7 +98,6 @@ stateCommandComplete:
   sta b0
   jsr bankswitch
   jsr ft_music_play
-
   .endif
   
   jsr playSound

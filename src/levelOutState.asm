@@ -172,6 +172,11 @@ stateCommandComplete:
   sta $2005
   
   .ifdef MUSIC_ENABLE
+  ;switch to the level and music bank
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
   jsr ft_music_play
   .endif
 

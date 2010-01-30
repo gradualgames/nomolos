@@ -2,6 +2,7 @@
 .include "macros.inc"
 .include "ram.inc"
 .include "zp.inc"
+.include "misc.inc"
 
 .segment "CODE"
 
@@ -10,6 +11,12 @@
 ;are finished.
 .export updateEntities
 .proc updateEntities
+
+  ;switch to the actor and entity bank
+  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
 
   ;start at last entity
   ldy #$0f
