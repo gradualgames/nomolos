@@ -5,6 +5,8 @@
 .include "titledata.inc"
 .include "fontdata.inc"
 
+.segment "CODE"
+
 ;ROM definition table
 ROMDefinitionTable0:
   .byte $02
