@@ -1,3 +1,6 @@
+.ifndef MISCDATA_INC
+MISCDATA_INC = 1
+
 .import banktable
 .import attackSound
 .import hitSound
@@ -14,3 +17,5 @@
 .import titleDef
 .import titlePalette
 .import titleNametable
+
+.endif

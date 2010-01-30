@@ -1,4 +1,6 @@
-;labels from sprite sheet
+.ifndef SPRITESHEET1_INC
+SPRITESHEET1_INC = 1
+
 .import NomolosWalk0
 .import NomolosWalk1
 .import NomolosWalk2
@@ -57,3 +59,5 @@
 .import explosionUpdate
 .import deentleUpdate
 .import exitLevelUpdate
+
+.endif

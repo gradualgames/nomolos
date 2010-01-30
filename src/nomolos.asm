@@ -2,9 +2,6 @@
 .include "macros.inc"
 .include "flags.inc"
 .include "structs.inc"
-
-.include "spritesheet1.inc"
-
 .include "titledata.inc"
 .include "fontdata.inc"
 .include "zp.inc"

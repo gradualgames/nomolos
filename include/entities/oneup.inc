@@ -1,3 +1,6 @@
+.ifndef ONEUP_INC
+ONEUP_INC = 1
+
 .export oneUpUpdate
 .proc oneUpUpdate
 
@@ -106,3 +109,5 @@ oneUpDie:
   rts
   
 .endproc
+
+.endif

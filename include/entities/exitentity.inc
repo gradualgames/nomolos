@@ -1,3 +1,6 @@
+.ifndef EXITENTITY_INC
+EXITENTITY_INC = 1
+
 .export exitLevelUpdate
 exitLevelUpdate:
 
@@ -79,3 +82,5 @@ exitDie:
   lda #0
   sta entityPool+entityRAM::alive,x
   rts
+
+.endif

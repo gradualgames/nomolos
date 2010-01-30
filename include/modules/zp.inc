@@ -1,3 +1,6 @@
+.ifndef ZP_INC
+ZP_INC = 1
+
 .importzp b0
 .importzp b1
 .importzp b2
@@ -65,3 +68,5 @@
 .importzp ft_music_addr
 .importzp paletteStep
 .importzp frameCounter
+
+.endif

@@ -1,3 +1,6 @@
+.ifndef FLAILITEM_INC
+FLAILITEM_INC = 1
+
 .export flailItemUpdate
 .proc flailItemUpdate
 
@@ -108,3 +111,5 @@ flailItemDie:
   rts
   
 .endproc
+
+.endif
