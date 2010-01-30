@@ -23,7 +23,7 @@
 .segment "CODE"
 
 .export playLevelUpdate
-playLevelUpdate:
+.proc playLevelUpdate
 
   ;wait for vblank to complete
   lda #0
@@ -93,9 +93,10 @@ stateCommandComplete:
   .endif
     
   rts
+.endproc
   
 .export playLevelUpdatePPU
-playLevelUpdatePPU:
+.proc playLevelUpdatePPU
 
   jsr updateSprites
   jsr updateColumnPPU
@@ -117,4 +118,5 @@ playLevelUpdatePPU:
   lda #1
   sta vblankDone
   rts
+.endproc
   

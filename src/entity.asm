@@ -9,7 +9,7 @@
 ;The entities are expected to jump back to returnFromEntityUpdate when they
 ;are finished.
 .export updateEntities
-updateEntities:
+.proc updateEntities
 
   ;start at last entity
   ldy #$0f
@@ -60,16 +60,18 @@ skipUpdate:
   dey
   bpl nextEntity
 
-
   rts
   
-indirectJsrW0:
+.endproc
+  
+.proc indirectJsrW0
   jmp (w0)
+.endproc
 
 ;This routine initializes the entity pool. All this
 ;entails is filling the first byte of every 16 byte chunk with zero.
 .export initEntities
-initEntities:
+.proc initEntities
   ldx #$0f
 :
   ;multiply the index by 16
@@ -84,6 +86,7 @@ initEntities:
   dex
   bpl :-
   rts
+.endproc
   
 ;This routine spawns a single entity. It works by first searching
 ;for the first "dead" entity in the entityPool. When it finds this
@@ -94,7 +97,7 @@ initEntities:
 ;w0 = positionX
 ;b1 = positionY
 .export spawnEntity
-spawnEntity:
+.proc spawnEntity
 
   ;save regs
   pha
@@ -214,4 +217,4 @@ spawnEntity:
   pla
 
   rts
-  
+.endproc

@@ -144,8 +144,7 @@
 .endproc
   
 .export decodeMap
-decodeMap:
-
+.proc decodeMap
   ;load the current scroll value and subtract the next scroll value. only when this is 0 or positive do we continue.
   lda scrollX
   sec
@@ -301,6 +300,7 @@ doDecode:
   jsr updateColumn
 
   rts
+.endproc
 
 ;This routine decodes a single 1x15 meta-meta tile and places the proper
 ;name table tile numbers into two 30 byte buffers for use by updateColumnPPU
@@ -308,8 +308,7 @@ doDecode:
 ;columnTileBuffer: the buffer to which the meta-meta tile will be decoded. It will consist of
 ;two 30 tile columns.
 .export updateColumn
-updateColumn:
-
+.proc updateColumn
   ;we need to calculate what the attributecolumnToUpdate is.
   ;we know the columnToUpdate. that's 0-31.
   ;if we shift this right, we get the meta tile column.
@@ -455,6 +454,7 @@ doNotSpawn:
 @skipNextTile:
 
   rts
+.endproc
 
 ;This routine updates a single attribute value in the attribute buffer.
 ;b0: The attribute row to update.
@@ -462,8 +462,7 @@ doNotSpawn:
 ;b2: The current metatile column.
 ;b3: The current metatile row.
 .export updateAttribute
-updateAttribute:
-  ;pha
+.proc updateAttribute
   tya
   pha
   txa
@@ -527,13 +526,12 @@ gotMask:
   tax
   pla
   tay
-  ;pla
 
   rts
+.endproc
   
 .export updateScrollPPU
-updateScrollPPU:
-
+.proc updateScrollPPU
   lda nametableToUpdate
   eor #$04
   sta $2006
@@ -586,9 +584,10 @@ updateColumnPPU:
   bne :-
 
   rts
+.endproc
 
 .export updateAttributePPU
-updateAttributePPU:
+.proc updateAttributePPU
 
 ;
   lda nametableToUpdate
@@ -646,3 +645,4 @@ updateAttributePPU:
   sta $2007
 
   rts  
+.endproc

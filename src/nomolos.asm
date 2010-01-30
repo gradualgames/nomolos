@@ -59,8 +59,9 @@ loop:
   
   jmp loop
   
-indirectJsrUpdate:
+.proc indirectJsrUpdate
   jmp (update)
+.endproc
 
 vblank:
 
@@ -83,10 +84,9 @@ vblank:
 irq:
   rti
   
-indirectJsrUpdatePPU:
+.proc indirectJsrUpdatePPU
   jmp (updatePPU)
-  
-
+.endproc
   
 .segment "VECTORS"
   .word vblank

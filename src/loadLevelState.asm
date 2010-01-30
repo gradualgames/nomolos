@@ -17,8 +17,7 @@
 .segment "CODE"
 
 .export loadLevelUpdate
-loadLevelUpdate:
-
+.proc loadLevelUpdate
   lda stateControl+loadLevelStateControl::state
   cmp #LOADLEVELSTATE_INIT
   beq loadLevelStateInit
@@ -251,7 +250,9 @@ loadLevelStateDone:
 stateSwitchComplete:
 
   rts
-  
+.endproc
+
 .export loadLevelUpdatePPU
-loadLevelUpdatePPU:
+.proc loadLevelUpdatePPU
   rts  
+.endproc

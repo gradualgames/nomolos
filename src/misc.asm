@@ -6,7 +6,7 @@
 ;bankswitches using UnROM.
 ;b0 - the bank to switch to
 .export bankswitch
-bankswitch:
+.proc bankswitch
   txa
   pha
 
@@ -18,6 +18,7 @@ bankswitch:
   pla
   tax 
   rts
+.endproc
   
 ;Creates a decimal string based on a digit table and a power table
 ;and an input 8 bit value.
@@ -152,7 +153,7 @@ skipUpperZeroDigit:
 ;assumes VRAM is already pointing to where the text should start
 ;assumes w0 contains address of string to draw
 .export displayString
-displayString:
+.proc displayString
   ;load number of characters in string
   ldy #0
   lda (w0),y
@@ -169,12 +170,13 @@ displayString:
   bne :-
 
   rts
+.endproc
   
 ;loads 8k of chr data into VRAM starting at address $0000
 ;expects w0 to have address of chr data to load.
 ;uses w1 to count how much data has been shoveled
 .export loadChr
-loadChr:
+.proc loadChr
   ;start at $0000 in VRAM
   lda #$00
   sta $2006
@@ -212,11 +214,12 @@ loadChrLoop:
   bne loadChrLoop
 
   rts
+.endproc
   
 ;loads a nametable and attribute table located at address in w0
 ;assumes VRAM points to the nametable that is to be loaded
 .export loadNametable
-loadNametable:
+.proc loadNametable
   ldy #$00
   ldx #$04
 
@@ -230,13 +233,13 @@ loadNametable:
   bne :-
 
   rts
+.endproc
   
 ;expects VRAM to already be pointing to the nametable we want to clear.
 ;input: b0 - value to clear nametable with
 ;       b1 - value to clear attribute table with
 .export clearNametable
-clearNametable:
-
+.proc clearNametable
   ;clear the nametable
   lda #$20
   sta $2006
@@ -270,10 +273,11 @@ clearNametable:
   bne :-
 
   rts
+.endproc
   
 ;expects w0 to have address of palette
 .export loadPalette
-loadPalette:
+.proc loadPalette
   ldy #0
   lda #$3F
   sta $2006
@@ -287,3 +291,4 @@ loadPalette:
   cpx #$20
   bne :-
   rts
+.endproc

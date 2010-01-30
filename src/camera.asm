@@ -13,7 +13,7 @@
 ;outputs: <w0 is the screen x coordinate.
 ;         <w1 is the screen y coordinate.
 .export cameraToScreenCoords
-cameraToScreenCoords:
+.proc cameraToScreenCoords
 
   ;subtract scrollX from the input X coordinate
   sec
@@ -26,10 +26,12 @@ cameraToScreenCoords:
   ;do nothing to y coordinate since camera never moves from 0 vertically
   
   rts
+  
+.endproc
 
 ;resets camera to the beginning of a level (scrollX = 0)
 .export resetCamera
-resetCamera:
+.proc resetCamera
 
   lda #0
   sta nextScrollX
@@ -43,11 +45,13 @@ resetCamera:
 
   rts
   
+.endproc
+  
 ;moves the camera in response to input position
 ;expects: b0 is screen X coordinate to respond to
 ;output:  b0 has been adjusted based on how far the camera was scrolled.
 .export updateCamera
-updateCamera:
+.proc updateCamera
 
   ;compare b0 to middle of screen.
   lda b0
@@ -73,3 +77,5 @@ updateCamera:
 :
   
   rts
+  
+.endproc

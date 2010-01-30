@@ -1679,8 +1679,7 @@ skipNomolosWalkingLeft:
   
 dontDrawNomolos:
 
-  rts
-  
+  rts  
 .endproc
   
 .export drawNomolosHearts
@@ -1710,6 +1709,5 @@ drawNextHeart:
   bne drawNextHeart
 skipDrawHearts:
 
-  rts
-  
+  rts  
 .endproc

@@ -21,8 +21,7 @@
 ;w8 - right x
 ;w9 - bottom y
 .export rectInRect16
-rectInRect16:
-
+.proc rectInRect16
   ;compute bottom of rectangle A
   clc
   lda w3
@@ -114,6 +113,7 @@ rectInRect16:
   lda #0
 
   rts
+.endproc
 
 ;tests one rectangle for whether it intersects another.
 ;rectangle A:
@@ -125,8 +125,7 @@ rectInRect16:
 ;outputs:
 ;Z - true = intersection, false = no intersection
 .export rectInRect
-rectInRect:
-
+.proc rectInRect
   ;load bottom of rectA
   lda w3+1
   sec
@@ -171,6 +170,7 @@ rectInRect:
   lda #0
 
   rts
+.endproc
 ;// check if 2 rectangles intersect
 ;inline bool RectRectIntersection(const fRECT& rect1, const fRECT& rect2)
 ;{

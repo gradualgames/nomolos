@@ -13,7 +13,7 @@
 .segment "CODE"
 
 .export gameOverUpdate
-gameOverUpdate:
+.proc gameOverUpdate
 
   lda stateControl+gameOverStateControl::state
   cmp #GAMEOVERSTATE_INIT
@@ -139,11 +139,13 @@ gameOverStateDone:
 stateCommandComplete:
 
   rts
+.endproc
 
 .export gameOverUpdatePPU
-gameOverUpdatePPU:
+.proc gameOverUpdatePPU
 
   dec frameCounter
 
   rts
+.endproc
   

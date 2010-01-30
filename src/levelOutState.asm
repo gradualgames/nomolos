@@ -11,13 +11,12 @@
 .segment "CODE"
 
 .export levelOutUpdate
-levelOutUpdate:
-
+.proc levelOutUpdate
   rts
+.endproc
   
 .export levelOutPPUUpdate
-levelOutPPUUpdate:
-
+.proc levelOutPPUUpdate
   lda stateControl+levelOutStateControl::state
   cmp #LEVELOUTSTATE_INIT
   beq levelOutStateInit
@@ -177,4 +176,4 @@ stateCommandComplete:
   .endif
 
   rts
-  
+.endproc

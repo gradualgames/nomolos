@@ -8,7 +8,7 @@
 ;w1: location of animation object
 ;w2: location of animation definition  
 .export drawAnimation16
-drawAnimation16:
+.proc drawAnimation16
   ;get the current frame of this animation object
   ldy #animation::currentFrame
   lda (w1),y
@@ -31,12 +31,13 @@ drawAnimation16:
   jsr drawMetaSprite16
   
   rts
+.endproc
 
 ;draws an animation
 ;w1: location of animation object
 ;w2: location of animation definition  
 .export drawAnimation
-drawAnimation:
+.proc drawAnimation
   ;get the current frame of this animation object
   ldy #animation::currentFrame
   lda (w1),y
@@ -59,6 +60,7 @@ drawAnimation:
   jsr drawMetaSprite
   
   rts
+.endproc
   
 ;Updates a single animation. Assumes the animation at w1 has the following format:
 ;RAM stuff used:
@@ -75,8 +77,7 @@ drawAnimation:
 ;    .byte $00
 ;Global Variables:
 .export updateAnimation
-updateAnimation:
-
+.proc updateAnimation
   ;get the frame count down of this animation object
   ldy #animation::frameCountDown
   lda (w1),y
@@ -113,6 +114,7 @@ updateAnimation:
   sta (w1),y
 skipFrameUpdate:
   rts
+.endproc
   
 ;Draws a meta sprite at 16 bit screen X and Y. Also, it will
 ;clip individual sprites if they are off of the screen.
@@ -495,8 +497,7 @@ skipNextSpriteEntry:
 ;spriteAddress: the current sprite that will be overwritten in the sprite buffer
 ;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
 .export drawMetaSprite
-drawMetaSprite:
-
+.proc drawMetaSprite
   ;save regs
   txa
   pha
@@ -581,18 +582,21 @@ spriteNotFlipped:
   tax
   
   rts
+.endproc
 
 .export updateSprites
-updateSprites:
+.proc updateSprites
   lda #>(sprite)
   sta $4014    ; Jam page $200-$2FF into SPR-RAM
   rts
+.endproc
 
 .export clearSprites
-clearSprites:
+.proc clearSprites
   lda #$ff
   ldx #$00
 : sta sprite, x
   inx
   bne :-
   rts
+.endproc
