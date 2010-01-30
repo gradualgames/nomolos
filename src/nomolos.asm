@@ -63,8 +63,6 @@
 .import explosionUpdate
 .import deentleUpdate
 .import exitLevelUpdate
-.import hitSound
-.import attackSound
 
 .import level1palette, level1MetaTileTable, level1MetaMetaTileTable, level1Level, level1music
 .import level2palette, level2MetaTileTable, level2MetaMetaTileTable, level2Level, level2music
@@ -665,6 +663,140 @@ FlailItemEntity:
   .byte $00
   .byte $00
   .byte $00
+  
+.export attackSound
+attackSound:
+  .byte $0E
+  .byte $07
+  .byte $0F
+  .byte $f8
+  .byte $0C
+  .byte %00110000
+  .byte $0C
+  .byte %00110010
+  .byte $0C
+  .byte %00110100
+  .byte $0C
+  .byte %00110110
+  .byte $0C
+  .byte %00111000
+  .byte $0C
+  .byte %00111010
+  .byte $0C
+  .byte %00111100
+  .byte $0C
+  .byte %00111110
+  .byte $0C
+  .byte %00110000
+  .byte $ff
+ 
+.export hitSound
+hitSound:
+  .byte $0E
+  .byte $0a
+  .byte $0F
+  .byte $f8  
+  .byte $0C
+  .byte %00111110
+  .byte $0C
+  .byte %00111100
+  .byte $0C
+  .byte %00111010
+  .byte $0C
+  .byte %00111000
+  .byte $0C
+  .byte %00110110
+  .byte $0C
+  .byte %00110100
+  .byte $0C
+  .byte %00110010
+  .byte $0C
+  .byte %00110000
+  .byte $0C
+  .byte %00110000
+  .byte $ff
+
+.export getHealthSound
+getHealthSound:
+  .byte DISABLE_FAMITRACKER_CHANNEL
+  .byte $01 
+  .byte $04
+  .byte $84
+  .byte $05
+  .byte %00000000
+  .byte $07
+  .byte %00001000
+  .byte $06
+  .byte %11111111
+  .byte $06
+  .byte %10111111
+  .byte $06
+  .byte %01111111
+  .byte $06
+  .byte %00111111  
+  .byte ENABLE_FAMITRACKER_CHANNEL
+  .byte $01
+  .byte $ff
+  
+.export getOneUpSound
+getOneUpSound:
+  .byte DISABLE_FAMITRACKER_CHANNEL
+  .byte $01 
+  .byte $04
+  .byte $84
+  .byte $05
+  .byte %00000000
+  .byte $07
+  .byte %00001000
+  .byte $06
+  .byte %11111111
+  .byte $06
+  .byte %10111111
+  .byte $06
+  .byte %01111111
+  .byte $06
+  .byte %00111111  
+  .byte $06
+  .byte %11111111
+  .byte $06
+  .byte %10111111
+  .byte $06
+  .byte %01111111
+  .byte $06
+  .byte %00111111  
+  .byte ENABLE_FAMITRACKER_CHANNEL
+  .byte $01
+  .byte $ff
+  
+.export getFlailItemSound
+getFlailItemSound:
+  .byte DISABLE_FAMITRACKER_CHANNEL
+  .byte $01 
+  .byte $04
+  .byte $84
+  .byte $05
+  .byte %00000000
+  .byte $07
+  .byte %00001000
+  .byte $06
+  .byte %11111111
+  .byte $06
+  .byte %10111111
+  .byte $06
+  .byte %01111111
+  .byte $06
+  .byte %00111111  
+  .byte $06
+  .byte %11111111
+  .byte $06
+  .byte %10111111
+  .byte $06
+  .byte %01111111
+  .byte $06
+  .byte %00111111  
+  .byte ENABLE_FAMITRACKER_CHANNEL
+  .byte $01
+  .byte $ff
   
 ;level definitions
 LevelDefinitionTable:

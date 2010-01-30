@@ -226,6 +226,9 @@ alreadyDying:
 ;sets the nomolos dying state bit and sets coordinates for the scaredy cat graphic.
 .proc nomolosAttackedDie
 
+  lda currentBank
+  pha
+
   ;decrease Nomolos' lives
   dec nomolosLives
 
@@ -259,10 +262,19 @@ alreadyDying:
   
   ;tell famitracker to play the die sound
 .if .defined(MUSIC_ENABLE)
+  ;switch to the level and music bank
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
   lda #2
   ldx #0
   jsr ft_music_init
 .endif  
+
+  pla
+  sta b0
+  jsr bankswitch
 
   rts
 

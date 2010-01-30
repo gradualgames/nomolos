@@ -122,18 +122,14 @@ playLevelUpdatePPU:
   
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank
-  ;ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  ;lda (romDefinitionTableBaseAddress),y
-  ;sta b0
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (romDefinitionTableBaseAddress),y
+  sta b0
+  jsr bankswitch
   jsr ft_music_play
 
   .endif
   
-  ;switch to the nomolos and entity (and sound effects) bank
-  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
-  lda (romDefinitionTableBaseAddress),y
-  sta b0
-  jsr bankswitch
   jsr playSound
   
   lda #1
