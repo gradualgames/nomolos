@@ -34,14 +34,6 @@ MACROS_INC = 1
 
 .endmacro
 
-.macro indirectJsr address
-
-  jmp *+6
-  jmp (address)
-  jsr *-3
-
-.endmacro
-
 .macro waitVBlank
 
 :

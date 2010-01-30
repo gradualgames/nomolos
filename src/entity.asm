@@ -52,7 +52,7 @@ nextEntity:
   sta w0+1
 
   ;jump to the entity update routine indirectly
-  indirectJsr w0
+  jsr indirectJsrW0
   
   ;entities are expected to return here.
 skipUpdate:
@@ -65,6 +65,9 @@ skipUpdate:
 
 
   rts
+  
+indirectJsrW0:
+  jmp (w0)
 
 ;This routine initializes the entity pool. All this
 ;entails is filling the first byte of every 16 byte chunk with zero.

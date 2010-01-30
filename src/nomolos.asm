@@ -183,9 +183,12 @@ reset:
   
 loop:
 
-  indirectJsr update
+  jsr indirectJsrUpdate
   
   jmp loop
+  
+indirectJsrUpdate:
+  jmp (update)
 
 vblank:
 
@@ -196,7 +199,7 @@ vblank:
   pha
   php
   
-  indirectJsr updatePPU
+  jsr indirectJsrUpdatePPU
 
   plp
   pla
@@ -207,6 +210,9 @@ vblank:
 
 irq:
   rti
+  
+indirectJsrUpdatePPU:
+  jmp (updatePPU)
   
 ;bankswitches using UnROM.
 ;b0 - the bank to switch to
