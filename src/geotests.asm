@@ -1,7 +1,4 @@
-.importzp b0, b1, b2, b3, b4, b5
-.importzp w0, w1, w2, w3, w4, w5, w6, w7, w8, w9
-
-.export rectInRect, rectInRect16
+.include "zp.inc"
 
 .segment "CODE"
 
@@ -23,6 +20,7 @@
 ;rectangle B:
 ;w8 - right x
 ;w9 - bottom y
+.export rectInRect16
 rectInRect16:
 
   ;compute bottom of rectangle A
@@ -126,6 +124,7 @@ rectInRect16:
 ;w5 - bot right x, y
 ;outputs:
 ;Z - true = intersection, false = no intersection
+.export rectInRect
 rectInRect:
 
   ;load bottom of rectA

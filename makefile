@@ -36,7 +36,10 @@ FILES           = nomolos \
                   entity \
                   controller \
                   sound \
-                  geotests
+                  geotests \
+                  zp \
+                  misc \
+                  miscdata
 OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))
 LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
 INCLUDE_FILES   = $(addprefix $(INCLUDE_DIR)/,constants.inc \

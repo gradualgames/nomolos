@@ -1,33 +1,16 @@
 .include "structs.inc"
 .include "constants.inc"
 .include "macros.inc"
-
-;controller module
-.import readController
-
-;main module labels
-.import titleDef
-.import loadNametable, loadPalette
-.import loadChr, bankswitch
-
-;sprite module
-.import clearSprites, updateSprites
-
-;level in state labels
-.import levelInUpdate, levelInPPUUpdate
-
-;zeropage labels
-.importzp b0, w0
-.importzp stateControl
-.importzp controllerBuffer
-.importzp currentLevel
-.importzp nomolosLives
-.importzp update, updatePPU
-
-.export titleStateUpdate, titleStateUpdatePPU
+.include "controller.inc"
+.include "misc.inc"
+.include "miscdata.inc"
+.include "sprite.inc"
+.include "levelInState.inc"
+.include "zp.inc"
 
 .segment "CODE"
 
+.export titleStateUpdate
 titleStateUpdate:
 
   lda stateControl+titleStateControl::state
@@ -137,6 +120,7 @@ stateCommandComplete:
 
   rts
   
+.export titleStateUpdatePPU
 titleStateUpdatePPU:
 
   rts

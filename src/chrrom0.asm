@@ -1,7 +1,6 @@
-.export Level1Chr
-
 .segment "CHRROM0_LEVEL1_BG"  
 
+.export Level1Chr
 Level1Chr:
 ;Pattern Table
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00

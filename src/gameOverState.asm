@@ -2,35 +2,17 @@
 .include "constants.inc"
 .include "macros.inc"
 .include "flags.inc"
-
-;famitracker module
-.import ft_music_init
-
-;main module
-.import clearNametable, loadPalette, displayString, loadChr, bankswitch
-
-;main module misc data
-.import font1, gameOverString, haltmusic
-
-;sprite module
-.import clearSprites, updateSprites
-
-;level in state labels
-.import titleStateUpdate, titleStateUpdatePPU
-
-;zeropage labels
-.importzp b0, b1, w0
-.importzp stateControl
-.importzp frameCounter
-.importzp update, updatePPU
-.importzp currentLevel
-.importzp nomolosLives
-.importzp ft_music_addr
-
-.export gameOverUpdate, gameOverUpdatePPU
+.include "famitracker.inc"
+.include "misc.inc"
+.include "miscdata.inc"
+.include "sprite.inc"
+.include "levelInState.inc"
+.include "zp.inc"
+.include "titleState.inc"
 
 .segment "CODE"
 
+.export gameOverUpdate
 gameOverUpdate:
 
   lda stateControl+gameOverStateControl::state
@@ -158,6 +140,7 @@ stateCommandComplete:
 
   rts
 
+.export gameOverUpdatePPU
 gameOverUpdatePPU:
 
   dec frameCounter

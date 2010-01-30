@@ -1,17 +1,7 @@
 .include "constants.inc"
 .include "structs.inc"
-
-;famitracker labels
-.import bankswitch
-.import ft_enable_channel, ft_disable_channel
-
-.importzp b0
-.importzp currentBank
-.importzp romDefinitionTableBaseAddress
-.importzp soundAddr, soundOff, w0
-
-.export initsound, lowc
-.export loadSound, playSound, finishSound
+.include "famitracker.inc"
+.include "zp.inc"
 
 .segment "CODE"
 
@@ -20,6 +10,7 @@ blankSound:
 
 ;fast forwards to the end of the current sound to ensure channel enable/disable commands
 ;are read before the next sound is played.
+.export finishSound
 .proc finishSound
 
   ;save x (entities use this)
@@ -66,6 +57,7 @@ soundFinished:
 
 .endproc
   
+.export playSound
 .proc playSound
 
   ;load current sound offset
@@ -138,6 +130,7 @@ soundDone:
 ;finishes the current sound if there is one and
 ;loads a new sound into the sound address.
 ;w0 = address of sound to load
+.export loadSound
 .proc loadSound
 
   jsr finishSound
@@ -152,6 +145,7 @@ soundDone:
 
 .endproc
 
+.export initsound
 .proc initsound
         ; initialize sound hardware
   lda #$01
@@ -172,6 +166,7 @@ soundDone:
   
 .endproc
   
+.export lowc
 .proc lowc
   pha
   lda #$84

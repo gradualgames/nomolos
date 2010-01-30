@@ -2,41 +2,21 @@
 .include "constants.inc"
 .include "structs.inc"
 .include "flags.inc"
-
-;famitracker module
-.import ft_music_init
-;sound module
-.import initsound
-;main module
-.import bankswitch
-.import loadPalette, loadChr
-.import LevelDefinitionTable
-;camera module
-.import resetCamera
-;nomolos logic module
-.import initNomolos
-;play level state
-.import playLevelUpdatePPU, playLevelUpdate
-;map update routines
-.import updateScrollPPU, updateColumnPPU, updateAttributePPU
-;sprite update routines
-.import updateSprites, clearSprites, updateColumn
-;entity routines
-.import initEntities, updateEntities
-;global variables
-.importzp update, updatePPU, stateControl
-.importzp b0, w0, w1, w3, levelBaseAddress, columnToUpdate
-.importzp metametaTileTableBaseAddress, nametableToUpdate
-.importzp entityDefinitionTableBaseAddress
-.importzp metaTileTableBaseAddress
-.importzp romDefinitionTableBaseAddress
-.importzp ft_music_addr
-
-;load level state labels
-.export loadLevelUpdate, loadLevelUpdatePPU
+.include "famitracker.inc"
+.include "sound.inc"
+.include "misc.inc"
+.include "miscdata.inc"
+.include "camera.inc"
+.include "nomolosLogic.inc"
+.include "playLevelState.inc"
+.include "map.inc"
+.include "sprite.inc"
+.include "entity.inc"
+.include "zp.inc"
 
 .segment "CODE"
 
+.export loadLevelUpdate
 loadLevelUpdate:
 
   lda stateControl+loadLevelStateControl::state
@@ -272,5 +252,6 @@ stateSwitchComplete:
 
   rts
   
+.export loadLevelUpdatePPU
 loadLevelUpdatePPU:
   rts  

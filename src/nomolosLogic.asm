@@ -2,48 +2,17 @@
 .include "macros.inc"
 .include "structs.inc"
 .include "flags.inc"
-
-.import bankswitch
-
-;Sprite module labels
-.import drawMetaSprite, drawMetaSprite16, drawAnimation, drawAnimation16, updateAnimation
-
-;Map module labels (for collision detection)
-.import testMapCollision
-
-;Camera module labels
-.import updateCamera, cameraToScreenCoords
-
-;sound module labels
-.import lowc, loadSound, playSound, finishSound
-
-;famitracker module
-.import ft_music_init
-
-;global variables
-.importzp currentBank
-.importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
-.importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
-.importzp nomolosHitboxX, nomolosHitboxY
-.importzp nomolosScaredyCatX, nomolosScaredyCatY
-.importzp nomolosXSpeed, nomolosYSpeed, nomolosAnim, nomolosState, nomolosHealth
-.importzp nomolosWeaponAnim
-.importzp nomolosSubState
-.importzp nomolosLives
-.importzp nomolosBlinkCounter, nomolosHitboxCounter
-.importzp nomolosAbovePenetrationDistance, nomolosBelowPenetrationDistance
-.importzp romDefinitionTableBaseAddress
-.importzp controllerBuffer
-.importzp soundAddr, soundOff
-.importzp stateControl
-.importzp frameCounter
-
-;Nomolos interface
-.export initNomolos, updateNomolos, drawNomolos, drawNomolosHearts, hurtNomolos
-.export nomolosDeadly, addNomolosHealth, addNomolosLife
+.include "misc.inc"
+.include "sprite.inc"
+.include "map.inc"
+.include "camera.inc"
+.include "sound.inc"
+.include "famitracker.inc"
+.include "zp.inc"
 
 .segment "CODE"
 
+.export initNomolos
 .proc initNomolos
 
   resetAnim nomolosAnim
@@ -95,6 +64,7 @@
 
 ;adds a life to Nomolos. The accumulator is assumed to contain the
 ;number of lives to add.
+.export addNomolosLife
 .proc addNomolosLife
 
   clc
@@ -112,6 +82,7 @@
 
 ;adds health to Nomolos. The accumulator is assumed to contain the
 ;number of hearts to add on to his health.
+.export addNomolosHealth
 .proc addNomolosHealth
 
   clc
@@ -131,6 +102,7 @@
 
 ;hurts Nomolos. It makes him bounce in the air a little bit, lose a heart,
 ;and become invincible temporarily.
+.export hurtNomolos
 .proc hurtNomolos
 
   ;if blinking is on, skip this whole routine
@@ -179,8 +151,8 @@ skipHurt:
   
 .endproc
 
-  
 ;sets the nomolos dying state bit, and the sub state bit that represents "falling"
+.export nomolosFallDie
 .proc nomolosFallDie
 
   ;make certain we're not already dying...
@@ -224,6 +196,7 @@ alreadyDying:
 .endproc
   
 ;sets the nomolos dying state bit and sets coordinates for the scaredy cat graphic.
+.export nomolosAttackedDie
 .proc nomolosAttackedDie
 
   lda currentBank
@@ -281,6 +254,7 @@ alreadyDying:
 .endproc
   
 ;Causes the hit box to be activated for a few frames.
+.export nomolosAttack
 .proc nomolosAttack
 
   ;if attacking is on, skip this whole routine
@@ -355,6 +329,7 @@ skipAttack:
 ;by Nomolos' hit box.
 ;zero flag set = nomolos is not deadly
 ;zero flag clear = nomolos is deadly.
+.export nomolosDeadly
 .proc nomolosDeadly
 
   lda nomolosState
@@ -401,6 +376,7 @@ nomolosNotAttacking:
 
 .endproc
   
+.export loadHurtResult
 .proc loadHurtResult
 
   ;load "hurt" result of map collision test
@@ -467,6 +443,7 @@ skipAttackUpdate:
 
 .endproc
   
+.export updateFlailAttack
 .proc updateFlailAttack
 
   lda nomolosHitboxCounter
@@ -520,6 +497,7 @@ skipAttackUpdate:
 
 .endproc
   
+.export updateNomolos
 .proc updateNomolos
 
   ;make sure to swap to the bank containing the level and music data first
@@ -1253,6 +1231,7 @@ notRight:
   rts
 .endproc
   
+.export updateNomolosAnimation
 .proc updateNomolosAnimation
 
   lda #<nomolosAnim
@@ -1330,6 +1309,7 @@ skipUpdateNomolosMoving:
   
 .endproc
   
+.export drawAttackFlail
 .proc drawAttackFlail
 
   ;draw the flail animation and flail ball animation here
@@ -1392,6 +1372,7 @@ skipUpdateNomolosMoving:
 
 .endproc
   
+.export drawAttackSword
 .proc drawAttackSword
 
   lda #<nomolosAnim
@@ -1440,6 +1421,7 @@ skipUpdateNomolosMoving:
 .endproc
   
 ;draws nomolos based on his current state.
+.export drawNomolos
 .proc drawNomolos
 
   lda nomolosState
@@ -1701,8 +1683,7 @@ dontDrawNomolos:
   
 .endproc
   
-.import NomolosWalk0
-  
+.export drawNomolosHearts
 .proc drawNomolosHearts
   
   ldx nomolosHealth

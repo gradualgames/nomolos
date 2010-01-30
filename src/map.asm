@@ -1,32 +1,9 @@
 .include "constants.inc"
 .include "structs.inc"
-
-;global variables
-.importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4
-.importzp attributeBuffer, columnTileBuffer
-.importzp metaTileBuffer, metaTileTableBaseAddress
-.importzp attributeColumnToUpdate
-.importzp metametaTileTableBaseAddress
-.importzp levelBaseAddress, columnToUpdate, nametableToUpdate
-.importzp scrollX, nextScrollX
-.importzp romDefinitionTableBaseAddress
-.importzp currentBank
-
-.import bankswitch
-
-;sound module
-.import lowc
-
-;entity module
-.import spawnEntity
-
-;map and camera interface
-.export testMapCollision
-.export decodeMap
-.export updateColumn
-.export updateAttribute
-.export updateScrollPPU, updateColumnPPU
-.export updateAttributePPU
+.include "zp.inc"
+.include "misc.inc"
+.include "sound.inc"
+.include "entity.inc"
 
 .segment "CODE"
 
@@ -39,6 +16,7 @@
 ;the zero flag should be set if there is no collision, clear otherwise
 ;b0: whether or not the collision was with a "hurt" tile.
 ;b1: whether or not the collision was with a "solid" tile.
+.export testMapCollision
 .proc testMapCollision
 
   lda #0
@@ -165,6 +143,7 @@
   rts
 .endproc
   
+.export decodeMap
 decodeMap:
 
   ;load the current scroll value and subtract the next scroll value. only when this is 0 or positive do we continue.
@@ -328,6 +307,7 @@ doDecode:
 ;w1: address of meta-meta tile to decode
 ;columnTileBuffer: the buffer to which the meta-meta tile will be decoded. It will consist of
 ;two 30 tile columns.
+.export updateColumn
 updateColumn:
 
   ;we need to calculate what the attributecolumnToUpdate is.
@@ -481,6 +461,7 @@ doNotSpawn:
 ;b1: The attribute value we want to put into the attribute.
 ;b2: The current metatile column.
 ;b3: The current metatile row.
+.export updateAttribute
 updateAttribute:
   ;pha
   tya
@@ -550,6 +531,7 @@ gotMask:
 
   rts
   
+.export updateScrollPPU
 updateScrollPPU:
 
   lda nametableToUpdate
@@ -568,6 +550,7 @@ updateScrollPPU:
 ;dumps two columns of tiles to the PPU
 ;columnTileBuffer: the buffer containing both columns of tiles to write
 ;columnToUpdate: the column to update
+.export updateColumnPPU
 updateColumnPPU:
 
   lda nametableToUpdate
@@ -604,6 +587,7 @@ updateColumnPPU:
 
   rts
 
+.export updateAttributePPU
 updateAttributePPU:
 
 ;

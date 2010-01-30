@@ -1,61 +1,10 @@
-.include "constants.inc"
-.include "macros.inc"
-.include "structs.inc"
-.include "flags.inc"
-
-;zp variables
-.importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
-.importzp nomolosScreenX, nomolosScreenY, nomolosState
-.importzp nomolosSubState
-.importzp nomolosHitboxX, nomolosHitboxY
-.importzp nomolosLives
-.importzp soundAddr, soundOff
-.importzp stateControl
-.importzp romDefinitionTableBaseAddress
-.importzp currentLevel
-
-.import entityPool
-
-;famitracker
-.importzp ft_music_addr
-.import ft_music_init
-.import ft_music_play
-.import ft_disable_channel
-
-;main module
-.import loadLevel
-.import haltmusic
-
-;ROM labels
-.import ROMDefinitionTable0
-
-;geotests module
-.import rectInRect, rectInRect16
-
-;nomolosLogic module
-.import hurtNomolos, nomolosDeadly
-.import addNomolosHealth, addNomolosLife
-
-;entity module
-.import returnFromEntityUpdate, spawnEntity
-
-;camera module
-.import cameraToScreenCoords
-
-;sprite module
-.import updateAnimation, drawAnimation, drawAnimation16, drawMetaSprite
-.import drawMetaSprite16
-
-;sound module
-.import lowc, loadSound, finishSound
-
-.export level2palette, level2MetaTileTable, level2MetaMetaTileTable, level2Level, level2music
-
 .segment "ROM1"
 
+.export level2music
 level2music:
 .incbin "data/music1.bin"
 
+.export level2palette
 level2palette:
 
 ;Image Palette
@@ -66,6 +15,7 @@ level2palette:
 ;Palette
   .byte $0d,$0d,$20,$27,$21,$04,$2a,$0d,$21,$0d,$27,$10,$21,$21,$21,$21
 
+.export level2MetaTileTable
 level2MetaTileTable:
 MetaTile0:
   .byte $02,$00,$00,$00,$01,$0f,$10,$00
@@ -205,6 +155,7 @@ MetaTile67:
   .byte $01,$00,$00,$65,$66,$6f,$70,$03
 MetaTile68:
   .byte $01,$00,$00,$52,$53,$52,$5c,$04
+.export level2MetaMetaTileTable
 level2MetaMetaTileTable:
 MetaMetaTile0:
   .byte $2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$30,$07,$00
@@ -324,6 +275,7 @@ MetaMetaTile57:
   .byte $1c,$44,$1c,$44,$1c,$44,$1c,$44,$1c,$44,$1c,$44,$1c,$44,$07,$00
 MetaMetaTile58:
   .byte $1d,$1d,$1d,$1d,$1d,$1d,$1d,$1d,$1d,$1d,$1d,$1d,$1d,$1d,$07,$00
+.export level2Level
 level2Level:
   .byte $00,$01,$02,$02,$02,$02,$02,$02,$02,$02,$02,$02,$00,$01,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0e,$03,$00,$0f,$0f,$01,$10
   .byte $10,$11,$12,$13,$14,$15,$10,$10,$00,$01,$02,$02,$02,$16,$02,$02,$02,$02,$16,$02,$02,$02,$02,$00,$01,$17,$18,$19,$1a,$1b,$1c,$1d

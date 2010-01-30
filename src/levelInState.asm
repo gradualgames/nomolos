@@ -2,41 +2,16 @@
 .include "constants.inc"
 .include "macros.inc"
 .include "flags.inc"
-
-;famitracker imports
-.import ft_music_init
-
-;load level state imports
-.import loadLevelUpdatePPU, loadLevelUpdate
-
-;main module imports
-.import loadChr, bankswitch
-.import displayString, createDecimalString
-.import loadPalette, clearNametable
-.import font1, powerTable, livesString, levelString
-.import haltmusic
-
-;sprite module imports
-.import clearSprites, updateSprites
-
-;zeropage labels
-.importzp b0, b1, b2, b3, w0, w1, w2
-.importzp update, updatePPU
-.importzp stateControl
-.importzp stringBuffer
-.importzp romDefinitionTableBaseAddress
-.importzp nomolosLives
-.importzp currentLevel
-.importzp frameCounter
-.importzp ft_music_addr
-
-;state return labels
-.import updatePPUFinished, updateFinished
-
-.export levelInUpdate, levelInPPUUpdate
+.include "famitracker.inc"
+.include "loadLevelState.inc"
+.include "misc.inc"
+.include "miscdata.inc"
+.include "sprite.inc"
+.include "zp.inc"
 
 .segment "CODE"
 
+.export levelInUpdate
 levelInUpdate:
 
   lda stateControl+levelInStateControl::state
@@ -228,6 +203,7 @@ stateCommandComplete:
 
   rts
 
+.export levelInPPUUpdate
 levelInPPUUpdate:
 
   dec frameCounter

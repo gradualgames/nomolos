@@ -1,62 +1,10 @@
-.include "constants.inc"
-.include "macros.inc"
-.include "structs.inc"
-.include "flags.inc"
-
-;zp variables
-.importzp b0, b1, b2, b3, b4, b5, w0, w1, w2, w3, w4, w5
-.importzp nomolosScreenX, nomolosScreenY, nomolosState, nomolosSubState
-.importzp nomolosHitboxX, nomolosHitboxY
-.importzp nomolosLives
-.importzp soundAddr, soundOff
-.importzp stateControl
-.importzp romDefinitionTableBaseAddress
-.importzp currentLevel
-
-;famitracker
-.importzp ft_music_addr
-.import ft_music_init
-.import ft_music_play
-.import ft_disable_channel
-
-.import entityPool
-
-;ROM1
-.import ROMDefinitionTable1
-
-;main module
-.import haltmusic
-
-;load level state labels
-.import loadLevelUpdate, loadLevelUpdatePPU
-
-;geotests module
-.import rectInRect, rectInRect16
-
-;nomolosLogic module
-.import initNomolos, hurtNomolos, nomolosDeadly, addNomolosHealth
-.import addNomolosLife
-
-;entity module
-.import initEntities, returnFromEntityUpdate, spawnEntity
-
-;camera module
-.import resetCamera, cameraToScreenCoords
-
-;sprite module
-.import clearSprites, updateAnimation, drawAnimation, drawAnimation16, drawMetaSprite
-.import drawMetaSprite16
-
-;sound module
-.import initsound, lowc, loadSound, finishSound
-
-.export level1palette, level1MetaTileTable, level1MetaMetaTileTable, level1Level, level1music
-
 .segment "ROM0"
 
+.export level1music
 level1music:
 .incbin "data/music.bin"
 
+.export level1palette
 level1palette:
 
 ;Image Palette
@@ -67,6 +15,7 @@ level1palette:
 ;Palette
   .byte $21,$0d,$20,$27,$21,$04,$2a,$0d,$21,$0d,$27,$10,$21,$21,$21,$21
 
+.export level1MetaTileTable
 level1MetaTileTable:
 MetaTile0:
   .byte $02,$00,$00,$00,$00,$00,$00,$00
@@ -100,6 +49,7 @@ MetaTile14:
   .byte $02,$00,$00,$00,$00,$00,$00,$05
 MetaTile15:
   .byte $02,$00,$00,$00,$00,$00,$00,$06
+.export level1MetaMetaTileTable
 level1MetaMetaTileTable:
 MetaMetaTile0:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00
@@ -209,6 +159,7 @@ MetaMetaTile52:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$09,$03,$00
 MetaMetaTile53:
   .byte $0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0a,$0b,$03,$00
+.export level1Level
 level1Level:
   .byte $00,$00,$00,$00,$00,$00,$00,$01,$02,$02,$03,$02,$04,$05,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0e,$0f,$10,$11,$12,$00,$00,$13,$14
   .byte $15,$16,$00,$00,$17,$00,$18,$19,$1a,$1b,$1c,$00,$00,$1d,$1e,$1f,$20,$00,$00,$00,$21,$22,$23,$22,$21,$00,$00,$00,$24,$00,$00,$25

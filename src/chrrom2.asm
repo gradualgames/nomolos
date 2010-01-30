@@ -1,7 +1,6 @@
-.export Font0Chr
-
 .segment "CHRROM2_FONT0_BG"  
 
+.export Font0Chr
 Font0Chr:
 ;Pattern Table
   .byte $00,$00,$70,$88,$78,$88,$98,$68,$00,$00,$00,$00,$00,$00,$00,$00

@@ -2,35 +2,20 @@
 .include "constants.inc"
 .include "macros.inc"
 .include "flags.inc"
-
-.import bankswitch
-
-;famitracker module
-.import ft_music_play
-
-;zeropage variables
-.importzp b0
-.importzp w0, scrollX, nametableToUpdate
-.importzp paletteStep, frameCounter
-.importzp stateControl
-.importzp romDefinitionTableBaseAddress
-.importzp update, updatePPU
-.importzp nomolosLives
-
-;game over state labels
-.import gameOverUpdate, gameOverUpdatePPU
-
-;level in state labels
-.import levelInUpdate, levelInPPUUpdate
-
-.export levelOutUpdate, levelOutPPUUpdate
+.include "misc.inc"
+.include "famitracker.inc"
+.include "zp.inc"
+.include "gameOverState.inc"
+.include "levelInState.inc"
 
 .segment "CODE"
 
+.export levelOutUpdate
 levelOutUpdate:
 
   rts
   
+.export levelOutPPUUpdate
 levelOutPPUUpdate:
 
   lda stateControl+levelOutStateControl::state

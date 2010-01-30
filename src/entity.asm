@@ -1,17 +1,14 @@
 .include "structs.inc"
 .include "macros.inc"
-
-.import entityPool
-
-.importzp b0, b1, b2, w0, entityDefinitionTableBaseAddress
-
-.export updateEntities, initEntities, spawnEntity
+.include "ram.inc"
+.include "zp.inc"
 
 .segment "CODE"
 
 ;This routine indirectly jumps to every update routine for every live entity.
 ;The entities are expected to jump back to returnFromEntityUpdate when they
 ;are finished.
+.export updateEntities
 updateEntities:
 
   ;start at last entity
@@ -71,6 +68,7 @@ indirectJsrW0:
 
 ;This routine initializes the entity pool. All this
 ;entails is filling the first byte of every 16 byte chunk with zero.
+.export initEntities
 initEntities:
   ldx #$0f
 :
@@ -95,7 +93,7 @@ initEntities:
 ;b0 = index of entity definition to spawn
 ;w0 = positionX
 ;b1 = positionY
-
+.export spawnEntity
 spawnEntity:
 
   ;save regs
@@ -216,3 +214,4 @@ spawnEntity:
   pla
 
   rts
+  

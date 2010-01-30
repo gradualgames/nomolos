@@ -2,46 +2,27 @@
 .include "structs.inc"
 .include "macros.inc"
 
-;main module
-.import bankswitch
+.include "misc.inc"
+
 ;rom labels
 .import Heart0
 ;famitracker module
 .import ft_music_play
 ;load level state labels
 .import loadLevelUpdate, loadLevelUpdatePPU
-;sound module
-.import playSound
-;level out state labels
-.import levelOutUpdate, levelOutPPUUpdate
-;input system labels
-.import readController
-;map drawing labels
-.import updateScrollPPU, updateAttributePPU
-.import updateColumnPPU
-;sprite drawing labels
-.import drawMetaSprite, clearSprites, updateSprites
-;entity update labels
-.import updateEntities
-;map decoding labels
-.import decodeMap
-;camera labels
-.import updateCamera
-;nomolos logic labels
-.import updateNomolos, drawNomolos, drawNomolosHearts
-;global variables
-.importzp currentBank
-.importzp update, updatePPU
-.importzp spriteAddress, spriteAddressStart, vblankDone
-.importzp stateControl
-.importzp b0, b1, b2, w0, controllerBuffer
-.importzp romDefinitionTableBaseAddress
-
-;play level state labels
-.export playLevelUpdate, playLevelUpdatePPU
+.include "sound.inc"
+.include "levelOutState.inc"
+.include "controller.inc"
+.include "map.inc"
+.include "sprite.inc"
+.include "entity.inc"
+.include "camera.inc"
+.include "nomolosLogic.inc"
+.include "zp.inc"
 
 .segment "CODE"
 
+.export playLevelUpdate
 playLevelUpdate:
 
   ;wait for vblank to complete
@@ -113,6 +94,7 @@ stateCommandComplete:
     
   rts
   
+.export playLevelUpdatePPU
 playLevelUpdatePPU:
 
   jsr updateSprites

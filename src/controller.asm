@@ -1,11 +1,10 @@
+.include "zp.inc"
+
 .segment "CODE"
-
-.importzp controllerBuffer
-
-.export readController
 
 ;deserializes the controller into a buffer
 ;output: controllerBuffer
+.export readController
 .proc readController
   lda #$01  ; strobe joypad
   sta $4016

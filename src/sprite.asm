@@ -1,19 +1,13 @@
 .include "structs.inc"
-
-;global variables
-.importzp b0, b1, b2, b3, b4, w0, w1, w2, w3, w4, w5
-.importzp spriteAddress
-.import sprite
-
-;sprite manipulation interface
-.export drawAnimation, drawAnimation16, updateAnimation, updateSprites, clearSprites
-.export drawMetaSprite, drawMetaSprite16
+.include "zp.inc"
+.include "ram.inc"
 
 .segment "CODE"
 
 ;draws an animation and expects to be passed parameters that drawMetaSprite16 will use also
 ;w1: location of animation object
 ;w2: location of animation definition  
+.export drawAnimation16
 drawAnimation16:
   ;get the current frame of this animation object
   ldy #animation::currentFrame
@@ -41,6 +35,7 @@ drawAnimation16:
 ;draws an animation
 ;w1: location of animation object
 ;w2: location of animation definition  
+.export drawAnimation
 drawAnimation:
   ;get the current frame of this animation object
   ldy #animation::currentFrame
@@ -79,6 +74,7 @@ drawAnimation:
 ;    .dw frameAddress etc.
 ;    .byte $00
 ;Global Variables:
+.export updateAnimation
 updateAnimation:
 
   ;get the frame count down of this animation object
@@ -132,6 +128,7 @@ skipFrameUpdate:
 ;b4: temporarily stores x offset
 ;w5: temporarily stores whether the x coordinate (low byte) and y coordinate (high byte)
 ; are onscreen.
+.export drawMetaSprite16
 .proc drawMetaSprite16
 
   ;save regs
@@ -497,6 +494,7 @@ skipNextSpriteEntry:
 ;Global Variables:
 ;spriteAddress: the current sprite that will be overwritten in the sprite buffer
 ;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
+.export drawMetaSprite
 drawMetaSprite:
 
   ;save regs
@@ -584,11 +582,13 @@ spriteNotFlipped:
   
   rts
 
+.export updateSprites
 updateSprites:
   lda #>(sprite)
   sta $4014    ; Jam page $200-$2FF into SPR-RAM
   rts
 
+.export clearSprites
 clearSprites:
   lda #$ff
   ldx #$00

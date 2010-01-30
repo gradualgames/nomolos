@@ -1,10 +1,8 @@
+;global headers
 .include "constants.inc"
 
-.importzp nomolosX, nomolosY, nomolosScreenX, nomolosScreenY
-.importzp scrollX, nextScrollX, columnToUpdate
-.importzp b0, b1, b2, b3, w0, w1
-
-.export resetCamera, updateCamera, cameraToScreenCoords
+;modules
+.include "zp.inc"
 
 .segment "CODE"
 
@@ -14,6 +12,7 @@
 ;         w1 is the y coordinate.
 ;outputs: <w0 is the screen x coordinate.
 ;         <w1 is the screen y coordinate.
+.export cameraToScreenCoords
 cameraToScreenCoords:
 
   ;subtract scrollX from the input X coordinate
@@ -29,6 +28,7 @@ cameraToScreenCoords:
   rts
 
 ;resets camera to the beginning of a level (scrollX = 0)
+.export resetCamera
 resetCamera:
 
   lda #0
@@ -46,6 +46,7 @@ resetCamera:
 ;moves the camera in response to input position
 ;expects: b0 is screen X coordinate to respond to
 ;output:  b0 has been adjusted based on how far the camera was scrolled.
+.export updateCamera
 updateCamera:
 
   ;compare b0 to middle of screen.

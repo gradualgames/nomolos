@@ -1,7 +1,6 @@
-.export TitleChr
-
 .segment "CHRROM3_TITLE_BG"  
 
+.export TitleChr
 TitleChr:
 ;Pattern Table
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
