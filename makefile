@@ -53,7 +53,8 @@ INCLUDE_FLAGS = -I include \
                 -I include/data/spritesheets \
                 -I include/data/levels \
                 -I include/data/misc \
-                -I include/ft_driver
+                -I include/ft_driver \
+                -I include/global
 ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) --dbgfile $(DEBUG_FILE) -o
 NAMELIST_GENERATOR_FLAGS = -o $(NES_FILE) \

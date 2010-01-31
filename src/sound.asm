@@ -1,4 +1,5 @@
 .include "constants.inc"
+.include "flags.inc"
 .include "structs.inc"
 .include "famitracker.inc"
 .include "zp.inc"
@@ -34,8 +35,10 @@ keepFinishing:
   ;move back to command index
   dey
   ;re-enable that channel
+  .ifdef MUSIC_ENABLE
   tax
   jsr ft_enable_channel
+  .endif
   
 enableCommandNotFoundYet:
 
@@ -81,8 +84,10 @@ soundFinished:
   
   ;grab the value
   lda (soundAddr),y
+  .ifdef MUSIC_ENABLE
   tax
   jsr ft_disable_channel
+  .endif
   
   ;point to the next entry in the sound
   iny
@@ -98,8 +103,10 @@ soundFinished:
   
   ;grab the value
   lda (soundAddr),y
+  .ifdef MUSIC_ENABLE
   tax
   jsr ft_enable_channel
+  .endif
   
   ;point to the next entry in the sound
   iny

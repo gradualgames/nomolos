@@ -1,15 +1,9 @@
 .include "flags.inc"
 .include "structs.inc"
 .include "macros.inc"
-
 .include "misc.inc"
-
-;rom labels
-.import Heart0
-;famitracker module
-.import ft_music_play
-;load level state labels
-.import loadLevelUpdate, loadLevelUpdatePPU
+.include "famitracker.inc"
+.include "loadLevelState.inc"
 .include "sound.inc"
 .include "levelOutState.inc"
 .include "controller.inc"

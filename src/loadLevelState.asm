@@ -107,12 +107,14 @@ loadLevelStateInit:
   lda (romDefinitionTableBaseAddress),y
   sta entityDefinitionTableBaseAddress+1
   
+  .ifdef MUSIC_ENABLE
   ldy #ROMDefinitionTableStruct::music
   lda (romDefinitionTableBaseAddress),y
   sta ft_music_addr
   iny
   lda (romDefinitionTableBaseAddress),y
   sta ft_music_addr+1
+  .endif
   
   jsr initsound
   
@@ -134,7 +136,7 @@ loadLevelStateInit:
   sta $2000
   
   ;initialize music driver as NTSC and track #0.
-.if .defined(MUSIC_ENABLE)
+.ifdef MUSIC_ENABLE
   lda #0
   ldx #0
   jsr ft_music_init
