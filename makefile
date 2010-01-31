@@ -44,7 +44,7 @@ OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))
 LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
 CONFIG_FILE     = $(OUTPUT_NAME).cfg
 MAP_FILE         = $(OUTPUT_NAME).map
-DEBUG_FILE      = $(OUTPUT_NAME).txt
+DEBUG_FILE      = $(OUTPUT_NAME).dbg
 
 #Switches
 INCLUDE_FLAGS = -I include \
