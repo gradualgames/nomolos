@@ -2,6 +2,7 @@
 
 #Utility programs
 NAMELIST_GENERATOR = nlgen
+DEPENDENCY_GENERATOR = depgen
 
 #CA65 programs
 ASSEMBLER       = ca65
@@ -45,6 +46,7 @@ LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
 CONFIG_FILE     = $(OUTPUT_NAME).cfg
 MAP_FILE         = $(OUTPUT_NAME).map
 DEBUG_FILE      = $(OUTPUT_NAME).dbg
+DEPENDENCY_FILE = $(OUTPUT_NAME).dep
 
 #Switches
 INCLUDE_FLAGS = -I include \
@@ -67,6 +69,13 @@ NAMELIST_GENERATOR_FLAGS = -o $(NES_FILE) \
                            -nl 7 CODE C000 \
                            -map $(MAP_FILE) \
                            $(addprefix -lst ,$(LST_FILES))
+DEPENDENCY_GENERATOR_FLAGS = -o $(DEPENDENCY_FILE) \
+                             -p ".include \"(?<depfile>[a-zA-Z_]*.inc)\"" \
+                             -b bin \
+                             -s src \
+                             -r "\$$(ASSEMBLER) \$$< \$$(ASSEMBLER_FLAGS) \$$@" \
+                             $(addprefix -f ,$(addprefix $(SRC_DIR)/,$(addsuffix .asm,$(FILES)))) \
+                             $(INCLUDE_FLAGS)
 
 #Rules
 
@@ -81,10 +90,13 @@ debug: $(NES_FILE)
 $(NES_FILE): $(OBJECT_FILES) $(CONFIG_FILE)
 	$(LINKER) $(OBJECT_FILES) $(LINKER_FLAGS) $(NES_FILE)
 
-#Rule for assembling all the object files from source files
-$(OBJECT_FILES): $(BIN_DIR)/%.o : $(SRC_DIR)/%.asm
-	$(ASSEMBLER) $< $(ASSEMBLER_FLAGS) $@
+#Rule for generating dependency file
+$(DEPENDENCY_FILE):
+	$(DEPENDENCY_GENERATOR) $(DEPENDENCY_GENERATOR_FLAGS)
+
+#Quietly include dependency file incase it has not been generated yet.
+-include $(DEPENDENCY_FILE)
 
 #Rule for cleaning the build
 clean:
-	rm -f $(OBJECT_FILES) $(NES_FILE) $(MAP_FILE) $(LST_FILES) $(DEBUG_FILE) *.nl
+	rm -f $(OBJECT_FILES) $(NES_FILE) $(MAP_FILE) $(LST_FILES) $(DEBUG_FILE) $(DEPENDENCY_FILE) *.nl
