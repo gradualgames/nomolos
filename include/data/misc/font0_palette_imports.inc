@@ -1,0 +1,1 @@
+.import font0_palette

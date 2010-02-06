@@ -3,7 +3,7 @@
 .include "level1.inc"
 .include "level2.inc"
 .include "titledata.inc"
-.include "fontdata.inc"
+.include "font0_patterns_imports.inc"
 
 .segment "CODE"
 
@@ -275,11 +275,11 @@ haltmusic:
 
 .export font1
 font1:
-  .word Font0Chr
+  .word font0_patterns
   .byte $04
   .byte $35,$36,$37,$38,$39,$3a,$3b,$3c,$3d,$3e
-  .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
-  .byte $0d,$20,$0d,$0d,$0d,$00,$00,$00,$0d,$00,$00,$00,$0d,$00,$00,$00
+.include "font0_palette_source.inc"
+  .byte $3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f,$3f
 
 ;table of decimal powers for creating decimal strings from 8 bit numbers
 .export powerTable

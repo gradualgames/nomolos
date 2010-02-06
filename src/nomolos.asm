@@ -3,7 +3,6 @@
 .include "flags.inc"
 .include "structs.inc"
 .include "titledata.inc"
-.include "fontdata.inc"
 .include "zp.inc"
 .include "camera.inc"
 .include "nomolosLogic.inc"
