@@ -4,13 +4,7 @@
 level2music:
 .incbin "data/music1.bin"
 
-.export level2palette
-level2palette:
-
-;Image Palette
-;Palette
-  .byte $0d,$10,$00,$05,$3f,$10,$00,$02,$3f,$10,$28,$08,$3f,$07,$05,$20
-
+.include "level2_palette_source.inc"
 ;Sprite Palette
 ;Palette
   .byte $0d,$0d,$20,$27,$21,$04,$2a,$0d,$21,$0d,$27,$10,$21,$21,$21,$21

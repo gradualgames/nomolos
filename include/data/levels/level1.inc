@@ -2,8 +2,9 @@
 LEVEL1_INC = 1
 
 .include "spritesheet1.inc"
+.include "level1_patterns_imports.inc"
+.include "level1_palette_imports.inc"
 
-.import level1palette, level1MetaTileTable, level1MetaMetaTileTable, level1Level, level1music
-.import Level1Chr
+.import level1MetaTileTable, level1MetaMetaTileTable, level1Level, level1music
 
 .endif

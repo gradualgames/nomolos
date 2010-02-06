@@ -27,7 +27,7 @@ ROMDefinitionTable0:
   .word Heart0                 
   .word attackSound            
   .word hitSound               
-  .word level1palette                
+  .word level1_palette                
   .word level1MetaTileTable          
   .word level1MetaMetaTileTable      
   .word level1Level                  
@@ -55,7 +55,7 @@ ROMDefinitionTable1:
   .word Heart0                
   .word attackSound           
   .word hitSound              
-  .word level2palette               
+  .word level2_palette               
   .word level2MetaTileTable         
   .word level2MetaMetaTileTable     
   .word level2Level                 
@@ -252,13 +252,13 @@ getFlailItemSound:
 .export LevelDefinitionTable
 LevelDefinitionTable:
 Level1:
-  .word Level1Chr  ;location of chr data
-  .byte $03        ;prg bank where data resides
-  .byte $00        ;prg bank where code/additional data resides
+  .word level1_patterns  ;location of chr data
+  .byte $03              ;prg bank where data resides
+  .byte $00              ;prg bank where code/additional data resides
   .word ROMDefinitionTable0
   .byte $00, $00  ;pad to 8 bytes. this may be used eventually anyway (music track for example)
 Level2:
-  .word Level2Chr
+  .word level2_patterns
   .byte $03       
   .byte $01
   .word ROMDefinitionTable1
