@@ -66,7 +66,7 @@ levelInStateRun:
   sta w0
   lda #>(font1+font::palette)
   sta w0+1
-  jsr loadPalette
+  jsr loadPaletteBg
   
   ;switch to PRG block containing font1
   lda font1+font::chrPrgRomBank

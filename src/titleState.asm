@@ -72,7 +72,7 @@ titleStateRun:
   sta w0
   lda titleDef+title::paletteAddress+1
   sta w0+1
-  jsr loadPalette
+  jsr loadPaletteBg
   
   ;wait for vblank so when we turn graphics back on we don't get ugly scrambling =)
   waitVBlank

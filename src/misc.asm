@@ -292,3 +292,37 @@ loadChrLoop:
   bne :-
   rts
 .endproc
+
+.export loadPaletteBg
+.proc loadPaletteBg
+  ldy #0
+  lda #$3F
+  sta $2006
+  lda #$00
+  sta $2006  
+  ldx #$00
+: lda (w0),y
+  sta $2007
+  inx
+  iny
+  cpx #$10
+  bne :-
+  rts
+.endproc
+
+.export loadPaletteSpr
+.proc loadPaletteSpr
+  ldy #0
+  lda #$3F
+  sta $2006
+  lda #$10
+  sta $2006  
+  ldx #$00
+: lda (w0),y
+  sta $2007
+  inx
+  iny
+  cpx #$10
+  bne :-
+  rts
+.endproc

@@ -8,5 +8,7 @@ MISC_INC = 1
 .import loadNametable
 .import clearNametable
 .import loadPalette
+.import loadPaletteBg
+.import loadPaletteSpr
 
 .endif
