@@ -1,6 +1,7 @@
 .ifndef SPRITESHEET1_INC
 SPRITESHEET1_INC = 1
 
+.include "spritesheet1_patterns_imports.inc"
 .include "spritesheet1_sprites_imports.inc"
 .include "spritesheet1_animations_imports.inc"
 

@@ -1,1 +1,0 @@
-.import level1_palette

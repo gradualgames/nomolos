@@ -4,11 +4,12 @@
 level1music:
 .incbin "data/music.bin"
 
-.include "level1_palette_source.inc"
-
-;Sprite Palette
-;Palette
-  .byte $21,$0d,$20,$27,$21,$04,$2a,$0d,$21,$0d,$27,$10,$21,$21,$21,$21
+.export level1_palette
+level1_palette:
+;level1_palette
+  .byte $21,$28,$18,$08,$21,$19,$2a,$0b,$21,$0d,$07,$28,$21,$21,$21,$21
+;spritesheet1_palette
+  .byte $21,$04,$2a,$0d,$21,$0d,$27,$20,$21,$21,$21,$21,$21,$21,$21,$21
 
 .export level1MetaTileTable
 level1MetaTileTable:
