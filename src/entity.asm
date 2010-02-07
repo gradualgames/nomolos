@@ -5,8 +5,68 @@
 .include "ppu.inc"
 .include "mapper.inc"
 .include "camera.inc"
+.include "geotests.inc"
+.include "constants.inc"
 
 .segment "CODE"
+
+.export compareEntityRectToHitboxRect
+;assumes b2 and b3 represent the width and height of the calling entity
+.proc compareEntityRectToHitboxRect
+  ;transfer entity rectangle to w2 = left and w3 = top and b2 = width and b3 = height
+  lda entityScreenX
+  sta w2
+  lda entityScreenX+1
+  sta w2+1
+  lda entityScreenY
+  sta w3
+  lda entityScreenY+1
+  sta w3+1
+  
+  ;transfer Hitbox rectangle to w4 = left and w5 = top and b4 = width and b5 = height
+  lda nomolosHitboxX
+  sta w4
+  lda nomolosHitboxX+1
+  sta w4+1
+  lda #nomolosHitboxWidth
+  sta b4
+  lda #nomolosHitboxHeight
+  sta b5
+    
+  jsr rectInRect16
+  rts
+.endproc
+
+.export compareEntityRectToNomolosRect
+;assumes b2 and b3 represent the width and height of the current entity
+.proc compareEntityRectToNomolosRect
+  ;transfer Deentle rectangle to w2 = left and w3 = top and b2 = width and b3 = height
+  lda entityScreenX
+  sta w2
+  lda entityScreenX+1
+  sta w2+1
+  lda entityScreenY
+  sta w3
+  lda entityScreenY+1
+  sta w3+1
+  
+  ;transfer Nomolos rectangle to w4 = left and w5 = top and b4 = width and b5 = height
+  lda nomolosScreenX
+  sta w4
+  lda nomolosScreenX+1
+  sta w4+1
+  lda nomolosScreenY
+  sta w5
+  lda nomolosScreenY+1
+  sta w5+1
+  lda #nomolosWidth
+  sta b4
+  lda #nomolosHeight
+  sta b5
+
+  jsr rectInRect16
+  rts
+.endproc
 
 .export getEntityScreenCoordinates
 .proc getEntityScreenCoordinates
