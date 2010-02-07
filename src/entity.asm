@@ -2,7 +2,8 @@
 .include "macros.inc"
 .include "ram.inc"
 .include "zp.inc"
-.include "misc.inc"
+.include "ppu.inc"
+.include "mapper.inc"
 
 .segment "CODE"
 

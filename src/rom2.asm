@@ -5,7 +5,7 @@
 .include "zp.inc"
 .include "famitracker.inc"
 .include "ram.inc"
-.include "misc.inc"
+.include "ppu.inc"
 .include "gameUIData.inc"
 .include "loadLevelState.inc"
 .include "geotests.inc"

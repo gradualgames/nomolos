@@ -1,7 +1,6 @@
-.ifndef MISC_INC
-MISC_INC = 1
+.ifndef PPU_INC
+PPU_INC = 1
 
-.import bankswitch
 .import createDecimalString
 .import displayString
 .import loadChr

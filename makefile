@@ -38,7 +38,8 @@ FILES           = nomolos \
                   sound \
                   geotests \
                   zp \
-                  misc \
+                  mapper \
+                  ppu \
                   gameUIData \
                   levelDataIndex
 OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))

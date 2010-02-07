@@ -1,7 +1,8 @@
 .include "constants.inc"
 .include "structs.inc"
 .include "zp.inc"
-.include "misc.inc"
+.include "ppu.inc"
+.include "mapper.inc"
 .include "sound.inc"
 .include "entity.inc"
 
