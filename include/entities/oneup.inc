@@ -17,9 +17,6 @@ ONEUP_INC = 1
   lda entityPool+entityRAM::positionY+1,x
   sta w1+1
   jsr cameraToScreenCoords
-  bpl skipJmpOneUpDie
-  jmp oneUpDie
-skipJmpOneUpDie:
   
   ;save screen coordinates for use later
   lda w0
@@ -30,6 +27,21 @@ skipJmpOneUpDie:
   pha
   lda w1+1
   pha  
+  
+  ;test x coordinate for whether the item should die.
+  sec
+  lda #$f0
+  sbc w0
+  lda #$ff
+  sbc w0+1
+  bmi skipJmpOneUpDie
+  
+  pla
+  pla
+  pla
+  pla
+  jmp oneUpDie
+skipJmpOneUpDie:
   
   ;transfer entity rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda w0
