@@ -60,6 +60,12 @@ w8:       .res 2
 .exportzp w9
 w9:       .res 2
 
+.exportzp entityScreenX
+entityScreenX: .res 2
+
+.exportzp entityScreenY
+entityScreenY: .res 2
+
 .exportzp currentBank
 currentBank: .res 1
 

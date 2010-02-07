@@ -21,6 +21,8 @@ ZP_INC = 1
 .importzp w7
 .importzp w8
 .importzp w9
+.importzp entityScreenX
+.importzp entityScreenY
 .importzp currentBank
 .importzp stringBuffer
 .importzp vblankDone

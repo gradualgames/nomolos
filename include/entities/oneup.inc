@@ -4,53 +4,27 @@ ONEUP_INC = 1
 .export oneUpUpdate
 .proc oneUpUpdate
 
-  ;get out low byte of positionX
-  lda entityPool+entityRAM::positionX,x
-  sta w0
-  ;get out high byte of positionX
-  lda entityPool+entityRAM::positionX+1,x
-  sta w0+1
-  
-  ;get out positionY
-  lda entityPool+entityRAM::positionY,x
-  sta w1
-  lda entityPool+entityRAM::positionY+1,x
-  sta w1+1
-  jsr cameraToScreenCoords
-  
-  ;save screen coordinates for use later
-  lda w0
-  pha
-  lda w0+1
-  pha
-  lda w1
-  pha
-  lda w1+1
-  pha  
+  jsr getEntityScreenCoordinates
   
   ;test x coordinate for whether the item should die.
   sec
   lda #$f0
-  sbc w0
+  sbc entityScreenX
   lda #$ff
-  sbc w0+1
+  sbc entityScreenX+1
   bmi skipJmpOneUpDie
-  
-  pla
-  pla
-  pla
-  pla
+
   jmp oneUpDie
 skipJmpOneUpDie:
   
   ;transfer entity rectangle to w2 = left and w3 = top and b2 = width and b3 = height
-  lda w0
+  lda entityScreenX
   sta w2
-  lda w0+1
+  lda entityScreenX+1
   sta w2+1
-  lda w1
+  lda entityScreenY
   sta w3
-  lda w1+1
+  lda entityScreenY+1
   sta w3+1
   lda #$10
   sta b2
@@ -86,12 +60,6 @@ skipJmpNotTouching:
   sta w0+1
   jsr loadSound
     
-  ;restore stack
-  pla
-  pla
-  pla
-  pla
-    
   jmp oneUpDie
   
 notTouching:
@@ -101,14 +69,14 @@ notTouching:
   lda #>OneUp0
   sta w0+1
   
-  pla
-  sta w4+1
-  pla
-  sta w4
-  pla
-  sta w3+1
-  pla 
+  lda entityScreenX
   sta w3
+  lda entityScreenX+1
+  sta w3+1
+  lda entityScreenY
+  sta w4
+  lda entityScreenY+1
+  sta w4+1
   
   jsr drawMetaSprite16
   

@@ -29,28 +29,16 @@ explosionInit:
   
 explosionExplode:
 
-  ;get out low byte of positionX
-  lda entityPool+entityRAM::positionX,x
-  sta w0
-  ;get out high byte of positionX
-  lda entityPool+entityRAM::positionX+1,x
-  sta w0+1
-  
-  ;get out positionY
-  lda entityPool+entityRAM::positionY,x
-  sta w1
-  lda entityPool+entityRAM::positionY+1,x
-  sta w1+1
-  jsr cameraToScreenCoords
+  jsr getEntityScreenCoordinates
 
   ;store screen coordinates
-  lda w0
+  lda entityScreenX
   sta w3
-  lda w0+1
+  lda entityScreenX+1
   sta w3+1
-  lda w1
+  lda entityScreenY
   sta w4
-  lda w1+1
+  lda entityScreenY+1
   sta w4+1
   
   ;load address of animation object into w1

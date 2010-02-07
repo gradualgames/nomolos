@@ -4,8 +4,37 @@
 .include "zp.inc"
 .include "ppu.inc"
 .include "mapper.inc"
+.include "camera.inc"
 
 .segment "CODE"
+
+.export getEntityScreenCoordinates
+.proc getEntityScreenCoordinates
+  ;get out low byte of positionX
+  lda entityPool+entityRAM::positionX,x
+  sta w0
+  ;get out high byte of positionX
+  lda entityPool+entityRAM::positionX+1,x
+  sta w0+1
+  
+  ;get out positionY
+  lda entityPool+entityRAM::positionY,x
+  sta w1
+  lda entityPool+entityRAM::positionY+1,x
+  sta w1+1
+  jsr cameraToScreenCoords
+
+  ;save screen coordinates for use later
+  lda w0
+  sta entityScreenX
+  lda w0+1
+  sta entityScreenX+1
+  lda w1
+  sta entityScreenY
+  lda w1+1
+  sta entityScreenY+1
+  rts
+.endproc
 
 ;This routine indirectly jumps to every update routine for every live entity.
 ;The entities are expected to jump back to returnFromEntityUpdate when they
