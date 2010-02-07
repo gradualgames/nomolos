@@ -54,7 +54,7 @@ INCLUDE_FLAGS = -I include \
                 -I include/entities \
                 -I include/data/spritesheets \
                 -I include/data/levels \
-                -I include/data/misc \
+                -I include/data/gameUIData \
                 -I include/ft_driver \
                 -I include/global
 ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
