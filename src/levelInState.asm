@@ -5,7 +5,7 @@
 .include "famitracker.inc"
 .include "loadLevelState.inc"
 .include "misc.inc"
-.include "miscdata.inc"
+.include "gameUIData.inc"
 .include "sprite.inc"
 .include "zp.inc"
 

@@ -3,7 +3,7 @@
 .include "macros.inc"
 .include "controller.inc"
 .include "misc.inc"
-.include "miscdata.inc"
+.include "gameUIData.inc"
 .include "sprite.inc"
 .include "levelInState.inc"
 .include "zp.inc"

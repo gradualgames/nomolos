@@ -7,7 +7,6 @@ MISCDATA_INC = 1
 .import getHealthSound
 .import getOneUpSound
 .import getFlailItemSound
-.import LevelDefinitionTable
 .import haltmusic
 .import font1
 .import powerTable

@@ -1,5 +1,5 @@
 .include "zp.inc"
-.include "miscdata.inc"
+.include "gameUIData.inc"
 
 .segment "CODE"
 

@@ -5,7 +5,7 @@
 .include "famitracker.inc"
 .include "sound.inc"
 .include "misc.inc"
-.include "miscdata.inc"
+.include "levelDataIndex.inc"
 .include "camera.inc"
 .include "nomolosLogic.inc"
 .include "playLevelState.inc"
