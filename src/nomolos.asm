@@ -31,6 +31,8 @@ sprite: .res 256
 
 .export entityPool
 entityPool: .res 256
+.export entityLocals
+entityLocals: .res 256
 
 ;FamiTracker driver must be included here so its variables come after the sprite
 ;page and entity page. This avoids clobbering graphics/sound memory.
