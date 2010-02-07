@@ -526,6 +526,13 @@ skipAttackUpdate:
   and #nomolosDyingTestAND
   beq nomolosNotDying
   
+  ;clear buttons we don't want to respond to during dying state.
+  lda #0
+  sta controllerBuffer+buttons::_a
+  sta controllerBuffer+buttons::_b
+  sta controllerBuffer+buttons::_left
+  sta controllerBuffer+buttons::_right
+  
   lda nomolosSubState
   and #nomolosAttackedDyingTestAND
   beq nomolosNotAttackedDying
@@ -549,13 +556,6 @@ skipAttackUpdate:
   sta stateControl+playLevelStateControl::state
   
 scaredyCatStillRising:
-  
-  ;clear buttons we don't want to respond to during dying state.
-  lda #0
-  sta controllerBuffer+buttons::_a
-  sta controllerBuffer+buttons::_b
-  sta controllerBuffer+buttons::_left
-  sta controllerBuffer+buttons::_right
   
   jmp nomolosNotDying
   
