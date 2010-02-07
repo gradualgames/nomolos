@@ -2,8 +2,6 @@
 .include "constants.inc"
 .include "level1.inc"
 .include "level2.inc"
-.include "title_patterns_imports.inc"
-.include "font0_patterns_imports.inc"
 
 .segment "CODE"
 
