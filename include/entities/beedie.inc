@@ -2,8 +2,7 @@
 BEEDIE_INC = 1
 
 BEEDIE_INITSTATE = 0
-BEEDIE_MOVERIGHTSTATE = 1
-BEEDIE_MOVELEFTSTATE = 2
+BEEDIE_RESTSTATE = 1
 
 .export beedieUpdate
 .proc beedieUpdate
@@ -13,10 +12,8 @@ BEEDIE_MOVELEFTSTATE = 2
   ;figure out what state to jump to
   cmp #BEEDIE_INITSTATE
   beq beedie_initState
-  cmp #BEEDIE_MOVERIGHTSTATE
-  beq beedie_moveRightState
-  cmp #BEEDIE_MOVELEFTSTATE
-  beq beedie_moveLeftState
+  cmp #BEEDIE_RESTSTATE
+  beq beedie_restState
 
 beedie_initState:
 
@@ -26,85 +23,12 @@ beedie_initState:
   lda #$ff
   sta entityPool+entityRAM::animationObject+1,x
   
-  ;switch state to "run"
-  lda #BEEDIE_MOVELEFTSTATE
+  ;switch state to "rest"
+  lda #BEEDIE_RESTSTATE
   sta entityPool+entityRAM::state,x
   rts
 
-beedie_moveRightState:
-
-  ;add 1 to PositionX
-  clc
-  lda entityPool+entityRAM::positionX,x
-  adc #1
-  sta entityPool+entityRAM::positionX,x
-  lda entityPool+entityRAM::positionX+1,x
-  adc #0
-  sta entityPool+entityRAM::positionX+1,x
-  
-  ;do PositionX - spawnPositionX
-  sec
-  lda entityPool+entityRAM::positionX,x
-  sbc entityPool+entityRAM::spawnPositionX,x
-  sta w0
-  lda entityPool+entityRAM::positionX+1,x
-  sbc entityPool+entityRAM::spawnPositionX+1,x
-  sta w0+1
-  
-  ;difference is in w0, subtract our desired delta distance from it
-  sec
-  lda w0
-  sbc #30
-  sta w0
-  lda w0+1
-  sbc #0
-  sta w0+1
-  bne dontSwitchToLeftState
-  
-  lda #BEEDIE_MOVELEFTSTATE
-  sta entityPool+entityRAM::state,x
-  
-dontSwitchToLeftState:
-
-  jsr beedie_draw
-
-  rts
-
-beedie_moveLeftState:
-
-  ;sub 1 from PositionX
-  sec
-  lda entityPool+entityRAM::positionX,x
-  sbc #1
-  sta entityPool+entityRAM::positionX,x
-  lda entityPool+entityRAM::positionX+1,x
-  sbc #0
-  sta entityPool+entityRAM::positionX+1,x
-  
-  ;do spawnPositionX - PositionX
-  sec
-  lda entityPool+entityRAM::spawnPositionX,x
-  sbc entityPool+entityRAM::positionX,x 
-  sta w0
-  lda entityPool+entityRAM::spawnPositionX+1,x
-  sbc entityPool+entityRAM::positionX+1,x 
-  sta w0+1
-  
-  ;difference is in w0, subtract our desired delta distance from it
-  sec
-  lda w0
-  sbc #30
-  sta w0
-  lda w0+1
-  sbc #0
-  sta w0+1
-  
-  bne dontSwitchToRightState
-  
-  lda #BEEDIE_MOVERIGHTSTATE
-  sta entityPool+entityRAM::state,x
-  
-dontSwitchToRightState:
+beedie_restState:
 
   jsr beedie_draw
 
