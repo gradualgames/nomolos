@@ -10,5 +10,6 @@ SPRITESHEET1_INC = 1
 .import explosionUpdate
 .import deentleUpdate
 .import exitLevelUpdate
+.import beedieUpdate
 
 .endif

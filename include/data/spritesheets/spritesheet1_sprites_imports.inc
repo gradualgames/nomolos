@@ -34,4 +34,8 @@
 .import FlailBall7
 .import NomolosFlailOverlay0
 .import FlailItem0
+.import Beedie0
+.import Beedie1
+.import Grank0
+.import Grank1
 

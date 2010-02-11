@@ -127,6 +127,14 @@ FlailItemEntity:
   .byte $00
   .byte $00
   .byte $00
+BeedieEntity:
+  .word beedieUpdate
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
   
 .export attackSound
 attackSound:

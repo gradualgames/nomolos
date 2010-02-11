@@ -26,4 +26,5 @@
 .include "explosion.inc"  
 .include "deentle.inc"
 .include "flailitem.inc"
+.include "beedie.inc"
   

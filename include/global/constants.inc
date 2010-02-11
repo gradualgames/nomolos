@@ -7,8 +7,8 @@ ExplosionIndex = 1
 MouseIndex = 2
 ExitLevelEntityIndex = 3
 OneUpEntityIndex = 4
-FlailItemEntityIndex = 4
-
+FlailItemEntityIndex = 5
+BeedieEntityIndex = 6
 
 ;bit positions for PPU control register $2000
 PPU0_EXECUTE_NMI = 7

@@ -103,3 +103,10 @@ FlailItem:
   .word FlailItem0
   .word $0000
 
+.export BeedieBlob
+BeedieBlob:
+  .byte $0a
+  .word Beedie0
+  .word Beedie1
+  .word $0000
+

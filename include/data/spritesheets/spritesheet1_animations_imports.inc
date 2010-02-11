@@ -12,3 +12,4 @@
 .import FlailBall
 .import NomolosFlailOverlay
 .import FlailItem
+.import BeedieBlob
