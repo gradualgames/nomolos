@@ -1,8 +1,15 @@
 .ifndef BEEDIE_INC
 BEEDIE_INC = 1
 
+.struct beedieLocals
+  y_velocity .word
+  y_belowPenetration .byte
+  x_collisionPointBottom .word
+  y_collisionPointBottom .word
+.endstruct
+
 BEEDIE_INITSTATE = 0
-BEEDIE_RESTSTATE = 1
+BEEDIE_RUNSTATE = 1
 
 .export beedieUpdate
 .proc beedieUpdate
@@ -12,8 +19,8 @@ BEEDIE_RESTSTATE = 1
   ;figure out what state to jump to
   cmp #BEEDIE_INITSTATE
   beq beedie_initState
-  cmp #BEEDIE_RESTSTATE
-  beq beedie_restState
+  cmp #BEEDIE_RUNSTATE
+  beq beedie_runState
 
 beedie_initState:
 
@@ -23,13 +30,86 @@ beedie_initState:
   lda #$ff
   sta entityPool+entityRAM::animationObject+1,x
   
-  ;switch state to "rest"
-  lda #BEEDIE_RESTSTATE
+  ;set vertical velocity to zero
+  lda #0
+  sta entityLocals+beedieLocals::y_velocity,x
+  
+  ;switch state to "run"
+  lda #BEEDIE_RUNSTATE
   sta entityPool+entityRAM::state,x
   rts
 
-beedie_restState:
+beedie_runState:
 
+  ;increment the vertical velocity
+  lda entityLocals+beedieLocals::y_velocity+1,x
+  cmp #10
+  bpl stopAccelerating
+  clc
+  lda entityLocals+beedieLocals::y_velocity,x
+  adc #$20
+  sta entityLocals+beedieLocals::y_velocity,x
+  lda entityLocals+beedieLocals::y_velocity+1,x
+  adc #0
+  sta entityLocals+beedieLocals::y_velocity+1,x
+stopAccelerating:
+  
+  ;add vertical velocity to 24 bit Y coordinate
+  clc
+  lda entityLocals+beedieLocals::y_velocity,x
+  adc entityPool+entityRAM::positionYFine,x
+  sta entityPool+entityRAM::positionYFine,x
+  lda entityLocals+beedieLocals::y_velocity+1,x
+  adc entityPool+entityRAM::positionY,x
+  sta entityPool+entityRAM::positionY,x
+  lda #0
+  adc entityPool+entityRAM::positionY+1,x
+  sta entityPool+entityRAM::positionY+1,x
+  
+  ;perform collision detection and eject if necessary
+  ;load the entity's X coordinate + 8
+  clc
+  lda entityPool+entityRAM::positionX,x
+  adc #8
+  sta entityLocals+beedieLocals::x_collisionPointBottom,x
+  sta w0
+  lda entityPool+entityRAM::positionX+1,x
+  adc #0
+  sta entityLocals+beedieLocals::x_collisionPointBottom+1,x
+  sta w0+1
+  ;load the entity's Y coordinate + 16
+  clc
+  lda entityPool+entityRAM::positionY,x
+  adc #16
+  sta entityLocals+beedieLocals::y_collisionPointBottom,x
+  sta w1
+  lda entityPool+entityRAM::positionY+1,x
+  adc #0
+  sta entityLocals+beedieLocals::y_collisionPointBottom+1,x
+  sta w1+1
+  
+  jsr testMapCollision
+  lda b1
+  bne noBottomCollision
+  
+  lda #0
+  sta entityLocals+beedieLocals::y_velocity,x
+  sta entityLocals+beedieLocals::y_velocity+1,x
+  
+  ;there was a collision beneath the beedie. calculate penetration distance and eject.
+  lda entityLocals+beedieLocals::y_collisionPointBottom,x
+  and #penetrationCalculationMask
+  sta entityLocals+beedieLocals::y_belowPenetration,x
+  sec
+  lda entityPool+entityRAM::positionY,x
+  sbc entityLocals+beedieLocals::y_belowPenetration,x
+  sta entityPool+entityRAM::positionY,x
+  lda entityPool+entityRAM::positionY+1,x
+  sbc #0
+  sta entityPool+entityRAM::positionY+1,x
+  
+noBottomCollision:  
+  
   jsr beedie_draw
 
   rts
