@@ -59,7 +59,7 @@ INCLUDE_FLAGS = -I include \
                 -I include/global
 ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) --dbgfile $(DEBUG_FILE) -o
-NAMELIST_GENERATOR_FLAGS = -o $(NES_FILE) \
+NAMELIST_GENERATOR_FLAGS = -rom $(NES_FILE) \
                            -nl ram ZEROPAGE 0000 \
                            -nl ram STACK 0100 \
                            -nl ram BSS 0200 \
