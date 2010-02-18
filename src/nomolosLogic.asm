@@ -538,12 +538,6 @@ skipAttackUpdate:
   bne yesBelowCollision
   
 noBelowCollision:
-  ;There was no below collision.
-  ;Clear below collision flag.
-  lda nomolosState
-  and #nomolosBelowCollisionOffAND
-  sta nomolosState
-  
   rts
   
 yesBelowCollision:
@@ -633,11 +627,18 @@ skipButtonATest:
   lda b1
   bne yesAboveCollision
   
-  ;There was no above collision.
-  ;Clear above collision flag.
-  lda nomolosState
-  and #nomolosAboveCollisionOffAND
-  sta nomolosState
+  ;is current state of A button released, and previous state of A button pressed?
+  lda controllerBuffer+buttons::_a
+  and #%00000011
+  cmp #%00000010
+  bne dontStopRising
+  
+  ;yes, so stop rising into the air.
+  lda #0
+  sta nomolosYSpeed
+  sta nomolosYSpeed+1
+dontStopRising:
+  
   rts
   
 yesAboveCollision:
@@ -862,6 +863,12 @@ noSignExtend:
   ;map and eject if necessary. Also check for A button press
   ;or release to start/stop jumping.
   ;************************************************************
+  ;clear the collision flags
+  lda nomolosState
+  and #nomolosBelowCollisionOffAND
+  and #nomolosAboveCollisionOffAND
+  sta nomolosState
+  
   lda nomolosYSpeed+1
   bmi ySpeedNegative
 ySpeedPositive:
@@ -871,16 +878,6 @@ ySpeedPositive:
 ySpeedNegative:
   jsr testAboveCollision
   
-  ;is current state of A button released, and previous state of A button pressed?
-  lda controllerBuffer+buttons::_a
-  and #%00000011
-  cmp #%00000010
-  bne dontStopRising
-  
-  ;yes, so stop rising into the air.
-  lda #0
-  sta nomolosYSpeed
-  sta nomolosYSpeed+1
 dontStopRising:
 
 ySpeedTestDone:
@@ -1464,24 +1461,16 @@ attackSwitchDone:
   
 skipDrawNomolosFighting:
 
-  ;we need to test two cases to know if nomolos is jumping,
-  ;in order to cover the case where he is motionless for a
-  ;split second at the top of an arc.
-  ;test if there is anything below nomolos. If there is nothing,
-  ;we skip the Y speed test becase we know he should be drawn 
-  ;jumping.
+
+  ;test if there is anything below nomolos. if there is not,
+  ;draw nomolos's jumping animation.
   lda nomolosState
   and #nomolosBelowCollisionTestAND
   lsr
   lsr
   lsr
-  beq skipYSpeedTest
+  bne skipDrawNomolosJumping
 
-  ;check whether Nomolos is moving vertically
-  lda nomolosYSpeed+1
-  beq skipDrawNomolosJumping
-skipYSpeedTest:
-  
   resetAnim nomolosAnim
   
   lda #<nomolosAnim
