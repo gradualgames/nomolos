@@ -498,6 +498,182 @@ skipAttackUpdate:
 
 .endproc
   
+.proc testBelowCollision
+
+  ;Is there a collision at bottom left of Nomolos?
+  lda nomolosX+1
+  sta w0
+  lda nomolosX+2
+  sta w0+1
+  lda nomolosY+1
+  clc
+  adc #(nomolosHeight+1)
+  sta w1
+  lda nomolosY+2
+  adc #0
+  sta w1+1
+  jsr testMapCollision
+  jsr loadHurtResult
+  lda b1
+  bne yesBelowCollision
+
+  ;Is there a collision at bottom right of Nomolos?
+  lda nomolosX+1
+  clc
+  adc #$0f
+  sta w0
+  lda nomolosX+2
+  adc #$00
+  sta w0+1
+  lda nomolosY+1
+  clc
+  adc #(nomolosHeight+1)
+  sta w1
+  lda nomolosY+2
+  adc #0
+  sta w1+1
+  jsr testMapCollision
+  jsr loadHurtResult
+  lda b1
+  bne yesBelowCollision
+  
+noBelowCollision:
+  ;There was no below collision.
+  ;Clear below collision flag.
+  lda nomolosState
+  and #nomolosBelowCollisionOffAND
+  sta nomolosState
+  
+  rts
+  
+yesBelowCollision:
+
+  ;Calculate penetration distance and store it in belowPenetrationDistance.
+  ;Set below collision flag.
+  lda nomolosY+1
+  clc
+  adc #(nomolosHeight+1)
+  and #penetrationCalculationMask
+  sta nomolosBelowPenetrationDistance
+  
+  ;eject by penetration distance
+  lda nomolosY+1
+  sec
+  sbc nomolosBelowPenetrationDistance
+  sta nomolosY+1
+  lda nomolosY+2
+  sbc #0
+  sta nomolosY+2
+  
+  lda nomolosState
+  ora #nomolosBelowCollisionOnOR
+  sta nomolosState
+  
+  ;************************************************************
+  ;Test A button for off-to-on transition and start the jump
+  ;into the air if so.
+  ;************************************************************
+
+  ;Test if current state of A button is down and previous state is up. In other words,
+  ;AND with #%00000011, then test for equality to 1.
+  lda controllerBuffer+buttons::_a
+  and #%00000011
+  cmp #1
+  bne skipButtonATest
+  
+  lda #nomolosStartJumpLo
+  sta nomolosYSpeed
+  lda #nomolosStartJumpHi
+  sta nomolosYSpeed+1
+
+  rts
+  
+skipButtonATest:
+  
+  ;set velocity to zero, since we've collided with the ground and the player
+  ;has not pressed A.
+  lda #0
+  sta nomolosYSpeed
+  sta nomolosYSpeed+1
+  
+  rts
+
+.endproc
+  
+.proc testAboveCollision
+
+  ;Is there a collision at top left of Nomolos?
+  lda nomolosX+1
+  sta w0
+  lda nomolosX+2
+  sta w0+1
+  lda nomolosY+1
+  sta w1
+  lda nomolosY+2
+  sta w1+1
+  jsr testMapCollision
+  jsr loadHurtResult
+  lda b1
+  bne yesAboveCollision
+  
+  ;Is there a collision at top right of Nomolos?
+  lda nomolosX+1
+  clc
+  adc #$0f
+  sta w0
+  lda nomolosX+2
+  adc #$00
+  sta w0+1
+  lda nomolosY+1
+  sta w1
+  lda nomolosY+2
+  sta w1+1
+  jsr testMapCollision
+  jsr loadHurtResult
+  lda b1
+  bne yesAboveCollision
+  
+  ;There was no above collision.
+  ;Clear above collision flag.
+  lda nomolosState
+  and #nomolosAboveCollisionOffAND
+  sta nomolosState
+  rts
+  
+yesAboveCollision:
+  ;There was an above collision:
+ 
+  ;Calculate penetration distance and store it in abovePenetrationDistance.
+  ;Set above collision flag.
+  lda nomolosY+1
+  and #penetrationCalculationMask
+  sta nomolosAbovePenetrationDistance
+  lda #$0f  ;we subtract the above penetration distance from the height of a tile.
+  sec
+  sbc nomolosAbovePenetrationDistance
+  sta nomolosAbovePenetrationDistance
+  
+  ;eject by penetration distance
+  lda nomolosY+1
+  clc
+  adc nomolosAbovePenetrationDistance
+  sta nomolosY+1
+  lda nomolosY+2
+  adc #0
+  sta nomolosY+2
+  
+  lda nomolosState
+  ora #nomolosAboveCollisionOnOR
+  sta nomolosState
+  
+  ;reset velocity
+  lda #0
+  sta nomolosYSpeed
+  sta nomolosYSpeed+1
+  
+  rts
+.endproc
+  
 .export updateNomolos
 .proc updateNomolos
 
@@ -639,158 +815,6 @@ skipAttack:
 :
 
   ;************************************************************
-  ;Test for collisions above and below Nomolos.
-  ;************************************************************
-  
-  ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
-  ;top left
-  lda nomolosX+1
-  sta w0
-  lda nomolosX+2
-  sta w0+1
-  lda nomolosY+1
-  clc
-  adc #nomolosStartJumpHi
-  sta w1
-  lda nomolosY+2
-  adc #$ff
-  sta w1+1
-  jsr testMapCollision
-  jsr loadHurtResult
-  lda b1
-  beq noTopLeftCollision
-  
-  jmp yesAboveCollision
-  
-noTopLeftCollision:
-  
-  ;Is there a collision above Nomolos? (NomolosY - maxYCollisionDistance)
-  ;top right
-  lda nomolosX+1
-  clc
-  adc #$0f
-  sta w0
-  lda nomolosX+2
-  adc #$00
-  sta w0+1
-  lda nomolosY+1
-  clc
-  adc #nomolosStartJumpHi
-  sta w1
-  lda nomolosY+2
-  adc #$ff
-  sta w1+1
-  jsr testMapCollision
-  jsr loadHurtResult
-  lda b1
-  beq noTopRightCollision
-  
-  jmp yesAboveCollision
-  
-noTopRightCollision:
-
-  jmp noAboveCollision
-  
-yesAboveCollision:
-  ;There was an above collision:
- 
-  ;Calculate penetration distance and store it in abovePenetrationDistance.
-  ;Set above collision flag.
-  lda nomolosY+1
-  clc
-  adc #nomolosStartJumpHi
-  and #penetrationCalculationMask
-  sta nomolosAbovePenetrationDistance
-  lda #$0f  ;we subtract the above penetration distance from the height of a tile.
-  sec
-  sbc nomolosAbovePenetrationDistance
-  sta nomolosAbovePenetrationDistance
-  lda nomolosState
-  ora #nomolosAboveCollisionOnOR
-  sta nomolosState
-  jmp skipNoAboveCollision
-noAboveCollision:
-  ;There was no above collision.
-  ;Clear above collision flag.
-  lda nomolosState
-  and #nomolosAboveCollisionOffAND
-  sta nomolosState
-skipNoAboveCollision:
-  ;Is there a collision below Nomolos?
-  ;(NomolosY + NomolosHeight + maxYCollisionDistance)
-  ;bottom left
-  lda nomolosX+1
-  sta w0
-  lda nomolosX+2
-  sta w0+1
-  lda nomolosY+1
-  clc
-  adc #(nomolosHeight+nomolosVerticalSpeedMax)
-  sta w1
-  lda nomolosY+2
-  adc #0
-  sta w1+1
-  jsr testMapCollision
-  jsr loadHurtResult
-  lda b1
-  beq noBottomLeftCollision
-  
-  jmp yesBottomCollision
-  
-noBottomLeftCollision:
-  
-  ;Is there a collision below Nomolos?
-  ;(NomolosY + NomolosHeight + maxYCollisionDistance)
-  ;bottom right
-  lda nomolosX+1
-  clc
-  adc #$0f
-  sta w0
-  lda nomolosX+2
-  adc #$00
-  sta w0+1
-  lda nomolosY+1
-  clc
-  adc #(nomolosHeight+nomolosVerticalSpeedMax)
-  sta w1
-  lda nomolosY+2
-  adc #0
-  sta w1+1
-  jsr testMapCollision
-  jsr loadHurtResult
-  lda b1
-  beq noBottomRightCollision
-  
-  jmp yesBottomCollision
-  
-noBottomRightCollision:
-  
-  beq noBelowCollision  ;we want to skip the following code when there is not a collision
-                        ;set = not collision, so we use beq
-
-yesBottomCollision:
-  ;There was a below collision:
-  
-  ;Calculate penetration distance and store it in belowPenetrationDistance.
-  ;Set below collision flag.
-  lda nomolosY+1
-  clc
-  adc #(nomolosHeight+nomolosVerticalSpeedMax+2)
-  and #penetrationCalculationMask
-  sta nomolosBelowPenetrationDistance
-  lda nomolosState
-  ora #nomolosBelowCollisionOnOR
-  sta nomolosState
-  jmp yesBelowCollision
-noBelowCollision:
-  ;There was no below collision.
-  ;Clear below collision flag.
-  lda nomolosState
-  and #nomolosBelowCollisionOffAND
-  sta nomolosState
-yesBelowCollision:
-
-  ;************************************************************
   ;Make gravity act on Nomolos.
   ;************************************************************
 
@@ -810,136 +834,7 @@ yesBelowCollision:
   adc #nomolosVerticalAccelerationHi
   sta nomolosYSpeed+1
 DoNotIncrementSpeed:
-    
-  ;************************************************************
-  ;Find out if the newly calculated vertical speed would make
-  ;Nomolos cut into a tile and modify it accordingly.
-  ;************************************************************
 
-  ;Test sign of vertical speed so we know what direction we may
-  ;need to modify it.
-  lda nomolosYSpeed+1
-  bmi ySpeedNegative
-  ;Vertical speed was positive.
-  ;Test for a below collision.
-  lda nomolosState
-  and #nomolosBelowCollisionTestAND
-  lsr
-  lsr
-  lsr
-  beq @noBelowCollision
-  ;There was a below collision. 
-  ;Compare max vertical speed to below penetration distance.
-  lda #nomolosVerticalSpeedMax  
-  sec
-  sbc nomolosBelowPenetrationDistance
-  ;Determine if the penetration is less than the calculated
-  ;vertical speed.
-  cmp nomolosYSpeed+1
-  bpl @penetrationNotLessThanYSpeed
-  ;Penetration was less than the calculated vertical speed,
-  ;so modify the vertical speed to be equal to the penetration
-  ;distance.
-  clc
-  adc #1
-  sta nomolosYSpeed+1
-  lda #0
-  sta nomolosYSpeed
-@penetrationNotLessThanYSpeed:
-  ;Penetration was greater than the calculated vertical speed,
-  ;so we do not need to modify the vertical speed.
-@noBelowCollision:
-
-  jmp skipYSpeedNegativeCode
-ySpeedNegative:
-  ;Vertical speed was negative.
-  ;Test A for on to off transition, stop rising if true.
-
-  ;is current state of A button released, and previous state of A button pressed?
-  lda controllerBuffer+buttons::_a
-  and #%00000011
-  cmp #%00000010
-  bne dontStopRising
-  
-  ;yes, so stop rising into the air.
-  lda #0
-  sta nomolosYSpeed
-  sta nomolosYSpeed+1
-  
-dontStopRising:
-
-  ;Test for an above collision.
-  lda nomolosState
-  and #nomolosAboveCollisionTestAND
-  lsr
-  lsr
-  lsr
-  lsr
-  and #1   
-  beq @noAboveCollision
-  ;There was a collision above Nomolos.
-  
-  ;Compare start jump speed to above penetration distance.
-  ;Start jump speed is negative so we add it to above penetration distance.
-  lda #nomolosStartJumpHi
-  clc
-  adc nomolosAbovePenetrationDistance
-  cmp nomolosYSpeed+1
-  bmi @penetrationNotLessThanYSpeed
-  ;Vertical speed is greater than the penetration, so we must stop rising
-  ;into the air.
-  sta nomolosYSpeed+1
-  lda #0
-  sta nomolosYSpeed
-
-@penetrationNotLessThanYSpeed:
-@noAboveCollision:
-skipYSpeedNegativeCode:
-  ;Vertical speed is less than the penetration, so we don't need to do
-  ;anything else. 
-  
-  ;************************************************************
-  ;Test A button for off-to-on transition and start the jump
-  ;into the air if so.
-  ;************************************************************
-
-  ;Test vertical speed. Skip A button test if is nonzero.
-  lda nomolosYSpeed+1
-  bne skipButtonATest
-  
-  ;Test if current state of A button is down and previous state is up. In other words,
-  ;AND with #%00000011, then test for equality to 1.
-  lda controllerBuffer+buttons::_a
-  and #%00000011
-  cmp #1
-  bne skipButtonATest
-  lda nomolosState
-  and #nomolosBelowCollisionTestAND
-  lsr
-  lsr
-  lsr
-  beq skipButtonATest
-  ;A button was down, collision was beneath so start the jump
-  
-  ;but don't start the jump if there's a collision above!
-  ;is above collision true?
-  lda nomolosState
-  and #nomolosAboveCollisionTestAND
-  lsr
-  lsr
-  lsr
-  lsr
-  and #1          
-  bne @noAboveCollision
-  
-  lda #nomolosStartJumpLo
-  sta nomolosYSpeed
-  lda #nomolosStartJumpHi
-  sta nomolosYSpeed+1
-  
-@noAboveCollision:
-skipButtonATest:
- 
   ;************************************************************
   ;Move vertical position according to vertical speed.
   ;************************************************************
@@ -962,6 +857,33 @@ skipButtonATest:
   sta nomolosY+2
 noSignExtend:
 
+  ;************************************************************
+  ;Test vertical velocity sign and then detect collision with
+  ;map and eject if necessary. Also check for A button press
+  ;or release to start/stop jumping.
+  ;************************************************************
+  lda nomolosYSpeed+1
+  bmi ySpeedNegative
+ySpeedPositive:
+  jsr testBelowCollision
+  
+  jmp ySpeedTestDone
+ySpeedNegative:
+  jsr testAboveCollision
+  
+  ;is current state of A button released, and previous state of A button pressed?
+  lda controllerBuffer+buttons::_a
+  and #%00000011
+  cmp #%00000010
+  bne dontStopRising
+  
+  ;yes, so stop rising into the air.
+  lda #0
+  sta nomolosYSpeed
+  sta nomolosYSpeed+1
+dontStopRising:
+
+ySpeedTestDone:
   
   ;************************************************************
   ;Test left and right buttons. Test for collision to the left
