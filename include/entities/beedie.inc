@@ -6,10 +6,18 @@ BEEDIE_INC = 1
   y_belowPenetration .byte
   x_collisionPointBottom .word
   y_collisionPointBottom .word
+  restCounter .byte
+  directionFlag .byte
 .endstruct
 
+BEEDIE_RESTCOUNTER_RESTLENGTH = 25
+
+BEEDIE_DIRECTIONFLAG_LEFT =  %00000000
+BEEDIE_DIRECTIONFLAG_RIGHT = %00000001
+
 BEEDIE_INITSTATE = 0
-BEEDIE_RUNSTATE = 1
+BEEDIE_RESTSTATE = 1
+BEEDIE_JUMPSTATE = 2
 
 .export beedieUpdate
 .proc beedieUpdate
@@ -19,8 +27,10 @@ BEEDIE_RUNSTATE = 1
   ;figure out what state to jump to
   cmp #BEEDIE_INITSTATE
   beq beedie_initState
-  cmp #BEEDIE_RUNSTATE
-  beq beedie_runState
+  cmp #BEEDIE_RESTSTATE
+  beq beedie_restState
+  cmp #BEEDIE_JUMPSTATE
+  beq beedie_jumpState
 
 beedie_initState:
 
@@ -34,12 +44,109 @@ beedie_initState:
   lda #0
   sta entityLocals+beedieLocals::y_velocity,x
   
-  ;switch state to "run"
-  lda #BEEDIE_RUNSTATE
+  ;set rest counter
+  lda #BEEDIE_RESTCOUNTER_RESTLENGTH
+  sta entityLocals+beedieLocals::restCounter,x
+  
+  ;set direction flag
+  lda #BEEDIE_DIRECTIONFLAG_LEFT
+  sta entityLocals+beedieLocals::directionFlag,x
+  
+  ;switch state to "jump"
+  lda #BEEDIE_JUMPSTATE
   sta entityPool+entityRAM::state,x
   rts
 
-beedie_runState:
+beedie_restState:
+
+  ;decrement rest counter
+  dec entityLocals+beedieLocals::restCounter,x
+  bne stillResting
+  
+  ;on rest counter = 0, jump to jump state init and set vertical velocity
+  lda #$0a
+  sta entityLocals+beedieLocals::y_velocity,x
+  lda #$fd
+  sta entityLocals+beedieLocals::y_velocity+1,x
+  lda #BEEDIE_JUMPSTATE
+  sta entityPool+entityRAM::state,x
+  
+stillResting:
+
+  jsr getEntityScreenCoordinates
+  jsr beedie_draw
+
+  rts
+  
+beedie_jumpState:
+
+  jsr getEntityScreenCoordinates
+
+  ;slide beedie in the direction he is facing
+  lda entityLocals+beedieLocals::directionFlag,x
+  bne beedieGoingRight
+beedieGoingLeft:
+
+  ;test for collision on left side of beedie. reverse direction if true
+  lda entityPool+entityRAM::positionX,x
+  sta w0
+  lda entityPool+entityRAM::positionX+1,x
+  sta w0+1
+  lda entityPool+entityRAM::positionY,x
+  clc
+  adc #8
+  sta w1
+  lda entityPool+entityRAM::positionY+1,x
+  adc #0
+  sta w1+1
+  jsr testMapCollision
+  lda b1
+  bne noLeftCollision
+  lda #BEEDIE_DIRECTIONFLAG_RIGHT
+  sta entityLocals+beedieLocals::directionFlag,x
+noLeftCollision:
+
+  lda entityPool+entityRAM::positionX,x
+  sec
+  sbc #1
+  sta entityPool+entityRAM::positionX,x
+  lda entityPool+entityRAM::positionX+1,x
+  sbc #0
+  sta entityPool+entityRAM::positionX+1,x
+  
+  jmp beedieDirectionTestDone
+beedieGoingRight:
+
+  ;test for collision on right side of beedie. reverse direction if true
+  lda entityPool+entityRAM::positionX,x
+  clc
+  adc #$10
+  sta w0
+  lda entityPool+entityRAM::positionX+1,x
+  adc #0
+  sta w0+1
+  lda entityPool+entityRAM::positionY,x
+  clc
+  adc #8
+  sta w1
+  lda entityPool+entityRAM::positionY+1,x
+  adc #0
+  sta w1+1
+  jsr testMapCollision
+  lda b1
+  bne noRightCollision
+  lda #BEEDIE_DIRECTIONFLAG_LEFT
+  sta entityLocals+beedieLocals::directionFlag,x
+noRightCollision:
+
+  lda entityPool+entityRAM::positionX,x
+  clc
+  adc #1
+  sta entityPool+entityRAM::positionX,x
+  lda entityPool+entityRAM::positionX+1,x
+  adc #0
+  sta entityPool+entityRAM::positionX+1,x
+beedieDirectionTestDone:
 
   ;increment the vertical velocity
   lda entityLocals+beedieLocals::y_velocity+1,x
@@ -54,17 +161,26 @@ beedie_runState:
   sta entityLocals+beedieLocals::y_velocity+1,x
 stopAccelerating:
   
-  ;add vertical velocity to 24 bit Y coordinate
+  ;add vertical velocity to 24 bit Y coordinate with sign extension
   clc
   lda entityLocals+beedieLocals::y_velocity,x
   adc entityPool+entityRAM::positionYFine,x
   sta entityPool+entityRAM::positionYFine,x
   lda entityLocals+beedieLocals::y_velocity+1,x
+  bmi signExtend
   adc entityPool+entityRAM::positionY,x
   sta entityPool+entityRAM::positionY,x
   lda #0
   adc entityPool+entityRAM::positionY+1,x
   sta entityPool+entityRAM::positionY+1,x
+  jmp signExtendAddDone
+signExtend:
+  adc entityPool+entityRAM::positionY,x
+  sta entityPool+entityRAM::positionY,x
+  lda #$ff
+  adc entityPool+entityRAM::positionY+1,x
+  sta entityPool+entityRAM::positionY+1,x
+signExtendAddDone:
   
   ;perform collision detection and eject if necessary
   ;load the entity's X coordinate + 8
@@ -108,6 +224,25 @@ stopAccelerating:
   sbc #0
   sta entityPool+entityRAM::positionY+1,x
   
+  ;set rest counter and transition to rest state. set direction bit based on Nomolos' location.
+  lda #BEEDIE_RESTCOUNTER_RESTLENGTH
+  sta entityLocals+beedieLocals::restCounter,x
+  lda #BEEDIE_RESTSTATE
+  sta entityPool+entityRAM::state,x
+  
+  lda entityScreenX
+  clc
+  sbc nomolosScreenX
+  bmi followToRight
+followToLeft:
+  lda #BEEDIE_DIRECTIONFLAG_LEFT
+  sta entityLocals+beedieLocals::directionFlag,x
+  jmp followTestDone
+followToRight:
+  lda #BEEDIE_DIRECTIONFLAG_RIGHT
+  sta entityLocals+beedieLocals::directionFlag,x
+followTestDone:
+  
 noBottomCollision:  
   
   jsr beedie_draw
@@ -115,8 +250,6 @@ noBottomCollision:
   rts
   
 beedie_draw:
-
-  jsr getEntityScreenCoordinates
 
   ;test the x coordinate for whether it is a certain distance off screen. compare it
   ;to -32.
