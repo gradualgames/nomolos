@@ -58,7 +58,7 @@ titleStateRun:
   
   ;now switch to the prg bank containing the chr data of the title screen.
   lda titleDef+title::chrPrgRomBank
-  sta b0
+  sta nextBank
   jsr bankswitch
   
   ;now load the chr data

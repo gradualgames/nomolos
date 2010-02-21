@@ -105,7 +105,7 @@
   ;switch to the actor and entity bank
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
   lda (romDefinitionTableBaseAddress),y
-  sta b0
+  sta nextBank
   jsr bankswitch
 
   ;start at last entity

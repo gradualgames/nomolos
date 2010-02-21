@@ -101,7 +101,7 @@ beedieGoingLeft:
   sta w1+1
   jsr testMapCollision
   lda b1
-  bne noLeftCollision
+  beq noLeftCollision
   lda #BEEDIE_DIRECTIONFLAG_RIGHT
   sta entityLocals+beedieLocals::directionFlag,x
 noLeftCollision:
@@ -134,7 +134,7 @@ beedieGoingRight:
   sta w1+1
   jsr testMapCollision
   lda b1
-  bne noRightCollision
+  beq noRightCollision
   lda #BEEDIE_DIRECTIONFLAG_LEFT
   sta entityLocals+beedieLocals::directionFlag,x
 noRightCollision:
@@ -206,7 +206,7 @@ signExtendAddDone:
   
   jsr testMapCollision
   lda b1
-  bne noBottomCollision
+  beq noBottomCollision
   
   lda #0
   sta entityLocals+beedieLocals::y_velocity,x

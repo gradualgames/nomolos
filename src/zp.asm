@@ -69,6 +69,9 @@ entityScreenY: .res 2
 .exportzp currentBank
 currentBank: .res 1
 
+.exportzp nextBank
+nextBank: .res 1
+
 .exportzp stringBuffer
 stringBuffer: .res 8
 

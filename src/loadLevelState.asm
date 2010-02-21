@@ -56,7 +56,7 @@ loadLevelStateInit:
   
   ;first bank switch to the PRG rom bank containing the level's chr data
   lda LevelDefinitionTable+level::chrPrgRomBank,x
-  sta b0
+  sta nextBank
   jsr bankswitch
   
   ;now load the address of the chr data from the level definition table
@@ -72,7 +72,7 @@ loadLevelStateInit:
   
   ;load PRG bank into $8000
   lda LevelDefinitionTable+level::prgRomBank,x
-  sta b0
+  sta nextBank
   jsr bankswitch
 
   lda LevelDefinitionTable+level::romDefinitionTable,x
@@ -221,14 +221,14 @@ loadLevelStateDone:
   ;switch to the actor and entity bank
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
   lda (romDefinitionTableBaseAddress),y
-  sta b0
+  sta nextBank
   jsr bankswitch
   
   jsr updateEntities
   
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
-  sta b0
+  sta nextBank
   jsr bankswitch
   
   lda #$24

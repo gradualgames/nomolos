@@ -68,7 +68,7 @@ gameOverStateRun:
   
   ;switch to PRG block containing font1
   lda font1+font::chrPrgRomBank
-  sta b0
+  sta nextBank
   jsr bankswitch
   
   ;load chr data

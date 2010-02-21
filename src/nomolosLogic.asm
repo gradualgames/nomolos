@@ -239,7 +239,7 @@ alreadyDying:
   ;switch to the level and music bank
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
-  sta b0
+  sta nextBank
   jsr bankswitch
   lda #2
   ldx #0
@@ -247,7 +247,7 @@ alreadyDying:
 .endif  
 
   pla
-  sta b0
+  sta nextBank
   jsr bankswitch
 
   rts
@@ -681,7 +681,7 @@ yesAboveCollision:
   ;switch to the PRG bank containing level data
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
-  sta b0
+  sta nextBank
   jsr bankswitch
 
   ;************************************************************
@@ -1134,7 +1134,7 @@ notRight:
   ;switch to the actor and entity bank
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
   lda (romDefinitionTableBaseAddress),y
-  sta b0
+  sta nextBank
   jsr bankswitch
   
   ;************************************************************

@@ -24,6 +24,7 @@ ZP_INC = 1
 .importzp entityScreenX
 .importzp entityScreenY
 .importzp currentBank
+.importzp nextBank
 .importzp stringBuffer
 .importzp vblankDone
 .importzp update

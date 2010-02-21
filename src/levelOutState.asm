@@ -176,7 +176,7 @@ stateCommandComplete:
   ;switch to the level and music bank
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
-  sta b0
+  sta nextBank
   jsr bankswitch
   jsr ft_music_play
   .endif

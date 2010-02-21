@@ -24,7 +24,7 @@
   pha
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
-  sta b0
+  sta nextBank
   jsr bankswitch
 
   lda #0
@@ -87,16 +87,16 @@
   lda w1+1
   beq @insideScreen
   
-  ;restore previous bank
-  pla
-  sta b0
-  jsr bankswitch
-  
   ;being outside the map means the map didn't hurt Nomolos.
   lda #0
   sta b0
   ;being outside the map also means no collision.
   sta b1
+  
+  ;restore previous bank
+  pla
+  sta nextBank
+  jsr bankswitch
   
   rts
 @insideScreen:
@@ -143,11 +143,6 @@
   
   ldy #0
   
-  ;restore previous bank
-  pla
-  sta b0
-  jsr bankswitch
-  
   ;point to the "hurt" attribute. Store this in b0.
   iny
   lda (w3),y
@@ -158,6 +153,11 @@
   ;lda #1
   lda (w3), y
   sta b1
+  
+  ;restore previous bank
+  pla
+  sta nextBank
+  jsr bankswitch
 
   rts
 .endproc
@@ -167,7 +167,7 @@
   ;switch to the level and music bank
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
-  sta b0
+  sta nextBank
   jsr bankswitch
 
   ;load the current scroll value and subtract the next scroll value. only when this is 0 or positive do we continue.
