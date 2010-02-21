@@ -221,9 +221,7 @@ alreadyDying:
   ora #nomolosAttackedDyingOR
   sta nomolosSubState
   
-  ;transfer current screen coordinates to scaredy cat coordinates. These coordinates
-  ;are located in the same place in memory as the hit box, since we will not need the
-  ;hit box while in dying state.
+  ;transfer current screen coordinates to scaredy cat coordinates.
   lda nomolosScreenX
   sta nomolosScaredyCatX
   lda nomolosScreenX+1

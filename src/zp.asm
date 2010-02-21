@@ -110,13 +110,12 @@ nomolosHitboxX: .res 2
 
 .exportzp nomolosHitboxY
 nomolosHitboxY: .res 2
-;the following two variables occupy the same location as the hit box, because
-;the hit box will not be used while nomolos is dying.
+
 .exportzp nomolosScaredyCatX
-nomolosScaredyCatX = nomolosHitboxX
+nomolosScaredyCatX: .res 2
 
 .exportzp nomolosScaredyCatY
-nomolosScaredyCatY = nomolosHitboxY
+nomolosScaredyCatY: .res 2
 
 .exportzp nomolosBelowPenetrationDistance
 nomolosBelowPenetrationDistance: .res 1
