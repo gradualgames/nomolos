@@ -391,7 +391,7 @@ nomolosNotAttacking:
   
 .proc updateSwordAttack
 
-  lda #$0c
+  lda #$10
   sta nomolosHitboxWidth
   lda #$20
   sta nomolosHitboxHeight
@@ -450,7 +450,7 @@ skipAttackUpdate:
 .export updateFlailAttack
 .proc updateFlailAttack
 
-  lda #$0c
+  lda #$10
   sta nomolosHitboxWidth
   lda #$20
   sta nomolosHitboxHeight
