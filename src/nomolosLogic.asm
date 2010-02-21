@@ -391,13 +391,18 @@ nomolosNotAttacking:
   
 .proc updateSwordAttack
 
+  lda #$0c
+  sta nomolosHitboxWidth
+  lda #$20
+  sta nomolosHitboxHeight
+
   lda nomolosState
   and #1
   beq skipNomolosFacingLeft
   
   clc
   lda nomolosScreenX
-  adc #$f4
+  adc #$f0
   sta nomolosHitboxX
   lda nomolosScreenX+1
   adc #$ff
@@ -444,6 +449,11 @@ skipAttackUpdate:
   
 .export updateFlailAttack
 .proc updateFlailAttack
+
+  lda #$0c
+  sta nomolosHitboxWidth
+  lda #$20
+  sta nomolosHitboxHeight
 
   lda nomolosHitboxCounter
   and #1

@@ -111,6 +111,12 @@ nomolosHitboxX: .res 2
 .exportzp nomolosHitboxY
 nomolosHitboxY: .res 2
 
+.exportzp nomolosHitboxWidth
+nomolosHitboxWidth: .res 1
+
+.exportzp nomolosHitboxHeight
+nomolosHitboxHeight: .res 1
+
 .exportzp nomolosScaredyCatX
 nomolosScaredyCatX: .res 2
 

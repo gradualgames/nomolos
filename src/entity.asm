@@ -28,9 +28,9 @@
   sta w4
   lda nomolosHitboxX+1
   sta w4+1
-  lda #nomolosHitboxWidth
+  lda nomolosHitboxWidth
   sta b4
-  lda #nomolosHitboxHeight
+  lda nomolosHitboxHeight
   sta b5
     
   jsr rectInRect16

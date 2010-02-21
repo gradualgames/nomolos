@@ -38,6 +38,8 @@ ZP_INC = 1
 .importzp nomolosScreenY
 .importzp nomolosHitboxX
 .importzp nomolosHitboxY
+.importzp nomolosHitboxWidth
+.importzp nomolosHitboxHeight
 .importzp nomolosScaredyCatX
 .importzp nomolosScaredyCatY
 .importzp nomolosBelowPenetrationDistance

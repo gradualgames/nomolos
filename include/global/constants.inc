@@ -92,8 +92,6 @@ nomolosVerticalAccelerationHi = $00
 nomolosVerticalSpeedMax = $0a
 nomolosWidth = $10
 nomolosHeight = $20
-nomolosHitboxWidth = $0c
-nomolosHitboxHeight = $20
 
 startingLevel = $00
 maxHealth = 3
