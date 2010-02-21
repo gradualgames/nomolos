@@ -28,4 +28,5 @@
 .include "deentle.inc"
 .include "flailitem.inc"
 .include "beedie.inc"
+.include "grank.inc"
   

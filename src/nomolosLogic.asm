@@ -106,6 +106,8 @@
 .export hurtNomolos
 .proc hurtNomolos
 
+  rts
+
   ;if blinking is on, skip this whole routine
   lda nomolosState
   and #nomolosBlinkingTestAND

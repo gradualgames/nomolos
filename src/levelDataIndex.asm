@@ -135,6 +135,14 @@ BeedieEntity:
   .byte $00
   .byte $00
   .byte $00
+GrankEntity:
+  .word grankUpdate
+  .byte $00
+  .byte $e9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
   
 .export attackSound
 attackSound:

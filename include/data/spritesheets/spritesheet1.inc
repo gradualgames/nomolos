@@ -11,5 +11,6 @@ SPRITESHEET1_INC = 1
 .import deentleUpdate
 .import exitLevelUpdate
 .import beedieUpdate
+.import grankUpdate
 
 .endif
