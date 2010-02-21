@@ -110,3 +110,10 @@ BeedieBlob:
   .word Beedie1
   .word $0000
 
+.export GrankFly
+GrankFly:
+  .byte $0a
+  .word Grank0
+  .word Grank1
+  .word $0000
+
