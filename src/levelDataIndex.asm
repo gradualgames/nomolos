@@ -130,7 +130,7 @@ FlailItemEntity:
 BeedieEntity:
   .word beedieUpdate
   .byte $00
-  .byte $10
+  .byte $00
   .byte %00000000
   .byte $00
   .byte $00

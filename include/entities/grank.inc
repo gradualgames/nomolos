@@ -9,8 +9,10 @@ GRANK_INC = 1
 GRANK_INITSTATE = 0
 GRANK_FLYSTATE = 1
 
-GRANK_VERTSPEED = 20
-GRANK_HORIZSPEED = 20
+GRANK_VERTSPEED = 10
+GRANK_MAXVERTSPEED = 2
+GRANK_HORIZSPEED = 10
+GRANK_MAXHORIZSPEED = 3
 
 .export grankUpdate
 .proc grankUpdate
@@ -157,6 +159,64 @@ followToRight:
   sta entityLocals+grankLocals::x_velocity+1,x
   
 followTestDone:
+
+  ;keep x and y velocity under control
+  lda entityLocals+grankLocals::x_velocity+1,x  ;high byte is "pixel speed"
+  bpl xVelocityPositive
+xVelocityNegative:
+.scope 
+  
+  cmp #(-GRANK_MAXHORIZSPEED)
+  bpl notMaxHoriz
+  
+  lda #(-GRANK_MAXHORIZSPEED)
+  sta entityLocals+grankLocals::x_velocity+1,x
+  
+notMaxHoriz:
+.endscope
+  
+  jmp xVelocityTestDone
+xVelocityPositive:
+.scope
+  cmp #(GRANK_MAXHORIZSPEED)
+  bmi notMaxHoriz
+  
+  lda #(GRANK_MAXHORIZSPEED)
+  sta entityLocals+grankLocals::x_velocity+1,x
+  
+notMaxHoriz:
+.endscope
+
+xVelocityTestDone:
+  
+  ;keep x and y velocity under control
+  lda entityLocals+grankLocals::y_velocity+1,x  ;high byte is "pixel speed"
+  bpl yVelocityPositive
+yVelocityNegative:
+.scope 
+  
+  cmp #(-GRANK_MAXVERTSPEED)
+  bpl notMaxVert
+  
+  lda #(-GRANK_MAXVERTSPEED)
+  sta entityLocals+grankLocals::y_velocity+1,x
+  
+notMaxVert:
+.endscope
+  
+  jmp yVelocityTestDone
+yVelocityPositive:
+.scope
+  cmp #(GRANK_MAXVERTSPEED)
+  bmi notMaxVert
+  
+  lda #(GRANK_MAXVERTSPEED)
+  sta entityLocals+grankLocals::y_velocity+1,x
+  
+notMaxVert:
+.endscope
+
+yVelocityTestDone:
   
   jsr grank_draw
 
