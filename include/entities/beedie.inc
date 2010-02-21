@@ -231,8 +231,10 @@ signExtendAddDone:
   sta entityPool+entityRAM::state,x
   
   lda entityScreenX
-  clc
+  sec
   sbc nomolosScreenX
+  lda entityScreenX+1
+  sbc nomolosScreenX+1
   bmi followToRight
 followToLeft:
   lda #BEEDIE_DIRECTIONFLAG_LEFT
