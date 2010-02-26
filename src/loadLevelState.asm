@@ -43,6 +43,8 @@ loadLevelStateInit:
   
   ;wait for vblank so we can turn off graphics, switch chr banks without graphical glitches
   waitVBlank
+	
+  transitionWait $06, $ff
 
   ;turn off NMI, inc32 (for loading palette)
   lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
@@ -240,7 +242,12 @@ loadLevelStateDone:
   switchState playLevelUpdate, playLevelUpdatePPU
       
   waitVBlank
-      
+			
+  ;reset scroll
+  lda #0
+  sta $2005
+  sta $2005
+
   ;turn rendering on
   lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000

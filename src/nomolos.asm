@@ -7,6 +7,7 @@
 .include "nomolosLogic.inc"
 .include "loadLevelState.inc"
 .include "levelInState.inc"
+.include "gameOverState.inc"
 .include "titleState.inc"
 .include "entity.inc"
 .include "sound.inc"
@@ -48,9 +49,21 @@ reset:
   initNES
   clearRAM
 
-  lda #TITLESTATE_INIT
-  sta stateControl+titleStateControl::state
-  switchState titleStateUpdate, titleStateUpdatePPU
+  lda #GAMEOVERSTATE_INIT
+  sta stateControl+gameOverStateControl::state
+  switchState gameOverUpdate, gameOverUpdatePPU
+  
+  ;lda #TITLESTATE_INIT
+  ;sta stateControl+titleStateControl::state
+  ;switchState titleStateUpdate, titleStateUpdatePPU
+	
+  ;load current level
+  ;lda #0
+  ;sta stateControl+loadLevelStateControl::levelToLoad
+  ;lda #LOADLEVELSTATE_INIT
+  ;sta stateControl+loadLevelStateControl::state
+  
+  ;switchState loadLevelUpdate, loadLevelUpdatePPU
   
 loop:
 

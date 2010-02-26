@@ -42,6 +42,17 @@ MACROS_INC = 1
 
 .endmacro
   
+.macro transitionWait outer, inner
+
+	ldy #outer
+:	ldx #inner
+:	dex
+	bne :-
+	dey
+	bne :--
+
+.endmacro	
+	
 ;Switches state so the main loop and vblank indirectly jump to different places.
 ;Assumes availability of zp variables update and updatePPU.
 .macro switchState updateAddr, updatePPUAddr

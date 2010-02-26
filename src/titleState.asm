@@ -26,7 +26,10 @@ titleStateInit:
 
   ;this init state should be similar to the level in state, only we won't be
   ;clearing the nametable, we'll be loading it from a particular location.
-
+  waitVBlank
+ 
+  transitionWait $0e, $ff
+	
   ;turn sprite and background visibility off
   lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
@@ -77,7 +80,7 @@ titleStateRun:
   
   ;wait for vblank so when we turn graphics back on we don't get ugly scrambling =)
   waitVBlank
-  
+	
   ;reset scroll
   lda #0
   sta $2005
