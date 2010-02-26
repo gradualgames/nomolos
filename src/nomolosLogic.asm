@@ -686,12 +686,6 @@ yesAboveCollision:
 .export updateNomolos
 .proc updateNomolos
 
-  ;switch to the PRG bank containing level data
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (romDefinitionTableBaseAddress),y
-  sta nextBank
-  jsr bankswitch
-
   ;************************************************************
   ;Load NomolosY coordinate and test to see if he is off screen
   ;to the bottom. If he is, he should die.
@@ -1139,12 +1133,6 @@ notRight:
   lda b0
   sta nomolosScreenX
   
-  ;switch to the actor and entity bank
-  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
-  lda (romDefinitionTableBaseAddress),y
-  sta nextBank
-  jsr bankswitch
-  
   ;************************************************************
   ;Update Nomolos' animation object.
   ;************************************************************
@@ -1155,6 +1143,12 @@ notRight:
   
 .export updateNomolosAnimation
 .proc updateNomolosAnimation
+
+  ;switch to the actor and entity bank
+  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
+  lda (romDefinitionTableBaseAddress),y
+  sta nextBank
+  jsr bankswitch  
 
   lda #<nomolosAnim
   sta w1
