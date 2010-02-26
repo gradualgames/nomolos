@@ -49,13 +49,13 @@ reset:
   initNES
   clearRAM
 
-  lda #GAMEOVERSTATE_INIT
-  sta stateControl+gameOverStateControl::state
-  switchState gameOverUpdate, gameOverUpdatePPU
+  ;lda #GAMEOVERSTATE_INIT
+  ;sta stateControl+gameOverStateControl::state
+  ;switchState gameOverUpdate, gameOverUpdatePPU
   
-  ;lda #TITLESTATE_INIT
-  ;sta stateControl+titleStateControl::state
-  ;switchState titleStateUpdate, titleStateUpdatePPU
+  lda #TITLESTATE_INIT
+  sta stateControl+titleStateControl::state
+  switchState titleStateUpdate, titleStateUpdatePPU
 	
   ;load current level
   ;lda #0
