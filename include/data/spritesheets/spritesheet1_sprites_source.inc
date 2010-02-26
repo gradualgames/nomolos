@@ -144,10 +144,10 @@ ScardyCat0:
 .export ScardyCatOverlay0
 ScardyCatOverlay0:
   .byte $04
-  .byte $00,$71,$01,$00,$08
-  .byte $00,$72,$01,$08,$00
-  .byte $08,$86,$01,$00,$08
-  .byte $08,$87,$01,$08,$00
+  .byte $08,$71,$01,$00,$08
+  .byte $08,$72,$01,$08,$00
+  .byte $10,$86,$01,$00,$08
+  .byte $10,$87,$01,$08,$00
 .export NomolosFight0
 NomolosFight0:
   .byte $0a

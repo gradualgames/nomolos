@@ -33,8 +33,6 @@ levelInStateInit:
   ;for some reason the following pause makes the transition look perfect. 
 	waitVBlank
 	
-  transitionWait $0e, $ff
-
   ;turn sprite and background visibility off
   lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
@@ -72,6 +70,7 @@ levelInStateRun:
   sta w0
   lda #>(font1+font::palette)
   sta w0+1
+  waitVBlank
   jsr loadPaletteBg
   
   ;switch to PRG block containing font1
