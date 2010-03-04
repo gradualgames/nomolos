@@ -18,7 +18,7 @@
 
   resetAnim nomolosAnim
   resetAnim nomolosWeaponAnim
-  
+
   lda #0
   and #nomolosWalkingRightAND  
   sta nomolosState
@@ -252,6 +252,31 @@ alreadyDying:
 
 .endproc
   
+.proc nomolosSpearAttack
+
+  ;play an attack sound
+  ldy #ROMDefinitionTableStruct::attackSound
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+  jsr loadSound
+  
+  ;turn on the attack hit box
+  lda #$0c
+  sta nomolosHitboxCounter
+  lda nomolosState
+  ora #nomolosAttackOnOR
+  sta nomolosState
+  
+  ;reset animation
+  resetAnim nomolosAnim
+
+  rts
+
+.endproc
+  
 ;Causes the hit box to be activated for a few frames.
 .export nomolosAttack
 .proc nomolosAttack
@@ -267,6 +292,14 @@ alreadyDying:
   beq nomolosAttackSwordBranch
   cmp #nomolosAttackFlail
   beq nomolosAttackFlailBranch
+  cmp #nomolosAttackSpear
+  beq nomolosAttackSpearBranch
+  jmp attackSwitchDone
+  
+nomolosAttackSpearBranch:
+
+  jsr nomolosSpearAttack
+
   jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
@@ -341,6 +374,16 @@ skipAttack:
   beq nomolosAttackSwordBranch
   cmp #nomolosAttackFlail
   beq nomolosAttackFlailBranch
+  cmp #nomolosAttackSpear
+  beq nomolosAttackSpearBranch
+  jmp attackSwitchDone
+  
+nomolosAttackSpearBranch:
+
+  lda #1
+
+  rts
+
   jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
@@ -502,6 +545,63 @@ skipNomolosFacingRight:
   resetAnim nomolosAnim
 skipAttackUpdate:
 
+  rts
+
+.endproc
+  
+.proc updateSpearAttack
+
+  lda #$10
+  sta nomolosHitboxWidth
+  lda #$20
+  sta nomolosHitboxHeight
+
+  lda nomolosState
+  and #1
+  beq skipNomolosFacingLeft
+  
+  clc
+  lda nomolosScreenX
+  adc #$f0
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$ff
+  sta nomolosHitboxX+1
+  
+  lda nomolosScreenY
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  sta nomolosHitboxY+1
+
+  jmp skipNomolosFacingRight
+skipNomolosFacingLeft:
+
+  clc
+  lda nomolosScreenX
+  adc #$10
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$00
+  sta nomolosHitboxX+1
+
+  lda nomolosScreenY
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  sta nomolosHitboxY+1
+
+skipNomolosFacingRight:
+
+  dec nomolosHitboxCounter
+  bne skipAttackUpdate
+  
+  ;set attack state to off
+  lda nomolosState
+  and #nomolosAttackOffAND
+  sta nomolosState
+  
+  ;reset animation object
+  resetAnim nomolosAnim
+skipAttackUpdate:
   rts
 
 .endproc
@@ -793,6 +893,14 @@ skipBlinkReset:
   beq nomolosAttackSwordBranch
   cmp #nomolosAttackFlail
   beq nomolosAttackFlailBranch
+  cmp #nomolosAttackSpear
+  beq nomolosAttackSpearBranch
+  jmp attackSwitchDone
+  
+nomolosAttackSpearBranch:
+
+  jsr updateSpearAttack
+  
   jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
@@ -1165,6 +1273,20 @@ notRight:
   beq nomolosAttackSwordBranch
   cmp #nomolosAttackFlail
   beq nomolosAttackFlailBranch
+  cmp #nomolosAttackSpear
+  beq nomolosAttackSpearBranch
+  jmp attackSwitchDone
+  
+nomolosAttackSpearBranch:
+  ldy #ROMDefinitionTableStruct::NomolosSpear
+  lda (romDefinitionTableBaseAddress),y
+  sta w2
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w2+1
+  
+  jsr updateAnimation  
+
   jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
@@ -1335,6 +1457,54 @@ skipUpdateNomolosMoving:
   rts
 
 .endproc
+
+.export drawAttackSpear
+.proc drawAttackSpear
+
+  lda #<nomolosAnim
+  sta w1
+  lda #>nomolosAnim
+  sta w1+1
+  
+  ldy #ROMDefinitionTableStruct::NomolosSpear
+  lda (romDefinitionTableBaseAddress),y
+  sta w2
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w2+1
+  
+  ;get the direction bit into bit 6 of b2 for horiz flip
+  clc
+  lda nomolosState
+  and #1
+  ror
+  ror
+  ror
+  sta b2
+  
+  lda nomolosScreenX
+  sta w3
+  lda nomolosScreenX+1
+  sta w3+1
+  lda nomolosScreenY
+  sta w4
+  lda nomolosScreenY+1
+  sta w4+1
+  
+  jsr drawAnimation16
+  
+  ldy #ROMDefinitionTableStruct::NomolosFightOverlay
+  lda (romDefinitionTableBaseAddress),y
+  sta w2
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w2+1
+  
+  jsr drawAnimation16
+  
+  rts
+
+.endproc
   
 ;draws nomolos based on his current state.
 .export drawNomolos
@@ -1444,6 +1614,14 @@ skipBlinkCheck:
   beq nomolosAttackSwordBranch
   cmp #nomolosAttackFlail
   beq nomolosAttackFlailBranch
+  cmp #nomolosAttackSpear
+  beq nomolosAttackSpearBranch
+  
+nomolosAttackSpearBranch:
+
+  jsr drawAttackSpear
+  
+  jmp attackSwitchDone
   
 nomolosAttackFlailBranch:
 

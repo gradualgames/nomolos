@@ -117,3 +117,10 @@ GrankFly:
   .word Grank1
   .word $0000
 
+.export NomolosUseSpear
+NomolosUseSpear:
+  .byte $06
+  .word NomolosUseSpear0
+  .word NomolosUseSpear1
+  .word $0000
+

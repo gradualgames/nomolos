@@ -38,4 +38,7 @@
 .import Beedie1
 .import Grank0
 .import Grank1
+.import NomolosUseSpear0
+.import NomolosUseSpear1
+.import Spear0
 

@@ -33,6 +33,8 @@ ROMDefinitionTable0:
   .word NomolosFightOverlay    
   .word NomolosUseFlail
   .word NomolosFlailOverlay
+  .word NomolosUseSpear
+  .word NomolosFightOverlay
   .word FlailBall
   .word SlumpedArmor0           
   .word SlumpedArmorOverlay0
@@ -61,6 +63,8 @@ ROMDefinitionTable1:
   .word NomolosFightOverlay   
   .word NomolosUseFlail
   .word NomolosFlailOverlay
+  .word NomolosUseSpear
+  .word NomolosFightOverlay
   .word FlailBall
   .word SlumpedArmor0         
   .word SlumpedArmorOverlay0

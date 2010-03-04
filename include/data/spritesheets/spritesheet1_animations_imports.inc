@@ -14,3 +14,4 @@
 .import FlailItem
 .import BeedieBlob
 .import GrankFly
+.import NomolosUseSpear

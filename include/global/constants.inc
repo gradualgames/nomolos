@@ -79,7 +79,7 @@ nomolosAttackTestMask  = %00000110
 nomolosAttackSetMask   = %11111001
 nomolosAttackSword     = %00000000
 nomolosAttackFlail     = %00000010
-;nomolosAttackCrossbow = %00000100
+nomolosAttackSpear     = %00000100
 
 nomolosStartingLives = $03
 nomolosHurtBounceLo = $0a
