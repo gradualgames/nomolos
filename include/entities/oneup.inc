@@ -31,9 +31,9 @@ skipJmpNotTouching:
   lda #1
   jsr addNomolosLife
     
-  lda #<getOneUpSound
+  lda #<getItemSound
   sta w0
-  lda #>getOneUpSound
+  lda #>getItemSound
   sta w0+1
   jsr loadSound
     

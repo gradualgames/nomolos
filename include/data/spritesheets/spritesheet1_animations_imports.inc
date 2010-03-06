@@ -15,3 +15,4 @@
 .import BeedieBlob
 .import GrankFly
 .import NomolosUseSpear
+.import SpearFly

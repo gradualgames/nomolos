@@ -5,8 +5,7 @@ MISCDATA_INC = 1
 .import attackSound
 .import hitSound
 .import getHealthSound
-.import getOneUpSound
-.import getFlailItemSound
+.import getItemSound
 .import haltmusic
 .import font1
 .import powerTable

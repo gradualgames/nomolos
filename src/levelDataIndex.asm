@@ -1,4 +1,3 @@
-.include "spritesheet1.inc"
 .include "constants.inc"
 .include "level1.inc"
 .include "level2.inc"
@@ -147,6 +146,14 @@ GrankEntity:
   .byte $00
   .byte $00
   .byte $00
+SpearItemEntity:
+  .word spearItemUpdate
+  .byte $00
+  .byte $f9
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
   
 .export attackSound
 attackSound:
@@ -222,38 +229,8 @@ getHealthSound:
   .byte $01
   .byte $ff
   
-.export getOneUpSound
-getOneUpSound:
-  .byte DISABLE_FAMITRACKER_CHANNEL
-  .byte $01 
-  .byte $04
-  .byte $84
-  .byte $05
-  .byte %00000000
-  .byte $07
-  .byte %00001000
-  .byte $06
-  .byte %11111111
-  .byte $06
-  .byte %10111111
-  .byte $06
-  .byte %01111111
-  .byte $06
-  .byte %00111111  
-  .byte $06
-  .byte %11111111
-  .byte $06
-  .byte %10111111
-  .byte $06
-  .byte %01111111
-  .byte $06
-  .byte %00111111  
-  .byte ENABLE_FAMITRACKER_CHANNEL
-  .byte $01
-  .byte $ff
-  
-.export getFlailItemSound
-getFlailItemSound:
+.export getItemSound
+getItemSound:
   .byte DISABLE_FAMITRACKER_CHANNEL
   .byte $01 
   .byte $04

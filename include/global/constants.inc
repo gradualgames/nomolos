@@ -10,6 +10,7 @@ OneUpEntityIndex = 4
 FlailItemEntityIndex = 5
 BeedieEntityIndex = 6
 GrankEntityIndex = 7
+SpearItemEntityIndex = 8
 
 ;bit positions for PPU control register $2000
 PPU0_EXECUTE_NMI = 7

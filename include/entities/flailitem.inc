@@ -25,9 +25,9 @@ skipJmpNotTouching:
   ora #nomolosAttackFlail
   sta nomolosSubState
       
-  lda #<getFlailItemSound
+  lda #<getItemSound
   sta w0
-  lda #>getFlailItemSound
+  lda #>getItemSound
   sta w0+1
   jsr loadSound
     

@@ -124,3 +124,9 @@ NomolosUseSpear:
   .word NomolosUseSpear1
   .word $0000
 
+.export SpearFly
+SpearFly:
+  .byte $0a
+  .word Spear0
+  .word $0000
+

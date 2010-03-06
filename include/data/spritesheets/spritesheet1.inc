@@ -12,5 +12,6 @@ SPRITESHEET1_INC = 1
 .import exitLevelUpdate
 .import beedieUpdate
 .import grankUpdate
+.import spearItemUpdate
 
 .endif

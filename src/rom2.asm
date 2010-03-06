@@ -29,4 +29,5 @@
 .include "flailitem.inc"
 .include "beedie.inc"
 .include "grank.inc"
+.include "spearitem.inc"
   
