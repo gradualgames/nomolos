@@ -272,7 +272,54 @@ alreadyDying:
   
   ;reset animation
   resetAnim nomolosAnim
+  
+  ;set initial location for the hit box
+  lda #$20
+  sta nomolosHitboxWidth
+  lda #$08
+  sta nomolosHitboxHeight
 
+  lda nomolosState
+  and #1
+  beq skipNomolosFacingLeft
+  
+  clc
+  lda nomolosScreenX
+  adc #$f0
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$ff
+  sta nomolosHitboxX+1
+  
+  clc
+  lda nomolosScreenY
+  adc #$10
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  adc #$00
+  sta nomolosHitboxY+1
+
+  jmp skipNomolosFacingRight
+skipNomolosFacingLeft:
+
+  clc
+  lda nomolosScreenX
+  adc #$10
+  sta nomolosHitboxX
+  lda nomolosScreenX+1
+  adc #$00
+  sta nomolosHitboxX+1
+
+  clc
+  lda nomolosScreenY
+  adc #$10
+  sta nomolosHitboxY
+  lda nomolosScreenY+1
+  adc #$00
+  sta nomolosHitboxY+1
+
+skipNomolosFacingRight:
+  
   rts
 
 .endproc
@@ -551,45 +598,33 @@ skipAttackUpdate:
   
 .proc updateSpearAttack
 
-  lda #$10
-  sta nomolosHitboxWidth
-  lda #$20
-  sta nomolosHitboxHeight
-
+  ;move the spear in the direction nomolos is facing
   lda nomolosState
   and #1
-  beq skipNomolosFacingLeft
+  beq nomolosFacingRight
+nomolosFacingLeft:
   
-  clc
-  lda nomolosScreenX
-  adc #$f0
+  sec
+  lda nomolosHitboxX
+  sbc #10
   sta nomolosHitboxX
-  lda nomolosScreenX+1
-  adc #$ff
+  lda nomolosHitboxX+1
+  sbc #0
   sta nomolosHitboxX+1
   
-  lda nomolosScreenY
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
-  sta nomolosHitboxY+1
-
-  jmp skipNomolosFacingRight
-skipNomolosFacingLeft:
+  jmp nomolosDirectionTestDone
+  
+nomolosFacingRight:
 
   clc
-  lda nomolosScreenX
-  adc #$10
+  lda nomolosHitboxX
+  adc #10
   sta nomolosHitboxX
-  lda nomolosScreenX+1
-  adc #$00
+  lda nomolosHitboxX+1
+  adc #0
   sta nomolosHitboxX+1
 
-  lda nomolosScreenY
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
-  sta nomolosHitboxY+1
-
-skipNomolosFacingRight:
+nomolosDirectionTestDone:  
 
   dec nomolosHitboxCounter
   bne skipAttackUpdate
@@ -1501,6 +1536,25 @@ skipUpdateNomolosMoving:
   sta w2+1
   
   jsr drawAnimation16
+  
+  ;draw the spear at the location of the hit box
+  lda nomolosHitboxX
+  sta w3
+  lda nomolosHitboxX+1
+  sta w3+1
+  lda nomolosHitboxY
+  sta w4
+  lda nomolosHitboxY+1
+  sta w4+1
+  
+  ldy #ROMDefinitionTableStruct::SpearFly
+  lda (romDefinitionTableBaseAddress),y
+  sta w0
+  iny
+  lda (romDefinitionTableBaseAddress),y
+  sta w0+1
+  
+  jsr drawMetaSprite16
   
   rts
 

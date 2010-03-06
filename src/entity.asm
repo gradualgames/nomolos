@@ -28,6 +28,10 @@
   sta w4
   lda nomolosHitboxX+1
   sta w4+1
+  lda nomolosHitboxY
+  sta w5
+  lda nomolosHitboxY+1
+  sta w5+1
   lda nomolosHitboxWidth
   sta b4
   lda nomolosHitboxHeight

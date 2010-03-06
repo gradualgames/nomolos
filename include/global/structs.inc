@@ -122,6 +122,7 @@ TITLESTATE_DONE = %00000010
   NomolosSpear .word
   NomolosSpearOverlay .word
   FlailBall .word
+  SpearFly .word
   SlumpedArmor .word
   SlumpedArmorOverlay .word
   ScaredyCat .word

@@ -35,6 +35,7 @@ ROMDefinitionTable0:
   .word NomolosUseSpear
   .word NomolosFightOverlay
   .word FlailBall
+  .word Spear0
   .word SlumpedArmor0           
   .word SlumpedArmorOverlay0
   .word ScardyCat0
@@ -65,6 +66,7 @@ ROMDefinitionTable1:
   .word NomolosUseSpear
   .word NomolosFightOverlay
   .word FlailBall
+  .word Spear0
   .word SlumpedArmor0         
   .word SlumpedArmorOverlay0
   .word ScardyCat0
