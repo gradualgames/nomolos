@@ -55,15 +55,15 @@ loadLevelStateInit:
   ;load CHR bank into $0000
   
   ;first bank switch to the PRG rom bank containing the level's chr data
-  lda LevelDefinitionTable+level::chrPrgRomBank,x
+  lda level_definition_table+level::chrPrgRomBank,x
   sta nextBank
   jsr mapper_switch_bank
   
   ;now load the address of the chr data from the level definition table
-  lda LevelDefinitionTable+level::chrAddress,x
+  lda level_definition_table+level::chrAddress,x
   sta w0
   inx
-  lda LevelDefinitionTable+level::chrAddress,x
+  lda level_definition_table+level::chrAddress,x
   dex
   sta w0+1
   
@@ -71,13 +71,13 @@ loadLevelStateInit:
   jsr ppu_load_chr
   
   ;load PRG bank into $8000
-  lda LevelDefinitionTable+level::prgRomBank,x
+  lda level_definition_table+level::prgRomBank,x
   sta nextBank
   jsr mapper_switch_bank
 
-  lda LevelDefinitionTable+level::romDefinitionTable,x
+  lda level_definition_table+level::romDefinitionTable,x
   sta romDefinitionTableBaseAddress
-  lda LevelDefinitionTable+level::romDefinitionTable+1,x
+  lda level_definition_table+level::romDefinitionTable+1,x
   sta romDefinitionTableBaseAddress+1
 
   ldy #ROMDefinitionTableStruct::Level

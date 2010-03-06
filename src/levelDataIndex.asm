@@ -5,8 +5,8 @@
 .segment "CODE"
 
 ;level definitions
-.export LevelDefinitionTable
-LevelDefinitionTable:
+.export level_definition_table
+level_definition_table:
 Level1:
   .word level1_patterns  ;location of chr data
   .byte $03              ;prg bank where data resides

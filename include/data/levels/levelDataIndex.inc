@@ -1,6 +1,6 @@
 .ifndef LEVELDATAINDEX_INC
 LEVELDATAINDEX_INC = 1
 
-.import LevelDefinitionTable
+.import level_definition_table
 
 .endif
