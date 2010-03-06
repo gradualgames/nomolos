@@ -191,13 +191,13 @@ loadLevelStateLoad:
   sta w3+1 ;spawnX+1
   
   lda columnToUpdate
-  jsr updateColumn
+  jsr map_update_column
 
   ;rendering is off in this state, so we update the PPU
   jsr sprite_update_all
-  jsr updateColumnPPU
-  jsr updateAttributePPU
-  jsr updateScrollPPU
+  jsr map_update_column_ppu
+  jsr map_update_attribute_ppu
+  jsr map_update_scroll_ppu
 
   ;move on to next column.
   inc columnToUpdate

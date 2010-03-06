@@ -17,8 +17,8 @@
 ;the zero flag should be set if there is no collision, clear otherwise
 ;b0: whether or not the collision was with a "hurt" tile.
 ;b1: whether or not the collision was with a "solid" tile.
-.export testMapCollision
-.proc testMapCollision
+.export map_test_collision
+.proc map_test_collision
   ;switch to the level and music bank
   lda currentBank  ;save current bank
   pha
@@ -162,8 +162,8 @@
   rts
 .endproc
   
-.export decodeMap
-.proc decodeMap
+.export map_decode
+.proc map_decode
   ;switch to the level and music bank
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
@@ -321,19 +321,19 @@ doDecode:
   adc w1+1    ; Add with carry the big end of number 2
   sta w1+1    ; Store the big end of the result
 
-  ;Load the meta meta tile address, and call the updateColumn routine to get that meta tile into the PPU buffers.
-  jsr updateColumn
+  ;Load the meta meta tile address, and call the map_update_column routine to get that meta tile into the PPU buffers.
+  jsr map_update_column
 
   rts
 .endproc
 
 ;This routine decodes a single 1x15 meta-meta tile and places the proper
-;name table tile numbers into two 30 byte buffers for use by updateColumnPPU
+;name table tile numbers into two 30 byte buffers for use by map_update_column_ppu
 ;w1: address of meta-meta tile to decode
 ;columnTileBuffer: the buffer to which the meta-meta tile will be decoded. It will consist of
 ;two 30 tile columns.
-.export updateColumn
-.proc updateColumn
+.export map_update_column
+.proc map_update_column
   ;we need to calculate what the attributecolumnToUpdate is.
   ;we know the columnToUpdate. that's 0-31.
   ;if we shift this right, we get the meta tile column.
@@ -391,7 +391,7 @@ nextTile:
 
   sta b1
 
-  jsr updateAttribute
+  jsr map_update_attribute
 
   iny
   ;let's not bother with the hurt flag for now
@@ -421,7 +421,7 @@ nextTile:
   bmi doNotSpawn  
   sta b0
   
-  ;save metaTileColumn, this is used by updateAttribute for the entire loop.
+  ;save metaTileColumn, this is used by map_update_attribute for the entire loop.
   lda b2 ;metaTileColumn
   pha
   
@@ -486,8 +486,8 @@ doNotSpawn:
 ;b1: The attribute value we want to put into the attribute.
 ;b2: The current metatile column.
 ;b3: The current metatile row.
-.export updateAttribute
-.proc updateAttribute
+.export map_update_attribute
+.proc map_update_attribute
   tya
   pha
   txa
@@ -555,8 +555,8 @@ gotMask:
   rts
 .endproc
   
-.export updateScrollPPU
-.proc updateScrollPPU
+.export map_update_scroll_ppu
+.proc map_update_scroll_ppu
   lda nametableToUpdate
   eor #$04
   sta $2006
@@ -569,12 +569,13 @@ gotMask:
   sta $2005
 
   rts
+.endproc
 
 ;dumps two columns of tiles to the PPU
 ;columnTileBuffer: the buffer containing both columns of tiles to write
 ;columnToUpdate: the column to update
-.export updateColumnPPU
-updateColumnPPU:
+.export map_update_column_ppu
+.proc map_update_column_ppu
 
   lda nametableToUpdate
   sta $2006
@@ -611,8 +612,8 @@ updateColumnPPU:
   rts
 .endproc
 
-.export updateAttributePPU
-.proc updateAttributePPU
+.export map_update_attribute_ppu
+.proc map_update_attribute_ppu
 
 ;
   lda nametableToUpdate

@@ -41,7 +41,7 @@
   jsr nomolos_draw_hearts
   jsr entity_update_all
   
-  jsr decodeMap
+  jsr map_decode
     
   lda stateControl+playLevelStateControl::state
   cmp #PLAYLEVELSTATE_SWITCHLEVEL
@@ -82,9 +82,9 @@ stateCommandComplete:
 .proc playLevelUpdatePPU
 
   jsr sprite_update_all
-  jsr updateColumnPPU
-  jsr updateAttributePPU
-  jsr updateScrollPPU
+  jsr map_update_column_ppu
+  jsr map_update_attribute_ppu
+  jsr map_update_scroll_ppu
   
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank

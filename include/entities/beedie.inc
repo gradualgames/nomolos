@@ -99,7 +99,7 @@ beedieGoingLeft:
   lda entityPool+entityRAM::positionY+1,x
   adc #0
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   lda b1
   beq noLeftCollision
   lda #BEEDIE_DIRECTIONFLAG_RIGHT
@@ -132,7 +132,7 @@ beedieGoingRight:
   lda entityPool+entityRAM::positionY+1,x
   adc #0
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   lda b1
   beq noRightCollision
   lda #BEEDIE_DIRECTIONFLAG_LEFT
@@ -204,7 +204,7 @@ signExtendAddDone:
   sta entityLocals+beedieLocals::y_collisionPointBottom+1,x
   sta w1+1
   
-  jsr testMapCollision
+  jsr map_test_collision
   lda b1
   beq noBottomCollision
   

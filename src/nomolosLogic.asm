@@ -655,7 +655,7 @@ skipAttackUpdate:
   lda nomolosY+2
   adc #0
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   jsr nomolos_load_hurt_result
   lda b1
   bne yesBelowCollision
@@ -675,7 +675,7 @@ skipAttackUpdate:
   lda nomolosY+2
   adc #0
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   jsr nomolos_load_hurt_result
   lda b1
   bne yesBelowCollision
@@ -748,7 +748,7 @@ skipButtonATest:
   sta w1
   lda nomolosY+2
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   jsr nomolos_load_hurt_result
   lda b1
   bne yesAboveCollision
@@ -765,7 +765,7 @@ skipButtonATest:
   sta w1
   lda nomolosY+2
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   jsr nomolos_load_hurt_result
   lda b1
   bne yesAboveCollision
@@ -1080,7 +1080,7 @@ skipJmpNotLeft:
   lda nomolosY+2
   adc #0
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   jsr nomolos_load_hurt_result
   lda b1
   bne notLeft
@@ -1099,7 +1099,7 @@ skipJmpNotLeft:
   lda nomolosY+2
   adc #0
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   jsr nomolos_load_hurt_result
   lda b1
   bne notLeft
@@ -1118,7 +1118,7 @@ skipJmpNotLeft:
   lda nomolosY+2
   adc #0
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   jsr nomolos_load_hurt_result
   lda b1
   bne notLeft
@@ -1187,7 +1187,7 @@ skipJmpNotRight:
   lda nomolosY+2
   adc #0
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   jsr nomolos_load_hurt_result
   lda b1
   bne notRight
@@ -1207,7 +1207,7 @@ skipJmpNotRight:
   lda nomolosY+2
   adc #0
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   jsr nomolos_load_hurt_result
   lda b1
   bne notRight
@@ -1226,7 +1226,7 @@ skipJmpNotRight:
   lda nomolosY+2
   adc #0
   sta w1+1
-  jsr testMapCollision
+  jsr map_test_collision
   jsr nomolos_load_hurt_result
   lda b1
   bne notRight
