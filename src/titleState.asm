@@ -55,19 +55,19 @@ titleStateRun:
   sta w0
   lda titleDef+title::nametableAddress+1
   sta w0+1
-  jsr loadNametable
+  jsr ppu_load_name_table
   
   ;now switch to the prg bank containing the chr data of the title screen.
   lda titleDef+title::chrPrgRomBank
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
   
   ;now load the chr data
   lda titleDef+title::chrAddress
   sta w0
   lda titleDef+title::chrAddress+1
   sta w0+1
-  jsr loadChr
+  jsr ppu_load_chr
   
   ;now that nametable loaded, load the new palette.
   lda titleDef+title::paletteAddress
@@ -75,7 +75,7 @@ titleStateRun:
   lda titleDef+title::paletteAddress+1
   sta w0+1
   waitVBlank
-  jsr loadPaletteBg
+  jsr ppu_load_palette_bg
   
   ;reset scroll
   lda #0

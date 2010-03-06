@@ -59,7 +59,7 @@ gameOverStateRun:
   sta b0
   lda #0
   sta b1
-  jsr clearNametable  
+  jsr ppu_clear_name_table  
   
   ;now that nametable is clear, load the new palette.
   lda #<(font1+font::palette)
@@ -67,19 +67,19 @@ gameOverStateRun:
   lda #>(font1+font::palette)
   sta w0+1
   waitVBlank
-  jsr loadPalette
+  jsr ppu_load_palette
   
   ;switch to PRG block containing font1
   lda font1+font::chrPrgRomBank
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
   
   ;load chr data
   lda font1+font::chrAddress
   sta w0
   lda font1+font::chrAddress+1
   sta w0+1
-  jsr loadChr
+  jsr ppu_load_chr
 
   ;display GAME OVER string
   lda #$20
@@ -92,7 +92,7 @@ gameOverStateRun:
   sta w0
   lda #>gameOverString
   sta w0+1
-  jsr displayString
+  jsr ppu_display_string
 
   ;wait for vblank so when we turn graphics back on we don't get ugly scrambling =)
   waitVBlank

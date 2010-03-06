@@ -25,7 +25,7 @@
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
 
   lda #0
   sta b0
@@ -96,7 +96,7 @@
   ;restore previous bank
   pla
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
   
   rts
 @insideScreen:
@@ -157,7 +157,7 @@
   ;restore previous bank
   pla
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
 
   rts
 .endproc
@@ -168,7 +168,7 @@
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
 
   ;load the current scroll value and subtract the next scroll value. only when this is 0 or positive do we continue.
   lda scrollX

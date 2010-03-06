@@ -57,7 +57,7 @@ switchLevel:
   lda #LOADLEVELSTATE_INIT
   sta stateControl+loadLevelStateControl::state
   
-  switchState loadLevelUpdate, loadLevelUpdatePPU
+  switchState load_level_state_update, load_level_state_update_ppu
   
   jmp stateCommandComplete
   
@@ -91,7 +91,7 @@ stateCommandComplete:
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
   sta b0
-  jsr bankswitch
+  jsr mapper_switch_bank
   jsr ft_music_play
   .endif
   

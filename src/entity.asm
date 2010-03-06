@@ -110,7 +110,7 @@
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
   lda (romDefinitionTableBaseAddress),y
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
 
   ;start at last entity
   ldy #$0f

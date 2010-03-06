@@ -238,7 +238,7 @@ alreadyDying:
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
   lda #2
   ldx #0
   jsr ft_music_init
@@ -246,7 +246,7 @@ alreadyDying:
 
   pla
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
 
   rts
 
@@ -1291,7 +1291,7 @@ notRight:
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
   lda (romDefinitionTableBaseAddress),y
   sta nextBank
-  jsr bankswitch  
+  jsr mapper_switch_bank  
 
   lda #<nomolosAnim
   sta w1

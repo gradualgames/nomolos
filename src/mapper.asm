@@ -5,8 +5,8 @@
 
 ;bankswitches using UnROM.
 ;nextBank - the bank to switch to
-.export bankswitch
-.proc bankswitch
+.export mapper_switch_bank
+.proc mapper_switch_bank
   txa
   pha
 

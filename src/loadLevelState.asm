@@ -17,8 +17,8 @@
 
 .segment "CODE"
 
-.export loadLevelUpdate
-.proc loadLevelUpdate
+.export load_level_state_update
+.proc load_level_state_update
   lda stateControl+loadLevelStateControl::state
   cmp #LOADLEVELSTATE_INIT
   beq loadLevelStateInit
@@ -57,7 +57,7 @@ loadLevelStateInit:
   ;first bank switch to the PRG rom bank containing the level's chr data
   lda LevelDefinitionTable+level::chrPrgRomBank,x
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
   
   ;now load the address of the chr data from the level definition table
   lda LevelDefinitionTable+level::chrAddress,x
@@ -68,12 +68,12 @@ loadLevelStateInit:
   sta w0+1
   
   ;load the chr data into vram
-  jsr loadChr
+  jsr ppu_load_chr
   
   ;load PRG bank into $8000
   lda LevelDefinitionTable+level::prgRomBank,x
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
 
   lda LevelDefinitionTable+level::romDefinitionTable,x
   sta romDefinitionTableBaseAddress
@@ -127,7 +127,7 @@ loadLevelStateInit:
   sta w0+1
 
   waitVBlank
-  jsr loadPalette
+  jsr ppu_load_palette
   jsr sprite_clear_all
   jsr entity_init_all
   jsr nomolos_init  
@@ -223,14 +223,14 @@ loadLevelStateDone:
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
   lda (romDefinitionTableBaseAddress),y
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
   
   jsr entity_update_all
   
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
   
   lda #$24
   sta nametableToUpdate  
@@ -261,7 +261,7 @@ stateSwitchComplete:
   rts
 .endproc
 
-.export loadLevelUpdatePPU
-.proc loadLevelUpdatePPU
+.export load_level_state_update_ppu
+.proc load_level_state_update_ppu
   rts  
 .endproc

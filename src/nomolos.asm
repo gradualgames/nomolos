@@ -63,7 +63,7 @@ reset:
   ;lda #LOADLEVELSTATE_INIT
   ;sta stateControl+loadLevelStateControl::state
   
-  ;switchState loadLevelUpdate, loadLevelUpdatePPU
+  ;switchState load_level_state_update, load_level_state_update_ppu
   
 loop:
 

@@ -11,14 +11,14 @@
 ; w1 - Address of power table
 ; w2 - Address of destination buffer
 ;Output:
-; w2 - Contains a string displayable by displayString
+; w2 - Contains a string displayable by ppu_display_string
 ;Temporary:
 ; b1 - current power
 ; b2 - current digit
 ; b3 - index in dest buffer
 ; b4 - whether a nonzero digit has been encountered yet.
-.export createDecimalString
-.proc createDecimalString
+.export ppu_create_decimal_string
+.proc ppu_create_decimal_string
  
   ;digit count
   lda #0
@@ -135,8 +135,8 @@ skipUpperZeroDigit:
  
 ;assumes VRAM is already pointing to where the text should start
 ;assumes w0 contains address of string to draw
-.export displayString
-.proc displayString
+.export ppu_display_string
+.proc ppu_display_string
   ;load number of characters in string
   ldy #0
   lda (w0),y
@@ -158,8 +158,8 @@ skipUpperZeroDigit:
 ;loads 8k of chr data into VRAM starting at address $0000
 ;expects w0 to have address of chr data to load.
 ;uses w1 to count how much data has been shoveled
-.export loadChr
-.proc loadChr
+.export ppu_load_chr
+.proc ppu_load_chr
   ;start at $0000 in VRAM
   lda #$00
   sta $2006
@@ -201,8 +201,8 @@ loadChrLoop:
   
 ;loads a nametable and attribute table located at address in w0
 ;assumes VRAM points to the nametable that is to be loaded
-.export loadNametable
-.proc loadNametable
+.export ppu_load_name_table
+.proc ppu_load_name_table
   ldy #$00
   ldx #$04
 
@@ -221,8 +221,8 @@ loadChrLoop:
 ;expects VRAM to already be pointing to the nametable we want to clear.
 ;input: b0 - value to clear nametable with
 ;       b1 - value to clear attribute table with
-.export clearNametable
-.proc clearNametable
+.export ppu_clear_name_table
+.proc ppu_clear_name_table
   ;clear the nametable
   lda #$20
   sta $2006
@@ -259,8 +259,8 @@ loadChrLoop:
 .endproc
   
 ;expects w0 to have address of palette
-.export loadPalette
-.proc loadPalette
+.export ppu_load_palette
+.proc ppu_load_palette
   ldy #0
   lda #$3F
   sta $2006
@@ -276,8 +276,8 @@ loadChrLoop:
   rts
 .endproc
 
-.export loadPaletteBg
-.proc loadPaletteBg
+.export ppu_load_palette_bg
+.proc ppu_load_palette_bg
   ldy #0
   lda #$3F
   sta $2006
@@ -293,8 +293,8 @@ loadChrLoop:
   rts
 .endproc
 
-.export loadPaletteSpr
-.proc loadPaletteSpr
+.export ppu_load_palette_spr
+.proc ppu_load_palette_spr
   ldy #0
   lda #$3F
   sta $2006

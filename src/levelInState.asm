@@ -63,7 +63,7 @@ levelInStateRun:
   sta b0
   lda #0
   sta b1
-  jsr clearNametable  
+  jsr ppu_clear_name_table  
   
   ;now that nametable is clear, load the new palette.
   lda #<(font1+font::palette)
@@ -71,19 +71,19 @@ levelInStateRun:
   lda #>(font1+font::palette)
   sta w0+1
   waitVBlank
-  jsr loadPaletteBg
+  jsr ppu_load_palette_bg
   
   ;switch to PRG block containing font1
   lda font1+font::chrPrgRomBank
   sta nextBank
-  jsr bankswitch
+  jsr mapper_switch_bank
   
   ;load chr data
   lda font1+font::chrAddress
   sta w0
   lda font1+font::chrAddress+1
   sta w0+1
-  jsr loadChr
+  jsr ppu_load_chr
   
   ;create decimal string for currentLevel variable
   lda currentLevel
@@ -104,7 +104,7 @@ levelInStateRun:
   lda #>stringBuffer
   sta w2+1
   
-  jsr createDecimalString
+  jsr ppu_create_decimal_string
   
   ;now let's write a string!
   lda #$20
@@ -119,14 +119,14 @@ levelInStateRun:
   lda #>levelString
   sta w0+1
   
-  jsr displayString
+  jsr ppu_display_string
   
   lda #<stringBuffer
   sta w0
   lda #>stringBuffer
   sta w0+1
   
-  jsr displayString
+  jsr ppu_display_string
   
   ;display lives remaining string
   lda #$20
@@ -139,7 +139,7 @@ levelInStateRun:
   sta w0
   lda #>livesString
   sta w0+1
-  jsr displayString
+  jsr ppu_display_string
   
   ;create decimal string for nomolosLives variable
   lda nomolosLives
@@ -157,7 +157,7 @@ levelInStateRun:
   lda #>stringBuffer
   sta w2+1
   
-  jsr createDecimalString
+  jsr ppu_create_decimal_string
   
   ;now display the string right where we are in VRAM (at the end of "Lives...")
   lda #<stringBuffer
@@ -165,7 +165,7 @@ levelInStateRun:
   lda #>stringBuffer
   sta w0+1
   
-  jsr displayString
+  jsr ppu_display_string
 
   ;wait for vblank so when we turn graphics back on we don't get ugly scrambling =)
   waitVBlank
@@ -201,7 +201,7 @@ levelInStateDone:
   lda #LOADLEVELSTATE_INIT
   sta stateControl+loadLevelStateControl::state
   
-  switchState loadLevelUpdate, loadLevelUpdatePPU
+  switchState load_level_state_update, load_level_state_update_ppu
   
 stateCommandComplete:
 

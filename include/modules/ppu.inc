@@ -1,13 +1,13 @@
 .ifndef PPU_INC
 PPU_INC = 1
 
-.import createDecimalString
-.import displayString
-.import loadChr
-.import loadNametable
-.import clearNametable
-.import loadPalette
-.import loadPaletteBg
-.import loadPaletteSpr
+.import ppu_create_decimal_string
+.import ppu_display_string
+.import ppu_load_chr
+.import ppu_load_name_table
+.import ppu_clear_name_table
+.import ppu_load_palette
+.import ppu_load_palette_bg
+.import ppu_load_palette_spr
 
 .endif
