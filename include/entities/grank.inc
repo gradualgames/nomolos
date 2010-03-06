@@ -49,7 +49,7 @@ grank_initState:
 
 grank_flyState:
 
-  jsr getEntityScreenCoordinates
+  jsr entity_compute_screen_coordinates
   
   ;add x velocity to 24 bit X coordinate with sign extension
 .scope addXVelocity
@@ -243,7 +243,7 @@ grankOnScreen:
   sta b2
   lda #$10
   sta b3
-  jsr compareEntityRectToNomolosRect
+  jsr entity_test_collision_nomolos
   
   bne :+
   
@@ -258,7 +258,7 @@ grankOnScreen:
   sta b2
   lda #$10
   sta b3
-  jsr compareEntityRectToHitboxRect
+  jsr entity_test_collision_hitbox
   
   bne nomolosNotAttacking
   
@@ -332,7 +332,7 @@ killGrank:
   lda entityPool+entityRAM::positionY,x
   sta b1
   
-  jsr spawnEntity
+  jsr entity_spawn
 
   rts
 .endproc

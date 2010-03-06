@@ -1,9 +1,11 @@
 .ifndef ENTITY_INC
 ENTITY_INC = 1
 
-.import updateEntities, initEntities, spawnEntity
-.import getEntityScreenCoordinates
-.import compareEntityRectToNomolosRect
-.import compareEntityRectToHitboxRect
+.import entity_update_all
+.import entity_init_all
+.import entity_spawn
+.import entity_compute_screen_coordinates
+.import entity_test_collision_nomolos
+.import entity_test_collision_hitbox
 
 .endif

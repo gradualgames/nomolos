@@ -435,7 +435,7 @@ nextTile:
   asl
   asl
   sta b1
-  jsr spawnEntity
+  jsr entity_spawn
   
   pla
   sta b2 ;metaTileColumn

@@ -10,9 +10,9 @@
 
 .segment "CODE"
 
-.export compareEntityRectToHitboxRect
+.export entity_test_collision_hitbox
 ;assumes b2 and b3 represent the width and height of the calling entity
-.proc compareEntityRectToHitboxRect
+.proc entity_test_collision_hitbox
   ;transfer entity rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda entityScreenX
   sta w2
@@ -41,9 +41,9 @@
   rts
 .endproc
 
-.export compareEntityRectToNomolosRect
+.export entity_test_collision_nomolos
 ;assumes b2 and b3 represent the width and height of the current entity
-.proc compareEntityRectToNomolosRect
+.proc entity_test_collision_nomolos
   ;transfer Deentle rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda entityScreenX
   sta w2
@@ -72,8 +72,8 @@
   rts
 .endproc
 
-.export getEntityScreenCoordinates
-.proc getEntityScreenCoordinates
+.export entity_compute_screen_coordinates
+.proc entity_compute_screen_coordinates
   ;get out low byte of positionX
   lda entityPool+entityRAM::positionX,x
   sta w0
@@ -103,8 +103,8 @@
 ;This routine indirectly jumps to every update routine for every live entity.
 ;The entities are expected to jump back to returnFromEntityUpdate when they
 ;are finished.
-.export updateEntities
-.proc updateEntities
+.export entity_update_all
+.proc entity_update_all
 
   ;switch to the actor and entity bank
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
@@ -171,8 +171,8 @@ skipUpdate:
 
 ;This routine initializes the entity pool. All this
 ;entails is filling the first byte of every 16 byte chunk with zero.
-.export initEntities
-.proc initEntities
+.export entity_init_all
+.proc entity_init_all
   ldx #$0f
 :
   ;multiply the index by 16
@@ -197,8 +197,8 @@ skipUpdate:
 ;b0 = index of entity definition to spawn
 ;w0 = positionX
 ;b1 = positionY
-.export spawnEntity
-.proc spawnEntity
+.export entity_spawn
+.proc entity_spawn
 
   ;save regs
   pha

@@ -129,7 +129,7 @@ loadLevelStateInit:
   waitVBlank
   jsr loadPalette
   jsr clearSprites
-  jsr initEntities
+  jsr entity_init_all
   jsr nomolos_init  
   jsr resetCamera  
 
@@ -225,7 +225,7 @@ loadLevelStateDone:
   sta nextBank
   jsr bankswitch
   
-  jsr updateEntities
+  jsr entity_update_all
   
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (romDefinitionTableBaseAddress),y

@@ -4,7 +4,7 @@ EXITENTITY_INC = 1
 .export exitLevelUpdate
 exitLevelUpdate:
 
-  jsr getEntityScreenCoordinates
+  jsr entity_compute_screen_coordinates
   bpl skipJmpExitDie
   jmp exitDie
 skipJmpExitDie:
@@ -14,7 +14,7 @@ skipJmpExitDie:
   sta b2
   lda #$10
   sta b3
-  jsr compareEntityRectToNomolosRect
+  jsr entity_test_collision_nomolos
   
   beq skipJmpNotTouching
   jmp notTouching

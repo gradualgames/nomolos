@@ -1,13 +1,13 @@
-.ifndef FLAILITEM_INC
-FLAILITEM_INC = 1
+.ifndef SPEARITEM_INC
+SPEARITEM_INC = 1
 
-.export flailItemUpdate
-.proc flailItemUpdate
+.export spearItemUpdate
+.proc spearItemUpdate
 
   jsr entity_compute_screen_coordinates
-  bpl skipJmpflailItemDie
-  jmp flailItemDie
-skipJmpflailItemDie:
+  bpl skipJmpspearItemDie
+  jmp spearItemDie
+skipJmpspearItemDie:
   
   ;load entity width and height
   lda #$10
@@ -22,7 +22,7 @@ skipJmpNotTouching:
       
   lda nomolosSubState
   and #nomolosAttackSetMask
-  ora #nomolosAttackFlail
+  ora #nomolosAttackSpear
   sta nomolosSubState
       
   lda #<getItemSound
@@ -31,13 +31,13 @@ skipJmpNotTouching:
   sta w0+1
   jsr loadSound
     
-  jmp flailItemDie
+  jmp spearItemDie
   
 notTouching:
 
-  lda #<FlailItem0
+  lda #<Spear0
   sta w0
-  lda #>FlailItem0
+  lda #>Spear0
   sta w0+1
   
   lda entityScreenX
@@ -53,7 +53,7 @@ notTouching:
   
   rts
 
-flailItemDie:
+spearItemDie:
 
   lda #0
   sta entityPool+entityRAM::alive,x

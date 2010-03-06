@@ -29,7 +29,7 @@ explosionInit:
   
 explosionExplode:
 
-  jsr getEntityScreenCoordinates
+  jsr entity_compute_screen_coordinates
 
   ;store screen coordinates
   lda entityScreenX

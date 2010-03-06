@@ -73,14 +73,14 @@ beedie_restState:
   
 stillResting:
 
-  jsr getEntityScreenCoordinates
+  jsr entity_compute_screen_coordinates
   jsr beedie_draw
 
   rts
   
 beedie_jumpState:
 
-  jsr getEntityScreenCoordinates
+  jsr entity_compute_screen_coordinates
 
   ;slide beedie in the direction he is facing
   lda entityLocals+beedieLocals::directionFlag,x
@@ -272,7 +272,7 @@ beedieOnScreen:
   sta b2
   lda #$10
   sta b3
-  jsr compareEntityRectToNomolosRect
+  jsr entity_test_collision_nomolos
   
   bne :+
   
@@ -287,7 +287,7 @@ beedieOnScreen:
   sta b2
   lda #$10
   sta b3
-  jsr compareEntityRectToHitboxRect
+  jsr entity_test_collision_hitbox
   
   bne nomolosNotAttacking
   
@@ -361,7 +361,7 @@ killBeedie:
   lda entityPool+entityRAM::positionY,x
   sta b1
   
-  jsr spawnEntity
+  jsr entity_spawn
 
   rts
 .endproc

@@ -39,7 +39,7 @@
   jsr nomolos_update
   jsr nomolos_draw
   jsr nomolos_draw_hearts
-  jsr updateEntities
+  jsr entity_update_all
   
   jsr decodeMap
     

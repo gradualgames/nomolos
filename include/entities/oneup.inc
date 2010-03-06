@@ -4,7 +4,7 @@ ONEUP_INC = 1
 .export oneUpUpdate
 .proc oneUpUpdate
 
-  jsr getEntityScreenCoordinates
+  jsr entity_compute_screen_coordinates
   
   ;test x coordinate for whether the item should die.
   sec
@@ -22,7 +22,7 @@ skipJmpOneUpDie:
   sta b2
   lda #$10
   sta b3
-  jsr compareEntityRectToNomolosRect
+  jsr entity_test_collision_nomolos
   
   beq skipJmpNotTouching
   jmp notTouching

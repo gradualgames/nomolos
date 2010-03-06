@@ -112,7 +112,7 @@ dontSwitchToRightState:
   
 deentle_draw:
 
-  jsr getEntityScreenCoordinates
+  jsr entity_compute_screen_coordinates
 
   ;test the x coordinate for whether it is a certain distance off screen. compare it
   ;to -32.
@@ -133,7 +133,7 @@ deentleOnScreen:
   sta b2
   lda #$10
   sta b3
-  jsr compareEntityRectToNomolosRect
+  jsr entity_test_collision_nomolos
   
   bne :+
   
@@ -148,7 +148,7 @@ deentleOnScreen:
   sta b2
   lda #$10
   sta b3
-  jsr compareEntityRectToHitboxRect
+  jsr entity_test_collision_hitbox
   
   bne nomolosNotAttacking
   
@@ -222,7 +222,7 @@ killDeentle:
   lda entityPool+entityRAM::positionY,x
   sta b1
   
-  jsr spawnEntity
+  jsr entity_spawn
 
   rts
   
