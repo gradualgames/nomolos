@@ -11,8 +11,8 @@ blankSound:
 
 ;fast forwards to the end of the current sound to ensure channel enable/disable commands
 ;are read before the next sound is played.
-.export finishSound
-.proc finishSound
+.export sound_finish
+.proc sound_finish
 
   ;save x (entities use this)
   txa
@@ -60,8 +60,8 @@ soundFinished:
 
 .endproc
   
-.export playSound
-.proc playSound
+.export sound_play
+.proc sound_play
 
   ;load current sound offset
   ldy soundOff
@@ -137,10 +137,10 @@ soundDone:
 ;finishes the current sound if there is one and
 ;loads a new sound into the sound address.
 ;w0 = address of sound to load
-.export loadSound
-.proc loadSound
+.export sound_load
+.proc sound_load
 
-  jsr finishSound
+  jsr sound_finish
   lda w0
   sta soundAddr
   lda w0+1
@@ -152,8 +152,8 @@ soundDone:
 
 .endproc
 
-.export initsound
-.proc initsound
+.export sound_init
+.proc sound_init
         ; initialize sound hardware
   lda #$01
   sta $4015
@@ -173,8 +173,8 @@ soundDone:
   
 .endproc
   
-.export lowc
-.proc lowc
+.export sound_play_low_c
+.proc sound_play_low_c
   pha
   lda #$84
   sta $4000

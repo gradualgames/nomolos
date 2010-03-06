@@ -1,7 +1,7 @@
 .ifndef SOUND_INC
 SOUND_INC = 1
 
-.import initsound, lowc
-.import loadSound, playSound, finishSound
+.import sound_init, sound_play_low_c
+.import sound_load, sound_play, sound_finish
 
 .endif

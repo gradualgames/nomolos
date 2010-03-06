@@ -185,7 +185,7 @@
   rts
   
 doDecode:
-  ;jsr lowc  ;quick hack to determine aurally whether each column is getting drawn only once.
+  ;jsr sound_play_low_c  ;quick hack to determine aurally whether each column is getting drawn only once.
 
   ;Load the current scroll value. Shifting this 16 bit value right by 4 will produce the correct column number for the leftmost
   ;column on the screen.

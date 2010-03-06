@@ -117,7 +117,7 @@ loadLevelStateInit:
   sta ft_music_addr+1
   .endif
   
-  jsr initsound
+  jsr sound_init
   
   ldy #ROMDefinitionTableStruct::palette
   lda (romDefinitionTableBaseAddress),y

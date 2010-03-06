@@ -144,7 +144,7 @@ skipDecreaseHealth:
   iny
   lda (romDefinitionTableBaseAddress),y
   sta w0+1
-  jsr loadSound
+  jsr sound_load
   
 skipHurt:
 
@@ -261,7 +261,7 @@ alreadyDying:
   iny
   lda (romDefinitionTableBaseAddress),y
   sta w0+1
-  jsr loadSound
+  jsr sound_load
   
   ;turn on the attack hit box
   lda #$0c
@@ -358,7 +358,7 @@ nomolosAttackSwordBranch:
   iny
   lda (romDefinitionTableBaseAddress),y
   sta w0+1
-  jsr loadSound
+  jsr sound_load
   
   ;turn on the attack hit box
   lda #$0c
@@ -381,7 +381,7 @@ nomolosAttackFlailBranch:
   iny
   lda (romDefinitionTableBaseAddress),y
   sta w0+1
-  jsr loadSound
+  jsr sound_load
   
   ;turn on the attack hit box
   lda #$0c

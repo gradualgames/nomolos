@@ -54,12 +54,12 @@ mouseOnScreen:
   lda #1
   jsr nomolos_add_health
   
-  ;playSound getHealthSound
+  ;sound_play getHealthSound
   lda #<getHealthSound
   sta w0
   lda #>getHealthSound
   sta w0+1
-  jsr loadSound
+  jsr sound_load
   
   jmp mouseDie
   

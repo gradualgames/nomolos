@@ -95,7 +95,7 @@ stateCommandComplete:
   jsr ft_music_play
   .endif
   
-  jsr playSound
+  jsr sound_play
   
   lda #1
   sta vblankDone

@@ -296,7 +296,7 @@ beedieOnScreen:
   sta w0
   lda #>hitSound
   sta w0+1
-  jsr loadSound
+  jsr sound_load
   
   jmp killBeedie
   
