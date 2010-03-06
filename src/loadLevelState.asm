@@ -238,7 +238,7 @@ loadLevelStateDone:
   lda #PLAYLEVELSTATE_KEEPPLAYING
   sta stateControl+playLevelStateControl::state
   
-  switchState playLevelUpdate, playLevelUpdatePPU
+  switchState play_level_state_update, play_level_state_update_ppu
       
   waitVBlank
 			

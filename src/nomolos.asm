@@ -67,11 +67,11 @@ reset:
   
 loop:
 
-  jsr indirectJsrUpdate
+  jsr indirect_jsr_update
   
   jmp loop
   
-.proc indirectJsrUpdate
+.proc indirect_jsr_update
   jmp (update)
 .endproc
 
@@ -84,7 +84,7 @@ vblank:
   pha
   php
   
-  jsr indirectJsrUpdatePPU
+  jsr indirect_jsr_update_ppu
 
   plp
   pla
@@ -96,7 +96,7 @@ vblank:
 irq:
   rti
   
-.proc indirectJsrUpdatePPU
+.proc indirect_jsr_update_ppu
   jmp (updatePPU)
 .endproc
   
