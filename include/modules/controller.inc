@@ -1,6 +1,6 @@
 .ifndef CONTROLLER_INC
 CONTROLLER_INC = 1
 
-.import readController
+.import controller_read
 
 .endif

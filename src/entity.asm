@@ -86,7 +86,7 @@
   sta w1
   lda entity_instances+entityRAM::positionY+1,x
   sta w1+1
-  jsr cameraToScreenCoords
+  jsr camera_to_screen_coords
 
   ;save screen coordinates for use later
   lda w0

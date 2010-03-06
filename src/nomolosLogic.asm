@@ -1257,7 +1257,7 @@ notRight:
   sta w1
   lda nomolosY+2
   sta w1+1
-  jsr cameraToScreenCoords
+  jsr camera_to_screen_coords
   lda w0
   sta nomolosScreenX
   lda w0+1
@@ -1272,7 +1272,7 @@ notRight:
   ;************************************************************
   lda nomolosScreenX
   sta b0
-  jsr updateCamera
+  jsr camera_update
   lda b0
   sta nomolosScreenX
   

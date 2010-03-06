@@ -4,14 +4,14 @@ SPRITESHEET1_INC = 1
 .include "spritesheet1_sprites_imports.inc"
 .include "spritesheet1_animations_imports.inc"
 
-.import flailItemUpdate
-.import oneUpUpdate
-.import mouseUpdate
-.import explosionUpdate
-.import deentleUpdate
-.import exitLevelUpdate
-.import beedieUpdate
-.import grankUpdate
-.import spearItemUpdate
+.import flail_item_update
+.import oneup_update
+.import mouse_update
+.import explosion_update
+.import deentle_update
+.import exit_level_update
+.import beedie_update
+.import grank_update
+.import spear_item_update
 
 .endif

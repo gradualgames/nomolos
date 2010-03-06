@@ -1,8 +1,8 @@
 .ifndef EXITENTITY_INC
 EXITENTITY_INC = 1
 
-.export exitLevelUpdate
-exitLevelUpdate:
+.export exit_level_update
+exit_level_update:
 
   jsr entity_compute_screen_coordinates
   bpl skipJmpExitDie

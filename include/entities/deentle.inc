@@ -5,8 +5,8 @@ DEENTLE_INITSTATE = 0
 DEENTLE_MOVERIGHTSTATE = 1
 DEENTLE_MOVELEFTSTATE = 2
 
-.export deentleUpdate
-deentleUpdate:
+.export deentle_update
+deentle_update:
 
   ;load current state
   lda entity_instances+entityRAM::state,x

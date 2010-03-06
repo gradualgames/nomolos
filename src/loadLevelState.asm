@@ -131,7 +131,7 @@ loadLevelStateInit:
   jsr sprite_clear_all
   jsr entity_init_all
   jsr nomolos_init  
-  jsr resetCamera  
+  jsr camera_reset  
 
   ;turn on inc32
   lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )

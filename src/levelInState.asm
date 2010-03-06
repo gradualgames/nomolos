@@ -12,8 +12,8 @@
 
 .segment "CODE"
 
-.export levelInUpdate
-.proc levelInUpdate
+.export level_in_state_update
+.proc level_in_state_update
   lda stateControl+levelInStateControl::state
   cmp #LEVELINSTATE_INIT
   bne :+
@@ -208,8 +208,8 @@ stateCommandComplete:
   rts
 .endproc
 
-.export levelInPPUUpdate
-.proc levelInPPUUpdate
+.export level_in_state_update_ppu
+.proc level_in_state_update_ppu
   dec frameCounter
 
   rts

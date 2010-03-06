@@ -1,8 +1,8 @@
 .ifndef ONEUP_INC
 ONEUP_INC = 1
 
-.export oneUpUpdate
-.proc oneUpUpdate
+.export oneup_update
+.proc oneup_update
 
   jsr entity_compute_screen_coordinates
   

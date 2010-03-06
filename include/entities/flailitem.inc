@@ -1,8 +1,8 @@
 .ifndef FLAILITEM_INC
 FLAILITEM_INC = 1
 
-.export flailItemUpdate
-.proc flailItemUpdate
+.export flail_item_update
+.proc flail_item_update
 
   jsr entity_compute_screen_coordinates
   bpl skipJmpflailItemDie

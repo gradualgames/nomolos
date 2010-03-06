@@ -4,8 +4,8 @@
 
 ;deserializes the controller into a buffer
 ;output: controllerBuffer
-.export readController
-.proc readController
+.export controller_read
+.proc controller_read
   lda #$01  ; strobe joypad
   sta $4016
   lda #$00

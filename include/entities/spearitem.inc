@@ -1,8 +1,8 @@
 .ifndef SPEARITEM_INC
 SPEARITEM_INC = 1
 
-.export spearItemUpdate
-.proc spearItemUpdate
+.export spear_item_update
+.proc spear_item_update
 
   jsr entity_compute_screen_coordinates
   bpl skipJmpspearItemDie

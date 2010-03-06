@@ -96,7 +96,7 @@ titleStateRun:
   
 titleStateDone:
 
-  jsr readController
+  jsr controller_read
   lda controllerBuffer+buttons::_start
   and #1
   beq :+
@@ -110,7 +110,7 @@ titleStateDone:
   sta currentLevel
   lda #LEVELINSTATE_INIT
   sta stateControl+levelOutStateControl::state
-  switchState levelInUpdate, levelInPPUUpdate
+  switchState level_in_state_update, level_in_state_update_ppu
   
 :
 

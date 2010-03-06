@@ -85,7 +85,7 @@ ROMDefinitionTable1:
 ;Entities
 EntityDefinitionTable:
 DeentleEntity:
-  .word deentleUpdate
+  .word deentle_update
   .byte $00
   .byte $00
   .byte %00000000
@@ -93,7 +93,7 @@ DeentleEntity:
   .byte $00
   .byte $00
 ExplosionEntity:
-  .word explosionUpdate
+  .word explosion_update
   .byte $00
   .byte $00
   .byte %00000000
@@ -101,7 +101,7 @@ ExplosionEntity:
   .byte $00
   .byte $00
 MouseEntity:
-  .word mouseUpdate
+  .word mouse_update
   .byte $00
   .byte $f9
   .byte %00000000
@@ -109,7 +109,7 @@ MouseEntity:
   .byte $00
   .byte $00
 ExitLevelEntity:
-  .word exitLevelUpdate
+  .word exit_level_update
   .byte $00
   .byte $f9
   .byte %00000000
@@ -117,7 +117,7 @@ ExitLevelEntity:
   .byte $00
   .byte $00
 OneUpEntity:
-  .word oneUpUpdate
+  .word oneup_update
   .byte $00
   .byte $00
   .byte %00000000
@@ -125,7 +125,7 @@ OneUpEntity:
   .byte $00
   .byte $00
 FlailItemEntity:
-  .word flailItemUpdate
+  .word flail_item_update
   .byte $00
   .byte $f9
   .byte %00000000
@@ -133,7 +133,7 @@ FlailItemEntity:
   .byte $00
   .byte $00
 BeedieEntity:
-  .word beedieUpdate
+  .word beedie_update
   .byte $00
   .byte $00
   .byte %00000000
@@ -141,7 +141,7 @@ BeedieEntity:
   .byte $00
   .byte $00
 GrankEntity:
-  .word grankUpdate
+  .word grank_update
   .byte $00
   .byte $e9
   .byte %00000000
@@ -149,7 +149,7 @@ GrankEntity:
   .byte $00
   .byte $00
 SpearItemEntity:
-  .word spearItemUpdate
+  .word spear_item_update
   .byte $00
   .byte $f9
   .byte %00000000

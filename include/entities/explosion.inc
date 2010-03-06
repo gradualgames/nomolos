@@ -4,8 +4,8 @@ EXPLOSION_INC = 1
 EXPLOSION_INITSTATE = 0
 EXPLOSION_EXPLODESTATE = 1
 
-.export explosionUpdate
-explosionUpdate:
+.export explosion_update
+explosion_update:
 
   lda entity_instances+entityRAM::state,x
   cmp #EXPLOSION_INITSTATE

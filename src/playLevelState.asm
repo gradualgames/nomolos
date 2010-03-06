@@ -32,7 +32,7 @@
   sta $2001
   .endif
   
-  jsr readController
+  jsr controller_read
   
   jsr sprite_clear_all
   
