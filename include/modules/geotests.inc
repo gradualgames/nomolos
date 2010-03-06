@@ -1,6 +1,7 @@
 .ifndef GEOTESTS_INC
 GEOTESTS_INC = 1
 
-.import rectInRect, rectInRect16
+.import geotests_rect_in_rect
+.import geotests_rect_in_rect_16bit
 
 .endif

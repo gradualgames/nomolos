@@ -20,8 +20,8 @@
 ;rectangle B:
 ;w8 - right x
 ;w9 - bottom y
-.export rectInRect16
-.proc rectInRect16
+.export geotests_rect_in_rect_16bit
+.proc geotests_rect_in_rect_16bit
   ;compute bottom of rectangle A
   clc
   lda w3
@@ -124,8 +124,8 @@
 ;w5 - bot right x, y
 ;outputs:
 ;Z - true = intersection, false = no intersection
-.export rectInRect
-.proc rectInRect
+.export geotests_rect_in_rect
+.proc geotests_rect_in_rect
   ;load bottom of rectA
   lda w3+1
   sec

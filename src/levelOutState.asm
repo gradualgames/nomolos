@@ -11,13 +11,13 @@
 
 .segment "CODE"
 
-.export levelOutUpdate
-.proc levelOutUpdate
+.export level_out_state_update
+.proc level_out_state_update
   rts
 .endproc
   
-.export levelOutPPUUpdate
-.proc levelOutPPUUpdate
+.export level_out_state_update_ppu
+.proc level_out_state_update_ppu
   lda stateControl+levelOutStateControl::state
   cmp #LEVELOUTSTATE_INIT
   beq levelOutStateInit
@@ -75,7 +75,7 @@ livesNegativeMeansGameOver:
 
   lda #GAMEOVERSTATE_INIT
   sta stateControl+gameOverStateControl::state
-  switchState gameOverUpdate, gameOverUpdatePPU
+  switchState game_over_state_update, game_over_state_update_ppu
   jmp skipIncPaletteStep
 
 :

@@ -44,11 +44,11 @@ ROMDefinitionTable0:
   .word attackSound            
   .word hitSound               
   .word level1_palette                
-  .word level1MetaTileTable          
-  .word level1MetaMetaTileTable      
-  .word level1Level                  
+  .word level1_meta_tile_table          
+  .word level1_meta_meta_tile_table      
+  .word level1_level                  
   .word EntityDefinitionTable  
-  .word level1music                  
+  .word level1_music                  
   .byte $01
 
 ;ROM definition table
@@ -75,11 +75,11 @@ ROMDefinitionTable1:
   .word attackSound           
   .word hitSound              
   .word level2_palette               
-  .word level2MetaTileTable         
-  .word level2MetaMetaTileTable     
-  .word level2Level                 
+  .word level2_meta_tile_table         
+  .word level2_meta_meta_tile_table     
+  .word level2_level                 
   .word EntityDefinitionTable 
-  .word level2music                 
+  .word level2_music                 
   .byte $00
   
 ;Entities

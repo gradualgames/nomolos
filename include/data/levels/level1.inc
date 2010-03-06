@@ -5,6 +5,9 @@ LEVEL1_INC = 1
 .include "level1_patterns_imports.inc"
 .import level1_palette
 
-.import level1MetaTileTable, level1MetaMetaTileTable, level1Level, level1music
+.import level1_meta_tile_table
+.import level1_meta_meta_tile_table
+.import level1_level
+.import level1_music
 
 .endif

@@ -11,8 +11,8 @@
 
 .segment "CODE"
 
-.export titleStateUpdate
-.proc titleStateUpdate
+.export title_state_update
+.proc title_state_update
 
   lda stateControl+titleStateControl::state
   cmp #TITLESTATE_INIT
@@ -121,8 +121,8 @@ stateCommandComplete:
   rts
 .endproc
   
-.export titleStateUpdatePPU
-.proc titleStateUpdatePPU
+.export title_state_update_ppu
+.proc title_state_update_ppu
 
   rts
 .endproc

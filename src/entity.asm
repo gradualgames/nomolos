@@ -37,7 +37,7 @@
   lda nomolosHitboxHeight
   sta b5
     
-  jsr rectInRect16
+  jsr geotests_rect_in_rect_16bit
   rts
 .endproc
 
@@ -68,7 +68,7 @@
   lda #nomolosHeight
   sta b5
 
-  jsr rectInRect16
+  jsr geotests_rect_in_rect_16bit
   rts
 .endproc
 

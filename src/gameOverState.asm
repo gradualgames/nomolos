@@ -13,8 +13,8 @@
 
 .segment "CODE"
 
-.export gameOverUpdate
-.proc gameOverUpdate
+.export game_over_state_update
+.proc game_over_state_update
 
   lda stateControl+gameOverStateControl::state
   cmp #GAMEOVERSTATE_INIT
@@ -136,7 +136,7 @@ gameOverStateDone:
   ;switch to title state
   lda #TITLESTATE_INIT
   sta stateControl+titleStateControl::state
-  switchState titleStateUpdate, titleStateUpdatePPU
+  switchState title_state_update, title_state_update_ppu
   
   jmp stateCommandComplete
   
@@ -145,8 +145,8 @@ stateCommandComplete:
   rts
 .endproc
 
-.export gameOverUpdatePPU
-.proc gameOverUpdatePPU
+.export game_over_state_update_ppu
+.proc game_over_state_update_ppu
 
   dec frameCounter
 

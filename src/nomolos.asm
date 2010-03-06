@@ -51,11 +51,11 @@ reset:
 
   ;lda #GAMEOVERSTATE_INIT
   ;sta stateControl+gameOverStateControl::state
-  ;switchState gameOverUpdate, gameOverUpdatePPU
+  ;switchState game_over_state_update, game_over_state_update_ppu
   
   lda #TITLESTATE_INIT
   sta stateControl+titleStateControl::state
-  switchState titleStateUpdate, titleStateUpdatePPU
+  switchState title_state_update, title_state_update_ppu
 	
   ;load current level
   ;lda #0

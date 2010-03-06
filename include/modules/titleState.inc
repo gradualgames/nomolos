@@ -1,5 +1,5 @@
 .ifndef TITLESTATE_INC
 TITLESTATE_INC = 1
-.import titleStateUpdate, titleStateUpdatePPU
+.import title_state_update, title_state_update_ppu
 
 .endif

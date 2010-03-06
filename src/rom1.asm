@@ -1,7 +1,7 @@
 .segment "ROM1"
 
-.export level2music
-level2music:
+.export level2_music
+level2_music:
 .incbin "data/music1.bin"
 
 .export level2_palette
@@ -11,12 +11,12 @@ level2_palette:
 ;spritesheet1_palette
   .byte $3f,$0d,$38,$07,$3f,$04,$2a,$0d,$3f,$0d,$27,$20,$3f,$21,$21,$21
   
-.export level2MetaTileTable
-level2MetaTileTable = MetaTileTable
-.export level2MetaMetaTileTable
-level2MetaMetaTileTable = MetaMetaTileTable
-.export level2Level
-level2Level = Level
+.export level2_meta_tile_table
+level2_meta_tile_table = MetaTileTable
+.export level2_meta_meta_tile_table
+level2_meta_meta_tile_table = MetaMetaTileTable
+.export level2_level
+level2_level = Level
   
 MetaTileTable:
 MetaTile0:

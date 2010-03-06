@@ -5,6 +5,6 @@ LEVEL2_INC = 1
 .include "level2_patterns_imports.inc"
 .import level2_palette
 
-.import level2MetaTileTable, level2MetaMetaTileTable, level2Level, level2music
+.import level2_meta_tile_table, level2_meta_meta_tile_table, level2_level, level2_music
 
 .endif
