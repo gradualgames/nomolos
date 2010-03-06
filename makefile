@@ -19,7 +19,7 @@ FILES           = nomolos \
                   nomolosLogic \
                   level1 \
                   level2 \
-                  rom2 \
+                  spritesheet1 \
                   chrrom0 \
                   chrrom1 \
                   chrrom2 \
