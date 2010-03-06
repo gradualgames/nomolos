@@ -42,9 +42,9 @@ titleStateInit:
 titleStateRun:
 
   ;clear the sprites
-  jsr clearSprites
+  jsr sprite_clear_all
   ;update sprites
-  jsr updateSprites
+  jsr sprite_update_all
 
   ;load the title nametable and attribute table.
   lda #$20

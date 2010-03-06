@@ -49,7 +49,7 @@ notTouching:
   lda entityScreenY+1
   sta w4+1
   
-  jsr drawMetaSprite16
+  jsr sprite_draw_metasprite_16bit
   
   rts
 

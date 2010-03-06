@@ -128,7 +128,7 @@ loadLevelStateInit:
 
   waitVBlank
   jsr loadPalette
-  jsr clearSprites
+  jsr sprite_clear_all
   jsr entity_init_all
   jsr nomolos_init  
   jsr resetCamera  
@@ -194,7 +194,7 @@ loadLevelStateLoad:
   jsr updateColumn
 
   ;rendering is off in this state, so we update the PPU
-  jsr updateSprites
+  jsr sprite_update_all
   jsr updateColumnPPU
   jsr updateAttributePPU
   jsr updateScrollPPU

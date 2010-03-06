@@ -92,7 +92,7 @@ mouseOnScreen:
   sta w2
   lda #>Mouse
   sta w2+1
-  jsr updateAnimation  
+  jsr sprite_update_animation  
   
   lda entityScreenX
   sta w3
@@ -103,7 +103,7 @@ mouseOnScreen:
   lda entityScreenY+1
   sta w4+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
 mouseOffScreen:
   

@@ -4,11 +4,11 @@
 
 .segment "CODE"
 
-;draws an animation and expects to be passed parameters that drawMetaSprite16 will use also
+;draws an animation and expects to be passed parameters that sprite_draw_metasprite_16bit will use also
 ;w1: location of animation object
 ;w2: location of animation definition  
-.export drawAnimation16
-.proc drawAnimation16
+.export sprite_draw_animation_16bit
+.proc sprite_draw_animation_16bit
   ;get the current frame of this animation object
   ldy #animation::currentFrame
   lda (w1),y
@@ -28,7 +28,7 @@
   lda (w2),y
   sta w0+1
   ;display current frame
-  jsr drawMetaSprite16
+  jsr sprite_draw_metasprite_16bit
   
   rts
 .endproc
@@ -36,8 +36,8 @@
 ;draws an animation
 ;w1: location of animation object
 ;w2: location of animation definition  
-.export drawAnimation
-.proc drawAnimation
+.export sprite_draw_animation_8bit
+.proc sprite_draw_animation_8bit
   ;get the current frame of this animation object
   ldy #animation::currentFrame
   lda (w1),y
@@ -57,7 +57,7 @@
   lda (w2),y
   sta w0+1
   ;display current frame
-  jsr drawMetaSprite
+  jsr sprite_draw_metasprite_8bit
   
   rts
 .endproc
@@ -76,8 +76,8 @@
 ;    .dw frameAddress etc.
 ;    .byte $00
 ;Global Variables:
-.export updateAnimation
-.proc updateAnimation
+.export sprite_update_animation
+.proc sprite_update_animation
   ;get the frame count down of this animation object
   ldy #animation::frameCountDown
   lda (w1),y
@@ -130,8 +130,8 @@ skipFrameUpdate:
 ;b4: temporarily stores x offset
 ;w5: temporarily stores whether the x coordinate (low byte) and y coordinate (high byte)
 ; are onscreen.
-.export drawMetaSprite16
-.proc drawMetaSprite16
+.export sprite_draw_metasprite_16bit
+.proc sprite_draw_metasprite_16bit
 
   ;save regs
   txa
@@ -496,8 +496,8 @@ skipNextSpriteEntry:
 ;Global Variables:
 ;spriteAddress: the current sprite that will be overwritten in the sprite buffer
 ;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
-.export drawMetaSprite
-.proc drawMetaSprite
+.export sprite_draw_metasprite_8bit
+.proc sprite_draw_metasprite_8bit
   ;save regs
   txa
   pha
@@ -584,15 +584,15 @@ spriteNotFlipped:
   rts
 .endproc
 
-.export updateSprites
-.proc updateSprites
+.export sprite_update_all
+.proc sprite_update_all
   lda #>(sprite)
   sta $4014    ; Jam page $200-$2FF into SPR-RAM
   rts
 .endproc
 
-.export clearSprites
-.proc clearSprites
+.export sprite_clear_all
+.proc sprite_clear_all
   lda #$ff
   ldx #$00
 : sta sprite, x

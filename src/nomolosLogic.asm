@@ -1320,7 +1320,7 @@ nomolosAttackSpearBranch:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr updateAnimation  
+  jsr sprite_update_animation  
 
   jmp attackSwitchDone
   
@@ -1332,7 +1332,7 @@ nomolosAttackSwordBranch:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr updateAnimation
+  jsr sprite_update_animation
   
   jmp attackSwitchDone
   
@@ -1345,7 +1345,7 @@ nomolosAttackFlailBranch:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr updateAnimation
+  jsr sprite_update_animation
   
   lda #<nomolosWeaponAnim
   sta w1
@@ -1359,7 +1359,7 @@ nomolosAttackFlailBranch:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr updateAnimation
+  jsr sprite_update_animation
   
 attackSwitchDone:
   rts
@@ -1375,7 +1375,7 @@ skipUpdateNomolosFighting:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
  
-  jsr updateAnimation
+  jsr sprite_update_animation
 skipUpdateNomolosMoving:
 
   rts  
@@ -1416,7 +1416,7 @@ skipUpdateNomolosMoving:
   lda nomolosScreenY+1
   sta w4+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosFlailOverlay
   lda (romDefinitionTableBaseAddress),y
@@ -1425,7 +1425,7 @@ skipUpdateNomolosMoving:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   lda #<nomolosWeaponAnim
   sta w1
@@ -1439,7 +1439,7 @@ skipUpdateNomolosMoving:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   rts
 
@@ -1478,7 +1478,7 @@ skipUpdateNomolosMoving:
   lda nomolosScreenY+1
   sta w4+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosFightOverlay
   lda (romDefinitionTableBaseAddress),y
@@ -1487,7 +1487,7 @@ skipUpdateNomolosMoving:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   rts
 
@@ -1526,7 +1526,7 @@ skipUpdateNomolosMoving:
   lda nomolosScreenY+1
   sta w4+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosFightOverlay
   lda (romDefinitionTableBaseAddress),y
@@ -1535,7 +1535,7 @@ skipUpdateNomolosMoving:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   ;draw the spear at the location of the hit box
   lda nomolosHitboxX
@@ -1554,7 +1554,7 @@ skipUpdateNomolosMoving:
   lda (romDefinitionTableBaseAddress),y
   sta w0+1
   
-  jsr drawMetaSprite16
+  jsr sprite_draw_metasprite_16bit
   
   rts
 
@@ -1594,7 +1594,7 @@ skipUpdateNomolosMoving:
   sta b2
   
   ;draw the slumped armor
-  jsr drawMetaSprite16  
+  jsr sprite_draw_metasprite_16bit  
   
   ldy #ROMDefinitionTableStruct::SlumpedArmorOverlay
   lda (romDefinitionTableBaseAddress),y
@@ -1604,7 +1604,7 @@ skipUpdateNomolosMoving:
   sta w0+1
   
   ;draw the slumped armor overlay
-  jsr drawMetaSprite16
+  jsr sprite_draw_metasprite_16bit
   
   ldy #ROMDefinitionTableStruct::ScaredyCat
   lda (romDefinitionTableBaseAddress),y
@@ -1624,7 +1624,7 @@ skipUpdateNomolosMoving:
   sta w4+1
   
   ;draw the scaredy cat
-  jsr drawMetaSprite16
+  jsr sprite_draw_metasprite_16bit
   
   ldy #ROMDefinitionTableStruct::ScaredyCatOverlay
   lda (romDefinitionTableBaseAddress),y
@@ -1634,7 +1634,7 @@ skipUpdateNomolosMoving:
   sta w0+1
   
   ;draw the scaredy cat overlay
-  jsr drawMetaSprite16
+  jsr sprite_draw_metasprite_16bit
   
 nomolosNotAttackedDying:
   
@@ -1736,7 +1736,7 @@ skipDrawNomolosFighting:
   lda nomolosScreenY+1
   sta w4+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosJumpOverlay
   lda (romDefinitionTableBaseAddress),y
@@ -1745,7 +1745,7 @@ skipDrawNomolosFighting:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   rts
 skipDrawNomolosJumping:
@@ -1775,7 +1775,7 @@ skipDrawNomolosJumping:
   sta w4
   lda nomolosScreenY+1
   sta w4+1
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosWalk
   lda (romDefinitionTableBaseAddress),y
@@ -1784,7 +1784,7 @@ skipDrawNomolosJumping:
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   jmp skipNomolosWalkingLeft
 skipNomolosWalkingRight:
@@ -1805,7 +1805,7 @@ skipNomolosWalkingRight:
   sta w4
   lda nomolosScreenY+1
   sta w4+1
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosWalk
   lda (romDefinitionTableBaseAddress),y
@@ -1813,7 +1813,7 @@ skipNomolosWalkingRight:
   iny
   lda (romDefinitionTableBaseAddress),y
   sta w2+1
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
 skipNomolosWalkingLeft:
   
@@ -1840,7 +1840,7 @@ dontDrawNomolos:
   lda (romDefinitionTableBaseAddress),y
   sta w0+1
 drawNextHeart:
-  jsr drawMetaSprite
+  jsr sprite_draw_metasprite_8bit
   lda b0
   clc
   adc #$08

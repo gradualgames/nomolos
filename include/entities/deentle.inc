@@ -186,7 +186,7 @@ nomolosNotAttacking:
   sta w2+1
   lda #0
   sta b2
-  jsr updateAnimation  
+  jsr sprite_update_animation  
   
   lda entityScreenX
   sta w3
@@ -197,7 +197,7 @@ nomolosNotAttacking:
   lda entityScreenY+1
   sta w4+1
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
 deentleOffscreen:
   rts
   

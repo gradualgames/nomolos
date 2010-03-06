@@ -61,9 +61,9 @@ explosionExplode:
   sta w2
   lda #>Explosion
   sta w2+1
-  jsr updateAnimation  
+  jsr sprite_update_animation  
   
-  jsr drawAnimation16
+  jsr sprite_draw_animation_16bit
   
   lda entityPool+entityRAM::animationObject+1,x
   cmp #2

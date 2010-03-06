@@ -49,9 +49,9 @@ levelInStateRun:
   ;rendering should be off so we can do what we want with the PPU
 
   ;clear the sprites
-  jsr clearSprites
+  jsr sprite_clear_all
   ;update sprites
-  jsr updateSprites
+  jsr sprite_update_all
 
   ;clear the nametable
   lda #$20

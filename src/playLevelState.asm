@@ -34,7 +34,7 @@
   
   jsr readController
   
-  jsr clearSprites
+  jsr sprite_clear_all
   
   jsr nomolos_update
   jsr nomolos_draw
@@ -81,7 +81,7 @@ stateCommandComplete:
 .export playLevelUpdatePPU
 .proc playLevelUpdatePPU
 
-  jsr updateSprites
+  jsr sprite_update_all
   jsr updateColumnPPU
   jsr updateAttributePPU
   jsr updateScrollPPU
