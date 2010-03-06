@@ -18,7 +18,7 @@ GRANK_MAXHORIZSPEED = 3
 .proc grankUpdate
 
   ;load current state
-  lda entityPool+entityRAM::state,x
+  lda entity_instances+entityRAM::state,x
   ;figure out what state to jump to
   cmp #GRANK_INITSTATE
   beq grank_initState
@@ -29,9 +29,9 @@ grank_initState:
 
   ;init code for animation, etc. goes here
   lda #1
-  sta entityPool+entityRAM::animationObject,x
+  sta entity_instances+entityRAM::animationObject,x
   lda #$ff
-  sta entityPool+entityRAM::animationObject+1,x
+  sta entity_instances+entityRAM::animationObject+1,x
   
   ;set x velocity to 0
   lda #0
@@ -44,7 +44,7 @@ grank_initState:
   
   ;switch state to "fly"
   lda #GRANK_FLYSTATE
-  sta entityPool+entityRAM::state,x
+  sta entity_instances+entityRAM::state,x
   rts
 
 grank_flyState:
@@ -55,22 +55,22 @@ grank_flyState:
 .scope addXVelocity
   clc
   lda entityLocals+grankLocals::x_velocity,x
-  adc entityPool+entityRAM::positionXFine,x
-  sta entityPool+entityRAM::positionXFine,x
+  adc entity_instances+entityRAM::positionXFine,x
+  sta entity_instances+entityRAM::positionXFine,x
   lda entityLocals+grankLocals::x_velocity+1,x
   bmi signExtend
-  adc entityPool+entityRAM::positionX,x
-  sta entityPool+entityRAM::positionX,x
+  adc entity_instances+entityRAM::positionX,x
+  sta entity_instances+entityRAM::positionX,x
   lda #0
-  adc entityPool+entityRAM::positionX+1,x
-  sta entityPool+entityRAM::positionX+1,x
+  adc entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entityRAM::positionX+1,x
   jmp signExtendAddDone
 signExtend:
-  adc entityPool+entityRAM::positionX,x
-  sta entityPool+entityRAM::positionX,x
+  adc entity_instances+entityRAM::positionX,x
+  sta entity_instances+entityRAM::positionX,x
   lda #$ff
-  adc entityPool+entityRAM::positionX+1,x
-  sta entityPool+entityRAM::positionX+1,x
+  adc entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entityRAM::positionX+1,x
 signExtendAddDone:
 .endscope
 
@@ -78,22 +78,22 @@ signExtendAddDone:
 .scope addYVelocity
   clc
   lda entityLocals+grankLocals::y_velocity,x
-  adc entityPool+entityRAM::positionYFine,x
-  sta entityPool+entityRAM::positionYFine,x
+  adc entity_instances+entityRAM::positionYFine,x
+  sta entity_instances+entityRAM::positionYFine,x
   lda entityLocals+grankLocals::y_velocity+1,x
   bmi signExtend
-  adc entityPool+entityRAM::positionY,x
-  sta entityPool+entityRAM::positionY,x
+  adc entity_instances+entityRAM::positionY,x
+  sta entity_instances+entityRAM::positionY,x
   lda #0
-  adc entityPool+entityRAM::positionY+1,x
-  sta entityPool+entityRAM::positionY+1,x
+  adc entity_instances+entityRAM::positionY+1,x
+  sta entity_instances+entityRAM::positionY+1,x
   jmp signExtendAddDone
 signExtend:
-  adc entityPool+entityRAM::positionY,x
-  sta entityPool+entityRAM::positionY,x
+  adc entity_instances+entityRAM::positionY,x
+  sta entity_instances+entityRAM::positionY,x
   lda #$ff
-  adc entityPool+entityRAM::positionY+1,x
-  sta entityPool+entityRAM::positionY+1,x
+  adc entity_instances+entityRAM::positionY+1,x
+  sta entity_instances+entityRAM::positionY+1,x
 signExtendAddDone:
 .endscope
 
@@ -274,9 +274,9 @@ grankOnScreen:
 nomolosNotAttacking:
 
   ;load address of animation object into w1
-  lda #<(entityPool+entityRAM::animationObject)
+  lda #<(entity_instances+entityRAM::animationObject)
   sta w1
-  lda #>(entityPool+entityRAM::animationObject)
+  lda #>(entity_instances+entityRAM::animationObject)
   sta w1+1
   
   ;get the index into a
@@ -315,21 +315,21 @@ killGrank:
 
   ;make it dead
   lda #0
-  sta entityPool+entityRAM::alive,x
+  sta entity_instances+entityRAM::alive,x
   
   ;spawn an explosion entity
   lda #ExplosionIndex
   sta b0
 
   ;get out low byte of positionX
-  lda entityPool+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entityPool+entityRAM::positionX+1,x
+  lda entity_instances+entityRAM::positionX+1,x
   sta w0+1
   
   ;get out positionY
-  lda entityPool+entityRAM::positionY,x
+  lda entity_instances+entityRAM::positionY,x
   sta b1
   
   jsr entity_spawn

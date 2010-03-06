@@ -7,7 +7,7 @@ EXPLOSION_EXPLODESTATE = 1
 .export explosionUpdate
 explosionUpdate:
 
-  lda entityPool+entityRAM::state,x
+  lda entity_instances+entityRAM::state,x
   cmp #EXPLOSION_INITSTATE
   beq explosionInit
   cmp #EXPLOSION_EXPLODESTATE
@@ -17,13 +17,13 @@ explosionInit:
 
   ;reset the explosion animation object
   lda #$01
-  sta entityPool+entityRAM::animationObject,x
+  sta entity_instances+entityRAM::animationObject,x
   lda #$ff
-  sta entityPool+entityRAM::animationObject+1,x
+  sta entity_instances+entityRAM::animationObject+1,x
   
   ;set state to explode
   lda #EXPLOSION_EXPLODESTATE
-  sta entityPool+entityRAM::state,x
+  sta entity_instances+entityRAM::state,x
   
   rts
   
@@ -42,9 +42,9 @@ explosionExplode:
   sta w4+1
   
   ;load address of animation object into w1
-  lda #<(entityPool+entityRAM::animationObject)
+  lda #<(entity_instances+entityRAM::animationObject)
   sta w1
-  lda #>(entityPool+entityRAM::animationObject)
+  lda #>(entity_instances+entityRAM::animationObject)
   sta w1+1
   
   ;get the index into a
@@ -65,10 +65,10 @@ explosionExplode:
   
   jsr sprite_draw_animation_16bit
   
-  lda entityPool+entityRAM::animationObject+1,x
+  lda entity_instances+entityRAM::animationObject+1,x
   cmp #2
   bne @skipFrameCounterTest
-  lda entityPool+entityRAM::animationObject,x
+  lda entity_instances+entityRAM::animationObject,x
   cmp #1
   beq explosionDie
 @skipFrameCounterTest:
@@ -78,7 +78,7 @@ explosionExplode:
 explosionDie:
 
   lda #0
-  sta entityPool+entityRAM::alive,x
+  sta entity_instances+entityRAM::alive,x
 
   rts
   

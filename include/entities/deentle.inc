@@ -9,7 +9,7 @@ DEENTLE_MOVELEFTSTATE = 2
 deentleUpdate:
 
   ;load current state
-  lda entityPool+entityRAM::state,x
+  lda entity_instances+entityRAM::state,x
   ;figure out what state to jump to
   cmp #DEENTLE_INITSTATE
   beq deentle_initState
@@ -22,33 +22,33 @@ deentle_initState:
 
   ;init code for animation, etc. goes here
   lda #1
-  sta entityPool+entityRAM::animationObject,x
+  sta entity_instances+entityRAM::animationObject,x
   lda #$ff
-  sta entityPool+entityRAM::animationObject+1,x
+  sta entity_instances+entityRAM::animationObject+1,x
   
   ;switch state to "run"
   lda #DEENTLE_MOVELEFTSTATE
-  sta entityPool+entityRAM::state,x
+  sta entity_instances+entityRAM::state,x
   rts
 
 deentle_moveRightState:
 
   ;add 1 to PositionX
   clc
-  lda entityPool+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX,x
   adc #1
-  sta entityPool+entityRAM::positionX,x
-  lda entityPool+entityRAM::positionX+1,x
+  sta entity_instances+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX+1,x
   adc #0
-  sta entityPool+entityRAM::positionX+1,x
+  sta entity_instances+entityRAM::positionX+1,x
   
   ;do PositionX - spawnPositionX
   sec
-  lda entityPool+entityRAM::positionX,x
-  sbc entityPool+entityRAM::spawnPositionX,x
+  lda entity_instances+entityRAM::positionX,x
+  sbc entity_instances+entityRAM::spawnPositionX,x
   sta w0
-  lda entityPool+entityRAM::positionX+1,x
-  sbc entityPool+entityRAM::spawnPositionX+1,x
+  lda entity_instances+entityRAM::positionX+1,x
+  sbc entity_instances+entityRAM::spawnPositionX+1,x
   sta w0+1
   
   ;difference is in w0, subtract our desired delta distance from it
@@ -62,7 +62,7 @@ deentle_moveRightState:
   bne dontSwitchToLeftState
   
   lda #DEENTLE_MOVELEFTSTATE
-  sta entityPool+entityRAM::state,x
+  sta entity_instances+entityRAM::state,x
   
 dontSwitchToLeftState:
 
@@ -74,20 +74,20 @@ deentle_moveLeftState:
 
   ;sub 1 from PositionX
   sec
-  lda entityPool+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX,x
   sbc #1
-  sta entityPool+entityRAM::positionX,x
-  lda entityPool+entityRAM::positionX+1,x
+  sta entity_instances+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX+1,x
   sbc #0
-  sta entityPool+entityRAM::positionX+1,x
+  sta entity_instances+entityRAM::positionX+1,x
   
   ;do spawnPositionX - PositionX
   sec
-  lda entityPool+entityRAM::spawnPositionX,x
-  sbc entityPool+entityRAM::positionX,x 
+  lda entity_instances+entityRAM::spawnPositionX,x
+  sbc entity_instances+entityRAM::positionX,x 
   sta w0
-  lda entityPool+entityRAM::spawnPositionX+1,x
-  sbc entityPool+entityRAM::positionX+1,x 
+  lda entity_instances+entityRAM::spawnPositionX+1,x
+  sbc entity_instances+entityRAM::positionX+1,x 
   sta w0+1
   
   ;difference is in w0, subtract our desired delta distance from it
@@ -102,7 +102,7 @@ deentle_moveLeftState:
   bne dontSwitchToRightState
   
   lda #DEENTLE_MOVERIGHTSTATE
-  sta entityPool+entityRAM::state,x
+  sta entity_instances+entityRAM::state,x
   
 dontSwitchToRightState:
 
@@ -164,9 +164,9 @@ deentleOnScreen:
 nomolosNotAttacking:
 
   ;load address of animation object into w1
-  lda #<(entityPool+entityRAM::animationObject)
+  lda #<(entity_instances+entityRAM::animationObject)
   sta w1
-  lda #>(entityPool+entityRAM::animationObject)
+  lda #>(entity_instances+entityRAM::animationObject)
   sta w1+1
   
   ;get the index into a
@@ -205,21 +205,21 @@ killDeentle:
 
   ;make it dead
   lda #0
-  sta entityPool+entityRAM::alive,x
+  sta entity_instances+entityRAM::alive,x
   
   ;spawn an explosion entity
   lda #ExplosionIndex
   sta b0
 
   ;get out low byte of positionX
-  lda entityPool+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entityPool+entityRAM::positionX+1,x
+  lda entity_instances+entityRAM::positionX+1,x
   sta w0+1
   
   ;get out positionY
-  lda entityPool+entityRAM::positionY,x
+  lda entity_instances+entityRAM::positionY,x
   sta b1
   
   jsr entity_spawn

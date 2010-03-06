@@ -75,16 +75,16 @@
 .export entity_compute_screen_coordinates
 .proc entity_compute_screen_coordinates
   ;get out low byte of positionX
-  lda entityPool+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entityPool+entityRAM::positionX+1,x
+  lda entity_instances+entityRAM::positionX+1,x
   sta w0+1
   
   ;get out positionY
-  lda entityPool+entityRAM::positionY,x
+  lda entity_instances+entityRAM::positionY,x
   sta w1
-  lda entityPool+entityRAM::positionY+1,x
+  lda entity_instances+entityRAM::positionY+1,x
   sta w1+1
   jsr cameraToScreenCoords
 
@@ -125,12 +125,12 @@ nextEntity:
   asl
   asl
   tax
-  lda entityPool+entityRAM::alive,x
+  lda entity_instances+entityRAM::alive,x
   beq skipUpdate
   ;if we arrive here, x points to a live entity
 
   ;load the entity index
-  lda entityPool+entityRAM::index,x
+  lda entity_instances+entityRAM::index,x
   ;multiply the entity index by 8
   asl
   asl
@@ -183,14 +183,14 @@ skipUpdate:
   asl
   tay
   lda #$00
-  sta entityPool+entityRAM::alive, y
+  sta entity_instances+entityRAM::alive, y
   dex
   bpl :-
   rts
 .endproc
   
 ;This routine spawns a single entity. It works by first searching
-;for the first "dead" entity in the entityPool. When it finds this
+;for the first "dead" entity in the entity_instances. When it finds this
 ;dead entity, it fills it according to the entityRAM struct.
 
 ;the following parameters are expected:
@@ -216,7 +216,7 @@ skipUpdate:
   asl
   asl
   tax
-  lda entityPool+entityRAM::alive,x
+  lda entity_instances+entityRAM::alive,x
   beq :+  ;found a dead entity, jump out with current value of x
   dey
   bpl :-
@@ -225,11 +225,11 @@ skipUpdate:
   
   ;make the entity alive. ALIVE! MUA HUAH HAH HAH
   lda #$01
-  sta entityPool+entityRAM::alive,x
+  sta entity_instances+entityRAM::alive,x
   
   ;store the kind of entity this is
   lda b0
-  sta entityPool+entityRAM::index,x
+  sta entity_instances+entityRAM::index,x
   
   ;now that we know the kind of entity this is, we must look up
   ;the entity and pull out its initialXOffset and initialYOffset,
@@ -261,9 +261,9 @@ skipUpdate:
 
   ;now w0 should have the spawnPositionX value
   lda w0
-  sta entityPool+entityRAM::spawnPositionX,x
+  sta entity_instances+entityRAM::spawnPositionX,x
   lda w0+1
-  sta entityPool+entityRAM::spawnPositionX+1,x
+  sta entity_instances+entityRAM::spawnPositionX+1,x
   
   ;load initial y offset
   iny
@@ -279,25 +279,25 @@ skipUpdate:
   
   ;now b1 should have the spawnPositionY value
   lda b1
-  sta entityPool+entityRAM::spawnPositionY,x
+  sta entity_instances+entityRAM::spawnPositionY,x
   
   ;load positionXFine
   lda #$00
-  sta entityPool+entityRAM::positionXFine,x
+  sta entity_instances+entityRAM::positionXFine,x
   ;load positionX
   lda w0
-  sta entityPool+entityRAM::positionX,x
+  sta entity_instances+entityRAM::positionX,x
   lda w0+1
-  sta entityPool+entityRAM::positionX+1,x
+  sta entity_instances+entityRAM::positionX+1,x
   
   ;load positionYFine
   lda #$00
-  sta entityPool+entityRAM::positionYFine,x
+  sta entity_instances+entityRAM::positionYFine,x
   ;load positionY
   lda b1
-  sta entityPool+entityRAM::positionY,x
+  sta entity_instances+entityRAM::positionY,x
   lda #0
-  sta entityPool+entityRAM::positionY+1,x
+  sta entity_instances+entityRAM::positionY+1,x
   
   ;point to the initial state
   iny
@@ -305,7 +305,7 @@ skipUpdate:
   lda (entityDefinitionTableBaseAddress),y  
   ;point to state variable in entity entry
   ;store the initial state there
-  sta entityPool+entityRAM::state,x
+  sta entity_instances+entityRAM::state,x
   
   ;at this point the entity should be fully spawned and ready
   ;to have its update routine called.

@@ -30,8 +30,8 @@ stack:  .res 256
 .export sprite
 sprite: .res 256
 
-.export entityPool
-entityPool: .res 256
+.export entity_instances
+entity_instances: .res 256
 .export entityLocals
 entityLocals: .res 256
 

@@ -45,7 +45,7 @@ notTouching:
 
 exitDie:
   lda #0
-  sta entityPool+entityRAM::alive,x
+  sta entity_instances+entityRAM::alive,x
   rts
 
 .endif

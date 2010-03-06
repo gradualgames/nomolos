@@ -7,7 +7,7 @@ MOUSE_SITTHERESTATE = 1
 .export mouseUpdate
 mouseUpdate:
 
-  lda entityPool+entityRAM::state,x
+  lda entity_instances+entityRAM::state,x
   cmp #MOUSE_INITSTATE
   beq mouseInit
   cmp #MOUSE_SITTHERESTATE
@@ -17,12 +17,12 @@ mouseInit:
 
   ;reset the explosion animation object
   lda #$01
-  sta entityPool+entityRAM::animationObject,x
+  sta entity_instances+entityRAM::animationObject,x
   lda #$ff
-  sta entityPool+entityRAM::animationObject+1,x
+  sta entity_instances+entityRAM::animationObject+1,x
   
   lda #MOUSE_SITTHERESTATE
-  sta entityPool+entityRAM::state,x
+  sta entity_instances+entityRAM::state,x
 
   rts
   
@@ -73,9 +73,9 @@ mouseOnScreen:
   sta b2
   
   ;load address of animation object into w1
-  lda #<(entityPool+entityRAM::animationObject)
+  lda #<(entity_instances+entityRAM::animationObject)
   sta w1
-  lda #>(entityPool+entityRAM::animationObject)
+  lda #>(entity_instances+entityRAM::animationObject)
   sta w1+1
   
   ;get the index into a
@@ -112,7 +112,7 @@ mouseOffScreen:
 mouseDie:
 
   lda #0
-  sta entityPool+entityRAM::alive,x
+  sta entity_instances+entityRAM::alive,x
 
   rts
   
