@@ -276,10 +276,10 @@ beedieOnScreen:
   
   bne :+
   
-  jsr hurtNomolos
+  jsr nomolos_hurt
   
 :
-  jsr nomolosDeadly
+  jsr nomolos_is_deadly
   beq nomolosNotAttacking
   
   ;load beedie width and height

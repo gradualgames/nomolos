@@ -52,7 +52,7 @@ mouseOnScreen:
   bne @notTouching
   
   lda #1
-  jsr addNomolosHealth
+  jsr nomolos_add_health
   
   ;playSound getHealthSound
   lda #<getHealthSound

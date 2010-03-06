@@ -137,10 +137,10 @@ deentleOnScreen:
   
   bne :+
   
-  jsr hurtNomolos
+  jsr nomolos_hurt
   
 :
-  jsr nomolosDeadly
+  jsr nomolos_is_deadly
   beq nomolosNotAttacking
   
   ;load deentle width and height

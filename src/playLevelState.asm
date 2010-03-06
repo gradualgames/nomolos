@@ -36,9 +36,9 @@
   
   jsr clearSprites
   
-  jsr updateNomolos
-  jsr drawNomolos
-  jsr drawNomolosHearts
+  jsr nomolos_update
+  jsr nomolos_draw
+  jsr nomolos_draw_hearts
   jsr updateEntities
   
   jsr decodeMap

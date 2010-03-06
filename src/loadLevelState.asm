@@ -130,7 +130,7 @@ loadLevelStateInit:
   jsr loadPalette
   jsr clearSprites
   jsr initEntities
-  jsr initNomolos  
+  jsr nomolos_init  
   jsr resetCamera  
 
   ;turn on inc32

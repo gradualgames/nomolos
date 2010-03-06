@@ -29,7 +29,7 @@ skipJmpOneUpDie:
 skipJmpNotTouching:
   
   lda #1
-  jsr addNomolosLife
+  jsr nomolos_add_life
     
   lda #<getItemSound
   sta w0

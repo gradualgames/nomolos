@@ -13,8 +13,8 @@
 
 .segment "CODE"
 
-.export initNomolos
-.proc initNomolos
+.export nomolos_init
+.proc nomolos_init
 
   resetAnim nomolosAnim
   resetAnim nomolosWeaponAnim
@@ -65,8 +65,8 @@
 
 ;adds a life to Nomolos. The accumulator is assumed to contain the
 ;number of lives to add.
-.export addNomolosLife
-.proc addNomolosLife
+.export nomolos_add_life
+.proc nomolos_add_life
 
   clc
   adc nomolosLives
@@ -83,8 +83,8 @@
 
 ;adds health to Nomolos. The accumulator is assumed to contain the
 ;number of hearts to add on to his health.
-.export addNomolosHealth
-.proc addNomolosHealth
+.export nomolos_add_health
+.proc nomolos_add_health
 
   clc
   adc nomolosHealth
@@ -103,8 +103,8 @@
 
 ;hurts Nomolos. It makes him bounce in the air a little bit, lose a heart,
 ;and become invincible temporarily.
-.export hurtNomolos
-.proc hurtNomolos
+.export nomolos_hurt
+.proc nomolos_hurt
 
   ;if blinking is on, skip this whole routine
   lda nomolosState
@@ -119,7 +119,7 @@
   dec nomolosHealth
   bne nomolosNotDead
   ;on the instant that nomolos dies, we want him to die. 
-  jsr nomolosAttackedDie
+  jsr nomolos_die_attack
   
 nomolosNotDead:
 skipDecreaseHealth:
@@ -153,8 +153,8 @@ skipHurt:
 .endproc
 
 ;sets the nomolos dying state bit, and the sub state bit that represents "falling"
-.export nomolosFallDie
-.proc nomolosFallDie
+.export nomolos_die_fall
+.proc nomolos_die_fall
 
   ;make certain we're not already dying...
   lda nomolosState
@@ -197,8 +197,8 @@ alreadyDying:
 .endproc
   
 ;sets the nomolos dying state bit and sets coordinates for the scaredy cat graphic.
-.export nomolosAttackedDie
-.proc nomolosAttackedDie
+.export nomolos_die_attack
+.proc nomolos_die_attack
 
   lda currentBank
   pha
@@ -252,7 +252,7 @@ alreadyDying:
 
 .endproc
   
-.proc nomolosSpearAttack
+.proc nomolos_attack_spear
 
   ;play an attack sound
   ldy #ROMDefinitionTableStruct::attackSound
@@ -325,8 +325,8 @@ skipNomolosFacingRight:
 .endproc
   
 ;Causes the hit box to be activated for a few frames.
-.export nomolosAttack
-.proc nomolosAttack
+.export nomolos_attack_sword
+.proc nomolos_attack_sword
 
   ;if attacking is on, skip this whole routine
   lda nomolosState
@@ -345,7 +345,7 @@ skipNomolosFacingRight:
   
 nomolosAttackSpearBranch:
 
-  jsr nomolosSpearAttack
+  jsr nomolos_attack_spear
 
   jmp attackSwitchDone
   
@@ -408,8 +408,8 @@ skipAttack:
 ;by Nomolos' hit box.
 ;zero flag set = nomolos is not deadly
 ;zero flag clear = nomolos is deadly.
-.export nomolosDeadly
-.proc nomolosDeadly
+.export nomolos_is_deadly
+.proc nomolos_is_deadly
 
   lda nomolosState
   and #nomolosAttackTestAND
@@ -465,8 +465,8 @@ nomolosNotAttacking:
 
 .endproc
   
-.export loadHurtResult
-.proc loadHurtResult
+.export nomolos_load_hurt_result
+.proc nomolos_load_hurt_result
 
   ;load "hurt" result of map collision test
   lda b0
@@ -479,7 +479,7 @@ nomolosNotAttacking:
 
 .endproc
   
-.proc updateSwordAttack
+.proc nomolos_update_attack_sword
 
   lda #$10
   sta nomolosHitboxWidth
@@ -537,8 +537,8 @@ skipAttackUpdate:
 
 .endproc
   
-.export updateFlailAttack
-.proc updateFlailAttack
+.export nomolos_update_attack_flail
+.proc nomolos_update_attack_flail
 
   lda #$10
   sta nomolosHitboxWidth
@@ -596,7 +596,7 @@ skipAttackUpdate:
 
 .endproc
   
-.proc updateSpearAttack
+.proc nomolos_update_attack_spear
 
   ;move the spear in the direction nomolos is facing
   lda nomolosState
@@ -641,7 +641,7 @@ skipAttackUpdate:
 
 .endproc
   
-.proc testBelowCollision
+.proc nomolos_test_collision_below
 
   ;Is there a collision at bottom left of Nomolos?
   lda nomolosX+1
@@ -656,7 +656,7 @@ skipAttackUpdate:
   adc #0
   sta w1+1
   jsr testMapCollision
-  jsr loadHurtResult
+  jsr nomolos_load_hurt_result
   lda b1
   bne yesBelowCollision
 
@@ -676,7 +676,7 @@ skipAttackUpdate:
   adc #0
   sta w1+1
   jsr testMapCollision
-  jsr loadHurtResult
+  jsr nomolos_load_hurt_result
   lda b1
   bne yesBelowCollision
   
@@ -737,7 +737,7 @@ skipButtonATest:
 
 .endproc
   
-.proc testAboveCollision
+.proc nomolos_test_collision_above
 
   ;Is there a collision at top left of Nomolos?
   lda nomolosX+1
@@ -749,7 +749,7 @@ skipButtonATest:
   lda nomolosY+2
   sta w1+1
   jsr testMapCollision
-  jsr loadHurtResult
+  jsr nomolos_load_hurt_result
   lda b1
   bne yesAboveCollision
   
@@ -766,7 +766,7 @@ skipButtonATest:
   lda nomolosY+2
   sta w1+1
   jsr testMapCollision
-  jsr loadHurtResult
+  jsr nomolos_load_hurt_result
   lda b1
   bne yesAboveCollision
   
@@ -818,8 +818,8 @@ yesAboveCollision:
   rts
 .endproc
   
-.export updateNomolos
-.proc updateNomolos
+.export nomolos_update
+.proc nomolos_update
 
   ;************************************************************
   ;Load NomolosY coordinate and test to see if he is off screen
@@ -828,7 +828,7 @@ yesAboveCollision:
   lda nomolosY+2
   cmp #1
   bne @nomolosNotDead
-  jsr nomolosFallDie
+  jsr nomolos_die_fall
 @nomolosNotDead:
   
   ;************************************************************
@@ -898,7 +898,7 @@ nomolosNotDying:
   lda nomolosState
   and #nomolosHurtByMapOffAND
   sta nomolosState
-  jsr hurtNomolos
+  jsr nomolos_hurt
 @notHurtByMap:
 
   ;************************************************************
@@ -934,19 +934,19 @@ skipBlinkReset:
   
 nomolosAttackSpearBranch:
 
-  jsr updateSpearAttack
+  jsr nomolos_update_attack_spear
   
   jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
 
-  jsr updateSwordAttack
+  jsr nomolos_update_attack_sword
 
   jmp attackSwitchDone
   
 nomolosAttackFlailBranch:
 
-  jsr updateFlailAttack
+  jsr nomolos_update_attack_flail
   
 attackSwitchDone:
 skipAttack:
@@ -957,7 +957,7 @@ skipAttack:
   ;test for transition from off to on
   cmp #%00000001
   bne :+
-  jsr nomolosAttack
+  jsr nomolos_attack_sword
 :
 
   ;************************************************************
@@ -1017,11 +1017,11 @@ noSignExtend:
   lda nomolosYSpeed+1
   bmi ySpeedNegative
 ySpeedPositive:
-  jsr testBelowCollision
+  jsr nomolos_test_collision_below
   
   jmp ySpeedTestDone
 ySpeedNegative:
-  jsr testAboveCollision
+  jsr nomolos_test_collision_above
   
 dontStopRising:
 
@@ -1081,7 +1081,7 @@ skipJmpNotLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
-  jsr loadHurtResult
+  jsr nomolos_load_hurt_result
   lda b1
   bne notLeft
   
@@ -1100,7 +1100,7 @@ skipJmpNotLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
-  jsr loadHurtResult
+  jsr nomolos_load_hurt_result
   lda b1
   bne notLeft
 
@@ -1119,7 +1119,7 @@ skipJmpNotLeft:
   adc #0
   sta w1+1
   jsr testMapCollision
-  jsr loadHurtResult
+  jsr nomolos_load_hurt_result
   lda b1
   bne notLeft
   
@@ -1139,7 +1139,7 @@ skipJmpNotLeft:
   sbc #0
   sta nomolosX+2
   
-  ;jsr updateNomolosAnimation
+  ;jsr nomolos_update_animation
 notLeft:
   
   ;is there an on to off transition on the right button?
@@ -1188,7 +1188,7 @@ skipJmpNotRight:
   adc #0
   sta w1+1
   jsr testMapCollision
-  jsr loadHurtResult
+  jsr nomolos_load_hurt_result
   lda b1
   bne notRight
   
@@ -1208,7 +1208,7 @@ skipJmpNotRight:
   adc #0
   sta w1+1
   jsr testMapCollision
-  jsr loadHurtResult
+  jsr nomolos_load_hurt_result
   lda b1
   bne notRight
   
@@ -1227,7 +1227,7 @@ skipJmpNotRight:
   adc #0
   sta w1+1
   jsr testMapCollision
-  jsr loadHurtResult
+  jsr nomolos_load_hurt_result
   lda b1
   bne notRight
   
@@ -1279,13 +1279,13 @@ notRight:
   ;************************************************************
   ;Update Nomolos' animation object.
   ;************************************************************
-  jsr updateNomolosAnimation
+  jsr nomolos_update_animation
   
   rts
 .endproc
   
-.export updateNomolosAnimation
-.proc updateNomolosAnimation
+.export nomolos_update_animation
+.proc nomolos_update_animation
 
   ;switch to the actor and entity bank
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
@@ -1382,8 +1382,8 @@ skipUpdateNomolosMoving:
   
 .endproc
   
-.export drawAttackFlail
-.proc drawAttackFlail
+.export nomolos_draw_attack_flail
+.proc nomolos_draw_attack_flail
 
   ;draw the flail animation and flail ball animation here
   lda #<nomolosAnim
@@ -1445,8 +1445,8 @@ skipUpdateNomolosMoving:
 
 .endproc
   
-.export drawAttackSword
-.proc drawAttackSword
+.export nomolos_draw_attack_sword
+.proc nomolos_draw_attack_sword
 
   lda #<nomolosAnim
   sta w1
@@ -1493,8 +1493,8 @@ skipUpdateNomolosMoving:
 
 .endproc
 
-.export drawAttackSpear
-.proc drawAttackSpear
+.export nomolos_draw_attack_spear
+.proc nomolos_draw_attack_spear
 
   lda #<nomolosAnim
   sta w1
@@ -1561,8 +1561,8 @@ skipUpdateNomolosMoving:
 .endproc
   
 ;draws nomolos based on his current state.
-.export drawNomolos
-.proc drawNomolos
+.export nomolos_draw
+.proc nomolos_draw
 
   lda nomolosState
   and #nomolosDyingTestAND
@@ -1673,19 +1673,19 @@ skipBlinkCheck:
   
 nomolosAttackSpearBranch:
 
-  jsr drawAttackSpear
+  jsr nomolos_draw_attack_spear
   
   jmp attackSwitchDone
   
 nomolosAttackFlailBranch:
 
-  jsr drawAttackFlail
+  jsr nomolos_draw_attack_flail
 
   jmp attackSwitchDone
   
 nomolosAttackSwordBranch:
 
-  jsr drawAttackSword
+  jsr nomolos_draw_attack_sword
   
   jmp attackSwitchDone
   
@@ -1822,8 +1822,8 @@ dontDrawNomolos:
   rts  
 .endproc
   
-.export drawNomolosHearts
-.proc drawNomolosHearts
+.export nomolos_draw_hearts
+.proc nomolos_draw_hearts
   
   ldx nomolosHealth
   beq skipDrawHearts
