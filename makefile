@@ -17,8 +17,8 @@ OUTPUT_NAME     = nomolos
 NES_FILE        = $(OUTPUT_NAME).nes
 FILES           = nomolos \
                   nomolosLogic \
-                  rom0 \
-                  rom1 \
+                  level1 \
+                  level2 \
                   rom2 \
                   chrrom0 \
                   chrrom1 \
