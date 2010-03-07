@@ -94,7 +94,7 @@ nomolosVerticalSpeedMax = $0a
 nomolosWidth = $10
 nomolosHeight = $20
 
-startingLevel = $01
+startingLevel = $00
 maxHealth = 3
 maxLives = 20
 
