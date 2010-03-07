@@ -9,9 +9,9 @@ ONEUP_INC = 1
   ;test x coordinate for whether the item should die.
   sec
   lda #$f0
-  sbc entityScreenX
+  sbc entity_screen_x
   lda #$ff
-  sbc entityScreenX+1
+  sbc entity_screen_x+1
   bmi skipJmpOneUpDie
 
   jmp oneUpDie
@@ -46,13 +46,13 @@ notTouching:
   lda #>OneUp0
   sta w0+1
   
-  lda entityScreenX
+  lda entity_screen_x
   sta w3
-  lda entityScreenX+1
+  lda entity_screen_x+1
   sta w3+1
-  lda entityScreenY
+  lda entity_screen_y
   sta w4
-  lda entityScreenY+1
+  lda entity_screen_y+1
   sta w4+1
   
   jsr sprite_draw_metasprite_16bit

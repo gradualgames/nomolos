@@ -16,48 +16,48 @@
 .export nomolos_init
 .proc nomolos_init
 
-  resetAnim nomolosAnim
-  resetAnim nomolosWeaponAnim
+  resetAnim nomolos_animation
+  resetAnim nomolos_weapon_animation
 
   lda #0
   and #nomolosWalkingRightAND  
-  sta nomolosState
+  sta nomolos_state_primary
   
   lda #0
-  sta nomolosXSpeed
+  sta nomolos_x_velocity
   lda #2
-  sta nomolosXSpeed+1
+  sta nomolos_x_velocity+1
   lda #$00
-  sta nomolosYSpeed
+  sta nomolos_y_velocity
   lda #$00
-  sta nomolosYSpeed+1  
+  sta nomolos_y_velocity+1  
   
   lda #0
-  sta nomolosX
+  sta nomolos_map_x
   lda #80
-  sta nomolosX+1
+  sta nomolos_map_x+1
   lda #0
-  sta nomolosX+2
+  sta nomolos_map_x+2
   
   lda #0
-  sta nomolosY
+  sta nomolos_map_y
   lda #90
-  sta nomolosY+1
+  sta nomolos_map_y+1
   lda #0
-  sta nomolosY+2
+  sta nomolos_map_y+2
   
   lda #3
-  sta nomolosHealth
+  sta nomolos_status_health
   
   lda #0
-  sta nomolosHitboxCounter
+  sta nomolos_counter_attack_rect
   
   lda #0
-  sta nomolosHitboxX
-  sta nomolosHitboxX+1
+  sta nomolos_attack_rect_x
+  sta nomolos_attack_rect_x+1
   lda #0
-  sta nomolosHitboxY
-  sta nomolosHitboxY+1
+  sta nomolos_attack_rect_y
+  sta nomolos_attack_rect_y+1
 
   rts
   
@@ -69,13 +69,13 @@
 .proc nomolos_add_life
 
   clc
-  adc nomolosLives
-  sta nomolosLives
+  adc nomolos_status_lives
+  sta nomolos_status_lives
   
   cmp #maxLives  
   bmi :+
   lda #maxLives
-  sta nomolosLives
+  sta nomolos_status_lives
 :
   rts
 
@@ -87,14 +87,14 @@
 .proc nomolos_add_health
 
   clc
-  adc nomolosHealth
-  sta nomolosHealth
+  adc nomolos_status_health
+  sta nomolos_status_health
   
-  cmp #maxHealth  ;if result is negative, that means nomolosHealth - maxHealth was negative, which means we're less than maxHealth
+  cmp #maxHealth  ;if result is negative, that means nomolos_status_health - maxHealth was negative, which means we're less than maxHealth
                   ;negative is less, positive is more
   bmi :+
   lda #maxHealth
-  sta nomolosHealth
+  sta nomolos_status_health
 :
 
   rts
@@ -107,16 +107,16 @@
 .proc nomolos_hurt
 
   ;if blinking is on, skip this whole routine
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosBlinkingTestAND
   lsr
   lsr
   bne skipHurt
 
   ;decrease nomolos' health.
-  lda nomolosHealth
+  lda nomolos_status_health
   beq skipDecreaseHealth
-  dec nomolosHealth
+  dec nomolos_status_health
   bne nomolosNotDead
   ;on the instant that nomolos dies, we want him to die. 
   jsr nomolos_die_attack
@@ -126,23 +126,23 @@ skipDecreaseHealth:
   
   ;make nomolos bounce a little bit.
   lda #nomolosHurtBounceLo
-  sta nomolosYSpeed
+  sta nomolos_y_velocity
   lda #nomolosHurtBounceHi
-  sta nomolosYSpeed+1
+  sta nomolos_y_velocity+1
   
   ;turn on blinking
   lda #$60
-  sta nomolosBlinkCounter
-  lda nomolosState
+  sta nomolos_counter_temp_invincibility_blink
+  lda nomolos_state_primary
   ora #nomolosBlinkingOnOR
-  sta nomolosState  
+  sta nomolos_state_primary  
   
   ;play a hit sound
   ldy #ROMDefinitionTableStruct::hitSound
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
   jsr sound_load
   
@@ -157,31 +157,31 @@ skipHurt:
 .proc nomolos_die_fall
 
   ;make certain we're not already dying...
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosDyingTestAND
   bne alreadyDying
 
   ;lose special weapon if any
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosAttackSetMask
-  sta nomolosSubState
+  sta nomolos_state_secondary
   
   ;decrease Nomolos' lives
-  dec nomolosLives
+  dec nomolos_status_lives
   
   ;make nomolos die.
-  lda nomolosState
+  lda nomolos_state_primary
   ora #nomolosDyingOnOR
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;make sure all following logic knows that this is death by falling.
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosFellDyingAND
-  sta nomolosSubState
+  sta nomolos_state_secondary
   
   ;store a frame counter value so we can pause a bit before transitioning to level out
   lda #200
-  sta frameCounter
+  sta frame_counter
   
   ;tell famitracker to play the die sound
 .if .defined(MUSIC_ENABLE)
@@ -200,44 +200,44 @@ alreadyDying:
 .export nomolos_die_attack
 .proc nomolos_die_attack
 
-  lda currentBank
+  lda mapper_bank_current
   pha
 
   ;decrease Nomolos' lives
-  dec nomolosLives
+  dec nomolos_status_lives
 
   ;lose special weapon if any
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosAttackSetMask
-  sta nomolosSubState
+  sta nomolos_state_secondary
   
   ;make nomolos die.
-  lda nomolosState
+  lda nomolos_state_primary
   ora #nomolosDyingOnOR
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;make sure all following logic knows that this is death by being attacked
-  lda nomolosSubState
+  lda nomolos_state_secondary
   ora #nomolosAttackedDyingOR
-  sta nomolosSubState
+  sta nomolos_state_secondary
   
   ;transfer current screen coordinates to scaredy cat coordinates.
-  lda nomolosScreenX
-  sta nomolosScaredyCatX
-  lda nomolosScreenX+1
-  sta nomolosScaredyCatX+1
+  lda nomolos_screen_x
+  sta nomolos_out_of_armor_screen_x
+  lda nomolos_screen_x+1
+  sta nomolos_out_of_armor_screen_x+1
   
-  lda nomolosScreenY
-  sta nomolosScaredyCatY
-  lda nomolosScreenY+1
-  sta nomolosScaredyCatY+1
+  lda nomolos_screen_y
+  sta nomolos_out_of_armor_screen_y
+  lda nomolos_screen_y+1
+  sta nomolos_out_of_armor_screen_y+1
   
   ;tell famitracker to play the die sound
 .if .defined(MUSIC_ENABLE)
   ;switch to the level and music bank
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (romDefinitionTableBaseAddress),y
-  sta nextBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
   jsr mapper_switch_bank
   lda #2
   ldx #0
@@ -245,7 +245,7 @@ alreadyDying:
 .endif  
 
   pla
-  sta nextBank
+  sta mapper_bank_next
   jsr mapper_switch_bank
 
   rts
@@ -256,67 +256,67 @@ alreadyDying:
 
   ;play an attack sound
   ldy #ROMDefinitionTableStruct::attackSound
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
   jsr sound_load
   
   ;turn on the attack hit box
   lda #$0c
-  sta nomolosHitboxCounter
-  lda nomolosState
+  sta nomolos_counter_attack_rect
+  lda nomolos_state_primary
   ora #nomolosAttackOnOR
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;reset animation
-  resetAnim nomolosAnim
+  resetAnim nomolos_animation
   
   ;set initial location for the hit box
   lda #$20
-  sta nomolosHitboxWidth
+  sta nomolos_attack_rect_width
   lda #$08
-  sta nomolosHitboxHeight
+  sta nomolos_attack_rect_height
 
-  lda nomolosState
+  lda nomolos_state_primary
   and #1
   beq skipNomolosFacingLeft
   
   clc
-  lda nomolosScreenX
+  lda nomolos_screen_x
   adc #$f0
-  sta nomolosHitboxX
-  lda nomolosScreenX+1
+  sta nomolos_attack_rect_x
+  lda nomolos_screen_x+1
   adc #$ff
-  sta nomolosHitboxX+1
+  sta nomolos_attack_rect_x+1
   
   clc
-  lda nomolosScreenY
+  lda nomolos_screen_y
   adc #$0C
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
+  sta nomolos_attack_rect_y
+  lda nomolos_screen_y+1
   adc #$00
-  sta nomolosHitboxY+1
+  sta nomolos_attack_rect_y+1
 
   jmp skipNomolosFacingRight
 skipNomolosFacingLeft:
 
   clc
-  lda nomolosScreenX
+  lda nomolos_screen_x
   adc #$10
-  sta nomolosHitboxX
-  lda nomolosScreenX+1
+  sta nomolos_attack_rect_x
+  lda nomolos_screen_x+1
   adc #$00
-  sta nomolosHitboxX+1
+  sta nomolos_attack_rect_x+1
 
   clc
-  lda nomolosScreenY
+  lda nomolos_screen_y
   adc #$0C
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
+  sta nomolos_attack_rect_y
+  lda nomolos_screen_y+1
   adc #$00
-  sta nomolosHitboxY+1
+  sta nomolos_attack_rect_y+1
 
 skipNomolosFacingRight:
   
@@ -329,11 +329,11 @@ skipNomolosFacingRight:
 .proc nomolos_attack_sword
 
   ;if attacking is on, skip this whole routine
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosAttackTestAND
   bne skipAttack
 
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
@@ -353,22 +353,22 @@ nomolosAttackSwordBranch:
   
   ;play an attack sound
   ldy #ROMDefinitionTableStruct::attackSound
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
   jsr sound_load
   
   ;turn on the attack hit box
   lda #$0c
-  sta nomolosHitboxCounter
-  lda nomolosState
+  sta nomolos_counter_attack_rect
+  lda nomolos_state_primary
   ora #nomolosAttackOnOR
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;reset animation
-  resetAnim nomolosAnim
+  resetAnim nomolos_animation
   
   jmp attackSwitchDone
   
@@ -376,25 +376,25 @@ nomolosAttackFlailBranch:
 
   ;play an attack sound
   ldy #ROMDefinitionTableStruct::attackSound
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
   jsr sound_load
   
   ;turn on the attack hit box
   lda #$0c
-  sta nomolosHitboxCounter
-  lda nomolosState
+  sta nomolos_counter_attack_rect
+  lda nomolos_state_primary
   ora #nomolosAttackOnOR
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;reset animation
-  resetAnim nomolosAnim
+  resetAnim nomolos_animation
   
   ;reset weapon animation
-  resetAnim nomolosWeaponAnim
+  resetAnim nomolos_weapon_animation
   
 attackSwitchDone:
 skipAttack:
@@ -411,11 +411,11 @@ skipAttack:
 .export nomolos_is_deadly
 .proc nomolos_is_deadly
 
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosAttackTestAND
   beq nomolosNotAttacking
   
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
@@ -435,7 +435,7 @@ nomolosAttackSpearBranch:
   
 nomolosAttackSwordBranch:
   ;load current frame
-  lda nomolosAnim+1
+  lda nomolos_animation+1
   cmp #0
   beq nomolosPawNotExtended
   
@@ -471,9 +471,9 @@ nomolosNotAttacking:
   ;load "hurt" result of map collision test
   lda b0
   beq :+
-  lda nomolosState
+  lda nomolos_state_primary
   ora #nomolosHurtByMapOnOR
-  sta nomolosState
+  sta nomolos_state_primary
 :
   rts
 
@@ -482,55 +482,55 @@ nomolosNotAttacking:
 .proc nomolos_update_attack_sword
 
   lda #$10
-  sta nomolosHitboxWidth
+  sta nomolos_attack_rect_width
   lda #$20
-  sta nomolosHitboxHeight
+  sta nomolos_attack_rect_height
 
-  lda nomolosState
+  lda nomolos_state_primary
   and #1
   beq skipNomolosFacingLeft
   
   clc
-  lda nomolosScreenX
+  lda nomolos_screen_x
   adc #$f0
-  sta nomolosHitboxX
-  lda nomolosScreenX+1
+  sta nomolos_attack_rect_x
+  lda nomolos_screen_x+1
   adc #$ff
-  sta nomolosHitboxX+1
+  sta nomolos_attack_rect_x+1
   
-  lda nomolosScreenY
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
-  sta nomolosHitboxY+1
+  lda nomolos_screen_y
+  sta nomolos_attack_rect_y
+  lda nomolos_screen_y+1
+  sta nomolos_attack_rect_y+1
 
   jmp skipNomolosFacingRight
 skipNomolosFacingLeft:
 
   clc
-  lda nomolosScreenX
+  lda nomolos_screen_x
   adc #$10
-  sta nomolosHitboxX
-  lda nomolosScreenX+1
+  sta nomolos_attack_rect_x
+  lda nomolos_screen_x+1
   adc #$00
-  sta nomolosHitboxX+1
+  sta nomolos_attack_rect_x+1
 
-  lda nomolosScreenY
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
-  sta nomolosHitboxY+1
+  lda nomolos_screen_y
+  sta nomolos_attack_rect_y
+  lda nomolos_screen_y+1
+  sta nomolos_attack_rect_y+1
 
 skipNomolosFacingRight:
 
-  dec nomolosHitboxCounter
+  dec nomolos_counter_attack_rect
   bne skipAttackUpdate
   
   ;set attack state to off
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosAttackOffAND
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;reset animation object
-  resetAnim nomolosAnim
+  resetAnim nomolos_animation
 skipAttackUpdate:
 
   rts
@@ -541,55 +541,55 @@ skipAttackUpdate:
 .proc nomolos_update_attack_flail
 
   lda #$10
-  sta nomolosHitboxWidth
+  sta nomolos_attack_rect_width
   lda #$20
-  sta nomolosHitboxHeight
+  sta nomolos_attack_rect_height
 
-  lda nomolosHitboxCounter
+  lda nomolos_counter_attack_rect
   and #1
   beq skipNomolosFacingLeft
   
   clc
-  lda nomolosScreenX
+  lda nomolos_screen_x
   adc #$e0
-  sta nomolosHitboxX
-  lda nomolosScreenX+1
+  sta nomolos_attack_rect_x
+  lda nomolos_screen_x+1
   adc #$ff
-  sta nomolosHitboxX+1
+  sta nomolos_attack_rect_x+1
   
-  lda nomolosScreenY
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
-  sta nomolosHitboxY+1
+  lda nomolos_screen_y
+  sta nomolos_attack_rect_y
+  lda nomolos_screen_y+1
+  sta nomolos_attack_rect_y+1
 
   jmp skipNomolosFacingRight
 skipNomolosFacingLeft:
 
   clc
-  lda nomolosScreenX
+  lda nomolos_screen_x
   adc #$20
-  sta nomolosHitboxX
-  lda nomolosScreenX+1
+  sta nomolos_attack_rect_x
+  lda nomolos_screen_x+1
   adc #$00
-  sta nomolosHitboxX+1
+  sta nomolos_attack_rect_x+1
 
-  lda nomolosScreenY
-  sta nomolosHitboxY
-  lda nomolosScreenY+1
-  sta nomolosHitboxY+1
+  lda nomolos_screen_y
+  sta nomolos_attack_rect_y
+  lda nomolos_screen_y+1
+  sta nomolos_attack_rect_y+1
 
 skipNomolosFacingRight:
 
-  dec nomolosHitboxCounter
+  dec nomolos_counter_attack_rect
   bne skipAttackUpdate
   
   ;set attack state to off
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosAttackOffAND
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;reset animation object
-  resetAnim nomolosAnim
+  resetAnim nomolos_animation
 skipAttackUpdate:
 
   rts
@@ -599,43 +599,43 @@ skipAttackUpdate:
 .proc nomolos_update_attack_spear
 
   ;move the spear in the direction nomolos is facing
-  lda nomolosState
+  lda nomolos_state_primary
   and #1
   beq nomolosFacingRight
 nomolosFacingLeft:
   
   sec
-  lda nomolosHitboxX
+  lda nomolos_attack_rect_x
   sbc #10
-  sta nomolosHitboxX
-  lda nomolosHitboxX+1
+  sta nomolos_attack_rect_x
+  lda nomolos_attack_rect_x+1
   sbc #0
-  sta nomolosHitboxX+1
+  sta nomolos_attack_rect_x+1
   
   jmp nomolosDirectionTestDone
   
 nomolosFacingRight:
 
   clc
-  lda nomolosHitboxX
+  lda nomolos_attack_rect_x
   adc #10
-  sta nomolosHitboxX
-  lda nomolosHitboxX+1
+  sta nomolos_attack_rect_x
+  lda nomolos_attack_rect_x+1
   adc #0
-  sta nomolosHitboxX+1
+  sta nomolos_attack_rect_x+1
 
 nomolosDirectionTestDone:  
 
-  dec nomolosHitboxCounter
+  dec nomolos_counter_attack_rect
   bne skipAttackUpdate
   
   ;set attack state to off
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosAttackOffAND
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;reset animation object
-  resetAnim nomolosAnim
+  resetAnim nomolos_animation
 skipAttackUpdate:
   rts
 
@@ -644,15 +644,15 @@ skipAttackUpdate:
 .proc nomolos_test_collision_below
 
   ;Is there a collision at bottom left of Nomolos?
-  lda nomolosX+1
+  lda nomolos_map_x+1
   sta w0
-  lda nomolosX+2
+  lda nomolos_map_x+2
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   clc
   adc #(nomolosHeight+1)
   sta w1
-  lda nomolosY+2
+  lda nomolos_map_y+2
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -661,18 +661,18 @@ skipAttackUpdate:
   bne yesBelowCollision
 
   ;Is there a collision at bottom right of Nomolos?
-  lda nomolosX+1
+  lda nomolos_map_x+1
   clc
   adc #$0f
   sta w0
-  lda nomolosX+2
+  lda nomolos_map_x+2
   adc #$00
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   clc
   adc #(nomolosHeight+1)
   sta w1
-  lda nomolosY+2
+  lda nomolos_map_y+2
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -687,24 +687,24 @@ yesBelowCollision:
 
   ;Calculate penetration distance and store it in belowPenetrationDistance.
   ;Set below collision flag.
-  lda nomolosY+1
+  lda nomolos_map_y+1
   clc
   adc #(nomolosHeight+1)
   and #penetrationCalculationMask
-  sta nomolosBelowPenetrationDistance
+  sta nomolos_below_ejection_distance
   
   ;eject by penetration distance
-  lda nomolosY+1
+  lda nomolos_map_y+1
   sec
-  sbc nomolosBelowPenetrationDistance
-  sta nomolosY+1
-  lda nomolosY+2
+  sbc nomolos_below_ejection_distance
+  sta nomolos_map_y+1
+  lda nomolos_map_y+2
   sbc #0
-  sta nomolosY+2
+  sta nomolos_map_y+2
   
-  lda nomolosState
+  lda nomolos_state_primary
   ora #nomolosBelowCollisionOnOR
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;************************************************************
   ;Test A button for off-to-on transition and start the jump
@@ -713,15 +713,15 @@ yesBelowCollision:
 
   ;Test if current state of A button is down and previous state is up. In other words,
   ;AND with #%00000011, then test for equality to 1.
-  lda controllerBuffer+buttons::_a
+  lda buffer_controller+buttons::_a
   and #%00000011
   cmp #1
   bne skipButtonATest
   
   lda #nomolosStartJumpLo
-  sta nomolosYSpeed
+  sta nomolos_y_velocity
   lda #nomolosStartJumpHi
-  sta nomolosYSpeed+1
+  sta nomolos_y_velocity+1
 
   rts
   
@@ -730,8 +730,8 @@ skipButtonATest:
   ;set velocity to zero, since we've collided with the ground and the player
   ;has not pressed A.
   lda #0
-  sta nomolosYSpeed
-  sta nomolosYSpeed+1
+  sta nomolos_y_velocity
+  sta nomolos_y_velocity+1
   
   rts
 
@@ -740,13 +740,13 @@ skipButtonATest:
 .proc nomolos_test_collision_above
 
   ;Is there a collision at top left of Nomolos?
-  lda nomolosX+1
+  lda nomolos_map_x+1
   sta w0
-  lda nomolosX+2
+  lda nomolos_map_x+2
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   sta w1
-  lda nomolosY+2
+  lda nomolos_map_y+2
   sta w1+1
   jsr map_test_collision
   jsr nomolos_load_hurt_result
@@ -754,16 +754,16 @@ skipButtonATest:
   bne yesAboveCollision
   
   ;Is there a collision at top right of Nomolos?
-  lda nomolosX+1
+  lda nomolos_map_x+1
   clc
   adc #$0f
   sta w0
-  lda nomolosX+2
+  lda nomolos_map_x+2
   adc #$00
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   sta w1
-  lda nomolosY+2
+  lda nomolos_map_y+2
   sta w1+1
   jsr map_test_collision
   jsr nomolos_load_hurt_result
@@ -771,15 +771,15 @@ skipButtonATest:
   bne yesAboveCollision
   
   ;is current state of A button released, and previous state of A button pressed?
-  lda controllerBuffer+buttons::_a
+  lda buffer_controller+buttons::_a
   and #%00000011
   cmp #%00000010
   bne dontStopRising
   
   ;yes, so stop rising into the air.
   lda #0
-  sta nomolosYSpeed
-  sta nomolosYSpeed+1
+  sta nomolos_y_velocity
+  sta nomolos_y_velocity+1
 dontStopRising:
   
   rts
@@ -789,31 +789,31 @@ yesAboveCollision:
  
   ;Calculate penetration distance and store it in abovePenetrationDistance.
   ;Set above collision flag.
-  lda nomolosY+1
+  lda nomolos_map_y+1
   and #penetrationCalculationMask
-  sta nomolosAbovePenetrationDistance
+  sta nomolos_above_ejection_distance
   lda #$0f  ;we subtract the above penetration distance from the height of a tile.
   sec
-  sbc nomolosAbovePenetrationDistance
-  sta nomolosAbovePenetrationDistance
+  sbc nomolos_above_ejection_distance
+  sta nomolos_above_ejection_distance
   
   ;eject by penetration distance
-  lda nomolosY+1
+  lda nomolos_map_y+1
   clc
-  adc nomolosAbovePenetrationDistance
-  sta nomolosY+1
-  lda nomolosY+2
+  adc nomolos_above_ejection_distance
+  sta nomolos_map_y+1
+  lda nomolos_map_y+2
   adc #0
-  sta nomolosY+2
+  sta nomolos_map_y+2
   
-  lda nomolosState
+  lda nomolos_state_primary
   ora #nomolosAboveCollisionOnOR
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;reset velocity
   lda #0
-  sta nomolosYSpeed
-  sta nomolosYSpeed+1
+  sta nomolos_y_velocity
+  sta nomolos_y_velocity+1
   
   rts
 .endproc
@@ -825,7 +825,7 @@ yesAboveCollision:
   ;Load NomolosY coordinate and test to see if he is off screen
   ;to the bottom. If he is, he should die.
   ;************************************************************
-  lda nomolosY+2
+  lda nomolos_map_y+2
   cmp #1
   bne @nomolosNotDead
   jsr nomolos_die_fall
@@ -836,29 +836,29 @@ yesAboveCollision:
   ;true. Move scaredy cat graphic upwards and clear buttons 
   ;that we do not want to respond to when dying is true.
   ;************************************************************
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosDyingTestAND
   beq nomolosNotDying
   
   ;clear buttons we don't want to respond to during dying state.
   lda #0
-  sta controllerBuffer+buttons::_a
-  sta controllerBuffer+buttons::_b
-  sta controllerBuffer+buttons::_left
-  sta controllerBuffer+buttons::_right
+  sta buffer_controller+buttons::_a
+  sta buffer_controller+buttons::_b
+  sta buffer_controller+buttons::_left
+  sta buffer_controller+buttons::_right
   
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosAttackedDyingTestAND
   beq nomolosNotAttackedDying
   
   ;move scaredy cat graphic upwards.
   sec
-  lda nomolosScaredyCatY
+  lda nomolos_out_of_armor_screen_y
   sbc #$03
-  sta nomolosScaredyCatY
-  lda nomolosScaredyCatY+1
+  sta nomolos_out_of_armor_screen_y
+  lda nomolos_out_of_armor_screen_y+1
   sbc #$00
-  sta nomolosScaredyCatY+1
+  sta nomolos_out_of_armor_screen_y+1
   
   ;when the scaredy cat Y reaches a certain coordinate off the screen,
   ;we want to transition out of this level and to an appropriate "level in"
@@ -867,7 +867,7 @@ yesAboveCollision:
   bpl scaredyCatStillRising
   
   lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
-  sta stateControl+playLevelStateControl::state
+  sta state_control_params+playLevelStateControl::state
   
 scaredyCatStillRising:
   
@@ -875,11 +875,11 @@ scaredyCatStillRising:
   
 nomolosNotAttackedDying:
   
-  dec frameCounter
+  dec frame_counter
   bne skipLevelOutState
   
   lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
-  sta stateControl+playLevelStateControl::state
+  sta state_control_params+playLevelStateControl::state
   
 skipLevelOutState:
   
@@ -892,12 +892,12 @@ nomolosNotDying:
   ;************************************************************
   ;Load result of "hurt by map" flag and hurt nomolos if true.
   ;************************************************************
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosHurtByMapTestAND
   beq @notHurtByMap
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosHurtByMapOffAND
-  sta nomolosState
+  sta nomolos_state_primary
   jsr nomolos_hurt
 @notHurtByMap:
 
@@ -908,21 +908,21 @@ nomolosNotDying:
   ;************************************************************
 
   ;Update blink counter and reset if zero
-  dec nomolosBlinkCounter
+  dec nomolos_counter_temp_invincibility_blink
   bne skipBlinkReset
   
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosBlinkingOffAND
-  sta nomolosState
+  sta nomolos_state_primary
 skipBlinkReset:
 
   ;Update hitbox counter if attack state on
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosAttackTestAND
   beq skipAttack
   ;attack state was on
   
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
@@ -952,7 +952,7 @@ attackSwitchDone:
 skipAttack:
 
   ;Run attack routine if B transitions from off to on
-  lda controllerBuffer+buttons::_b
+  lda buffer_controller+buttons::_b
   and #%00000011
   ;test for transition from off to on
   cmp #%00000001
@@ -967,40 +967,40 @@ skipAttack:
   ;Compare vertical speed max to current vertical speed.
   lda #nomolosVerticalSpeedMax  
   sec
-  sbc nomolosYSpeed+1
+  sbc nomolos_y_velocity+1
   ;we want to skip the following code if the result was negative
   bmi DoNotIncrementSpeed
   ;Yes:
-  ;  nomolosYSpeed = nomolosYSpeed + nomolosVerticalAcceleration
-  lda nomolosYSpeed
+  ;  nomolos_y_velocity = nomolos_y_velocity + nomolosVerticalAcceleration
+  lda nomolos_y_velocity
   clc
   adc #nomolosVerticalAccelerationLo
-  sta nomolosYSpeed
-  lda nomolosYSpeed+1
+  sta nomolos_y_velocity
+  lda nomolos_y_velocity+1
   adc #nomolosVerticalAccelerationHi
-  sta nomolosYSpeed+1
+  sta nomolos_y_velocity+1
 DoNotIncrementSpeed:
 
   ;************************************************************
   ;Move vertical position according to vertical speed.
   ;************************************************************
   clc
-  lda nomolosY  
-  adc nomolosYSpeed
-  sta nomolosY
-  lda nomolosY+1
-  adc nomolosYSpeed+1
-  sta nomolosY+1
-  lda nomolosYSpeed+1
+  lda nomolos_map_y  
+  adc nomolos_y_velocity
+  sta nomolos_map_y
+  lda nomolos_map_y+1
+  adc nomolos_y_velocity+1
+  sta nomolos_map_y+1
+  lda nomolos_y_velocity+1
   bmi @signExtend
-  lda nomolosY+2
+  lda nomolos_map_y+2
   adc #0
-  sta nomolosY+2
+  sta nomolos_map_y+2
   jmp noSignExtend
 @signExtend:
-  lda nomolosY+2
+  lda nomolos_map_y+2
   adc #$ff
-  sta nomolosY+2
+  sta nomolos_map_y+2
 noSignExtend:
 
   ;************************************************************
@@ -1009,12 +1009,12 @@ noSignExtend:
   ;or release to start/stop jumping.
   ;************************************************************
   ;clear the collision flags
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosBelowCollisionOffAND
   and #nomolosAboveCollisionOffAND
-  sta nomolosState
+  sta nomolos_state_primary
   
-  lda nomolosYSpeed+1
+  lda nomolos_y_velocity+1
   bmi ySpeedNegative
 ySpeedPositive:
   jsr nomolos_test_collision_below
@@ -1035,49 +1035,49 @@ ySpeedTestDone:
   ;************************************************************
 
   ;is there an on to off transition on the left button?
-  lda controllerBuffer+buttons::_left
+  lda buffer_controller+buttons::_left
   and #%00000011
   cmp #%00000010
   bne @skipMoveOff
   
-  lda nomolosState
+  lda nomolos_state_primary
   ;if attack is on, do not reset the animation
   and #nomolosAttackTestAND
   bne @skipResetAnim
-  resetAnim nomolosAnim
+  resetAnim nomolos_animation
 @skipResetAnim:
 
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosMovingOffAND       ;state not moving
-  sta nomolosState
+  sta nomolos_state_primary
 @skipMoveOff:
   
-  lda controllerBuffer+buttons::_left ;Left
+  lda buffer_controller+buttons::_left ;Left
 
   ;is left button down?
   and #1
   bne skipJmpNotLeft
   jmp notLeft
 skipJmpNotLeft:
-  lda nomolosState
+  lda nomolos_state_primary
   ora #nomolosWalkingLeftOR
   ora #nomolosMovingOnOR
   
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;test collision with map
-  lda nomolosX+1
+  lda nomolos_map_x+1
   sec
   sbc #1
   sta w0
-  lda nomolosX+2
+  lda nomolos_map_x+2
   sbc #0
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   clc
   adc #1
   sta w1
-  lda nomolosY+2
+  lda nomolos_map_y+2
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -1085,18 +1085,18 @@ skipJmpNotLeft:
   lda b1
   bne notLeft
   
-  lda nomolosX+1
+  lda nomolos_map_x+1
   sec
   sbc #1
   sta w0
-  lda nomolosX+2
+  lda nomolos_map_x+2
   sbc #0
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   clc
   adc #$0f
   sta w1
-  lda nomolosY+2
+  lda nomolos_map_y+2
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -1104,18 +1104,18 @@ skipJmpNotLeft:
   lda b1
   bne notLeft
 
-  lda nomolosX+1
+  lda nomolos_map_x+1
   sec
   sbc #1
   sta w0
-  lda nomolosX+2
+  lda nomolos_map_x+2
   sbc #0
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   clc 
   adc #$1e
   sta w1
-  lda nomolosY+2
+  lda nomolos_map_y+2
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -1124,67 +1124,67 @@ skipJmpNotLeft:
   bne notLeft
   
   ;also make certain nomolos can't walk past left part of screen
-  lda nomolosScreenX
+  lda nomolos_screen_x
   beq notLeft
   
   ;24 bit Sub
   sec
-  lda nomolosX
-  sbc nomolosXSpeed
-  sta nomolosX
-  lda nomolosX+1
-  sbc nomolosXSpeed+1
-  sta nomolosX+1   
-  lda nomolosX+2
+  lda nomolos_map_x
+  sbc nomolos_x_velocity
+  sta nomolos_map_x
+  lda nomolos_map_x+1
+  sbc nomolos_x_velocity+1
+  sta nomolos_map_x+1   
+  lda nomolos_map_x+2
   sbc #0
-  sta nomolosX+2
+  sta nomolos_map_x+2
   
   ;jsr nomolos_update_animation
 notLeft:
   
   ;is there an on to off transition on the right button?
-  lda controllerBuffer+buttons::_right
+  lda buffer_controller+buttons::_right
   and #%00000011
   cmp #%00000010
   bne @skipMoveOff
   
-  lda nomolosState
+  lda nomolos_state_primary
   ;if attack is on, do not reset the animation
   and #nomolosAttackTestAND
   bne @skipResetAnim
-  resetAnim nomolosAnim
+  resetAnim nomolos_animation
 @skipResetAnim:
 
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosMovingOffAND       ;state not moving
-  sta nomolosState
+  sta nomolos_state_primary
 @skipMoveOff:
   
-  lda controllerBuffer+buttons::_right ; Right
+  lda buffer_controller+buttons::_right ; Right
 
   ;is right button down?
   and #1
   bne skipJmpNotRight
   jmp notRight
 skipJmpNotRight:
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosWalkingRightAND ;state is walking right
   ora #nomolosMovingOnOR       ;state is moving
-  sta nomolosState
+  sta nomolos_state_primary
   
   ;test collision with map
-  lda nomolosX+1
+  lda nomolos_map_x+1
   clc
   adc #$10
   sta w0  
-  lda nomolosX+2
+  lda nomolos_map_x+2
   adc #$00
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   clc
   adc #1
   sta w1  
-  lda nomolosY+2
+  lda nomolos_map_y+2
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -1192,19 +1192,19 @@ skipJmpNotRight:
   lda b1
   bne notRight
   
-  ;lda nomolosX+1
-  lda nomolosX+1
+  ;lda nomolos_map_x+1
+  lda nomolos_map_x+1
   clc
   adc #$10
   sta w0  
-  lda nomolosX+2
+  lda nomolos_map_x+2
   adc #$00
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   clc
   adc #$0f
   sta w1
-  lda nomolosY+2
+  lda nomolos_map_y+2
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -1212,18 +1212,18 @@ skipJmpNotRight:
   lda b1
   bne notRight
   
-  lda nomolosX+1
+  lda nomolos_map_x+1
   clc
   adc #$10
   sta w0  
-  lda nomolosX+2
+  lda nomolos_map_x+2
   adc #$00
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   clc
   adc #$1e
   sta w1
-  lda nomolosY+2
+  lda nomolos_map_y+2
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -1233,15 +1233,15 @@ skipJmpNotRight:
   
   ;24 bit add
   clc
-  lda nomolosX
-  adc nomolosXSpeed
-  sta nomolosX
-  lda nomolosX+1
-  adc nomolosXSpeed+1
-  sta nomolosX+1
-  lda nomolosX+2
+  lda nomolos_map_x
+  adc nomolos_x_velocity
+  sta nomolos_map_x
+  lda nomolos_map_x+1
+  adc nomolos_x_velocity+1
+  sta nomolos_map_x+1
+  lda nomolos_map_x+2
   adc #0
-  sta nomolosX+2
+  sta nomolos_map_x+2
   
 notRight:
 
@@ -1249,32 +1249,32 @@ notRight:
   ;Compute screen coordinates from level coordinates.
   ;************************************************************
 
-  lda nomolosX+1
+  lda nomolos_map_x+1
   sta w0
-  lda nomolosX+2
+  lda nomolos_map_x+2
   sta w0+1
-  lda nomolosY+1
+  lda nomolos_map_y+1
   sta w1
-  lda nomolosY+2
+  lda nomolos_map_y+2
   sta w1+1
   jsr camera_to_screen_coords
   lda w0
-  sta nomolosScreenX
+  sta nomolos_screen_x
   lda w0+1
-  sta nomolosScreenX+1
+  sta nomolos_screen_x+1
   lda w1
-  sta nomolosScreenY 
+  sta nomolos_screen_y 
   lda w1+1
-  sta nomolosScreenY+1
+  sta nomolos_screen_y+1
 
   ;************************************************************
   ;Move camera to center itself on Nomolos.
   ;************************************************************
-  lda nomolosScreenX
+  lda nomolos_screen_x
   sta b0
   jsr camera_update
   lda b0
-  sta nomolosScreenX
+  sta nomolos_screen_x
   
   ;************************************************************
   ;Update Nomolos' animation object.
@@ -1289,20 +1289,20 @@ notRight:
 
   ;switch to the actor and entity bank
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
-  lda (romDefinitionTableBaseAddress),y
-  sta nextBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
   jsr mapper_switch_bank  
 
-  lda #<nomolosAnim
+  lda #<nomolos_animation
   sta w1
-  lda #>nomolosAnim
+  lda #>nomolos_animation
   sta w1+1
 
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosAttackTestAND
   beq skipUpdateNomolosFighting
   
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
@@ -1314,10 +1314,10 @@ notRight:
   
 nomolosAttackSpearBranch:
   ldy #ROMDefinitionTableStruct::NomolosSpear
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   jsr sprite_update_animation  
@@ -1326,10 +1326,10 @@ nomolosAttackSpearBranch:
   
 nomolosAttackSwordBranch:
   ldy #ROMDefinitionTableStruct::NomolosFight
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   jsr sprite_update_animation
@@ -1339,24 +1339,24 @@ nomolosAttackSwordBranch:
 nomolosAttackFlailBranch:
 
   ldy #ROMDefinitionTableStruct::NomolosFlail
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   jsr sprite_update_animation
   
-  lda #<nomolosWeaponAnim
+  lda #<nomolos_weapon_animation
   sta w1
-  lda #>nomolosWeaponAnim
+  lda #>nomolos_weapon_animation
   sta w1+1
 
   ldy #ROMDefinitionTableStruct::FlailBall
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   jsr sprite_update_animation
@@ -1365,14 +1365,14 @@ attackSwitchDone:
   rts
 skipUpdateNomolosFighting:
   
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosMovingTestAND
   beq skipUpdateNomolosMoving
   ldy #ROMDefinitionTableStruct::NomolosWalk
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
  
   jsr sprite_update_animation
@@ -1386,57 +1386,57 @@ skipUpdateNomolosMoving:
 .proc nomolos_draw_attack_flail
 
   ;draw the flail animation and flail ball animation here
-  lda #<nomolosAnim
+  lda #<nomolos_animation
   sta w1
-  lda #>nomolosAnim
+  lda #>nomolos_animation
   sta w1+1
   
   ldy #ROMDefinitionTableStruct::NomolosFlail
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   ;get the direction bit into bit 6 of b2 for horiz flip
   clc
-  lda nomolosState
+  lda nomolos_state_primary
   and #1
   ror
   ror
   ror
   sta b2
   
-  lda nomolosScreenX
+  lda nomolos_screen_x
   sta w3
-  lda nomolosScreenX+1
+  lda nomolos_screen_x+1
   sta w3+1
-  lda nomolosScreenY
+  lda nomolos_screen_y
   sta w4
-  lda nomolosScreenY+1
+  lda nomolos_screen_y+1
   sta w4+1
   
   jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosFlailOverlay
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   jsr sprite_draw_animation_16bit
   
-  lda #<nomolosWeaponAnim
+  lda #<nomolos_weapon_animation
   sta w1
-  lda #>nomolosWeaponAnim
+  lda #>nomolos_weapon_animation
   sta w1+1
   
   ldy #ROMDefinitionTableStruct::FlailBall
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   jsr sprite_draw_animation_16bit
@@ -1448,43 +1448,43 @@ skipUpdateNomolosMoving:
 .export nomolos_draw_attack_sword
 .proc nomolos_draw_attack_sword
 
-  lda #<nomolosAnim
+  lda #<nomolos_animation
   sta w1
-  lda #>nomolosAnim
+  lda #>nomolos_animation
   sta w1+1
   
   ldy #ROMDefinitionTableStruct::NomolosFight
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   ;get the direction bit into bit 6 of b2 for horiz flip
   clc
-  lda nomolosState
+  lda nomolos_state_primary
   and #1
   ror
   ror
   ror
   sta b2
   
-  lda nomolosScreenX
+  lda nomolos_screen_x
   sta w3
-  lda nomolosScreenX+1
+  lda nomolos_screen_x+1
   sta w3+1
-  lda nomolosScreenY
+  lda nomolos_screen_y
   sta w4
-  lda nomolosScreenY+1
+  lda nomolos_screen_y+1
   sta w4+1
   
   jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosFightOverlay
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   jsr sprite_draw_animation_16bit
@@ -1496,62 +1496,62 @@ skipUpdateNomolosMoving:
 .export nomolos_draw_attack_spear
 .proc nomolos_draw_attack_spear
 
-  lda #<nomolosAnim
+  lda #<nomolos_animation
   sta w1
-  lda #>nomolosAnim
+  lda #>nomolos_animation
   sta w1+1
   
   ldy #ROMDefinitionTableStruct::NomolosSpear
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   ;get the direction bit into bit 6 of b2 for horiz flip
   clc
-  lda nomolosState
+  lda nomolos_state_primary
   and #1
   ror
   ror
   ror
   sta b2
   
-  lda nomolosScreenX
+  lda nomolos_screen_x
   sta w3
-  lda nomolosScreenX+1
+  lda nomolos_screen_x+1
   sta w3+1
-  lda nomolosScreenY
+  lda nomolos_screen_y
   sta w4
-  lda nomolosScreenY+1
+  lda nomolos_screen_y+1
   sta w4+1
   
   jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosFightOverlay
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   jsr sprite_draw_animation_16bit
   
   ;draw the spear at the location of the hit box
-  lda nomolosHitboxX
+  lda nomolos_attack_rect_x
   sta w3
-  lda nomolosHitboxX+1
+  lda nomolos_attack_rect_x+1
   sta w3+1
-  lda nomolosHitboxY
+  lda nomolos_attack_rect_y
   sta w4
-  lda nomolosHitboxY+1
+  lda nomolos_attack_rect_y+1
   sta w4+1
   
   ldy #ROMDefinitionTableStruct::SpearFly
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
   
   jsr sprite_draw_metasprite_16bit
@@ -1564,30 +1564,30 @@ skipUpdateNomolosMoving:
 .export nomolos_draw
 .proc nomolos_draw
 
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosDyingTestAND
   beq nomolosNotDying
   
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosAttackedDyingTestAND
   beq nomolosNotAttackedDying
   
   ;if we're in dying state, we will only ever draw the slumped armor and the scaredy cat graphic and return.
   ldy #ROMDefinitionTableStruct::SlumpedArmor
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
   
   ;get Nomolos' screen coordinates.
-  lda nomolosScreenX
+  lda nomolos_screen_x
   sta w3
-  lda nomolosScreenX+1
+  lda nomolos_screen_x+1
   sta w3+1
-  lda nomolosScreenY
+  lda nomolos_screen_y
   sta w4
-  lda nomolosScreenY+1
+  lda nomolos_screen_y+1
   sta w4+1
   
   lda #0
@@ -1597,40 +1597,40 @@ skipUpdateNomolosMoving:
   jsr sprite_draw_metasprite_16bit  
   
   ldy #ROMDefinitionTableStruct::SlumpedArmorOverlay
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
   
   ;draw the slumped armor overlay
   jsr sprite_draw_metasprite_16bit
   
   ldy #ROMDefinitionTableStruct::ScaredyCat
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
   
   ;get Nomolos' screen coordinates.
-  lda nomolosScaredyCatX
+  lda nomolos_out_of_armor_screen_x
   sta w3
-  lda nomolosScaredyCatX+1
+  lda nomolos_out_of_armor_screen_x+1
   sta w3+1
-  lda nomolosScaredyCatY
+  lda nomolos_out_of_armor_screen_y
   sta w4
-  lda nomolosScaredyCatY+1
+  lda nomolos_out_of_armor_screen_y+1
   sta w4+1
   
   ;draw the scaredy cat
   jsr sprite_draw_metasprite_16bit
   
   ldy #ROMDefinitionTableStruct::ScaredyCatOverlay
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
   
   ;draw the scaredy cat overlay
@@ -1641,14 +1641,14 @@ nomolosNotAttackedDying:
   rts
 nomolosNotDying:
 
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosBlinkingTestAND
   lsr
   lsr
   beq skipBlinkCheck
   
   ;check blink counter
-  lda nomolosBlinkCounter
+  lda nomolos_counter_temp_invincibility_blink
   and #%00000011
   bne skipReturn
   rts
@@ -1658,11 +1658,11 @@ skipBlinkCheck:
 
   ;test if nomolos is fighting. if he is, always draw him fighting
   ;regardless of whether he is in the air.
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosAttackTestAND
   beq skipDrawNomolosFighting
   
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosAttackTestMask
   cmp #nomolosAttackSword
   beq nomolosAttackSwordBranch
@@ -1698,51 +1698,51 @@ skipDrawNomolosFighting:
 
   ;test if there is anything below nomolos. if there is not,
   ;draw nomolos's jumping animation.
-  lda nomolosState
+  lda nomolos_state_primary
   and #nomolosBelowCollisionTestAND
   lsr
   lsr
   lsr
   bne skipDrawNomolosJumping
 
-  resetAnim nomolosAnim
+  resetAnim nomolos_animation
   
-  lda #<nomolosAnim
+  lda #<nomolos_animation
   sta w1
-  lda #>nomolosAnim
+  lda #>nomolos_animation
   sta w1+1
   
   ldy #ROMDefinitionTableStruct::NomolosJump
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   ;get the direction bit into bit 6 of b2 for horiz flip
-  lda nomolosState
+  lda nomolos_state_primary
   and #1
   ror
   ror
   ror
   sta b2
   
-  lda nomolosScreenX
+  lda nomolos_screen_x
   sta w3
-  lda nomolosScreenX+1
+  lda nomolos_screen_x+1
   sta w3+1
-  lda nomolosScreenY
+  lda nomolos_screen_y
   sta w4
-  lda nomolosScreenY+1
+  lda nomolos_screen_y+1
   sta w4+1
   
   jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosJumpOverlay
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   jsr sprite_draw_animation_16bit
@@ -1750,38 +1750,38 @@ skipDrawNomolosFighting:
   rts
 skipDrawNomolosJumping:
 
-  lda #<nomolosAnim
+  lda #<nomolos_animation
   sta w1
-  lda #>nomolosAnim
+  lda #>nomolos_animation
   sta w1+1
   
-  lda nomolosState
+  lda nomolos_state_primary
   and #1
   bne skipNomolosWalkingRight
   ldy #ROMDefinitionTableStruct::NomolosWalkOverlay
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   lda #%00000000
   sta b2
   
-  lda nomolosScreenX
+  lda nomolos_screen_x
   sta w3
-  lda nomolosScreenX+1
+  lda nomolos_screen_x+1
   sta w3+1
-  lda nomolosScreenY
+  lda nomolos_screen_y
   sta w4
-  lda nomolosScreenY+1
+  lda nomolos_screen_y+1
   sta w4+1
   jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosWalk
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   
   jsr sprite_draw_animation_16bit
@@ -1789,29 +1789,29 @@ skipDrawNomolosJumping:
   jmp skipNomolosWalkingLeft
 skipNomolosWalkingRight:
   ldy #ROMDefinitionTableStruct::NomolosWalkOverlay
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   lda #%01000000
   sta b2
 
-  lda nomolosScreenX
+  lda nomolos_screen_x
   sta w3
-  lda nomolosScreenX+1
+  lda nomolos_screen_x+1
   sta w3+1
-  lda nomolosScreenY
+  lda nomolos_screen_y
   sta w4
-  lda nomolosScreenY+1
+  lda nomolos_screen_y+1
   sta w4+1
   jsr sprite_draw_animation_16bit
   
   ldy #ROMDefinitionTableStruct::NomolosWalk
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w2+1
   jsr sprite_draw_animation_16bit
   
@@ -1825,7 +1825,7 @@ dontDrawNomolos:
 .export nomolos_draw_hearts
 .proc nomolos_draw_hearts
   
-  ldx nomolosHealth
+  ldx nomolos_status_health
   beq skipDrawHearts
   
   lda #$10
@@ -1834,10 +1834,10 @@ dontDrawNomolos:
   lda #0
   sta b2
   ldy #ROMDefinitionTableStruct::Heart0
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
 drawNextHeart:
   jsr sprite_draw_metasprite_8bit

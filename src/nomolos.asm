@@ -50,18 +50,18 @@ reset:
   clearRAM
 
   ;lda #GAMEOVERSTATE_INIT
-  ;sta stateControl+gameOverStateControl::state
+  ;sta state_control_params+gameOverStateControl::state
   ;switchState game_over_state_update, game_over_state_update_ppu
   
   lda #TITLESTATE_INIT
-  sta stateControl+titleStateControl::state
+  sta state_control_params+titleStateControl::state
   switchState title_state_update, title_state_update_ppu
 	
   ;load current level
   ;lda #0
-  ;sta stateControl+loadLevelStateControl::levelToLoad
+  ;sta state_control_params+loadLevelStateControl::levelToLoad
   ;lda #LOADLEVELSTATE_INIT
-  ;sta stateControl+loadLevelStateControl::state
+  ;sta state_control_params+loadLevelStateControl::state
   
   ;switchState load_level_state_update, load_level_state_update_ppu
   
@@ -97,7 +97,7 @@ irq:
   rti
   
 .proc indirect_jsr_update_ppu
-  jmp (updatePPU)
+  jmp (update_ppu)
 .endproc
   
 .segment "VECTORS"

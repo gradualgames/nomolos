@@ -3,7 +3,7 @@
 .segment "CODE"
 
 ;deserializes the controller into a buffer
-;output: controllerBuffer
+;output: buffer_controller
 .export controller_read
 .proc controller_read
   lda #$01  ; strobe joypad
@@ -15,23 +15,23 @@
   ror 
   ;put carry bit into controller buffer. use rol to keep
   ;history of button presses.
-  rol controllerBuffer
+  rol buffer_controller
   lda $4016  ; B 
   ror
-  rol controllerBuffer+1
+  rol buffer_controller+1
   lda $4016          ; Select 
-  sta controllerBuffer+2
+  sta buffer_controller+2
   lda $4016          ; Start 
-  sta controllerBuffer+3
+  sta buffer_controller+3
   lda $4016          ; Up
-  sta controllerBuffer+4
+  sta buffer_controller+4
   lda $4016          ; Down
-  sta controllerBuffer+5
+  sta buffer_controller+5
   lda $4016          ; Left 
   ror
-  rol controllerBuffer+6
+  rol buffer_controller+6
   lda $4016          ; Right  
   ror
-  rol controllerBuffer+7
+  rol buffer_controller+7
   rts
 .endproc

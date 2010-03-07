@@ -18,7 +18,7 @@
   
 .export level_out_state_update_ppu
 .proc level_out_state_update_ppu
-  lda stateControl+levelOutStateControl::state
+  lda state_control_params+levelOutStateControl::state
   cmp #LEVELOUTSTATE_INIT
   beq levelOutStateInit
   cmp #LEVELOUTSTATE_FADEOUT
@@ -31,11 +31,11 @@
 levelOutStateInit:
 
   lda #5
-  sta frameCounter
+  sta frame_counter
   lda #0
-  sta paletteStep
+  sta palette_step
   lda #LEVELOUTSTATE_FADEOUT
-  sta stateControl+levelOutStateControl::state
+  sta state_control_params+levelOutStateControl::state
   
   lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
@@ -47,56 +47,56 @@ levelOutStateInit:
   ;************************************************************
 levelOutStateFadeOut:
 
-  dec frameCounter
+  dec frame_counter
   beq :+
   jmp skipIncPaletteStep
 :
   
   lda #5
-  sta frameCounter
+  sta frame_counter
   
-  lda paletteStep
+  lda palette_step
   cmp #6
   bmi :+ 
   
   ;this is the end condition of the fade out. Instead of skipping the step
   ;we want to actually switch to the level in state.
   
-  lda nomolosLives
+  lda nomolos_status_lives
   
   bmi livesNegativeMeansGameOver
   
   lda #LEVELINSTATE_INIT
-  sta stateControl+levelOutStateControl::state
+  sta state_control_params+levelOutStateControl::state
   switchState level_in_state_update, level_in_state_update_ppu
   jmp skipIncPaletteStep
   
 livesNegativeMeansGameOver:
 
   lda #GAMEOVERSTATE_INIT
-  sta stateControl+gameOverStateControl::state
+  sta state_control_params+gameOverStateControl::state
   switchState game_over_state_update, game_over_state_update_ppu
   jmp skipIncPaletteStep
 
 :
   
-  inc paletteStep
+  inc palette_step
 
   ;************************************************************
-  ;Load paletteStep, decide how to modify the current palette
+  ;Load palette_step, decide how to modify the current palette
   ;based on that step. 
   ;************************************************************
-  lda paletteStep
+  lda palette_step
   cmp #3
   bpl stepGreaterThanOrEqualToFour
 stepLessThanFour:
 
   ;load the address of the current palette in ROM
   ldy #ROMDefinitionTableStruct::palette
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
   ldy #0
   lda #$3F
@@ -114,7 +114,7 @@ stepLessThanFour:
   lda (w0),y
   
   ;load the current palette step
-  ldx paletteStep
+  ldx palette_step
 darkenPaletteLoop:
   cmp #$10
   bmi paletteEntryLessThan16
@@ -161,13 +161,13 @@ skipIncPaletteStep:
   
 stateCommandComplete:
 
-  lda nametableToUpdate
+  lda name_table_to_update
   eor #$04
   sta $2006
   lda #$00
   sta $2006
 
-  lda scrollX
+  lda camera_scroll_x
   sta $2005
   lda #0
   sta $2005
@@ -175,8 +175,8 @@ stateCommandComplete:
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (romDefinitionTableBaseAddress),y
-  sta nextBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
   jsr mapper_switch_bank
   jsr ft_music_play
   .endif

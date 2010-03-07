@@ -15,13 +15,13 @@
 .export camera_to_screen_coords
 .proc camera_to_screen_coords
 
-  ;subtract scrollX from the input X coordinate
+  ;subtract camera_scroll_x from the input X coordinate
   sec
   lda w0 ;load low byte of 16 bit X coord
-  sbc scrollX
+  sbc camera_scroll_x
   sta w0
   lda w0+1 ;load high byte of 16 bit x coord
-  sbc scrollX+1
+  sbc camera_scroll_x+1
   sta w0+1
   ;do nothing to y coordinate since camera never moves from 0 vertically
   
@@ -29,19 +29,19 @@
   
 .endproc
 
-;resets camera to the beginning of a level (scrollX = 0)
+;resets camera to the beginning of a level (camera_scroll_x = 0)
 .export camera_reset
 .proc camera_reset
 
   lda #0
-  sta nextScrollX
-  sta nextScrollX+1
+  sta camera_scroll_next_x
+  sta camera_scroll_next_x+1
   lda #$00
-  sta scrollX
+  sta camera_scroll_x
   lda #$00
-  sta scrollX+1
+  sta camera_scroll_x+1
   lda #$00
-  sta columnToUpdate
+  sta column_to_update
 
   rts
   
@@ -67,12 +67,12 @@
   sta b0
   ;scroll the camera
   clc
-  lda scrollX
+  lda camera_scroll_x
   adc b1
-  sta scrollX
-  lda scrollX+1
+  sta camera_scroll_x
+  lda camera_scroll_x+1
   adc #0
-  sta scrollX+1
+  sta camera_scroll_x+1
   
 :
   

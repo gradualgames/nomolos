@@ -97,11 +97,11 @@ signExtend:
 signExtendAddDone:
 .endscope
 
-  lda entityScreenY
+  lda entity_screen_y
   sec
-  sbc nomolosScreenY
-  lda entityScreenY+1
-  sbc nomolosScreenY+1
+  sbc nomolos_screen_y
+  lda entity_screen_y+1
+  sbc nomolos_screen_y+1
   
   bmi followDown
 followUp:
@@ -129,11 +129,11 @@ followDown:
 
 followVertTestDone:
 
-  lda entityScreenX
+  lda entity_screen_x
   sec
-  sbc nomolosScreenX
-  lda entityScreenX+1
-  sbc nomolosScreenX+1
+  sbc nomolos_screen_x
+  lda entity_screen_x+1
+  sbc nomolos_screen_x+1
   bmi followToRight
 followToLeft:
   
@@ -229,9 +229,9 @@ grank_draw:
   ;-32 - -40 = 8. positive = offscreen, die. negative = onscreen, do not die.
   sec
   lda #$e0
-  sbc entityScreenX
+  sbc entity_screen_x
   lda #$ff
-  sbc entityScreenX+1
+  sbc entity_screen_x+1
   bmi grankOnScreen
   
   ;jmp killGrank
@@ -298,13 +298,13 @@ nomolosNotAttacking:
   sta b2
   jsr sprite_update_animation  
   
-  lda entityScreenX
+  lda entity_screen_x
   sta w3
-  lda entityScreenX+1
+  lda entity_screen_x+1
   sta w3+1
-  lda entityScreenY
+  lda entity_screen_y
   sta w4
-  lda entityScreenY+1
+  lda entity_screen_y+1
   sta w4+1
   
   jsr sprite_draw_animation_16bit

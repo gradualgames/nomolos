@@ -19,10 +19,10 @@ blankSound:
   pha
 
   ;load current sound offset
-  ldy soundOff
+  ldy sound_offset
 keepFinishing:
   ;load command
-  lda (soundAddr),y
+  lda (sound_address),y
   ;at end?
   cmp #$ff
   beq soundFinished
@@ -31,7 +31,7 @@ keepFinishing:
   bne enableCommandNotFoundYet
   ;move on to channel value
   iny
-  lda (soundAddr),y
+  lda (sound_address),y
   ;move back to command index
   dey
   ;re-enable that channel
@@ -50,7 +50,7 @@ enableCommandNotFoundYet:
   
 soundFinished:
 
-  sty soundOff
+  sty sound_offset
 
   ;restore x (entities use this)
   pla
@@ -64,9 +64,9 @@ soundFinished:
 .proc sound_play
 
   ;load current sound offset
-  ldy soundOff
+  ldy sound_offset
   ;load x with the offset from $4000 (or famitracker channel command)
-  lda (soundAddr),y
+  lda (sound_address),y
   
   tax
   ;see if we're at the end of the sound
@@ -83,7 +83,7 @@ soundFinished:
   iny
   
   ;grab the value
-  lda (soundAddr),y
+  lda (sound_address),y
   .ifdef MUSIC_ENABLE
   tax
   jsr ft_disable_channel
@@ -91,7 +91,7 @@ soundFinished:
   
   ;point to the next entry in the sound
   iny
-  sty soundOff
+  sty sound_offset
   
   jmp soundDone
 @notDisable:
@@ -102,7 +102,7 @@ soundFinished:
   iny
   
   ;grab the value
-  lda (soundAddr),y
+  lda (sound_address),y
   .ifdef MUSIC_ENABLE
   tax
   jsr ft_enable_channel
@@ -110,7 +110,7 @@ soundFinished:
   
   ;point to the next entry in the sound
   iny
-  sty soundOff
+  sty sound_offset
   
   jmp soundDone
 @notEnable:
@@ -119,14 +119,14 @@ soundFinished:
   iny
 
   ;grab the value
-  lda (soundAddr),y
+  lda (sound_address),y
   
   ;stuff the value into the sound register
   sta $4000,x
 
   ;point to the next entry in the sound
   iny
-  sty soundOff
+  sty sound_offset
 
 soundDone:
 
@@ -142,11 +142,11 @@ soundDone:
 
   jsr sound_finish
   lda w0
-  sta soundAddr
+  sta sound_address
   lda w0+1
-  sta soundAddr+1
+  sta sound_address+1
   lda #0
-  sta soundOff  
+  sta sound_offset  
 
   rts
 
@@ -164,11 +164,11 @@ soundDone:
   
   ;make sure the sound effect system is playing nothing at first
   lda #<blankSound
-  sta soundAddr
+  sta sound_address
   lda #>blankSound
-  sta soundAddr+1
+  sta sound_address+1
   lda #$00
-  sta soundOff
+  sta sound_offset
   rts
   
 .endproc

@@ -22,8 +22,8 @@
 
   ;wait for vblank to complete
   lda #0
-  sta vblankDone
-: lda vblankDone
+  sta vblank_done
+: lda vblank_done
   beq :-
 
   ;turn monochrome bit on
@@ -43,7 +43,7 @@
   
   jsr map_decode
     
-  lda stateControl+playLevelStateControl::state
+  lda state_control_params+playLevelStateControl::state
   cmp #PLAYLEVELSTATE_SWITCHLEVEL
   beq switchLevel
   cmp #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
@@ -52,10 +52,10 @@
   jmp stateCommandComplete
   
 switchLevel:
-  lda stateControl+playLevelStateControl::levelNum
-  sta stateControl+loadLevelStateControl::levelToLoad
+  lda state_control_params+playLevelStateControl::levelNum
+  sta state_control_params+loadLevelStateControl::levelToLoad
   lda #LOADLEVELSTATE_INIT
-  sta stateControl+loadLevelStateControl::state
+  sta state_control_params+loadLevelStateControl::state
   
   switchState load_level_state_update, load_level_state_update_ppu
   
@@ -64,7 +64,7 @@ switchLevel:
 switchToLevelOutState:
 
   lda #LEVELOUTSTATE_INIT
-  sta stateControl+levelOutStateControl::state
+  sta state_control_params+levelOutStateControl::state
   switchState level_out_state_update, level_out_state_update_ppu
   
 stateCommandComplete:
@@ -89,7 +89,7 @@ stateCommandComplete:
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta b0
   jsr mapper_switch_bank
   jsr ft_music_play
@@ -98,7 +98,7 @@ stateCommandComplete:
   jsr sound_play
   
   lda #1
-  sta vblankDone
+  sta vblank_done
   rts
 .endproc
   

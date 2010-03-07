@@ -20,11 +20,11 @@
 .export map_test_collision
 .proc map_test_collision
   ;switch to the level and music bank
-  lda currentBank  ;save current bank
+  lda mapper_bank_current  ;save current bank
   pha
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (romDefinitionTableBaseAddress),y
-  sta nextBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
   jsr mapper_switch_bank
 
   lda #0
@@ -45,10 +45,10 @@
   
   ;add this value to the level base address and store it in w2
   clc
-  lda levelBaseAddress  
+  lda base_address_level  
   adc w0
   sta w2
-  lda levelBaseAddress+1
+  lda base_address_level+1
   adc w0+1
   sta w2+1
   
@@ -76,10 +76,10 @@
   ;add this value to the base address and store it in w4
   clc
   lda w3
-  adc metametaTileTableBaseAddress
+  adc base_address_meta_meta_tile_table
   sta w4
   lda w3+1
-  adc metametaTileTableBaseAddress+1
+  adc base_address_meta_meta_tile_table+1
   sta w4+1
   
   ;now we have to figure out what row to look at.
@@ -95,7 +95,7 @@
   
   ;restore previous bank
   pla
-  sta nextBank
+  sta mapper_bank_next
   jsr mapper_switch_bank
   
   rts
@@ -132,13 +132,13 @@
   rol 
   sta w3+1
   
-  ;add metaTileTableBaseAddress to w3
+  ;add base_address_meta_tile_table to w3
   clc
   lda w3
-  adc metaTileTableBaseAddress
+  adc base_address_meta_tile_table
   sta w3
   lda w3+1
-  adc metaTileTableBaseAddress+1
+  adc base_address_meta_tile_table+1
   sta w3+1
   
   ldy #0
@@ -156,7 +156,7 @@
   
   ;restore previous bank
   pla
-  sta nextBank
+  sta mapper_bank_next
   jsr mapper_switch_bank
 
   rts
@@ -166,22 +166,22 @@
 .proc map_decode
   ;switch to the level and music bank
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (romDefinitionTableBaseAddress),y
-  sta nextBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
   jsr mapper_switch_bank
 
   ;load the current scroll value and subtract the next scroll value. only when this is 0 or positive do we continue.
-  lda scrollX
+  lda camera_scroll_x
   sec
-  sbc nextScrollX
+  sbc camera_scroll_next_x
   sta w0
-  lda scrollX+1
-  sbc nextScrollX+1
+  lda camera_scroll_x+1
+  sbc camera_scroll_next_x+1
   sta w0+1
   beq doDecode
   bpl doDecode
   
-  ;the result was negative, which means the scroll hasn't reached nextScrollX yet. Return.
+  ;the result was negative, which means the scroll hasn't reached camera_scroll_next_x yet. Return.
   rts
   
 doDecode:
@@ -190,11 +190,11 @@ doDecode:
   ;Load the current scroll value. Shifting this 16 bit value right by 4 will produce the correct column number for the leftmost
   ;column on the screen.
 
-  lda scrollX
+  lda camera_scroll_x
   sta w0
   sta w2
   sta w3 ;spawnX
-  lda scrollX+1
+  lda camera_scroll_x+1
   sta w0+1
   sta w2+1
   sta w3+1 ;spawnX+1
@@ -205,11 +205,11 @@ doDecode:
   adc #1
   sta w3+1
   
-  ;calculate "the next" scrollX from the current scrollX value.
+  ;calculate "the next" camera_scroll_x from the current camera_scroll_x value.
   lda w2
   ;cut off anything less than 16.
   and #%11110000
-  ;do a 16 bit add of "16" to this "next" scrollX value.
+  ;do a 16 bit add of "16" to this "next" camera_scroll_x value.
   clc
   adc #$10
   sta w2
@@ -217,20 +217,20 @@ doDecode:
   adc #0
   sta w2+1
   
-  ;transfer the computed next scrollX to our nextScrollX variable.
+  ;transfer the computed next camera_scroll_x to our camera_scroll_next_x variable.
   lda w2
-  sta nextScrollX
+  sta camera_scroll_next_x
   lda w2+1
-  sta nextScrollX+1
+  sta camera_scroll_next_x+1
 
   ;calculate the nametable to draw the column into
-  lda scrollX+1
+  lda camera_scroll_x+1
   eor #$01  ;flip the lowest bit to get the opposite nametable
   and #$01  ;grab just the lowest bit
   asl
   asl
   ora #$20
-  sta nametableToUpdate
+  sta name_table_to_update
 
   ;shift right w0 by 4
   lda w0
@@ -262,15 +262,15 @@ doDecode:
   asl
   ;make sure it is from 0 to 31
   and #$1f
-  sta columnToUpdate
+  sta column_to_update
 
   ;w0 now has the column number we wish to decode.
   ;The upper byte now has the map offset * 256, and the lower byte has the offset into the map data from that point.
-  ;levelBaseAddress points to the current level. So load that address into w1, and add w0 to w1.
+  ;base_address_level points to the current level. So load that address into w1, and add w0 to w1.
 
-  lda levelBaseAddress
+  lda base_address_level
   sta w1
-  lda levelBaseAddress+1
+  lda base_address_level+1
   sta w1+1
 
   clc           ; Clear the carry flag
@@ -308,9 +308,9 @@ doDecode:
   rol 
   sta w0+1
 
-  lda metametaTileTableBaseAddress
+  lda base_address_meta_meta_tile_table
   sta w1
-  lda metametaTileTableBaseAddress+1
+  lda base_address_meta_meta_tile_table+1
   sta w1+1
 
   clc         ; Clear the carry flag
@@ -330,19 +330,19 @@ doDecode:
 ;This routine decodes a single 1x15 meta-meta tile and places the proper
 ;name table tile numbers into two 30 byte buffers for use by map_update_column_ppu
 ;w1: address of meta-meta tile to decode
-;columnTileBuffer: the buffer to which the meta-meta tile will be decoded. It will consist of
+;buffer_column: the buffer to which the meta-meta tile will be decoded. It will consist of
 ;two 30 tile columns.
 .export map_update_column
 .proc map_update_column
   ;we need to calculate what the attributecolumnToUpdate is.
-  ;we know the columnToUpdate. that's 0-31.
+  ;we know the column_to_update. that's 0-31.
   ;if we shift this right, we get the meta tile column.
   ;if we shift this right again, we get the attribute column to update.
-  lda columnToUpdate
+  lda column_to_update
   lsr
   sta b2 ;metaTileColumn
   lsr
-  sta attributeColumnToUpdate
+  sta attribute_column_to_update
 
   ldy #0
   ldy #0
@@ -374,13 +374,13 @@ nextTile:
   rol 
   sta w2+1
   
-  ;add metaTileTableBaseAddress to w2
+  ;add base_address_meta_tile_table to w2
   clc
   lda w2
-  adc metaTileTableBaseAddress
+  adc base_address_meta_tile_table
   sta w2
   lda w2+1
-  adc metaTileTableBaseAddress+1
+  adc base_address_meta_tile_table+1
   sta w2+1
   
   ldy #0
@@ -400,19 +400,19 @@ nextTile:
   iny
   ;load the top left
   lda (w2), y
-  sta metaTileBuffer
+  sta buffer_meta_tile
   ;load the top right
   iny
   lda (w2), y
-  sta metaTileBuffer+1
+  sta buffer_meta_tile+1
   ;load the bottm left tile
   iny
   lda (w2), y
-  sta metaTileBuffer+2
+  sta buffer_meta_tile+2
   ;load the bottom right tile
   iny
   lda (w2), y
-  sta metaTileBuffer+3
+  sta buffer_meta_tile+3
   ;load the entity number to spawn
   iny
   lda (w2), y
@@ -454,21 +454,21 @@ doNotSpawn:
 
   ;now y should have the offset into the column buffer
   ;load the top left tile
-  lda metaTileBuffer
+  lda buffer_meta_tile
   ;store it in left column
-  sta columnTileBuffer, y
+  sta buffer_column, y
   ;load the top right tile
-  lda metaTileBuffer+1
+  lda buffer_meta_tile+1
   ;store it in the right column
-  sta columnTileBuffer+30, y
+  sta buffer_column+30, y
   ;load the bottom left tile
-  lda metaTileBuffer+2
+  lda buffer_meta_tile+2
   ;store it in the left column
-  sta columnTileBuffer+1, y
+  sta buffer_column+1, y
   ;load the bottom right tile
-  lda metaTileBuffer+3
+  lda buffer_meta_tile+3
   ;store it in the right column
-  sta columnTileBuffer+31, y
+  sta buffer_column+31, y
 
   pla
   tay
@@ -542,10 +542,10 @@ rowBitWasZero:
 gotMask:
 
   ldy b0
-  lda attributeBuffer, y
+  lda buffer_attribute, y
   and b5
   ora b1
-  sta attributeBuffer, y
+  sta buffer_attribute, y
 
   pla
   tax
@@ -557,13 +557,13 @@ gotMask:
   
 .export map_update_scroll_ppu
 .proc map_update_scroll_ppu
-  lda nametableToUpdate
+  lda name_table_to_update
   eor #$04
   sta $2006
   lda #$00
   sta $2006
 
-  lda scrollX
+  lda camera_scroll_x
   sta $2005
   lda #0
   sta $2005
@@ -572,29 +572,29 @@ gotMask:
 .endproc
 
 ;dumps two columns of tiles to the PPU
-;columnTileBuffer: the buffer containing both columns of tiles to write
-;columnToUpdate: the column to update
+;buffer_column: the buffer containing both columns of tiles to write
+;column_to_update: the column to update
 .export map_update_column_ppu
 .proc map_update_column_ppu
 
-  lda nametableToUpdate
+  lda name_table_to_update
   sta $2006
-  lda columnToUpdate
+  lda column_to_update
   sta $2006
 
   ldy #0
   ldx #30
 :
-  lda columnTileBuffer, y
+  lda buffer_column, y
   sta $2007
 
   iny
   dex
   bne :-
 
-  lda nametableToUpdate
+  lda name_table_to_update
   sta $2006
-  lda columnToUpdate
+  lda column_to_update
   clc
   adc #1
   sta $2006
@@ -602,7 +602,7 @@ gotMask:
   ldy #0
   ldx #30
 :
-  lda columnTileBuffer+30, y
+  lda buffer_column+30, y
   sta $2007
 
   iny
@@ -616,58 +616,58 @@ gotMask:
 .proc map_update_attribute_ppu
 
 ;
-  lda nametableToUpdate
+  lda name_table_to_update
   ora #$03
   sta $2006
   lda #%11000000
-  ora attributeColumnToUpdate
+  ora attribute_column_to_update
   sta $2006
 
-  lda attributeBuffer
+  lda buffer_attribute
   sta $2007
-  lda attributeBuffer+4
+  lda buffer_attribute+4
   sta $2007
 
 ;
-  lda nametableToUpdate
+  lda name_table_to_update
   ora #$03
   sta $2006
   lda #%11000000
-  ora attributeColumnToUpdate
+  ora attribute_column_to_update
   ora #$08
   sta $2006
 
-  lda attributeBuffer+1
+  lda buffer_attribute+1
   sta $2007
-  lda attributeBuffer+5
+  lda buffer_attribute+5
   sta $2007
 
 ;
-  lda nametableToUpdate
+  lda name_table_to_update
   ora #$03
   sta $2006
   lda #%11000000
-  ora attributeColumnToUpdate
+  ora attribute_column_to_update
   ora #$10
   sta $2006
 
-  lda attributeBuffer+2
+  lda buffer_attribute+2
   sta $2007
-  lda attributeBuffer+6
+  lda buffer_attribute+6
   sta $2007
 
 ;
-  lda nametableToUpdate
+  lda name_table_to_update
   ora #$03
   sta $2006
   lda #%11000000
-  ora attributeColumnToUpdate
+  ora attribute_column_to_update
   ora #$18
   sta $2006
 
-  lda attributeBuffer+3
+  lda buffer_attribute+3
   sta $2007
-  lda attributeBuffer+7
+  lda buffer_attribute+7
   sta $2007
 
   rts  

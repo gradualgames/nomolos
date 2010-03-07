@@ -20,10 +20,10 @@ skipJmpflailItemDie:
   jmp notTouching
 skipJmpNotTouching:
       
-  lda nomolosSubState
+  lda nomolos_state_secondary
   and #nomolosAttackSetMask
   ora #nomolosAttackFlail
-  sta nomolosSubState
+  sta nomolos_state_secondary
       
   lda #<getItemSound
   sta w0
@@ -40,13 +40,13 @@ notTouching:
   lda #>FlailItem0
   sta w0+1
   
-  lda entityScreenX
+  lda entity_screen_x
   sta w3
-  lda entityScreenX+1
+  lda entity_screen_x+1
   sta w3+1
-  lda entityScreenY
+  lda entity_screen_y
   sta w4
-  lda entityScreenY+1
+  lda entity_screen_y+1
   sta w4+1
   
   jsr sprite_draw_metasprite_16bit

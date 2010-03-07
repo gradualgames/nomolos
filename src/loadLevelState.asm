@@ -19,7 +19,7 @@
 
 .export load_level_state_update
 .proc load_level_state_update
-  lda stateControl+loadLevelStateControl::state
+  lda state_control_params+loadLevelStateControl::state
   cmp #LOADLEVELSTATE_INIT
   beq loadLevelStateInit
   cmp #LOADLEVELSTATE_LOAD
@@ -33,7 +33,7 @@
   
 loadLevelStateInit:
 
-  lda stateControl+loadLevelStateControl::levelToLoad
+  lda state_control_params+loadLevelStateControl::levelToLoad
   ;multiply accumulator by 8
   asl
   asl
@@ -56,7 +56,7 @@ loadLevelStateInit:
   
   ;first bank switch to the PRG rom bank containing the level's chr data
   lda level_definition_table+level::chrPrgRomBank,x
-  sta nextBank
+  sta mapper_bank_next
   jsr mapper_switch_bank
   
   ;now load the address of the chr data from the level definition table
@@ -72,58 +72,58 @@ loadLevelStateInit:
   
   ;load PRG bank into $8000
   lda level_definition_table+level::prgRomBank,x
-  sta nextBank
+  sta mapper_bank_next
   jsr mapper_switch_bank
 
   lda level_definition_table+level::romDefinitionTable,x
-  sta romDefinitionTableBaseAddress
+  sta base_address_rom_definition_table
   lda level_definition_table+level::romDefinitionTable+1,x
-  sta romDefinitionTableBaseAddress+1
+  sta base_address_rom_definition_table+1
 
   ldy #ROMDefinitionTableStruct::Level
-  lda (romDefinitionTableBaseAddress),y
-  sta levelBaseAddress
+  lda (base_address_rom_definition_table),y
+  sta base_address_level
   iny
-  lda (romDefinitionTableBaseAddress),y
-  sta levelBaseAddress+1
+  lda (base_address_rom_definition_table),y
+  sta base_address_level+1
 
   ldy #ROMDefinitionTableStruct::MetaMetaTileTable
-  lda (romDefinitionTableBaseAddress),y
-  sta metametaTileTableBaseAddress
+  lda (base_address_rom_definition_table),y
+  sta base_address_meta_meta_tile_table
   iny
-  lda (romDefinitionTableBaseAddress),y
-  sta metametaTileTableBaseAddress+1
+  lda (base_address_rom_definition_table),y
+  sta base_address_meta_meta_tile_table+1
 
   ldy #ROMDefinitionTableStruct::MetaTileTable
-  lda (romDefinitionTableBaseAddress),y
-  sta metaTileTableBaseAddress
+  lda (base_address_rom_definition_table),y
+  sta base_address_meta_tile_table
   iny
-  lda (romDefinitionTableBaseAddress),y
-  sta metaTileTableBaseAddress+1
+  lda (base_address_rom_definition_table),y
+  sta base_address_meta_tile_table+1
   
   ldy #ROMDefinitionTableStruct::EntityDefinitionTable
-  lda (romDefinitionTableBaseAddress),y
-  sta entityDefinitionTableBaseAddress
+  lda (base_address_rom_definition_table),y
+  sta base_address_entity_definition_table
   iny
-  lda (romDefinitionTableBaseAddress),y
-  sta entityDefinitionTableBaseAddress+1
+  lda (base_address_rom_definition_table),y
+  sta base_address_entity_definition_table+1
   
   .ifdef MUSIC_ENABLE
   ldy #ROMDefinitionTableStruct::music
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta ft_music_addr
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta ft_music_addr+1
   .endif
   
   jsr sound_init
   
   ldy #ROMDefinitionTableStruct::palette
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0
   iny
-  lda (romDefinitionTableBaseAddress),y
+  lda (base_address_rom_definition_table),y
   sta w0+1
 
   waitVBlank
@@ -145,19 +145,19 @@ loadLevelStateInit:
 .endif
   
   lda #LOADLEVELSTATE_LOAD
-  sta stateControl+loadLevelStateControl::state
+  sta state_control_params+loadLevelStateControl::state
   
   jmp stateSwitchComplete
   
 loadLevelStateLoad:
 
   lda #$20
-  sta nametableToUpdate
+  sta name_table_to_update
 
-  lda columnToUpdate
+  lda column_to_update
   lsr
   tay
-  lda (levelBaseAddress),y
+  lda (base_address_level),y
 
   ;store the meta meta tile index as a 16 bit number
   sta w1
@@ -175,14 +175,14 @@ loadLevelStateLoad:
   ;now add MetaMetaTileTable to this number
   clc
   lda w1
-  adc metametaTileTableBaseAddress
+  adc base_address_meta_meta_tile_table
   sta w1
   lda w1+1
-  adc metametaTileTableBaseAddress+1
+  adc base_address_meta_meta_tile_table+1
   sta w1+1
 
   ;calculate spawnX
-  lda columnToUpdate
+  lda column_to_update
   asl
   asl
   asl
@@ -190,7 +190,7 @@ loadLevelStateLoad:
   lda #0
   sta w3+1 ;spawnX+1
   
-  lda columnToUpdate
+  lda column_to_update
   jsr map_update_column
 
   ;rendering is off in this state, so we update the PPU
@@ -200,16 +200,16 @@ loadLevelStateLoad:
   jsr map_update_scroll_ppu
 
   ;move on to next column.
-  inc columnToUpdate
-  inc columnToUpdate
+  inc column_to_update
+  inc column_to_update
   
-  lda columnToUpdate
+  lda column_to_update
   ;have we updated all the columns on the screen yet?
   cmp #32
   bne :+
   
   lda #LOADLEVELSTATE_DONE
-  sta stateControl+playLevelStateControl::state
+  sta state_control_params+playLevelStateControl::state
   
 :
   
@@ -221,22 +221,22 @@ loadLevelStateDone:
   ;keep any new entities positioned where they need to be
   ;switch to the actor and entity bank
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
-  lda (romDefinitionTableBaseAddress),y
-  sta nextBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
   jsr mapper_switch_bank
   
   jsr entity_update_all
   
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (romDefinitionTableBaseAddress),y
-  sta nextBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
   jsr mapper_switch_bank
   
   lda #$24
-  sta nametableToUpdate  
+  sta name_table_to_update  
 
   lda #PLAYLEVELSTATE_KEEPPLAYING
-  sta stateControl+playLevelStateControl::state
+  sta state_control_params+playLevelStateControl::state
   
   switchState play_level_state_update, play_level_state_update_ppu
       

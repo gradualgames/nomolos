@@ -50,9 +50,9 @@ MACROS_INC = 1
   lda #>(updateAddr)
   sta update+1
   lda #<(updatePPUAddr)
-  sta updatePPU
+  sta update_ppu
   lda #>(updatePPUAddr)
-  sta updatePPU+1
+  sta update_ppu+1
 .endmacro
 
 .macro resetAnim animAddr

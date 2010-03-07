@@ -16,7 +16,7 @@
 .export game_over_state_update
 .proc game_over_state_update
 
-  lda stateControl+gameOverStateControl::state
+  lda state_control_params+gameOverStateControl::state
   cmp #GAMEOVERSTATE_INIT
   beq gameOverStateInit
   cmp #GAMEOVERSTATE_RUN
@@ -38,7 +38,7 @@ gameOverStateInit:
   sta $2001
   
   lda #GAMEOVERSTATE_RUN
-  sta stateControl+gameOverStateControl::state
+  sta state_control_params+gameOverStateControl::state
 
   jmp stateCommandComplete
   
@@ -71,7 +71,7 @@ gameOverStateRun:
   
   ;switch to PRG block containing font1
   lda font1+font::chrPrgRomBank
-  sta nextBank
+  sta mapper_bank_next
   jsr mapper_switch_bank
   
   ;load chr data
@@ -121,21 +121,21 @@ gameOverStateRun:
   sta $2001
   
   lda #GAMEOVERSTATE_DONE
-  sta stateControl+gameOverStateControl::state
+  sta state_control_params+gameOverStateControl::state
 
   lda #200
-  sta frameCounter
+  sta frame_counter
   
   jmp stateCommandComplete
   
 gameOverStateDone:
 
-  lda frameCounter
+  lda frame_counter
   bne stateCommandComplete
 
   ;switch to title state
   lda #TITLESTATE_INIT
-  sta stateControl+titleStateControl::state
+  sta state_control_params+titleStateControl::state
   switchState title_state_update, title_state_update_ppu
   
   jmp stateCommandComplete
@@ -148,7 +148,7 @@ stateCommandComplete:
 .export game_over_state_update_ppu
 .proc game_over_state_update_ppu
 
-  dec frameCounter
+  dec frame_counter
 
   rts
 .endproc

@@ -14,7 +14,7 @@
 
 .export level_in_state_update
 .proc level_in_state_update
-  lda stateControl+levelInStateControl::state
+  lda state_control_params+levelInStateControl::state
   cmp #LEVELINSTATE_INIT
   bne :+
   jmp levelInStateInit
@@ -40,7 +40,7 @@ levelInStateInit:
   sta $2001
 
   lda #LEVELINSTATE_RUN
-  sta stateControl+levelInStateControl::state
+  sta state_control_params+levelInStateControl::state
   
   jmp stateCommandComplete
 
@@ -75,7 +75,7 @@ levelInStateRun:
   
   ;switch to PRG block containing font1
   lda font1+font::chrPrgRomBank
-  sta nextBank
+  sta mapper_bank_next
   jsr mapper_switch_bank
   
   ;load chr data
@@ -85,8 +85,8 @@ levelInStateRun:
   sta w0+1
   jsr ppu_load_chr
   
-  ;create decimal string for currentLevel variable
-  lda currentLevel
+  ;create decimal string for level_current variable
+  lda level_current
   ;add one to level so level 0 is displayed as level 1, etc.
   clc
   adc #1
@@ -99,9 +99,9 @@ levelInStateRun:
   sta w1
   lda #>powerTable
   sta w1+1
-  lda #<stringBuffer
+  lda #<ppu_string_buffer
   sta w2
-  lda #>stringBuffer
+  lda #>ppu_string_buffer
   sta w2+1
   
   jsr ppu_create_decimal_string
@@ -121,9 +121,9 @@ levelInStateRun:
   
   jsr ppu_display_string
   
-  lda #<stringBuffer
+  lda #<ppu_string_buffer
   sta w0
-  lda #>stringBuffer
+  lda #>ppu_string_buffer
   sta w0+1
   
   jsr ppu_display_string
@@ -141,8 +141,8 @@ levelInStateRun:
   sta w0+1
   jsr ppu_display_string
   
-  ;create decimal string for nomolosLives variable
-  lda nomolosLives
+  ;create decimal string for nomolos_status_lives variable
+  lda nomolos_status_lives
   sta b0
   lda #<(font1+font::digitTable)
   sta w0
@@ -152,17 +152,17 @@ levelInStateRun:
   sta w1
   lda #>powerTable
   sta w1+1
-  lda #<stringBuffer
+  lda #<ppu_string_buffer
   sta w2
-  lda #>stringBuffer
+  lda #>ppu_string_buffer
   sta w2+1
   
   jsr ppu_create_decimal_string
   
   ;now display the string right where we are in VRAM (at the end of "Lives...")
-  lda #<stringBuffer
+  lda #<ppu_string_buffer
   sta w0
-  lda #>stringBuffer
+  lda #>ppu_string_buffer
   sta w0+1
   
   jsr ppu_display_string
@@ -183,23 +183,23 @@ levelInStateRun:
   sta $2001
   
   lda #200
-  sta frameCounter
+  sta frame_counter
   
   lda #LEVELINSTATE_DONE
-  sta stateControl+levelInStateControl::state
+  sta state_control_params+levelInStateControl::state
   
   jmp stateCommandComplete
 
 levelInStateDone:
   
-  lda frameCounter
+  lda frame_counter
   bne stateCommandComplete
   
   ;load current level
-  lda currentLevel
-  sta stateControl+loadLevelStateControl::levelToLoad
+  lda level_current
+  sta state_control_params+loadLevelStateControl::levelToLoad
   lda #LOADLEVELSTATE_INIT
-  sta stateControl+loadLevelStateControl::state
+  sta state_control_params+loadLevelStateControl::state
   
   switchState load_level_state_update, load_level_state_update_ppu
   
@@ -210,7 +210,7 @@ stateCommandComplete:
 
 .export level_in_state_update_ppu
 .proc level_in_state_update_ppu
-  dec frameCounter
+  dec frame_counter
 
   rts
 .endproc

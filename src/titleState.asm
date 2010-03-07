@@ -14,7 +14,7 @@
 .export title_state_update
 .proc title_state_update
 
-  lda stateControl+titleStateControl::state
+  lda state_control_params+titleStateControl::state
   cmp #TITLESTATE_INIT
   beq titleStateInit
   cmp #TITLESTATE_RUN
@@ -35,7 +35,7 @@ titleStateInit:
   sta $2001
   
   lda #TITLESTATE_RUN
-  sta stateControl+titleStateControl::state
+  sta state_control_params+titleStateControl::state
 
   jmp stateCommandComplete
   
@@ -59,7 +59,7 @@ titleStateRun:
   
   ;now switch to the prg bank containing the chr data of the title screen.
   lda titleDef+title::chrPrgRomBank
-  sta nextBank
+  sta mapper_bank_next
   jsr mapper_switch_bank
   
   ;now load the chr data
@@ -90,14 +90,14 @@ titleStateRun:
   sta $2001
   
   lda #TITLESTATE_DONE
-  sta stateControl+titleStateControl::state
+  sta state_control_params+titleStateControl::state
   
   jmp stateCommandComplete
   
 titleStateDone:
 
   jsr controller_read
-  lda controllerBuffer+buttons::_start
+  lda buffer_controller+buttons::_start
   and #1
   beq :+
   
@@ -105,11 +105,11 @@ titleStateDone:
   ;set current level and switch to "level in" state
   ;start out Nomolos with 3 lives.
   lda #nomolosStartingLives
-  sta nomolosLives
+  sta nomolos_status_lives
   lda #startingLevel
-  sta currentLevel
+  sta level_current
   lda #LEVELINSTATE_INIT
-  sta stateControl+levelOutStateControl::state
+  sta state_control_params+levelOutStateControl::state
   switchState level_in_state_update, level_in_state_update_ppu
   
 :

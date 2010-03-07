@@ -32,13 +32,13 @@ explosionExplode:
   jsr entity_compute_screen_coordinates
 
   ;store screen coordinates
-  lda entityScreenX
+  lda entity_screen_x
   sta w3
-  lda entityScreenX+1
+  lda entity_screen_x+1
   sta w3+1
-  lda entityScreenY
+  lda entity_screen_y
   sta w4
-  lda entityScreenY+1
+  lda entity_screen_y+1
   sta w4+1
   
   ;load address of animation object into w1

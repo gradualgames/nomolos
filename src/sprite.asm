@@ -125,7 +125,7 @@ skipFrameUpdate:
 ;b2: extra bits to OR into the sprite attribute
 ;    (presumably %01000000 to flip horiz)
 ;Global Variables:
-;spriteAddress: the current sprite that will be overwritten in the sprite buffer
+;next_sprite_address: the current sprite that will be overwritten in the sprite buffer
 ;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
 ;b4: temporarily stores x offset
 ;w5: temporarily stores whether the x coordinate (low byte) and y coordinate (high byte)
@@ -267,8 +267,8 @@ yHighByteTestDone:
   lda (w0),y
   sta b3
   
-  ;we want to start writing to the sprite buffer at spriteAddress
-  ldx spriteAddress
+  ;we want to start writing to the sprite buffer at next_sprite_address
+  ldx next_sprite_address
   
   ;point to the first sprite entry, this is the y coordinate
   iny    
@@ -454,8 +454,8 @@ wrapAroundTestDoneX:
   jmp nextSpriteEntry
 skipNextSpriteEntry:
   
-  ;set spriteAddress to current value of x, this is the next sprite
-  stx spriteAddress
+  ;set next_sprite_address to current value of x, this is the next sprite
+  stx next_sprite_address
   
   ;restore regs
   pla
@@ -494,7 +494,7 @@ skipNextSpriteEntry:
 ;b2: extra bits to OR into the sprite attributes
 ;    (presumably %01000000 to flip horiz)
 ;Global Variables:
-;spriteAddress: the current sprite that will be overwritten in the sprite buffer
+;next_sprite_address: the current sprite that will be overwritten in the sprite buffer
 ;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
 .export sprite_draw_metasprite_8bit
 .proc sprite_draw_metasprite_8bit
@@ -507,8 +507,8 @@ skipNextSpriteEntry:
   lda (w0),y
   sta b3
   
-  ;we want to start writing to the sprite buffer at spriteAddress
-  ldx spriteAddress
+  ;we want to start writing to the sprite buffer at next_sprite_address
+  ldx next_sprite_address
   
   ;point to the first sprite entry, this is the y coordinate
   iny    
@@ -575,7 +575,7 @@ spriteNotFlipped:
   bne nextSpriteEntry
   
   txa
-  sta spriteAddress
+  sta next_sprite_address
   
   ;restore regs
   pla

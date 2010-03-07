@@ -14,27 +14,27 @@
 ;assumes b2 and b3 represent the width and height of the calling entity
 .proc entity_test_collision_hitbox
   ;transfer entity rectangle to w2 = left and w3 = top and b2 = width and b3 = height
-  lda entityScreenX
+  lda entity_screen_x
   sta w2
-  lda entityScreenX+1
+  lda entity_screen_x+1
   sta w2+1
-  lda entityScreenY
+  lda entity_screen_y
   sta w3
-  lda entityScreenY+1
+  lda entity_screen_y+1
   sta w3+1
   
   ;transfer Hitbox rectangle to w4 = left and w5 = top and b4 = width and b5 = height
-  lda nomolosHitboxX
+  lda nomolos_attack_rect_x
   sta w4
-  lda nomolosHitboxX+1
+  lda nomolos_attack_rect_x+1
   sta w4+1
-  lda nomolosHitboxY
+  lda nomolos_attack_rect_y
   sta w5
-  lda nomolosHitboxY+1
+  lda nomolos_attack_rect_y+1
   sta w5+1
-  lda nomolosHitboxWidth
+  lda nomolos_attack_rect_width
   sta b4
-  lda nomolosHitboxHeight
+  lda nomolos_attack_rect_height
   sta b5
     
   jsr geotests_rect_in_rect_16bit
@@ -45,23 +45,23 @@
 ;assumes b2 and b3 represent the width and height of the current entity
 .proc entity_test_collision_nomolos
   ;transfer Deentle rectangle to w2 = left and w3 = top and b2 = width and b3 = height
-  lda entityScreenX
+  lda entity_screen_x
   sta w2
-  lda entityScreenX+1
+  lda entity_screen_x+1
   sta w2+1
-  lda entityScreenY
+  lda entity_screen_y
   sta w3
-  lda entityScreenY+1
+  lda entity_screen_y+1
   sta w3+1
   
   ;transfer Nomolos rectangle to w4 = left and w5 = top and b4 = width and b5 = height
-  lda nomolosScreenX
+  lda nomolos_screen_x
   sta w4
-  lda nomolosScreenX+1
+  lda nomolos_screen_x+1
   sta w4+1
-  lda nomolosScreenY
+  lda nomolos_screen_y
   sta w5
-  lda nomolosScreenY+1
+  lda nomolos_screen_y+1
   sta w5+1
   lda #nomolosWidth
   sta b4
@@ -90,13 +90,13 @@
 
   ;save screen coordinates for use later
   lda w0
-  sta entityScreenX
+  sta entity_screen_x
   lda w0+1
-  sta entityScreenX+1
+  sta entity_screen_x+1
   lda w1
-  sta entityScreenY
+  sta entity_screen_y
   lda w1+1
-  sta entityScreenY+1
+  sta entity_screen_y+1
   rts
 .endproc
 
@@ -108,8 +108,8 @@
 
   ;switch to the actor and entity bank
   ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
-  lda (romDefinitionTableBaseAddress),y
-  sta nextBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
   jsr mapper_switch_bank
 
   ;start at last entity
@@ -139,13 +139,13 @@ nextEntity:
   ;now y points to the entity definition
   
   ;load low byte of update routine
-  lda (entityDefinitionTableBaseAddress),y
+  lda (base_address_entity_definition_table),y
   ;might as well use w0..
   sta w0
   ;point to high byte of update routine
   iny
   ;load high byte of update routine
-  lda (entityDefinitionTableBaseAddress),y
+  lda (base_address_entity_definition_table),y
   ;put the high byte into w0
   sta w0+1
 
@@ -247,7 +247,7 @@ skipUpdate:
   iny
   
   ;store the initial X offset in b2 for now
-  lda (entityDefinitionTableBaseAddress),y
+  lda (base_address_entity_definition_table),y
   sta b2
   
   ;load the low byte of the x parameter, and do a 16 bit subtract from this
@@ -268,7 +268,7 @@ skipUpdate:
   ;load initial y offset
   iny
   ;load the initial y offset and store it in b2 for now
-  lda (entityDefinitionTableBaseAddress),y
+  lda (base_address_entity_definition_table),y
   sta b2
   
   ;subtract this from the y parameter
@@ -302,7 +302,7 @@ skipUpdate:
   ;point to the initial state
   iny
   ;load initial state
-  lda (entityDefinitionTableBaseAddress),y  
+  lda (base_address_entity_definition_table),y  
   ;point to state variable in entity entry
   ;store the initial state there
   sta entity_instances+entityRAM::state,x
