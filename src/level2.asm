@@ -1,8 +1,8 @@
-.segment "CHRROM1_LEVEL2_BG"
+.segment "ROM3_4K2"
 
 .include "level2_patterns_source.inc"
 
-.segment "CHRROM1_LEVEL2_SPR"
+.segment "ROM3_4K3"
 
 .include "spritesheet1_patterns_source.inc"
 

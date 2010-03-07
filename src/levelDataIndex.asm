@@ -2,11 +2,11 @@
 .include "level1.inc"
 .include "level2.inc"
 
-.segment "CHRROM2_FONT0_BG"  
+.segment "ROM4_4K0"  
 
 .include "font0_patterns_source.inc"
 
-.segment "CHRROM3_TITLE_BG"  
+.segment "ROM4_4K2"  
 
 .include "title_patterns_source.inc"
 
