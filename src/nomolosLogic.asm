@@ -293,7 +293,7 @@ alreadyDying:
   
   clc
   lda nomolosScreenY
-  adc #$10
+  adc #$0C
   sta nomolosHitboxY
   lda nomolosScreenY+1
   adc #$00
@@ -312,7 +312,7 @@ skipNomolosFacingLeft:
 
   clc
   lda nomolosScreenY
-  adc #$10
+  adc #$0C
   sta nomolosHitboxY
   lda nomolosScreenY+1
   adc #$00
