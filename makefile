@@ -71,6 +71,10 @@ NAMELIST_GENERATOR_FLAGS = -rom $(NES_FILE) \
 #Rule for making the NES rom
 all: $(NES_FILE)
 
+#Rule for ensuring bin directory is present
+$(BIN_DIR):
+	mkdir $(BIN_DIR)
+
 #Rule for making the NES rom and generating debug files for FCEUXDSP
 debug: $(NES_FILE)
 	$(NAMELIST_GENERATOR) $(NAMELIST_GENERATOR_FLAGS)
@@ -80,9 +84,10 @@ $(NES_FILE): $(OBJECT_FILES) $(CONFIG_FILE)
 	$(LINKER) $(OBJECT_FILES) $(LINKER_FLAGS) $(NES_FILE)
 
 #Rule for assembling all the object files from source files
-$(OBJECT_FILES): $(BIN_DIR)/%.o : $(SRC_DIR)/%.asm
+$(OBJECT_FILES): $(BIN_DIR)/%.o : $(SRC_DIR)/%.asm $(BIN_DIR)
 	$(ASSEMBLER) $< $(ASSEMBLER_FLAGS) $@
 
 #Rule for cleaning the build
 clean:
 	rm -f $(OBJECT_FILES) $(NES_FILE) $(MAP_FILE) $(LST_FILES) $(DEBUG_FILE) *.nl
+	rm -rf $(BIN_DIR)
