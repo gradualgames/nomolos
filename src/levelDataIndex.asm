@@ -30,8 +30,8 @@ Level2:
 
 ;ROM definition table
 ROMDefinitionTable0:
-  .byte $02
-  .byte $00
+  .byte sprite_sheet_1_bank
+  .byte level_1_bank
   .word NomolosWalk            
   .word NomolosWalkOverlay     
   .word NomolosJump            
@@ -57,12 +57,12 @@ ROMDefinitionTable0:
   .word level1_level                  
   .word EntityDefinitionTable  
   .word level1_music                  
-  .byte $01
+  .byte level_2_index
 
 ;ROM definition table
 ROMDefinitionTable1:
-  .byte $02
-  .byte $01
+  .byte sprite_sheet_1_bank
+  .byte level_2_bank
   .word NomolosWalk           
   .word NomolosWalkOverlay    
   .word NomolosJump           
@@ -88,7 +88,7 @@ ROMDefinitionTable1:
   .word level2_level                 
   .word EntityDefinitionTable 
   .word level2_music                 
-  .byte $00
+  .byte level_1_index
   
 ;Entities
 EntityDefinitionTable:

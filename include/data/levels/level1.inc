@@ -1,6 +1,9 @@
 .ifndef LEVEL1_INC
 LEVEL1_INC = 1
 
+level_1_index = 0
+level_1_bank = 0
+
 .include "spritesheet1.inc"
 .include "level1_patterns_imports.inc"
 .import level1_palette
