@@ -17,8 +17,7 @@ level2_palette:
 ;level2_palette
   .byte $0d,$07,$06,$0d,$0d,$10,$00,$07,$0d,$10,$00,$01,$0d,$10,$28,$08
 ;spritesheet1_palette
-  .byte $3f,$0d,$38,$07,$3f,$04,$2a,$0d,$3f,$0d,$27,$20,$3f,$21,$21,$21
-  
+  .byte $0d,$0d,$08,$0b,$0d,$0d,$38,$07,$0d,$04,$2a,$0d,$0d,$0d,$27,$20  
 .export level2_meta_tile_table
 level2_meta_tile_table = MetaTileTable
 .export level2_meta_meta_tile_table
