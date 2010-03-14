@@ -130,3 +130,12 @@ SpearFly:
   .word Spear0
   .word $0000
 
+.export SkelekinWalk
+SkelekinWalk:
+  .byte $0a
+  .word Skelekin1
+  .word Skelekin0
+  .word Skelekin1
+  .word Skelekin2
+  .word $0000
+

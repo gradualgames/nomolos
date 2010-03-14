@@ -16,3 +16,4 @@
 .import GrankFly
 .import NomolosUseSpear
 .import SpearFly
+.import SkelekinWalk

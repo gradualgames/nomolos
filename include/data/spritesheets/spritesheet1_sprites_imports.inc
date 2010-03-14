@@ -41,4 +41,7 @@
 .import NomolosUseSpear0
 .import NomolosUseSpear1
 .import Spear0
+.import Skelekin0
+.import Skelekin1
+.import Skelekin2
 

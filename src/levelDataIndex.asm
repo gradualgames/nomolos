@@ -164,6 +164,14 @@ SpearItemEntity:
   .byte $00
   .byte $00
   .byte $00
+SkelekinEntity:
+	.word skelekin_update
+	.byte $00
+	.byte $10
+	.byte %00000000
+	.byte $00
+	.byte $00
+	.byte $00
   
 .export attackSound
 attackSound:

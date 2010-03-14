@@ -30,4 +30,5 @@
 .include "beedie.inc"
 .include "grank.inc"
 .include "spearitem.inc"
+.include "skelekin.inc"
   
