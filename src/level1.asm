@@ -19,7 +19,7 @@ level1_palette:
 ;level1_palette
   .byte $21,$28,$18,$08,$21,$19,$2a,$0b,$21,$0d,$07,$28,$21,$21,$21,$21
 ;spritesheet1_palette
-  .byte $21,$0d,$08,$0b,$21,$0d,$38,$07,$21,$04,$2a,$0d,$21,$0d,$27,$20
+  .byte $21,$0d,$08,$0b,$21,$04,$2a,$0d,$21,$0d,$27,$20,$21,$0d,$07,$38
 
 .export level1_meta_tile_table
 level1_meta_tile_table = MetaTileTable
