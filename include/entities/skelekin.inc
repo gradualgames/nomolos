@@ -168,9 +168,11 @@ nomolosNotAttacking:
   sta w1+1 
   
   ;load address of skelekin animation definition into w2
-  lda #<SkelekinWalk
+  ldy #ROMDefinitionTableStruct::SkelekinWalk
+  lda (base_address_rom_definition_table),y
   sta w2
-  lda #>SkelekinWalk
+  iny
+  lda (base_address_rom_definition_table),y
   sta w2+1
 
   jsr sprite_update_animation  

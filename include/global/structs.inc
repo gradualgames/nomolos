@@ -127,7 +127,18 @@ TITLESTATE_DONE = %00000010
   SlumpedArmorOverlay .word
   ScaredyCat .word
   ScaredyCatOverlay .word
+  
   Heart0 .word
+  Spear0 .word
+  GrankFly .word
+  BeedieBlob .word
+  FlailItem0 .word
+  DeentleWalk .word
+  Explosion .word
+  Mouse .word
+  OneUp0 .word
+  SkelekinWalk .word
+  
   attackSound .word
   hitSound .word
   palette .word

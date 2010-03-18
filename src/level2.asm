@@ -4,7 +4,7 @@
 
 .segment "ROM3_4K3"
 
-.include "spritesheet1_patterns_source.inc"
+.include "spritesheet2_patterns_source.inc"
 
 .segment "ROM1"
 
@@ -17,7 +17,7 @@ level2_palette:
 ;level2_palette
   .byte $0d,$07,$06,$0d,$0d,$10,$00,$07,$0d,$10,$00,$01,$0d,$10,$28,$08
 ;spritesheet1_palette
-  .byte $0d,$0d,$08,$0b,$0d,$04,$2a,$0d,$0d,$0d,$27,$20,$0d,$0d,$07,$38
+  .byte $0d,$04,$29,$0d,$0d,$0d,$27,$20,$0d,$0d,$07,$38,$0d,$21,$21,$21
 
 .export level2_meta_tile_table
 level2_meta_tile_table = MetaTileTable
@@ -183,6 +183,8 @@ MetaTile76:
   .byte $01,$00,$00,$00,$07,$0f,$10,$06
 MetaTile77:
   .byte $01,$00,$00,$00,$7b,$0f,$10,$09
+MetaTile78:
+  .byte $01,$00,$00,$00,$07,$0f,$10,$0a
 MetaMetaTileTable:
 MetaMetaTile0:
   .byte $2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$2b,$30,$07,$00
@@ -209,7 +211,7 @@ MetaMetaTile10:
 MetaMetaTile11:
   .byte $06,$06,$06,$08,$0e,$15,$1c,$1c,$1c,$23,$29,$08,$08,$08,$07,$00
 MetaMetaTile12:
-  .byte $06,$06,$06,$08,$08,$16,$1d,$1d,$1d,$24,$2a,$08,$08,$40,$07,$00
+  .byte $06,$06,$06,$08,$08,$16,$1d,$1d,$1d,$24,$2a,$08,$08,$4e,$07,$00
 MetaMetaTile13:
   .byte $06,$06,$06,$06,$08,$08,$08,$08,$08,$2f,$08,$08,$08,$08,$07,$00
 MetaMetaTile14:

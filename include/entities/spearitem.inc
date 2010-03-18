@@ -35,9 +35,11 @@ skipJmpNotTouching:
   
 notTouching:
 
-  lda #<Spear0
+  ldy #ROMDefinitionTableStruct::Spear0
+  lda (base_address_rom_definition_table),y
   sta w0
-  lda #>Spear0
+  iny
+  lda (base_address_rom_definition_table),y
   sta w0+1
   
   lda entity_screen_x

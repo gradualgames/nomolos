@@ -20,6 +20,7 @@ FILES           = nomolos \
                   level1 \
                   level2 \
                   spritesheet1 \
+                  spritesheet2 \
                   loadLevelState \
                   playLevelState \
                   levelOutState \

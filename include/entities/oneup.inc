@@ -41,9 +41,11 @@ skipJmpNotTouching:
   
 notTouching:
 
-  lda #<OneUp0
+  ldy #ROMDefinitionTableStruct::OneUp0
+  lda (base_address_rom_definition_table),y
   sta w0
-  lda #>OneUp0
+  iny
+  lda (base_address_rom_definition_table),y
   sta w0+1
   
   lda entity_screen_x

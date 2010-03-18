@@ -180,10 +180,13 @@ nomolosNotAttacking:
   sta w1+1 
   
   ;load address of deentle animation definition into w2
-  lda #<DeentleWalk
+  ldy #ROMDefinitionTableStruct::DeentleWalk
+  lda (base_address_rom_definition_table),y
   sta w2
-  lda #>DeentleWalk
+  iny
+  lda (base_address_rom_definition_table),y
   sta w2+1
+  
   lda #0
   sta b2
   jsr sprite_update_animation  

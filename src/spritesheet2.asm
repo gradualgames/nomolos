@@ -18,16 +18,20 @@
 
 .segment "ROM2"
 
-.include "spritesheet1_sprites_source.inc"
-.include "spritesheet1_animations_source.inc"
+.scope spritesheet2
 
-.include "oneup.inc"
-.include "exitentity.inc"
-.include "mouse.inc"
-.include "explosion.inc"  
-.include "deentle.inc"
-.include "flailitem.inc"
-.include "beedie.inc"
-.include "grank.inc"
-.include "spearitem.inc"
-.include "skelekin.inc"
+.include "spritesheet2_sprites_source.inc"
+.include "spritesheet2_animations_source.inc"
+
+;.include "oneup.inc"
+;.include "exitentity.inc"
+;.include "mouse.inc"
+;.include "explosion.inc"  
+;.include "deentle.inc"
+;.include "flailitem.inc"
+;.include "beedie.inc"
+;.include "grank.inc"
+;.include "spearitem.inc"
+;.include "skelekin.inc"
+
+.endscope

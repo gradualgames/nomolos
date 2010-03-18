@@ -35,10 +35,12 @@ skipJmpNotTouching:
   
 notTouching:
 
-  lda #<FlailItem0
+  ldy #ROMDefinitionTableStruct::FlailItem0
+  lda (base_address_rom_definition_table),y
   sta w0
-  lda #>FlailItem0
-  sta w0+1
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w0+1  
   
   lda entity_screen_x
   sta w3

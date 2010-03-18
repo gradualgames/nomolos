@@ -1,141 +1,132 @@
 ;Animations
-.export NomolosWalk
-NomolosWalk:
+.export spritesheet1_NomolosWalk
+spritesheet1_NomolosWalk:
   .byte $06
-  .word NomolosWalk0
-  .word NomolosWalk1
-  .word NomolosWalk0
-  .word NomolosWalk2
+  .word spritesheet1_NomolosWalk0
+  .word spritesheet1_NomolosWalk1
+  .word spritesheet1_NomolosWalk0
+  .word spritesheet1_NomolosWalk2
   .word $0000
 
-.export NomolosJump
-NomolosJump:
+.export spritesheet1_NomolosJump
+spritesheet1_NomolosJump:
   .byte $0a
-  .word NomolosJump0
+  .word spritesheet1_NomolosJump0
   .word $0000
 
-.export NomolosWalkOverlay
-NomolosWalkOverlay:
+.export spritesheet1_NomolosWalkOverlay
+spritesheet1_NomolosWalkOverlay:
   .byte $0a
-  .word NomolosWalkOverlay0
-  .word NomolosWalkOverlay1
-  .word NomolosWalkOverlay0
-  .word NomolosWalkOverlay2
+  .word spritesheet1_NomolosWalkOverlay0
+  .word spritesheet1_NomolosWalkOverlay1
+  .word spritesheet1_NomolosWalkOverlay0
+  .word spritesheet1_NomolosWalkOverlay2
   .word $0000
 
-.export NomolosJumpOverlay
-NomolosJumpOverlay:
+.export spritesheet1_NomolosJumpOverlay
+spritesheet1_NomolosJumpOverlay:
   .byte $0a
-  .word NomolosJumpOverlay0
+  .word spritesheet1_NomolosJumpOverlay0
   .word $0000
 
-.export Heart
-Heart:
+.export spritesheet1_Heart
+spritesheet1_Heart:
   .byte $0a
-  .word Heart0
+  .word spritesheet1_Heart0
   .word $0000
 
-.export DeentleWalk
-DeentleWalk:
+.export spritesheet1_DeentleWalk
+spritesheet1_DeentleWalk:
   .byte $0a
-  .word Deentle0
-  .word Deentle1
+  .word spritesheet1_Deentle0
+  .word spritesheet1_Deentle1
   .word $0000
 
-.export Explosion
-Explosion:
+.export spritesheet1_Explosion
+spritesheet1_Explosion:
   .byte $02
-  .word Explosion0
-  .word Explosion1
-  .word Explosion2
+  .word spritesheet1_Explosion0
+  .word spritesheet1_Explosion1
+  .word spritesheet1_Explosion2
   .word $0000
 
-.export Mouse
-Mouse:
+.export spritesheet1_Mouse
+spritesheet1_Mouse:
   .byte $0a
-  .word Mouse0
+  .word spritesheet1_Mouse0
   .word $0000
 
-.export NomolosFight
-NomolosFight:
+.export spritesheet1_NomolosFight
+spritesheet1_NomolosFight:
   .byte $06
-  .word NomolosFight0
-  .word NomolosFight1
+  .word spritesheet1_NomolosFight0
+  .word spritesheet1_NomolosFight1
   .word $0000
 
-.export NomolosFightOverlay
-NomolosFightOverlay:
+.export spritesheet1_NomolosFightOverlay
+spritesheet1_NomolosFightOverlay:
   .byte $06
-  .word NomolosFightOverlay0
-  .word NomolosFightOverlay1
+  .word spritesheet1_NomolosFightOverlay0
+  .word spritesheet1_NomolosFightOverlay1
   .word $0000
 
-.export NomolosUseFlail
-NomolosUseFlail:
+.export spritesheet1_NomolosUseFlail
+spritesheet1_NomolosUseFlail:
   .byte $06
-  .word NomolosUseFlail0
-  .word NomolosUseFlail1
+  .word spritesheet1_NomolosUseFlail0
+  .word spritesheet1_NomolosUseFlail1
   .word $0000
 
-.export FlailBall
-FlailBall:
+.export spritesheet1_FlailBall
+spritesheet1_FlailBall:
   .byte $01
-  .word FlailBall0
-  .word FlailBall1
-  .word FlailBall2
-  .word FlailBall3
-  .word FlailBall4
-  .word FlailBall5
-  .word FlailBall6
-  .word FlailBall7
+  .word spritesheet1_FlailBall0
+  .word spritesheet1_FlailBall1
+  .word spritesheet1_FlailBall2
+  .word spritesheet1_FlailBall3
+  .word spritesheet1_FlailBall4
+  .word spritesheet1_FlailBall5
+  .word spritesheet1_FlailBall6
+  .word spritesheet1_FlailBall7
   .word $0000
 
-.export NomolosFlailOverlay
-NomolosFlailOverlay:
+.export spritesheet1_NomolosFlailOverlay
+spritesheet1_NomolosFlailOverlay:
   .byte $06
-  .word NomolosFlailOverlay0
-  .word NomolosFlailOverlay0
+  .word spritesheet1_NomolosFlailOverlay0
+  .word spritesheet1_NomolosFlailOverlay0
   .word $0000
 
-.export FlailItem
-FlailItem:
+.export spritesheet1_FlailItem
+spritesheet1_FlailItem:
   .byte $0a
-  .word FlailItem0
+  .word spritesheet1_FlailItem0
   .word $0000
 
-.export BeedieBlob
-BeedieBlob:
+.export spritesheet1_BeedieBlob
+spritesheet1_BeedieBlob:
   .byte $0a
-  .word Beedie0
-  .word Beedie1
+  .word spritesheet1_Beedie0
+  .word spritesheet1_Beedie1
   .word $0000
 
-.export GrankFly
-GrankFly:
+.export spritesheet1_GrankFly
+spritesheet1_GrankFly:
   .byte $0a
-  .word Grank0
-  .word Grank1
+  .word spritesheet1_Grank0
+  .word spritesheet1_Grank1
   .word $0000
 
-.export NomolosUseSpear
-NomolosUseSpear:
+.export spritesheet1_NomolosUseSpear
+spritesheet1_NomolosUseSpear:
   .byte $06
-  .word NomolosUseSpear0
-  .word NomolosUseSpear1
+  .word spritesheet1_NomolosUseSpear0
+  .word spritesheet1_NomolosUseSpear1
   .word $0000
 
-.export SpearFly
-SpearFly:
+.export spritesheet1_SpearFly
+spritesheet1_SpearFly:
   .byte $0a
-  .word Spear0
-  .word $0000
-
-.export SkelekinWalk
-SkelekinWalk:
-  .byte $0a
-  .word Skelekin1
-  .word Skelekin0
-  .word Skelekin1
-  .word Skelekin2
+  .word spritesheet1_Spear0
   .word $0000
 

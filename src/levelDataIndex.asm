@@ -32,23 +32,34 @@ Level2:
 ROMDefinitionTable0:
   .byte sprite_sheet_1_bank
   .byte level_1_bank
-  .word NomolosWalk            
-  .word NomolosWalkOverlay     
-  .word NomolosJump            
-  .word NomolosJumpOverlay     
-  .word NomolosFight           
-  .word NomolosFightOverlay    
-  .word NomolosUseFlail
-  .word NomolosFlailOverlay
-  .word NomolosUseSpear
-  .word NomolosFightOverlay
-  .word FlailBall
-  .word Spear0
-  .word SlumpedArmor0           
-  .word SlumpedArmorOverlay0
-  .word ScardyCat0
-  .word ScardyCatOverlay0
-  .word Heart0                 
+  .word spritesheet1_NomolosWalk            
+  .word spritesheet1_NomolosWalkOverlay     
+  .word spritesheet1_NomolosJump            
+  .word spritesheet1_NomolosJumpOverlay     
+  .word spritesheet1_NomolosFight           
+  .word spritesheet1_NomolosFightOverlay    
+  .word spritesheet1_NomolosUseFlail
+  .word spritesheet1_NomolosFlailOverlay
+  .word spritesheet1_NomolosUseSpear
+  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_FlailBall
+  .word spritesheet1_Spear0
+  .word spritesheet1_SlumpedArmor0           
+  .word spritesheet1_SlumpedArmorOverlay0
+  .word spritesheet1_ScardyCat0
+  .word spritesheet1_ScardyCatOverlay0
+  .word spritesheet1_Heart0                 
+  
+  .word spritesheet1_Spear0
+  .word spritesheet1_GrankFly
+  .word spritesheet1_BeedieBlob
+  .word spritesheet1_FlailItem0
+  .word spritesheet1_DeentleWalk
+  .word spritesheet1_Explosion
+  .word spritesheet1_Mouse
+  .word spritesheet1_OneUp0
+  .word $0000
+  
   .word attackSound            
   .word hitSound               
   .word level1_palette                
@@ -63,23 +74,34 @@ ROMDefinitionTable0:
 ROMDefinitionTable1:
   .byte sprite_sheet_1_bank
   .byte level_2_bank
-  .word NomolosWalk           
-  .word NomolosWalkOverlay    
-  .word NomolosJump           
-  .word NomolosJumpOverlay    
-  .word NomolosFight          
-  .word NomolosFightOverlay   
-  .word NomolosUseFlail
-  .word NomolosFlailOverlay
-  .word NomolosUseSpear
-  .word NomolosFightOverlay
-  .word FlailBall
-  .word Spear0
-  .word SlumpedArmor0         
-  .word SlumpedArmorOverlay0
-  .word ScardyCat0
-  .word ScardyCatOverlay0
-  .word Heart0                
+  .word spritesheet2_NomolosWalk            
+  .word spritesheet2_NomolosWalkOverlay     
+  .word spritesheet2_NomolosJump            
+  .word spritesheet2_NomolosJumpOverlay     
+  .word spritesheet2_NomolosFight           
+  .word spritesheet2_NomolosFightOverlay    
+  .word spritesheet2_NomolosUseFlail
+  .word spritesheet2_NomolosFlailOverlay
+  .word spritesheet2_NomolosUseSpear
+  .word spritesheet2_NomolosFightOverlay
+  .word spritesheet2_FlailBall
+  .word spritesheet2_Spear0
+  .word spritesheet2_SlumpedArmor0           
+  .word spritesheet2_SlumpedArmorOverlay0
+  .word spritesheet2_ScardyCat0
+  .word spritesheet2_ScardyCatOverlay0
+  .word spritesheet2_Heart0                 
+  
+  .word spritesheet2_Spear0
+  .word spritesheet2_GrankFly
+  .word spritesheet2_BeedieBlob
+  .word spritesheet2_FlailItem0
+  .word spritesheet2_DeentleWalk
+  .word spritesheet2_Explosion
+  .word spritesheet2_Mouse
+  .word spritesheet2_OneUp0
+  .word spritesheet2_SkelekinWalk
+  
   .word attackSound           
   .word hitSound              
   .word level2_palette               
@@ -89,6 +111,7 @@ ROMDefinitionTable1:
   .word EntityDefinitionTable 
   .word level2_music                 
   .byte level_1_index
+  
   
 ;Entities
 EntityDefinitionTable:
@@ -165,13 +188,13 @@ SpearItemEntity:
   .byte $00
   .byte $00
 SkelekinEntity:
-	.word skelekin_update
-	.byte $00
-	.byte $10
-	.byte %00000000
-	.byte $00
-	.byte $00
-	.byte $00
+  .word skelekin_update
+  .byte $00
+  .byte $10
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
   
 .export attackSound
 attackSound:

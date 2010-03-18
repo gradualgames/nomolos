@@ -290,9 +290,11 @@ nomolosNotAttacking:
   sta w1+1 
   
   ;load address of grank animation definition into w2
-  lda #<GrankFly
+  ldy #ROMDefinitionTableStruct::GrankFly
+  lda (base_address_rom_definition_table),y
   sta w2
-  lda #>GrankFly
+  iny
+  lda (base_address_rom_definition_table),y
   sta w2+1
   lda #0
   sta b2

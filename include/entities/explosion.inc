@@ -57,9 +57,11 @@ explosionExplode:
   adc #0
   sta w1+1 
   
-  lda #<Explosion
+  ldy #ROMDefinitionTableStruct::Explosion
+  lda (base_address_rom_definition_table),y
   sta w2
-  lda #>Explosion
+  iny
+  lda (base_address_rom_definition_table),y
   sta w2+1
   jsr sprite_update_animation  
   

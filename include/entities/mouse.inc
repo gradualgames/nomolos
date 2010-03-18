@@ -88,9 +88,11 @@ mouseOnScreen:
   adc #0
   sta w1+1 
   
-  lda #<Mouse
+  ldy #ROMDefinitionTableStruct::Mouse
+  lda (base_address_rom_definition_table),y
   sta w2
-  lda #>Mouse
+  iny
+  lda (base_address_rom_definition_table),y
   sta w2+1
   jsr sprite_update_animation  
   
