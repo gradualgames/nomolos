@@ -15,5 +15,6 @@ sprite_sheet_1_bank = $02
 .import beedie_update
 .import grank_update
 .import spear_item_update
+.import bat_update
 
 .endif

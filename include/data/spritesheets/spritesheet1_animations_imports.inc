@@ -16,3 +16,4 @@
 .import spritesheet1_GrankFly
 .import spritesheet1_NomolosUseSpear
 .import spritesheet1_SpearFly
+.import spritesheet1_BatFly

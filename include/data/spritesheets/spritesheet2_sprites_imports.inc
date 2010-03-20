@@ -44,4 +44,6 @@
 .import spritesheet2_Skelekin0
 .import spritesheet2_Skelekin1
 .import spritesheet2_Skelekin2
+.import spritesheet2_Bat0
+.import spritesheet2_Bat1
 

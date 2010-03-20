@@ -139,3 +139,10 @@ spritesheet2_SkelekinWalk:
   .word spritesheet2_Skelekin2
   .word $0000
 
+.export spritesheet2_BatFly
+spritesheet2_BatFly:
+  .byte $0a
+  .word spritesheet2_Bat0
+  .word spritesheet2_Bat1
+  .word $0000
+

@@ -138,6 +138,7 @@ TITLESTATE_DONE = %00000010
   Mouse .word
   OneUp0 .word
   SkelekinWalk .word
+  BatFly .word
   
   attackSound .word
   hitSound .word

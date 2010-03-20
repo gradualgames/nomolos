@@ -370,4 +370,14 @@ spritesheet2_Skelekin2:
   .byte $10,$b1,$01,$08,$00
   .byte $18,$b6,$01,$00,$08
   .byte $18,$b7,$01,$08,$00
+.export spritesheet2_Bat0
+spritesheet2_Bat0:
+  .byte $02
+  .byte $00,$ae,$00,$00,$08
+  .byte $00,$af,$00,$08,$00
+.export spritesheet2_Bat1
+spritesheet2_Bat1:
+  .byte $02
+  .byte $00,$b4,$00,$00,$08
+  .byte $00,$b5,$00,$08,$00
 

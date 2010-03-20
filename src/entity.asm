@@ -207,6 +207,13 @@ skipUpdate:
   tya 
   pha
 
+  ;if 0 is passed in, we are not to spawn an entity.
+  lda b0
+  beq do_not_spawn
+  
+  ;subtract from entity index to get zero based entity index
+  dec b0
+  
   ;start at the last entity
   ldy #$0f
 :
@@ -309,6 +316,8 @@ skipUpdate:
   
   ;at this point the entity should be fully spawned and ready
   ;to have its update routine called.
+  
+do_not_spawn:
   
   ;restore regs
   pla

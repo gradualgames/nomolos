@@ -320,7 +320,7 @@ killGrank:
   sta entity_instances+entityRAM::alive,x
   
   ;spawn an explosion entity
-  lda #ExplosionIndex
+  lda #entity_index_explosion
   sta b0
 
   ;get out low byte of positionX

@@ -17,3 +17,4 @@
 .import spritesheet2_NomolosUseSpear
 .import spritesheet2_SpearFly
 .import spritesheet2_SkelekinWalk
+.import spritesheet2_BatFly

@@ -1,24 +1,24 @@
-.ifndef DEENTLE_INC
-DEENTLE_INC = 1
+.ifndef BAT_INC
+BAT_INC = 1
 
-DEENTLE_INITSTATE = 0
-DEENTLE_MOVERIGHTSTATE = 1
-DEENTLE_MOVELEFTSTATE = 2
+BAT_INITSTATE = 0
+BAT_MOVERIGHTSTATE = 1
+BAT_MOVELEFTSTATE = 2
 
-.export deentle_update
-deentle_update:
+.export bat_update
+.proc bat_update
 
   ;load current state
   lda entity_instances+entityRAM::state,x
   ;figure out what state to jump to
-  cmp #DEENTLE_INITSTATE
-  beq deentle_initState
-  cmp #DEENTLE_MOVERIGHTSTATE
-  beq deentle_moveRightState
-  cmp #DEENTLE_MOVELEFTSTATE
-  beq deentle_moveLeftState
+  cmp #BAT_INITSTATE
+  beq bat_initState
+  cmp #BAT_MOVERIGHTSTATE
+  beq bat_moveRightState
+  cmp #BAT_MOVELEFTSTATE
+  beq bat_moveLeftState
 
-deentle_initState:
+bat_initState:
 
   ;init code for animation, etc. goes here
   lda #1
@@ -26,91 +26,79 @@ deentle_initState:
   lda #$ff
   sta entity_instances+entityRAM::animationObject+1,x
   
-  ;switch state to "run"
-  lda #DEENTLE_MOVELEFTSTATE
+  ;switch state to "move left"
+  lda #BAT_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
   rts
 
-deentle_moveRightState:
+bat_moveRightState:
 
-  ;add 1 to PositionX
   clc
   lda entity_instances+entityRAM::positionX,x
-  adc #1
-  sta entity_instances+entityRAM::positionX,x
+  adc #$10
+  sta w0
   lda entity_instances+entityRAM::positionX+1,x
+  adc #$00
+  sta w0+1
+  lda entity_instances+entityRAM::positionY,x
+  clc
+  adc #$10
+  sta w1
+  lda entity_instances+entityRAM::positionY+1,x
   adc #0
-  sta entity_instances+entityRAM::positionX+1,x
-  
-  ;do PositionX - spawnPositionX
-  sec
-  lda entity_instances+entityRAM::positionX,x
-  sbc entity_instances+entityRAM::spawnPositionX,x
-  sta w0
-  lda entity_instances+entityRAM::positionX+1,x
-  sbc entity_instances+entityRAM::spawnPositionX+1,x
-  sta w0+1
-  
-  ;difference is in w0, subtract our desired delta distance from it
-  sec
-  lda w0
-  sbc #30
-  sta w0
-  lda w0+1
-  sbc #0
-  sta w0+1
-  bne dontSwitchToLeftState
-  
-  lda #DEENTLE_MOVELEFTSTATE
+  sta w1+1
+  jsr map_test_collision
+  lda b1
+  beq no_right_collision
+  lda #BAT_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
-  
-dontSwitchToLeftState:
+no_right_collision:
 
-  jsr deentle_draw
+  clc
+	lda entity_instances+entityRAM::positionX,x
+	adc #$01
+	sta entity_instances+entityRAM::positionX,x
+	lda entity_instances+entityRAM::positionX+1,x
+	adc #$00
+	sta entity_instances+entityRAM::positionX+1,x
+
+  jsr bat_draw
 
   rts
 
-deentle_moveLeftState:
-
-  ;sub 1 from PositionX
-  sec
+bat_moveLeftState:
+ 
   lda entity_instances+entityRAM::positionX,x
-  sbc #1
-  sta entity_instances+entityRAM::positionX,x
+  sta w0
   lda entity_instances+entityRAM::positionX+1,x
-  sbc #0
-  sta entity_instances+entityRAM::positionX+1,x
-  
-  ;do spawnPositionX - PositionX
-  sec
-  lda entity_instances+entityRAM::spawnPositionX,x
-  sbc entity_instances+entityRAM::positionX,x 
-  sta w0
-  lda entity_instances+entityRAM::spawnPositionX+1,x
-  sbc entity_instances+entityRAM::positionX+1,x 
   sta w0+1
-  
-  ;difference is in w0, subtract our desired delta distance from it
-  sec
-  lda w0
-  sbc #30
-  sta w0
-  lda w0+1
-  sbc #0
-  sta w0+1
-  
-  bne dontSwitchToRightState
-  
-  lda #DEENTLE_MOVERIGHTSTATE
+  lda entity_instances+entityRAM::positionY,x
+  clc
+  adc #$10
+  sta w1
+  lda entity_instances+entityRAM::positionY+1,x
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  lda b1
+  beq no_left_collision
+  lda #BAT_MOVERIGHTSTATE
   sta entity_instances+entityRAM::state,x
-  
-dontSwitchToRightState:
+no_left_collision:
+ 
+  sec
+	lda entity_instances+entityRAM::positionX,x
+	sbc #$01
+	sta entity_instances+entityRAM::positionX,x
+	lda entity_instances+entityRAM::positionX+1,x
+	sbc #$00
+	sta entity_instances+entityRAM::positionX+1,x
 
-  jsr deentle_draw
+  jsr bat_draw
 
   rts
   
-deentle_draw:
+bat_draw:
 
   jsr entity_compute_screen_coordinates
 
@@ -122,13 +110,13 @@ deentle_draw:
   sbc entity_screen_x
   lda #$ff
   sbc entity_screen_x+1
-  bmi deentleOnScreen
+  bmi batOnScreen
   
-  jmp killDeentle
+  jmp killBat
   
-deentleOnScreen:  
+batOnScreen:  
   
-  ;load deentle width and height
+  ;load bat width and height
   lda #$10
   sta b2
   lda #$10
@@ -143,7 +131,7 @@ deentleOnScreen:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
   
-  ;load deentle width and height
+  ;load bat width and height
   lda #$10
   sta b2
   lda #$10
@@ -159,7 +147,7 @@ deentleOnScreen:
   sta w0+1
   jsr sound_load
   
-  jmp killDeentle
+  jmp killBat
   
 nomolosNotAttacking:
 
@@ -179,16 +167,14 @@ nomolosNotAttacking:
   adc #0
   sta w1+1 
   
-  ;load address of deentle animation definition into w2
-  ldy #ROMDefinitionTableStruct::DeentleWalk
+  ;load address of bat animation definition into w2
+  ldy #ROMDefinitionTableStruct::BatFly
   lda (base_address_rom_definition_table),y
   sta w2
   iny
   lda (base_address_rom_definition_table),y
   sta w2+1
-  
-  lda #0
-  sta b2
+
   jsr sprite_update_animation  
   
   lda entity_screen_x
@@ -200,11 +186,21 @@ nomolosNotAttacking:
   lda entity_screen_y+1
   sta w4+1
   
+  lda entity_instances+entityRAM::state,x
+  cmp #BAT_MOVELEFTSTATE
+  bne bat_moving_right
+  lda #%01000000
+  sta b2
+  jmp bat_direction_test_done
+bat_moving_right:
+  lda #%00000000
+  sta b2
+bat_direction_test_done:
   jsr sprite_draw_animation_16bit
-deentleOffscreen:
+batOffscreen:
   rts
   
-killDeentle:
+killBat:
 
   ;make it dead
   lda #0
@@ -228,5 +224,7 @@ killDeentle:
   jsr entity_spawn
 
   rts
+
+.endproc
   
 .endif

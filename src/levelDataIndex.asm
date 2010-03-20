@@ -59,6 +59,7 @@ ROMDefinitionTable0:
   .word spritesheet1_Mouse
   .word spritesheet1_OneUp0
   .word $0000
+  .word spritesheet1_BatFly
   
   .word attackSound            
   .word hitSound               
@@ -101,6 +102,7 @@ ROMDefinitionTable1:
   .word spritesheet2_Mouse
   .word spritesheet2_OneUp0
   .word spritesheet2_SkelekinWalk
+  .word spritesheet2_BatFly
   
   .word attackSound           
   .word hitSound              
@@ -191,6 +193,14 @@ SkelekinEntity:
   .word skelekin_update
   .byte $00
   .byte $10
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+BatEntity:
+  .word bat_update
+  .byte $00
+  .byte $00
   .byte %00000000
   .byte $00
   .byte $00

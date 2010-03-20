@@ -416,9 +416,6 @@ nextTile:
   ;load the entity number to spawn
   iny
   lda (w2), y
-  sec
-  sbc #1
-  bmi doNotSpawn  
   sta b0
   
   ;save metaTileColumn, this is used by map_update_attribute for the entire loop.
@@ -440,7 +437,7 @@ nextTile:
   pla
   sta b2 ;metaTileColumn
   
-doNotSpawn:
+;doNotSpawn:
   
   ;figure out an offset into the column buffer
   ;restore y but save it again

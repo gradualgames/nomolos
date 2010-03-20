@@ -337,4 +337,14 @@ spritesheet1_Spear0:
   .byte $00,$7d,$00,$00,$10
   .byte $00,$7e,$02,$08,$08
   .byte $00,$7f,$02,$10,$00
+.export spritesheet1_Bat0
+spritesheet1_Bat0:
+  .byte $02
+  .byte $00,$b7,$01,$00,$08
+  .byte $00,$b8,$01,$08,$00
+.export spritesheet1_Bat1
+spritesheet1_Bat1:
+  .byte $02
+  .byte $00,$c8,$01,$00,$08
+  .byte $00,$c9,$01,$08,$00
 

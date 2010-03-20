@@ -41,4 +41,6 @@
 .import spritesheet1_NomolosUseSpear0
 .import spritesheet1_NomolosUseSpear1
 .import spritesheet1_Spear0
+.import spritesheet1_Bat0
+.import spritesheet1_Bat1
 

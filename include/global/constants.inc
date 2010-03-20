@@ -2,16 +2,17 @@
 CONSTANTS_INC = 1
 
 ;entity indices
-DeentleIndex = 0
-ExplosionIndex = 1
-MouseIndex = 2
-ExitLevelEntityIndex = 3
-OneUpEntityIndex = 4
-FlailItemEntityIndex = 5
-BeedieEntityIndex = 6
-GrankEntityIndex = 7
-SpearItemEntityIndex = 8
-skelekin_entity_index = 9
+entity_index_deentle = 1
+entity_index_explosion = 2
+entity_index_mouse = 3
+entity_index_exit = 4
+entity_index_one_up = 5
+entity_index_flail = 6
+entity_index_beedie = 7
+entity_index_grank = 8
+entity_index_spear = 9
+entity_index_skelekin = 10
+entity_index_bat = 11
 
 ;bit positions for PPU control register $2000
 PPU0_EXECUTE_NMI = 7

@@ -31,3 +31,4 @@
 .include "grank.inc"
 .include "spearitem.inc"
 .include "skelekin.inc"
+.include "bat.inc"
