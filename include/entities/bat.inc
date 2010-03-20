@@ -1,9 +1,17 @@
 .ifndef BAT_INC
 BAT_INC = 1
 
+.struct bat_locals
+  y_velocity .word
+.endstruct
+
 BAT_INITSTATE = 0
-BAT_MOVERIGHTSTATE = 1
-BAT_MOVELEFTSTATE = 2
+BAT_DESCENT_STATE = 1
+BAT_TROUGH_STATE = 2
+BAT_ASCENT_STATE = 3
+BAT_CREST_STATE = 4
+
+BAT_VERTICAL_ACCELERATION = 20
 
 .export bat_update
 .proc bat_update
@@ -13,10 +21,14 @@ BAT_MOVELEFTSTATE = 2
   ;figure out what state to jump to
   cmp #BAT_INITSTATE
   beq bat_initState
-  cmp #BAT_MOVERIGHTSTATE
-  beq bat_moveRightState
-  cmp #BAT_MOVELEFTSTATE
-  beq bat_moveLeftState
+  cmp #BAT_DESCENT_STATE
+  beq bat_descent_state
+  cmp #BAT_TROUGH_STATE
+  beq bat_trough_state
+  cmp #BAT_ASCENT_STATE
+  beq bat_ascent_state
+  cmp #BAT_CREST_STATE
+  beq bat_crest_state
 
 bat_initState:
 
@@ -26,75 +38,145 @@ bat_initState:
   lda #$ff
   sta entity_instances+entityRAM::animationObject+1,x
   
-  ;switch state to "move left"
-  lda #BAT_MOVELEFTSTATE
+  ;clear locals
+  lda #0
+  sta entityLocals+bat_locals::y_velocity,x
+  sta entityLocals+bat_locals::y_velocity+1,x
+  
+  ;switch state to "descent"
+  lda #BAT_DESCENT_STATE
   sta entity_instances+entityRAM::state,x
   rts
 
-bat_moveRightState:
+bat_descent_state:
 
+  ;increase vertical velocity until certain value is reached, then switch to trough state.
   clc
-  lda entity_instances+entityRAM::positionX,x
-  adc #$10
-  sta w0
-  lda entity_instances+entityRAM::positionX+1,x
-  adc #$00
-  sta w0+1
-  lda entity_instances+entityRAM::positionY,x
-  clc
-  adc #$10
-  sta w1
-  lda entity_instances+entityRAM::positionY+1,x
+  lda entityLocals+bat_locals::y_velocity,x
+  adc #BAT_VERTICAL_ACCELERATION
+  sta entityLocals+bat_locals::y_velocity,x
+  lda entityLocals+bat_locals::y_velocity+1,x
   adc #0
-  sta w1+1
-  jsr map_test_collision
-  lda b1
-  beq no_right_collision
-  lda #BAT_MOVELEFTSTATE
+  sta entityLocals+bat_locals::y_velocity+1,x
+  cmp #2
+  bmi do_not_switch_to_trough_state
+  
+  lda #BAT_TROUGH_STATE
   sta entity_instances+entityRAM::state,x
-no_right_collision:
-
-  clc
-	lda entity_instances+entityRAM::positionX,x
-	adc #$01
-	sta entity_instances+entityRAM::positionX,x
-	lda entity_instances+entityRAM::positionX+1,x
-	adc #$00
-	sta entity_instances+entityRAM::positionX+1,x
+  
+do_not_switch_to_trough_state:
+  
+  jsr bat_move
 
   jsr bat_draw
 
   rts
 
-bat_moveLeftState:
- 
-  lda entity_instances+entityRAM::positionX,x
-  sta w0
-  lda entity_instances+entityRAM::positionX+1,x
-  sta w0+1
-  lda entity_instances+entityRAM::positionY,x
-  clc
-  adc #$10
-  sta w1
-  lda entity_instances+entityRAM::positionY+1,x
-  adc #0
-  sta w1+1
-  jsr map_test_collision
-  lda b1
-  beq no_left_collision
-  lda #BAT_MOVERIGHTSTATE
-  sta entity_instances+entityRAM::state,x
-no_left_collision:
- 
+bat_trough_state:
+
+  ;decrease vertical velocity until zero, then switch to ascent state.
   sec
-	lda entity_instances+entityRAM::positionX,x
-	sbc #$01
-	sta entity_instances+entityRAM::positionX,x
-	lda entity_instances+entityRAM::positionX+1,x
-	sbc #$00
-	sta entity_instances+entityRAM::positionX+1,x
+  lda entityLocals+bat_locals::y_velocity,x
+  sbc #BAT_VERTICAL_ACCELERATION
+  sta entityLocals+bat_locals::y_velocity,x
+  lda entityLocals+bat_locals::y_velocity+1,x
+  sbc #0
+  sta entityLocals+bat_locals::y_velocity+1,x
+  cmp #0
+  bne do_not_switch_to_ascent_state
+
+  lda #BAT_ASCENT_STATE
+  sta entity_instances+entityRAM::state,x
+  
+do_not_switch_to_ascent_state:
+  
+  jsr bat_move
+  
+  jsr bat_draw
+
+  rts
+  
+bat_ascent_state:
+
+  ;decrease vertical velocity until certain value, then switch to crest state.
+  sec
+  lda entityLocals+bat_locals::y_velocity,x
+  sbc #10
+  sta entityLocals+bat_locals::y_velocity,x
+  lda entityLocals+bat_locals::y_velocity+1,x
+  sbc #0
+  sta entityLocals+bat_locals::y_velocity+1,x
+  cmp #$fe
+  bpl do_not_switch_to_crest_state
+  
+  lda #BAT_CREST_STATE
+  sta entity_instances+entityRAM::state,x
+  
+do_not_switch_to_crest_state:
+
+  jsr bat_move
 
   jsr bat_draw
+  
+  rts
+  
+bat_crest_state:
+
+  ;increase vertical velocity until zero, then switch to descent state.
+  clc
+  lda entityLocals+bat_locals::y_velocity,x
+  adc #10
+  sta entityLocals+bat_locals::y_velocity,x
+  lda entityLocals+bat_locals::y_velocity+1,x
+  adc #0
+  sta entityLocals+bat_locals::y_velocity+1,x
+  cmp #0
+  bne do_not_switch_to_descent_state
+
+  lda #BAT_DESCENT_STATE
+  sta entity_instances+entityRAM::state,x
+  
+do_not_switch_to_descent_state:
+  
+  jsr bat_move
+
+  jsr bat_draw
+  
+  rts
+  
+bat_move:
+
+  ;move bat left
+  sec
+  lda entity_instances+entityRAM::positionX,x
+  sbc #1
+  sta entity_instances+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX+1,x
+  sbc #0
+  sta entity_instances+entityRAM::positionX+1,x
+
+  ;add y velocity to 24 bit Y coordinate with sign extension
+.scope addYVelocity
+  clc
+  lda entityLocals+bat_locals::y_velocity,x
+  adc entity_instances+entityRAM::positionYFine,x
+  sta entity_instances+entityRAM::positionYFine,x
+  lda entityLocals+bat_locals::y_velocity+1,x
+  bmi signExtend
+  adc entity_instances+entityRAM::positionY,x
+  sta entity_instances+entityRAM::positionY,x
+  lda #0
+  adc entity_instances+entityRAM::positionY+1,x
+  sta entity_instances+entityRAM::positionY+1,x
+  jmp signExtendAddDone
+signExtend:
+  adc entity_instances+entityRAM::positionY,x
+  sta entity_instances+entityRAM::positionY,x
+  lda #$ff
+  adc entity_instances+entityRAM::positionY+1,x
+  sta entity_instances+entityRAM::positionY+1,x
+signExtendAddDone:
+.endscope
 
   rts
   
@@ -186,16 +268,6 @@ nomolosNotAttacking:
   lda entity_screen_y+1
   sta w4+1
   
-  lda entity_instances+entityRAM::state,x
-  cmp #BAT_MOVELEFTSTATE
-  bne bat_moving_right
-  lda #%01000000
-  sta b2
-  jmp bat_direction_test_done
-bat_moving_right:
-  lda #%00000000
-  sta b2
-bat_direction_test_done:
   jsr sprite_draw_animation_16bit
 batOffscreen:
   rts
