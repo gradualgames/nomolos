@@ -87,6 +87,12 @@ stateCommandComplete:
 .export play_level_state_update_ppu
 .proc play_level_state_update_ppu
 
+  pha
+  tya
+  pha
+  txa
+  pha
+
   jsr sprite_update_all
   jsr map_update_column_ppu
   jsr map_update_attribute_ppu
@@ -105,6 +111,13 @@ stateCommandComplete:
   
   lda #1
   sta vblank_done
+  
+  pla
+  tax
+  pla
+  tay
+  pla
+
   rts
 .endproc
   

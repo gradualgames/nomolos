@@ -113,7 +113,7 @@
   jsr mapper_switch_bank
 
   ;start at last entity
-  ldy #$0f
+  ldy #$07
 nextEntity:
   ;save y 
   tya  
@@ -215,7 +215,7 @@ skipUpdate:
   dec b0
   
   ;start at the last entity
-  ldy #$0f
+  ldy #$07
 :
   tya
   asl
@@ -229,6 +229,8 @@ skipUpdate:
   bpl :-
 :
   ;when we get here we are pointing at a dead entity with x
+  tya
+  bmi do_not_spawn
   
   ;make the entity alive. ALIVE! MUA HUAH HAH HAH
   lda #$01
