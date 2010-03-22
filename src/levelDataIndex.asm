@@ -64,9 +64,13 @@ ROMDefinitionTable0:
   .word attackSound            
   .word hitSound               
   .word level1_palette                
-  .word level1_meta_tile_table          
-  .word level1_meta_meta_tile_table      
-  .word level1_level                  
+
+  .word level1_map
+  .word level1_map_column_table
+  .word level1_attribute_column_table
+  .word level1_meta_tile_column_table
+  .word level1_meta_tile_table
+  
   .word EntityDefinitionTable  
   .word level1_music                  
   .byte level_2_index
@@ -107,9 +111,13 @@ ROMDefinitionTable1:
   .word attackSound           
   .word hitSound              
   .word level2_palette               
-  .word level2_meta_tile_table         
-  .word level2_meta_meta_tile_table     
-  .word level2_level                 
+  
+  .word level2_map
+  .word level2_map_column_table
+  .word level2_attribute_column_table
+  .word level2_meta_tile_column_table
+  .word level2_meta_tile_table
+  
   .word EntityDefinitionTable 
   .word level2_music                 
   .byte level_1_index

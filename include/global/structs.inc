@@ -143,9 +143,13 @@ TITLESTATE_DONE = %00000010
   attackSound .word
   hitSound .word
   palette .word
-  MetaTileTable .word
-  MetaMetaTileTable .word
-  Level .word
+
+  map .word
+  map_column_table .word
+  attribute_column_table .word
+  meta_tile_column_table .word
+  meta_tile_table .word
+  
   EntityDefinitionTable .word
   music .word
   NextLevel .byte

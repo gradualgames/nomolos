@@ -39,9 +39,15 @@
   jsr nomolos_update
   jsr nomolos_draw
   jsr nomolos_draw_hearts
-  jsr entity_update_all
-  
-  jsr map_decode
+  ;jsr entity_update_all
+
+  lda camera_will_scroll_right
+  beq camera_scrolling_left
+  jsr map_decode_right_side
+  jmp camera_scroll_test_done
+camera_scrolling_left:
+  jsr map_decode_left_side
+camera_scroll_test_done:
     
   lda state_control_params+playLevelStateControl::state
   cmp #PLAYLEVELSTATE_SWITCHLEVEL
@@ -90,7 +96,7 @@ stateCommandComplete:
   ;switch to the level and music bank
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (base_address_rom_definition_table),y
-  sta b0
+  sta mapper_bank_next
   jsr mapper_switch_bank
   jsr ft_music_play
   .endif

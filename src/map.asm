@@ -19,6 +19,20 @@
 ;b1: whether or not the collision was with a "solid" tile.
 .export map_test_collision
 .proc map_test_collision
+map_x_coordinate = w0
+map_y_coordinate = w1
+collision_was_hurt_tile = b0
+collision_was_solid_tile = b1
+meta_tile_column_index = w2
+
+map_index = w3
+map_column_index = w4
+attribute_column_address = w5
+map_column_address = w6
+meta_tile_column_address = w7
+meta_tile_address = w8
+
+
   ;switch to the level and music bank
   lda mapper_bank_current  ;save current bank
   pha
@@ -26,133 +40,143 @@
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
-
-  lda #0
-  sta b0
-  sta b1
-
-  ;divide X coordinate by 16 to get column coordinate
-  lda w0
-  lsr w0+1
+  
+  ;compute meta tile column index from camera_scroll_x by dividing by 16, or shifting right by 4.
+  lda map_x_coordinate
+  sta meta_tile_column_index
+  lda map_x_coordinate+1
+  sta meta_tile_column_index+1
+  
+  lda meta_tile_column_index
+  lsr meta_tile_column_index+1
   ror
-  lsr w0+1
+  lsr meta_tile_column_index+1
   ror
-  lsr w0+1
+  lsr meta_tile_column_index+1
   ror
-  lsr w0+1
+  lsr meta_tile_column_index+1
   ror
-  sta w0
+  sta meta_tile_column_index
   
-  ;add this value to the level base address and store it in w2
-  clc
-  lda base_address_level  
-  adc w0
-  sta w2
-  lda base_address_level+1
-  adc w0+1
-  sta w2+1
-  
-  ;now we have the exact offset in the level stored in w2
-  ldy #$00
-  ;load the meta tile column index
-  lda (w2),y
-  
-  sta w3
-  lda #0
-  sta w3+1
-  
-  ;now shift left w3 by 4 to get offset within the meta tile column table.
-  lda w3+1
-  asl w3
-  rol 
-  asl w3
-  rol 
-  asl w3
-  rol 
-  asl w3
-  rol 
-  sta w3+1
-  
-  ;add this value to the base address and store it in w4
-  clc
-  lda w3
-  adc base_address_meta_meta_tile_table
-  sta w4
-  lda w3+1
-  adc base_address_meta_meta_tile_table+1
-  sta w4+1
-  
-  ;now we have to figure out what row to look at.
-  ;load the high byte of the Y coordinate...if this is nonzero, we're outside the visible map.
-  lda w1+1
-  beq @insideScreen
-  
-  ;being outside the map means the map didn't hurt Nomolos.
-  lda #0
-  sta b0
-  ;being outside the map also means no collision.
-  sta b1
-  
-  ;restore previous bank
-  pla
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-  
-  rts
-@insideScreen:
-  ;load the Y coordinate
-  ;divide it by 16 to get row
-  lda w1
-  lsr w1+1
-  ror
-  lsr w1+1
-  ror
-  lsr w1+1
-  ror
-  lsr w1+1
-  ror
-  sta w1
-  ;put the result in Y so we can look up a meta tile
+  ;now meta_tile_column_index is the correct value 
+  ;calculate map_index from meta_tile_column_index
+  lda meta_tile_column_index
+  lsr
   tay
-  ;load the meta tile index
-  lda (w4),y
   
-  ;get this meta tile number into a 16 bit situation so we can multiply it by 8
-  sta w3
+  ;now, we want to use map index to pull a value out of the map. This value is an index into the map column table.
+  ;we want to turn that value into map_column_address
+  lda (base_address_map),y
+  ;interpret this as a 16 bit value
+  sta map_column_address
   lda #0
-  sta w3+1
+  sta map_column_address+1
   
-  ;now shift left w3 by 3 to get offset within the meta tile table.
-  lda w3+1
-  asl w3
+  ;shift left the map column address by 2
+  lda map_column_address+1
+  asl map_column_address
   rol 
-  asl w3
+  asl map_column_address
   rol 
-  asl w3
-  rol 
-  sta w3+1
+  sta map_column_address+1
   
-  ;add base_address_meta_tile_table to w3
+  ;add the base address on
   clc
-  lda w3
-  adc base_address_meta_tile_table
-  sta w3
-  lda w3+1
-  adc base_address_meta_tile_table+1
-  sta w3+1
+  lda base_address_map_column_table
+  adc map_column_address
+  sta map_column_address
+  lda base_address_map_column_table+1
+  adc map_column_address+1
+  sta map_column_address+1
+
+  ;point at left meta tile column index within the map column. now test for whether we are looking
+  ;at the right one instead.
+  ldy #1
   
-  ldy #0
-  
-  ;point to the "hurt" attribute. Store this in b0.
+  ;lets figure out whether we want to decode the left or the right side of the map column
+  ;check lowest bit. If it is 1, we do right side, otherwise left
+  lda meta_tile_column_index
+  and #1
+  beq decode_left_column
+decode_right_column:
+  ;point at the right meta tile column index within the map column.
   iny
-  lda (w3),y
-  sta b0
+decode_left_column:
+
+  ;get the meta tile column index
+  lda (map_column_address),y
   
-  ;point to the "solid" attribute. This is the big finale of the collision routine.
-  iny
-  ;lda #1
-  lda (w3), y
-  sta b1
+  ;interpret this as a 16 bit number
+  sta meta_tile_column_address
+  lda #0
+  sta meta_tile_column_address+1
+  
+  ;shift left the meta tile column address by 4 since each meta tile column is 16 bytes long
+  ;now shift left w0 by 4.
+  lda meta_tile_column_address+1
+  asl meta_tile_column_address
+  rol 
+  asl meta_tile_column_address
+  rol 
+  asl meta_tile_column_address
+  rol 
+  asl meta_tile_column_address
+  rol 
+  sta meta_tile_column_address+1
+  
+  ;calculate full address of meta tile column address by adding it to the base address of the meta tile column table
+  clc
+  lda base_address_meta_tile_column_table
+  adc meta_tile_column_address
+  sta meta_tile_column_address
+  lda base_address_meta_tile_column_table+1
+  adc meta_tile_column_address+1
+  sta meta_tile_column_address+1
+  
+  ;now we have full address of the meta tile column stored in meta_tile_column_address  
+  ;use y coordinate to compute index into meta tile column. divide it by 16
+  lda map_y_coordinate
+  lsr
+  lsr
+  lsr
+  lsr
+  
+  ;transfer a to y to use y as an index from the computed meta tile column
+  tay
+  
+  ;get the index of the meta tile.
+  lda (meta_tile_column_address),y
+  
+  ;interpret this as a 16 bit value
+  sta meta_tile_address
+  lda #0
+  ;now shift left the meta_tile_address by 3 to get correct offset
+  sta meta_tile_address+1
+  lda meta_tile_address+1
+  asl meta_tile_address
+  rol 
+  asl meta_tile_address
+  rol 
+  asl meta_tile_address
+  rol 
+  sta meta_tile_address+1
+  ;now calculate full address of meta_tile_address by adding base_address_meta_tile_table
+  clc
+  lda base_address_meta_tile_table
+  adc meta_tile_address
+  sta meta_tile_address
+  lda base_address_meta_tile_table+1
+  adc meta_tile_address+1
+  sta meta_tile_address+1
+
+  ;now transfer results to collision_was_hurt_tile and collision_was_solid_tile
+  ldy #1 ;index of hurt
+  lda (meta_tile_address),y
+  sta collision_was_hurt_tile
+  
+  ldy #2 ;index of solid
+  lda (meta_tile_address),y
+  sta collision_was_solid_tile
   
   ;restore previous bank
   pla
@@ -160,413 +184,384 @@
   jsr mapper_switch_bank
 
   rts
+
 .endproc
+
+;does this for left-scrolling. There is a sibling function, map_decode_right_side, for right-scrolling.
+.export map_decode_left_side
+.proc map_decode_left_side
+meta_tile_column_index = w0
   
-.export map_decode
-.proc map_decode
   ;switch to the level and music bank
+  lda mapper_bank_current  ;save current bank
+  pha
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
-
-  ;load the current scroll value and subtract the next scroll value. only when this is 0 or positive do we continue.
+  
+  ;compute meta tile column index from camera_scroll_x by dividing by 16, or shifting right by 4.
   lda camera_scroll_x
-  sec
-  sbc camera_scroll_next_x
-  sta w0
+  sta meta_tile_column_index
   lda camera_scroll_x+1
-  sbc camera_scroll_next_x+1
-  sta w0+1
-  beq doDecode
-  bpl doDecode
+  sta meta_tile_column_index+1
   
-  ;the result was negative, which means the scroll hasn't reached camera_scroll_next_x yet. Return.
-  rts
+  lda meta_tile_column_index
+  lsr meta_tile_column_index+1
+  ror
+  lsr meta_tile_column_index+1
+  ror
+  lsr meta_tile_column_index+1
+  ror
+  lsr meta_tile_column_index+1
+  ror
+  sta meta_tile_column_index
   
-doDecode:
-  ;jsr sound_play_low_c  ;quick hack to determine aurally whether each column is getting drawn only once.
-
-  ;Load the current scroll value. Shifting this 16 bit value right by 4 will produce the correct column number for the leftmost
-  ;column on the screen.
-
-  lda camera_scroll_x
-  sta w0
-  sta w2
-  sta w3 ;spawnX
+  ;now meta_tile_column_index is the correct value for the map column decoder
+  lda meta_tile_column_index
+  sta w1
+  lda meta_tile_column_index+1
+  sta w1+1
+  
+  ;compute the name_table_to_update based on the upper byte of camera_scroll_x
   lda camera_scroll_x+1
-  sta w0+1
-  sta w2+1
-  sta w3+1 ;spawnX+1
-  
-  ;add 256 to w3 to get correct spawnX
-  lda w3+1
-  clc
-  adc #1
-  sta w3+1
-  
-  ;calculate "the next" camera_scroll_x from the current camera_scroll_x value.
-  lda w2
-  ;cut off anything less than 16.
-  and #%11110000
-  ;do a 16 bit add of "16" to this "next" camera_scroll_x value.
-  clc
-  adc #$10
-  sta w2
-  lda w2+1
-  adc #0
-  sta w2+1
-  
-  ;transfer the computed next camera_scroll_x to our camera_scroll_next_x variable.
-  lda w2
-  sta camera_scroll_next_x
-  lda w2+1
-  sta camera_scroll_next_x+1
-
-  ;calculate the nametable to draw the column into
-  lda camera_scroll_x+1
-  eor #$01  ;flip the lowest bit to get the opposite nametable
-  and #$01  ;grab just the lowest bit
-  asl
-  asl
-  ora #$20
+  and #1
+  beq name_table_is_2000
+name_table_is_2400:
+  lda #$24
   sta name_table_to_update
+  sta name_table_to_view
+  jmp name_table_to_update_test_done
+name_table_is_2000:
+  lda #$20
+  sta name_table_to_update
+  sta name_table_to_view
+name_table_to_update_test_done:
 
-  ;shift right w0 by 4
-  lda w0
-  lsr w0+1
-  ror
-  lsr w0+1
-  ror
-  lsr w0+1
-  ror
-  lsr w0+1
-  ror
-  sta w0
-
-  ;At this point we should have the correct column for the leftmost column on the screen stored in w0.
-  ;Add 16 to this number and we will have the column we wish to decode.
-
-  clc
-  lda w0
-  adc #$10
-  sta w0
-  lda w0+1
-  adc #$00
-  sta w0+1
-
-  ;now that we have the correct column, figure out what it is in "tile columns" for the PPU routine.
-  ;load the column number
-  lda w0
-  ;multiply it by two, this is the tile column
-  asl
-  ;make sure it is from 0 to 31
-  and #$1f
-  sta column_to_update
-
-  ;w0 now has the column number we wish to decode.
-  ;The upper byte now has the map offset * 256, and the lower byte has the offset into the map data from that point.
-  ;base_address_level points to the current level. So load that address into w1, and add w0 to w1.
-
-  lda base_address_level
-  sta w1
-  lda base_address_level+1
-  sta w1+1
-
-  clc           ; Clear the carry flag
-  lda w0      ; Load little end of number 1 into accumulator register
-  adc w1      ; Add with carry the little end of number 2
-  sta w1      ; Store the little end of the result
-  lda w0+1    ; Load big end of number 1 into accumulator
-  adc w1+1    ; Add with carry the big end of number 2
-  sta w1+1    ; Store the big end of the result
-
-  ;at this point, w1 should now have the correct offset into the level.
-
-  ldy #0
-  ;Load the value at the map offset value just calculated.
-  lda (w1), y
-  ;we should now have a value from the map itself.
-
-  ;Use this offset to figure out which meta meta tile to look at. In other words, load it into the low byte of a word,
-  ;then shift left the word by 4 to get the correct meta meta tile address.
-
-  ;store the meta meta tile offset
-  sta w0
-  lda #0
-  sta w0+1
-
-  ;now shift left w0 by 4.
-  lda w0+1
-  asl w0
-  rol 
-  asl w0
-  rol 
-  asl w0
-  rol 
-  asl w0
-  rol 
-  sta w0+1
-
-  lda base_address_meta_meta_tile_table
-  sta w1
-  lda base_address_meta_meta_tile_table+1
-  sta w1+1
-
-  clc         ; Clear the carry flag
-  lda w0      ; Load little end of number 1 into accumulator register
-  adc w1      ; Add with carry the little end of number 2
-  sta w1      ; Store the little end of the result
-  lda w0+1    ; Load big end of number 1 into accumulator
-  adc w1+1    ; Add with carry the big end of number 2
-  sta w1+1    ; Store the big end of the result
-
-  ;Load the meta meta tile address, and call the map_update_column routine to get that meta tile into the PPU buffers.
-  jsr map_update_column
-
-  rts
-.endproc
-
-;This routine decodes a single 1x15 meta-meta tile and places the proper
-;name table tile numbers into two 30 byte buffers for use by map_update_column_ppu
-;w1: address of meta-meta tile to decode
-;buffer_column: the buffer to which the meta-meta tile will be decoded. It will consist of
-;two 30 tile columns.
-.export map_update_column
-.proc map_update_column
-  ;we need to calculate what the attributecolumnToUpdate is.
-  ;we know the column_to_update. that's 0-31.
-  ;if we shift this right, we get the meta tile column.
-  ;if we shift this right again, we get the attribute column to update.
-  lda column_to_update
+  ;compute attribute column to update based on the meta tile column index
+  lda meta_tile_column_index
   lsr
-  sta b2 ;metaTileColumn
-  lsr
+  and #%00000111
   sta attribute_column_to_update
-
-  ldy #0
-  ldy #0
-  ldx #15
-nextTile:
-  ;save y, we need it for indirect addressing again
-  sty b4 ;spawnY
-  tya
-  pha
-  sta b3 ;store the metatile row
-  lsr ;get the correct attribute row
-  sta b0
-
-  ;indirectly load the meta tile number
-  lda (w1),y
-
-  ;get this meta tile number into a 16 bit situation so we can multiply it by 8
-  sta w2
+  
+  ;compute column to update based on meta_tile_column_index
+  lda meta_tile_column_index
+  asl
+  and #%00011111
+  sta column_to_update
+  
+  jsr map_decode_column
+  
+  ;flag the ppu upload routines that we scrolled left
   lda #0
-  sta w2+1
+  sta camera_scrolled_right
   
-  ;now shift left w2 by 3 to get offset within the meta tile table.
-  lda w2+1
-  asl w2
-  rol 
-  asl w2
-  rol 
-  asl w2
-  rol 
-  sta w2+1
-  
-  ;add base_address_meta_tile_table to w2
-  clc
-  lda w2
-  adc base_address_meta_tile_table
-  sta w2
-  lda w2+1
-  adc base_address_meta_tile_table+1
-  sta w2+1
-  
-  ldy #0
-
-  ;y has the index of the attribute field
-  lda (w2), y
-  ;now a has the attribute to write
-
-  sta b1
-
-  jsr map_update_attribute
-
-  iny
-  ;let's not bother with the hurt flag for now
-  iny
-  ;let's not bother with the solid flag for now
-  iny
-  ;load the top left
-  lda (w2), y
-  sta buffer_meta_tile
-  ;load the top right
-  iny
-  lda (w2), y
-  sta buffer_meta_tile+1
-  ;load the bottm left tile
-  iny
-  lda (w2), y
-  sta buffer_meta_tile+2
-  ;load the bottom right tile
-  iny
-  lda (w2), y
-  sta buffer_meta_tile+3
-  ;load the entity number to spawn
-  iny
-  lda (w2), y
-  sta b0
-  
-  ;save metaTileColumn, this is used by map_update_attribute for the entire loop.
-  lda b2 ;metaTileColumn
-  pha
-  
-  lda w3
-  sta w0
-  lda w3+1
-  sta w0+1
-  lda b4
-  asl
-  asl
-  asl
-  asl
-  sta b1
-  jsr entity_spawn
-  
+  ;restore previous bank
   pla
-  sta b2 ;metaTileColumn
+  sta mapper_bank_next
+  jsr mapper_switch_bank
   
-;doNotSpawn:
-  
-  ;figure out an offset into the column buffer
-  ;restore y but save it again
-  pla
-  tay
-  pha
-
-  ;multiply current index by 2, this is the offset into the column buffer
-  asl a
-  tay
-
-  ;now y should have the offset into the column buffer
-  ;load the top left tile
-  lda buffer_meta_tile
-  ;store it in left column
-  sta buffer_column, y
-  ;load the top right tile
-  lda buffer_meta_tile+1
-  ;store it in the right column
-  sta buffer_column+30, y
-  ;load the bottom left tile
-  lda buffer_meta_tile+2
-  ;store it in the left column
-  sta buffer_column+1, y
-  ;load the bottom right tile
-  lda buffer_meta_tile+3
-  ;store it in the right column
-  sta buffer_column+31, y
-
-  pla
-  tay
-  iny
-  dex
-  beq @skipNextTile
-  jmp nextTile
-@skipNextTile:
-
-  rts
-.endproc
-
-;This routine updates a single attribute value in the attribute buffer.
-;b0: The attribute row to update.
-;b1: The attribute value we want to put into the attribute.
-;b2: The current metatile column.
-;b3: The current metatile row.
-.export map_update_attribute
-.proc map_update_attribute
-  tya
-  pha
-  txa
-  pha
-
-  lda b3   ;get the metatile row.
-  and #$01 ;keep the lowest bit
-  beq rowBitWasZero
-
-  ;do the column test
-  lda b2
-  and #$01
-  beq :+
-  ;row bit 1, column bit 1
-  lda #%00111111
-  sta b5
-  ror b1
-  ror b1
-  ror b1
-  jmp gotMask
-:
-  ;row bit 1, column bit 0
-  lda #%11001111
-  sta b5
-  ror b1
-  ror b1
-  ror b1
-  ror b1
-  ror b1
-  jmp gotMask
-
-
-rowBitWasZero:
-
-  ;do the column test
-  lda b2
-  and #$01
-  beq :+
-  ;row bit 0, column bit 1
-  lda #%11110011
-  sta b5
-  rol b1
-  rol b1
-  jmp gotMask
-:
-  ;row bit 0, column bit 0
-  lda #%11111100
-  sta b5
-  jmp gotMask
-
-
-gotMask:
-
-  ldy b0
-  lda buffer_attribute, y
-  and b5
-  ora b1
-  sta buffer_attribute, y
-
-  pla
-  tax
-  pla
-  tay
-
   rts
 .endproc
   
-.export map_update_scroll_ppu
-.proc map_update_scroll_ppu
-  lda name_table_to_update
-  eor #$04
-  sta $2006
-  lda #$00
-  sta $2006
-
+;computes correct parameters for map_decode_column and ppu update routines based on current camera_scroll_x.
+;does this for right-scrolling. There is a sibling function, map_decode_left_side, for left-scrolling.
+.export map_decode_right_side
+.proc map_decode_right_side
+meta_tile_column_index = w0
+  
+  ;switch to the level and music bank
+  lda mapper_bank_current  ;save current bank
+  pha
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+  
+  ;compute meta tile column index from camera_scroll_x by dividing by 16, or shifting right by 4.
   lda camera_scroll_x
-  sta $2005
-  lda #0
-  sta $2005
+  sta meta_tile_column_index
+  lda camera_scroll_x+1
+  sta meta_tile_column_index+1
+  
+  lda meta_tile_column_index
+  lsr meta_tile_column_index+1
+  ror
+  lsr meta_tile_column_index+1
+  ror
+  lsr meta_tile_column_index+1
+  ror
+  lsr meta_tile_column_index+1
+  ror
+  sta meta_tile_column_index
+  
+  ;now that we have meta tile column index, we want to add 16 to it so we're off the right side of the screen.
+  clc
+  lda meta_tile_column_index
+  adc #$10
+  sta meta_tile_column_index
+  lda meta_tile_column_index+1
+  adc #$00
+  sta meta_tile_column_index+1
+  
+  ;now meta_tile_column_index is the correct value for the map column decoder
+  lda meta_tile_column_index
+  sta w1
+  lda meta_tile_column_index+1
+  sta w1+1
+  
+  ;compute the name_table_to_update based on the upper byte of camera_scroll_x
+  lda camera_scroll_x+1
+  and #1
+  beq name_table_is_2400
+name_table_is_2000:
+  lda #$20
+  sta name_table_to_update
+  lda #$24
+  sta name_table_to_view
+  jmp name_table_to_update_test_done
+name_table_is_2400:
+  lda #$24
+  sta name_table_to_update
+  lda #$20
+  sta name_table_to_view
+name_table_to_update_test_done:
 
+  ;compute attribute column to update based on the meta tile column index
+  lda meta_tile_column_index
+  lsr
+  and #%00000111
+  sta attribute_column_to_update
+  
+  ;compute column to update based on meta_tile_column_index
+  lda meta_tile_column_index
+  asl
+  and #%00011111
+  sta column_to_update
+  
+  jsr map_decode_column
+  
+  ;flag the ppu upload routines that we scrolled right
+  lda #1
+  sta camera_scrolled_right
+  
+  ;restore previous bank
+  pla
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+  
   rts
 .endproc
+  
+;decodes a single column from the map. It will fill an entire attribute buffer
+;with the correct attributes, and it will fill a two-column buffer with tile indices.
+;does not do anything with PPU that is the job of the PPU upload routines
+;parameters:
+;expects w1 to contain index of column to decode, in meta tile column units. From this, the
+;map column index will be deduced.
+;expects base_address_map to contain address of map data
+;expects base_address_map_column_table to contain address of map column table
+;expects base_address_attribute_column_table to contain address of attribute column table
+;expects base_address_meta_tile_column_table to contain address of meta tile column table
+;expects base_address_meta_tile_table to contain address of meta tile table
+.export map_decode_column
+.proc map_decode_column
+meta_tile_column_index = w1
+map_index = w0
+map_column_index = w2
+attribute_column_address = w3
+map_column_address = w4
+meta_tile_column_address = w5
+meta_tile_address = w6
+
+  ;calculate map_index from meta_tile_column_index
+  lda meta_tile_column_index
+  lsr
+  tay
+  
+  ;now, we want to use map index to pull a value out of the map. This value is an index into the map column table.
+  ;we want to turn that value into map_column_address
+  lda (base_address_map),y
+  ;interpret this as a 16 bit value
+  sta map_column_address
+  lda #0
+  sta map_column_address+1
+  
+  ;shift left the map column address by 2
+  lda map_column_address+1
+  asl map_column_address
+  rol 
+  asl map_column_address
+  rol 
+  sta map_column_address+1
+  
+  ;add the base address on
+  clc
+  lda base_address_map_column_table
+  adc map_column_address
+  sta map_column_address
+  lda base_address_map_column_table+1
+  adc map_column_address+1
+  sta map_column_address+1
+
+  ;load the index of the attribute column
+  ldy #0
+  clc
+  lda (map_column_address),y
+  
+  ;interpret this index as a 16-bit number
+  sta attribute_column_address
+  lda #0
+  sta attribute_column_address+1
+  
+  ;now calculate the address of the attribute column based on this index
+  ;multiply by 8
+  ;now shift left attribute_column_address by 3.
+  lda attribute_column_address+1
+  asl attribute_column_address
+  rol 
+  asl attribute_column_address
+  rol 
+  asl attribute_column_address
+  rol 
+  sta attribute_column_address+1
+  
+  ;attribute_column_address now has 16-bit offset of attribute column.
+  ;now calculate address of attribute column based on table address
+  clc
+  lda base_address_attribute_column_table
+  adc attribute_column_address
+  sta attribute_column_address
+  lda base_address_attribute_column_table+1
+  adc attribute_column_address+1
+  sta attribute_column_address+1
+  
+  ;attribute_column_address now has 16-bit address of attribute column. copy it to attribute buffer
+  ldy #7
+attribute_copy_loop:
+  lda (attribute_column_address),y
+  sta buffer_attribute,y
+  dey
+  bpl attribute_copy_loop
+  
+  
+  ;point at left meta tile column index within the map column. now test for whether we are looking
+  ;at the right one instead.
+  ldy #1
+  
+  ;lets figure out whether we want to decode the left or the right side of the map column
+  ;check lowest bit. If it is 1, we do right side, otherwise left
+  lda meta_tile_column_index
+  and #1
+  beq decode_left_column
+decode_right_column:
+  ;point at the right meta tile column index within the map column.
+  iny
+decode_left_column:
+
+  ;get the meta tile column index
+  lda (map_column_address),y
+  
+  ;interpret this as a 16 bit number
+  sta meta_tile_column_address
+  lda #0
+  sta meta_tile_column_address+1
+  
+  ;shift left the meta tile column address by 4 since each meta tile column is 16 bytes long
+  ;now shift left w0 by 4.
+  lda meta_tile_column_address+1
+  asl meta_tile_column_address
+  rol 
+  asl meta_tile_column_address
+  rol 
+  asl meta_tile_column_address
+  rol 
+  asl meta_tile_column_address
+  rol 
+  sta meta_tile_column_address+1
+  
+  ;calculate full address of meta tile column address by adding it to the base address of the meta tile column table
+  clc
+  lda base_address_meta_tile_column_table
+  adc meta_tile_column_address
+  sta meta_tile_column_address
+  lda base_address_meta_tile_column_table+1
+  adc meta_tile_column_address+1
+  sta meta_tile_column_address+1
+  
+  ;now we have full address of the meta tile column stored in meta_tile_column_address  
+  ;loop through all 15 indices within the meta tile column, and write the left column to the first 30 bytes of the
+  ;buffer and the right column to the second 30 bytes of the buffer.
+  ;we don't need map column or y anymore.
+.scope decode_left_meta_tile_column
+  ldx #0
+  ldy #0
+column_loop:
+  ;start of column loop
+
+  ;get index of meta tile
+  lda (meta_tile_column_address),y
+  ;interpret this as a 16 bit value
+  sta meta_tile_address
+  lda #0
+  ;now shift left the meta_tile_address by 3 to get correct offset
+  sta meta_tile_address+1
+  lda meta_tile_address+1
+  asl meta_tile_address
+  rol 
+  asl meta_tile_address
+  rol 
+  asl meta_tile_address
+  rol 
+  sta meta_tile_address+1
+  ;now calculate full address of meta_tile_address by adding base_address_meta_tile_table
+  clc
+  lda base_address_meta_tile_table
+  adc meta_tile_address
+  sta meta_tile_address
+  lda base_address_meta_tile_table+1
+  adc meta_tile_address+1
+  sta meta_tile_address+1
+  
+  ;now meta_tile_address has full address of a meta tile to decode
+  ;store y
+  tya
+  pha
+  
+  ldy #3
+  lda (meta_tile_address),y
+  sta buffer_column,x
+  iny
+  ;pointing at top right tile index
+  lda (meta_tile_address),y
+  sta buffer_column+30,x
+  inx
+  iny
+  ;pointing at bottom left tile index
+  lda (meta_tile_address),y
+  sta buffer_column,x
+  iny
+  ;pointing at bottom right tile index
+  lda (meta_tile_address),y
+  sta buffer_column+30,x
+  inx
+  iny
+  iny
+  
+  ;restore y
+  pla
+  tay  
+  
+  ;increment y to next meta tile
+  iny
+
+  cpy #15
+  bne column_loop
+.endscope
+  
+  rts
+.endproc
+
 
 ;dumps two columns of tiles to the PPU
 ;buffer_column: the buffer containing both columns of tiles to write
@@ -668,4 +663,18 @@ gotMask:
   sta $2007
 
   rts  
+.endproc
+
+.export map_update_scroll_ppu
+.proc map_update_scroll_ppu
+  lda name_table_to_view  
+  
+  sta $2006
+  lda #$00
+  sta $2006
+
+  lda camera_scroll_x
+  sta $2005
+  lda #0
+  sta $2005
 .endproc

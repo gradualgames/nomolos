@@ -43,7 +43,7 @@ loadLevelStateInit:
   
   ;wait for vblank so we can turn off graphics, switch chr banks without graphical glitches
   waitVBlank
-	
+  
   ;turn off NMI, inc32 (for loading palette)
   lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
@@ -80,21 +80,35 @@ loadLevelStateInit:
   lda level_definition_table+level::romDefinitionTable+1,x
   sta base_address_rom_definition_table+1
 
-  ldy #ROMDefinitionTableStruct::Level
+  ldy #ROMDefinitionTableStruct::map
   lda (base_address_rom_definition_table),y
-  sta base_address_level
+  sta base_address_map
   iny
   lda (base_address_rom_definition_table),y
-  sta base_address_level+1
-
-  ldy #ROMDefinitionTableStruct::MetaMetaTileTable
+  sta base_address_map+1
+  
+  ldy #ROMDefinitionTableStruct::map_column_table
   lda (base_address_rom_definition_table),y
-  sta base_address_meta_meta_tile_table
+  sta base_address_map_column_table
   iny
   lda (base_address_rom_definition_table),y
-  sta base_address_meta_meta_tile_table+1
-
-  ldy #ROMDefinitionTableStruct::MetaTileTable
+  sta base_address_map_column_table+1
+  
+  ldy #ROMDefinitionTableStruct::attribute_column_table
+  lda (base_address_rom_definition_table),y
+  sta base_address_attribute_column_table
+  iny
+  lda (base_address_rom_definition_table),y
+  sta base_address_attribute_column_table+1
+  
+  ldy #ROMDefinitionTableStruct::meta_tile_column_table
+  lda (base_address_rom_definition_table),y
+  sta base_address_meta_tile_column_table
+  iny
+  lda (base_address_rom_definition_table),y
+  sta base_address_meta_tile_column_table+1
+  
+  ldy #ROMDefinitionTableStruct::meta_tile_table
   lda (base_address_rom_definition_table),y
   sta base_address_meta_tile_table
   iny
@@ -144,78 +158,93 @@ loadLevelStateInit:
   jsr ft_music_init
 .endif
   
+  lda #0
+  sta camera_scroll_x
+  sta camera_scroll_x+1
+  
   lda #LOADLEVELSTATE_LOAD
   sta state_control_params+loadLevelStateControl::state
-  
+    
   jmp stateSwitchComplete
   
 loadLevelStateLoad:
 
+  ;lda camera_scroll_x+1
+  ;bne done_loading_level
+
+  ;decode a column at the current scrollX.
+meta_tile_column_index = w0
+  
+  ;compute meta tile column index from camera_scroll_x by dividing by 16, or shifting right by 4.
+  lda camera_scroll_x
+  sta meta_tile_column_index
+  lda camera_scroll_x+1
+  sta meta_tile_column_index+1
+  
+  lda meta_tile_column_index
+  lsr meta_tile_column_index+1
+  ror
+  lsr meta_tile_column_index+1
+  ror
+  lsr meta_tile_column_index+1
+  ror
+  lsr meta_tile_column_index+1
+  ror
+  sta meta_tile_column_index
+  
+  ;now meta_tile_column_index is the correct value for the map column decoder
+  lda meta_tile_column_index
+  sta w1
+  lda meta_tile_column_index+1
+  sta w1+1
+  
   lda #$20
   sta name_table_to_update
-
-  lda column_to_update
-  lsr
-  tay
-  lda (base_address_level),y
-
-  ;store the meta meta tile index as a 16 bit number
-  sta w1
-  lda #0
-  sta w1+1
-
-  ;shift left this number by 4
-  ldx #4
-:
-  asl w1
-  rol w1+1
-  dex
-  bne :-
-
-  ;now add MetaMetaTileTable to this number
-  clc
-  lda w1
-  adc base_address_meta_meta_tile_table
-  sta w1
-  lda w1+1
-  adc base_address_meta_meta_tile_table+1
-  sta w1+1
-
-  ;calculate spawnX
-  lda column_to_update
-  asl
-  asl
-  asl
-  sta w3 ;spawnX
-  lda #0
-  sta w3+1 ;spawnX+1
+  lda #$20
+  sta name_table_to_view
   
-  lda column_to_update
-  jsr map_update_column
-
-  ;rendering is off in this state, so we update the PPU
-  jsr sprite_update_all
+  ;compute attribute column to update based on the meta tile column index
+  lda meta_tile_column_index
+  lsr
+  and #%00000111
+  sta attribute_column_to_update
+  
+  ;compute column to update based on meta_tile_column_index
+  lda meta_tile_column_index
+  asl
+  and #%00011111
+  sta column_to_update
+  
+  jsr map_decode_column
+  
+  ;directly upload everything to ppu
   jsr map_update_column_ppu
   jsr map_update_attribute_ppu
-  jsr map_update_scroll_ppu
 
-  ;move on to next column.
-  inc column_to_update
-  inc column_to_update
+  ;move camera_scroll_x along
+  clc
+  lda camera_scroll_x
+  adc #$10
+  sta camera_scroll_x
+  lda camera_scroll_x+1
+  adc #$00
+  sta camera_scroll_x+1
   
-  lda column_to_update
-  ;have we updated all the columns on the screen yet?
-  cmp #32
-  bne :+
+  beq load_state_not_done
   
   lda #LOADLEVELSTATE_DONE
-  sta state_control_params+playLevelStateControl::state
-  
-:
+  sta state_control_params+loadLevelStateControl::state
+
+load_state_not_done:
   
   jmp stateSwitchComplete
 
+
 loadLevelStateDone:
+
+  lda #0
+  sta camera_scroll_x
+  sta camera_scroll_x+1
 
   ;switch to play level state.  
   ;keep any new entities positioned where they need to be
@@ -225,23 +254,20 @@ loadLevelStateDone:
   sta mapper_bank_next
   jsr mapper_switch_bank
   
-  jsr entity_update_all
+  ;jsr entity_update_all
   
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
   
-  lda #$24
-  sta name_table_to_update  
-
   lda #PLAYLEVELSTATE_KEEPPLAYING
   sta state_control_params+playLevelStateControl::state
   
   switchState play_level_state_update, play_level_state_update_ppu
       
   waitVBlank
-			
+
   ;reset scroll
   lda #0
   sta $2005
@@ -263,5 +289,14 @@ stateSwitchComplete:
 
 .export load_level_state_update_ppu
 .proc load_level_state_update_ppu
+
+  ;lda #$20
+  ;sta $2006
+  ;lda #0
+  ;sta $2006
+  ;lda #0
+  ;sta $2005
+  ;sta $2005
+
   rts  
 .endproc

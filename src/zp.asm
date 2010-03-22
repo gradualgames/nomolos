@@ -156,23 +156,32 @@ nomolos_status_lives: .res 1
 .exportzp camera_scroll_x
 camera_scroll_x:                           .res 2
 
-.exportzp camera_scroll_next_x
-camera_scroll_next_x:                       .res 2
+.exportzp camera_will_scroll_right
+camera_will_scroll_right: .res 1
 
-.exportzp base_address_level
-base_address_level:                  .res 2
-
-.exportzp base_address_meta_meta_tile_table
-base_address_meta_meta_tile_table:      .res 2
-
-.exportzp base_address_meta_tile_table
-base_address_meta_tile_table:          .res 2
+.exportzp camera_scrolled_right
+camera_scrolled_right:                       .res 2
 
 .exportzp base_address_entity_definition_table
 base_address_entity_definition_table:  .res 2
 
 .exportzp base_address_rom_definition_table
 base_address_rom_definition_table: .res 2
+
+.exportzp base_address_map
+base_address_map: .res 2
+
+.exportzp base_address_map_column_table
+base_address_map_column_table: .res 2
+
+.exportzp base_address_attribute_column_table
+base_address_attribute_column_table: .res 2
+
+.exportzp base_address_meta_tile_column_table
+base_address_meta_tile_column_table: .res 2
+
+.exportzp base_address_meta_tile_table
+base_address_meta_tile_table: .res 2
 
 .exportzp level_current
 level_current:                      .res 1
@@ -194,6 +203,9 @@ column_to_update:    .res 1
 
 .exportzp name_table_to_update
 name_table_to_update: .res 1
+
+.exportzp name_table_to_view
+name_table_to_view: .res 1
 
 .exportzp next_sprite_address
 next_sprite_address: .res 1

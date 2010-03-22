@@ -3,6 +3,7 @@ CAMERA_INC = 1
 
 .import camera_to_screen_coords
 .import camera_reset
-.import camera_update
+.import camera_scroll_right
+.import camera_scroll_left
 
 .endif

@@ -7,10 +7,11 @@ level_1_bank = 0
 .include "spritesheet1.inc"
 .include "level1_patterns_imports.inc"
 .import level1_palette
-
+.import level1_map
+.import level1_map_column_table
+.import level1_attribute_column_table
+.import level1_meta_tile_column_table
 .import level1_meta_tile_table
-.import level1_meta_meta_tile_table
-.import level1_level
 .import level1_music
 
 .endif

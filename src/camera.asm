@@ -33,9 +33,6 @@
 .export camera_reset
 .proc camera_reset
 
-  lda #0
-  sta camera_scroll_next_x
-  sta camera_scroll_next_x+1
   lda #$00
   sta camera_scroll_x
   lda #$00
@@ -48,34 +45,105 @@
 .endproc
   
 ;moves the camera in response to input position
-;expects: b0 is screen X coordinate to respond to
-;output:  b0 has been adjusted based on how far the camera was scrolled.
-.export camera_update
-.proc camera_update
+;expects: w0 is screen X coordinate to respond to
+;output:  w0 has been adjusted based on how far the camera was scrolled.
+.export camera_scroll_right
+.proc camera_scroll_right
 
-  ;compare b0 to middle of screen.
-  lda b0
   sec
-  sbc #scrollReact
+  lda w0
+  sbc #200
+  lda w0+1
+  sbc #0
   bmi :+
-    
-  sta b1
-  ;adjust b0 based on difference with middle of screen.
+  
+  ;x coord was to the right of 200. now we scroll the camera, by how much? w0 - 200
   sec
-  lda b0
-  sbc b1
-  sta b0
-  ;scroll the camera
+  lda w0
+  sbc #200
+  sta w1
+  lda w0+1
+  sbc #0
+  sta w1+1
+  
   clc
   lda camera_scroll_x
-  adc b1
+  adc w1
   sta camera_scroll_x
   lda camera_scroll_x+1
-  adc #0
+  adc w1+1
   sta camera_scroll_x+1
   
+  lda #1
+  sta camera_will_scroll_right
+  
+  
 :
-  
+
+  ;compare b0 to middle of screen.
+;  lda b0
+;  
+;  sec
+;  sbc #200
+;  bmi :+
+;  
+;  sta b1
+;  sec
+;  lda b0
+;  sbc b1
+;  sta b0
+;  
+;  clc
+;  lda camera_scroll_x
+;  adc b1
+;  sta camera_scroll_x
+;  lda camera_scroll_x+1
+;  adc #0
+;  sta camera_scroll_x+1
+;  
+;  lda #1
+;  sta camera_will_scroll_right
+;:
   rts
+
+.endproc
+
+;moves the camera in response to input position
+;expects: b0 is screen X coordinate to respond to
+;output:  b0 has been adjusted based on how far the camera was scrolled.
+.export camera_scroll_left
+.proc camera_scroll_left
+
+
+  sec
+  lda w0
+  sbc #50
+  lda w0+1
+  sbc #0
+  bpl :+
   
+  ;x coord was to the left of 50. now we scroll the camera, by how much? 50 - w0
+  sec
+  lda #50
+  sbc w0
+  sta w1
+  lda #0
+  sbc w0+1
+  sta w1+1
+  
+  sec
+  lda camera_scroll_x
+  sbc w1
+  sta camera_scroll_x
+  lda camera_scroll_x+1
+  sbc w1+1
+  sta camera_scroll_x+1
+  
+  lda #0
+  sta camera_will_scroll_right
+  
+  
+:
+
+  rts
 .endproc

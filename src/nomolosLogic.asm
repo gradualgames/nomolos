@@ -980,6 +980,7 @@ skipAttack:
   adc #nomolosVerticalAccelerationHi
   sta nomolos_y_velocity+1
 DoNotIncrementSpeed:
+  jsr nomolos_compute_screen_coordinates
 
   ;************************************************************
   ;Move vertical position according to vertical speed.
@@ -1123,10 +1124,7 @@ skipJmpNotLeft:
   lda b1
   bne notLeft
   
-  ;also make certain nomolos can't walk past left part of screen
-  lda nomolos_screen_x
-  beq notLeft
-  
+ 
   ;24 bit Sub
   sec
   lda nomolos_map_x
@@ -1139,7 +1137,14 @@ skipJmpNotLeft:
   sbc #0
   sta nomolos_map_x+2
   
-  ;jsr nomolos_update_animation
+  jsr nomolos_compute_screen_coordinates
+
+  lda nomolos_screen_x
+  sta w0
+  lda nomolos_screen_x+1
+  sta w0+1
+  jsr camera_scroll_left
+
 notLeft:
   
   ;is there an on to off transition on the right button?
@@ -1167,6 +1172,7 @@ notLeft:
   bne skipJmpNotRight
   jmp notRight
 skipJmpNotRight:
+
   lda nomolos_state_primary
   and #nomolosWalkingRightAND ;state is walking right
   ora #nomolosMovingOnOR       ;state is moving
@@ -1243,8 +1249,35 @@ skipJmpNotRight:
   adc #0
   sta nomolos_map_x+2
   
+  jsr nomolos_compute_screen_coordinates
+  
+  lda nomolos_screen_x
+  sta w0
+  lda nomolos_screen_x+1
+  sta w0+1
+  jsr camera_scroll_right
 notRight:
 
+
+
+  ;************************************************************
+  ;Move camera to center itself on Nomolos.
+  ;************************************************************
+  ;lda nomolos_screen_x
+  ;sta b0
+  ;jsr camera_update
+  ;lda b0
+  ;sta nomolos_screen_x
+  
+  ;************************************************************
+  ;Update Nomolos' animation object.
+  ;************************************************************
+  jsr nomolos_update_animation
+  
+  rts
+.endproc
+  
+.proc nomolos_compute_screen_coordinates
   ;************************************************************
   ;Compute screen coordinates from level coordinates.
   ;************************************************************
@@ -1266,20 +1299,6 @@ notRight:
   sta nomolos_screen_y 
   lda w1+1
   sta nomolos_screen_y+1
-
-  ;************************************************************
-  ;Move camera to center itself on Nomolos.
-  ;************************************************************
-  lda nomolos_screen_x
-  sta b0
-  jsr camera_update
-  lda b0
-  sta nomolos_screen_x
-  
-  ;************************************************************
-  ;Update Nomolos' animation object.
-  ;************************************************************
-  jsr nomolos_update_animation
   
   rts
 .endproc

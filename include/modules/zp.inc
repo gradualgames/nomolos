@@ -53,9 +53,12 @@ ZP_INC = 1
 .importzp nomolos_status_health
 .importzp nomolos_status_lives
 .importzp camera_scroll_x
-.importzp camera_scroll_next_x
-.importzp base_address_level
-.importzp base_address_meta_meta_tile_table
+.importzp camera_will_scroll_right
+.importzp camera_scrolled_right
+.importzp base_address_map
+.importzp base_address_map_column_table
+.importzp base_address_attribute_column_table
+.importzp base_address_meta_tile_column_table
 .importzp base_address_meta_tile_table
 .importzp base_address_entity_definition_table
 .importzp base_address_rom_definition_table
@@ -66,6 +69,7 @@ ZP_INC = 1
 .importzp buffer_meta_tile
 .importzp column_to_update
 .importzp name_table_to_update
+.importzp name_table_to_view
 .importzp next_sprite_address
 .importzp buffer_controller
 .importzp sound_address
