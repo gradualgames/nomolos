@@ -545,7 +545,48 @@ column_loop:
   lda (meta_tile_address),y
   sta buffer_column+30,x
   inx
+  ;point at entity
   iny
+  lda (meta_tile_address),y
+  ;entity index to spawn
+  sta b0
+  lda #0
+
+  ;calculate x coordinate at which to spawn entity
+  lda camera_will_scroll_right
+camera_scroll_to_right:
+  beq spawn_entity_to_left
+  lda camera_scroll_x
+  and #%00001111
+  bne do_not_spawn_entity
+  lda camera_scroll_x
+  sta w0
+  clc
+  lda camera_scroll_x+1
+  adc #1
+  sta w0+1
+  jmp camera_scroll_test_done
+spawn_entity_to_left:
+  lda camera_scroll_x
+  and #%00001111
+  bne do_not_spawn_entity
+  lda camera_scroll_x
+  sta w0
+  lda camera_scroll_x+1
+  sta w0+1
+camera_scroll_test_done:
+  
+  ;get y's stored value off of stack
+  pla
+  pha
+  asl
+  asl
+  asl
+  asl
+  sta b1
+  
+  jsr entity_spawn
+do_not_spawn_entity:
   iny
   
   ;restore y

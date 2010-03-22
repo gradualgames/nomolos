@@ -102,6 +102,7 @@ maxLives = 20
 
 ;keeps the lowest 4 bits to get penetration distance from a y coordinate
 penetrationCalculationMask = %00001111
-scrollReact = 120
+scrollReactRight = 150-nomolosWidth
+scrollReactLeft = 106
 
 .endif

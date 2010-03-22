@@ -39,7 +39,7 @@
   jsr nomolos_update
   jsr nomolos_draw
   jsr nomolos_draw_hearts
-  ;jsr entity_update_all
+  jsr entity_update_all
 
   lda camera_will_scroll_right
   beq camera_scrolling_left

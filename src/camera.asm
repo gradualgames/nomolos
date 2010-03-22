@@ -52,15 +52,15 @@
 
   sec
   lda w0
-  sbc #200
+  sbc #scrollReactRight
   lda w0+1
   sbc #0
   bmi :+
   
-  ;x coord was to the right of 200. now we scroll the camera, by how much? w0 - 200
+  ;x coord was to the right of scrollReactRight. now we scroll the camera, by how much? w0 - scrollReactRight
   sec
   lda w0
-  sbc #200
+  sbc #scrollReactRight
   sta w1
   lda w0+1
   sbc #0
@@ -80,30 +80,6 @@
   
 :
 
-  ;compare b0 to middle of screen.
-;  lda b0
-;  
-;  sec
-;  sbc #200
-;  bmi :+
-;  
-;  sta b1
-;  sec
-;  lda b0
-;  sbc b1
-;  sta b0
-;  
-;  clc
-;  lda camera_scroll_x
-;  adc b1
-;  sta camera_scroll_x
-;  lda camera_scroll_x+1
-;  adc #0
-;  sta camera_scroll_x+1
-;  
-;  lda #1
-;  sta camera_will_scroll_right
-;:
   rts
 
 .endproc
@@ -117,14 +93,14 @@
 
   sec
   lda w0
-  sbc #50
+  sbc #scrollReactLeft
   lda w0+1
   sbc #0
   bpl :+
   
-  ;x coord was to the left of 50. now we scroll the camera, by how much? 50 - w0
+  ;x coord was to the left of scrollReactLeft. now we scroll the camera, by how much? scrollReactLeft - w0
   sec
-  lda #50
+  lda #scrollReactLeft
   sbc w0
   sta w1
   lda #0
@@ -141,7 +117,6 @@
   
   lda #0
   sta camera_will_scroll_right
-  
   
 :
 
