@@ -169,9 +169,6 @@ loadLevelStateInit:
   
 loadLevelStateLoad:
 
-  ;lda camera_scroll_x+1
-  ;bne done_loading_level
-
   ;decode a column at the current scrollX.
 meta_tile_column_index = w0
   
@@ -254,7 +251,7 @@ loadLevelStateDone:
   sta mapper_bank_next
   jsr mapper_switch_bank
   
-  ;jsr entity_update_all
+  jsr entity_update_all
   
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (base_address_rom_definition_table),y

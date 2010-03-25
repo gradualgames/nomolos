@@ -75,7 +75,7 @@
   sta camera_scroll_x+1
   
   lda #1
-  sta camera_will_scroll_right
+  sta camera_scroll_direction
   
   
 :
@@ -115,8 +115,8 @@
   sbc w1+1
   sta camera_scroll_x+1
   
-  lda #0
-  sta camera_will_scroll_right
+  lda #$ff
+  sta camera_scroll_direction
   
 :
 

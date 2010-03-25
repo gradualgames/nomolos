@@ -187,6 +187,23 @@ decode_left_column:
 
 .endproc
 
+;decodes the map left or right depending on the camera_will_scroll_right variable.
+;if the variable is 1, it scrolls right, zero, it scrolls left.
+.export map_decode
+.proc map_decode
+  ;do not decode map if direction is 0
+  lda camera_scroll_direction
+  beq camera_scroll_test_done
+  ;now decide what direction to decode in
+  bmi camera_scrolling_left
+  jsr map_decode_right_side
+  jmp camera_scroll_test_done
+camera_scrolling_left:
+  jsr map_decode_left_side
+camera_scroll_test_done:
+  rts
+.endproc
+
 ;does this for left-scrolling. There is a sibling function, map_decode_right_side, for right-scrolling.
 .export map_decode_left_side
 .proc map_decode_left_side
@@ -550,12 +567,12 @@ column_loop:
   lda (meta_tile_address),y
   ;entity index to spawn
   sta b0
-  lda #0
 
   ;calculate x coordinate at which to spawn entity
-  lda camera_will_scroll_right
+  lda camera_scroll_direction
+  beq do_not_spawn_entity
 camera_scroll_to_right:
-  beq spawn_entity_to_left
+  bmi spawn_entity_to_left
   lda camera_scroll_x
   and #%00001111
   bne do_not_spawn_entity

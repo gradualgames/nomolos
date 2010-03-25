@@ -54,7 +54,7 @@ ZP_INC = 1
 .importzp nomolos_status_health
 .importzp nomolos_status_lives
 .importzp camera_scroll_x
-.importzp camera_will_scroll_right
+.importzp camera_scroll_direction
 .importzp camera_scrolled_right
 .importzp base_address_map
 .importzp base_address_map_column_table

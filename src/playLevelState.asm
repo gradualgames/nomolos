@@ -36,6 +36,9 @@
   lda #0
   sta ppu_data_ready
   
+  ;camera has not scrolled yet
+  sta camera_scroll_direction
+  
   jsr controller_read
   
   jsr sprite_clear_all
@@ -44,14 +47,7 @@
   jsr nomolos_draw
   jsr nomolos_draw_hearts
   jsr entity_update_all
-
-  lda camera_will_scroll_right
-  beq camera_scrolling_left
-  jsr map_decode_right_side
-  jmp camera_scroll_test_done
-camera_scrolling_left:
-  jsr map_decode_left_side
-camera_scroll_test_done:
+  jsr map_decode
 
   ;ppu data is ready
   lda #1

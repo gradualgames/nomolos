@@ -2,6 +2,7 @@
 MAP_INC = 1
 
 .import map_test_collision
+.import map_decode
 .import map_decode_left_side
 .import map_decode_right_side
 .import map_decode_column

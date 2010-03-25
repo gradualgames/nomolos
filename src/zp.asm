@@ -159,8 +159,8 @@ nomolos_status_lives: .res 1
 .exportzp camera_scroll_x
 camera_scroll_x:                           .res 2
 
-.exportzp camera_will_scroll_right
-camera_will_scroll_right: .res 1
+.exportzp camera_scroll_direction
+camera_scroll_direction: .res 1
 
 .exportzp camera_scrolled_right
 camera_scrolled_right:                       .res 2
