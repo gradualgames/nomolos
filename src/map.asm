@@ -32,6 +32,13 @@ map_column_address = w6
 meta_tile_column_address = w7
 meta_tile_address = w8
 
+  lda map_y_coordinate+1
+  beq skip_leave_map_test_collision
+  lda #0
+  sta b0
+  sta b1
+  rts
+skip_leave_map_test_collision:
 
   ;switch to the level and music bank
   lda mapper_bank_current  ;save current bank
