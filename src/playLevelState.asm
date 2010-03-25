@@ -32,6 +32,10 @@
   sta $2001
   .endif
   
+  ;ppu data is not ready
+  lda #0
+  sta ppu_data_ready
+  
   jsr controller_read
   
   jsr sprite_clear_all
@@ -48,6 +52,10 @@
 camera_scrolling_left:
   jsr map_decode_left_side
 camera_scroll_test_done:
+
+  ;ppu data is ready
+  lda #1
+  sta ppu_data_ready
     
   lda state_control_params+playLevelStateControl::state
   cmp #PLAYLEVELSTATE_SWITCHLEVEL
@@ -93,6 +101,8 @@ stateCommandComplete:
   txa
   pha
 
+  lda ppu_data_ready
+  beq ppu_data_not_ready
   jsr sprite_update_all
   jsr map_update_column_ppu
   jsr map_update_attribute_ppu
@@ -108,6 +118,7 @@ stateCommandComplete:
   .endif
   
   jsr sound_play
+ppu_data_not_ready:
   
   lda #1
   sta vblank_done

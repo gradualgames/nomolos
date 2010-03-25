@@ -113,7 +113,7 @@
   jsr mapper_switch_bank
 
   ;start at last entity
-  ldy #$07
+  ldy #lastEntity
 nextEntity:
   ;save y 
   tya  
@@ -215,7 +215,7 @@ skipUpdate:
   dec b0
   
   ;start at the last entity
-  ldy #$07
+  ldy #lastEntity
 :
   tya
   asl
