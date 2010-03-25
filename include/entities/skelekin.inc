@@ -55,12 +55,12 @@ skelekin_moveRightState:
 no_right_collision:
 
   clc
-	lda entity_instances+entityRAM::positionX,x
-	adc #$01
-	sta entity_instances+entityRAM::positionX,x
-	lda entity_instances+entityRAM::positionX+1,x
-	adc #$00
-	sta entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entityRAM::positionX,x
+  adc #$01
+  sta entity_instances+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX+1,x
+  adc #$00
+  sta entity_instances+entityRAM::positionX+1,x
 
   jsr skelekin_draw
 
@@ -87,12 +87,12 @@ skelekin_moveLeftState:
 no_left_collision:
  
   sec
-	lda entity_instances+entityRAM::positionX,x
-	sbc #$01
-	sta entity_instances+entityRAM::positionX,x
-	lda entity_instances+entityRAM::positionX+1,x
-	sbc #$00
-	sta entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entityRAM::positionX,x
+  sbc #$01
+  sta entity_instances+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX+1,x
+  sbc #$00
+  sta entity_instances+entityRAM::positionX+1,x
 
   jsr skelekin_draw
 
@@ -102,19 +102,8 @@ skelekin_draw:
 
   jsr entity_compute_screen_coordinates
 
-  ;test the x coordinate for whether it is a certain distance off screen. compare it
-  ;to -32.
-  ;-32 - -40 = 8. positive = offscreen, die. negative = onscreen, do not die.
-  sec
-  lda #$e0
-  sbc entity_screen_x
-  lda #$ff
-  sbc entity_screen_x+1
-  bmi skelekinOnScreen
-  
-  jmp killSkelekin
-  
-skelekinOnScreen:  
+  jsr entity_test_death_zone
+  beq killSkelekin
   
   ;load skelekin width and height
   lda #$10
@@ -186,15 +175,15 @@ nomolosNotAttacking:
   lda entity_screen_y+1
   sta w4+1
   
-	lda entity_instances+entityRAM::state,x
-	cmp #SKELEKIN_MOVELEFTSTATE
-	bne skelekin_moving_right
-	lda #%01000000
-	sta b2
-	jmp skelekin_direction_test_done
+  lda entity_instances+entityRAM::state,x
+  cmp #SKELEKIN_MOVELEFTSTATE
+  bne skelekin_moving_right
+  lda #%01000000
+  sta b2
+  jmp skelekin_direction_test_done
 skelekin_moving_right:
-	lda #%00000000
-	sta b2
+  lda #%00000000
+  sta b2
 skelekin_direction_test_done:
   jsr sprite_draw_animation_16bit
 skelekinOffscreen:

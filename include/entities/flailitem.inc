@@ -4,10 +4,8 @@ FLAILITEM_INC = 1
 .export flail_item_update
 .proc flail_item_update
 
-  jsr entity_compute_screen_coordinates
-  bpl skipJmpflailItemDie
-  jmp flailItemDie
-skipJmpflailItemDie:
+  jsr entity_test_death_zone
+  beq flailItemDie
   
   ;load entity width and height
   lda #$10

@@ -4,10 +4,8 @@ SPEARITEM_INC = 1
 .export spear_item_update
 .proc spear_item_update
 
-  jsr entity_compute_screen_coordinates
-  bpl skipJmpspearItemDie
-  jmp spearItemDie
-skipJmpspearItemDie:
+  jsr entity_test_death_zone
+  beq spearItemDie
   
   ;load entity width and height
   lda #$10

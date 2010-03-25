@@ -30,17 +30,8 @@ mouseSitThere:
 
   jsr entity_compute_screen_coordinates
 
-  ;test x coordinate for whether the item should die.
-  sec
-  lda #$f0
-  sbc w0
-  lda #$ff
-  sbc w0+1
-  bmi mouseOnScreen
-  
-  jmp mouseDie
-  
-mouseOnScreen:
+  jsr entity_test_death_zone
+  beq mouseDie
   
   ;load entity width and height
   lda #$10

@@ -6,16 +6,8 @@ ONEUP_INC = 1
 
   jsr entity_compute_screen_coordinates
   
-  ;test x coordinate for whether the item should die.
-  sec
-  lda #$f0
-  sbc entity_screen_x
-  lda #$ff
-  sbc entity_screen_x+1
-  bmi skipJmpOneUpDie
-
-  jmp oneUpDie
-skipJmpOneUpDie:
+  jsr entity_test_death_zone
+  beq oneUpDie
   
   ;load entity width and height
   lda #$10

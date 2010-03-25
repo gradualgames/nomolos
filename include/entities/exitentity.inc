@@ -3,11 +3,9 @@ EXITENTITY_INC = 1
 
 .export exit_level_update
 exit_level_update:
-
-  jsr entity_compute_screen_coordinates
-  bpl skipJmpExitDie
-  jmp exitDie
-skipJmpExitDie:
+ 
+  jsr entity_test_death_zone
+  beq exitDie
   
   ;load entity width and height
   lda #$10

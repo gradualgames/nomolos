@@ -10,6 +10,41 @@
 
 .segment "CODE"
 
+;tests whether an entity is a certain distance offscreen
+;uses b5
+;a set zero flag indicates the entity was in a death zone.
+.export entity_test_death_zone
+.proc entity_test_death_zone
+
+  ;if upper byte is zero, the entity is not in the death zone (it is on screen)
+  lda entity_screen_x+1
+  beq entity_not_in_death_zone
+  
+  ;otherwise, do test the lower byte
+  lda entity_screen_x
+  and #%11100000
+
+  cmp #%00000000
+  beq entity_not_in_death_zone
+  
+  cmp #%11100000
+  beq entity_not_in_death_zone
+  
+entity_is_in_death_zone:
+
+  ;set zero flag so beq will take a branch in following code
+  lda #0
+
+  rts
+  
+entity_not_in_death_zone:
+
+  ;clear zero flag so beq will not take a branch in following code
+  lda #1
+
+  rts
+.endproc
+
 .export entity_test_collision_hitbox
 ;assumes b2 and b3 represent the width and height of the calling entity
 .proc entity_test_collision_hitbox

@@ -184,19 +184,8 @@ bat_draw:
 
   jsr entity_compute_screen_coordinates
 
-  ;test the x coordinate for whether it is a certain distance off screen. compare it
-  ;to -32.
-  ;-32 - -40 = 8. positive = offscreen, die. negative = onscreen, do not die.
-  sec
-  lda #$e0
-  sbc entity_screen_x
-  lda #$ff
-  sbc entity_screen_x+1
-  bmi batOnScreen
-  
-  jmp killBat
-  
-batOnScreen:  
+  jsr entity_test_death_zone
+  beq killBat
   
   ;load bat width and height
   lda #$10
