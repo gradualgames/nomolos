@@ -212,6 +212,10 @@ meta_tile_column_index = w0
   and #%00011111
   sta column_to_update
   
+  ;we say we are scrolling to the left so entities spawn in place with the columns
+  lda #$ff
+  sta camera_scroll_direction
+  
   jsr map_decode_column
   
   ;directly upload everything to ppu

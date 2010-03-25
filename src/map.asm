@@ -510,7 +510,6 @@ decode_left_column:
   ;loop through all 15 indices within the meta tile column, and write the left column to the first 30 bytes of the
   ;buffer and the right column to the second 30 bytes of the buffer.
   ;we don't need map column or y anymore.
-.scope decode_left_meta_tile_column
   ldx #0
   ldy #0
 column_loop:
@@ -615,7 +614,6 @@ do_not_spawn_entity:
 
   cpy #15
   bne column_loop
-.endscope
   
   rts
 .endproc

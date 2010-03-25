@@ -90,7 +90,6 @@
 .export camera_scroll_left
 .proc camera_scroll_left
 
-
   sec
   lda w0
   sbc #scrollReactLeft
@@ -114,6 +113,13 @@
   lda camera_scroll_x+1
   sbc w1+1
   sta camera_scroll_x+1
+  
+  ;do not scroll past zero
+  bpl skip_do_not_scroll_past_zero
+  lda #0
+  sta camera_scroll_x
+  sta camera_scroll_x+1
+skip_do_not_scroll_past_zero:
   
   lda #$ff
   sta camera_scroll_direction

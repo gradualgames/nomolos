@@ -1137,6 +1137,15 @@ skipJmpNotLeft:
   sbc #0
   sta nomolos_map_x+2
   
+  bpl skip_nomolos_do_not_go_past_zero
+  
+  lda #0
+  sta nomolos_map_x
+  sta nomolos_map_x+1
+  sta nomolos_map_x+2
+  
+skip_nomolos_do_not_go_past_zero:
+
   jsr nomolos_compute_screen_coordinates
 
   lda nomolos_screen_x
