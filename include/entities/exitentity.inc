@@ -3,6 +3,8 @@ EXITENTITY_INC = 1
 
 .export exit_level_update
 exit_level_update:
+
+  jsr entity_compute_screen_coordinates
  
   jsr entity_test_death_zone
   beq exitDie
