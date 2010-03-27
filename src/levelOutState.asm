@@ -161,8 +161,7 @@ skipIncPaletteStep:
   
 stateCommandComplete:
 
-  lda name_table_to_update
-  eor #$04
+  lda name_table_to_view
   sta $2006
   lda #$00
   sta $2006

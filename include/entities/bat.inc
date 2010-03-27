@@ -3,6 +3,7 @@ BAT_INC = 1
 
 .struct bat_locals
   y_velocity .word
+  x_velocity .word
 .endstruct
 
 BAT_INITSTATE = 0
@@ -32,20 +33,8 @@ BAT_VERTICAL_ACCELERATION = 20
 
 bat_initState:
 
-  ;init code for animation, etc. goes here
-  lda #1
-  sta entity_instances+entityRAM::animationObject,x
-  lda #$ff
-  sta entity_instances+entityRAM::animationObject+1,x
-  
-  ;clear locals
-  lda #0
-  sta entityLocals+bat_locals::y_velocity,x
-  sta entityLocals+bat_locals::y_velocity+1,x
-  
-  ;switch state to "descent"
-  lda #BAT_DESCENT_STATE
-  sta entity_instances+entityRAM::state,x
+  jsr bat_init
+
   rts
 
 bat_descent_state:
@@ -144,15 +133,53 @@ do_not_switch_to_descent_state:
   
   rts
   
+bat_init:
+
+  ;init code for animation, etc. goes here
+  lda #1
+  sta entity_instances+entityRAM::animationObject,x
+  lda #$ff
+  sta entity_instances+entityRAM::animationObject+1,x
+  
+  ;clear locals
+  lda #0
+  sta entityLocals+bat_locals::y_velocity,x
+  sta entityLocals+bat_locals::y_velocity+1,x
+  
+  ;compare entity x position to nomolos x position to decide direction
+  sec
+  lda nomolos_map_x+1
+  sbc entity_instances+entityRAM::positionX,x
+  lda nomolos_map_x+2
+  sbc entity_instances+entityRAM::positionX+1,x
+  bpl bat_will_go_right
+bat_will_go_left:
+  lda #$ff
+  sta entityLocals+bat_locals::x_velocity,x
+  sta entityLocals+bat_locals::x_velocity+1,x
+  jmp bat_direction_test_done
+bat_will_go_right:
+  lda #$01
+  sta entityLocals+bat_locals::x_velocity,x
+  lda #$00
+  sta entityLocals+bat_locals::x_velocity+1,x
+bat_direction_test_done:
+  
+  ;switch state to "descent"
+  lda #BAT_DESCENT_STATE
+  sta entity_instances+entityRAM::state,x
+
+  rts
+  
 bat_move:
 
-  ;move bat left
-  sec
+  ;move bat horizontally
+  clc
   lda entity_instances+entityRAM::positionX,x
-  sbc #1
+  adc entityLocals+bat_locals::x_velocity,x
   sta entity_instances+entityRAM::positionX,x
   lda entity_instances+entityRAM::positionX+1,x
-  sbc #0
+  adc entityLocals+bat_locals::x_velocity+1,x
   sta entity_instances+entityRAM::positionX+1,x
 
   ;add y velocity to 24 bit Y coordinate with sign extension
