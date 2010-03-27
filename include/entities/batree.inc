@@ -1,6 +1,9 @@
 .ifndef BATREE_INC
 BATREE_INC = 1
 
+BATREE_WIDTH = $18
+BATREE_HEIGHT = $28
+
 .struct batree_locals
   batspawn_counter .byte
 .endstruct
@@ -165,9 +168,9 @@ batree_draw:
   beq killBatree
   
   ;load batree width and height
-  lda #$10
+  lda #BATREE_WIDTH
   sta b2
-  lda #$10
+  lda #BATREE_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   
@@ -180,9 +183,9 @@ batree_draw:
   beq nomolosNotAttacking
   
   ;load batree width and height
-  lda #$10
+  lda #BATREE_WIDTH
   sta b2
-  lda #$10
+  lda #BATREE_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
   

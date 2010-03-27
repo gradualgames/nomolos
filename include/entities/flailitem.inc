@@ -1,6 +1,9 @@
 .ifndef FLAILITEM_INC
 FLAILITEM_INC = 1
 
+FLAILITEM_WIDTH = $10
+FLAILITEM_HEIGHT = $08
+
 .export flail_item_update
 .proc flail_item_update
 
@@ -10,9 +13,9 @@ FLAILITEM_INC = 1
   beq flailItemDie
   
   ;load entity width and height
-  lda #$10
+  lda #FLAILITEM_WIDTH
   sta b2
-  lda #$10
+  lda #FLAILITEM_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   

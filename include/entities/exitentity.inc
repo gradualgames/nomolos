@@ -1,6 +1,9 @@
 .ifndef EXITENTITY_INC
 EXITENTITY_INC = 1
 
+EXITENTITY_WIDTH = $10
+EXITENTITY_HEIGHT = $ff
+
 .export exit_level_update
 exit_level_update:
 
@@ -10,9 +13,9 @@ exit_level_update:
   beq exitDie
   
   ;load entity width and height
-  lda #$10
+  lda #EXITENTITY_WIDTH
   sta b2
-  lda #$10
+  lda #EXITENTITY_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   

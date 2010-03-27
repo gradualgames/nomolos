@@ -1,6 +1,9 @@
 .ifndef ONEUP_INC
 ONEUP_INC = 1
 
+ONEUP_WIDTH = $10
+ONEUP_HEIGHT = $08
+
 .export oneup_update
 .proc oneup_update
 
@@ -10,9 +13,9 @@ ONEUP_INC = 1
   beq oneUpDie
   
   ;load entity width and height
-  lda #$10
+  lda #ONEUP_WIDTH
   sta b2
-  lda #$10
+  lda #ONEUP_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   

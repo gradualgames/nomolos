@@ -1,6 +1,9 @@
 .ifndef BAT_INC
 BAT_INC = 1
 
+BAT_WIDTH = $10
+BAT_HEIGHT = $08
+
 .struct bat_locals
   y_velocity .word
   x_velocity .word
@@ -218,9 +221,9 @@ bat_draw:
   beq killBat
   
   ;load bat width and height
-  lda #$10
+  lda #BAT_WIDTH
   sta b2
-  lda #$10
+  lda #BAT_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   

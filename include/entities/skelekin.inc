@@ -1,6 +1,10 @@
 .ifndef SKELEKIN_INC
 SKELEKIN_INC = 1
 
+SKELEKIN_WIDTH = $10
+SKELEKIN_HEIGHT = $20
+SKELEKIN_HALFHEIGHT = $10
+
 SKELEKIN_INITSTATE = 0
 SKELEKIN_MOVERIGHTSTATE = 1
 SKELEKIN_MOVELEFTSTATE = 2
@@ -35,14 +39,14 @@ skelekin_moveRightState:
 
   clc
   lda entity_instances+entityRAM::positionX,x
-  adc #$10
+  adc #SKELEKIN_WIDTH
   sta w0
   lda entity_instances+entityRAM::positionX+1,x
   adc #$00
   sta w0+1
   lda entity_instances+entityRAM::positionY,x
   clc
-  adc #$10
+  adc #SKELEKIN_HALFHEIGHT
   sta w1
   lda entity_instances+entityRAM::positionY+1,x
   adc #0
@@ -74,7 +78,7 @@ skelekin_moveLeftState:
   sta w0+1
   lda entity_instances+entityRAM::positionY,x
   clc
-  adc #$10
+  adc #SKELEKIN_WIDTH
   sta w1
   lda entity_instances+entityRAM::positionY+1,x
   adc #0
@@ -106,9 +110,9 @@ skelekin_draw:
   beq killSkelekin
   
   ;load skelekin width and height
-  lda #$10
+  lda #SKELEKIN_WIDTH
   sta b2
-  lda #$10
+  lda #SKELEKIN_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   
@@ -121,9 +125,9 @@ skelekin_draw:
   beq nomolosNotAttacking
   
   ;load skelekin width and height
-  lda #$10
+  lda #SKELEKIN_WIDTH
   sta b2
-  lda #$10
+  lda #SKELEKIN_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
   

@@ -1,6 +1,9 @@
 .ifndef SPEARITEM_INC
 SPEARITEM_INC = 1
 
+SPEARITEM_WIDTH = $18
+SPEARITEM_HEIGHT = $08
+
 .export spear_item_update
 .proc spear_item_update
 
@@ -10,9 +13,9 @@ SPEARITEM_INC = 1
   beq spearItemDie
   
   ;load entity width and height
-  lda #$10
+  lda #SPEARITEM_WIDTH
   sta b2
-  lda #$10
+  lda #SPEARITEM_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   

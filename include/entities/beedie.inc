@@ -1,6 +1,11 @@
 .ifndef BEEDIE_INC
 BEEDIE_INC = 1
 
+BEEDIE_WIDTH = $10
+BEEDIE_HALFWIDTH = $08
+BEEDIE_HEIGHT = $10
+BEEDIE_HALFHEIGHT = $08
+
 .struct beedieLocals
   y_velocity .word
   y_belowPenetration .byte
@@ -94,7 +99,7 @@ beedieGoingLeft:
   sta w0+1
   lda entity_instances+entityRAM::positionY,x
   clc
-  adc #8
+  adc #BEEDIE_HALFHEIGHT
   sta w1
   lda entity_instances+entityRAM::positionY+1,x
   adc #0
@@ -120,14 +125,14 @@ beedieGoingRight:
   ;test for collision on right side of beedie. reverse direction if true
   lda entity_instances+entityRAM::positionX,x
   clc
-  adc #$10
+  adc #BEEDIE_WIDTH
   sta w0
   lda entity_instances+entityRAM::positionX+1,x
   adc #0
   sta w0+1
   lda entity_instances+entityRAM::positionY,x
   clc
-  adc #8
+  adc #BEEDIE_HALFHEIGHT
   sta w1
   lda entity_instances+entityRAM::positionY+1,x
   adc #0
@@ -186,17 +191,17 @@ signExtendAddDone:
   ;load the entity's X coordinate + 8
   clc
   lda entity_instances+entityRAM::positionX,x
-  adc #8
+  adc #BEEDIE_HALFWIDTH
   sta entityLocals+beedieLocals::x_collisionPointBottom,x
   sta w0
   lda entity_instances+entityRAM::positionX+1,x
   adc #0
   sta entityLocals+beedieLocals::x_collisionPointBottom+1,x
   sta w0+1
-  ;load the entity's Y coordinate + 16
+  ;load the entity's Y coordinate + height
   clc
   lda entity_instances+entityRAM::positionY,x
-  adc #16
+  adc #BEEDIE_HEIGHT
   sta entityLocals+beedieLocals::y_collisionPointBottom,x
   sta w1
   lda entity_instances+entityRAM::positionY+1,x
@@ -257,9 +262,9 @@ beedie_draw:
   beq killBeedie
   
   ;load beedie width and height
-  lda #$10
+  lda #BEEDIE_WIDTH
   sta b2
-  lda #$10
+  lda #BEEDIE_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   
@@ -272,9 +277,9 @@ beedie_draw:
   beq nomolosNotAttacking
   
   ;load beedie width and height
-  lda #$10
+  lda #BEEDIE_WIDTH
   sta b2
-  lda #$10
+  lda #BEEDIE_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
   

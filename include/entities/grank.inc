@@ -1,6 +1,9 @@
 .ifndef GRANK_INC
 GRANK_INC = 1
 
+GRANK_WIDTH = $10
+GRANK_HEIGHT = $10
+
 .struct grankLocals
   x_velocity .word
   y_velocity .word
@@ -228,9 +231,9 @@ grank_draw:
   beq killGrank
   
   ;load grank width and height
-  lda #$10
+  lda #GRANK_WIDTH
   sta b2
-  lda #$10
+  lda #GRANK_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   
@@ -243,9 +246,9 @@ grank_draw:
   beq nomolosNotAttacking
   
   ;load grank width and height
-  lda #$10
+  lda #GRANK_WIDTH
   sta b2
-  lda #$10
+  lda #GRANK_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
   

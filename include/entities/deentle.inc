@@ -1,6 +1,9 @@
 .ifndef DEENTLE_INC
 DEENTLE_INC = 1
 
+DEENTLE_WIDTH = $10
+DEENTLE_HEIGHT = $10
+
 DEENTLE_INITSTATE = 0
 DEENTLE_MOVERIGHTSTATE = 1
 DEENTLE_MOVELEFTSTATE = 2
@@ -118,9 +121,9 @@ deentle_draw:
   beq killDeentle
   
   ;load deentle width and height
-  lda #$10
+  lda #DEENTLE_WIDTH
   sta b2
-  lda #$10
+  lda #DEENTLE_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   
@@ -133,9 +136,9 @@ deentle_draw:
   beq nomolosNotAttacking
   
   ;load deentle width and height
-  lda #$10
+  lda #DEENTLE_WIDTH
   sta b2
-  lda #$10
+  lda #DEENTLE_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
   

@@ -1,6 +1,9 @@
 .ifndef MOUSE_INC
 MOUSE_INC = 1
 
+MOUSE_WIDTH = $10
+MOUSE_HEIGHT = $08
+
 MOUSE_INITSTATE = 0
 MOUSE_SITTHERESTATE = 1
 
@@ -34,9 +37,9 @@ mouseSitThere:
   beq mouseDie
   
   ;load entity width and height
-  lda #$10
+  lda #MOUSE_WIDTH
   sta b2
-  lda #$10
+  lda #MOUSE_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   
