@@ -16,6 +16,8 @@
 .include "sprite.inc"
 .include "sound.inc"
 
+.segment "ROM2"
+
 .include "oneup.inc"
 .include "exitentity.inc"
 .include "mouse.inc"
