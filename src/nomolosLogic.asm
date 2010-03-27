@@ -299,6 +299,11 @@ alreadyDying:
   adc #$00
   sta nomolos_attack_rect_y+1
 
+  ;flag that the spear is moving to the left
+  lda nomolos_state_secondary
+  and #nomolosAttackDirectionLeftAND
+  sta nomolos_state_secondary
+  
   jmp skipNomolosFacingRight
 skipNomolosFacingLeft:
 
@@ -317,6 +322,11 @@ skipNomolosFacingLeft:
   lda nomolos_screen_y+1
   adc #$00
   sta nomolos_attack_rect_y+1
+  
+  ;flag that the spear is moving to the right
+  lda nomolos_state_secondary
+  ora #nomolosAttackDirectionRightOR
+  sta nomolos_state_secondary
 
 skipNomolosFacingRight:
   
@@ -598,11 +608,11 @@ skipAttackUpdate:
   
 .proc nomolos_update_attack_spear
 
-  ;move the spear in the direction nomolos is facing
-  lda nomolos_state_primary
-  and #1
-  beq nomolosFacingRight
-nomolosFacingLeft:
+  ;move the spear in the direction flagged by secondary state
+  lda nomolos_state_secondary
+  and #nomolosAttackDirectionTestAND
+  bne nomolosAttackRight
+nomolosAttackLeft:
   
   sec
   lda nomolos_attack_rect_x
@@ -614,7 +624,7 @@ nomolosFacingLeft:
   
   jmp nomolosDirectionTestDone
   
-nomolosFacingRight:
+nomolosAttackRight:
 
   clc
   lda nomolos_attack_rect_x
@@ -1538,11 +1548,12 @@ skipUpdateNomolosMoving:
   
   ;get the direction bit into bit 6 of b2 for horiz flip
   clc
-  lda nomolos_state_primary
-  and #1
-  ror
-  ror
-  ror
+  lda nomolos_state_secondary
+  eor #$ff
+  and #nomolosAttackDirectionTestAND
+  rol
+  rol
+  rol
   sta b2
   
   lda nomolos_screen_x

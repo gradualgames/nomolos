@@ -85,6 +85,10 @@ nomolosAttackSword     = %00000000
 nomolosAttackFlail     = %00000010
 nomolosAttackSpear     = %00000100
 
+nomolosAttackDirectionRightOR =  %00001000
+nomolosAttackDirectionLeftAND = %11110111
+nomolosAttackDirectionTestAND    = %00001000
+
 nomolosStartingLives = $03
 nomolosHurtBounceLo = $0a
 nomolosHurtBounceHi = $fd
