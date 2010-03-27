@@ -101,7 +101,7 @@ bat_ascent_state:
   ;decrease vertical velocity until certain value, then switch to crest state.
   sec
   lda entityLocals+bat_locals::y_velocity,x
-  sbc #10
+  sbc #BAT_VERTICAL_ACCELERATION
   sta entityLocals+bat_locals::y_velocity,x
   lda entityLocals+bat_locals::y_velocity+1,x
   sbc #0
@@ -125,7 +125,7 @@ bat_crest_state:
   ;increase vertical velocity until zero, then switch to descent state.
   clc
   lda entityLocals+bat_locals::y_velocity,x
-  adc #10
+  adc #BAT_VERTICAL_ACCELERATION
   sta entityLocals+bat_locals::y_velocity,x
   lda entityLocals+bat_locals::y_velocity+1,x
   adc #0
