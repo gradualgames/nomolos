@@ -137,3 +137,10 @@ spritesheet1_BatFly:
   .word spritesheet1_Bat1
   .word $0000
 
+.export spritesheet1_Batree
+spritesheet1_Batree:
+  .byte $0a
+  .word spritesheet1_Batree0
+  .word spritesheet1_Batree1
+  .word $0000
+

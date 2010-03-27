@@ -1,24 +1,28 @@
-.ifndef DEENTLE_INC
-DEENTLE_INC = 1
+.ifndef BATREE_INC
+BATREE_INC = 1
 
-DEENTLE_INITSTATE = 0
-DEENTLE_MOVERIGHTSTATE = 1
-DEENTLE_MOVELEFTSTATE = 2
+.struct batree_locals
+  batspawn_counter .byte
+.endstruct
 
-.export deentle_update
-.proc deentle_update
+BATREE_INITSTATE = 0
+BATREE_MOVERIGHTSTATE = 1
+BATREE_MOVELEFTSTATE = 2
+
+.export batree_update
+.proc batree_update
 
   ;load current state
   lda entity_instances+entityRAM::state,x
   ;figure out what state to jump to
-  cmp #DEENTLE_INITSTATE
-  beq deentle_initState
-  cmp #DEENTLE_MOVERIGHTSTATE
-  beq deentle_moveRightState
-  cmp #DEENTLE_MOVELEFTSTATE
-  beq deentle_moveLeftState
+  cmp #BATREE_INITSTATE
+  beq batree_initState
+  cmp #BATREE_MOVERIGHTSTATE
+  beq batree_moveRightState
+  cmp #BATREE_MOVELEFTSTATE
+  beq batree_moveLeftState
 
-deentle_initState:
+batree_initState:
 
   ;init code for animation, etc. goes here
   lda #1
@@ -26,12 +30,16 @@ deentle_initState:
   lda #$ff
   sta entity_instances+entityRAM::animationObject+1,x
   
+  ;set initial batspawn_counter
+  lda #50
+  sta entityLocals+batree_locals::batspawn_counter,x
+  
   ;switch state to "run"
-  lda #DEENTLE_MOVELEFTSTATE
+  lda #BATREE_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
   rts
 
-deentle_moveRightState:
+batree_moveRightState:
 
   ;add 1 to PositionX
   clc
@@ -61,16 +69,18 @@ deentle_moveRightState:
   sta w0+1
   bne dontSwitchToLeftState
   
-  lda #DEENTLE_MOVELEFTSTATE
+  lda #BATREE_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
   
 dontSwitchToLeftState:
 
-  jsr deentle_draw
+  jsr batree_draw
+  
+  jsr batree_update_batspawn_counter
 
   rts
 
-deentle_moveLeftState:
+batree_moveLeftState:
 
   ;sub 1 from PositionX
   sec
@@ -101,23 +111,60 @@ deentle_moveLeftState:
   
   bne dontSwitchToRightState
   
-  lda #DEENTLE_MOVERIGHTSTATE
+  lda #BATREE_MOVERIGHTSTATE
   sta entity_instances+entityRAM::state,x
   
 dontSwitchToRightState:
 
-  jsr deentle_draw
+  jsr batree_draw
+  
+  jsr batree_update_batspawn_counter
 
   rts
   
-deentle_draw:
+batree_update_batspawn_counter:
+
+  dec entityLocals+batree_locals::batspawn_counter,x
+  bne do_not_spawn_bat
+  
+  ;spawn bat at location of batree
+;This routine spawns a single entity. It works by first searching
+;for the first "dead" entity in the entity_instances. When it finds this
+;dead entity, it fills it according to the entityRAM struct.
+
+;the following parameters are expected:
+;b0 = index of entity definition to spawn
+;w0 = positionX
+;b1 = positionY
+
+  lda entity_instances+entityRAM::positionX,x
+  sta w0
+  lda entity_instances+entityRAM::positionX+1,x
+  sta w0+1
+  lda entity_instances+entityRAM::positionY,x
+  clc
+  adc #16
+  sta b1
+  lda #entity_index_bat
+  sta b0
+  jsr entity_spawn
+  
+  ;reset bat spawn counter
+  lda #50
+  sta entityLocals+batree_locals::batspawn_counter,x
+  
+do_not_spawn_bat:
+
+  rts
+  
+batree_draw:
 
   jsr entity_compute_screen_coordinates
 
   jsr entity_test_death_zone
-  beq killDeentle
+  beq killBatree
   
-  ;load deentle width and height
+  ;load batree width and height
   lda #$10
   sta b2
   lda #$10
@@ -132,7 +179,7 @@ deentle_draw:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
   
-  ;load deentle width and height
+  ;load batree width and height
   lda #$10
   sta b2
   lda #$10
@@ -148,7 +195,7 @@ deentle_draw:
   sta w0+1
   jsr sound_load
   
-  jmp killDeentle
+  jmp killBatree
   
 nomolosNotAttacking:
 
@@ -168,8 +215,8 @@ nomolosNotAttacking:
   adc #0
   sta w1+1 
   
-  ;load address of deentle animation definition into w2
-  ldy #ROMDefinitionTableStruct::DeentleWalk
+  ;load address of batree animation definition into w2
+  ldy #ROMDefinitionTableStruct::Batree
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -189,11 +236,22 @@ nomolosNotAttacking:
   lda entity_screen_y+1
   sta w4+1
   
+  jsr entity_test_face_nomolos
+  bpl entity_facing_right
+entity_facing_left:
+  lda #%01000000
+  sta b2
+  jmp entity_facing_test_done
+entity_facing_right:
+  lda #%00000000
+  sta b2
+entity_facing_test_done:
+  
   jsr sprite_draw_animation_16bit
-deentleOffscreen:
+batreeOffscreen:
   rts
   
-killDeentle:
+killBatree:
 
   ;make it dead
   lda #0

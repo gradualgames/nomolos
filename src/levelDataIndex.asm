@@ -60,6 +60,7 @@ ROMDefinitionTable0:
   .word spritesheet1_OneUp0
   .word $0000
   .word spritesheet1_BatFly
+  .word spritesheet1_Batree
   
   .word attackSound            
   .word hitSound               
@@ -107,6 +108,7 @@ ROMDefinitionTable1:
   .word spritesheet2_OneUp0
   .word spritesheet2_SkelekinWalk
   .word spritesheet2_BatFly
+  .word $0000
   
   .word attackSound           
   .word hitSound              
@@ -209,6 +211,14 @@ BatEntity:
   .word bat_update
   .byte $00
   .byte $00
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+Batree:
+  .word batree_update
+  .byte $00
+  .byte $18
   .byte %00000000
   .byte $00
   .byte $00

@@ -13,6 +13,8 @@ BAT_ASCENT_STATE = 3
 BAT_CREST_STATE = 4
 
 BAT_VERTICAL_ACCELERATION = 20
+BAT_MAX_ASCENT_VELOCITY = $fe
+BAT_MAX_DESCENT_VELOCITY = $02
 
 .export bat_update
 .proc bat_update
@@ -47,7 +49,7 @@ bat_descent_state:
   lda entityLocals+bat_locals::y_velocity+1,x
   adc #0
   sta entityLocals+bat_locals::y_velocity+1,x
-  cmp #2
+  cmp #BAT_MAX_DESCENT_VELOCITY
   bmi do_not_switch_to_trough_state
   
   lda #BAT_TROUGH_STATE
@@ -95,7 +97,7 @@ bat_ascent_state:
   lda entityLocals+bat_locals::y_velocity+1,x
   sbc #0
   sta entityLocals+bat_locals::y_velocity+1,x
-  cmp #$fe
+  cmp #BAT_MAX_ASCENT_VELOCITY
   bpl do_not_switch_to_crest_state
   
   lda #BAT_CREST_STATE
@@ -141,9 +143,10 @@ bat_init:
   lda #$ff
   sta entity_instances+entityRAM::animationObject+1,x
   
-  ;clear locals
+  ;set initial vertical velocity
   lda #0
   sta entityLocals+bat_locals::y_velocity,x
+  lda #BAT_MAX_DESCENT_VELOCITY
   sta entityLocals+bat_locals::y_velocity+1,x
   
   ;compare entity x position to nomolos x position to decide direction
@@ -165,8 +168,8 @@ bat_will_go_right:
   sta entityLocals+bat_locals::x_velocity+1,x
 bat_direction_test_done:
   
-  ;switch state to "descent"
-  lda #BAT_DESCENT_STATE
+  ;switch state to "trough"
+  lda #BAT_TROUGH_STATE
   sta entity_instances+entityRAM::state,x
 
   rts

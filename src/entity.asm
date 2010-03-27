@@ -10,6 +10,29 @@
 
 .segment "CODE"
 
+;returns positive if entity must turn right to face nomolos,
+;negative if entity must turn left.
+.export entity_test_face_nomolos
+.proc entity_test_face_nomolos
+
+  ;compare entity x position to nomolos x position to decide direction
+  sec
+  lda nomolos_map_x+1
+  sbc entity_instances+entityRAM::positionX,x
+  lda nomolos_map_x+2
+  sbc entity_instances+entityRAM::positionX+1,x
+  bpl entity_will_go_right
+entity_will_go_left:
+  ;set negative flag
+  lda #$ff
+  rts
+entity_will_go_right:
+  ;clear negative flag
+  lda #$01
+  rts
+  
+.endproc
+
 ;tests whether an entity is a certain distance offscreen
 ;uses b5
 ;a set zero flag indicates the entity was in a death zone.

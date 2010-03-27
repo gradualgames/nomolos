@@ -43,4 +43,6 @@
 .import spritesheet1_Spear0
 .import spritesheet1_Bat0
 .import spritesheet1_Bat1
+.import spritesheet1_Batree0
+.import spritesheet1_Batree1
 
