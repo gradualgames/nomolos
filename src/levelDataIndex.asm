@@ -1,6 +1,7 @@
 .include "constants.inc"
 .include "level1.inc"
 .include "level2.inc"
+.include "entities.inc"
 
 .segment "ROM4_4K0"  
 
