@@ -3,6 +3,7 @@ BATREE_INC = 1
 
 BATREE_WIDTH = $18
 BATREE_HEIGHT = $28
+BATREE_BATSPAWN_INTERVAL = 50
 
 .struct batree_locals
   batspawn_counter .byte
@@ -34,7 +35,7 @@ batree_initState:
   sta entity_instances+entityRAM::animationObject+1,x
   
   ;set initial batspawn_counter
-  lda #50
+  lda #BATREE_BATSPAWN_INTERVAL
   sta entityLocals+batree_locals::batspawn_counter,x
   
   ;switch state to "run"
@@ -153,7 +154,7 @@ batree_update_batspawn_counter:
   jsr entity_spawn
   
   ;reset bat spawn counter
-  lda #50
+  lda #BATREE_BATSPAWN_INTERVAL
   sta entityLocals+batree_locals::batspawn_counter,x
   
 do_not_spawn_bat:
