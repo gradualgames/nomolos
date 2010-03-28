@@ -428,4 +428,49 @@ spritesheet1_Owl2:
   .byte $10,$fb,$00,$08,$10
   .byte $10,$fc,$00,$10,$08
   .byte $10,$fd,$00,$18,$00
+.export spritesheet1_Snuffer0
+spritesheet1_Snuffer0:
+  .byte $0c
+  .byte $00,$ab,$01,$00,$18
+  .byte $00,$ac,$01,$08,$10
+  .byte $00,$ad,$01,$10,$08
+  .byte $00,$ae,$01,$18,$00
+  .byte $08,$b9,$01,$00,$18
+  .byte $08,$ba,$01,$08,$10
+  .byte $08,$bb,$01,$10,$08
+  .byte $08,$bc,$01,$18,$00
+  .byte $10,$ca,$01,$00,$18
+  .byte $10,$cb,$01,$08,$10
+  .byte $10,$cc,$01,$10,$08
+  .byte $10,$cd,$01,$18,$00
+.export spritesheet1_Snuffer1
+spritesheet1_Snuffer1:
+  .byte $0c
+  .byte $00,$ab,$01,$00,$18
+  .byte $00,$ac,$01,$08,$10
+  .byte $00,$ad,$01,$10,$08
+  .byte $00,$ae,$01,$18,$00
+  .byte $08,$bd,$01,$00,$18
+  .byte $08,$be,$01,$08,$10
+  .byte $08,$bf,$01,$10,$08
+  .byte $08,$bc,$01,$18,$00
+  .byte $10,$ce,$01,$00,$18
+  .byte $10,$cf,$01,$08,$10
+  .byte $10,$d0,$01,$10,$08
+  .byte $10,$d1,$01,$18,$00
+.export spritesheet1_Snuffer2
+spritesheet1_Snuffer2:
+  .byte $0c
+  .byte $00,$af,$01,$00,$18
+  .byte $00,$b0,$01,$08,$10
+  .byte $00,$b1,$01,$10,$08
+  .byte $00,$b2,$01,$18,$00
+  .byte $08,$c0,$01,$00,$18
+  .byte $08,$c1,$01,$08,$10
+  .byte $08,$c2,$01,$10,$08
+  .byte $08,$c3,$01,$18,$00
+  .byte $10,$d2,$01,$00,$18
+  .byte $10,$d3,$01,$08,$10
+  .byte $10,$d4,$01,$10,$08
+  .byte $10,$17,$00,$18,$00
 

@@ -31,3 +31,4 @@
 .include "bat.inc"
 .include "batree.inc"
 .include "owl.inc"
+.include "snuffer.inc"

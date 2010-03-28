@@ -1,28 +1,32 @@
-.ifndef SKELEKIN_INC
-SKELEKIN_INC = 1
+.ifndef SNUFFER_INC
+SNUFFER_INC = 1
 
-SKELEKIN_WIDTH = $10
-SKELEKIN_HEIGHT = $20
-SKELEKIN_HALFHEIGHT = $10
+.struct snuffer_locals
+  anim_index .byte
+.endstruct
 
-SKELEKIN_INITSTATE = 0
-SKELEKIN_MOVERIGHTSTATE = 1
-SKELEKIN_MOVELEFTSTATE = 2
+SNUFFER_WIDTH = $20
+SNUFFER_HEIGHT = $18
+SNUFFER_HALFHEIGHT = $0C
 
-.export skelekin_update
-.proc skelekin_update
+SNUFFER_INITSTATE = 0
+SNUFFER_MOVERIGHTSTATE = 1
+SNUFFER_MOVELEFTSTATE = 2
+
+.export snuffer_update
+.proc snuffer_update
 
   ;load current state
   lda entity_instances+entityRAM::state,x
   ;figure out what state to jump to
-  cmp #SKELEKIN_INITSTATE
-  beq skelekin_initState
-  cmp #SKELEKIN_MOVERIGHTSTATE
-  beq skelekin_moveRightState
-  cmp #SKELEKIN_MOVELEFTSTATE
-  beq skelekin_moveLeftState
+  cmp #SNUFFER_INITSTATE
+  beq snuffer_initState
+  cmp #SNUFFER_MOVERIGHTSTATE
+  beq snuffer_moveRightState
+  cmp #SNUFFER_MOVELEFTSTATE
+  beq snuffer_moveLeftState
 
-skelekin_initState:
+snuffer_initState:
 
   ;init code for animation, etc. goes here
   lda #1
@@ -34,31 +38,31 @@ skelekin_initState:
   bpl entity_facing_right
 entity_facing_left:
 
-  lda #SKELEKIN_MOVELEFTSTATE
+  lda #SNUFFER_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
 
   jmp entity_facing_test_done
 entity_facing_right:
 
-  lda #SKELEKIN_MOVERIGHTSTATE
+  lda #SNUFFER_MOVERIGHTSTATE
   sta entity_instances+entityRAM::state,x
 
 entity_facing_test_done:
   
   rts
 
-skelekin_moveRightState:
+snuffer_moveRightState:
 
   clc
   lda entity_instances+entityRAM::positionX,x
-  adc #SKELEKIN_WIDTH
+  adc #SNUFFER_WIDTH
   sta w0
   lda entity_instances+entityRAM::positionX+1,x
   adc #$00
   sta w0+1
   lda entity_instances+entityRAM::positionY,x
   clc
-  adc #SKELEKIN_HALFHEIGHT
+  adc #SNUFFER_HALFHEIGHT
   sta w1
   lda entity_instances+entityRAM::positionY+1,x
   adc #0
@@ -66,23 +70,23 @@ skelekin_moveRightState:
   jsr map_test_collision
   lda b1
   beq no_right_collision
-  lda #SKELEKIN_MOVELEFTSTATE
+  lda #SNUFFER_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
 no_right_collision:
 
   clc
   lda entity_instances+entityRAM::positionX,x
-  adc #$01
+  adc #$02
   sta entity_instances+entityRAM::positionX,x
   lda entity_instances+entityRAM::positionX+1,x
   adc #$00
   sta entity_instances+entityRAM::positionX+1,x
 
-  jsr skelekin_draw
+  jsr snuffer_draw
 
   rts
 
-skelekin_moveLeftState:
+snuffer_moveLeftState:
  
   lda entity_instances+entityRAM::positionX,x
   sta w0
@@ -90,7 +94,7 @@ skelekin_moveLeftState:
   sta w0+1
   lda entity_instances+entityRAM::positionY,x
   clc
-  adc #SKELEKIN_HALFHEIGHT
+  adc #SNUFFER_HALFHEIGHT
   sta w1
   lda entity_instances+entityRAM::positionY+1,x
   adc #0
@@ -98,114 +102,23 @@ skelekin_moveLeftState:
   jsr map_test_collision
   lda b1
   beq no_left_collision
-  lda #SKELEKIN_MOVERIGHTSTATE
+  lda #SNUFFER_MOVERIGHTSTATE
   sta entity_instances+entityRAM::state,x
 no_left_collision:
  
   sec
   lda entity_instances+entityRAM::positionX,x
-  sbc #$01
+  sbc #$02
   sta entity_instances+entityRAM::positionX,x
   lda entity_instances+entityRAM::positionX+1,x
   sbc #$00
   sta entity_instances+entityRAM::positionX+1,x
 
-  jsr skelekin_draw
+  jsr snuffer_draw
 
   rts
   
-skelekin_draw:
-
-  jsr entity_compute_screen_coordinates
-
-  jsr entity_test_death_zone
-  beq killSkelekin
-  
-  ;load skelekin width and height
-  lda #SKELEKIN_WIDTH
-  sta b2
-  lda #SKELEKIN_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-  
-  bne :+
-  
-  jsr nomolos_hurt
-  
-:
-  jsr nomolos_is_deadly
-  beq nomolosNotAttacking
-  
-  ;load skelekin width and height
-  lda #SKELEKIN_WIDTH
-  sta b2
-  lda #SKELEKIN_HEIGHT
-  sta b3
-  jsr entity_test_collision_hitbox
-  
-  bne nomolosNotAttacking
-  
-  ;play an explode sound
-  lda #<hitSound
-  sta w0
-  lda #>hitSound
-  sta w0+1
-  jsr sound_load
-  
-  jmp killSkelekin
-  
-nomolosNotAttacking:
-
-  ;load address of animation object into w1
-  lda #<(entity_instances+entityRAM::animationObject)
-  sta w1
-  lda #>(entity_instances+entityRAM::animationObject)
-  sta w1+1
-  
-  ;get the index into a
-  txa
-  clc
-  ;do a 16 bit add onto the address with this index
-  adc w1
-  sta w1
-  lda w1+1
-  adc #0
-  sta w1+1 
-  
-  ;load address of skelekin animation definition into w2
-  ldy #ROMDefinitionTableStruct::SkelekinWalk
-  lda (base_address_rom_definition_table),y
-  sta w2
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w2+1
-
-  jsr sprite_update_animation  
-  
-  lda entity_screen_x
-  sta w3
-  lda entity_screen_x+1
-  sta w3+1
-  lda entity_screen_y
-  sta w4
-  lda entity_screen_y+1
-  sta w4+1
-  
-  lda entity_instances+entityRAM::state,x
-  cmp #SKELEKIN_MOVELEFTSTATE
-  bne skelekin_moving_right
-  lda #%01000000
-  sta b2
-  jmp skelekin_direction_test_done
-skelekin_moving_right:
-  lda #%00000000
-  sta b2
-skelekin_direction_test_done:
-  jsr sprite_draw_animation_16bit
-skelekinOffscreen:
-  rts
-  
-killSkelekin:
+killSnuffer:
 
   ;make it dead
   jsr entity_kill
@@ -227,6 +140,108 @@ killSkelekin:
   
   jsr entity_spawn
 
+  rts
+  
+snuffer_draw:
+
+  lda #ROMDefinitionTableStruct::SnufferRun
+  sta entity_locals+snuffer_locals::anim_index,x
+
+  jsr entity_compute_screen_coordinates
+
+  jsr entity_test_death_zone
+  beq killSnuffer
+  
+  ;load snuffer width and height
+  lda #SNUFFER_WIDTH
+  sta b2
+  lda #SNUFFER_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+  
+  bne :+
+  
+  jsr nomolos_hurt
+  
+  lda #ROMDefinitionTableStruct::SnufferBite
+  sta entity_locals+snuffer_locals::anim_index,x
+  
+  lda #1
+  sta entity_instances+entityRAM::animationObject,x
+  lda #$ff
+  sta entity_instances+entityRAM::animationObject+1,x
+  
+:
+  jsr nomolos_is_deadly
+  beq nomolosNotAttacking
+  
+  ;load snuffer width and height
+  lda #SNUFFER_WIDTH
+  sta b2
+  lda #SNUFFER_HEIGHT
+  sta b3
+  jsr entity_test_collision_hitbox
+  
+  bne nomolosNotAttacking
+  
+  ;play an explode sound
+  lda #<hitSound
+  sta w0
+  lda #>hitSound
+  sta w0+1
+  jsr sound_load
+  
+  jmp killSnuffer
+  
+nomolosNotAttacking:
+
+  ;load address of animation object into w1
+  lda #<(entity_instances+entityRAM::animationObject)
+  sta w1
+  lda #>(entity_instances+entityRAM::animationObject)
+  sta w1+1
+  
+  ;get the index into a
+  txa
+  clc
+  ;do a 16 bit add onto the address with this index
+  adc w1
+  sta w1
+  lda w1+1
+  adc #0
+  sta w1+1 
+  
+  ;load address of snuffer animation definition into w2
+  ldy entity_locals+snuffer_locals::anim_index,x
+  lda (base_address_rom_definition_table),y
+  sta w2
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w2+1
+
+  jsr sprite_update_animation  
+  
+  lda entity_screen_x
+  sta w3
+  lda entity_screen_x+1
+  sta w3+1
+  lda entity_screen_y
+  sta w4
+  lda entity_screen_y+1
+  sta w4+1
+  
+  lda entity_instances+entityRAM::state,x
+  cmp #SNUFFER_MOVELEFTSTATE
+  bne snuffer_moving_right
+  lda #%01000000
+  sta b2
+  jmp snuffer_direction_test_done
+snuffer_moving_right:
+  lda #%00000000
+  sta b2
+snuffer_direction_test_done:
+  jsr sprite_draw_animation_16bit
+snufferOffscreen:
   rts
 
 .endproc

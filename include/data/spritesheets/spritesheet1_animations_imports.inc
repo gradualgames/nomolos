@@ -20,3 +20,5 @@
 .import spritesheet1_Batree
 .import spritesheet1_OwlFly
 .import spritesheet1_OwlAttack
+.import spritesheet1_SnufferRun
+.import spritesheet1_SnufferBite

@@ -48,4 +48,7 @@
 .import spritesheet1_Owl0
 .import spritesheet1_Owl1
 .import spritesheet1_Owl2
+.import spritesheet1_Snuffer0
+.import spritesheet1_Snuffer1
+.import spritesheet1_Snuffer2
 

@@ -11,3 +11,4 @@
 .import batree_update
 .import skelekin_update
 .import owl_update
+.import snuffer_update

@@ -7,7 +7,7 @@ OWL_HEIGHT = $18
 .struct owl_locals
   x_velocity .word
   y_velocity .word
-  should_draw_attack .byte
+  anim_index .byte
 .endstruct
 
 OWL_INITSTATE = 0
@@ -255,8 +255,8 @@ owl_draw:
   jsr entity_test_death_zone
   beq killOwl
   
-  lda #0
-  sta entity_locals+owl_locals::should_draw_attack,x
+  lda #ROMDefinitionTableStruct::OwlFly
+  sta entity_locals+owl_locals::anim_index,x
   ;load owl width and height
   lda #OWL_WIDTH
   sta b2
@@ -267,8 +267,13 @@ owl_draw:
   bne :+
   
   jsr nomolos_hurt
+  lda #ROMDefinitionTableStruct::OwlAttack
+  sta entity_locals+owl_locals::anim_index,x
+  
   lda #1
-  sta entity_locals+owl_locals::should_draw_attack,x
+  sta entity_instances+entityRAM::animationObject,x
+  lda #$ff
+  sta entity_instances+entityRAM::animationObject+1,x
   
 :
   jsr nomolos_is_deadly
@@ -311,32 +316,14 @@ nomolosNotAttacking:
   sta w1+1 
   
   ;load address of owl animation definition into w2
-  lda entity_locals+owl_locals::should_draw_attack,x
-  beq draw_owl_flying
-draw_owl_attacking:
-  lda #1
-  sta entity_instances+entityRAM::animationObject,x
-  lda #$ff
-  sta entity_instances+entityRAM::animationObject+1,x
 
-  ldy #ROMDefinitionTableStruct::OwlAttack
+  ldy entity_locals+owl_locals::anim_index,x
   lda (base_address_rom_definition_table),y
   sta w2
   iny
   lda (base_address_rom_definition_table),y
   sta w2+1
   
-  jmp should_draw_attack_test_done
-draw_owl_flying:
-  ldy #ROMDefinitionTableStruct::OwlFly
-  lda (base_address_rom_definition_table),y
-  sta w2
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w2+1
-
-should_draw_attack_test_done:
-
   jsr sprite_update_animation  
   
   lda entity_screen_x

@@ -15,6 +15,7 @@ entity_index_skelekin = 10
 entity_index_bat = 11
 entity_index_batree = 12
 entity_index_owl = 13
+entity_index_snuffer = 14
 
 ;bit positions for PPU control register $2000
 PPU0_EXECUTE_NMI = 7

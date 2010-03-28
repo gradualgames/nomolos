@@ -64,6 +64,8 @@ ROMDefinitionTable0:
   .word spritesheet1_Batree
   .word spritesheet1_OwlFly
   .word spritesheet1_OwlAttack
+  .word spritesheet1_SnufferRun
+  .word spritesheet1_SnufferBite
   
   .word attackSound            
   .word hitSound               
@@ -114,6 +116,8 @@ ROMDefinitionTable1:
   .word $0000 ;Batree
   .word $0000 ;OwlFly
   .word $0000 ;OwlAttack
+  .word $0000 ;SnufferRun
+  .word $0000 ;SnufferBite
   
   .word attackSound           
   .word hitSound              
@@ -232,6 +236,14 @@ Owl:
   .word owl_update
   .byte $00
   .byte $10
+  .byte %00000000
+  .byte $01
+  .byte $00
+  .byte $00
+Snuffer:
+  .word snuffer_update
+  .byte $00
+  .byte $08
   .byte %00000000
   .byte $01
   .byte $00

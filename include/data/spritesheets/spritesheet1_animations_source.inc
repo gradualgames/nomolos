@@ -157,3 +157,16 @@ spritesheet1_OwlAttack:
   .word spritesheet1_Owl2
   .word $0000
 
+.export spritesheet1_SnufferRun
+spritesheet1_SnufferRun:
+  .byte $0a
+  .word spritesheet1_Snuffer0
+  .word spritesheet1_Snuffer1
+  .word $0000
+
+.export spritesheet1_SnufferBite
+spritesheet1_SnufferBite:
+  .byte $0a
+  .word spritesheet1_Snuffer2
+  .word $0000
+

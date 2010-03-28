@@ -142,6 +142,8 @@ TITLESTATE_DONE = %00000010
   Batree .word
   OwlFly .word
   OwlAttack .word
+  SnufferRun .word
+  SnufferBite .word
   
   attackSound .word
   hitSound .word
