@@ -10,7 +10,10 @@ exit_level_update:
   jsr entity_compute_screen_coordinates
  
   jsr entity_test_death_zone
-  beq exitDie
+  bne exit_entity_do_not_die
+  jsr entity_kill
+  rts
+exit_entity_do_not_die:
   
   ;load entity width and height
   lda #EXITENTITY_WIDTH
@@ -19,9 +22,11 @@ exit_level_update:
   sta b3
   jsr entity_test_collision_nomolos
   
-  beq skipJmpNotTouching
-  jmp notTouching
-skipJmpNotTouching:
+  beq is_touching_nomolos
+  rts
+is_touching_nomolos:
+  
+  jsr entity_kill
   
   ;turn off music by playing track #0 of haltmusic  
 .if .defined(MUSIC_ENABLE)
@@ -40,15 +45,6 @@ skipJmpNotTouching:
   lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
   sta state_control_params+playLevelStateControl::state
     
-  jmp exitDie
-  
-notTouching:
-
-  rts
-
-exitDie:
-  lda #0
-  sta entity_instances+entityRAM::alive,x
   rts
 
 .endif

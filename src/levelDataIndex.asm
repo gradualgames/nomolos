@@ -137,7 +137,7 @@ DeentleEntity:
   .byte $00
   .byte $00
   .byte %00000000
-  .byte $00
+  .byte $05
   .byte $00
   .byte $00
 ExplosionEntity:
@@ -145,7 +145,7 @@ ExplosionEntity:
   .byte $00
   .byte $00
   .byte %00000000
-  .byte $00
+  .byte $0A
   .byte $00
   .byte $00
 MouseEntity:
@@ -153,7 +153,7 @@ MouseEntity:
   .byte $00
   .byte $f9
   .byte %00000000
-  .byte $00
+  .byte $0A
   .byte $00
   .byte $00
 ExitLevelEntity:
@@ -161,7 +161,7 @@ ExitLevelEntity:
   .byte $00
   .byte $f9
   .byte %00000000
-  .byte $00
+  .byte $01
   .byte $00
   .byte $00
 OneUpEntity:
@@ -169,7 +169,7 @@ OneUpEntity:
   .byte $00
   .byte $00
   .byte %00000000
-  .byte $00
+  .byte $0A
   .byte $00
   .byte $00
 FlailItemEntity:
@@ -177,7 +177,7 @@ FlailItemEntity:
   .byte $00
   .byte $f9
   .byte %00000000
-  .byte $00
+  .byte $0A
   .byte $00
   .byte $00
 BeedieEntity:
@@ -185,7 +185,7 @@ BeedieEntity:
   .byte $00
   .byte $00
   .byte %00000000
-  .byte $00
+  .byte $05
   .byte $00
   .byte $00
 GrankEntity:
@@ -193,7 +193,7 @@ GrankEntity:
   .byte $00
   .byte $e9
   .byte %00000000
-  .byte $00
+  .byte $05
   .byte $00
   .byte $00
 SpearItemEntity:
@@ -201,7 +201,7 @@ SpearItemEntity:
   .byte $00
   .byte $f9
   .byte %00000000
-  .byte $00
+  .byte $0A
   .byte $00
   .byte $00
 SkelekinEntity:
@@ -209,7 +209,7 @@ SkelekinEntity:
   .byte $00
   .byte $10
   .byte %00000000
-  .byte $00
+  .byte $05
   .byte $00
   .byte $00
 BatEntity:
@@ -217,7 +217,7 @@ BatEntity:
   .byte $00
   .byte $00
   .byte %00000000
-  .byte $00
+  .byte $0A
   .byte $00
   .byte $00
 Batree:
@@ -225,7 +225,7 @@ Batree:
   .byte $00
   .byte $18
   .byte %00000000
-  .byte $00
+  .byte $01
   .byte $00
   .byte $00
 Owl:
@@ -233,7 +233,7 @@ Owl:
   .byte $00
   .byte $10
   .byte %00000000
-  .byte $00
+  .byte $01
   .byte $00
   .byte $00
   

@@ -38,12 +38,12 @@ grank_initState:
   
   ;set x velocity to 0
   lda #0
-  sta entityLocals+grankLocals::x_velocity,x
-  sta entityLocals+grankLocals::x_velocity+1,x
+  sta entity_locals+grankLocals::x_velocity,x
+  sta entity_locals+grankLocals::x_velocity+1,x
   
   ;set y velocity to 0
-  sta entityLocals+grankLocals::y_velocity,x
-  sta entityLocals+grankLocals::y_velocity+1,x
+  sta entity_locals+grankLocals::y_velocity,x
+  sta entity_locals+grankLocals::y_velocity+1,x
   
   ;switch state to "fly"
   lda #GRANK_FLYSTATE
@@ -57,10 +57,10 @@ grank_flyState:
   ;add x velocity to 24 bit X coordinate with sign extension
 .scope addXVelocity
   clc
-  lda entityLocals+grankLocals::x_velocity,x
+  lda entity_locals+grankLocals::x_velocity,x
   adc entity_instances+entityRAM::positionXFine,x
   sta entity_instances+entityRAM::positionXFine,x
-  lda entityLocals+grankLocals::x_velocity+1,x
+  lda entity_locals+grankLocals::x_velocity+1,x
   bmi signExtend
   adc entity_instances+entityRAM::positionX,x
   sta entity_instances+entityRAM::positionX,x
@@ -80,10 +80,10 @@ signExtendAddDone:
   ;add y velocity to 24 bit Y coordinate with sign extension
 .scope addYVelocity
   clc
-  lda entityLocals+grankLocals::y_velocity,x
+  lda entity_locals+grankLocals::y_velocity,x
   adc entity_instances+entityRAM::positionYFine,x
   sta entity_instances+entityRAM::positionYFine,x
-  lda entityLocals+grankLocals::y_velocity+1,x
+  lda entity_locals+grankLocals::y_velocity+1,x
   bmi signExtend
   adc entity_instances+entityRAM::positionY,x
   sta entity_instances+entityRAM::positionY,x
@@ -110,25 +110,25 @@ signExtendAddDone:
 followUp:
 
   ;subtract from y velocity
-  lda entityLocals+grankLocals::y_velocity,x
+  lda entity_locals+grankLocals::y_velocity,x
   sec
   sbc #GRANK_VERTSPEED
-  sta entityLocals+grankLocals::y_velocity,x
-  lda entityLocals+grankLocals::y_velocity+1,x
+  sta entity_locals+grankLocals::y_velocity,x
+  lda entity_locals+grankLocals::y_velocity+1,x
   sbc #0
-  sta entityLocals+grankLocals::y_velocity+1,x
+  sta entity_locals+grankLocals::y_velocity+1,x
 
   jmp followVertTestDone
 followDown:
   
   ;add to y velocity
-  lda entityLocals+grankLocals::y_velocity,x
+  lda entity_locals+grankLocals::y_velocity,x
   clc
   adc #GRANK_VERTSPEED
-  sta entityLocals+grankLocals::y_velocity,x
-  lda entityLocals+grankLocals::y_velocity+1,x
+  sta entity_locals+grankLocals::y_velocity,x
+  lda entity_locals+grankLocals::y_velocity+1,x
   adc #0
-  sta entityLocals+grankLocals::y_velocity+1,x
+  sta entity_locals+grankLocals::y_velocity+1,x
 
 followVertTestDone:
 
@@ -141,30 +141,30 @@ followVertTestDone:
 followToLeft:
   
   ;subtract from x velocity
-  lda entityLocals+grankLocals::x_velocity,x
+  lda entity_locals+grankLocals::x_velocity,x
   sec
   sbc #GRANK_HORIZSPEED
-  sta entityLocals+grankLocals::x_velocity,x
-  lda entityLocals+grankLocals::x_velocity+1,x
+  sta entity_locals+grankLocals::x_velocity,x
+  lda entity_locals+grankLocals::x_velocity+1,x
   sbc #0
-  sta entityLocals+grankLocals::x_velocity+1,x
+  sta entity_locals+grankLocals::x_velocity+1,x
   
   jmp followTestDone
 followToRight:
   
   ;add to x velocity
-  lda entityLocals+grankLocals::x_velocity,x
+  lda entity_locals+grankLocals::x_velocity,x
   clc
   adc #GRANK_HORIZSPEED
-  sta entityLocals+grankLocals::x_velocity,x
-  lda entityLocals+grankLocals::x_velocity+1,x
+  sta entity_locals+grankLocals::x_velocity,x
+  lda entity_locals+grankLocals::x_velocity+1,x
   adc #0
-  sta entityLocals+grankLocals::x_velocity+1,x
+  sta entity_locals+grankLocals::x_velocity+1,x
   
 followTestDone:
 
   ;keep x and y velocity under control
-  lda entityLocals+grankLocals::x_velocity+1,x  ;high byte is "pixel speed"
+  lda entity_locals+grankLocals::x_velocity+1,x  ;high byte is "pixel speed"
   bpl xVelocityPositive
 xVelocityNegative:
 .scope 
@@ -173,7 +173,7 @@ xVelocityNegative:
   bpl notMaxHoriz
   
   lda #(-GRANK_MAXHORIZSPEED)
-  sta entityLocals+grankLocals::x_velocity+1,x
+  sta entity_locals+grankLocals::x_velocity+1,x
   
 notMaxHoriz:
 .endscope
@@ -185,7 +185,7 @@ xVelocityPositive:
   bmi notMaxHoriz
   
   lda #(GRANK_MAXHORIZSPEED)
-  sta entityLocals+grankLocals::x_velocity+1,x
+  sta entity_locals+grankLocals::x_velocity+1,x
   
 notMaxHoriz:
 .endscope
@@ -193,7 +193,7 @@ notMaxHoriz:
 xVelocityTestDone:
   
   ;keep x and y velocity under control
-  lda entityLocals+grankLocals::y_velocity+1,x  ;high byte is "pixel speed"
+  lda entity_locals+grankLocals::y_velocity+1,x  ;high byte is "pixel speed"
   bpl yVelocityPositive
 yVelocityNegative:
 .scope 
@@ -202,7 +202,7 @@ yVelocityNegative:
   bpl notMaxVert
   
   lda #(-GRANK_MAXVERTSPEED)
-  sta entityLocals+grankLocals::y_velocity+1,x
+  sta entity_locals+grankLocals::y_velocity+1,x
   
 notMaxVert:
 .endscope
@@ -214,7 +214,7 @@ yVelocityPositive:
   bmi notMaxVert
   
   lda #(GRANK_MAXVERTSPEED)
-  sta entityLocals+grankLocals::y_velocity+1,x
+  sta entity_locals+grankLocals::y_velocity+1,x
   
 notMaxVert:
 .endscope
@@ -308,8 +308,7 @@ grankOffscreen:
 killGrank:
 
   ;make it dead
-  lda #0
-  sta entity_instances+entityRAM::alive,x
+  jsr entity_kill
   
   ;spawn an explosion entity
   lda #entity_index_explosion

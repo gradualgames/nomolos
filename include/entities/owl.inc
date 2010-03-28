@@ -39,12 +39,12 @@ owl_initState:
   
   ;set x velocity to 0
   lda #0
-  sta entityLocals+owl_locals::x_velocity,x
-  sta entityLocals+owl_locals::x_velocity+1,x
+  sta entity_locals+owl_locals::x_velocity,x
+  sta entity_locals+owl_locals::x_velocity+1,x
   
   ;set y velocity to 0
-  sta entityLocals+owl_locals::y_velocity,x
-  sta entityLocals+owl_locals::y_velocity+1,x
+  sta entity_locals+owl_locals::y_velocity,x
+  sta entity_locals+owl_locals::y_velocity+1,x
   
   ;switch state to "fly"
   lda #OWL_FLYSTATE
@@ -58,10 +58,10 @@ owl_flyState:
   ;add x velocity to 24 bit X coordinate with sign extension
 .scope addXVelocity
   clc
-  lda entityLocals+owl_locals::x_velocity,x
+  lda entity_locals+owl_locals::x_velocity,x
   adc entity_instances+entityRAM::positionXFine,x
   sta entity_instances+entityRAM::positionXFine,x
-  lda entityLocals+owl_locals::x_velocity+1,x
+  lda entity_locals+owl_locals::x_velocity+1,x
   bmi signExtend
   adc entity_instances+entityRAM::positionX,x
   sta entity_instances+entityRAM::positionX,x
@@ -81,10 +81,10 @@ signExtendAddDone:
   ;add y velocity to 24 bit Y coordinate with sign extension
 .scope addYVelocity
   clc
-  lda entityLocals+owl_locals::y_velocity,x
+  lda entity_locals+owl_locals::y_velocity,x
   adc entity_instances+entityRAM::positionYFine,x
   sta entity_instances+entityRAM::positionYFine,x
-  lda entityLocals+owl_locals::y_velocity+1,x
+  lda entity_locals+owl_locals::y_velocity+1,x
   bmi signExtend
   adc entity_instances+entityRAM::positionY,x
   sta entity_instances+entityRAM::positionY,x
@@ -111,25 +111,25 @@ signExtendAddDone:
 followUp:
 
   ;subtract from y velocity
-  lda entityLocals+owl_locals::y_velocity,x
+  lda entity_locals+owl_locals::y_velocity,x
   sec
   sbc #OWL_VERTSPEED
-  sta entityLocals+owl_locals::y_velocity,x
-  lda entityLocals+owl_locals::y_velocity+1,x
+  sta entity_locals+owl_locals::y_velocity,x
+  lda entity_locals+owl_locals::y_velocity+1,x
   sbc #0
-  sta entityLocals+owl_locals::y_velocity+1,x
+  sta entity_locals+owl_locals::y_velocity+1,x
 
   jmp followVertTestDone
 followDown:
   
   ;add to y velocity
-  lda entityLocals+owl_locals::y_velocity,x
+  lda entity_locals+owl_locals::y_velocity,x
   clc
   adc #OWL_VERTSPEED
-  sta entityLocals+owl_locals::y_velocity,x
-  lda entityLocals+owl_locals::y_velocity+1,x
+  sta entity_locals+owl_locals::y_velocity,x
+  lda entity_locals+owl_locals::y_velocity+1,x
   adc #0
-  sta entityLocals+owl_locals::y_velocity+1,x
+  sta entity_locals+owl_locals::y_velocity+1,x
 
 followVertTestDone:
 
@@ -142,30 +142,30 @@ followVertTestDone:
 followToLeft:
   
   ;subtract from x velocity
-  lda entityLocals+owl_locals::x_velocity,x
+  lda entity_locals+owl_locals::x_velocity,x
   sec
   sbc #OWL_HORIZSPEED
-  sta entityLocals+owl_locals::x_velocity,x
-  lda entityLocals+owl_locals::x_velocity+1,x
+  sta entity_locals+owl_locals::x_velocity,x
+  lda entity_locals+owl_locals::x_velocity+1,x
   sbc #0
-  sta entityLocals+owl_locals::x_velocity+1,x
+  sta entity_locals+owl_locals::x_velocity+1,x
   
   jmp followTestDone
 followToRight:
   
   ;add to x velocity
-  lda entityLocals+owl_locals::x_velocity,x
+  lda entity_locals+owl_locals::x_velocity,x
   clc
   adc #OWL_HORIZSPEED
-  sta entityLocals+owl_locals::x_velocity,x
-  lda entityLocals+owl_locals::x_velocity+1,x
+  sta entity_locals+owl_locals::x_velocity,x
+  lda entity_locals+owl_locals::x_velocity+1,x
   adc #0
-  sta entityLocals+owl_locals::x_velocity+1,x
+  sta entity_locals+owl_locals::x_velocity+1,x
   
 followTestDone:
 
   ;keep x and y velocity under control
-  lda entityLocals+owl_locals::x_velocity+1,x  ;high byte is "pixel speed"
+  lda entity_locals+owl_locals::x_velocity+1,x  ;high byte is "pixel speed"
   bpl xVelocityPositive
 xVelocityNegative:
 .scope 
@@ -174,7 +174,7 @@ xVelocityNegative:
   bpl notMaxHoriz
   
   lda #(-OWL_MAXHORIZSPEED)
-  sta entityLocals+owl_locals::x_velocity+1,x
+  sta entity_locals+owl_locals::x_velocity+1,x
   
 notMaxHoriz:
 .endscope
@@ -186,7 +186,7 @@ xVelocityPositive:
   bmi notMaxHoriz
   
   lda #(OWL_MAXHORIZSPEED)
-  sta entityLocals+owl_locals::x_velocity+1,x
+  sta entity_locals+owl_locals::x_velocity+1,x
   
 notMaxHoriz:
 .endscope
@@ -194,7 +194,7 @@ notMaxHoriz:
 xVelocityTestDone:
   
   ;keep x and y velocity under control
-  lda entityLocals+owl_locals::y_velocity+1,x  ;high byte is "pixel speed"
+  lda entity_locals+owl_locals::y_velocity+1,x  ;high byte is "pixel speed"
   bpl yVelocityPositive
 yVelocityNegative:
 .scope 
@@ -203,7 +203,7 @@ yVelocityNegative:
   bpl notMaxVert
   
   lda #(-OWL_MAXVERTSPEED)
-  sta entityLocals+owl_locals::y_velocity+1,x
+  sta entity_locals+owl_locals::y_velocity+1,x
   
 notMaxVert:
 .endscope
@@ -215,7 +215,7 @@ yVelocityPositive:
   bmi notMaxVert
   
   lda #(OWL_MAXVERTSPEED)
-  sta entityLocals+owl_locals::y_velocity+1,x
+  sta entity_locals+owl_locals::y_velocity+1,x
   
 notMaxVert:
 .endscope
@@ -229,8 +229,7 @@ yVelocityTestDone:
 killOwl:
 
   ;make it dead
-  lda #0
-  sta entity_instances+entityRAM::alive,x
+  jsr entity_kill
   
   ;spawn an explosion entity
   lda #entity_index_explosion
@@ -257,7 +256,7 @@ owl_draw:
   beq killOwl
   
   lda #0
-  sta entityLocals+owl_locals::should_draw_attack,x
+  sta entity_locals+owl_locals::should_draw_attack,x
   ;load owl width and height
   lda #OWL_WIDTH
   sta b2
@@ -269,7 +268,7 @@ owl_draw:
   
   jsr nomolos_hurt
   lda #1
-  sta entityLocals+owl_locals::should_draw_attack,x
+  sta entity_locals+owl_locals::should_draw_attack,x
   
 :
   jsr nomolos_is_deadly
@@ -312,7 +311,7 @@ nomolosNotAttacking:
   sta w1+1 
   
   ;load address of owl animation definition into w2
-  lda entityLocals+owl_locals::should_draw_attack,x
+  lda entity_locals+owl_locals::should_draw_attack,x
   beq draw_owl_flying
 draw_owl_attacking:
   lda #1

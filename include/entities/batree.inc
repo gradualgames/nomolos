@@ -36,7 +36,7 @@ batree_initState:
   
   ;set initial batspawn_counter
   lda #BATREE_BATSPAWN_INTERVAL
-  sta entityLocals+batree_locals::batspawn_counter,x
+  sta entity_locals+batree_locals::batspawn_counter,x
   
   ;switch state to "run"
   lda #BATREE_MOVELEFTSTATE
@@ -128,7 +128,7 @@ dontSwitchToRightState:
   
 batree_update_batspawn_counter:
 
-  dec entityLocals+batree_locals::batspawn_counter,x
+  dec entity_locals+batree_locals::batspawn_counter,x
   bne do_not_spawn_bat
   
   ;spawn bat at location of batree
@@ -155,7 +155,7 @@ batree_update_batspawn_counter:
   
   ;reset bat spawn counter
   lda #BATREE_BATSPAWN_INTERVAL
-  sta entityLocals+batree_locals::batspawn_counter,x
+  sta entity_locals+batree_locals::batspawn_counter,x
   
 do_not_spawn_bat:
 
@@ -258,8 +258,7 @@ batreeOffscreen:
 killBatree:
 
   ;make it dead
-  lda #0
-  sta entity_instances+entityRAM::alive,x
+  jsr entity_kill
   
   ;spawn an explosion entity
   lda #entity_index_explosion

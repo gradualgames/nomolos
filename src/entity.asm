@@ -10,6 +10,32 @@
 
 .segment "CODE"
 
+;kills current entity located at entity_instances,x.
+;also decrements entity count at entity_counters + value at entity_instances+entityRAM::index,x
+.export entity_kill
+.proc entity_kill
+
+  lda #0
+  sta entity_instances+entityRAM::alive,x
+
+  ;save x
+  txa
+  pha
+  
+  ;get zero based index of entity
+  lda entity_instances+entityRAM::index,x
+
+  ;decrement counter for this entity  
+  tax
+  dec entity_counters,x
+  
+  ;restore x
+  pla
+  tax
+
+  rts
+.endproc
+
 ;returns positive if entity must turn right to face nomolos,
 ;negative if entity must turn left.
 .export entity_test_face_nomolos
@@ -231,6 +257,14 @@ skipUpdate:
 ;entails is filling the first byte of every 16 byte chunk with zero.
 .export entity_init_all
 .proc entity_init_all
+
+  ldx #$1F
+  lda #$00
+:
+  sta entity_counters,x
+  dex
+  bpl :-
+
   ldx #$0f
 :
   ;multiply the index by 16
@@ -255,6 +289,18 @@ skipUpdate:
 ;b0 = index of entity definition to spawn
 ;w0 = positionX
 ;b1 = positionY
+
+do_not_spawn:
+  
+  ;restore regs
+  pla
+  tay
+  pla
+  tax
+  pla
+  
+  rts
+
 .export entity_spawn
 .proc entity_spawn
 
@@ -271,6 +317,24 @@ skipUpdate:
   
   ;subtract from entity index to get zero based entity index
   dec b0
+  
+  ;if entity counter for specified entity is greater than max allowed, do not spawn.
+  lda b0
+  tax
+  ;multiply by 8 to get offset from entity definition table
+  asl
+  asl
+  asl
+  tay
+  ;point y at the max allowed entities entry
+  iny
+  iny
+  iny
+  iny
+  iny
+  lda (base_address_entity_definition_table),y
+  cmp entity_counters,x
+  beq do_not_spawn
   
   ;start at the last entity
   ldy #lastEntity
@@ -289,6 +353,21 @@ skipUpdate:
   ;when we get here we are pointing at a dead entity with x
   tya
   bmi do_not_spawn
+  
+  ;save x
+  txa
+  pha
+  
+  ;get entity index into x
+  lda b0
+  tax
+  
+  ;increment the entity count
+  inc entity_counters,x
+  
+  ;restore x
+  pla
+  tax
   
   ;make the entity alive. ALIVE! MUA HUAH HAH HAH
   lda #$01
@@ -376,8 +455,6 @@ skipUpdate:
   
   ;at this point the entity should be fully spawned and ready
   ;to have its update routine called.
-  
-do_not_spawn:
   
   ;restore regs
   pla

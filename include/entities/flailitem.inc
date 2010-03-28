@@ -60,8 +60,7 @@ notTouching:
 
 flailItemDie:
 
-  lda #0
-  sta entity_instances+entityRAM::alive,x
+  jsr entity_kill
   rts
   
 .endproc

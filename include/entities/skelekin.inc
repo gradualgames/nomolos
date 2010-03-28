@@ -208,8 +208,7 @@ skelekinOffscreen:
 killSkelekin:
 
   ;make it dead
-  lda #0
-  sta entity_instances+entityRAM::alive,x
+  jsr entity_kill
   
   ;spawn an explosion entity
   lda #entity_index_explosion

@@ -46,12 +46,12 @@ bat_descent_state:
 
   ;increase vertical velocity until certain value is reached, then switch to trough state.
   clc
-  lda entityLocals+bat_locals::y_velocity,x
+  lda entity_locals+bat_locals::y_velocity,x
   adc #BAT_VERTICAL_ACCELERATION
-  sta entityLocals+bat_locals::y_velocity,x
-  lda entityLocals+bat_locals::y_velocity+1,x
+  sta entity_locals+bat_locals::y_velocity,x
+  lda entity_locals+bat_locals::y_velocity+1,x
   adc #0
-  sta entityLocals+bat_locals::y_velocity+1,x
+  sta entity_locals+bat_locals::y_velocity+1,x
   cmp #BAT_MAX_DESCENT_VELOCITY
   bmi do_not_switch_to_trough_state
   
@@ -70,12 +70,12 @@ bat_trough_state:
 
   ;decrease vertical velocity until zero, then switch to ascent state.
   sec
-  lda entityLocals+bat_locals::y_velocity,x
+  lda entity_locals+bat_locals::y_velocity,x
   sbc #BAT_VERTICAL_ACCELERATION
-  sta entityLocals+bat_locals::y_velocity,x
-  lda entityLocals+bat_locals::y_velocity+1,x
+  sta entity_locals+bat_locals::y_velocity,x
+  lda entity_locals+bat_locals::y_velocity+1,x
   sbc #0
-  sta entityLocals+bat_locals::y_velocity+1,x
+  sta entity_locals+bat_locals::y_velocity+1,x
   cmp #0
   bne do_not_switch_to_ascent_state
 
@@ -94,12 +94,12 @@ bat_ascent_state:
 
   ;decrease vertical velocity until certain value, then switch to crest state.
   sec
-  lda entityLocals+bat_locals::y_velocity,x
+  lda entity_locals+bat_locals::y_velocity,x
   sbc #BAT_VERTICAL_ACCELERATION
-  sta entityLocals+bat_locals::y_velocity,x
-  lda entityLocals+bat_locals::y_velocity+1,x
+  sta entity_locals+bat_locals::y_velocity,x
+  lda entity_locals+bat_locals::y_velocity+1,x
   sbc #0
-  sta entityLocals+bat_locals::y_velocity+1,x
+  sta entity_locals+bat_locals::y_velocity+1,x
   cmp #BAT_MAX_ASCENT_VELOCITY
   bpl do_not_switch_to_crest_state
   
@@ -118,12 +118,12 @@ bat_crest_state:
 
   ;increase vertical velocity until zero, then switch to descent state.
   clc
-  lda entityLocals+bat_locals::y_velocity,x
+  lda entity_locals+bat_locals::y_velocity,x
   adc #BAT_VERTICAL_ACCELERATION
-  sta entityLocals+bat_locals::y_velocity,x
-  lda entityLocals+bat_locals::y_velocity+1,x
+  sta entity_locals+bat_locals::y_velocity,x
+  lda entity_locals+bat_locals::y_velocity+1,x
   adc #0
-  sta entityLocals+bat_locals::y_velocity+1,x
+  sta entity_locals+bat_locals::y_velocity+1,x
   cmp #0
   bne do_not_switch_to_descent_state
 
@@ -148,9 +148,9 @@ bat_init:
   
   ;set initial vertical velocity
   lda #0
-  sta entityLocals+bat_locals::y_velocity,x
+  sta entity_locals+bat_locals::y_velocity,x
   lda #BAT_MAX_DESCENT_VELOCITY
-  sta entityLocals+bat_locals::y_velocity+1,x
+  sta entity_locals+bat_locals::y_velocity+1,x
   
   ;compare entity x position to nomolos x position to decide direction
   sec
@@ -161,14 +161,14 @@ bat_init:
   bpl bat_will_go_right
 bat_will_go_left:
   lda #$ff
-  sta entityLocals+bat_locals::x_velocity,x
-  sta entityLocals+bat_locals::x_velocity+1,x
+  sta entity_locals+bat_locals::x_velocity,x
+  sta entity_locals+bat_locals::x_velocity+1,x
   jmp bat_direction_test_done
 bat_will_go_right:
   lda #$01
-  sta entityLocals+bat_locals::x_velocity,x
+  sta entity_locals+bat_locals::x_velocity,x
   lda #$00
-  sta entityLocals+bat_locals::x_velocity+1,x
+  sta entity_locals+bat_locals::x_velocity+1,x
 bat_direction_test_done:
   
   ;switch state to "trough"
@@ -182,19 +182,19 @@ bat_move:
   ;move bat horizontally
   clc
   lda entity_instances+entityRAM::positionX,x
-  adc entityLocals+bat_locals::x_velocity,x
+  adc entity_locals+bat_locals::x_velocity,x
   sta entity_instances+entityRAM::positionX,x
   lda entity_instances+entityRAM::positionX+1,x
-  adc entityLocals+bat_locals::x_velocity+1,x
+  adc entity_locals+bat_locals::x_velocity+1,x
   sta entity_instances+entityRAM::positionX+1,x
 
   ;add y velocity to 24 bit Y coordinate with sign extension
 .scope addYVelocity
   clc
-  lda entityLocals+bat_locals::y_velocity,x
+  lda entity_locals+bat_locals::y_velocity,x
   adc entity_instances+entityRAM::positionYFine,x
   sta entity_instances+entityRAM::positionYFine,x
-  lda entityLocals+bat_locals::y_velocity+1,x
+  lda entity_locals+bat_locals::y_velocity+1,x
   bmi signExtend
   adc entity_instances+entityRAM::positionY,x
   sta entity_instances+entityRAM::positionY,x
@@ -297,8 +297,7 @@ batOffscreen:
 killBat:
 
   ;make it dead
-  lda #0
-  sta entity_instances+entityRAM::alive,x
+  jsr entity_kill
   
   ;spawn an explosion entity
   lda #entity_index_explosion

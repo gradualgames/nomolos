@@ -31,8 +31,10 @@ sprite: .res 256
 
 .export entity_instances
 entity_instances: .res 256
-.export entityLocals
-entityLocals: .res 256
+.export entity_locals
+entity_locals: .res 256
+.export entity_counters
+entity_counters: .res 32
 
 ;FamiTracker driver must be included here so its variables come after the sprite
 ;page and entity page. This avoids clobbering graphics/sound memory.
