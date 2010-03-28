@@ -30,3 +30,4 @@
 .include "skelekin.inc"
 .include "bat.inc"
 .include "batree.inc"
+.include "owl.inc"

@@ -30,9 +30,21 @@ skelekin_initState:
   lda #$ff
   sta entity_instances+entityRAM::animationObject+1,x
   
-  ;switch state to "move left"
+  jsr entity_test_face_nomolos
+  bpl entity_facing_right
+entity_facing_left:
+
   lda #SKELEKIN_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
+
+  jmp entity_facing_test_done
+entity_facing_right:
+
+  lda #SKELEKIN_MOVERIGHTSTATE
+  sta entity_instances+entityRAM::state,x
+
+entity_facing_test_done:
+  
   rts
 
 skelekin_moveRightState:

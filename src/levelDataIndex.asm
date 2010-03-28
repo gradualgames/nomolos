@@ -49,8 +49,8 @@ ROMDefinitionTable0:
   .word spritesheet1_SlumpedArmorOverlay0
   .word spritesheet1_ScardyCat0
   .word spritesheet1_ScardyCatOverlay0
-  .word spritesheet1_Heart0                 
   
+  .word spritesheet1_Heart0                   
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
   .word spritesheet1_BeedieBlob
@@ -59,9 +59,11 @@ ROMDefinitionTable0:
   .word spritesheet1_Explosion
   .word spritesheet1_Mouse
   .word spritesheet1_OneUp0
-  .word $0000
+  .word $0000 ;Skelekin
   .word spritesheet1_BatFly
   .word spritesheet1_Batree
+  .word spritesheet1_OwlFly
+  .word spritesheet1_OwlAttack
   
   .word attackSound            
   .word hitSound               
@@ -97,8 +99,8 @@ ROMDefinitionTable1:
   .word spritesheet2_SlumpedArmorOverlay0
   .word spritesheet2_ScardyCat0
   .word spritesheet2_ScardyCatOverlay0
-  .word spritesheet2_Heart0                 
   
+  .word spritesheet2_Heart0                   
   .word spritesheet2_Spear0
   .word spritesheet2_GrankFly
   .word spritesheet2_BeedieBlob
@@ -109,7 +111,9 @@ ROMDefinitionTable1:
   .word spritesheet2_OneUp0
   .word spritesheet2_SkelekinWalk
   .word spritesheet2_BatFly
-  .word $0000
+  .word $0000 ;Batree
+  .word $0000 ;OwlFly
+  .word $0000 ;OwlAttack
   
   .word attackSound           
   .word hitSound              
@@ -220,6 +224,14 @@ Batree:
   .word batree_update
   .byte $00
   .byte $18
+  .byte %00000000
+  .byte $00
+  .byte $00
+  .byte $00
+Owl:
+  .word owl_update
+  .byte $00
+  .byte $10
   .byte %00000000
   .byte $00
   .byte $00

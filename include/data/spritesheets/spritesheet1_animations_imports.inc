@@ -18,3 +18,5 @@
 .import spritesheet1_SpearFly
 .import spritesheet1_BatFly
 .import spritesheet1_Batree
+.import spritesheet1_OwlFly
+.import spritesheet1_OwlAttack

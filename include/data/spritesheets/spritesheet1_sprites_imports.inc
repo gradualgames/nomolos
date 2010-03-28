@@ -45,4 +45,7 @@
 .import spritesheet1_Bat1
 .import spritesheet1_Batree0
 .import spritesheet1_Batree1
+.import spritesheet1_Owl0
+.import spritesheet1_Owl1
+.import spritesheet1_Owl2
 

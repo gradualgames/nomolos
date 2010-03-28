@@ -144,3 +144,16 @@ spritesheet1_Batree:
   .word spritesheet1_Batree1
   .word $0000
 
+.export spritesheet1_OwlFly
+spritesheet1_OwlFly:
+  .byte $0a
+  .word spritesheet1_Owl0
+  .word spritesheet1_Owl1
+  .word $0000
+
+.export spritesheet1_OwlAttack
+spritesheet1_OwlAttack:
+  .byte $0a
+  .word spritesheet1_Owl2
+  .word $0000
+

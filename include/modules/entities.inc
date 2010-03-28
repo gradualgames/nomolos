@@ -10,3 +10,4 @@
 .import bat_update
 .import batree_update
 .import skelekin_update
+.import owl_update

@@ -140,6 +140,8 @@ TITLESTATE_DONE = %00000010
   SkelekinWalk .word
   BatFly .word
   Batree .word
+  OwlFly .word
+  OwlAttack .word
   
   attackSound .word
   hitSound .word
