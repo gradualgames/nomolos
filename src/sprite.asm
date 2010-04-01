@@ -593,6 +593,8 @@ spriteNotFlipped:
 
 .export sprite_clear_all
 .proc sprite_clear_all
+  lda #$00
+  sta next_sprite_address
   lda #$ff
   ldx #$00
 : sta sprite, x
