@@ -19,10 +19,7 @@ explosion_update:
 explosionInit:
 
   ;reset the explosion animation object
-  lda #$01
-  sta entity_instances+entityRAM::animationObject,x
-  lda #$ff
-  sta entity_instances+entityRAM::animationObject+1,x
+  jsr entity_reset_anim
   
   ;set state to explode
   lda #EXPLOSION_EXPLODESTATE

@@ -29,10 +29,7 @@ SNUFFER_MOVELEFTSTATE = 2
 snuffer_initState:
 
   ;init code for animation, etc. goes here
-  lda #1
-  sta entity_instances+entityRAM::animationObject,x
-  lda #$ff
-  sta entity_instances+entityRAM::animationObject+1,x
+  jsr entity_reset_anim
   
   jsr entity_test_face_nomolos
   bpl entity_facing_right
@@ -166,10 +163,7 @@ snuffer_draw:
   lda #ROMDefinitionTableStruct::SnufferBite
   sta entity_locals+snuffer_locals::anim_index,x
   
-  lda #1
-  sta entity_instances+entityRAM::animationObject,x
-  lda #$ff
-  sta entity_instances+entityRAM::animationObject+1,x
+  jsr entity_reset_anim
   
 :
   jsr nomolos_is_deadly

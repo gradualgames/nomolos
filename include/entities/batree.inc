@@ -29,10 +29,7 @@ BATREE_MOVELEFTSTATE = 2
 batree_initState:
 
   ;init code for animation, etc. goes here
-  lda #1
-  sta entity_instances+entityRAM::animationObject,x
-  lda #$ff
-  sta entity_instances+entityRAM::animationObject+1,x
+  jsr entity_reset_anim
   
   ;set initial batspawn_counter
   lda #BATREE_BATSPAWN_INTERVAL

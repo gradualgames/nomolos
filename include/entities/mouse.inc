@@ -18,11 +18,8 @@ mouse_update:
 
 mouseInit:
 
-  ;reset the explosion animation object
-  lda #$01
-  sta entity_instances+entityRAM::animationObject,x
-  lda #$ff
-  sta entity_instances+entityRAM::animationObject+1,x
+  ;reset the animation object
+  jsr entity_reset_anim
   
   lda #MOUSE_SITTHERESTATE
   sta entity_instances+entityRAM::state,x

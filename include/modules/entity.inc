@@ -1,6 +1,7 @@
 .ifndef ENTITY_INC
 ENTITY_INC = 1
 
+.import entity_reset_anim
 .import entity_kill
 .import entity_test_face_nomolos
 .import entity_test_death_zone

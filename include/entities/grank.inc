@@ -31,10 +31,7 @@ GRANK_MAXHORIZSPEED = 3
 grank_initState:
 
   ;init code for animation, etc. goes here
-  lda #1
-  sta entity_instances+entityRAM::animationObject,x
-  lda #$ff
-  sta entity_instances+entityRAM::animationObject+1,x
+  jsr entity_reset_anim
   
   ;set x velocity to 0
   lda #0

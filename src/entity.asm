@@ -10,6 +10,15 @@
 
 .segment "CODE"
 
+.export entity_reset_anim
+.proc entity_reset_anim
+  lda #1
+  sta entity_instances+entityRAM::animationObject,x
+  lda #$ff
+  sta entity_instances+entityRAM::animationObject+1,x
+  rts
+.endproc
+
 ;kills current entity located at entity_instances,x.
 ;also decrements entity count at entity_counters + value at entity_instances+entityRAM::index,x
 .export entity_kill

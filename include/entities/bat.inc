@@ -141,10 +141,7 @@ do_not_switch_to_descent_state:
 bat_init:
 
   ;init code for animation, etc. goes here
-  lda #1
-  sta entity_instances+entityRAM::animationObject,x
-  lda #$ff
-  sta entity_instances+entityRAM::animationObject+1,x
+  jsr entity_reset_anim
   
   ;set initial vertical velocity
   lda #0
