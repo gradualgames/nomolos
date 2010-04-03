@@ -293,42 +293,7 @@ owl_draw:
   
 nomolosNotAttacking:
 
-  ;load address of animation object into w1
-  lda #<(entity_instances+entityRAM::animationObject)
-  sta w1
-  lda #>(entity_instances+entityRAM::animationObject)
-  sta w1+1
-  
-  ;get the index into a
-  txa
-  clc
-  ;do a 16 bit add onto the address with this index
-  adc w1
-  sta w1
-  lda w1+1
-  adc #0
-  sta w1+1 
-  
-  ;load address of owl animation definition into w2
-
   ldy entity_locals+owl_locals::anim_index,x
-  lda (base_address_rom_definition_table),y
-  sta w2
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w2+1
-  
-  jsr sprite_update_animation  
-  
-  lda entity_screen_x
-  sta w3
-  lda entity_screen_x+1
-  sta w3+1
-  lda entity_screen_y
-  sta w4
-  lda entity_screen_y+1
-  sta w4+1
-  
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:
@@ -339,8 +304,8 @@ entity_facing_right:
   lda #%01000000
   sta b2
 entity_facing_test_done:
-  
-  jsr sprite_draw_animation_16bit
+  jsr entity_draw_anim
+
 owlOffscreen:
   rts
   

@@ -153,41 +153,6 @@ skelekin_draw:
   
 nomolosNotAttacking:
 
-  ;load address of animation object into w1
-  lda #<(entity_instances+entityRAM::animationObject)
-  sta w1
-  lda #>(entity_instances+entityRAM::animationObject)
-  sta w1+1
-  
-  ;get the index into a
-  txa
-  clc
-  ;do a 16 bit add onto the address with this index
-  adc w1
-  sta w1
-  lda w1+1
-  adc #0
-  sta w1+1 
-  
-  ;load address of skelekin animation definition into w2
-  ldy #ROMDefinitionTableStruct::SkelekinWalk
-  lda (base_address_rom_definition_table),y
-  sta w2
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w2+1
-
-  jsr sprite_update_animation  
-  
-  lda entity_screen_x
-  sta w3
-  lda entity_screen_x+1
-  sta w3+1
-  lda entity_screen_y
-  sta w4
-  lda entity_screen_y+1
-  sta w4+1
-  
   lda entity_instances+entityRAM::state,x
   cmp #SKELEKIN_MOVELEFTSTATE
   bne skelekin_moving_right
@@ -198,7 +163,9 @@ skelekin_moving_right:
   lda #%00000000
   sta b2
 skelekin_direction_test_done:
-  jsr sprite_draw_animation_16bit
+  ldy #ROMDefinitionTableStruct::SkelekinWalk
+  jsr entity_draw_anim
+
 skelekinOffscreen:
   rts
   

@@ -7,8 +7,52 @@
 .include "camera.inc"
 .include "geotests.inc"
 .include "constants.inc"
+.include "sprite.inc"
 
 .segment "CODE"
+
+;draws entity's animation.
+;expects y to contain offset into rom definition table where animation address can be found.
+;expects b2 to contain flags for whether to flip the sprite. e.g. #%01000000 to flip
+.export entity_draw_anim
+.proc entity_draw_anim
+  ;load address of animation object into w1
+  lda #<(entity_instances+entityRAM::animationObject)
+  sta w1
+  lda #>(entity_instances+entityRAM::animationObject)
+  sta w1+1
+  
+  ;get the index into a
+  txa
+  clc
+  ;do a 16 bit add onto the address with this index
+  adc w1
+  sta w1
+  lda w1+1
+  adc #0
+  sta w1+1 
+  
+  ;load address of deentle animation definition into w2
+  lda (base_address_rom_definition_table),y
+  sta w2
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w2+1
+  
+  jsr sprite_update_animation  
+  
+  lda entity_screen_x
+  sta w3
+  lda entity_screen_x+1
+  sta w3+1
+  lda entity_screen_y
+  sta w4
+  lda entity_screen_y+1
+  sta w4+1
+  
+  jsr sprite_draw_animation_16bit
+  rts
+.endproc
 
 .export entity_reset_anim
 .proc entity_reset_anim
