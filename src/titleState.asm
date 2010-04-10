@@ -1,5 +1,7 @@
 .include "structs.inc"
 .include "constants.inc"
+.include "flags.inc"
+.include "famitracker.inc"
 .include "macros.inc"
 .include "controller.inc"
 .include "ppu.inc"
@@ -16,23 +18,40 @@
 
   lda state_control_params+titleStateControl::state
   cmp #TITLESTATE_INIT
-  beq titleStateInit
+  bne :+
+  jmp  titleStateInit
+:
   cmp #TITLESTATE_RUN
-  beq titleStateRun
+  bne :+
+  jmp titleStateRun
+:
   cmp #TITLESTATE_DONE
-  beq titleStateDone
+  bne :+
+  jmp titleStateDone
+:
   
 titleStateInit:
 
   ;this init state should be similar to the level in state, only we won't be
   ;clearing the nametable, we'll be loading it from a particular location.
   waitVBlank
-	
+  
   ;turn sprite and background visibility off
   lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
   lda #( ( 0 << PPU1_SPRITE_VISIBILITY ) | ( 0 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
   sta $2001
+  
+  ;initialize music driver as NTSC and track #0.
+.ifdef MUSIC_ENABLE
+  lda #<title_music
+  sta ft_music_addr
+  lda #>title_music
+  sta ft_music_addr+1
+  lda #0
+  ldx #0
+  jsr ft_music_init
+.endif
   
   lda #TITLESTATE_RUN
   sta state_control_params+titleStateControl::state
@@ -101,6 +120,14 @@ titleStateDone:
   and #1
   beq :+
   
+  .ifdef MUSIC_ENABLE
+  lda #<haltmusic
+  sta ft_music_addr
+  lda #>haltmusic
+  sta ft_music_addr+1
+  jsr ft_music_init
+  .endif
+  
   ;start was pressed, now we want to switch to level in state
   ;set current level and switch to "level in" state
   ;start out Nomolos with 3 lives.
@@ -123,6 +150,10 @@ stateCommandComplete:
   
 .export title_state_update_ppu
 .proc title_state_update_ppu
+
+  .ifdef MUSIC_ENABLE
+  jsr ft_music_play
+  .endif
 
   rts
 .endproc

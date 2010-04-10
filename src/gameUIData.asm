@@ -16,6 +16,10 @@ banktable:
 haltmusic:
 .incbin "data/haltmusic.bin"
 
+.export title_music
+title_music:
+.incbin "data/title_music.bin"
+
 .export font1
 font1:
   .word font0_patterns
