@@ -106,6 +106,10 @@
 .export nomolos_hurt
 .proc nomolos_hurt
 
+  .ifdef INVINCIBLE
+  rts
+  .endif
+
   ;if blinking is on, skip this whole routine
   lda nomolos_state_primary
   and #nomolosBlinkingTestAND
