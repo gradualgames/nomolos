@@ -246,7 +246,7 @@ bat_draw:
   sta w0
   lda #>hitSound
   sta w0+1
-  jsr sound_load
+  ;jsr sound_load
   
   jmp killBat
   

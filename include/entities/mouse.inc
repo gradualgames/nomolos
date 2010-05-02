@@ -50,7 +50,7 @@ mouseSitThere:
   sta w0
   lda #>getHealthSound
   sta w0+1
-  jsr sound_load
+  ; ;jsr sound_load
   
   jmp mouseDie
   

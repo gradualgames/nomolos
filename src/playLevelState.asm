@@ -110,10 +110,10 @@ stateCommandComplete:
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
-  jsr ft_music_play
+  ; jsr ft_music_play
   .endif
   
-  jsr sound_play
+  ;jsr sound_play
 ppu_data_not_ready:
   
   lda #1

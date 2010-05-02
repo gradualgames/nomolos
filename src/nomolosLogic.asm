@@ -148,7 +148,7 @@ skipDecreaseHealth:
   iny
   lda (base_address_rom_definition_table),y
   sta w0+1
-  jsr sound_load
+  ; ;jsr sound_load
   
 skipHurt:
 
@@ -187,12 +187,12 @@ skipHurt:
   lda #200
   sta frame_counter
   
-  ;tell famitracker to play the die sound
-.if .defined(MUSIC_ENABLE)
-  lda #2
-  ldx #0
-  jsr ft_music_init
-.endif  
+  ; ;tell famitracker to play the die sound
+; .if .defined(MUSIC_ENABLE)
+  ; lda #2
+  ; ldx #0
+  ; jsr ft_music_init
+; .endif  
 
 alreadyDying:
 
@@ -236,17 +236,17 @@ alreadyDying:
   lda nomolos_screen_y+1
   sta nomolos_out_of_armor_screen_y+1
   
-  ;tell famitracker to play the die sound
-.if .defined(MUSIC_ENABLE)
-  ;switch to the level and music bank
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (base_address_rom_definition_table),y
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-  lda #2
-  ldx #0
-  jsr ft_music_init
-.endif  
+  ; ;tell famitracker to play the die sound
+; .if .defined(MUSIC_ENABLE)
+  ; ;switch to the level and music bank
+  ; ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  ; lda (base_address_rom_definition_table),y
+  ; sta mapper_bank_next
+  ; jsr mapper_switch_bank
+  ; lda #2
+  ; ldx #0
+  ; jsr ft_music_init
+; .endif  
 
   pla
   sta mapper_bank_next
@@ -265,7 +265,7 @@ alreadyDying:
   iny
   lda (base_address_rom_definition_table),y
   sta w0+1
-  jsr sound_load
+  ; ;jsr sound_load
   
   ;turn on the attack hit box
   lda #$0c
@@ -372,7 +372,7 @@ nomolosAttackSwordBranch:
   iny
   lda (base_address_rom_definition_table),y
   sta w0+1
-  jsr sound_load
+  ; ;jsr sound_load
   
   ;turn on the attack hit box
   lda #$0c
@@ -395,7 +395,7 @@ nomolosAttackFlailBranch:
   iny
   lda (base_address_rom_definition_table),y
   sta w0+1
-  jsr sound_load
+  ; ;jsr sound_load
   
   ;turn on the attack hit box
   lda #$0c

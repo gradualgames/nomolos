@@ -122,16 +122,16 @@ loadLevelStateInit:
   lda (base_address_rom_definition_table),y
   sta base_address_entity_definition_table+1
   
-  .ifdef MUSIC_ENABLE
-  ldy #ROMDefinitionTableStruct::music
-  lda (base_address_rom_definition_table),y
-  sta ft_music_addr
-  iny
-  lda (base_address_rom_definition_table),y
-  sta ft_music_addr+1
-  .endif
+  ; .ifdef MUSIC_ENABLE
+  ; ldy #ROMDefinitionTableStruct::music
+  ; lda (base_address_rom_definition_table),y
+  ; sta ft_music_addr
+  ; iny
+  ; lda (base_address_rom_definition_table),y
+  ; sta ft_music_addr+1
+  ; .endif
   
-  jsr sound_init
+  ;jsr sound_init
   
   ldy #ROMDefinitionTableStruct::palette
   lda (base_address_rom_definition_table),y
@@ -151,12 +151,12 @@ loadLevelStateInit:
   lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
   sta $2000
   
-  ;initialize music driver as NTSC and track #0.
-.ifdef MUSIC_ENABLE
-  lda #0
-  ldx #0
-  jsr ft_music_init
-.endif
+  ; ;initialize music driver as NTSC and track #0.
+; .ifdef MUSIC_ENABLE
+  ; lda #0
+  ; ldx #0
+  ; jsr ft_music_init
+; .endif
   
   lda #0
   sta camera_scroll_x

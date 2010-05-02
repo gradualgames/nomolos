@@ -32,7 +32,7 @@ skipJmpNotTouching:
   sta w0
   lda #>getItemSound
   sta w0+1
-  jsr sound_load
+  ;jsr sound_load
     
   jmp flailItemDie
   

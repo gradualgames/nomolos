@@ -44,13 +44,13 @@ titleStateInit:
   
   ;initialize music driver as NTSC and track #0.
 .ifdef MUSIC_ENABLE
-  lda #<title_music
-  sta ft_music_addr
-  lda #>title_music
-  sta ft_music_addr+1
-  lda #0
-  ldx #0
-  jsr ft_music_init
+  ; lda #<title_music
+  ; sta ft_music_addr
+  ; lda #>title_music
+  ; sta ft_music_addr+1
+  ; lda #0
+  ; ldx #0
+  ; jsr ft_music_init
 .endif
   
   lda #TITLESTATE_RUN
@@ -120,13 +120,13 @@ titleStateDone:
   and #1
   beq :+
   
-  .ifdef MUSIC_ENABLE
-  lda #<haltmusic
-  sta ft_music_addr
-  lda #>haltmusic
-  sta ft_music_addr+1
-  jsr ft_music_init
-  .endif
+  ; .ifdef MUSIC_ENABLE
+  ; lda #<haltmusic
+  ; sta ft_music_addr
+  ; lda #>haltmusic
+  ; sta ft_music_addr+1
+  ; jsr ft_music_init
+  ; .endif
   
   ;start was pressed, now we want to switch to level in state
   ;set current level and switch to "level in" state
@@ -151,9 +151,9 @@ stateCommandComplete:
 .export title_state_update_ppu
 .proc title_state_update_ppu
 
-  .ifdef MUSIC_ENABLE
-  jsr ft_music_play
-  .endif
+  ; .ifdef MUSIC_ENABLE
+  ; jsr ft_music_play
+  ; .endif
 
   rts
 .endproc

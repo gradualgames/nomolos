@@ -38,11 +38,11 @@ entity_counters: .res 32
 
 ;FamiTracker driver must be included here so its variables come after the sprite
 ;page and entity page. This avoids clobbering graphics/sound memory.
-.ifdef MUSIC_ENABLE
-.include "driver.s"
-.export ft_enable_channel, ft_disable_channel
-.export ft_music_init, ft_music_play
-.endif
+; .ifdef MUSIC_ENABLE
+; .include "driver.s"
+; .export ft_enable_channel, ft_disable_channel
+; .export ft_music_init, ft_music_play
+; .endif
 
 .segment "CODE"
 
