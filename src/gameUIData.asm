@@ -4,6 +4,7 @@
 .include "level2.inc"
 .include "title_patterns_imports.inc"
 .include "font0_patterns_imports.inc"
+.include "soundengine.inc"
 
 .segment "CODE"
   
@@ -18,7 +19,81 @@ haltmusic:
 
 .export title_music
 title_music:
-.incbin "data/title_music.bin"
+  .word k13_square1
+  .word k13_square2
+  .word $0000
+  .word $0000
+  
+k13_square1:
+  .byte STL, _16TH
+  .byte STV, 2
+  .byte STP, 1
+  .byte G4, D4
+  .byte STL, _64TH, C4, B3, C4, B3
+  .byte STL, _32ND, A3, G3, FS3, E3, D3, C3, B2, C3
+  .byte STL, _8TH+_32ND, D3
+  .byte STL, _32ND, G3, FS3, B3, A3, E4, D4, G4, FS4, C5, B4, A4, G4, FS4
+  .byte STL, _16TH, G4, G3
+  .byte STL, _32ND, FS3, B3, A3, E4, D4, G4, FS4, C5, B4, A4, G4, FS4
+  .byte STL, _16TH, G4, D4
+  .byte STL, _32ND, E4, E3, E3, E3, E3, E3, E3, G3
+  .byte STL, _16TH, E3, E4
+  .byte STL, _64TH, FS4, E4, FS4, E4
+  .byte STL, _32ND, D4, C4, D4, D3, D3, D3, D3, D3, D3, FS3
+  .byte STL, _16TH, D3, D4
+  .byte STL, _64TH, E4, D4, E4, D4
+  .byte STL, _32ND, C4, B3, C4, D3, D3, D3, D3, D3, D3, FS3
+  .byte STL, _16TH, D3, C4
+  .byte STL, _64TH, D4, C4, D4, C4
+  .byte STL, _32ND, B3, A3, B3, G2, G2, G2, G2, G2, G2, B2
+  .byte STL, _16TH, G2, B3
+  .byte STL, _64TH, C4, B3, C4, B3
+  .byte STL, _32ND, A3, G3, D4, A3, FS3, D3, B3, D3, B2, G2, D4, A3, FS3, D3, B3, D3, B2, G2
+  .byte GOT
+  .word k13_square1
+
+k13_square2:
+  .byte STL, _16TH*6
+  .byte STV, 0
+  .byte STP, 1
+  .byte A1
+  .byte STV, 2
+  .byte STL, _16TH, G2, D2
+  .byte STL, _64TH, C2, B1, C2, B1
+  .byte STL, _32ND, A1, G1
+  .byte STL, _8TH, D2, D1
+  .byte STL, _16TH, G1, G2
+  .byte STL, _64TH, C2, B1, C2, B1
+  .byte STL, _32ND, A1, G1
+  .byte STL, _8TH, D2, D1
+  .byte STL, _16TH, G1, G2
+  .byte STL, _64TH, C2, B1, C2, B1
+  .byte STL, _32ND, A1, G1
+  .byte STL, _8TH, C2
+  .byte STL, _32ND, C4, C4, C4, E4
+  .byte STL, _16TH, C4, C4
+  .byte STL, _64TH, D4, C4, D4, C4
+  .byte STL, _32ND, B3, A3
+  .byte STL, _8TH, B3
+  .byte STL, _32ND, B3, B3, B3, D4
+  .byte STL, _16TH, B3, B2
+  .byte STL, _64TH, C3, B2, C3, B2
+  .byte STL, _32ND, A2, G2
+  .byte STL, _8TH, D2
+  .byte STL, _32ND, A3, A3, A3, C4
+  .byte STL, _16TH, A3, D2
+  .byte STL, _64TH, B2, A2, B2, A2
+  .byte STL, _32ND, G2, FS2
+  .byte STL, _8TH, G1
+  .byte STL, _32ND, B3, B3, B3, D4
+  .byte STL, _16TH, B3, G2
+  .byte STL, _64TH, A2, G2, A2, G2
+  .byte STL, _32ND, FS2, E2
+  .byte STL, _16TH, D1, D2, D1, D2, D1, D2, D1, D2
+  .byte GOT
+  .word k13_square2
+
+; .incbin "data/title_music.bin"
 
 .export font1
 font1:

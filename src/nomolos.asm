@@ -10,7 +10,8 @@
 .include "gameOverState.inc"
 .include "titleState.inc"
 .include "entity.inc"
-.include "sound.inc"
+;.include "sound.inc"
+.include "soundengine.inc"
 .include "level1.inc"
 .include "level2.inc"
 
@@ -50,6 +51,8 @@ reset:
   initNES
   clearRAM
 
+  jsr sound_initialize
+  
   ;lda #GAMEOVERSTATE_INIT
   ;sta state_control_params+gameOverStateControl::state
   ;switchState game_over_state_update, game_over_state_update_ppu

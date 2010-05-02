@@ -33,7 +33,8 @@ FILES           = nomolos \
                   sprite \
                   entity \
                   controller \
-                  sound \
+                  soundengine \
+                  sounds \
                   geotests \
                   zp \
                   mapper \

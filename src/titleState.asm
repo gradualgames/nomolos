@@ -1,7 +1,8 @@
 .include "structs.inc"
 .include "constants.inc"
 .include "flags.inc"
-.include "famitracker.inc"
+;.include "famitracker.inc"
+.include "soundengine.inc"
 .include "macros.inc"
 .include "controller.inc"
 .include "ppu.inc"
@@ -42,15 +43,13 @@ titleStateInit:
   lda #( ( 0 << PPU1_SPRITE_VISIBILITY ) | ( 0 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
   sta $2001
   
-  ;initialize music driver as NTSC and track #0.
+  ;load title screen music
 .ifdef MUSIC_ENABLE
-  ; lda #<title_music
-  ; sta ft_music_addr
-  ; lda #>title_music
-  ; sta ft_music_addr+1
-  ; lda #0
-  ; ldx #0
-  ; jsr ft_music_init
+  lda #<title_music
+  sta sound_param_word_1
+  lda #>title_music
+  sta sound_param_word_1+1
+  jsr song_initialize
 .endif
   
   lda #TITLESTATE_RUN
@@ -120,7 +119,10 @@ titleStateDone:
   and #1
   beq :+
   
-  ; .ifdef MUSIC_ENABLE
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
   ; lda #<haltmusic
   ; sta ft_music_addr
   ; lda #>haltmusic
@@ -151,9 +153,10 @@ stateCommandComplete:
 .export title_state_update_ppu
 .proc title_state_update_ppu
 
-  ; .ifdef MUSIC_ENABLE
-  ; jsr ft_music_play
-  ; .endif
+  .ifdef MUSIC_ENABLE
+  jsr sound_update
+  jsr sound_upload
+  .endif
 
   rts
 .endproc

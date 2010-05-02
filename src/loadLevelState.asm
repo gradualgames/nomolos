@@ -122,7 +122,7 @@ loadLevelStateInit:
   lda (base_address_rom_definition_table),y
   sta base_address_entity_definition_table+1
   
-  ; .ifdef MUSIC_ENABLE
+  ;.ifdef MUSIC_ENABLE
   ; ldy #ROMDefinitionTableStruct::music
   ; lda (base_address_rom_definition_table),y
   ; sta ft_music_addr
