@@ -1,4 +1,5 @@
 .include "constants.inc"
+.include "soundengine.inc"
 
 .segment "ROM3_4K0"  
 
@@ -14,7 +15,100 @@
 
 .export level1_music
 level1_music:
-.incbin "data/music.bin"
+  .word k1_square1
+  .word k1_square2
+  .word k1_triangle
+  .word $0000
+  
+k1_square1:
+  .byte STV, 2
+  .byte STP, 1
+  .byte STL, _32ND, FS3, GS3, A3, B3, CS4, CS3, F3, CS3
+  .byte STL, _8TH+_16TH, FS3
+  .byte STL, _16TH, GS3
+  .byte STL, _32ND, A3, FS3, B3, GS3, CS4, A3, GS3, FS3
+  .byte STL, _16TH, F3, CS4
+  .byte STL, _64TH, D4, CS4, D4, CS4, D4, CS4, D4, CS4
+  .byte STL, _32ND, CS4, B3, A3, GS3, FS3, E3, D3, CS3
+  .byte STL, _16TH, D3, B3
+  .byte STL, _64TH, CS4, B3, CS4, B3, CS4, B3, CS4, B3
+  .byte STL, _32ND, B3, A3, GS3, FS3, E3, D3, CS3, B2
+  .byte STL, _16TH, CS3, A3
+  .byte STL, _64TH, B3, A3, B3, A3, B3, A3, B3, A3
+  .byte STL, _32ND, A3, GS3, FS3, E3, D3, CS3, B2, A2
+  .byte STL, _16TH, B2, GS3
+  .byte STL, _64TH, A3, GS3, A3, GS3, A3, GS3, A3, GS3
+  .byte STL, _32ND, GS3, FS3, F3, DS3, CS3, B2, A2, GS2, A2, FS2, B2, GS2, CS3, A2, GS2, FS2
+  .byte F2, CS2, FS2, DS2, GS2, F2, A2, FS2, B2, GS2, CS3, A2, DS3, B2, F3, CS3, FS3, DS3, GS3, F3, A3, FS3
+  .byte B3, GS3
+  .byte STL, _8TH, CS4
+  .byte STL, _64TH, B3, A3, B3, A3, B3, A3, GS3, A3
+  .byte STL, _8TH, CS4
+  .byte STL, _64TH, B3, A3, B3, A3, B3, A3, GS3, A3
+  .byte STL, _8TH, CS4
+  .byte STL, _64TH, B3, A3, B3, A3, B3, A3, GS3, A3
+  .byte STL, _32ND, A3, FS3, B3, GS3, CS4, A3, GS3, FS3, F3, CS3, FS3, DS3, GS3, B2, A2, GS2
+  .byte A2, FS2, B2, GS2, CS3, A2, GS2, FS2, F2, CS2, FS2, DS2, GS2, F2, A2, FS2, B2, B2, A2
+  .byte GS2, A2, B2
+  .byte STL, _64TH, CS3, B2, A2, B2
+  .byte STL, _32ND, CS3, GS2, A2, FS2, GS2, F2
+  .byte STL, _16TH, A2, GS2, FS2
+  .byte STL, _16TH*6
+  .byte F2
+  .byte GOT
+  .word k1_square1
+  
+k1_square2:
+  .byte STV, 0
+  .byte STP, 1
+  .byte STL, _16TH*4
+  .byte A0
+  .byte STV, 2
+  .byte STL, _32ND, FS2, GS2, A2, B2, CS3, CS2, F2, CS2
+  .byte STL, _16TH, FS2, GS2, A2, B2, CS3, CS3, CS3, CS3, A2, A2, A2, A2, B2, B2, B2, B2
+  .byte GS2, GS2, GS2, GS2, A2, A2, A2, A2
+  .byte FS2, FS2, FS2, FS2, GS2, GS2, GS2, GS2
+  .byte CS2, CS2, CS2, CS2, FS2, GS2, A2, B2
+  .byte CS2, DS2, F2, FS2, GS2, A2, B2, CS3, DS3, F3, FS3, GS3
+  .byte STL, _32ND, A3, FS3, D3, B2, GS3, F3, GS3, F3, A3, FS3, D3, B2, GS3, F3, CS3, F3, A3
+  .byte FS3, D3, B2, GS3, F3, CS3, F3
+  .byte STL, _16TH, FS2, GS2, A2, B2, CS3, DS2, F2, CS2
+  .byte FS1, GS1, A1, B1, CS2, DS2, F2, FS2
+  .byte STL, _32ND, GS1, GS2, FS2, F2
+  .byte STL, _16TH, FS2, D2
+  .byte STL, _8TH+_16TH, CS1
+  .byte STL, _32ND, FS2, DS2, F2, CS2, DS2, C2, CS2, GS1, F1, GS1
+  .byte STL, _64TH, CS1, DS1, CS1, DS1, CS1, DS1, CS1, DS1
+  .byte STL, _8TH
+  .byte CS1
+  .byte GOT
+  .word k1_square2
+  
+k1_triangle:
+  .byte STV, 0
+  .byte STP, 1
+  .byte STL, _16TH*4
+  .byte A0
+  .byte STV, 2
+  .byte STL, _32ND, FS2, GS2, A2, B2, CS3, CS2, F2, CS2
+  .byte STL, _16TH, FS2, GS2, A2, B2, CS3, CS4, CS3, CS4, A2, A3, A2, A3, B2, B3, B2, B3
+  .byte GS2, GS3, GS2, GS3, A2, A3, A2, A3
+  .byte FS2, FS3, FS2, FS3, GS2, GS3, GS2, GS3
+  .byte CS2, CS3, CS2, CS3, FS2, GS2, A2, B2
+  .byte CS2, DS2, F2, FS2, GS2, A2, B2, CS3, DS3, F3, FS3, GS3
+  .byte STL, _32ND, A3, FS3, D3, B2, GS3, F3, GS3, F3, A3, FS3, D3, B2, GS3, F3, CS3, F3, A3
+  .byte FS3, D3, B2, GS3, F3, CS3, F3
+  .byte STL, _16TH, FS2, GS2, A2, B2, CS3, DS2, F2, CS2
+  .byte FS1, GS1, A1, B1, CS2, DS2, F2, FS2
+  .byte STL, _32ND, GS1, GS2, FS2, F2
+  .byte STL, _16TH, FS2, D2
+  .byte STL, _8TH+_16TH, CS1
+  .byte STL, _32ND, FS2, DS2, F2, CS2, DS2, C2, CS2, GS1, F1, GS1
+  .byte STL, _64TH, CS1, DS1, CS1, DS1, CS1, DS1, CS1, DS1
+  .byte STL, _8TH
+  .byte CS1
+  .byte GOT
+  .word k1_triangle
 
 .export level1_palette
 level1_palette:

@@ -3,7 +3,6 @@
 .include "flags.inc"
 .include "ram.inc"
 .include "zp.inc"
-.include "famitracker.inc"
 .include "ram.inc"
 .include "ppu.inc"
 .include "map.inc"

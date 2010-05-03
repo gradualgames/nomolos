@@ -1,3 +1,5 @@
+.include "soundengine.inc"
+
 .ifndef EXITENTITY_INC
 EXITENTITY_INC = 1
 
@@ -27,6 +29,11 @@ exit_entity_do_not_die:
 is_touching_nomolos:
   
   jsr entity_kill
+  
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
   
   ; ;turn off music by playing track #0 of haltmusic  
 ; .if .defined(MUSIC_ENABLE)

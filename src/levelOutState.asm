@@ -4,7 +4,6 @@
 .include "flags.inc"
 .include "ppu.inc"
 .include "mapper.inc"
-.include "famitracker.inc"
 .include "zp.inc"
 .include "gameOverState.inc"
 .include "levelInState.inc"
@@ -171,14 +170,5 @@ stateCommandComplete:
   lda #0
   sta $2005
   
-  .ifdef MUSIC_ENABLE
-  ;switch to the level and music bank
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (base_address_rom_definition_table),y
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-  ; jsr ft_music_play
-  .endif
-
   rts
 .endproc

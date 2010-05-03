@@ -10,7 +10,6 @@
 .include "gameOverState.inc"
 .include "titleState.inc"
 .include "entity.inc"
-;.include "sound.inc"
 .include "soundengine.inc"
 .include "level1.inc"
 .include "level2.inc"
@@ -36,14 +35,6 @@ entity_instances: .res 256
 entity_locals: .res 256
 .export entity_counters
 entity_counters: .res 32
-
-;FamiTracker driver must be included here so its variables come after the sprite
-;page and entity page. This avoids clobbering graphics/sound memory.
-; .ifdef MUSIC_ENABLE
-; .include "driver.s"
-; .export ft_enable_channel, ft_disable_channel
-; .export ft_music_init, ft_music_play
-; .endif
 
 .segment "CODE"
 

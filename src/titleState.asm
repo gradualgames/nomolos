@@ -1,7 +1,6 @@
 .include "structs.inc"
 .include "constants.inc"
 .include "flags.inc"
-;.include "famitracker.inc"
 .include "soundengine.inc"
 .include "macros.inc"
 .include "controller.inc"
@@ -123,12 +122,6 @@ titleStateDone:
   jsr sound_stop
   jsr sound_upload
   .endif
-  ; lda #<haltmusic
-  ; sta ft_music_addr
-  ; lda #>haltmusic
-  ; sta ft_music_addr+1
-  ; jsr ft_music_init
-  ; .endif
   
   ;start was pressed, now we want to switch to level in state
   ;set current level and switch to "level in" state

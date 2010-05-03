@@ -7,8 +7,7 @@
 .include "sprite.inc"
 .include "map.inc"
 .include "camera.inc"
-.include "sound.inc"
-.include "famitracker.inc"
+.include "soundengine.inc"
 .include "zp.inc"
 
 .segment "CODE"
@@ -187,13 +186,12 @@ skipHurt:
   lda #200
   sta frame_counter
   
-  ; ;tell famitracker to play the die sound
-; .if .defined(MUSIC_ENABLE)
-  ; lda #2
-  ; ldx #0
-  ; jsr ft_music_init
-; .endif  
-
+  ;stop all sound
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
+  
 alreadyDying:
 
   rts
@@ -203,9 +201,6 @@ alreadyDying:
 ;sets the nomolos dying state bit and sets coordinates for the scaredy cat graphic.
 .export nomolos_die_attack
 .proc nomolos_die_attack
-
-  lda mapper_bank_current
-  pha
 
   ;decrease Nomolos' lives
   dec nomolos_status_lives
@@ -236,21 +231,10 @@ alreadyDying:
   lda nomolos_screen_y+1
   sta nomolos_out_of_armor_screen_y+1
   
-  ; ;tell famitracker to play the die sound
-; .if .defined(MUSIC_ENABLE)
-  ; ;switch to the level and music bank
-  ; ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  ; lda (base_address_rom_definition_table),y
-  ; sta mapper_bank_next
-  ; jsr mapper_switch_bank
-  ; lda #2
-  ; ldx #0
-  ; jsr ft_music_init
-; .endif  
-
-  pla
-  sta mapper_bank_next
-  jsr mapper_switch_bank
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
 
   rts
 

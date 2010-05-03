@@ -1,4 +1,5 @@
 .include "constants.inc"
+.include "soundengine.inc"
 
 .segment "ROM3_4K2"
 
@@ -12,7 +13,77 @@
 
 .export level2_music
 level2_music:
-.incbin "data/music1.bin"
+  .word song6_2_square1
+  .word song6_2_square2
+  .word song6_2_triangle
+  .word song6_2_noise
+  
+song6_2_square1:
+  .byte STL, _16TH
+  .byte STV, $04
+  .byte STP, $01
+  .byte G2
+  .byte STL, _16TH*3, G2
+  .byte STL, _16TH, GS2
+  .byte STL, _16TH*3, G2
+  .byte STL, _16TH, F2, D2, GS2, F2, B2, GS2, C3, B2
+  .byte STV, $03
+  .byte STL, _32ND, DS2, D2, F2, DS2, G2, F2, GS2, G2, DS2, D2, F2, DS2, G2, F2, GS2, G2
+  .byte C2, AS1, D2, C2, DS2, D2, F2, DS2, C2, AS1, D2, C2, DS2, D2, F2, DS2
+  .byte DS2, D2, F2, DS2, G2, F2, GS2, G2, C2, B1, D2, C2, DS2, D2, F2, DS2
+  .byte G2, F2, GS2, G2, AS2, GS2, C3, AS2, G2, F2, GS2, G2, AS2, GS2, C3, AS2
+  .byte GOT
+  .word song6_2_square1
+  
+song6_2_square2:
+  .byte STL, _16TH
+  .byte STV, $04
+  .byte STP, $01
+  .byte DS3
+  .byte STL, _16TH*3, C3
+  .byte STL, _16TH, F3
+  .byte STL, _16TH*3, DS3
+  .byte STL, _16TH, GS2, F2, B2, GS2, D3, B2, FS3, G3
+  .byte STV, $05
+  .byte G3, GS3, AS3, C4
+  .byte STL, _16TH*4, G3
+  .byte STL, _16TH, GS3, AS3, C4, D4
+  .byte STL, _16TH*4, GS3
+  .byte STL, _16TH, G3, D3, DS3, F3
+  .byte STL, _16TH*4, G3
+  .byte STL, _16TH, AS3, GS3, AS3, D4
+  .byte STL, _16TH*4, DS4
+  .byte GOT
+  .word song6_2_square2
+  
+song6_2_triangle:
+  .byte STL, _16TH
+  .byte STV, $03
+  .byte STP, $01
+  .byte C2, G2, C3, G2, DS2, C2, DS2, G2, D2, F2, B2, GS2, F2, D2, FS2, G2
+  .byte C2, C3, C2, C3, C2, C3, C2, C3, GS1, GS2, GS1, GS2, GS1, GS2, GS1, GS2
+  .byte C2, C3, C2, C3, C2, C3, C2, C3, DS2, DS3, DS2, DS3, DS2, DS3, DS2, DS3
+  .byte GOT
+  .word song6_2_triangle
+  
+song6_2_noise:
+  .byte STV, $03
+  .byte STP, $01
+  .byte STL, _16TH, AS2
+  .byte STL, _16TH*3, GS2
+  .byte STL, _16TH, AS2
+  .byte STL, _16TH*3, GS2
+  .byte STL, _16TH, AS2
+  .byte STL, _32ND, GS2, GS2
+  .byte STL, _16TH, GS2
+  .byte STL, _8TH, GS2
+  .byte STL, _16TH, GS2
+  .byte STL, _8TH, GS2  
+  .byte STV, $00
+  .byte A0, A0, A0, A0, A0, A0, A0, A0
+  .byte A0, A0, A0, A0, A0, A0, A0, A0
+  .byte GOT
+  .word song6_2_noise
 
 .export level2_palette
 level2_palette:

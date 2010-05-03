@@ -2,7 +2,6 @@
 .include "constants.inc"
 .include "macros.inc"
 .include "flags.inc"
-.include "famitracker.inc"
 .include "loadLevelState.inc"
 .include "ppu.inc"
 .include "mapper.inc"

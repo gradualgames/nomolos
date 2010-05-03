@@ -3,7 +3,7 @@
 .include "macros.inc"
 .include "ppu.inc"
 .include "mapper.inc"
-.include "famitracker.inc"
+.include "soundengine.inc"
 .include "loadLevelState.inc"
 .include "sound.inc"
 .include "levelOutState.inc"
@@ -52,6 +52,15 @@
   ;ppu data is ready
   lda #1
   sta ppu_data_ready
+  
+  .ifdef MUSIC_ENABLE
+  ;switch to the level and music bank
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+  jsr sound_update
+  .endif
     
   lda state_control_params+playLevelStateControl::state
   cmp #PLAYLEVELSTATE_SWITCHLEVEL
@@ -105,15 +114,9 @@ stateCommandComplete:
   jsr map_update_scroll_ppu
   
   .ifdef MUSIC_ENABLE
-  ;switch to the level and music bank
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
-  lda (base_address_rom_definition_table),y
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-  ; jsr ft_music_play
+  jsr sound_upload
   .endif
   
-  ;jsr sound_play
 ppu_data_not_ready:
   
   lda #1
