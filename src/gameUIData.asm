@@ -93,8 +93,6 @@ k13_square2:
   .byte GOT
   .word k13_square2
 
-; .incbin "data/title_music.bin"
-
 .export font1
 font1:
   .word font0_patterns

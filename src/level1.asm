@@ -5,8 +5,6 @@
 
 .include "level1_patterns_source.inc"
 
-; Here begins the second 4K block.  The sprites get their data from this page.
-
 .segment "ROM3_4K1"
 
 .include "spritesheet1_patterns_source.inc"
