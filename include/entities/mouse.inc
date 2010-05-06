@@ -45,12 +45,23 @@ mouseSitThere:
   lda #1
   jsr nomolos_add_health
   
-  ;sound_play getHealthSound
+  ;play get health sound
+  txa
+  pha
+  
   lda #<getHealthSound
-  sta w0
+  sta sound_param_word_0
   lda #>getHealthSound
-  sta w0+1
-  ; ;jsr sound_load
+  sta sound_param_word_0+1
+  
+  lda #0
+  sta sound_param_byte_0
+  
+  ldx #soundeffect_two
+  jsr stream_initialize
+  
+  pla
+  tax
   
   jmp mouseDie
   

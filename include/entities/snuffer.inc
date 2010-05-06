@@ -178,12 +178,23 @@ snuffer_draw:
   
   bne nomolosNotAttacking
   
-  ;play an explode sound
+  ;play a hit sound
+  txa
+  pha
+  
   lda #<hitSound
-  sta w0
+  sta sound_param_word_0
   lda #>hitSound
-  sta w0+1
-  ;jsr sound_load
+  sta sound_param_word_0+1
+  
+  lda #3
+  sta sound_param_byte_0
+  
+  ldx #soundeffect_two
+  jsr stream_initialize
+  
+  pla
+  tax
   
   jmp killSnuffer
   

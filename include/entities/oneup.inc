@@ -26,11 +26,23 @@ skipJmpNotTouching:
   lda #1
   jsr nomolos_add_life
     
+  ;play a get item sound
+  txa
+  pha
+  
   lda #<getItemSound
-  sta w0
+  sta sound_param_word_0
   lda #>getItemSound
-  sta w0+1
-  ;jsr sound_load
+  sta sound_param_word_0+1
+  
+  lda #0
+  sta sound_param_byte_0
+  
+  ldx #soundeffect_two
+  jsr stream_initialize
+  
+  pla
+  tax
     
   jmp oneUpDie
   

@@ -2,6 +2,7 @@
 .include "level1.inc"
 .include "level2.inc"
 .include "entities.inc"
+.include "soundengine.inc"
 
 .segment "ROM4_4K0"  
 
@@ -251,104 +252,59 @@ Snuffer:
   
 .export attackSound
 attackSound:
-  .byte $0E
-  .byte $07
-  .byte $0F
-  .byte $f8
-  .byte $0C
-  .byte %00110000
-  .byte $0C
-  .byte %00110010
-  .byte $0C
-  .byte %00110100
-  .byte $0C
-  .byte %00110110
-  .byte $0C
-  .byte %00111000
-  .byte $0C
-  .byte %00111010
-  .byte $0C
-  .byte %00111100
-  .byte $0C
-  .byte %00111110
-  .byte $0C
-  .byte %00110000
-  .byte $ff
+  .byte STL, 10
+  .byte STV, $05
+  .byte STP, $01
+  .byte A0
+  .byte STV, $00
+  .byte A0
+  .byte TRM
  
 .export hitSound
 hitSound:
-  .byte $0E
-  .byte $0a
-  .byte $0F
-  .byte $f8  
-  .byte $0C
-  .byte %00111110
-  .byte $0C
-  .byte %00111100
-  .byte $0C
-  .byte %00111010
-  .byte $0C
-  .byte %00111000
-  .byte $0C
-  .byte %00110110
-  .byte $0C
-  .byte %00110100
-  .byte $0C
-  .byte %00110010
-  .byte $0C
-  .byte %00110000
-  .byte $0C
-  .byte %00110000
-  .byte $ff
+  .byte STL, 10
+  .byte STV, $03
+  .byte STP, $01
+  .byte G2
+  .byte STV, $00
+  .byte A0
+  .byte TRM
 
+.export getHurtSound
+getHurtSound:
+  .byte STL, 1
+  .byte STV, $01
+  .byte STP, $01
+  .byte C5, B4, A4, G4, F4, E4, D4, C4
+  .byte STV, $00
+  .byte A0
+  .byte TRM
+  
+.export dieSound
+dieSound:
+  .byte STL, 1
+  .byte STV, $01
+  .byte STP, $01
+  .byte C6, B5, A5, G5, F5, E5, D5, CS5
+  .byte C5, B4, A4, G4, F4, E4, D4, C4
+  .byte STV, $00
+  .byte A0
+  .byte TRM
+  
 .export getHealthSound
 getHealthSound:
-  .byte DISABLE_FAMITRACKER_CHANNEL
-  .byte $01 
-  .byte $04
-  .byte $84
-  .byte $05
-  .byte %00000000
-  .byte $07
-  .byte %00001000
-  .byte $06
-  .byte %11111111
-  .byte $06
-  .byte %10111111
-  .byte $06
-  .byte %01111111
-  .byte $06
-  .byte %00111111  
-  .byte ENABLE_FAMITRACKER_CHANNEL
-  .byte $01
-  .byte $ff
+  .byte STL, 1
+  .byte STV, $01
+  .byte STP, $01
+  .byte A4,C5,E4,A3,C6,E7
+  .byte A4,C5,E4,A3,C6,E7
+  .byte TRM
   
 .export getItemSound
 getItemSound:
-  .byte DISABLE_FAMITRACKER_CHANNEL
-  .byte $01 
-  .byte $04
-  .byte $84
-  .byte $05
-  .byte %00000000
-  .byte $07
-  .byte %00001000
-  .byte $06
-  .byte %11111111
-  .byte $06
-  .byte %10111111
-  .byte $06
-  .byte %01111111
-  .byte $06
-  .byte %00111111  
-  .byte $06
-  .byte %11111111
-  .byte $06
-  .byte %10111111
-  .byte $06
-  .byte %01111111
-  .byte $06
-  .byte %00111111  
-  .byte ENABLE_FAMITRACKER_CHANNEL
-  .byte $01
-  .byte $ff
+  .byte STL, 1
+  .byte STV, $01
+  .byte STP, $01
+  .byte A4, AS4, B4, C5, CS5, D5, DS5, E5
+  .byte A4, AS4, B4, C5, CS5, D5, DS5, E5
+  .byte TRM

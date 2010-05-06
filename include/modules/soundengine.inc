@@ -175,6 +175,10 @@ _QUARTER = 2*_8TH
 .endstruct
 stream_size = 16
 
+;values to use for x for playing sound effects
+soundeffect_one = (stream_size * 4)
+soundeffect_two = (stream_size * 5)
+
 .macro advance_stream_read_address
  
   clc

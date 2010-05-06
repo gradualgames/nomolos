@@ -9,6 +9,7 @@
 .include "camera.inc"
 .include "soundengine.inc"
 .include "zp.inc"
+.include "gameUIData.inc"
 
 .segment "CODE"
 
@@ -119,8 +120,22 @@
   ;decrease nomolos' health.
   lda nomolos_status_health
   beq skipDecreaseHealth
+  
+  ;play a get hurt sound
+  lda #<getHurtSound
+  sta sound_param_word_0
+  lda #>getHurtSound
+  sta sound_param_word_0+1
+  
+  lda #0
+  sta sound_param_byte_0
+  
+  ldx #soundeffect_one
+  jsr stream_initialize
+  
   dec nomolos_status_health
   bne nomolosNotDead
+  
   ;on the instant that nomolos dies, we want him to die. 
   jsr nomolos_die_attack
   
@@ -139,15 +154,6 @@ skipDecreaseHealth:
   lda nomolos_state_primary
   ora #nomolosBlinkingOnOR
   sta nomolos_state_primary  
-  
-  ;play a hit sound
-  ldy #ROMDefinitionTableStruct::hitSound
-  lda (base_address_rom_definition_table),y
-  sta w0
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w0+1
-  ; ;jsr sound_load
   
 skipHurt:
 
@@ -191,6 +197,18 @@ skipHurt:
   jsr sound_stop
   jsr sound_upload
   .endif
+  
+  ;play a die sound
+  lda #<dieSound
+  sta sound_param_word_0
+  lda #>dieSound
+  sta sound_param_word_0+1
+  
+  lda #0
+  sta sound_param_byte_0
+  
+  ldx #soundeffect_one
+  jsr stream_initialize
   
 alreadyDying:
 
@@ -236,6 +254,18 @@ alreadyDying:
   jsr sound_upload
   .endif
 
+  ;play a die sound
+  lda #<dieSound
+  sta sound_param_word_0
+  lda #>dieSound
+  sta sound_param_word_0+1
+  
+  lda #0
+  sta sound_param_byte_0
+  
+  ldx #soundeffect_one
+  jsr stream_initialize
+  
   rts
 
 .endproc
@@ -245,11 +275,16 @@ alreadyDying:
   ;play an attack sound
   ldy #ROMDefinitionTableStruct::attackSound
   lda (base_address_rom_definition_table),y
-  sta w0
+  sta sound_param_word_0
   iny
   lda (base_address_rom_definition_table),y
-  sta w0+1
-  ; ;jsr sound_load
+  sta sound_param_word_0+1
+  
+  lda #3
+  sta sound_param_byte_0
+  
+  ldx #soundeffect_one
+  jsr stream_initialize
   
   ;turn on the attack hit box
   lda #$0c
@@ -352,11 +387,16 @@ nomolosAttackSwordBranch:
   ;play an attack sound
   ldy #ROMDefinitionTableStruct::attackSound
   lda (base_address_rom_definition_table),y
-  sta w0
+  sta sound_param_word_0
   iny
   lda (base_address_rom_definition_table),y
-  sta w0+1
-  ; ;jsr sound_load
+  sta sound_param_word_0+1
+  
+  lda #3
+  sta sound_param_byte_0
+  
+  ldx #soundeffect_one
+  jsr stream_initialize
   
   ;turn on the attack hit box
   lda #$0c
@@ -375,11 +415,16 @@ nomolosAttackFlailBranch:
   ;play an attack sound
   ldy #ROMDefinitionTableStruct::attackSound
   lda (base_address_rom_definition_table),y
-  sta w0
+  sta sound_param_word_0
   iny
   lda (base_address_rom_definition_table),y
-  sta w0+1
-  ; ;jsr sound_load
+  sta sound_param_word_0+1
+  
+  lda #3
+  sta sound_param_byte_0
+  
+  ldx #soundeffect_one
+  jsr stream_initialize
   
   ;turn on the attack hit box
   lda #$0c

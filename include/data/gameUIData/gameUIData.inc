@@ -6,6 +6,8 @@ MISCDATA_INC = 1
 .import hitSound
 .import getHealthSound
 .import getItemSound
+.import getHurtSound
+.import dieSound
 .import haltmusic
 .import title_music
 .import font1
