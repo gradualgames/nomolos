@@ -50,9 +50,9 @@ DEBUG_FILE      = $(OUTPUT_NAME).dbg
 INCLUDE_FLAGS = -I include \
                 -I include/modules \
                 -I include/entities \
-                -I include/data/spritesheets \
-                -I include/data/levels \
-                -I include/data/fixedBankData \
+                -I include/spritesheets \
+                -I include/levels \
+                -I include/fixedBankData \
                 -I include/global
 ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) --dbgfile $(DEBUG_FILE) -o
