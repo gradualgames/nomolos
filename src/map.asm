@@ -65,15 +65,26 @@ skip_leave_map_test_collision:
   ror
   sta meta_tile_column_index
   
-  ;now meta_tile_column_index is the correct value 
-  ;calculate map_index from meta_tile_column_index
+  ;calculate map column index
   lda meta_tile_column_index
-  lsr
-  tay
+  sta map_column_index
+  lda meta_tile_column_index+1
+  sta map_column_index+1
   
-  ;now, we want to use map index to pull a value out of the map. This value is an index into the map column table.
-  ;we want to turn that value into map_column_address
-  lda (base_address_map),y
+  lsr map_column_index+1
+  ror map_column_index
+  
+  clc
+  lda base_address_map
+  adc map_column_index
+  sta map_column_index
+  lda base_address_map+1
+  adc map_column_index+1
+  sta map_column_index+1
+  
+  ldy #0
+  lda (map_column_index),y
+  
   ;interpret this as a 16 bit value
   sta map_column_address
   lda #0
@@ -400,12 +411,24 @@ meta_tile_address = w6
 
   ;calculate map_index from meta_tile_column_index
   lda meta_tile_column_index
-  lsr
-  tay
+  sta map_column_index
+  lda meta_tile_column_index+1
+  sta map_column_index+1
   
-  ;now, we want to use map index to pull a value out of the map. This value is an index into the map column table.
-  ;we want to turn that value into map_column_address
-  lda (base_address_map),y
+  lsr map_column_index+1
+  ror map_column_index
+  
+  clc
+  lda base_address_map
+  adc map_column_index
+  sta map_column_index
+  lda base_address_map+1
+  adc map_column_index+1
+  sta map_column_index+1
+  
+  ldy #0
+  lda (map_column_index),y
+  
   ;interpret this as a 16 bit value
   sta map_column_address
   lda #0
