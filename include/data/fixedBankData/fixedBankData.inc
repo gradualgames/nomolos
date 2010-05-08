@@ -1,6 +1,7 @@
-.ifndef MISCDATA_INC
-MISCDATA_INC = 1
+.ifndef LEVELDATAINDEX_INC
+LEVELDATAINDEX_INC = 1
 
+.import level_definition_table
 .import banktable
 .import attackSound
 .import hitSound

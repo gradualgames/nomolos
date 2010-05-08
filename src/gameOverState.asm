@@ -4,7 +4,7 @@
 .include "flags.inc"
 .include "ppu.inc"
 .include "mapper.inc"
-.include "gameUIData.inc"
+.include "fixedBankData.inc"
 .include "sprite.inc"
 .include "levelInState.inc"
 .include "zp.inc"

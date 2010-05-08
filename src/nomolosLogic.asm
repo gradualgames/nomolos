@@ -9,7 +9,7 @@
 .include "camera.inc"
 .include "soundengine.inc"
 .include "zp.inc"
-.include "gameUIData.inc"
+.include "fixedBankData.inc"
 
 .segment "CODE"
 

@@ -6,7 +6,7 @@
 .include "ram.inc"
 .include "ppu.inc"
 .include "map.inc"
-.include "gameUIData.inc"
+.include "fixedBankData.inc"
 .include "loadLevelState.inc"
 .include "geotests.inc"
 .include "nomolosLogic.inc"

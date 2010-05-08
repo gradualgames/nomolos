@@ -6,7 +6,7 @@
 .include "sound.inc"
 .include "ppu.inc"
 .include "mapper.inc"
-.include "levelDataIndex.inc"
+.include "fixedBankData.inc"
 .include "camera.inc"
 .include "nomolosLogic.inc"
 .include "playLevelState.inc"

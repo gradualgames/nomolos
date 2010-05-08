@@ -39,8 +39,7 @@ FILES           = nomolos \
                   zp \
                   mapper \
                   ppu \
-                  gameUIData \
-                  levelDataIndex
+                  fixedBankData
 OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))
 LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
 CONFIG_FILE     = $(OUTPUT_NAME).cfg
@@ -53,7 +52,7 @@ INCLUDE_FLAGS = -I include \
                 -I include/entities \
                 -I include/data/spritesheets \
                 -I include/data/levels \
-                -I include/data/gameUIData \
+                -I include/data/fixedBankData \
                 -I include/global
 ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) --dbgfile $(DEBUG_FILE) -o
