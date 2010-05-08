@@ -4,11 +4,11 @@
 .include "entities.inc"
 .include "soundengine.inc"
 
-.segment "ROM4_4K0"  
+.segment "ROM4_4K0"
 
 .include "font0_patterns_source.inc"
 
-.segment "ROM4_4K2"  
+.segment "ROM4_4K2"
 
 .include "title_patterns_source.inc"
 
@@ -18,40 +18,36 @@
 .export level_definition_table
 level_definition_table:
 Level1:
-  .word level1_patterns  ;location of chr data
-  .byte $03              ;prg bank where data resides
-  .byte $00              ;prg bank where code/additional data resides
   .word ROMDefinitionTable0
-  .byte $00, $00  ;pad to 8 bytes. this may be used eventually anyway (music track for example)
 Level2:
-  .word level2_patterns
-  .byte $03       
-  .byte $01
   .word ROMDefinitionTable1
-  .byte $00, $00
 
 ;ROM definition table
 ROMDefinitionTable0:
   .byte sprite_sheet_1_bank
   .byte level_1_bank
-  .word spritesheet1_NomolosWalk            
-  .word spritesheet1_NomolosWalkOverlay     
-  .word spritesheet1_NomolosJump            
-  .word spritesheet1_NomolosJumpOverlay     
-  .word spritesheet1_NomolosFight           
-  .word spritesheet1_NomolosFightOverlay    
+  .byte level_1_patterns_bank
+  
+  .word level1_patterns
+  
+  .word spritesheet1_NomolosWalk
+  .word spritesheet1_NomolosWalkOverlay
+  .word spritesheet1_NomolosJump
+  .word spritesheet1_NomolosJumpOverlay
+  .word spritesheet1_NomolosFight
+  .word spritesheet1_NomolosFightOverlay
   .word spritesheet1_NomolosUseFlail
   .word spritesheet1_NomolosFlailOverlay
   .word spritesheet1_NomolosUseSpear
   .word spritesheet1_NomolosFightOverlay
   .word spritesheet1_FlailBall
   .word spritesheet1_Spear0
-  .word spritesheet1_SlumpedArmor0           
+  .word spritesheet1_SlumpedArmor0
   .word spritesheet1_SlumpedArmorOverlay0
   .word spritesheet1_ScardyCat0
   .word spritesheet1_ScardyCatOverlay0
+  .word spritesheet1_Heart0
   
-  .word spritesheet1_Heart0                   
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
   .word spritesheet1_BeedieBlob
@@ -67,43 +63,48 @@ ROMDefinitionTable0:
   .word spritesheet1_OwlAttack
   .word spritesheet1_SnufferRun
   .word spritesheet1_SnufferBite
-  
-  .word attackSound            
-  .word hitSound               
-  .word level1_palette                
+
+  .word attackSound
+  .word hitSound
+  .word level1_palette
 
   .word level1_map
   .word level1_map_column_table
   .word level1_attribute_column_table
   .word level1_meta_tile_column_table
   .word level1_meta_tile_table
+
+  .word EntityDefinitionTable
   
-  .word EntityDefinitionTable  
-  .word level1_music                  
+  .word level1_music
+  
   .byte level_2_index
 
 ;ROM definition table
 ROMDefinitionTable1:
-  .byte sprite_sheet_1_bank
+  .byte sprite_sheet_2_bank
   .byte level_2_bank
-  .word spritesheet2_NomolosWalk            
-  .word spritesheet2_NomolosWalkOverlay     
-  .word spritesheet2_NomolosJump            
-  .word spritesheet2_NomolosJumpOverlay     
-  .word spritesheet2_NomolosFight           
-  .word spritesheet2_NomolosFightOverlay    
+  .byte level_2_patterns_bank
+  .word level2_patterns
+  
+  .word spritesheet2_NomolosWalk
+  .word spritesheet2_NomolosWalkOverlay
+  .word spritesheet2_NomolosJump
+  .word spritesheet2_NomolosJumpOverlay
+  .word spritesheet2_NomolosFight
+  .word spritesheet2_NomolosFightOverlay
   .word spritesheet2_NomolosUseFlail
   .word spritesheet2_NomolosFlailOverlay
   .word spritesheet2_NomolosUseSpear
   .word spritesheet2_NomolosFightOverlay
   .word spritesheet2_FlailBall
   .word spritesheet2_Spear0
-  .word spritesheet2_SlumpedArmor0           
+  .word spritesheet2_SlumpedArmor0
   .word spritesheet2_SlumpedArmorOverlay0
   .word spritesheet2_ScardyCat0
   .word spritesheet2_ScardyCatOverlay0
-  
-  .word spritesheet2_Heart0                   
+
+  .word spritesheet2_Heart0
   .word spritesheet2_Spear0
   .word spritesheet2_GrankFly
   .word spritesheet2_BeedieBlob
@@ -119,22 +120,22 @@ ROMDefinitionTable1:
   .word $0000 ;OwlAttack
   .word $0000 ;SnufferRun
   .word $0000 ;SnufferBite
-  
-  .word attackSound           
-  .word hitSound              
-  .word level2_palette               
-  
+
+  .word attackSound
+  .word hitSound
+  .word level2_palette
+
   .word level2_map
   .word level2_map_column_table
   .word level2_attribute_column_table
   .word level2_meta_tile_column_table
   .word level2_meta_tile_table
-  
-  .word EntityDefinitionTable 
-  .word level2_music                 
+
+  .word EntityDefinitionTable
+  .word level2_music
   .byte level_1_index
-  
-  
+
+
 ;Entities
 EntityDefinitionTable:
 DeentleEntity:
@@ -249,7 +250,7 @@ Snuffer:
   .byte $01
   .byte $00
   .byte $00
-  
+
 .export attackSound
 attackSound:
   .byte STL, 10
@@ -259,7 +260,7 @@ attackSound:
   .byte STV, $00
   .byte A0
   .byte TRM
- 
+
 .export hitSound
 hitSound:
   .byte STL, 10
@@ -279,7 +280,7 @@ getHurtSound:
   .byte STV, $00
   .byte A0
   .byte TRM
-  
+
 .export dieSound
 dieSound:
   .byte STL, 1
@@ -290,7 +291,7 @@ dieSound:
   .byte STV, $00
   .byte A0
   .byte TRM
-  
+
 .export getHealthSound
 getHealthSound:
   .byte STL, 1
@@ -299,7 +300,7 @@ getHealthSound:
   .byte A4,C5,E4,A3,C6,E7
   .byte A4,C5,E4,A3,C6,E7
   .byte TRM
-  
+
 .export getItemSound
 getItemSound:
   .byte STL, 1
@@ -320,7 +321,7 @@ title_music:
   .word k13_square2
   .word $0000
   .word $0000
-  
+
 k13_square1:
   .byte STL, _16TH
   .byte STV, 2
@@ -401,7 +402,7 @@ font1:
 .export powerTable
 powerTable:
   .byte 100, 10, 1
-  
+
 .export levelString
 levelString:
   .byte $06,$26,$04,$15,$04,$0b,$1a
@@ -409,18 +410,18 @@ levelString:
 .export livesString
 livesString:
   .byte $06,$26,$08,$15,$04,$12,$1a
-  
+
 .export gameOverString
 gameOverString:
   .byte $09,$21,$1b,$27,$1f,$1a,$29,$30,$1f,$2c
-  
+
 .export titleDef
 titleDef:
   .word title_palette
   .word title_nametable
   .word title_patterns
   .byte $04
-  
+
 .include "title_palette_source.inc"
 .include "title_nametable_source.inc"
 .include "title_attributetable_source.inc"

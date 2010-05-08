@@ -9,9 +9,6 @@ STRUCTS_INC = 1
 .endstruct
 
 .struct level
-  chrAddress .word
-  chrPrgRomBank .byte
-  prgRomBank .byte
   romDefinitionTable .word
 .endstruct
 
@@ -111,6 +108,8 @@ TITLESTATE_DONE = %00000010
 .struct ROMDefinitionTableStruct
   NomolosAndEntityBank .byte
   LevelAndMusicBank .byte
+  LevelPatternsBank .byte
+  LevelPatternsAddress .word
   NomolosWalk .word
   NomolosWalkOverlay .word
   NomolosJump .word

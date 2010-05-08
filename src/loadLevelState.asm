@@ -33,14 +33,6 @@
   
 loadLevelStateInit:
 
-  lda state_control_params+loadLevelStateControl::levelToLoad
-  ;multiply accumulator by 8
-  asl
-  asl
-  asl
-  ;transfer to x for indexing
-  tax
-  
   ;wait for vblank so we can turn off graphics, switch chr banks without graphical glitches
   waitVBlank
   
@@ -51,34 +43,41 @@ loadLevelStateInit:
   ;turn off sprites and bg
   lda #( ( 0 << PPU1_SPRITE_VISIBILITY ) | ( 0 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
   sta $2001
+
+  lda state_control_params+loadLevelStateControl::levelToLoad
+  ;multiply accumulator by 2
+  asl
+  ;transfer to x for indexing
+  tax
   
-  ;load CHR bank into $0000
+  ;Load location of the rom definition table for this level
+  lda level_definition_table+level::romDefinitionTable,x
+  sta base_address_rom_definition_table
+  lda level_definition_table+level::romDefinitionTable+1,x
+  sta base_address_rom_definition_table+1
   
   ;first bank switch to the PRG rom bank containing the level's chr data
-  lda level_definition_table+level::chrPrgRomBank,x
+  ldy #ROMDefinitionTableStruct::LevelPatternsBank
+  lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
   
   ;now load the address of the chr data from the level definition table
-  lda level_definition_table+level::chrAddress,x
+  ldy #ROMDefinitionTableStruct::LevelPatternsAddress
+  lda (base_address_rom_definition_table),y
   sta w0
-  inx
-  lda level_definition_table+level::chrAddress,x
-  dex
+  iny
+  lda (base_address_rom_definition_table),y
   sta w0+1
   
   ;load the chr data into vram
   jsr ppu_load_chr
   
   ;load PRG bank into $8000
-  lda level_definition_table+level::prgRomBank,x
+  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
-
-  lda level_definition_table+level::romDefinitionTable,x
-  sta base_address_rom_definition_table
-  lda level_definition_table+level::romDefinitionTable+1,x
-  sta base_address_rom_definition_table+1
 
   ldy #ROMDefinitionTableStruct::map
   lda (base_address_rom_definition_table),y

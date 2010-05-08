@@ -3,6 +3,7 @@ LEVEL1_INC = 1
 
 level_1_index = 0
 level_1_bank = 0
+level_1_patterns_bank = 3
 
 .include "spritesheet1.inc"
 .include "level1_patterns_imports.inc"
