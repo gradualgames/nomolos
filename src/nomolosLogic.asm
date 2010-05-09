@@ -356,34 +356,9 @@ skipNomolosFacingRight:
   rts
 
 .endproc
-  
-;Causes the hit box to be activated for a few frames.
-.export nomolos_attack_sword
+
 .proc nomolos_attack_sword
 
-  ;if attacking is on, skip this whole routine
-  lda nomolos_state_primary
-  and #nomolosAttackTestAND
-  bne skipAttack
-
-  lda nomolos_state_secondary
-  and #nomolosAttackTestMask
-  cmp #nomolosAttackSword
-  beq nomolosAttackSwordBranch
-  cmp #nomolosAttackFlail
-  beq nomolosAttackFlailBranch
-  cmp #nomolosAttackSpear
-  beq nomolosAttackSpearBranch
-  jmp attackSwitchDone
-  
-nomolosAttackSpearBranch:
-
-  jsr nomolos_attack_spear
-
-  jmp attackSwitchDone
-  
-nomolosAttackSwordBranch:
-  
   ;play an attack sound
   ldy #ROMDefinitionTableStruct::attackSound
   lda (base_address_rom_definition_table),y
@@ -407,10 +382,12 @@ nomolosAttackSwordBranch:
   
   ;reset animation
   resetAnim nomolos_animation
+
+  rts
+
+.endproc
   
-  jmp attackSwitchDone
-  
-nomolosAttackFlailBranch:
+.proc nomolos_attack_flail
 
   ;play an attack sound
   ldy #ROMDefinitionTableStruct::attackSound
@@ -438,6 +415,45 @@ nomolosAttackFlailBranch:
   
   ;reset weapon animation
   resetAnim nomolos_weapon_animation
+
+  rts
+
+.endproc
+  
+;Causes the hit box to be activated for a few frames.
+.export nomolos_attack
+.proc nomolos_attack
+
+  ;if attacking is on, skip this whole routine
+  lda nomolos_state_primary
+  and #nomolosAttackTestAND
+  bne skipAttack
+
+  lda nomolos_state_secondary
+  and #nomolosAttackTestMask
+  cmp #nomolosAttackSword
+  beq nomolosAttackSwordBranch
+  cmp #nomolosAttackFlail
+  beq nomolosAttackFlailBranch
+  cmp #nomolosAttackSpear
+  beq nomolosAttackSpearBranch
+  jmp attackSwitchDone
+  
+nomolosAttackSpearBranch:
+
+  jsr nomolos_attack_spear
+
+  jmp attackSwitchDone
+  
+nomolosAttackSwordBranch:
+  
+  jsr nomolos_attack_sword
+  
+  jmp attackSwitchDone
+  
+nomolosAttackFlailBranch:
+
+  jsr nomolos_attack_flail
   
 attackSwitchDone:
 skipAttack:
@@ -1000,7 +1016,7 @@ skipAttack:
   ;test for transition from off to on
   cmp #%00000001
   bne :+
-  jsr nomolos_attack_sword
+  jsr nomolos_attack
 :
 
   ;************************************************************
