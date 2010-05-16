@@ -157,6 +157,28 @@ TITLESTATE_DONE = %00000010
   EntityDefinitionTable .word
   music .word
   NextLevel .byte
+  
+;Nomolos
+  NomolosOffset .byte
+;Deentle
+  DeentleOffset .byte
+;Explosion
+  ExplosionOffset .byte
+;Beedie
+  BeedieOffset .byte
+;Grank
+  GrankOffset .byte
+;Bat
+  BatOffset .byte
+;Skelekin
+  SkelekinOffset .byte
+;Batree
+  BatreeOffset .byte
+;Owl
+  OwlOffset .byte
+;Snuffer
+  SnufferOffset .byte
+
 .endstruct
 
 .endif

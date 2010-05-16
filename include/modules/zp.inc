@@ -21,6 +21,7 @@ ZP_INC = 1
 .importzp w7
 .importzp w8
 .importzp w9
+.importzp sprite_group_offset
 .importzp entity_screen_x
 .importzp entity_screen_y
 .importzp mapper_bank_current

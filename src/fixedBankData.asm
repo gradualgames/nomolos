@@ -80,6 +80,28 @@ ROMDefinitionTable0:
   
   .byte level_2_index
 
+;Nomolos
+  .byte 0
+;Deentle
+  .byte 131
+;Explosion
+  .byte 139
+;Beedie
+  .byte 151
+;Grank
+  .byte 159
+;Bat
+  .byte 167
+;Skelekin
+  .byte 0
+;Batree
+  .byte 171
+;Owl
+  .byte 189
+;Snuffer
+  .byte 223
+
+  
 ;ROM definition table
 ROMDefinitionTable1:
   .byte sprite_sheet_2_bank
@@ -135,6 +157,26 @@ ROMDefinitionTable1:
   .word level2_music
   .byte level_1_index
 
+;Nomolos
+  .byte 0
+;Deentle
+  .byte 131
+;Explosion
+  .byte 139
+;Beedie
+  .byte 151
+;Grank
+  .byte 159
+;Bat
+  .byte 179
+;Skelekin
+  .byte 167
+;Batree
+  .byte 171
+;Owl
+  .byte 189
+;Snuffer
+  .byte 223
 
 ;Entities
 EntityDefinitionTable:

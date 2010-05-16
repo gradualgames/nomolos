@@ -200,6 +200,10 @@ snuffer_draw:
   
 nomolosNotAttacking:
 
+  ldy #ROMDefinitionTableStruct::SnufferOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
   ldy entity_locals+snuffer_locals::anim_index,x
   lda entity_instances+entityRAM::state,x
   cmp #SNUFFER_MOVELEFTSTATE

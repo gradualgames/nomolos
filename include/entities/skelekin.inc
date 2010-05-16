@@ -164,6 +164,10 @@ skelekin_draw:
   
 nomolosNotAttacking:
 
+  ldy #ROMDefinitionTableStruct::SkelekinOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
   lda entity_instances+entityRAM::state,x
   cmp #SKELEKIN_MOVELEFTSTATE
   bne skelekin_moving_right

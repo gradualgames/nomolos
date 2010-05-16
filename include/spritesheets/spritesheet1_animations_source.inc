@@ -169,4 +169,3 @@ spritesheet1_SnufferBite:
   .byte $0a
   .word spritesheet1_Snuffer2
   .word $0000
-

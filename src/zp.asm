@@ -60,6 +60,9 @@ w8:       .res 2
 .exportzp w9
 w9:       .res 2
 
+.exportzp sprite_group_offset
+sprite_group_offset: .res 1
+
 .exportzp entity_screen_x
 entity_screen_x: .res 2
 

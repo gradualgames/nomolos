@@ -304,6 +304,10 @@ owl_draw:
   
 nomolosNotAttacking:
 
+  ldy #ROMDefinitionTableStruct::OwlOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
   ldy entity_locals+owl_locals::anim_index,x
   jsr entity_test_face_nomolos
   bpl entity_facing_right

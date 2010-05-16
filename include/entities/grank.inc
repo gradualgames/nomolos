@@ -273,6 +273,10 @@ grank_draw:
   
 nomolosNotAttacking:
 
+  ldy #ROMDefinitionTableStruct::GrankOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
   ldy #ROMDefinitionTableStruct::GrankFly
   lda #0
   sta b2

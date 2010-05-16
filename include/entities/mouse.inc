@@ -72,6 +72,10 @@ mouseSitThere:
   lda w1
   sta b1
   
+  ldy #ROMDefinitionTableStruct::NomolosOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+  
   lda #0
   sta b2  
   ldy #ROMDefinitionTableStruct::Mouse

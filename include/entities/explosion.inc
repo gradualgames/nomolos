@@ -31,6 +31,10 @@ explosionExplode:
 
   jsr entity_compute_screen_coordinates
 
+  ldy #ROMDefinitionTableStruct::ExplosionOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+  
   ldy #ROMDefinitionTableStruct::Explosion
   jsr entity_draw_anim
   

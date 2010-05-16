@@ -163,6 +163,10 @@ deentle_draw:
   
 nomolosNotAttacking:
 
+  ldy #ROMDefinitionTableStruct::DeentleOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
   ldy #ROMDefinitionTableStruct::DeentleWalk
   jsr entity_draw_anim
 

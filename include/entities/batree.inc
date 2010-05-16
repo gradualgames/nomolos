@@ -211,6 +211,10 @@ batree_draw:
   
 nomolosNotAttacking:
 
+  ldy #ROMDefinitionTableStruct::BatreeOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
   ldy #ROMDefinitionTableStruct::Batree
   jsr entity_test_face_nomolos
   bpl entity_facing_right

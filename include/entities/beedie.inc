@@ -304,6 +304,10 @@ beedie_draw:
   
 nomolosNotAttacking:
 
+  ldy #ROMDefinitionTableStruct::BeedieOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
   ldy #ROMDefinitionTableStruct::BeedieBlob
   lda #0
   sta b2

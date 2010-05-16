@@ -124,6 +124,7 @@ skipFrameUpdate:
 ;w4: the 16 bit y coordinate at which to draw the sprite
 ;b2: extra bits to OR into the sprite attribute
 ;    (presumably %01000000 to flip horiz)
+;b5: tile group offset. All tile offsets within meta sprites are relative to this value.
 ;Global Variables:
 ;next_sprite_address: the current sprite that will be overwritten in the sprite buffer
 ;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
@@ -334,7 +335,10 @@ wrapAroundTestDoneY:
   iny
   
   ;copy the tile number into the sprite
+  clc
   lda (w0),y
+  ;add the grouping offset
+  adc sprite_group_offset
   sta sprite+spriteStruct::tile,x
   
   ;****************************************************************************

@@ -263,6 +263,10 @@ bat_draw:
   
 nomolosNotAttacking:
 
+  ldy #ROMDefinitionTableStruct::BatOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
   ldy #ROMDefinitionTableStruct::BatFly
   jsr entity_draw_anim
 
