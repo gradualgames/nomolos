@@ -22,3 +22,4 @@
 .import spritesheet1_OwlAttack
 .import spritesheet1_SnufferRun
 .import spritesheet1_SnufferBite
+.import spritesheet1_SkelekinWalk

@@ -53,7 +53,7 @@ reset:
   switchState title_state_update, title_state_update_ppu
   
   ;load current level
-  ;lda #0
+  ;lda #1
   ;sta state_control_params+loadLevelStateControl::levelToLoad
   ;lda #LOADLEVELSTATE_INIT
   ;sta state_control_params+loadLevelStateControl::state  

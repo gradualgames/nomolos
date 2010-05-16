@@ -48,6 +48,10 @@ skipJmpNotTouching:
   
 notTouching:
 
+  ldy #ROMDefinitionTableStruct::NomolosOffset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
   ldy #ROMDefinitionTableStruct::OneUp0
   lda (base_address_rom_definition_table),y
   sta w0

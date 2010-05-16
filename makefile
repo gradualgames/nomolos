@@ -21,7 +21,6 @@ FILES           = nomolos \
                   level2 \
                   entities \
                   spritesheet1 \
-                  spritesheet2 \
                   loadLevelState \
                   playLevelState \
                   levelOutState \

@@ -169,3 +169,12 @@ spritesheet1_SnufferBite:
   .byte $0a
   .word spritesheet1_Snuffer2
   .word $0000
+
+.export spritesheet1_SkelekinWalk
+spritesheet1_SkelekinWalk:
+  .byte $0a
+  .word spritesheet1_Skelekin1
+  .word spritesheet1_Skelekin0
+  .word spritesheet1_Skelekin1
+  .word spritesheet1_Skelekin2
+  .word $0000

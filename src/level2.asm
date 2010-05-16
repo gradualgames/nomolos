@@ -90,7 +90,7 @@ level2_palette:
 ;level2_palette
   .byte $0d,$07,$06,$0d,$0d,$10,$00,$07,$0d,$10,$00,$01,$0d,$10,$28,$08
 ;spritesheet1_palette
-  .byte $0d,$04,$29,$0d,$0d,$0d,$27,$20,$0d,$0d,$07,$38,$0d,$21,$21,$21
+  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$07,$38,$0d,$21,$21,$21
 
 .export level2_map
 level2_map = Map

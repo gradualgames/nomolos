@@ -112,7 +112,7 @@ k1_triangle:
 level1_palette:
   .byte $0d,$08,$02,$0b,$0d,$00,$10,$0b,$0d,$0b,$0a,$08,$0d,$02,$20,$10
 ;spritesheet1_palette
-  .byte $0d,$0d,$08,$0b,$0d,$04,$2a,$0d,$0d,$0d,$27,$20,$0d,$0d,$07,$38
+  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$07,$38,$0d,$0d,$08,$0b
 
 .export level1_map
 level1_map = Map
