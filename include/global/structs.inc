@@ -110,6 +110,7 @@ TITLESTATE_DONE = %00000010
   LevelAndMusicBank .byte
   LevelPatternsBank .byte
   LevelPatternsAddress .word
+  SpritePatternsAddress .word
   NomolosWalk .word
   NomolosWalkOverlay .word
   NomolosJump .word

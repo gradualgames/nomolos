@@ -1,5 +1,6 @@
 .export level1_patterns
 level1_patterns:
+  .word $0F10
   .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$00,$00,$00,$00,$00,$00,$00,$00
   .byte $ff,$ff,$ff,$ff,$fc,$f0,$ce,$bc,$00,$00,$00,$00,$03,$0f,$3f,$7f
   .byte $ff,$ff,$ff,$00,$07,$07,$00,$00,$00,$00,$00,$ff,$ff,$ff,$ff,$ff

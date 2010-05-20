@@ -1,3 +1,6 @@
+.export spritesheet1_PatternTable
+spritesheet1_PatternTable:
+  .word $0FD0
   .byte $02,$0d,$14,$25,$27,$4f,$9f,$9e,$00,$02,$03,$02,$00,$00,$00,$01
   .byte $00,$00,$f8,$fe,$fe,$ff,$08,$0b,$00,$00,$00,$00,$00,$00,$c6,$e4
   .byte $9e,$9e,$5e,$5f,$5f,$97,$e7,$0f,$01,$01,$01,$00,$00,$00,$00,$00

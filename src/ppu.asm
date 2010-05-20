@@ -155,20 +155,19 @@ skipUpperZeroDigit:
   rts
 .endproc
   
-;loads 8k of chr data into VRAM starting at address $0000
-;expects w0 to have address of chr data to load.
-;uses w1 to count how much data has been shoveled
-.export ppu_load_chr
-.proc ppu_load_chr
-  ;start at $0000 in VRAM
-  lda #$00
-  sta $2006
-  sta $2006
-  ;count from 0
-  lda #0
-  sta w1
-  sta w1+1
+;loads a specified amount of chr data into VRAM starting at the current VRAM location.
+;expects w0 to contain the address of the chr data.
+;uses w1 to contain the number of bytes to copy from this location.
+.export ppu_load_chr_amount
+.proc ppu_load_chr_amount
+
   ldy #0
+  lda (w0),y
+  sta w1
+  iny
+  lda (w0),y
+  sta w1+1
+  iny
   
 loadChrLoop:
   ;load a byte from the chr data
@@ -183,20 +182,18 @@ loadChrLoop:
   lda w0+1
   adc #0
   sta w0+1
-  ;count the data
-  clc
+  ;decrement the count
+  sec
   lda w1
-  adc #1
+  sbc #1
   sta w1
   lda w1+1
-  adc #0
+  sbc #0
   sta w1+1
-  
-  ;have we reached 8kb of data?
-  cmp #$20
-  bne loadChrLoop
+  bpl loadChrLoop
 
   rts
+
 .endproc
   
 ;loads a nametable and attribute table located at address in w0

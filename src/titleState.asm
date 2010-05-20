@@ -84,7 +84,12 @@ titleStateRun:
   sta w0
   lda titleDef+title::chrAddress+1
   sta w0+1
-  jsr ppu_load_chr
+  
+  lda #$00
+  sta $2006
+  sta $2006
+  
+  jsr ppu_load_chr_amount
   
   ;now that nametable loaded, load the new palette.
   lda titleDef+title::paletteAddress

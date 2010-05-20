@@ -1,12 +1,9 @@
 .include "constants.inc"
 .include "soundengine.inc"
 
-.segment "ROM3_4K0"  
+.segment "ROM3"  
 
 .include "level1_patterns_source.inc"
-
-.segment "ROM3_4K1"
-
 .include "spritesheet1_patterns_source.inc"
 
 .segment "ROM0"

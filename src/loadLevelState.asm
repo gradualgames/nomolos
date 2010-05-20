@@ -71,7 +71,27 @@ loadLevelStateInit:
   sta w0+1
   
   ;load the chr data into vram
-  jsr ppu_load_chr
+  lda #$00
+  sta $2006
+  sta $2006
+  
+  jsr ppu_load_chr_amount
+  
+  ;now load the address of the chr data from the level definition table
+  ldy #ROMDefinitionTableStruct::SpritePatternsAddress
+  lda (base_address_rom_definition_table),y
+  sta w0
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w0+1
+  
+  ;load the chr data into sprite vram
+  lda #$10
+  sta $2006
+  lda #$00
+  sta $2006
+  
+  jsr ppu_load_chr_amount
   
   ;load PRG bank into $8000
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank

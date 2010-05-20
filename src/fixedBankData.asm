@@ -4,12 +4,9 @@
 .include "entities.inc"
 .include "soundengine.inc"
 
-.segment "ROM4_4K0"
+.segment "ROM4"
 
 .include "font0_patterns_source.inc"
-
-.segment "ROM4_4K2"
-
 .include "title_patterns_source.inc"
 
 .segment "CODE"
@@ -29,6 +26,7 @@ ROMDefinitionTable0:
   .byte level_1_patterns_bank
   
   .word level1_patterns
+  .word spritesheet1_PatternTable
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay
@@ -107,7 +105,9 @@ ROMDefinitionTable1:
   .byte sprite_sheet_2_bank
   .byte level_2_bank
   .byte level_2_patterns_bank
+  
   .word level2_patterns
+  .word spritesheet2_PatternTable
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay

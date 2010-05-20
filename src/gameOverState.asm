@@ -78,7 +78,12 @@ gameOverStateRun:
   sta w0
   lda font1+font::chrAddress+1
   sta w0+1
-  jsr ppu_load_chr
+  
+  lda #$00
+  sta $2006
+  sta $2006
+  
+  jsr ppu_load_chr_amount
 
   ;display GAME OVER string
   lda #$20
