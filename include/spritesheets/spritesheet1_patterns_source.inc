@@ -1,6 +1,30 @@
-.export spritesheet1_PatternTable
-spritesheet1_PatternTable:
-  .word $0FD0
+.export spritesheet1_groups
+spritesheet1_groups:
+  .byte $09
+  .word spritesheet1_Nomolos_chr
+  .word spritesheet1_Deentle_chr
+  .word spritesheet1_Explosion_chr
+  .word spritesheet1_Beedie_chr
+  .word spritesheet1_Grank_chr
+  .word spritesheet1_Bat_chr
+  .word spritesheet1_Batree_chr
+  .word spritesheet1_Owl_chr
+  .word spritesheet1_Snuffer_chr
+
+.export spritesheet2_groups
+spritesheet2_groups:
+  .byte $07
+  .word spritesheet1_Nomolos_chr
+  .word spritesheet1_Deentle_chr
+  .word spritesheet1_Explosion_chr
+  .word spritesheet1_Beedie_chr
+  .word spritesheet1_Grank_chr
+  .word spritesheet1_Skelekin_chr
+  .word spritesheet1_Bat_chr
+  
+.export spritesheet1_Nomolos_chr
+spritesheet1_Nomolos_chr:
+  .word $0830
   .byte $02,$0d,$14,$25,$27,$4f,$9f,$9e,$00,$02,$03,$02,$00,$00,$00,$01
   .byte $00,$00,$f8,$fe,$fe,$ff,$08,$0b,$00,$00,$00,$00,$00,$00,$c6,$e4
   .byte $9e,$9e,$5e,$5f,$5f,$97,$e7,$0f,$01,$01,$01,$00,$00,$00,$00,$00
@@ -132,6 +156,9 @@ spritesheet1_PatternTable:
   .byte $00,$00,$00,$ff,$ff,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$03,$ff,$ff,$03,$00,$00,$00,$00,$00,$03,$03,$00,$00,$00
   .byte $00,$00,$ff,$fe,$fc,$f8,$00,$00,$00,$00,$00,$fc,$f8,$00,$00,$00
+.export spritesheet1_Deentle_chr
+spritesheet1_Deentle_chr:
+  .word $0080
   .byte $00,$20,$40,$43,$25,$1b,$0d,$0e,$00,$00,$00,$00,$02,$05,$02,$05
   .byte $00,$02,$01,$e1,$d2,$ec,$d8,$b8,$00,$00,$00,$00,$20,$d0,$a0,$50
   .byte $1f,$24,$4e,$11,$27,$4b,$29,$04,$00,$03,$01,$00,$00,$01,$00,$01
@@ -140,6 +167,9 @@ spritesheet1_PatternTable:
   .byte $02,$02,$c2,$a4,$d8,$b0,$70,$f8,$00,$00,$00,$40,$a0,$40,$a0,$00
   .byte $49,$9c,$23,$4e,$97,$13,$00,$00,$06,$03,$00,$01,$02,$00,$00,$00
   .byte $24,$72,$88,$e4,$d2,$90,$00,$00,$c0,$80,$00,$00,$80,$00,$00,$00
+.export spritesheet1_Explosion_chr
+spritesheet1_Explosion_chr:
+  .word $00C0
   .byte $00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$00,$00,$01,$03
   .byte $00,$00,$00,$00,$00,$00,$00,$80,$00,$00,$00,$00,$00,$00,$80,$c0
   .byte $01,$00,$00,$00,$00,$00,$00,$00,$03,$01,$00,$00,$00,$00,$00,$00
@@ -152,6 +182,9 @@ spritesheet1_PatternTable:
   .byte $00,$00,$00,$c0,$f0,$f0,$f8,$f8,$00,$00,$c0,$f0,$f8,$f8,$fc,$fc
   .byte $1f,$1f,$0f,$0f,$03,$00,$00,$00,$3f,$3f,$1f,$1f,$0f,$03,$00,$00
   .byte $f8,$f8,$f0,$f0,$c0,$00,$00,$00,$fc,$fc,$f8,$f8,$f0,$c0,$00,$00
+.export spritesheet1_Beedie_chr
+spritesheet1_Beedie_chr:
+  .word $0080
   .byte $00,$00,$00,$00,$01,$03,$07,$1f,$00,$00,$00,$00,$01,$02,$04,$18
   .byte $00,$00,$00,$00,$80,$c0,$e0,$f8,$00,$00,$00,$00,$80,$40,$20,$18
   .byte $3f,$7b,$79,$ff,$ff,$ff,$7f,$3f,$25,$46,$46,$86,$80,$83,$40,$3f
@@ -160,6 +193,9 @@ spritesheet1_PatternTable:
   .byte $80,$c0,$e0,$e0,$e0,$f0,$30,$78,$80,$40,$20,$20,$20,$d0,$d0,$c8
   .byte $1f,$1f,$1f,$1f,$1f,$0f,$07,$03,$16,$10,$11,$12,$10,$08,$04,$03
   .byte $f8,$f8,$f8,$f8,$f8,$f0,$e0,$c0,$c8,$08,$88,$48,$08,$10,$20,$c0
+.export spritesheet1_Grank_chr
+spritesheet1_Grank_chr:
+  .word $0080
   .byte $00,$30,$08,$06,$0f,$0f,$1f,$3f,$00,$00,$00,$00,$06,$06,$0a,$00
   .byte $00,$0c,$10,$60,$f0,$f0,$f8,$fc,$00,$00,$00,$00,$60,$60,$50,$00
   .byte $60,$c0,$c7,$88,$97,$a4,$8c,$78,$1f,$3f,$38,$77,$68,$58,$70,$00
@@ -168,10 +204,16 @@ spritesheet1_PatternTable:
   .byte $00,$00,$18,$66,$f0,$f0,$f8,$fc,$00,$00,$00,$00,$20,$60,$50,$00
   .byte $60,$c7,$ca,$90,$a4,$bf,$80,$7f,$1f,$38,$37,$6f,$5f,$40,$7f,$00
   .byte $06,$e3,$51,$09,$95,$fd,$01,$fe,$f8,$1c,$ee,$f6,$fa,$02,$fe,$00
+.export spritesheet1_Bat_chr
+spritesheet1_Bat_chr:
+  .word $0040
   .byte $12,$33,$7d,$ff,$ff,$ff,$93,$04,$12,$33,$4f,$a3,$d7,$ff,$93,$04
   .byte $90,$98,$7c,$fe,$fe,$fe,$92,$40,$90,$98,$e4,$8a,$d6,$fe,$92,$40
   .byte $12,$3b,$3d,$3f,$3f,$1f,$1f,$0f,$12,$2b,$37,$2b,$37,$13,$19,$0f
   .byte $90,$b8,$78,$f8,$f8,$f0,$f0,$e0,$90,$a8,$d8,$a8,$d8,$90,$30,$e0
+.export spritesheet1_Batree_chr
+spritesheet1_Batree_chr:
+  .word $0120
   .byte $61,$96,$88,$40,$78,$94,$d5,$4c,$00,$61,$77,$3f,$07,$63,$22,$33
   .byte $83,$73,$7f,$3f,$3f,$3f,$9f,$cf,$00,$81,$b1,$db,$da,$ce,$6f,$37
   .byte $ff,$9f,$9f,$99,$03,$07,$87,$a7,$00,$6e,$68,$66,$fc,$f8,$7a,$5a
@@ -190,6 +232,9 @@ spritesheet1_PatternTable:
   .byte $4f,$0f,$8f,$8f,$8f,$70,$6f,$66,$b7,$f7,$77,$77,$70,$8f,$90,$99
   .byte $66,$00,$00,$7c,$7e,$7e,$3e,$3e,$99,$ff,$ff,$83,$81,$81,$c1,$c1
   .byte $1d,$03,$97,$9f,$8f,$8f,$0f,$bf,$e2,$fd,$6b,$62,$72,$76,$f6,$4c
+.export spritesheet1_Owl_chr
+spritesheet1_Owl_chr:
+  .word $0220
   .byte $00,$01,$02,$04,$0b,$3f,$41,$ec,$00,$00,$01,$03,$04,$00,$3e,$13
   .byte $00,$de,$61,$40,$c2,$83,$89,$85,$00,$00,$9e,$bf,$3d,$7c,$76,$7a
   .byte $00,$00,$00,$80,$60,$30,$18,$8c,$00,$00,$00,$00,$80,$c0,$e0,$70
@@ -224,6 +269,9 @@ spritesheet1_PatternTable:
   .byte $00,$02,$fc,$3c,$77,$ee,$bc,$50,$ff,$fd,$03,$03,$00,$00,$00,$00
   .byte $04,$07,$2a,$75,$aa,$15,$13,$0c,$f8,$f8,$d5,$8a,$15,$0a,$0c,$00
   .byte $00,$00,$80,$40,$a0,$c0,$80,$00,$00,$00,$00,$80,$40,$00,$00,$00
+.export spritesheet1_Snuffer_chr
+spritesheet1_Snuffer_chr:
+  .word $01E0
   .byte $00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$7c,$ff,$00,$00,$00,$00,$00,$00,$00,$7c
   .byte $1c,$1e,$1f,$1f,$1f,$7f,$ff,$ff,$00,$0c,$0e,$0d,$07,$17,$77,$f7
@@ -254,3 +302,19 @@ spritesheet1_PatternTable:
   .byte $ff,$ff,$ff,$ff,$ff,$7f,$1f,$07,$6f,$6f,$6e,$6e,$6c,$0f,$07,$00
   .byte $f7,$f7,$e7,$f7,$ff,$fb,$fb,$81,$a3,$63,$c3,$c3,$73,$b1,$81,$00
   .byte $fe,$fe,$fc,$fc,$fc,$fe,$ff,$ee,$dc,$dc,$98,$98,$98,$dc,$ee,$00
+
+.export spritesheet1_Skelekin_chr
+spritesheet1_Skelekin_chr:
+  .word $00C0
+  .byte $3c,$7e,$ff,$fb,$ff,$79,$3a,$3e,$00,$1c,$70,$36,$7e,$3e,$1c,$1c
+  .byte $3f,$7f,$ff,$ff,$ff,$ff,$ff,$7f,$10,$3f,$68,$77,$59,$6e,$77,$38
+  .byte $fe,$ff,$ff,$82,$f8,$fc,$fc,$08,$00,$fe,$02,$00,$00,$78,$08,$00
+  .byte $7f,$3f,$3f,$3f,$3f,$3f,$3b,$39,$3e,$16,$18,$10,$12,$13,$11,$10
+  .byte $00,$00,$00,$00,$00,$80,$c0,$e0,$00,$00,$00,$00,$00,$00,$80,$c0
+  .byte $38,$38,$38,$38,$78,$7e,$ff,$ff,$10,$10,$10,$10,$30,$38,$7e,$00
+  .byte $f0,$7e,$7f,$3f,$1e,$1c,$00,$00,$60,$30,$36,$1c,$08,$00,$00,$00
+  .byte $fe,$ff,$ff,$82,$80,$80,$80,$00,$00,$fe,$02,$00,$00,$00,$00,$00
+  .byte $7f,$3f,$3e,$38,$38,$38,$38,$38,$3e,$16,$18,$10,$10,$10,$10,$10
+  .byte $3f,$7f,$ff,$ff,$ff,$ff,$ff,$7f,$18,$3c,$6a,$74,$58,$6f,$70,$38
+  .byte $fe,$ff,$ff,$82,$f8,$fc,$fc,$08,$00,$fe,$02,$00,$00,$f8,$08,$00
+  .byte $7f,$3e,$3e,$3e,$3f,$3f,$3b,$39,$36,$18,$1c,$0c,$06,$13,$11,$10

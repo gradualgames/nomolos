@@ -5,7 +5,7 @@ level_2_index = 1
 level_2_bank = 1
 level_2_patterns_bank = 3
 
-.include "spritesheet2.inc"
+.include "spritesheet1.inc"
 .include "level2_patterns_imports.inc"
 .import level2_palette
 .import level2_map

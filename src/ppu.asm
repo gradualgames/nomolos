@@ -161,6 +161,10 @@ skipUpperZeroDigit:
 .export ppu_load_chr_amount
 .proc ppu_load_chr_amount
 
+  ;save y
+  tya
+  pha
+
   ldy #0
   lda (w0),y
   sta w1
@@ -190,11 +194,54 @@ loadChrLoop:
   lda w1+1
   sbc #0
   sta w1+1
-  bpl loadChrLoop
+  
+  ;keep looping while either lo or hi byte of count is not zero.
+  lda w1
+  bne loadChrLoop
+  lda w1+1
+  bne loadChrLoop
+  
+  ;restore y
+  pla
+  tay
 
   rts
 
 .endproc
+  
+;loads in a set of groups of chr data (usually used as a sprite sheet)
+;expects w2 to contain the address of the chr group set.
+;the group set consists of a count for the number of groups (up to 255)
+;and then word addresses thereafter.
+.export ppu_load_chr_groups
+.proc ppu_load_chr_groups
+group_set_address = w2
+group_address = w0
+
+  ;load the count
+  ldy #0
+  lda (group_set_address),y
+  tax
+  iny
+  
+load_group_loop:
+
+  ;load the next chr group
+  lda (group_set_address),y
+  sta group_address
+  iny
+  lda (group_set_address),y
+  sta group_address+1
+  iny
+  
+  jsr ppu_load_chr_amount
+  
+  dex
+  bne load_group_loop
+
+  rts
+.endproc
+
   
 ;loads a nametable and attribute table located at address in w0
 ;assumes VRAM points to the nametable that is to be loaded

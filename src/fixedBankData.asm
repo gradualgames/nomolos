@@ -26,7 +26,7 @@ ROMDefinitionTable0:
   .byte level_1_patterns_bank
   
   .word level1_patterns
-  .word spritesheet1_PatternTable
+  .word spritesheet1_groups
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay
@@ -102,12 +102,12 @@ ROMDefinitionTable0:
   
 ;ROM definition table
 ROMDefinitionTable1:
-  .byte sprite_sheet_2_bank
+  .byte sprite_sheet_1_bank
   .byte level_2_bank
   .byte level_2_patterns_bank
   
   .word level2_patterns
-  .word spritesheet2_PatternTable
+  .word spritesheet2_groups
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay
