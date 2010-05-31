@@ -1,6 +1,7 @@
 .include "constants.inc"
 .include "level1.inc"
 .include "level2.inc"
+.include "level3.inc"
 .include "entities.inc"
 .include "soundengine.inc"
 
@@ -18,6 +19,8 @@ Level1:
   .word ROMDefinitionTable0
 Level2:
   .word ROMDefinitionTable1
+Level3:
+  .word ROMDefinitionTable2
 
 ;ROM definition table
 ROMDefinitionTable0:
@@ -99,7 +102,6 @@ ROMDefinitionTable0:
 ;Snuffer
   .byte 223
 
-  
 ;ROM definition table
 ROMDefinitionTable1:
   .byte sprite_sheet_1_bank
@@ -155,7 +157,7 @@ ROMDefinitionTable1:
 
   .word EntityDefinitionTable
   .word level2_music
-  .byte level_1_index
+  .byte level_3_index
 
 ;Nomolos
   .byte 0
@@ -178,6 +180,84 @@ ROMDefinitionTable1:
 ;Snuffer
   .byte 223
 
+;ROM definition table
+ROMDefinitionTable2:
+  .byte sprite_sheet_1_bank
+  .byte level_3_bank
+  .byte level_3_patterns_bank
+  
+  .word level3_patterns
+  .word spritesheet2_groups
+  
+  .word spritesheet1_NomolosWalk
+  .word spritesheet1_NomolosWalkOverlay
+  .word spritesheet1_NomolosJump
+  .word spritesheet1_NomolosJumpOverlay
+  .word spritesheet1_NomolosFight
+  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_NomolosUseFlail
+  .word spritesheet1_NomolosFlailOverlay
+  .word spritesheet1_NomolosUseSpear
+  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_FlailBall
+  .word spritesheet1_Spear0
+  .word spritesheet1_SlumpedArmor0
+  .word spritesheet1_SlumpedArmorOverlay0
+  .word spritesheet1_ScardyCat0
+  .word spritesheet1_ScardyCatOverlay0
+
+  .word spritesheet1_Heart0
+  .word spritesheet1_Spear0
+  .word spritesheet1_GrankFly
+  .word spritesheet1_BeedieBlob
+  .word spritesheet1_FlailItem0
+  .word spritesheet1_DeentleWalk
+  .word spritesheet1_Explosion
+  .word spritesheet1_Mouse
+  .word spritesheet1_OneUp0
+  .word spritesheet1_SkelekinWalk
+  .word spritesheet1_BatFly
+  .word $0000 ;Batree
+  .word $0000 ;OwlFly
+  .word $0000 ;OwlAttack
+  .word $0000 ;SnufferRun
+  .word $0000 ;SnufferBite
+
+  .word attackSound
+  .word hitSound
+  .word level3_palette
+
+  .word level3_map
+  .word level3_map_column_table
+  .word level3_attribute_column_table
+  .word level3_meta_tile_column_table
+  .word level3_meta_tile_table
+
+  .word EntityDefinitionTable
+  .word level3_music
+  .byte level_1_index
+
+;Nomolos
+  .byte 0
+;Deentle
+  .byte 131
+;Explosion
+  .byte 139
+;Beedie
+  .byte 151
+;Grank
+  .byte 159
+;Bat
+  .byte 179
+;Skelekin
+  .byte 167
+;Batree
+  .byte 171
+;Owl
+  .byte 189
+;Snuffer
+  .byte 223
+  
 ;Entities
 EntityDefinitionTable:
 DeentleEntity:

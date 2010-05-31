@@ -19,6 +19,7 @@ FILES           = nomolos \
                   nomolosLogic \
                   level1 \
                   level2 \
+                  level3 \
                   entities \
                   spritesheet1 \
                   loadLevelState \
