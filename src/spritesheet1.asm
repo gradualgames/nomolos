@@ -15,6 +15,10 @@
 .include "sprite.inc"
 .include "sound.inc"
 
+.segment "ROM3"
+
+.include "spritesheet1_patterns_source.inc"
+
 .segment "ROM2"
 
 .include "spritesheet1_sprites_source.inc"

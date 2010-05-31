@@ -29,6 +29,7 @@ ROMDefinitionTable0:
   .byte level_1_patterns_bank
   
   .word level1_patterns
+  .byte sprite_sheet_1_patterns_bank
   .word spritesheet1_groups
   
   .word spritesheet1_NomolosWalk
@@ -109,6 +110,7 @@ ROMDefinitionTable1:
   .byte level_2_patterns_bank
   
   .word level2_patterns
+  .byte sprite_sheet_1_patterns_bank
   .word spritesheet2_groups
   
   .word spritesheet1_NomolosWalk
@@ -187,6 +189,7 @@ ROMDefinitionTable2:
   .byte level_3_patterns_bank
   
   .word level3_patterns
+  .byte sprite_sheet_1_patterns_bank
   .word spritesheet2_groups
   
   .word spritesheet1_NomolosWalk

@@ -4,7 +4,6 @@
 .segment "ROM3"  
 
 .include "level1_patterns_source.inc"
-.include "spritesheet1_patterns_source.inc"
 
 .segment "ROM0"
 

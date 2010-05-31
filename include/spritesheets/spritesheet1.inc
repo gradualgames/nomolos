@@ -1,7 +1,8 @@
 .ifndef SPRITESHEET1_INC
 SPRITESHEET1_INC = 1
 
-sprite_sheet_1_bank = $02
+sprite_sheet_1_bank = 2
+sprite_sheet_1_patterns_bank = 3
 
 .include "spritesheet1_sprites_imports.inc"
 .include "spritesheet1_animations_imports.inc"

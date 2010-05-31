@@ -77,6 +77,12 @@ loadLevelStateInit:
   
   jsr ppu_load_chr_amount
   
+  ;bank switch to the bank containing sprite chr data
+  ldy #ROMDefinitionTableStruct::SpritePatternsBank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+  
   ;now load the address of the chr data from the level definition table
   ldy #ROMDefinitionTableStruct::SpritePatternsAddress
   lda (base_address_rom_definition_table),y
