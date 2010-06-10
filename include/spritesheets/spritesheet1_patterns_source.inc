@@ -1,5 +1,5 @@
-.export spritesheet1_groups
-spritesheet1_groups:
+.export level1_sprite_groups
+level1_sprite_groups:
   .byte $09
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_Deentle_chr
@@ -11,8 +11,8 @@ spritesheet1_groups:
   .word spritesheet1_Owl_chr
   .word spritesheet1_Snuffer_chr
 
-.export spritesheet2_groups
-spritesheet2_groups:
+.export level2_sprite_groups
+level2_sprite_groups:
   .byte $07
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_Deentle_chr

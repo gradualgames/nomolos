@@ -30,7 +30,7 @@ ROMDefinitionTable0:
   
   .word level1_patterns
   .byte sprite_sheet_1_patterns_bank
-  .word spritesheet1_groups
+  .word level1_sprite_groups
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay
@@ -82,26 +82,16 @@ ROMDefinitionTable0:
   
   .byte level_2_index
 
-;Nomolos
-  .byte 0
-;Deentle
-  .byte 131
-;Explosion
-  .byte 139
-;Beedie
-  .byte 151
-;Grank
-  .byte 159
-;Bat
-  .byte 167
-;Skelekin
-  .byte 0
-;Batree
-  .byte 171
-;Owl
-  .byte 189
-;Snuffer
-  .byte 223
+  .byte spritesheet1_Nomolos_chr_index
+  .byte spritesheet1_Deentle_chr_index
+  .byte spritesheet1_Explosion_chr_index
+  .byte spritesheet1_Beedie_chr_index
+  .byte spritesheet1_Grank_chr_index
+  .byte spritesheet1_Bat_chr_index
+  .byte 0 ;spritesheet1_Skelekin_chr_index
+  .byte spritesheet1_Batree_chr_index
+  .byte spritesheet1_Owl_chr_index
+  .byte spritesheet1_Snuffer_chr_index
 
 ;ROM definition table
 ROMDefinitionTable1:
@@ -111,7 +101,7 @@ ROMDefinitionTable1:
   
   .word level2_patterns
   .byte sprite_sheet_1_patterns_bank
-  .word spritesheet2_groups
+  .word level2_sprite_groups
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay
@@ -161,26 +151,16 @@ ROMDefinitionTable1:
   .word level2_music
   .byte level_3_index
 
-;Nomolos
-  .byte 0
-;Deentle
-  .byte 131
-;Explosion
-  .byte 139
-;Beedie
-  .byte 151
-;Grank
-  .byte 159
-;Bat
-  .byte 179
-;Skelekin
-  .byte 167
-;Batree
-  .byte 171
-;Owl
-  .byte 189
-;Snuffer
-  .byte 223
+  .byte spritesheet2_Nomolos_chr_index
+  .byte spritesheet2_Deentle_chr_index
+  .byte spritesheet2_Explosion_chr_index
+  .byte spritesheet2_Beedie_chr_index
+  .byte spritesheet2_Grank_chr_index
+  .byte spritesheet2_Bat_chr_index
+  .byte spritesheet2_Skelekin_chr_index
+  .byte 0 ;spritesheet2_Batree_chr_index
+  .byte 0 ;spritesheet2_Owl_chr_index
+  .byte 0 ;spritesheet2_Snuffer_chr_index
 
 ;ROM definition table
 ROMDefinitionTable2:
@@ -190,7 +170,7 @@ ROMDefinitionTable2:
   
   .word level3_patterns
   .byte sprite_sheet_1_patterns_bank
-  .word spritesheet2_groups
+  .word level2_sprite_groups
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay
