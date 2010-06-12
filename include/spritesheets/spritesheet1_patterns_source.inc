@@ -1,32 +1,3 @@
-.export level1_sprite_groups
-level1_sprite_groups:
-  .byte $09
-  .word spritesheet1_Nomolos_chr
-  .word spritesheet1_Deentle_chr
-  .word spritesheet1_Explosion_chr
-  .word spritesheet1_Beedie_chr
-  .word spritesheet1_Grank_chr
-  .word spritesheet1_Bat_chr
-  .word spritesheet1_Batree_chr
-  .word spritesheet1_Owl_chr
-  .word spritesheet1_Snuffer_chr
-
-.export level2_sprite_groups
-level2_sprite_groups:
-  .byte $07
-  .word spritesheet1_Nomolos_chr
-  .word spritesheet1_Deentle_chr
-  .word spritesheet1_Explosion_chr
-  .word spritesheet1_Beedie_chr
-  .word spritesheet1_Grank_chr
-  .word spritesheet1_Skelekin_chr
-  .word spritesheet1_Bat_chr
-  
-.export level3_sprite_groups
-level3_sprite_groups:
-  .byte $02
-  .word spritesheet1_Nomolos_chr
-  .word spritesheet1_Snail_chr
   
 .export spritesheet1_Nomolos_chr
 spritesheet1_Nomolos_chr:

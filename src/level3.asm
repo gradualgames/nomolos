@@ -1,5 +1,14 @@
 .include "constants.inc"
 .include "soundengine.inc"
+.include "spritesheet1.inc"
+
+.segment "CODE"
+
+.export level3_sprite_groups
+level3_sprite_groups:
+  .byte $02
+  .word spritesheet1_Nomolos_chr
+  .word spritesheet1_Snail_chr
 
 .segment "ROM3"
 

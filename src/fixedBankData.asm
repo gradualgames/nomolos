@@ -24,12 +24,12 @@ Level3:
 
 ;ROM definition table
 ROMDefinitionTable0:
-  .byte sprite_sheet_1_bank
+  .byte spritesheet_1_bank
   .byte level_1_bank
   .byte level_1_patterns_bank
   
   .word level1_patterns
-  .byte sprite_sheet_1_patterns_bank
+  .byte spritesheet_1_patterns_bank
   .word level1_sprite_groups
   
   .word spritesheet1_NomolosWalk
@@ -97,12 +97,12 @@ ROMDefinitionTable0:
 
 ;ROM definition table
 ROMDefinitionTable1:
-  .byte sprite_sheet_1_bank
+  .byte spritesheet_1_bank
   .byte level_2_bank
   .byte level_2_patterns_bank
   
   .word level2_patterns
-  .byte sprite_sheet_1_patterns_bank
+  .byte spritesheet_1_patterns_bank
   .word level2_sprite_groups
   
   .word spritesheet1_NomolosWalk
@@ -168,12 +168,12 @@ ROMDefinitionTable1:
 
 ;ROM definition table
 ROMDefinitionTable2:
-  .byte sprite_sheet_1_bank
+  .byte spritesheet_1_bank
   .byte level_3_bank
   .byte level_3_patterns_bank
   
   .word level3_patterns
-  .byte sprite_sheet_1_patterns_bank
+  .byte spritesheet_1_patterns_bank
   .word level3_sprite_groups
   
   .word spritesheet1_NomolosWalk
