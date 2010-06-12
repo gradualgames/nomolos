@@ -178,3 +178,10 @@ spritesheet1_SkelekinWalk:
   .word spritesheet1_Skelekin1
   .word spritesheet1_Skelekin2
   .word $0000
+
+.export spritesheet1_SnailCrawl
+spritesheet1_SnailCrawl:
+  .byte $0a
+  .word spritesheet1_Snail0
+  .word spritesheet1_Snail1
+  .word $0000

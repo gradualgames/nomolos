@@ -506,3 +506,22 @@ spritesheet1_Skelekin2:
   .byte $10,$04,$00,$08,$00
   .byte $18,$05,$00,$00,$08
   .byte $18,$06,$00,$08,$00
+.export spritesheet1_Snail0
+spritesheet1_Snail0:
+  .byte $06
+  .byte $00,$00,$00,$00,$10
+  .byte $00,$01,$01,$08,$08
+  .byte $00,$02,$01,$10,$00
+  .byte $08,$03,$01,$00,$10
+  .byte $08,$04,$01,$08,$08
+  .byte $08,$05,$01,$10,$00
+.export spritesheet1_Snail1
+spritesheet1_Snail1:
+  .byte $06
+  .byte $00,$06,$00,$00,$10
+  .byte $00,$07,$01,$08,$08
+  .byte $00,$08,$01,$10,$00
+  .byte $08,$09,$01,$00,$10
+  .byte $08,$0a,$01,$08,$08
+  .byte $08,$0b,$01,$10,$00
+

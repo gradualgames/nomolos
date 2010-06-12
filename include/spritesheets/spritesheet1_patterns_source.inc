@@ -22,6 +22,12 @@ level2_sprite_groups:
   .word spritesheet1_Skelekin_chr
   .word spritesheet1_Bat_chr
   
+.export level3_sprite_groups
+level3_sprite_groups:
+  .byte $02
+  .word spritesheet1_Nomolos_chr
+  .word spritesheet1_Snail_chr
+  
 .export spritesheet1_Nomolos_chr
 spritesheet1_Nomolos_chr:
   .word $0830
@@ -318,3 +324,20 @@ spritesheet1_Skelekin_chr:
   .byte $3f,$7f,$ff,$ff,$ff,$ff,$ff,$7f,$18,$3c,$6a,$74,$58,$6f,$70,$38
   .byte $fe,$ff,$ff,$82,$f8,$fc,$fc,$08,$00,$fe,$02,$00,$00,$f8,$08,$00
   .byte $7f,$3e,$3e,$3e,$3f,$3f,$3b,$39,$36,$18,$1c,$0c,$06,$13,$11,$10
+
+.export spritesheet1_Snail_chr
+spritesheet1_Snail_chr:
+  .word $00C0
+  .byte $00,$00,$00,$00,$44,$22,$22,$3e,$00,$00,$00,$00,$00,$00,$00,$00
+  .byte $00,$03,$0f,$3d,$7f,$6f,$4e,$e7,$00,$03,$0e,$3a,$61,$52,$73,$9a
+  .byte $00,$f0,$7c,$fe,$fe,$fe,$fa,$fe,$00,$f0,$bc,$0e,$fe,$0a,$6e,$4a
+  .byte $37,$23,$3d,$10,$10,$18,$0f,$00,$2b,$3f,$3f,$1f,$1f,$1f,$0f,$00
+  .byte $ef,$bb,$ff,$7f,$1f,$01,$c0,$3f,$93,$45,$f0,$ff,$ff,$ff,$ff,$3f
+  .byte $fe,$ea,$fe,$de,$f7,$ff,$01,$ff,$7a,$16,$f2,$22,$cf,$ff,$ff,$ff
+  .byte $00,$00,$00,$00,$00,$10,$20,$a0,$00,$00,$00,$00,$00,$00,$00,$00
+  .byte $00,$01,$07,$0f,$3f,$3b,$37,$3b,$00,$01,$07,$0c,$30,$25,$29,$25
+  .byte $00,$f8,$be,$7f,$ff,$ff,$7f,$fd,$00,$f8,$5e,$87,$ff,$05,$b5,$27
+  .byte $b0,$78,$67,$52,$40,$64,$38,$07,$b0,$78,$7f,$6f,$7f,$7f,$3f,$07
+  .byte $1d,$1f,$fd,$3f,$0f,$00,$00,$ff,$13,$10,$fa,$ff,$ff,$ff,$ff,$ff
+  .byte $ff,$f7,$fb,$fe,$ee,$fe,$01,$fe,$bd,$c9,$3d,$82,$f2,$fe,$ff,$fe
+

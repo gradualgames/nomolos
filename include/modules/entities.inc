@@ -12,3 +12,4 @@
 .import skelekin_update
 .import owl_update
 .import snuffer_update
+.import snail_update

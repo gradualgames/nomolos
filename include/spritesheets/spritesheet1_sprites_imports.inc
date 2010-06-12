@@ -51,4 +51,5 @@
 .import spritesheet1_Snuffer0
 .import spritesheet1_Snuffer1
 .import spritesheet1_Snuffer2
-
+.import spritesheet1_Snail0
+.import spritesheet1_Snail1
