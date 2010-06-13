@@ -2,16 +2,22 @@
 SNAIL_INC = 1
 
 .struct snail_locals
-  anim_index .byte
+  direction .byte
+  move_stop .byte
+  distance  .byte
 .endstruct
 
 SNAIL_WIDTH = $18
 SNAIL_HEIGHT = $10
 SNAIL_HALFHEIGHT = $08
 
+SNAIL_DISTANCE_TIL_ABOUT_FACE = 150
+SNAIL_DISTANCE_TIL_SWITCH_STATE = 50
+SNAIL_SPEED = 100
+
 SNAIL_INITSTATE = 0
-SNAIL_MOVERIGHTSTATE = 1
-SNAIL_MOVELEFTSTATE = 2
+SNAIL_MOVESTATE = 1
+SNAIL_STOPSTATE = 2
 
 .export snail_update
 .proc snail_update
@@ -21,98 +27,108 @@ SNAIL_MOVELEFTSTATE = 2
   ;figure out what state to jump to
   cmp #SNAIL_INITSTATE
   beq snail_initState
-  cmp #SNAIL_MOVERIGHTSTATE
-  beq snail_moveRightState
-  cmp #SNAIL_MOVELEFTSTATE
-  beq snail_moveLeftState
+  cmp #SNAIL_MOVESTATE
+  beq snail_moveState
+  cmp #SNAIL_STOPSTATE
+  beq snail_stopState
 
 snail_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
   
-  jsr entity_test_face_nomolos
-  bpl entity_facing_right
-entity_facing_left:
-
-  lda #SNAIL_MOVELEFTSTATE
+  lda #0
+  sta entity_locals+snail_locals::direction,x
+  lda #SNAIL_DISTANCE_TIL_SWITCH_STATE
+  sta entity_locals+snail_locals::move_stop,x
+  lda #SNAIL_DISTANCE_TIL_ABOUT_FACE
+  sta entity_locals+snail_locals::distance,x
+  
+  lda #SNAIL_MOVESTATE
   sta entity_instances+entityRAM::state,x
-
-  jmp entity_facing_test_done
-entity_facing_right:
-
-  lda #SNAIL_MOVERIGHTSTATE
-  sta entity_instances+entityRAM::state,x
-
-entity_facing_test_done:
   
   rts
 
-snail_moveRightState:
+snail_moveState:
 
-  clc
-  lda entity_instances+entityRAM::positionX,x
-  adc #SNAIL_WIDTH
-  sta w0
-  lda entity_instances+entityRAM::positionX+1,x
-  adc #$00
-  sta w0+1
-  lda entity_instances+entityRAM::positionY,x
-  clc
-  adc #SNAIL_HALFHEIGHT
-  sta w1
-  lda entity_instances+entityRAM::positionY+1,x
-  adc #0
-  sta w1+1
-  jsr map_test_collision
-  lda b1
-  beq no_right_collision
-  lda #SNAIL_MOVELEFTSTATE
+  .scope
+  dec entity_locals+snail_locals::move_stop,x
+  bne do_not_switch_state
+  
+  lda #SNAIL_DISTANCE_TIL_SWITCH_STATE
+  sta entity_locals+snail_locals::move_stop,x
+  
+  lda #SNAIL_STOPSTATE
   sta entity_instances+entityRAM::state,x
-no_right_collision:
+  
+do_not_switch_state:
+  .endscope
+  
+  dec entity_locals+snail_locals::distance,x
+  bne do_not_flip_direction
+  
+  lda entity_locals+snail_locals::direction,x
+  eor #$ff
+  sta entity_locals+snail_locals::direction,x
+  
+  lda #SNAIL_DISTANCE_TIL_ABOUT_FACE
+  sta entity_locals+snail_locals::distance,x
+  
+do_not_flip_direction:
 
-  clc
+  lda entity_locals+snail_locals::direction,x
+  bne move_right
+  
+move_left:
+
+  sec
+  lda entity_instances+entityRAM::positionXFine,x
+  sbc #SNAIL_SPEED
+  sta entity_instances+entityRAM::positionXFine,x
   lda entity_instances+entityRAM::positionX,x
-  adc #$01
+  sbc #0
   sta entity_instances+entityRAM::positionX,x
   lda entity_instances+entityRAM::positionX+1,x
-  adc #$00
+  sbc #0
   sta entity_instances+entityRAM::positionX+1,x
+
+  jmp direction_test_done
+move_right:
+
+  clc
+  lda entity_instances+entityRAM::positionXFine,x
+  adc #SNAIL_SPEED
+  sta entity_instances+entityRAM::positionXFine,x
+  lda entity_instances+entityRAM::positionX,x
+  adc #0
+  sta entity_instances+entityRAM::positionX,x
+  lda entity_instances+entityRAM::positionX+1,x
+  adc #0
+  sta entity_instances+entityRAM::positionX+1,x
+
+direction_test_done:
 
   jsr snail_draw
 
   rts
 
-snail_moveLeftState:
- 
-  lda entity_instances+entityRAM::positionX,x
-  sta w0
-  lda entity_instances+entityRAM::positionX+1,x
-  sta w0+1
-  lda entity_instances+entityRAM::positionY,x
-  clc
-  adc #SNAIL_HALFHEIGHT
-  sta w1
-  lda entity_instances+entityRAM::positionY+1,x
-  adc #0
-  sta w1+1
-  jsr map_test_collision
-  lda b1
-  beq no_left_collision
-  lda #SNAIL_MOVERIGHTSTATE
+snail_stopState:
+
+  .scope
+  dec entity_locals+snail_locals::move_stop,x
+  bne do_not_switch_state
+  
+  lda #SNAIL_DISTANCE_TIL_SWITCH_STATE
+  sta entity_locals+snail_locals::move_stop,x
+  
+  lda #SNAIL_MOVESTATE
   sta entity_instances+entityRAM::state,x
-no_left_collision:
- 
-  sec
-  lda entity_instances+entityRAM::positionX,x
-  sbc #$01
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
-  sbc #$00
-  sta entity_instances+entityRAM::positionX+1,x
+  
+do_not_switch_state:
+  .endscope
 
   jsr snail_draw
-
+  
   rts
   
 killSnail:
@@ -141,9 +157,6 @@ killSnail:
   
 snail_draw:
 
-  lda #ROMDefinitionTableStruct::SnailCrawl
-  sta entity_locals+snail_locals::anim_index,x
-
   jsr entity_compute_screen_coordinates
 
   jsr entity_test_death_zone
@@ -159,9 +172,6 @@ snail_draw:
   bne :+
   
   jsr nomolos_hurt
-  
-  lda #ROMDefinitionTableStruct::SnailCrawl
-  sta entity_locals+snail_locals::anim_index,x
   
   jsr entity_reset_anim
   
@@ -204,9 +214,9 @@ nomolosNotAttacking:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy entity_locals+snail_locals::anim_index,x
-  lda entity_instances+entityRAM::state,x
-  cmp #SNAIL_MOVELEFTSTATE
+  ldy #ROMDefinitionTableStruct::SnailCrawl
+  lda entity_locals+snail_locals::direction,x
+  cmp #0
   bne snail_moving_right
   lda #%00000000
   sta b2

@@ -227,7 +227,7 @@ ROMDefinitionTable2:
   
   .byte level3_sprites_Nomolos_chr_index
   .byte 0 ;level3_sprites_Deentle_chr_index
-  .byte 0 ;level3_sprites_Explosion_chr_index
+  .byte level3_sprites_Explosion_chr_index
   .byte 0 ;level3_sprites_Beedie_chr_index
   .byte 0 ;level3_sprites_Grank_chr_index
   .byte 0 ;level3_sprites_Bat_chr_index

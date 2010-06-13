@@ -6,9 +6,10 @@
 
 .export level3_sprite_groups
 level3_sprite_groups:
-  .byte $02
+  .byte $03
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_Snail_chr
+  .word spritesheet1_Explosion_chr
 
 .segment "ROM3"
 
