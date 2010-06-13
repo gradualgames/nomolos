@@ -1,5 +1,4 @@
 .include "macros.inc"
-.include "constants.inc"
 .include "structs.inc"
 .include "flags.inc"
 .include "soundengine.inc"

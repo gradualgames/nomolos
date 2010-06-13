@@ -1,4 +1,3 @@
-.include "constants.inc"
 .include "macros.inc"
 .include "structs.inc"
 .include "flags.inc"
@@ -10,10 +9,10 @@
 .include "soundengine.inc"
 .include "zp.inc"
 .include "fixedBankData.inc"
+.include "nomolosLogic.inc"
 
 .segment "CODE"
 
-.export nomolos_init
 .proc nomolos_init
 
   resetAnim nomolos_animation
@@ -65,7 +64,6 @@
 
 ;adds a life to Nomolos. The accumulator is assumed to contain the
 ;number of lives to add.
-.export nomolos_add_life
 .proc nomolos_add_life
 
   clc
@@ -83,7 +81,6 @@
 
 ;adds health to Nomolos. The accumulator is assumed to contain the
 ;number of hearts to add on to his health.
-.export nomolos_add_health
 .proc nomolos_add_health
 
   clc
@@ -103,7 +100,6 @@
 
 ;hurts Nomolos. It makes him bounce in the air a little bit, lose a heart,
 ;and become invincible temporarily.
-.export nomolos_hurt
 .proc nomolos_hurt
 
   .ifdef INVINCIBLE
@@ -162,7 +158,6 @@ skipHurt:
 .endproc
 
 ;sets the nomolos dying state bit, and the sub state bit that represents "falling"
-.export nomolos_die_fall
 .proc nomolos_die_fall
 
   ;make certain we're not already dying...
@@ -217,7 +212,6 @@ alreadyDying:
 .endproc
   
 ;sets the nomolos dying state bit and sets coordinates for the scaredy cat graphic.
-.export nomolos_die_attack
 .proc nomolos_die_attack
 
   ;decrease Nomolos' lives
@@ -421,7 +415,6 @@ skipNomolosFacingRight:
 .endproc
   
 ;Causes the hit box to be activated for a few frames.
-.export nomolos_attack
 .proc nomolos_attack
 
   ;if attacking is on, skip this whole routine
@@ -467,7 +460,6 @@ skipAttack:
 ;by Nomolos' hit box.
 ;zero flag set = nomolos is not deadly
 ;zero flag clear = nomolos is deadly.
-.export nomolos_is_deadly
 .proc nomolos_is_deadly
 
   lda nomolos_state_primary
@@ -524,7 +516,6 @@ nomolosNotAttacking:
 
 .endproc
   
-.export nomolos_load_hurt_result
 .proc nomolos_load_hurt_result
 
   ;load "hurt" result of map collision test
@@ -596,7 +587,6 @@ skipAttackUpdate:
 
 .endproc
   
-.export nomolos_update_attack_flail
 .proc nomolos_update_attack_flail
 
   lda #$10
@@ -877,7 +867,6 @@ yesAboveCollision:
   rts
 .endproc
   
-.export nomolos_update
 .proc nomolos_update
 
   ;************************************************************
@@ -1371,7 +1360,6 @@ notRight:
   rts
 .endproc
   
-.export nomolos_update_animation
 .proc nomolos_update_animation
 
   ;switch to the actor and entity bank
@@ -1469,7 +1457,6 @@ skipUpdateNomolosMoving:
   
 .endproc
   
-.export nomolos_draw_attack_flail
 .proc nomolos_draw_attack_flail
 
   ;draw the flail animation and flail ball animation here
@@ -1532,7 +1519,6 @@ skipUpdateNomolosMoving:
 
 .endproc
   
-.export nomolos_draw_attack_sword
 .proc nomolos_draw_attack_sword
 
   lda #<nomolos_animation
@@ -1580,7 +1566,6 @@ skipUpdateNomolosMoving:
 
 .endproc
 
-.export nomolos_draw_attack_spear
 .proc nomolos_draw_attack_spear
 
   lda #<nomolos_animation
@@ -1649,7 +1634,6 @@ skipUpdateNomolosMoving:
 .endproc
   
 ;draws nomolos based on his current state.
-.export nomolos_draw
 .proc nomolos_draw
 
   ;load Nomolos' sprite group offset.
@@ -1915,7 +1899,6 @@ dontDrawNomolos:
   rts  
 .endproc
   
-.export nomolos_draw_hearts
 .proc nomolos_draw_hearts
   
   ldx nomolos_status_health

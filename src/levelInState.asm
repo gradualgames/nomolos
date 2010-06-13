@@ -1,5 +1,4 @@
 .include "structs.inc"
-.include "constants.inc"
 .include "macros.inc"
 .include "flags.inc"
 .include "loadLevelState.inc"

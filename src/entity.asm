@@ -6,7 +6,7 @@
 .include "mapper.inc"
 .include "camera.inc"
 .include "geotests.inc"
-.include "constants.inc"
+
 .include "sprite.inc"
 
 .segment "CODE"

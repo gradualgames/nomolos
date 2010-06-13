@@ -1,4 +1,3 @@
-.include "constants.inc"
 .include "structs.inc"
 .include "zp.inc"
 .include "ppu.inc"

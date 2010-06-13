@@ -1,9 +1,14 @@
 .ifndef CAMERA_INC
 CAMERA_INC = 1
 
-.import camera_to_screen_coords
-.import camera_reset
-.import camera_scroll_right
-.import camera_scroll_left
+.include "nomolosLogic.inc"
+
+.global camera_to_screen_coords
+.global camera_reset
+.global camera_scroll_right
+.global camera_scroll_left
+
+scrollReactRight = 150-nomolosWidth
+scrollReactLeft = 106
 
 .endif

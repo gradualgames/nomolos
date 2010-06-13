@@ -1,5 +1,4 @@
 .include "structs.inc"
-.include "constants.inc"
 .include "flags.inc"
 .include "soundengine.inc"
 .include "macros.inc"
@@ -10,6 +9,7 @@
 .include "sprite.inc"
 .include "levelInState.inc"
 .include "zp.inc"
+.include "nomolosLogic.inc"
 
 .segment "CODE"
 

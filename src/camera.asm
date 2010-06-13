@@ -1,5 +1,6 @@
 ;global headers
-.include "constants.inc"
+
+.include "camera.inc"
 
 ;modules
 .include "zp.inc"
@@ -12,7 +13,6 @@
 ;         w1 is the y coordinate.
 ;outputs: <w0 is the screen x coordinate.
 ;         <w1 is the screen y coordinate.
-.export camera_to_screen_coords
 .proc camera_to_screen_coords
 
   ;subtract camera_scroll_x from the input X coordinate
@@ -30,7 +30,6 @@
 .endproc
 
 ;resets camera to the beginning of a level (camera_scroll_x = 0)
-.export camera_reset
 .proc camera_reset
 
   lda #$00
@@ -47,7 +46,6 @@
 ;moves the camera in response to input position
 ;expects: w0 is screen X coordinate to respond to
 ;output:  w0 has been adjusted based on how far the camera was scrolled.
-.export camera_scroll_right
 .proc camera_scroll_right
 
   sec
@@ -87,7 +85,6 @@
 ;moves the camera in response to input position
 ;expects: b0 is screen X coordinate to respond to
 ;output:  b0 has been adjusted based on how far the camera was scrolled.
-.export camera_scroll_left
 .proc camera_scroll_left
 
   sec
