@@ -33,3 +33,4 @@
 .include "snuffer.inc"
 .include "snail.inc"
 .include "dragon.inc"
+.include "iceball.inc"

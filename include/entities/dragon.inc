@@ -2,16 +2,24 @@
 DRAGON_INC = 1
 
 DRAGON_WIDTH = $20
+DRAGON_HALFWIDTH = $10
 DRAGON_HEIGHT = $18
+DRAGON_HALFHEIGHT = $0C
 
 .struct dragon_locals
   x_velocity .word
   y_velocity .word
   anim_index .byte
+  fly_hover  .byte
+  shoot_iceball .byte
 .endstruct
 
 DRAGON_INITSTATE = 0
 DRAGON_FLYSTATE = 1
+DRAGON_HOVERSTATE = 2
+
+DRAGON_TIME_TIL_STATE_SWITCH = 40
+DRAGON_TIME_TIL_SHOOT_ICEBALL = 50
 
 DRAGON_VERTSPEED = 20
 DRAGON_MAXVERTSPEED = 1
@@ -27,6 +35,8 @@ DRAGON_MAXHORIZSPEED = 4
   beq dragon_initState
   cmp #DRAGON_FLYSTATE
   beq dragon_flyState
+  cmp #DRAGON_HOVERSTATE
+  beq dragon_hoverState
 
 dragon_initState:
 
@@ -45,9 +55,87 @@ dragon_initState:
   ;switch state to "fly"
   lda #DRAGON_FLYSTATE
   sta entity_instances+entityRAM::state,x
+  
+  ;set fly_hover counter
+  lda #DRAGON_TIME_TIL_STATE_SWITCH
+  sta entity_locals+dragon_locals::fly_hover,x
+  
+  lda #DRAGON_TIME_TIL_SHOOT_ICEBALL
+  sta entity_locals+dragon_locals::shoot_iceball,x
+  
   rts
 
+dragon_hoverState:
+
+  .scope
+  dec entity_locals+dragon_locals::shoot_iceball,x
+  bne do_not_shoot_iceball
+  
+  ;spawn an explosion entity
+  lda #entity_index_iceball
+  sta b0
+
+  ;get out low byte of positionX
+  clc
+  lda entity_instances+entityRAM::positionX,x
+  adc #DRAGON_HALFWIDTH
+  sta w0
+  ;get out high byte of positionX
+  lda entity_instances+entityRAM::positionX+1,x
+  adc #0
+  sta w0+1
+  
+  ;get out positionY
+  lda entity_instances+entityRAM::positionY,x
+  sta b1
+  
+  jsr entity_spawn
+  
+  lda #DRAGON_TIME_TIL_SHOOT_ICEBALL
+  sta entity_locals+dragon_locals::shoot_iceball,x
+  
+do_not_shoot_iceball:
+  .endscope
+
+  .scope
+  dec entity_locals+dragon_locals::fly_hover,x
+  bne do_not_switch_state
+  
+  lda #DRAGON_FLYSTATE
+  sta entity_instances+entityRAM::state,x
+  
+  lda #DRAGON_TIME_TIL_STATE_SWITCH
+  sta entity_locals+dragon_locals::fly_hover,x
+  
+  lda #0
+  sta entity_locals+dragon_locals::x_velocity,x
+  sta entity_locals+dragon_locals::x_velocity+1,x
+  sta entity_locals+dragon_locals::y_velocity,x
+  sta entity_locals+dragon_locals::y_velocity+1,x
+  
+do_not_switch_state:
+  .endscope
+
+  jsr entity_compute_screen_coordinates
+  
+  jsr dragon_draw
+
+  rts
+  
 dragon_flyState:
+
+  .scope
+  dec entity_locals+dragon_locals::fly_hover,x
+  bne do_not_switch_state
+  
+  lda #DRAGON_HOVERSTATE
+  sta entity_instances+entityRAM::state,x
+  
+  lda #DRAGON_TIME_TIL_STATE_SWITCH
+  sta entity_locals+dragon_locals::fly_hover,x
+  
+do_not_switch_state:
+  .endscope
 
   jsr entity_compute_screen_coordinates
   
@@ -221,7 +309,7 @@ yVelocityTestDone:
   jsr dragon_draw
 
   rts
-
+ 
 killDragon:
 
   ;make it dead

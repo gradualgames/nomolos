@@ -56,3 +56,6 @@
 .import spritesheet1_Dragon0
 .import spritesheet1_Dragon1
 .import spritesheet1_Dragon2
+.import spritesheet1_IceBall0
+.import spritesheet1_IceBall1
+.import spritesheet1_IceBall2

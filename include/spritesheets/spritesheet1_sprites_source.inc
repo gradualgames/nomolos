@@ -569,4 +569,25 @@ spritesheet1_Dragon2:
   .byte $10,$1e,$03,$08,$10
   .byte $10,$1f,$03,$10,$08
   .byte $10,$20,$03,$18,$00
+.export spritesheet1_IceBall0
+spritesheet1_IceBall0:
+  .byte $04
+  .byte $00,$00,$03,$00,$08
+  .byte $00,$01,$03,$08,$00
+  .byte $08,$02,$03,$00,$08
+  .byte $08,$03,$03,$08,$00
+.export spritesheet1_IceBall1
+spritesheet1_IceBall1:
+  .byte $04
+  .byte $00,$04,$03,$00,$08
+  .byte $00,$05,$03,$08,$00
+  .byte $08,$06,$03,$00,$08
+  .byte $08,$07,$03,$08,$00
+.export spritesheet1_IceBall2
+spritesheet1_IceBall2:
+  .byte $04
+  .byte $00,$08,$03,$00,$08
+  .byte $00,$09,$03,$08,$00
+  .byte $08,$0a,$03,$00,$08
+  .byte $08,$0b,$03,$08,$00
 

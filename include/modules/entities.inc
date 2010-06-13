@@ -14,6 +14,7 @@
 .global snuffer_update
 .global snail_update
 .global dragon_update
+.global iceball_update
 
 ;entity indices
 entity_index_deentle = 1
@@ -32,3 +33,4 @@ entity_index_owl = 13
 entity_index_snuffer = 14
 entity_index_snail = 15
 entity_index_dragon = 16
+entity_index_iceball = 17

@@ -15,6 +15,8 @@ Owl_chr_size = 34
 Snuffer_chr_size = 30
 Skelekin_chr_size = 12
 Snail_chr_size = 12
+Dragon_chr_size = 33
+IceBall_chr_size = 12
 
 .include "spritesheet1_sprites_imports.inc"
 .include "spritesheet1_animations_imports.inc"

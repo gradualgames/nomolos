@@ -80,6 +80,7 @@ LEVELDATAINDEX_INC = 1
   SnufferBite .word
   SnailCrawl .word
   DragonFly .word
+  IceBallFly .word
   
   attackSound .word
   hitSound .word
@@ -107,6 +108,7 @@ LEVELDATAINDEX_INC = 1
   SnufferOffset .byte
   SnailOffset .byte
   DragonOffset .byte
+  IceBallOffset .byte
 
 .endstruct
 

@@ -25,3 +25,4 @@
 .import spritesheet1_SkelekinWalk
 .import spritesheet1_SnailCrawl
 .import spritesheet1_DragonFly
+.import spritesheet1_IceBallFly

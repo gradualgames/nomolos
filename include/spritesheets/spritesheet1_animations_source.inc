@@ -188,9 +188,18 @@ spritesheet1_SnailCrawl:
 
 .export spritesheet1_DragonFly
 spritesheet1_DragonFly:
-  .byte $0a
+  .byte $05
   .word spritesheet1_Dragon0
   .word spritesheet1_Dragon1
   .word spritesheet1_Dragon2
   .word spritesheet1_Dragon1
+  .word $0000
+  
+.export spritesheet1_IceBallFly
+spritesheet1_IceBallFly:
+  .byte $02
+  .word spritesheet1_IceBall2
+  .word spritesheet1_IceBall1
+  .word spritesheet1_IceBall0
+  .word spritesheet1_IceBall1
   .word $0000

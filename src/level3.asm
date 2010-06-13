@@ -6,11 +6,12 @@
 
 .export level3_sprite_groups
 level3_sprite_groups:
-  .byte $04
+  .byte $05
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_Snail_chr
   .word spritesheet1_Explosion_chr
   .word spritesheet1_Dragon_chr
+  .word spritesheet1_IceBall_chr
 
 .segment "ROM3"
 
@@ -262,15 +263,15 @@ MetaTile0:
 MetaTile1:
   .byte $00,$00,$01,$01,$02,$0f,$10,$00
 MetaTile2:
-  .byte $01,$00,$00,$03,$04,$11,$00,$00
+  .byte $01,$00,$01,$03,$04,$11,$00,$00
 MetaTile3:
-  .byte $01,$00,$00,$05,$06,$12,$13,$00
+  .byte $01,$00,$01,$05,$06,$12,$13,$00
 MetaTile4:
-  .byte $01,$00,$00,$07,$08,$14,$15,$00
+  .byte $01,$00,$01,$07,$08,$14,$15,$00
 MetaTile5:
   .byte $00,$00,$00,$09,$0a,$16,$17,$00
 MetaTile6:
-  .byte $01,$00,$00,$0b,$0c,$00,$18,$00
+  .byte $01,$00,$01,$0b,$0c,$00,$18,$00
 MetaTile7:
   .byte $00,$00,$01,$0d,$0e,$19,$1a,$00
 MetaTile8:
@@ -292,7 +293,7 @@ MetaTile15:
 MetaTile16:
   .byte $00,$00,$00,$00,$32,$00,$00,$00
 MetaTile17:
-  .byte $01,$00,$01,$33,$34,$3a,$3b,$00
+  .byte $01,$00,$00,$33,$34,$3a,$3b,$00
 MetaTile18:
   .byte $00,$00,$00,$3c,$3d,$00,$47,$00
 MetaTile19:
@@ -302,17 +303,17 @@ MetaTile20:
 MetaTile21:
   .byte $01,$00,$00,$00,$42,$00,$4b,$00
 MetaTile22:
-  .byte $01,$00,$01,$43,$44,$4c,$4d,$00
+  .byte $01,$00,$00,$43,$44,$4c,$4d,$00
 MetaTile23:
   .byte $00,$00,$01,$45,$46,$4e,$4f,$00
 MetaTile24:
-  .byte $01,$00,$01,$50,$51,$53,$54,$00
+  .byte $01,$00,$00,$50,$51,$53,$54,$00
 MetaTile25:
   .byte $00,$00,$00,$52,$00,$00,$00,$00
 MetaTile26:
-  .byte $00,$00,$00,$55,$56,$5a,$5b,$00
+  .byte $00,$00,$01,$55,$56,$5a,$5b,$00
 MetaTile27:
-  .byte $01,$00,$01,$57,$58,$5c,$5d,$00
+  .byte $01,$00,$00,$57,$58,$5c,$5d,$00
 MetaTile28:
   .byte $01,$00,$00,$59,$00,$5e,$00,$00
 MetaTile29:
