@@ -11,6 +11,7 @@
 .include "soundengine.inc"
 .include "level1.inc"
 .include "level2.inc"
+.include "ppu.inc"
 
 .segment "HEADER"
 .byte "NES",$1a   ;iNES header
@@ -37,8 +38,37 @@ entity_counters: .res 32
 .segment "CODE"
 
 reset:
-  initNES
-  clearRAM
+  ;set interrupt disable flag
+  sei
+  
+  ;clear binary encoded decimal flag
+  cld
+  
+  ;initialize stack
+  ldx #$FF  
+  txs
+  
+  ;turn off all graphics
+  inx
+  stx $2001
+
+  ;clear 2K RAM
+  lda #$00
+:
+  sta $0000, x
+  sta $0100, x
+  sta $0200, x
+  sta $0300, x
+  sta $0400, x
+  sta $0500, x
+  sta $0600, x
+  sta $0700, x
+  inx
+  bne :-
+  
+  ;wait for PPU to be ready
+  waitVBlank
+  waitVBlank
 
   jsr sound_initialize
   

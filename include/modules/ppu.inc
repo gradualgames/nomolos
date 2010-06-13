@@ -35,4 +35,12 @@ PPU1_SPRITE_CLIPPING = 2
 PPU1_BACKGROUND_CLIPPING = 1
 PPU1_DISPLAY_TYPE = 0
 
+.macro waitVBlank
+
+:
+  bit $2002
+  bpl :-
+
+.endmacro
+
 .endif
