@@ -4,7 +4,6 @@ FLAILITEM_INC = 1
 FLAILITEM_WIDTH = $10
 FLAILITEM_HEIGHT = $08
 
-.export flail_item_update
 .proc flail_item_update
 
   jsr entity_compute_screen_coordinates

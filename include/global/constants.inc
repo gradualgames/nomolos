@@ -1,23 +1,6 @@
 .ifndef CONSTANTS_INC
 CONSTANTS_INC = 1
 
-;entity indices
-entity_index_deentle = 1
-entity_index_explosion = 2
-entity_index_mouse = 3
-entity_index_exit = 4
-entity_index_one_up = 5
-entity_index_flail = 6
-entity_index_beedie = 7
-entity_index_grank = 8
-entity_index_spear = 9
-entity_index_skelekin = 10
-entity_index_bat = 11
-entity_index_batree = 12
-entity_index_owl = 13
-entity_index_snuffer = 14
-entity_index_snail = 15
-
 ;bit positions for PPU control register $2000
 PPU0_EXECUTE_NMI = 7
 PPU0_MASTER_SLAVE = 6

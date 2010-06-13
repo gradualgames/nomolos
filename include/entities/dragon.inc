@@ -1,63 +1,63 @@
-.ifndef OWL_INC
-OWL_INC = 1
+.ifndef DRAGON_INC
+DRAGON_INC = 1
 
-OWL_WIDTH = $18
-OWL_HEIGHT = $18
+DRAGON_WIDTH = $20
+DRAGON_HEIGHT = $18
 
-.struct owl_locals
+.struct dragon_locals
   x_velocity .word
   y_velocity .word
   anim_index .byte
 .endstruct
 
-OWL_INITSTATE = 0
-OWL_FLYSTATE = 1
+DRAGON_INITSTATE = 0
+DRAGON_FLYSTATE = 1
 
-OWL_VERTSPEED = 20
-OWL_MAXVERTSPEED = 1
-OWL_HORIZSPEED = 20
-OWL_MAXHORIZSPEED = 4
+DRAGON_VERTSPEED = 20
+DRAGON_MAXVERTSPEED = 1
+DRAGON_HORIZSPEED = 20
+DRAGON_MAXHORIZSPEED = 4
 
-.proc owl_update
+.proc dragon_update
 
   ;load current state
   lda entity_instances+entityRAM::state,x
   ;figure out what state to jump to
-  cmp #OWL_INITSTATE
-  beq owl_initState
-  cmp #OWL_FLYSTATE
-  beq owl_flyState
+  cmp #DRAGON_INITSTATE
+  beq dragon_initState
+  cmp #DRAGON_FLYSTATE
+  beq dragon_flyState
 
-owl_initState:
+dragon_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
   
   ;set x velocity to 0
   lda #0
-  sta entity_locals+owl_locals::x_velocity,x
-  sta entity_locals+owl_locals::x_velocity+1,x
+  sta entity_locals+dragon_locals::x_velocity,x
+  sta entity_locals+dragon_locals::x_velocity+1,x
   
   ;set y velocity to 0
-  sta entity_locals+owl_locals::y_velocity,x
-  sta entity_locals+owl_locals::y_velocity+1,x
+  sta entity_locals+dragon_locals::y_velocity,x
+  sta entity_locals+dragon_locals::y_velocity+1,x
   
   ;switch state to "fly"
-  lda #OWL_FLYSTATE
+  lda #DRAGON_FLYSTATE
   sta entity_instances+entityRAM::state,x
   rts
 
-owl_flyState:
+dragon_flyState:
 
   jsr entity_compute_screen_coordinates
   
   ;add x velocity to 24 bit X coordinate with sign extension
 .scope addXVelocity
   clc
-  lda entity_locals+owl_locals::x_velocity,x
+  lda entity_locals+dragon_locals::x_velocity,x
   adc entity_instances+entityRAM::positionXFine,x
   sta entity_instances+entityRAM::positionXFine,x
-  lda entity_locals+owl_locals::x_velocity+1,x
+  lda entity_locals+dragon_locals::x_velocity+1,x
   bmi signExtend
   adc entity_instances+entityRAM::positionX,x
   sta entity_instances+entityRAM::positionX,x
@@ -77,10 +77,10 @@ signExtendAddDone:
   ;add y velocity to 24 bit Y coordinate with sign extension
 .scope addYVelocity
   clc
-  lda entity_locals+owl_locals::y_velocity,x
+  lda entity_locals+dragon_locals::y_velocity,x
   adc entity_instances+entityRAM::positionYFine,x
   sta entity_instances+entityRAM::positionYFine,x
-  lda entity_locals+owl_locals::y_velocity+1,x
+  lda entity_locals+dragon_locals::y_velocity+1,x
   bmi signExtend
   adc entity_instances+entityRAM::positionY,x
   sta entity_instances+entityRAM::positionY,x
@@ -107,25 +107,25 @@ signExtendAddDone:
 followUp:
 
   ;subtract from y velocity
-  lda entity_locals+owl_locals::y_velocity,x
+  lda entity_locals+dragon_locals::y_velocity,x
   sec
-  sbc #OWL_VERTSPEED
-  sta entity_locals+owl_locals::y_velocity,x
-  lda entity_locals+owl_locals::y_velocity+1,x
+  sbc #DRAGON_VERTSPEED
+  sta entity_locals+dragon_locals::y_velocity,x
+  lda entity_locals+dragon_locals::y_velocity+1,x
   sbc #0
-  sta entity_locals+owl_locals::y_velocity+1,x
+  sta entity_locals+dragon_locals::y_velocity+1,x
 
   jmp followVertTestDone
 followDown:
   
   ;add to y velocity
-  lda entity_locals+owl_locals::y_velocity,x
+  lda entity_locals+dragon_locals::y_velocity,x
   clc
-  adc #OWL_VERTSPEED
-  sta entity_locals+owl_locals::y_velocity,x
-  lda entity_locals+owl_locals::y_velocity+1,x
+  adc #DRAGON_VERTSPEED
+  sta entity_locals+dragon_locals::y_velocity,x
+  lda entity_locals+dragon_locals::y_velocity+1,x
   adc #0
-  sta entity_locals+owl_locals::y_velocity+1,x
+  sta entity_locals+dragon_locals::y_velocity+1,x
 
 followVertTestDone:
 
@@ -138,39 +138,39 @@ followVertTestDone:
 followToLeft:
   
   ;subtract from x velocity
-  lda entity_locals+owl_locals::x_velocity,x
+  lda entity_locals+dragon_locals::x_velocity,x
   sec
-  sbc #OWL_HORIZSPEED
-  sta entity_locals+owl_locals::x_velocity,x
-  lda entity_locals+owl_locals::x_velocity+1,x
+  sbc #DRAGON_HORIZSPEED
+  sta entity_locals+dragon_locals::x_velocity,x
+  lda entity_locals+dragon_locals::x_velocity+1,x
   sbc #0
-  sta entity_locals+owl_locals::x_velocity+1,x
+  sta entity_locals+dragon_locals::x_velocity+1,x
   
   jmp followTestDone
 followToRight:
   
   ;add to x velocity
-  lda entity_locals+owl_locals::x_velocity,x
+  lda entity_locals+dragon_locals::x_velocity,x
   clc
-  adc #OWL_HORIZSPEED
-  sta entity_locals+owl_locals::x_velocity,x
-  lda entity_locals+owl_locals::x_velocity+1,x
+  adc #DRAGON_HORIZSPEED
+  sta entity_locals+dragon_locals::x_velocity,x
+  lda entity_locals+dragon_locals::x_velocity+1,x
   adc #0
-  sta entity_locals+owl_locals::x_velocity+1,x
+  sta entity_locals+dragon_locals::x_velocity+1,x
   
 followTestDone:
 
   ;keep x and y velocity under control
-  lda entity_locals+owl_locals::x_velocity+1,x  ;high byte is "pixel speed"
+  lda entity_locals+dragon_locals::x_velocity+1,x  ;high byte is "pixel speed"
   bpl xVelocityPositive
 xVelocityNegative:
 .scope 
   
-  cmp #(-OWL_MAXHORIZSPEED)
+  cmp #(-DRAGON_MAXHORIZSPEED)
   bpl notMaxHoriz
   
-  lda #(-OWL_MAXHORIZSPEED)
-  sta entity_locals+owl_locals::x_velocity+1,x
+  lda #(-DRAGON_MAXHORIZSPEED)
+  sta entity_locals+dragon_locals::x_velocity+1,x
   
 notMaxHoriz:
 .endscope
@@ -178,11 +178,11 @@ notMaxHoriz:
   jmp xVelocityTestDone
 xVelocityPositive:
 .scope
-  cmp #(OWL_MAXHORIZSPEED)
+  cmp #(DRAGON_MAXHORIZSPEED)
   bmi notMaxHoriz
   
-  lda #(OWL_MAXHORIZSPEED)
-  sta entity_locals+owl_locals::x_velocity+1,x
+  lda #(DRAGON_MAXHORIZSPEED)
+  sta entity_locals+dragon_locals::x_velocity+1,x
   
 notMaxHoriz:
 .endscope
@@ -190,16 +190,16 @@ notMaxHoriz:
 xVelocityTestDone:
   
   ;keep x and y velocity under control
-  lda entity_locals+owl_locals::y_velocity+1,x  ;high byte is "pixel speed"
+  lda entity_locals+dragon_locals::y_velocity+1,x  ;high byte is "pixel speed"
   bpl yVelocityPositive
 yVelocityNegative:
 .scope 
   
-  cmp #(-OWL_MAXVERTSPEED)
+  cmp #(-DRAGON_MAXVERTSPEED)
   bpl notMaxVert
   
-  lda #(-OWL_MAXVERTSPEED)
-  sta entity_locals+owl_locals::y_velocity+1,x
+  lda #(-DRAGON_MAXVERTSPEED)
+  sta entity_locals+dragon_locals::y_velocity+1,x
   
 notMaxVert:
 .endscope
@@ -207,22 +207,22 @@ notMaxVert:
   jmp yVelocityTestDone
 yVelocityPositive:
 .scope
-  cmp #(OWL_MAXVERTSPEED)
+  cmp #(DRAGON_MAXVERTSPEED)
   bmi notMaxVert
   
-  lda #(OWL_MAXVERTSPEED)
-  sta entity_locals+owl_locals::y_velocity+1,x
+  lda #(DRAGON_MAXVERTSPEED)
+  sta entity_locals+dragon_locals::y_velocity+1,x
   
 notMaxVert:
 .endscope
 
 yVelocityTestDone:
   
-  jsr owl_draw
+  jsr dragon_draw
 
   rts
 
-killOwl:
+killDragon:
 
   ;make it dead
   jsr entity_kill
@@ -246,25 +246,25 @@ killOwl:
 
   rts
   
-owl_draw:
+dragon_draw:
 
   jsr entity_test_death_zone
-  beq killOwl
+  beq killDragon
   
-  lda #ROMDefinitionTableStruct::OwlFly
-  sta entity_locals+owl_locals::anim_index,x
-  ;load owl width and height
-  lda #OWL_WIDTH
+  lda #ROMDefinitionTableStruct::DragonFly
+  sta entity_locals+dragon_locals::anim_index,x
+  ;load dragon width and height
+  lda #DRAGON_WIDTH
   sta b2
-  lda #OWL_HEIGHT
+  lda #DRAGON_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
   
   bne :+
   
   jsr nomolos_hurt
-  lda #ROMDefinitionTableStruct::OwlAttack
-  sta entity_locals+owl_locals::anim_index,x
+  lda #ROMDefinitionTableStruct::DragonFly
+  sta entity_locals+dragon_locals::anim_index,x
   
   jsr entity_reset_anim
   
@@ -272,10 +272,10 @@ owl_draw:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
   
-  ;load owl width and height
-  lda #OWL_WIDTH
+  ;load dragon width and height
+  lda #DRAGON_WIDTH
   sta b2
-  lda #OWL_HEIGHT
+  lda #DRAGON_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
   
@@ -299,15 +299,15 @@ owl_draw:
   pla
   tax
   
-  jmp killOwl
+  jmp killDragon
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::OwlOffset
+  ldy #ROMDefinitionTableStruct::DragonOffset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy entity_locals+owl_locals::anim_index,x
+  ldy entity_locals+dragon_locals::anim_index,x
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:
@@ -320,7 +320,7 @@ entity_facing_right:
 entity_facing_test_done:
   jsr entity_draw_anim
 
-owlOffscreen:
+dragonOffscreen:
   rts
   
 .endproc

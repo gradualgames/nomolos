@@ -24,3 +24,4 @@
 .import spritesheet1_SnufferBite
 .import spritesheet1_SkelekinWalk
 .import spritesheet1_SnailCrawl
+.import spritesheet1_DragonFly

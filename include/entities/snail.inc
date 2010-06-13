@@ -19,7 +19,6 @@ SNAIL_INITSTATE = 0
 SNAIL_MOVESTATE = 1
 SNAIL_STOPSTATE = 2
 
-.export snail_update
 .proc snail_update
 
   ;load current state

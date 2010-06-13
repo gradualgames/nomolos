@@ -7,7 +7,6 @@ EXPLOSION_HEIGHT = $10
 EXPLOSION_INITSTATE = 0
 EXPLOSION_EXPLODESTATE = 1
 
-.export explosion_update
 explosion_update:
 
   lda entity_instances+entityRAM::state,x

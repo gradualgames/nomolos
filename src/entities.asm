@@ -14,6 +14,7 @@
 .include "camera.inc"
 .include "sprite.inc"
 .include "sound.inc"
+.include "entities.inc"
 
 .segment "ROM2"
 
@@ -32,3 +33,4 @@
 .include "owl.inc"
 .include "snuffer.inc"
 .include "snail.inc"
+.include "dragon.inc"

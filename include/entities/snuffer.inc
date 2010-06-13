@@ -13,7 +13,6 @@ SNUFFER_INITSTATE = 0
 SNUFFER_MOVERIGHTSTATE = 1
 SNUFFER_MOVELEFTSTATE = 2
 
-.export snuffer_update
 .proc snuffer_update
 
   ;load current state

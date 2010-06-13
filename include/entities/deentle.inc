@@ -8,7 +8,6 @@ DEENTLE_INITSTATE = 0
 DEENTLE_MOVERIGHTSTATE = 1
 DEENTLE_MOVELEFTSTATE = 2
 
-.export deentle_update
 .proc deentle_update
 
   ;load current state

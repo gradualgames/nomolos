@@ -6,7 +6,6 @@ EXITENTITY_INC = 1
 EXITENTITY_WIDTH = $10
 EXITENTITY_HEIGHT = $ff
 
-.export exit_level_update
 exit_level_update:
 
   jsr entity_compute_screen_coordinates

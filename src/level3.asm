@@ -1,15 +1,17 @@
 .include "constants.inc"
 .include "soundengine.inc"
 .include "spritesheet1.inc"
+.include "entities.inc"
 
 .segment "CODE"
 
 .export level3_sprite_groups
 level3_sprite_groups:
-  .byte $03
+  .byte $04
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_Snail_chr
   .word spritesheet1_Explosion_chr
+  .word spritesheet1_Dragon_chr
 
 .segment "ROM3"
 
@@ -184,7 +186,7 @@ MetaTileColumnTable:
   .byte $03,$00,$0e,$13,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
   .byte $05,$0b,$0b,$0b,$0b,$0b,$14,$00,$00,$00,$00,$00,$00,$00,$00,$00
   .byte $06,$0c,$10,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
-  .byte $07,$07,$11,$15,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$32,$00
+  .byte $07,$07,$11,$15,$00,$36,$00,$00,$00,$00,$00,$00,$00,$00,$32,$00
   .byte $1d,$1d,$1d,$16,$10,$00,$00,$00,$00,$27,$2b,$2b,$2b,$30,$33,$00
   .byte $1d,$1d,$1d,$17,$11,$15,$00,$00,$00,$00,$00,$00,$29,$2d,$33,$00
   .byte $1d,$1d,$1d,$1d,$1d,$16,$00,$00,$00,$00,$00,$00,$2a,$2e,$33,$00
@@ -364,3 +366,5 @@ MetaTile52:
   .byte $03,$00,$01,$ac,$ad,$b2,$b3,$00
 MetaTile53:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_snail
+MetaTile54:
+  .byte $00,$00,$00,$00,$00,$00,$00,entity_index_dragon

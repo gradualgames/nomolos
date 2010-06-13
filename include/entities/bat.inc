@@ -19,7 +19,6 @@ BAT_VERTICAL_ACCELERATION = 20
 BAT_MAX_ASCENT_VELOCITY = $fe
 BAT_MAX_DESCENT_VELOCITY = $02
 
-.export bat_update
 .proc bat_update
 
   ;load current state

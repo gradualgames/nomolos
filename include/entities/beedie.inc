@@ -24,7 +24,6 @@ BEEDIE_INITSTATE = 0
 BEEDIE_RESTSTATE = 1
 BEEDIE_JUMPSTATE = 2
 
-.export beedie_update
 .proc beedie_update
 
   ;load current state

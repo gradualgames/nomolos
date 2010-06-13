@@ -17,7 +17,6 @@ GRANK_MAXVERTSPEED = 2
 GRANK_HORIZSPEED = 10
 GRANK_MAXHORIZSPEED = 3
 
-.export grank_update
 .proc grank_update
 
   ;load current state

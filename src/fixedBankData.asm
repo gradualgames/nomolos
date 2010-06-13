@@ -66,6 +66,7 @@ ROMDefinitionTable0:
   .word spritesheet1_SnufferRun
   .word spritesheet1_SnufferBite
   .word $0000 ;spritesheet1_SnailCrawl
+  .word $0000 ;spritesheet1_DragonFly
 
   .word attackSound
   .word hitSound
@@ -94,6 +95,7 @@ ROMDefinitionTable0:
   .byte level1_sprites_Owl_chr_index
   .byte level1_sprites_Snuffer_chr_index
   .byte 0 ;level1_sprites_Snail_chr_index
+  .byte 0 ;level1_sprites_Dragon_chr_index
 
 ;ROM definition table
 ROMDefinitionTable1:
@@ -134,11 +136,12 @@ ROMDefinitionTable1:
   .word spritesheet1_SkelekinWalk
   .word spritesheet1_BatFly
   .word $0000 ;Batree
-  .word $0000 ;OwlFly
-  .word $0000 ;OwlAttack
-  .word $0000 ;SnufferRun
-  .word $0000 ;SnufferBite
+  .word $0000 ;spritesheet1_OwlFly
+  .word $0000 ;spritesheet1_OwlAttack
+  .word $0000 ;spritesheet1_SnufferRun
+  .word $0000 ;spritesheet1_SnufferBite
   .word $0000 ;spritesheet1_SnailCrawl
+  .word $0000 ;spritesheet1_DragonFly
 
   .word attackSound
   .word hitSound
@@ -165,6 +168,7 @@ ROMDefinitionTable1:
   .byte 0 ;level2_sprites_Owl_chr_index
   .byte 0 ;level2_sprites_Snuffer_chr_index
   .byte 0 ;level2_sprites_Snail_chr_index
+  .byte 0 ;level2_sprites_Dragon_chr_index
 
 ;ROM definition table
 ROMDefinitionTable2:
@@ -210,6 +214,7 @@ ROMDefinitionTable2:
   .word $0000 ;SnufferRun
   .word $0000 ;SnufferBite
   .word spritesheet1_SnailCrawl
+  .word spritesheet1_DragonFly
 
   .word attackSound
   .word hitSound
@@ -236,6 +241,7 @@ ROMDefinitionTable2:
   .byte 0 ;level3_sprites_Owl_chr_index
   .byte 0 ;level3_sprites_Snuffer_chr_index
   .byte level3_sprites_Snail_chr_index  
+  .byte level3_sprites_Dragon_chr_index
   
 ;Entities
 EntityDefinitionTable:
@@ -353,6 +359,14 @@ Snuffer:
   .byte $00
 Snail:
   .word snail_update
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $01
+  .byte $00
+  .byte $00
+Dragon:
+  .word dragon_update
   .byte $00
   .byte $00
   .byte %00000000

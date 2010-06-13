@@ -9,7 +9,6 @@ SKELEKIN_INITSTATE = 0
 SKELEKIN_MOVERIGHTSTATE = 1
 SKELEKIN_MOVELEFTSTATE = 2
 
-.export skelekin_update
 .proc skelekin_update
 
   ;load current state

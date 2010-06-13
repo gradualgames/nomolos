@@ -4,7 +4,6 @@ SPEARITEM_INC = 1
 SPEARITEM_WIDTH = $18
 SPEARITEM_HEIGHT = $08
 
-.export spear_item_update
 .proc spear_item_update
 
   jsr entity_compute_screen_coordinates

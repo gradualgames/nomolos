@@ -13,7 +13,6 @@ BATREE_INITSTATE = 0
 BATREE_MOVERIGHTSTATE = 1
 BATREE_MOVELEFTSTATE = 2
 
-.export batree_update
 .proc batree_update
 
   ;load current state

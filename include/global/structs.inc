@@ -146,6 +146,7 @@ TITLESTATE_DONE = %00000010
   SnufferRun .word
   SnufferBite .word
   SnailCrawl .word
+  DragonFly .word
   
   attackSound .word
   hitSound .word
@@ -172,6 +173,7 @@ TITLESTATE_DONE = %00000010
   OwlOffset .byte
   SnufferOffset .byte
   SnailOffset .byte
+  DragonOffset .byte
 
 .endstruct
 

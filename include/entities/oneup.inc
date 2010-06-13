@@ -4,7 +4,6 @@ ONEUP_INC = 1
 ONEUP_WIDTH = $10
 ONEUP_HEIGHT = $08
 
-.export oneup_update
 .proc oneup_update
 
   jsr entity_compute_screen_coordinates

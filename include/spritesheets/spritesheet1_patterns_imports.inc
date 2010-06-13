@@ -1,0 +1,12 @@
+.import spritesheet1_Nomolos_chr
+.import spritesheet1_Deentle_chr
+.import spritesheet1_Explosion_chr
+.import spritesheet1_Beedie_chr
+.import spritesheet1_Grank_chr
+.import spritesheet1_Skelekin_chr
+.import spritesheet1_Bat_chr
+.import spritesheet1_Snuffer_chr
+.import spritesheet1_Owl_chr
+.import spritesheet1_Batree_chr
+.import spritesheet1_Snail_chr
+.import spritesheet1_Dragon_chr

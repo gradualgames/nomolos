@@ -53,3 +53,6 @@
 .import spritesheet1_Snuffer2
 .import spritesheet1_Snail0
 .import spritesheet1_Snail1
+.import spritesheet1_Dragon0
+.import spritesheet1_Dragon1
+.import spritesheet1_Dragon2

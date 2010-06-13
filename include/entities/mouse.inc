@@ -7,7 +7,6 @@ MOUSE_HEIGHT = $08
 MOUSE_INITSTATE = 0
 MOUSE_SITTHERESTATE = 1
 
-.export mouse_update
 mouse_update:
 
   lda entity_instances+entityRAM::state,x
