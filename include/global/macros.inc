@@ -1,8 +1,6 @@
 .ifndef MACROS_INC
 MACROS_INC = 1
 
-.include "structs.inc"
-
 .macro initNES
 
   sei

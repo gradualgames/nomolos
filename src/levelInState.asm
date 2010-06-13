@@ -1,4 +1,3 @@
-.include "structs.inc"
 .include "macros.inc"
 .include "flags.inc"
 .include "loadLevelState.inc"
@@ -7,10 +6,10 @@
 .include "fixedBankData.inc"
 .include "sprite.inc"
 .include "zp.inc"
+.include "levelInState.inc"
 
 .segment "CODE"
 
-.export level_in_state_update
 .proc level_in_state_update
   lda state_control_params+levelInStateControl::state
   cmp #LEVELINSTATE_INIT
@@ -211,7 +210,6 @@ stateCommandComplete:
   rts
 .endproc
 
-.export level_in_state_update_ppu
 .proc level_in_state_update_ppu
   dec frame_counter
 

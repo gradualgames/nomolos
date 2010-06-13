@@ -1,5 +1,4 @@
 .include "macros.inc"
-.include "structs.inc"
 .include "flags.inc"
 .include "soundengine.inc"
 .include "sound.inc"
@@ -13,10 +12,10 @@
 .include "sprite.inc"
 .include "entity.inc"
 .include "zp.inc"
+.include "loadLevelState.inc"
 
 .segment "CODE"
 
-.export load_level_state_update
 .proc load_level_state_update
   lda state_control_params+loadLevelStateControl::state
   cmp #LOADLEVELSTATE_INIT
@@ -304,7 +303,6 @@ stateSwitchComplete:
   rts
 .endproc
 
-.export load_level_state_update_ppu
 .proc load_level_state_update_ppu
 
   ;lda #$20

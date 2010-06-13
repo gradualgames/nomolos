@@ -1,4 +1,3 @@
-.include "structs.inc"
 .include "flags.inc"
 .include "soundengine.inc"
 .include "macros.inc"
@@ -10,10 +9,11 @@
 .include "levelInState.inc"
 .include "zp.inc"
 .include "nomolosLogic.inc"
+.include "levelOutState.inc"
+.include "titleState.inc"
 
 .segment "CODE"
 
-.export title_state_update
 .proc title_state_update
 
   lda state_control_params+titleStateControl::state
@@ -148,7 +148,6 @@ stateCommandComplete:
   rts
 .endproc
   
-.export title_state_update_ppu
 .proc title_state_update_ppu
 
   .ifdef MUSIC_ENABLE

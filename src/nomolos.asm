@@ -1,6 +1,5 @@
 .include "macros.inc"
 .include "flags.inc"
-.include "structs.inc"
 .include "zp.inc"
 .include "camera.inc"
 .include "nomolosLogic.inc"

@@ -1,4 +1,3 @@
-.include "structs.inc"
 .include "macros.inc"
 .include "flags.inc"
 .include "ppu.inc"
@@ -6,15 +5,15 @@
 .include "zp.inc"
 .include "gameOverState.inc"
 .include "levelInState.inc"
+.include "levelOutState.inc"
+.include "fixedBankData.inc"
 
 .segment "CODE"
 
-.export level_out_state_update
 .proc level_out_state_update
   rts
 .endproc
   
-.export level_out_state_update_ppu
 .proc level_out_state_update_ppu
   lda state_control_params+levelOutStateControl::state
   cmp #LEVELOUTSTATE_INIT

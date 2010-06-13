@@ -1,5 +1,4 @@
 .include "macros.inc"
-.include "structs.inc"
 .include "flags.inc"
 .include "ppu.inc"
 .include "mapper.inc"
@@ -10,6 +9,8 @@
 .include "zp.inc"
 .include "fixedBankData.inc"
 .include "nomolosLogic.inc"
+.include "controller.inc"
+.include "playLevelState.inc"
 
 .segment "CODE"
 

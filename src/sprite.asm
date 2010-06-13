@@ -1,13 +1,12 @@
-.include "structs.inc"
 .include "zp.inc"
 .include "ram.inc"
+.include "sprite.inc"
 
 .segment "CODE"
 
 ;draws an animation and expects to be passed parameters that sprite_draw_metasprite_16bit will use also
 ;w1: location of animation object
 ;w2: location of animation definition  
-.export sprite_draw_animation_16bit
 .proc sprite_draw_animation_16bit
   ;get the current frame of this animation object
   ldy #animation::currentFrame
@@ -36,7 +35,6 @@
 ;draws an animation
 ;w1: location of animation object
 ;w2: location of animation definition  
-.export sprite_draw_animation_8bit
 .proc sprite_draw_animation_8bit
   ;get the current frame of this animation object
   ldy #animation::currentFrame
@@ -76,7 +74,6 @@
 ;    .dw frameAddress etc.
 ;    .byte $00
 ;Global Variables:
-.export sprite_update_animation
 .proc sprite_update_animation
   ;get the frame count down of this animation object
   ldy #animation::frameCountDown
@@ -131,7 +128,6 @@ skipFrameUpdate:
 ;b4: temporarily stores x offset
 ;w5: temporarily stores whether the x coordinate (low byte) and y coordinate (high byte)
 ; are onscreen.
-.export sprite_draw_metasprite_16bit
 .proc sprite_draw_metasprite_16bit
 
   ;save regs
@@ -500,7 +496,6 @@ skipNextSpriteEntry:
 ;Global Variables:
 ;next_sprite_address: the current sprite that will be overwritten in the sprite buffer
 ;b3: temporarily stores how many sprite entries are in the currently drawing meta sprite
-.export sprite_draw_metasprite_8bit
 .proc sprite_draw_metasprite_8bit
   ;save regs
   txa
@@ -588,14 +583,12 @@ spriteNotFlipped:
   rts
 .endproc
 
-.export sprite_update_all
 .proc sprite_update_all
   lda #>(sprite)
   sta $4014    ; Jam page $200-$2FF into SPR-RAM
   rts
 .endproc
 
-.export sprite_clear_all
 .proc sprite_clear_all
   lda #$ff
   ldx #$00

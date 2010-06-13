@@ -1,4 +1,3 @@
-.include "structs.inc"
 .include "macros.inc"
 .include "ram.inc"
 .include "zp.inc"
@@ -6,6 +5,8 @@
 .include "mapper.inc"
 .include "camera.inc"
 .include "geotests.inc"
+.include "fixedBankData.inc"
+.include "entity.inc"
 
 .include "sprite.inc"
 
@@ -14,7 +15,6 @@
 ;draws entity's animation.
 ;expects y to contain offset into rom definition table where animation address can be found.
 ;expects b2 to contain flags for whether to flip the sprite. e.g. #%01000000 to flip
-.export entity_draw_anim
 .proc entity_draw_anim
   ;load address of animation object into w1
   lda #<(entity_instances+entityRAM::animationObject)
@@ -54,7 +54,6 @@
   rts
 .endproc
 
-.export entity_reset_anim
 .proc entity_reset_anim
   lda #1
   sta entity_instances+entityRAM::animationObject,x
@@ -65,7 +64,6 @@
 
 ;kills current entity located at entity_instances,x.
 ;also decrements entity count at entity_counters + value at entity_instances+entityRAM::index,x
-.export entity_kill
 .proc entity_kill
 
   lda #0
@@ -91,7 +89,6 @@
 
 ;returns positive if entity must turn right to face nomolos,
 ;negative if entity must turn left.
-.export entity_test_face_nomolos
 .proc entity_test_face_nomolos
 
   ;compare entity x position to nomolos x position to decide direction
@@ -115,7 +112,6 @@ entity_will_go_right:
 ;tests whether an entity is a certain distance offscreen
 ;uses b5
 ;a set zero flag indicates the entity was in a death zone.
-.export entity_test_death_zone
 .proc entity_test_death_zone
 
   ;if upper byte is zero, the entity is not in the death zone (it is on screen)
@@ -147,7 +143,6 @@ entity_not_in_death_zone:
   rts
 .endproc
 
-.export entity_test_collision_hitbox
 ;assumes b2 and b3 represent the width and height of the calling entity
 .proc entity_test_collision_hitbox
   ;transfer entity rectangle to w2 = left and w3 = top and b2 = width and b3 = height
@@ -178,7 +173,6 @@ entity_not_in_death_zone:
   rts
 .endproc
 
-.export entity_test_collision_nomolos
 ;assumes b2 and b3 represent the width and height of the current entity
 .proc entity_test_collision_nomolos
   ;transfer Deentle rectangle to w2 = left and w3 = top and b2 = width and b3 = height
@@ -209,7 +203,6 @@ entity_not_in_death_zone:
   rts
 .endproc
 
-.export entity_compute_screen_coordinates
 .proc entity_compute_screen_coordinates
   ;get out low byte of positionX
   lda entity_instances+entityRAM::positionX,x
@@ -240,7 +233,6 @@ entity_not_in_death_zone:
 ;This routine indirectly jumps to every update routine for every live entity.
 ;The entities are expected to jump back to returnFromEntityUpdate when they
 ;are finished.
-.export entity_update_all
 .proc entity_update_all
 
   ;switch to the actor and entity bank
@@ -308,7 +300,6 @@ skipUpdate:
 
 ;This routine initializes the entity pool. All this
 ;entails is filling the first byte of every 16 byte chunk with zero.
-.export entity_init_all
 .proc entity_init_all
 
   ldx #$1F
@@ -354,7 +345,6 @@ do_not_spawn:
   
   rts
 
-.export entity_spawn
 .proc entity_spawn
 
   ;save regs

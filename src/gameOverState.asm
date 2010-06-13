@@ -1,4 +1,3 @@
-.include "structs.inc"
 .include "macros.inc"
 .include "flags.inc"
 .include "ppu.inc"
@@ -8,10 +7,10 @@
 .include "levelInState.inc"
 .include "zp.inc"
 .include "titleState.inc"
+.include "gameOverState.inc"
 
 .segment "CODE"
 
-.export game_over_state_update
 .proc game_over_state_update
 
   lda state_control_params+gameOverStateControl::state
@@ -137,7 +136,6 @@ stateCommandComplete:
   rts
 .endproc
 
-.export game_over_state_update_ppu
 .proc game_over_state_update_ppu
 
   dec frame_counter

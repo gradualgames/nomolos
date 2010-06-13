@@ -1,4 +1,3 @@
-.include "structs.inc"
 .include "flags.inc"
 .include "ram.inc"
 .include "zp.inc"

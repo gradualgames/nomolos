@@ -1,5 +1,4 @@
 .include "flags.inc"
-.include "structs.inc"
 .include "macros.inc"
 .include "ppu.inc"
 .include "mapper.inc"
@@ -14,10 +13,11 @@
 .include "camera.inc"
 .include "nomolosLogic.inc"
 .include "zp.inc"
+.include "playLevelState.inc"
+.include "fixedBankData.inc"
 
 .segment "CODE"
 
-.export play_level_state_update
 .proc play_level_state_update
 
   ;wait for vblank to complete
@@ -97,7 +97,6 @@ stateCommandComplete:
   rts
 .endproc
   
-.export play_level_state_update_ppu
 .proc play_level_state_update_ppu
 
   pha

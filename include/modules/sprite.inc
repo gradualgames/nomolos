@@ -1,12 +1,24 @@
 .ifndef SPRITE_INC
 SPRITE_INC = 1
 
-.import sprite_draw_animation_8bit
-.import sprite_draw_animation_16bit
-.import sprite_update_animation
-.import sprite_update_all
-.import sprite_clear_all
-.import sprite_draw_metasprite_8bit
-.import sprite_draw_metasprite_16bit
+.global sprite_draw_animation_8bit
+.global sprite_draw_animation_16bit
+.global sprite_update_animation
+.global sprite_update_all
+.global sprite_clear_all
+.global sprite_draw_metasprite_8bit
+.global sprite_draw_metasprite_16bit
+
+.struct spriteStruct
+  ycoord .byte
+  tile .byte
+  attribute .byte
+  xcoord .byte
+.endstruct
+
+.struct animation
+  frameCountDown .byte
+  currentFrame .byte
+.endstruct
 
 .endif

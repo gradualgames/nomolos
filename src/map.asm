@@ -1,9 +1,9 @@
-.include "structs.inc"
 .include "zp.inc"
 .include "ppu.inc"
 .include "mapper.inc"
 .include "sound.inc"
 .include "entity.inc"
+.include "fixedBankData.inc"
 
 .segment "CODE"
 

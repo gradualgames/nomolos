@@ -1,16 +1,30 @@
 .ifndef ENTITY_INC
 ENTITY_INC = 1
 
-.import entity_draw_anim
-.import entity_reset_anim
-.import entity_kill
-.import entity_test_face_nomolos
-.import entity_test_death_zone
-.import entity_update_all
-.import entity_init_all
-.import entity_spawn
-.import entity_compute_screen_coordinates
-.import entity_test_collision_nomolos
-.import entity_test_collision_hitbox
+.global entity_draw_anim
+.global entity_reset_anim
+.global entity_kill
+.global entity_test_face_nomolos
+.global entity_test_death_zone
+.global entity_update_all
+.global entity_init_all
+.global entity_spawn
+.global entity_compute_screen_coordinates
+.global entity_test_collision_nomolos
+.global entity_test_collision_hitbox
+
+.struct entityRAM
+  alive .byte
+  index .byte
+  spawnPositionX .word
+  spawnPositionY .byte
+  positionXFine .byte
+  positionX .word
+  positionYFine .byte
+  positionY .word
+  state .byte
+  animationObject .word
+  extra .byte 2
+.endstruct
 
 .endif

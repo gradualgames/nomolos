@@ -1,4 +1,3 @@
-.include "structs.inc"
 .include "flags.inc"
 .include "ram.inc"
 .include "zp.inc"
@@ -14,6 +13,7 @@
 .include "sprite.inc"
 .include "sound.inc"
 .include "entities.inc"
+.include "playLevelState.inc"
 
 .segment "ROM2"
 
