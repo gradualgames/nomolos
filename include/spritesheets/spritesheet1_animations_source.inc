@@ -203,3 +203,11 @@ spritesheet1_IceBallFly:
   .word spritesheet1_IceBall0
   .word spritesheet1_IceBall1
   .word $0000
+
+.export spritesheet1_SharkLeap
+spritesheet1_SharkLeap:
+  .byte $0a
+  .word spritesheet1_Shark0
+  .word spritesheet1_Shark1
+  .word spritesheet1_Shark2
+  .word $0000

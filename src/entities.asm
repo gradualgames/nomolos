@@ -34,3 +34,4 @@
 .include "snail.inc"
 .include "dragon.inc"
 .include "iceball.inc"
+.include "shark.inc"

@@ -59,3 +59,6 @@
 .import spritesheet1_IceBall0
 .import spritesheet1_IceBall1
 .import spritesheet1_IceBall2
+.import spritesheet1_Shark0
+.import spritesheet1_Shark1
+.import spritesheet1_Shark2

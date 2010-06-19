@@ -68,6 +68,7 @@ ROMDefinitionTable0:
   .word $0000 ;spritesheet1_SnailCrawl
   .word $0000 ;spritesheet1_DragonFly
   .word $0000 ;spritesheet1_IceBallFly
+  .word $0000 ;spritesheet1_SharkLeap
 
   .word attackSound
   .word hitSound
@@ -98,6 +99,7 @@ ROMDefinitionTable0:
   .byte 0 ;level1_sprites_Snail_chr_index
   .byte 0 ;level1_sprites_Dragon_chr_index
   .byte 0 ;level1_sprites_IceBall_chr_index
+  .byte 0 ;level1_sprites_Shark_chr_index
 
 ;ROM definition table
 ROMDefinitionTable1:
@@ -146,6 +148,7 @@ ROMDefinitionTable1:
   .word $0000 ;spritesheet1_SnailCrawl
   .word $0000 ;spritesheet1_DragonFly
   .word $0000 ;spritesheet1_IceBallFly
+  .word $0000 ;spritesheet1_SharkLeap
 
   .word attackSound
   .word hitSound
@@ -174,6 +177,7 @@ ROMDefinitionTable1:
   .byte 0 ;level2_sprites_Snail_chr_index
   .byte 0 ;level2_sprites_Dragon_chr_index
   .byte 0 ;level2_sprites_IceBall_chr_index
+  .byte 0 ;level2_sprites_Shark_chr_index
 
 ;ROM definition table
 ROMDefinitionTable2:
@@ -222,6 +226,7 @@ ROMDefinitionTable2:
   .word spritesheet1_SnailCrawl
   .word spritesheet1_DragonFly
   .word spritesheet1_IceBallFly
+  .word spritesheet1_SharkLeap
 
   .word attackSound
   .word hitSound
@@ -250,6 +255,7 @@ ROMDefinitionTable2:
   .byte level3_sprites_Snail_chr_index  
   .byte level3_sprites_Dragon_chr_index
   .byte level3_sprites_IceBall_chr_index
+  .byte level3_sprites_Shark_chr_index
   
 ;Entities
 EntityDefinitionTable:
@@ -387,6 +393,14 @@ IceBall:
   .byte $00
   .byte %00000000
   .byte $0a
+  .byte $00
+  .byte $00
+Shark:
+  .word shark_update
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $05
   .byte $00
   .byte $00
   

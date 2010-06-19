@@ -590,4 +590,32 @@ spritesheet1_IceBall2:
   .byte $00,$09,$03,$08,$00
   .byte $08,$0a,$03,$00,$08
   .byte $08,$0b,$03,$08,$00
+.export spritesheet1_Shark0
+spritesheet1_Shark0:
+  .byte $06
+  .byte $00,$00,$03,$00,$10
+  .byte $00,$01,$03,$08,$08
+  .byte $00,$02,$02,$10,$00
+  .byte $08,$03,$03,$00,$10
+  .byte $08,$04,$03,$08,$08
+  .byte $08,$05,$03,$10,$00
+.export spritesheet1_Shark1
+spritesheet1_Shark1:
+  .byte $06
+  .byte $00,$06,$03,$00,$10
+  .byte $00,$07,$03,$08,$08
+  .byte $00,$08,$03,$10,$00
+  .byte $08,$09,$03,$00,$10
+  .byte $08,$0a,$03,$08,$08
+  .byte $08,$0b,$03,$10,$00
+.export spritesheet1_Shark2
+spritesheet1_Shark2:
+  .byte $06
+  .byte $00,$0c,$03,$00,$10
+  .byte $00,$0d,$03,$08,$08
+  .byte $00,$0e,$03,$10,$00
+  .byte $08,$0f,$03,$00,$10
+  .byte $08,$10,$03,$08,$08
+  .byte $08,$11,$02,$10,$00
+
 

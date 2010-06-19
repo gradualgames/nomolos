@@ -26,3 +26,4 @@
 .import spritesheet1_SnailCrawl
 .import spritesheet1_DragonFly
 .import spritesheet1_IceBallFly
+.import spritesheet1_SharkLeap
