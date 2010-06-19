@@ -45,6 +45,9 @@ LEVELDATAINDEX_INC = 1
   LevelPatternsAddress .word
   SpritePatternsBank .byte
   SpritePatternsAddress .word
+  CyclingPaletteAddress .word
+  CyclingPaletteSpeed .byte
+  
   NomolosWalk .word
   NomolosWalkOverlay .word
   NomolosJump .word

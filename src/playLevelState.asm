@@ -105,6 +105,82 @@ stateCommandComplete:
   txa
   pha
 
+  .scope palette_cycling_block
+cycling_palette_address = state_control_params+playLevelStateControl::cycling_palette_address
+cycling_palette_speed = state_control_params+playLevelStateControl::cycling_palette_speed
+palette_cycle_index = state_control_params+playLevelStateControl::palette_cycle_index
+palette_cycle_counter = state_control_params+playLevelStateControl::palette_cycle_counter
+
+  ;if upper byte of cycling palette address is zero, this level does not do palette cycling
+  lda cycling_palette_address+1
+  beq palette_cycling_off
+  
+  ;get cycling palette address
+  lda cycling_palette_address
+  sta w0
+  lda cycling_palette_address+1
+  sta w0+1
+  
+  ;get number of palettes in this cycling palette
+  ldy #0
+  lda (w0),y
+  
+  ;compare to palette_cycle_index, reset to zero if it is equal
+  cmp palette_cycle_index
+  bne do_not_reset_palette_cycle_index
+  
+  lda #0
+  sta palette_cycle_index
+  
+do_not_reset_palette_cycle_index:
+
+  ;now calculate offset of palette to read
+  lda palette_cycle_index
+  asl
+  asl
+  asl
+  asl
+  
+  ;add this offset to w0
+  clc
+  adc w0
+  sta w0
+  lda w0+1
+  adc #0
+  sta w0+1
+  
+  ;add 1 to w0
+  clc
+  lda w0
+  adc #1
+  sta w0
+  lda w0+1
+  adc #0
+  sta w0+1
+  
+  ;w0 should now point to correct palette, I hope
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+  
+  jsr ppu_load_palette_bg
+  
+  set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+  
+  dec palette_cycle_counter
+  bne do_not_increment_cycle_index
+  
+  inc palette_cycle_index
+
+  lda cycling_palette_speed
+  sta palette_cycle_counter
+  
+do_not_increment_cycle_index:
+  
+palette_cycling_off:
+  
+  .endscope
+  
   lda ppu_data_ready
   beq ppu_data_not_ready
   jsr sprite_update_all

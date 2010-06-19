@@ -285,6 +285,21 @@ loadLevelStateDone:
   sta mapper_bank_next
   jsr mapper_switch_bank
   
+  ldy #ROMDefinitionTableStruct::CyclingPaletteAddress
+  lda (base_address_rom_definition_table),y
+  sta state_control_params+playLevelStateControl::cycling_palette_address
+  iny
+  lda (base_address_rom_definition_table),y
+  sta state_control_params+playLevelStateControl::cycling_palette_address+1
+  
+  lda #0
+  sta state_control_params+playLevelStateControl::palette_cycle_index
+  
+  ldy #ROMDefinitionTableStruct::CyclingPaletteSpeed
+  lda (base_address_rom_definition_table),y
+  sta state_control_params+playLevelStateControl::cycling_palette_speed
+  sta state_control_params+playLevelStateControl::palette_cycle_counter
+  
   lda #PLAYLEVELSTATE_KEEPPLAYING
   sta state_control_params+playLevelStateControl::state
   

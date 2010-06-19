@@ -25,11 +25,12 @@ Level3:
 ROMDefinitionTable0:
   .byte spritesheet_1_bank
   .byte level_1_bank
-  .byte level_1_patterns_bank
-  
+  .byte level_1_patterns_bank  
   .word level1_patterns
   .byte spritesheet_1_patterns_bank
   .word level1_sprite_groups
+  .word 0 ;CyclingPaletteAddress
+  .byte 0 ;CyclingPaletteSpeed
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay
@@ -102,11 +103,12 @@ ROMDefinitionTable0:
 ROMDefinitionTable1:
   .byte spritesheet_1_bank
   .byte level_2_bank
-  .byte level_2_patterns_bank
-  
+  .byte level_2_patterns_bank  
   .word level2_patterns
   .byte spritesheet_1_patterns_bank
   .word level2_sprite_groups
+  .word 0 ;CyclingPaletteAddress
+  .byte 0 ;CyclingPaletteSpeed
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay
@@ -177,11 +179,12 @@ ROMDefinitionTable1:
 ROMDefinitionTable2:
   .byte spritesheet_1_bank
   .byte level_3_bank
-  .byte level_3_patterns_bank
-  
+  .byte level_3_patterns_bank  
   .word level3_patterns
   .byte spritesheet_1_patterns_bank
   .word level3_sprite_groups
+  .word level3_cycling_palettes ;CyclingPaletteAddress
+  .byte 10 ;CyclingPaletteSpeed
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay

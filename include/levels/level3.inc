@@ -15,6 +15,7 @@ level3_sprites_IceBall_chr_index = level3_sprites_Dragon_chr_index+Dragon_chr_si
 .import level3_sprite_groups
 .import level3_patterns
 .import level3_palette
+.import level3_cycling_palettes
 .import level3_map
 .import level3_map_column_table
 .import level3_attribute_column_table
