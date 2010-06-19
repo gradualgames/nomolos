@@ -40,6 +40,11 @@ loadLevelStateInit:
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
   
+  ;load background from vram $0000
+  clear_ppu_2000_bit PPU0_BACKGROUND_PATTERN_TABLE_ADDRESS
+  ;load sprites from vram $1000
+  set_ppu_2000_bit PPU0_SPRITE_PATTERN_TABLE_ADDRESS
+  
   ;turn off sprites and background while loading level
   clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
