@@ -28,8 +28,8 @@
 
   ;turn monochrome bit on
   .ifdef DISPLAY_FRAME_CPU_USAGE
-  lda #%00011111
-  sta $2001
+  set_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
   .endif
   
   ;ppu data is not ready
@@ -90,8 +90,8 @@ stateCommandComplete:
     
   ;turn monochrome bit off
   .ifdef DISPLAY_FRAME_CPU_USAGE
-  lda #%00011110
-  sta $2001
+  clear_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
   .endif
     
   rts

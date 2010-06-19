@@ -34,8 +34,9 @@ levelOutStateInit:
   lda #LEVELOUTSTATE_FADEOUT
   sta state_control_params+levelOutStateControl::state
   
-  lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
-  sta $2000
+  ;turn off inc32 since we are manipulating palette in this state
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
   
   jmp stateCommandComplete
 

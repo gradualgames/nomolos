@@ -27,15 +27,13 @@
   
 levelInStateInit:
 
-  ;for some reason the following pause makes the transition look perfect. 
-	waitVBlank
-	
+  waitVBlank
+  
   ;turn sprite and background visibility off
-  lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
-  sta $2000
-  lda #( ( 0 << PPU1_SPRITE_VISIBILITY ) | ( 0 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
-  sta $2001
-
+  clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY
+  clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
+  upload_ppu_2001
+  
   lda #LEVELINSTATE_RUN
   sta state_control_params+levelInStateControl::state
   
@@ -177,12 +175,10 @@ levelInStateRun:
   sta $2005
   sta $2005
   
-  ;turn on NMI
-  lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
-  sta $2000
-  ;turn sprite and background visibility on
-  lda #( ( 1 << PPU1_SPRITE_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
-  sta $2001
+  ;turn on sprite and background visibility
+  set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
+  set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
+  upload_ppu_2001
   
   lda #200
   sta frame_counter
@@ -211,6 +207,7 @@ stateCommandComplete:
 .endproc
 
 .proc level_in_state_update_ppu
+
   dec frame_counter
 
   rts

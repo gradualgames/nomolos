@@ -60,6 +60,12 @@ w8:       .res 2
 .exportzp w9
 w9:       .res 2
 
+.exportzp ppu_2000
+ppu_2000: .res 1
+
+.exportzp ppu_2001
+ppu_2001: .res 1
+
 .exportzp sprite_group_offset
 sprite_group_offset: .res 1
 
@@ -229,6 +235,7 @@ sound_offset: .res 1
 ft_music_addr: .res 2
 
 ;variables specific to level out state
+;TODO: these should be moved to the state control params perhaps
 .exportzp palette_step
 palette_step: .res 1
 

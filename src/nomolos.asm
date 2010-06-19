@@ -48,12 +48,14 @@ reset:
   ldx #$FF  
   txs
   
-  ;turn off all graphics
-  inx
-  stx $2001
-
+  ;turn off all graphics  
+  lda #$00
+  sta ppu_2001
+  upload_ppu_2001
+  
   ;clear 2K RAM
   lda #$00
+  ldx #$00
 :
   sta $0000, x
   sta $0100, x
@@ -69,6 +71,10 @@ reset:
   ;wait for PPU to be ready
   waitVBlank
   waitVBlank
+  
+  ;initialize ppu registers with settings we're never going to change
+  set_ppu_2001_bit PPU1_SPRITE_CLIPPING
+  set_ppu_2001_bit PPU1_BACKGROUND_CLIPPING
 
   jsr sound_initialize
   
@@ -76,16 +82,16 @@ reset:
   ;sta state_control_params+gameOverStateControl::state
   ;switchState game_over_state_update, game_over_state_update_ppu
   
-  ;lda #TITLESTATE_INIT
-  ;sta state_control_params+titleStateControl::state
-  ;switchState title_state_update, title_state_update_ppu
+  lda #TITLESTATE_INIT
+  sta state_control_params+titleStateControl::state
+  switchState title_state_update, title_state_update_ppu
   
   ;load current level
-  lda #2
-  sta state_control_params+loadLevelStateControl::levelToLoad
-  lda #LOADLEVELSTATE_INIT
-  sta state_control_params+loadLevelStateControl::state  
-  switchState load_level_state_update, load_level_state_update_ppu
+  ;lda #2
+  ;sta state_control_params+loadLevelStateControl::levelToLoad
+  ;lda #LOADLEVELSTATE_INIT
+  ;sta state_control_params+loadLevelStateControl::state  
+  ;switchState load_level_state_update, load_level_state_update_ppu
   
 loop:
 

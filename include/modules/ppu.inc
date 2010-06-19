@@ -35,6 +35,56 @@ PPU1_SPRITE_CLIPPING = 2
 PPU1_BACKGROUND_CLIPPING = 1
 PPU1_DISPLAY_TYPE = 0
 
+.macro set_ppu_2000_bit bit_position
+
+  ;load the current state of the ppu register
+  lda ppu_2000
+  ora #( 1 << bit_position )
+  sta ppu_2000
+
+.endmacro
+
+.macro clear_ppu_2000_bit bit_position
+
+  ;load the current state of the ppu register
+  lda ppu_2000
+  and #( ~( 1 << bit_position ) )
+  sta ppu_2000
+
+.endmacro
+
+.macro set_ppu_2001_bit bit_position
+
+  ;load the current state of the ppu register
+  lda ppu_2001
+  ora #( 1 << bit_position )
+  sta ppu_2001
+
+.endmacro
+
+.macro clear_ppu_2001_bit bit_position
+
+  ;load the current state of the ppu register
+  lda ppu_2001
+  and #( ~( 1 << bit_position ) )
+  sta ppu_2001
+
+.endmacro
+
+.macro upload_ppu_2000
+
+  lda ppu_2000
+  sta $2000
+
+.endmacro
+
+.macro upload_ppu_2001
+
+  lda ppu_2001
+  sta $2001
+
+.endmacro
+
 .macro waitVBlank
 
 :

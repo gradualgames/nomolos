@@ -34,13 +34,16 @@ loadLevelStateInit:
   ;wait for vblank so we can turn off graphics, switch chr banks without graphical glitches
   waitVBlank
   
-  ;turn off NMI, inc32 (for loading palette)
-  lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 0 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
-  sta $2000
+  ;turn off nmi while loading level
+  clear_ppu_2000_bit PPU0_EXECUTE_NMI
+  ;turn off inc32 for loading palette
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
   
-  ;turn off sprites and bg
-  lda #( ( 0 << PPU1_SPRITE_VISIBILITY ) | ( 0 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
-  sta $2001
+  ;turn off sprites and background while loading level
+  clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY
+  clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
+  upload_ppu_2001
 
   lda state_control_params+loadLevelStateControl::levelToLoad
   ;multiply accumulator by 2
@@ -169,9 +172,9 @@ loadLevelStateInit:
   jsr nomolos_init  
   jsr camera_reset  
 
-  ;turn on inc32
-  lda #( ( 0 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
-  sta $2000
+  ;turn on inc32 for column drawing
+  set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
   
   lda #0
   sta camera_scroll_x
@@ -289,12 +292,13 @@ loadLevelStateDone:
   sta $2005
   sta $2005
 
-  ;turn rendering on
-  lda #( ( 1 << PPU0_EXECUTE_NMI ) | ( 1 << PPU0_ADDRESS_INCREMENT ) | ( 1 << PPU0_SPRITE_PATTERN_TABLE_ADDRESS ) )
-  sta $2000
-   
-  lda #( ( 1 << PPU1_SPRITE_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_VISIBILITY ) | ( 1 << PPU1_BACKGROUND_CLIPPING ) | ( 1 << PPU1_SPRITE_CLIPPING ) )
-  sta $2001
+  set_ppu_2000_bit PPU0_EXECUTE_NMI
+  upload_ppu_2000
+     
+  ;turn on sprites and background
+  set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
+  set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
+  upload_ppu_2001
 
   jmp stateSwitchComplete
   
