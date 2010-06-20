@@ -105,6 +105,9 @@ stateCommandComplete:
   txa
   pha
 
+  lda ppu_data_ready
+  beq ppu_data_not_ready
+  
   .scope palette_cycling_block
 cycling_palette_address = state_control_params+playLevelStateControl::cycling_palette_address
 cycling_palette_speed = state_control_params+playLevelStateControl::cycling_palette_speed
@@ -181,8 +184,6 @@ palette_cycling_off:
   
   .endscope
   
-  lda ppu_data_ready
-  beq ppu_data_not_ready
   jsr sprite_update_all
   jsr map_update_column_ppu
   jsr map_update_attribute_ppu
