@@ -6,7 +6,7 @@ SHARK_HALFWIDTH = $08
 SHARK_HEIGHT = $10
 SHARK_HALFHEIGHT = $08
 
-.struct sharkLocals
+.struct shark_locals
   y_velocity .word
   y_belowPenetration .byte
   x_collisionPointBottom .word
@@ -15,7 +15,7 @@ SHARK_HALFHEIGHT = $08
   directionFlag .byte
 .endstruct
 
-SHARK_RESTCOUNTER_RESTLENGTH = 25
+SHARK_RESTCOUNTER_RESTLENGTH = 50
 
 SHARK_DIRECTIONFLAG_LEFT =  %00000000
 SHARK_DIRECTIONFLAG_RIGHT = %00000001
@@ -43,15 +43,15 @@ shark_initState:
   
   ;set vertical velocity to zero
   lda #0
-  sta entity_locals+sharkLocals::y_velocity,x
+  sta entity_locals+shark_locals::y_velocity,x
   
   ;set rest counter
   lda #SHARK_RESTCOUNTER_RESTLENGTH
-  sta entity_locals+sharkLocals::restCounter,x
+  sta entity_locals+shark_locals::restCounter,x
   
   ;set direction flag
   lda #SHARK_DIRECTIONFLAG_LEFT
-  sta entity_locals+sharkLocals::directionFlag,x
+  sta entity_locals+shark_locals::directionFlag,x
   
   ;switch state to "jump"
   lda #SHARK_JUMPSTATE
@@ -61,16 +61,19 @@ shark_initState:
 shark_restState:
 
   ;decrement rest counter
-  dec entity_locals+sharkLocals::restCounter,x
+  dec entity_locals+shark_locals::restCounter,x
   bne stillResting
   
   ;on rest counter = 0, jump to jump state init and set vertical velocity
   lda #$0a
-  sta entity_locals+sharkLocals::y_velocity,x
-  lda #$fd
-  sta entity_locals+sharkLocals::y_velocity+1,x
+  sta entity_locals+shark_locals::y_velocity,x
+  lda #$fc
+  sta entity_locals+shark_locals::y_velocity+1,x
   lda #SHARK_JUMPSTATE
   sta entity_instances+entityRAM::state,x
+  
+  ;reset anim for the arc of the shark's jump to look realistic
+  jsr entity_reset_anim
   
 stillResting:
 
@@ -84,32 +87,13 @@ shark_jumpState:
   jsr entity_compute_screen_coordinates
 
   ;slide shark in the direction he is facing
-  lda entity_locals+sharkLocals::directionFlag,x
+  lda entity_locals+shark_locals::directionFlag,x
   bne sharkGoingRight
 sharkGoingLeft:
 
-  ;test for collision on left side of shark. reverse direction if true
-  lda entity_instances+entityRAM::positionX,x
-  sta w0
-  lda entity_instances+entityRAM::positionX+1,x
-  sta w0+1
-  lda entity_instances+entityRAM::positionY,x
-  clc
-  adc #SHARK_HALFHEIGHT
-  sta w1
-  lda entity_instances+entityRAM::positionY+1,x
-  adc #0
-  sta w1+1
-  jsr map_test_collision
-  lda b1
-  beq noLeftCollision
-  lda #SHARK_DIRECTIONFLAG_RIGHT
-  sta entity_locals+sharkLocals::directionFlag,x
-noLeftCollision:
-
   lda entity_instances+entityRAM::positionX,x
   sec
-  sbc #1
+  sbc #2
   sta entity_instances+entityRAM::positionX,x
   lda entity_instances+entityRAM::positionX+1,x
   sbc #0
@@ -118,31 +102,9 @@ noLeftCollision:
   jmp sharkDirectionTestDone
 sharkGoingRight:
 
-  ;test for collision on right side of shark. reverse direction if true
   lda entity_instances+entityRAM::positionX,x
   clc
-  adc #SHARK_WIDTH
-  sta w0
-  lda entity_instances+entityRAM::positionX+1,x
-  adc #0
-  sta w0+1
-  lda entity_instances+entityRAM::positionY,x
-  clc
-  adc #SHARK_HALFHEIGHT
-  sta w1
-  lda entity_instances+entityRAM::positionY+1,x
-  adc #0
-  sta w1+1
-  jsr map_test_collision
-  lda b1
-  beq noRightCollision
-  lda #SHARK_DIRECTIONFLAG_LEFT
-  sta entity_locals+sharkLocals::directionFlag,x
-noRightCollision:
-
-  lda entity_instances+entityRAM::positionX,x
-  clc
-  adc #1
+  adc #2
   sta entity_instances+entityRAM::positionX,x
   lda entity_instances+entityRAM::positionX+1,x
   adc #0
@@ -150,24 +112,24 @@ noRightCollision:
 sharkDirectionTestDone:
 
   ;increment the vertical velocity
-  lda entity_locals+sharkLocals::y_velocity+1,x
+  lda entity_locals+shark_locals::y_velocity+1,x
   cmp #10
   bpl stopAccelerating
   clc
-  lda entity_locals+sharkLocals::y_velocity,x
+  lda entity_locals+shark_locals::y_velocity,x
   adc #$20
-  sta entity_locals+sharkLocals::y_velocity,x
-  lda entity_locals+sharkLocals::y_velocity+1,x
+  sta entity_locals+shark_locals::y_velocity,x
+  lda entity_locals+shark_locals::y_velocity+1,x
   adc #0
-  sta entity_locals+sharkLocals::y_velocity+1,x
+  sta entity_locals+shark_locals::y_velocity+1,x
 stopAccelerating:
   
   ;add vertical velocity to 24 bit Y coordinate with sign extension
   clc
-  lda entity_locals+sharkLocals::y_velocity,x
+  lda entity_locals+shark_locals::y_velocity,x
   adc entity_instances+entityRAM::positionYFine,x
   sta entity_instances+entityRAM::positionYFine,x
-  lda entity_locals+sharkLocals::y_velocity+1,x
+  lda entity_locals+shark_locals::y_velocity+1,x
   bmi signExtend
   adc entity_instances+entityRAM::positionY,x
   sta entity_instances+entityRAM::positionY,x
@@ -188,38 +150,38 @@ signExtendAddDone:
   clc
   lda entity_instances+entityRAM::positionX,x
   adc #SHARK_HALFWIDTH
-  sta entity_locals+sharkLocals::x_collisionPointBottom,x
+  sta entity_locals+shark_locals::x_collisionPointBottom,x
   sta w0
   lda entity_instances+entityRAM::positionX+1,x
   adc #0
-  sta entity_locals+sharkLocals::x_collisionPointBottom+1,x
+  sta entity_locals+shark_locals::x_collisionPointBottom+1,x
   sta w0+1
   ;load the entity's Y coordinate + height
   clc
   lda entity_instances+entityRAM::positionY,x
   adc #SHARK_HEIGHT
-  sta entity_locals+sharkLocals::y_collisionPointBottom,x
+  sta entity_locals+shark_locals::y_collisionPointBottom,x
   sta w1
   lda entity_instances+entityRAM::positionY+1,x
   adc #0
-  sta entity_locals+sharkLocals::y_collisionPointBottom+1,x
+  sta entity_locals+shark_locals::y_collisionPointBottom+1,x
   sta w1+1
   
-  jsr map_test_collision
-  lda b1
+  ;jsr map_test_collision
+  ;lda b1
   beq noBottomCollision
   
   lda #0
-  sta entity_locals+sharkLocals::y_velocity,x
-  sta entity_locals+sharkLocals::y_velocity+1,x
+  sta entity_locals+shark_locals::y_velocity,x
+  sta entity_locals+shark_locals::y_velocity+1,x
   
   ;there was a collision beneath the shark. calculate penetration distance and eject.
-  lda entity_locals+sharkLocals::y_collisionPointBottom,x
+  lda entity_locals+shark_locals::y_collisionPointBottom,x
   and #penetrationCalculationMask
-  sta entity_locals+sharkLocals::y_belowPenetration,x
+  sta entity_locals+shark_locals::y_belowPenetration,x
   sec
   lda entity_instances+entityRAM::positionY,x
-  sbc entity_locals+sharkLocals::y_belowPenetration,x
+  sbc entity_locals+shark_locals::y_belowPenetration,x
   sta entity_instances+entityRAM::positionY,x
   lda entity_instances+entityRAM::positionY+1,x
   sbc #0
@@ -227,7 +189,7 @@ signExtendAddDone:
   
   ;set rest counter and transition to rest state. set direction bit based on Nomolos' location.
   lda #SHARK_RESTCOUNTER_RESTLENGTH
-  sta entity_locals+sharkLocals::restCounter,x
+  sta entity_locals+shark_locals::restCounter,x
   lda #SHARK_RESTSTATE
   sta entity_instances+entityRAM::state,x
   
@@ -239,11 +201,11 @@ signExtendAddDone:
   bmi followToRight
 followToLeft:
   lda #SHARK_DIRECTIONFLAG_LEFT
-  sta entity_locals+sharkLocals::directionFlag,x
+  sta entity_locals+shark_locals::directionFlag,x
   jmp followTestDone
 followToRight:
   lda #SHARK_DIRECTIONFLAG_RIGHT
-  sta entity_locals+sharkLocals::directionFlag,x
+  sta entity_locals+shark_locals::directionFlag,x
 followTestDone:
   
 noBottomCollision:  
@@ -254,9 +216,6 @@ noBottomCollision:
   
 shark_draw:
 
-  jsr entity_test_death_zone
-  beq killShark
-  
   ;load shark width and height
   lda #SHARK_WIDTH
   sta b2
@@ -308,8 +267,18 @@ nomolosNotAttacking:
   sta sprite_group_offset
 
   ldy #ROMDefinitionTableStruct::SharkLeap
-  lda #0
+
+  lda entity_locals+shark_locals::directionFlag,x
+  bne entity_facing_right
+entity_facing_left:
+  lda #%01000000
   sta b2
+  jmp entity_facing_test_done
+entity_facing_right:
+  lda #%00000000
+  sta b2
+entity_facing_test_done:
+
   jsr entity_draw_anim
 
 sharkOffscreen:

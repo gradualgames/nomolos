@@ -206,7 +206,7 @@ spritesheet1_IceBallFly:
 
 .export spritesheet1_SharkLeap
 spritesheet1_SharkLeap:
-  .byte $0a
+  .byte 25
   .word spritesheet1_Shark0
   .word spritesheet1_Shark1
   .word spritesheet1_Shark2
