@@ -35,6 +35,27 @@ PPU1_SPRITE_CLIPPING = 2
 PPU1_BACKGROUND_CLIPPING = 1
 PPU1_DISPLAY_TYPE = 0
 
+  ; ;now let's write a string!
+  ; lda #$20
+  ; ;at location 13, 10
+  ; ora #%00000010
+  ; sta $2006
+  ; lda #%00001010
+  ; sta $2006
+
+.macro set_ppu_2006 nametable, row, column
+
+  lda #nametable
+  ;or in the upper two bits of row
+  ora #(row >> 3)
+  sta $2006
+  lda #column
+  ;or in the lower three bits of row
+  ora #<(row << 5)
+  sta $2006
+
+.endmacro
+  
 .macro set_ppu_2000_bit bit_position
 
   ;load the current state of the ppu register

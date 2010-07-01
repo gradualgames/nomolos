@@ -556,6 +556,18 @@ font1:
 powerTable:
   .byte 100, 10, 1
 
+.export press_start_string
+press_start_string:
+  .byte $0b,$0f,$11,$04,$12,$12,$1a,$12,$13,$00,$11,$13
+  
+.export lda_games_string
+lda_games_string:
+  .byte $0c,$01,$18,$1a,$0b,$03,$00,$1a,$06,$00,$0c,$04,$12
+ 
+.export copyright_c_2010_string
+copyright_c_2010_string:
+  .byte $08,$2c,$02,$2d,$1a,$1d,$1b,$1c,$1b
+  
 .export levelString
 levelString:
   .byte $06,$26,$04,$15,$04,$0b,$1a
@@ -577,4 +589,3 @@ titleDef:
 
 .include "title_palette_source.inc"
 .include "title_nametable_source.inc"
-.include "title_attributetable_source.inc"

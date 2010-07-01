@@ -99,6 +99,32 @@ titleStateRun:
   
   jsr ppu_load_chr_amount
   
+  ;write some important strings onto the title screen!
+  set_ppu_2006 $20, 19, 10
+  lda #<press_start_string
+  sta w0
+  lda #>press_start_string
+  sta w0+1
+  
+  jsr ppu_display_string
+  
+  set_ppu_2006 $20, 22, 10
+  lda #<lda_games_string
+  sta w0
+  lda #>lda_games_string
+  sta w0+1
+  
+  jsr ppu_display_string
+  
+  set_ppu_2006 $20, 23, 10
+  
+  lda #<copyright_c_2010_string
+  sta w0
+  lda #>copyright_c_2010_string
+  sta w0+1
+  
+  jsr ppu_display_string
+  
   ;now that nametable loaded, load the new palette.
   lda titleDef+title::paletteAddress
   sta w0

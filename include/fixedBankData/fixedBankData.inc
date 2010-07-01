@@ -13,6 +13,9 @@ LEVELDATAINDEX_INC = 1
 .import title_music
 .import font1
 .import powerTable
+.import press_start_string
+.import lda_games_string
+.import copyright_c_2010_string
 .import levelString
 .import livesString
 .import gameOverString
