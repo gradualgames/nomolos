@@ -82,12 +82,7 @@ gameOverStateRun:
   jsr ppu_load_chr_amount
 
   ;display GAME OVER string
-  lda #$20
-  ;at location 14, 10
-  ora #%00000001
-  sta $2006
-  lda #%11001010
-  sta $2006
+  set_ppu_2006 $20, 14, 11
   lda #<gameOverString
   sta w0
   lda #>gameOverString

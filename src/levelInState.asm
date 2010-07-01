@@ -107,12 +107,7 @@ levelInStateRun:
   jsr ppu_create_decimal_string
   
   ;now let's write a string!
-  lda #$20
-  ;at location 13, 10
-  ora #%00000001
-  sta $2006
-  lda #%10101010
-  sta $2006
+  set_ppu_2006 $20, 13, 11
   
   lda #<levelString
   sta w0
@@ -129,12 +124,7 @@ levelInStateRun:
   jsr ppu_display_string
   
   ;display lives remaining string
-  lda #$20
-  ;at location 14, 10
-  ora #%00000001
-  sta $2006
-  lda #%11001010
-  sta $2006
+  set_ppu_2006 $20, 14, 11
   lda #<livesString
   sta w0
   lda #>livesString
