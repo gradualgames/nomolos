@@ -34,7 +34,6 @@ FILES           = nomolos \
                   entity \
                   controller \
                   soundengine \
-                  sounds \
                   geotests \
                   zp \
                   mapper \

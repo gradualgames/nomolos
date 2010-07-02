@@ -1,6 +1,5 @@
 .linecont +
 .include "soundengine.inc"
-.include "sounds.inc"
 
 .segment "ZEROPAGE"
 sound_local_byte_0: .res 1
@@ -18,6 +17,9 @@ sound_param_byte_2: .res 1
 sound_param_word_0: .res 2
 sound_param_word_1: .res 2
 sound_param_word_2: .res 2
+
+base_address_volume_envelopes: .res 2
+base_address_pitch_envelopes: .res 2
 
 stream_byte: .res 1
 
@@ -131,25 +133,7 @@ stream_not_active:
       $0035, $0032, $002f, $002c, $002a, $0028, $0025, $0023, \
       $0021, $001f, $001d, $001c, $001a, $0019, $0017, $0016, \
       $0015, $0014, $0012, $0011, $0010, $000f, $000e, $000e
-
-;these were the first 9 values in Famitracker's table. I'm not sure what
-;they are, but they don't seem to be note values! Perhaps they are for the
-;noise channel. Not sure.
-;      $0d5c, $0c9c, $0be7, $0b3c, $0a9b, $0a02, $0972, $08eb, \
-;      $086a,
-      
-; ;Note table originally created by Celius, transcribed to the following table by MetalSlime. Thanks guys!
-; .define note_table \
-                                                                     ; $07F1, $0780, $0713, \
-      ; $06AD, $064D, $05F3, $059D, $054D, $0500, $04B8, $0475, $0435, $03F8, $03BF, $0389, \
-      ; $0356, $0326, $02F9, $02CE, $02A6, $027F, $025C, $023A, $021A, $01FB, $01DF, $01C4, \
-      ; $01AB, $0193, $017C, $0167, $0151, $013F, $012D, $011C, $010C, $00FD, $00EF, $00E2, \
-      ; $00D2, $00C9, $00BD, $00B3, $00A9, $009F, $0096, $008E, $0086, $007E, $0077, $0070, \
-      ; $006A, $0064, $005E, $0059, $0054, $004F, $004B, $0046, $0042, $003F, $003B, $0038, \
-      ; $0034, $0031, $002F, $002C, $0029, $0027, $0025, $0023, $0021, $001F, $001D, $001B, \
-      ; $001A, $0018, $0017, $0015, $0014, $0013, $0012, $0011, $0010, $000F, $000E, $000D, \
-      ; $000C, $000C, $000B, $000A, $000A, $0009, $0008                                     
-  
+ 
 note_table_lo: .lobytes note_table
 note_table_hi: .hibytes note_table
 
@@ -197,11 +181,13 @@ stream_callback_table_hi: .hibytes stream_callback_table
   
   ;load volume index
   lda streams+stream::volume_index,x
+  asl
   tay
   ;load volume address
-  lda volume_envelopes_lo,y
+  lda (base_address_volume_envelopes),y
   sta sound_local_word_0
-  lda volume_envelopes_hi,y
+  iny
+  lda (base_address_volume_envelopes),y
   sta sound_local_word_0+1
   ;load volume offset
   ldy streams+stream::volume_offset,x
@@ -229,11 +215,13 @@ volume_stop:
   
   ;load pitch index
   lda streams+stream::pitch_index,x
+  asl
   tay
   ;load pitch address
-  lda pitch_envelopes_lo,y
+  lda (base_address_pitch_envelopes),y
   sta sound_local_word_0
-  lda pitch_envelopes_hi,y
+  iny
+  lda (base_address_pitch_envelopes),y
   sta sound_local_word_0+1
   ;load pitch offset
   ldy streams+stream::pitch_offset,x
@@ -245,12 +233,32 @@ volume_stop:
   cmp #ENV_LOOP
   beq pitch_loop
  
+  ;test sign
+  lda (sound_local_word_0),y
+  bmi pitch_delta_negative
+pitch_delta_positive:
+ 
   clc
   lda streams+stream::channel_registers+2,x
   adc (sound_local_word_0),y
-  bcs :+
   sta streams+stream::channel_registers+2,x
-:
+  lda streams+stream::channel_registers+3,x
+  adc #0
+  sta streams+stream::channel_registers+3,x
+
+  jmp pitch_delta_test_done
+
+pitch_delta_negative:
+
+  clc
+  lda streams+stream::channel_registers+2,x
+  adc (sound_local_word_0),y
+  sta streams+stream::channel_registers+2,x
+  lda streams+stream::channel_registers+3,x
+  adc #$ff
+  sta streams+stream::channel_registers+3,x
+
+pitch_delta_test_done:
 
   ;move pitch offset along
   inc streams+stream::pitch_offset,x
@@ -283,11 +291,13 @@ square_2_play_note = square_1_play_note
   
   ;load volume index
   lda streams+stream::volume_index,x
+  asl
   tay
-  ;load volume address
-  lda volume_envelopes_lo,y
+  ;load volume address    
+  lda (base_address_volume_envelopes),y
   sta sound_local_word_0
-  lda volume_envelopes_hi,y
+  iny
+  lda (base_address_volume_envelopes),y
   sta sound_local_word_0+1
   ;load volume offset
   ldy streams+stream::volume_offset,x
@@ -315,11 +325,13 @@ volume_stop:
   
   ;load pitch index
   lda streams+stream::pitch_index,x
+  asl
   tay
   ;load pitch address
-  lda pitch_envelopes_lo,y
+  lda (base_address_pitch_envelopes),y
   sta sound_local_word_0
-  lda pitch_envelopes_hi,y
+  iny
+  lda (base_address_pitch_envelopes),y
   sta sound_local_word_0+1
   ;load pitch offset
   ldy streams+stream::pitch_offset,x
@@ -331,12 +343,32 @@ volume_stop:
   cmp #ENV_LOOP
   beq pitch_loop
  
+  ;test sign
+  lda (sound_local_word_0),y
+  bmi pitch_delta_negative
+pitch_delta_positive:
+ 
   clc
   lda streams+stream::channel_registers+2,x
   adc (sound_local_word_0),y
-  bcs :+
   sta streams+stream::channel_registers+2,x
-:
+  lda streams+stream::channel_registers+3,x
+  adc #0
+  sta streams+stream::channel_registers+3,x
+
+  jmp pitch_delta_test_done
+
+pitch_delta_negative:
+
+  clc
+  lda streams+stream::channel_registers+2,x
+  adc (sound_local_word_0),y
+  sta streams+stream::channel_registers+2,x
+  lda streams+stream::channel_registers+3,x
+  adc #$ff
+  sta streams+stream::channel_registers+3,x
+
+pitch_delta_test_done:
 
   ;move pitch offset along
   inc streams+stream::pitch_offset,x
@@ -355,22 +387,20 @@ pitch_stop:
 .proc noise_play_note
 
   ;load note index
-  ldy stream_byte
-  
-  ;load low byte of note
-  lda note_table_lo,y
-  ;store in low 8 bits of pitch
-  and #%01111111
-  ora #%00110000
+  lda stream_byte
+
+  ;note index is actually the "sound type" for noise channel
   sta streams+stream::channel_registers+2,x
   
   ;load volume index
   lda streams+stream::volume_index,x
+  asl
   tay
-  ;load volume address
-  lda volume_envelopes_lo,y
+  ;load volume address    
+  lda (base_address_volume_envelopes),y
   sta sound_local_word_0
-  lda volume_envelopes_hi,y
+  iny
+  lda (base_address_volume_envelopes),y
   sta sound_local_word_0+1
   ;load volume offset
   ldy streams+stream::volume_offset,x
@@ -563,6 +593,23 @@ no_triangle:
   ldx #48
   jsr stream_initialize
 no_noise:
+
+  ;load volume envelopes
+  iny
+  lda (song_address),y
+  sta base_address_volume_envelopes
+  iny
+  lda (song_address),y
+  sta base_address_volume_envelopes+1
+  
+  ;load pitch envelopes
+  iny
+  lda (song_address),y
+  sta base_address_pitch_envelopes
+  iny
+  lda (song_address),y
+  sta base_address_pitch_envelopes+1
+
   rts
   
 .endproc

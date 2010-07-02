@@ -7,6 +7,8 @@
 .globalzp sound_param_word_0
 .globalzp sound_param_word_1
 .globalzp sound_param_word_2
+.globalzp base_address_volume_envelopes
+.globalzp base_address_pitch_envelopes
 .globalzp stream_byte
 
 .global sound_initialize

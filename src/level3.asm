@@ -1,6 +1,7 @@
 .include "soundengine.inc"
 .include "spritesheet1.inc"
 .include "entities.inc"
+.include "fixedBankData.inc"
 
 .segment "CODE"
 
@@ -26,6 +27,58 @@ level3_music:
   .word song6_2_square2
   .word song6_2_triangle
   .word song6_2_noise
+  .word volume_envelopes
+  .word pitch_envelopes
+  
+volume_envelopes:
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+  .word sf_volume_envelope_silence
+  .word sf_volume_envelope_loud
+  .word sf_volume_envelope_1
+  .word sf_volume_envelope_decay
+  .word sf_volume_envelope_short_note
+
+  .word sf_volume_envelope_fade_in
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+pitch_envelopes:
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  
+  .word sf_pitch_envelope_0
+  .word sf_pitch_envelope_1
+  .word 0
+  .word 0
+  .word 0
+
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
   
 song6_2_square1:
   .byte TRM

@@ -3,6 +3,7 @@
 .include "level3.inc"
 .include "entities.inc"
 .include "soundengine.inc"
+.include "fixedBankData.inc"
 
 .segment "ROM4"
 
@@ -12,7 +13,7 @@
 .segment "CODE"
 
 ;level definitions
-.export level_definition_table
+
 level_definition_table:
 Level1:
   .word ROMDefinitionTable0
@@ -404,147 +405,190 @@ Shark:
   .byte $00
   .byte $00
   
-.export attackSound
 attackSound:
   .byte STL, 10
-  .byte STV, $05
-  .byte STP, $01
+  .byte STV, SOUND_EFFECT_BASE+5
+  .byte STP, SOUND_EFFECT_BASE+1
   .byte A0
-  .byte STV, $00
+  .byte STV, SOUND_EFFECT_BASE+0
   .byte A0
   .byte TRM
 
-.export hitSound
 hitSound:
   .byte STL, 10
-  .byte STV, $03
-  .byte STP, $01
+  .byte STV, SOUND_EFFECT_BASE+3
+  .byte STP, SOUND_EFFECT_BASE+1
   .byte G2
-  .byte STV, $00
+  .byte STV, SOUND_EFFECT_BASE+0
   .byte A0
   .byte TRM
 
-.export getHurtSound
+
 getHurtSound:
   .byte STL, 1
-  .byte STV, $01
-  .byte STP, $01
+  .byte STV, SOUND_EFFECT_BASE+1
+  .byte STP, SOUND_EFFECT_BASE+1
   .byte C5, B4, A4, G4, F4, E4, D4, C4
-  .byte STV, $00
+  .byte STV, SOUND_EFFECT_BASE+0
   .byte A0
   .byte TRM
 
-.export dieSound
 dieSound:
   .byte STL, 1
-  .byte STV, $01
-  .byte STP, $01
+  .byte STV, SOUND_EFFECT_BASE+1
+  .byte STP, SOUND_EFFECT_BASE+1
   .byte C6, B5, A5, G5, F5, E5, D5, CS5
   .byte C5, B4, A4, G4, F4, E4, D4, C4
-  .byte STV, $00
+  .byte STV, SOUND_EFFECT_BASE+0
   .byte A0
   .byte TRM
 
-.export getHealthSound
 getHealthSound:
   .byte STL, 1
-  .byte STV, $01
-  .byte STP, $01
+  .byte STV, SOUND_EFFECT_BASE+1
+  .byte STP, SOUND_EFFECT_BASE+1
   .byte A4,C5,E4,A3,C6,E7
   .byte A4,C5,E4,A3,C6,E7
   .byte TRM
 
-.export getItemSound
 getItemSound:
   .byte STL, 1
-  .byte STV, $01
-  .byte STP, $01
+  .byte STV, SOUND_EFFECT_BASE+1
+  .byte STP, SOUND_EFFECT_BASE+1
   .byte A4, AS4, B4, C5, CS5, D5, DS5, E5
   .byte A4, AS4, B4, C5, CS5, D5, DS5, E5
   .byte TRM
 
 ;miscellaneous data
-.export banktable
 banktable:
   .byte $00, $01, $02, $03, $04, $05, $06, $07
 
-.export title_music
-title_music:
-  .word k13_square1
-  .word k13_square2
-  .word $0000
-  .word $0000
+title_music: 
+  .word Square1
+  .word Square2
+  .word Triangle
+  .word Noise
+  .word volume_envelopes
+  .word pitch_envelopes
 
-k13_square1:
-  .byte STL, _16TH
-  .byte STV, 2
-  .byte STP, 1
-  .byte G4, D4
-  .byte STL, _64TH, C4, B3, C4, B3
-  .byte STL, _32ND, A3, G3, FS3, E3, D3, C3, B2, C3
-  .byte STL, _8TH+_32ND, D3
-  .byte STL, _32ND, G3, FS3, B3, A3, E4, D4, G4, FS4, C5, B4, A4, G4, FS4
-  .byte STL, _16TH, G4, G3
-  .byte STL, _32ND, FS3, B3, A3, E4, D4, G4, FS4, C5, B4, A4, G4, FS4
-  .byte STL, _16TH, G4, D4
-  .byte STL, _32ND, E4, E3, E3, E3, E3, E3, E3, G3
-  .byte STL, _16TH, E3, E4
-  .byte STL, _64TH, FS4, E4, FS4, E4
-  .byte STL, _32ND, D4, C4, D4, D3, D3, D3, D3, D3, D3, FS3
-  .byte STL, _16TH, D3, D4
-  .byte STL, _64TH, E4, D4, E4, D4
-  .byte STL, _32ND, C4, B3, C4, D3, D3, D3, D3, D3, D3, FS3
-  .byte STL, _16TH, D3, C4
-  .byte STL, _64TH, D4, C4, D4, C4
-  .byte STL, _32ND, B3, A3, B3, G2, G2, G2, G2, G2, G2, B2
-  .byte STL, _16TH, G2, B3
-  .byte STL, _64TH, C4, B3, C4, B3
-  .byte STL, _32ND, A3, G3, D4, A3, FS3, D3, B3, D3, B2, G2, D4, A3, FS3, D3, B3, D3, B2, G2
+volume_envelopes:
+  .word volume_envelope_0
+  .word volume_envelope_1
+  .word volume_envelope_2
+  .word 0
+  .word 0
+  
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+  .word sf_volume_envelope_silence
+  .word sf_volume_envelope_loud
+  .word sf_volume_envelope_1
+  .word sf_volume_envelope_decay
+  .word sf_volume_envelope_short_note
+
+  .word sf_volume_envelope_fade_in
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+pitch_envelopes:
+  .word pitch_envelope_0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  
+  .word sf_pitch_envelope_0
+  .word sf_pitch_envelope_1
+  .word 0
+  .word 0
+  .word 0
+
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+volume_envelope_0:
+  .byte 0, ENV_STOP
+
+volume_envelope_1:
+  .byte 15, ENV_LOOP
+volume_envelope_2:
+  .byte 14,12,11,9,7,6,4,2,1,0,0,2,3,5,8,6,3,1,ENV_STOP
+
+pitch_envelope_0:
+  .byte 0, ENV_LOOP
+
+sf_volume_envelope_silence:
+  .byte 0, ENV_STOP
+
+sf_volume_envelope_loud:
+  .byte 15, ENV_STOP
+
+sf_volume_envelope_1:
+  .byte 14, 12, 11, 9, 7, 6, 4, 2, 1, 0, 0, 2, 3, 5, 8, 6, 3, 1, ENV_STOP
+  
+sf_volume_envelope_decay:
+  .byte 15, 14, 12, 8, 7, 6, 3, 1, 0, ENV_STOP
+  
+sf_volume_envelope_short_note:
+  .byte 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0, ENV_STOP
+  
+sf_volume_envelope_fade_in:
+  .byte 0, 1, 3, 6, 7, 8, 12, 14, 15, ENV_STOP
+  
+sf_pitch_envelope_0:
+  .byte 0, ENV_LOOP
+  
+sf_pitch_envelope_1: 
+  .byte 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, -1, -2, -3, -4, -5, ENV_LOOP
+  
+Square1:
+  .byte STV,2,STP,0,STL,20,G4,D4,STL,5,C4,B3,C4,B3,STL,10,A3,G3,FS3,E3,D3,C3,B2,C3
+  .byte STL,50,D3,STL,10,G3,FS3,B3,A3,E4,D4,G4,FS4,C5,B4,A4,G4,FS4,STL,20,G4,G3,STL,10
+  .byte FS3,B3,A3,E4,D4,G4,FS4,C5,B4,A4,G4,FS4,STL,20,G4,D4,STL,10,E4,E3,E3,E3,E3,E3
+  .byte E3,G3,STL,20,E3,E4,STL,5,FS4,E4,FS4,E4,STL,10,D4,C4,D4,D3,D3,D3,D3,D3,D3,FS3
+  .byte STL,20,D3,D4,STL,5,E4,D4,E4,D4,STL,10,C4,B3,C4,D3,D3,D3,D3,D3,D3,FS3,STL,20
+  .byte D3,C4,STL,5,D4,C4,D4,C4,STL,10,B3,A3,B3,G2,G2,G2,G2,G2,G2,B2,STL,20,G2,B3
+  .byte STL,5,C4,B3,C4,B3,STL,10,A3,G3,D4,A3,FS3,D3,B3,D3,B2,G2,D4,A3,FS3,D3,B3,D3
+  .byte B2,G2
   .byte GOT
-  .word k13_square1
+  .word Square1
 
-k13_square2:
-  .byte STL, _16TH*6
-  .byte STV, 0
-  .byte STP, 1
-  .byte A1
-  .byte STV, 2
-  .byte STL, _16TH, G2, D2
-  .byte STL, _64TH, C2, B1, C2, B1
-  .byte STL, _32ND, A1, G1
-  .byte STL, _8TH, D2, D1
-  .byte STL, _16TH, G1, G2
-  .byte STL, _64TH, C2, B1, C2, B1
-  .byte STL, _32ND, A1, G1
-  .byte STL, _8TH, D2, D1
-  .byte STL, _16TH, G1, G2
-  .byte STL, _64TH, C2, B1, C2, B1
-  .byte STL, _32ND, A1, G1
-  .byte STL, _8TH, C2
-  .byte STL, _32ND, C4, C4, C4, E4
-  .byte STL, _16TH, C4, C4
-  .byte STL, _64TH, D4, C4, D4, C4
-  .byte STL, _32ND, B3, A3
-  .byte STL, _8TH, B3
-  .byte STL, _32ND, B3, B3, B3, D4
-  .byte STL, _16TH, B3, B2
-  .byte STL, _64TH, C3, B2, C3, B2
-  .byte STL, _32ND, A2, G2
-  .byte STL, _8TH, D2
-  .byte STL, _32ND, A3, A3, A3, C4
-  .byte STL, _16TH, A3, D2
-  .byte STL, _64TH, B2, A2, B2, A2
-  .byte STL, _32ND, G2, FS2
-  .byte STL, _8TH, G1
-  .byte STL, _32ND, B3, B3, B3, D4
-  .byte STL, _16TH, B3, G2
-  .byte STL, _64TH, A2, G2, A2, G2
-  .byte STL, _32ND, FS2, E2
-  .byte STL, _16TH, D1, D2, D1, D2, D1, D2, D1, D2
+Square2:
+  .byte STV,0,STL,120,A0,STV,2,STP,0,STL,20,G2,D2,STL,5,C2,B1,C2,B1,STL,10,A1,G1,STL
+  .byte 40,D2,D1,STL,20,G1,G2,STL,5,C2,B1,C2,B1,STL,10,A1,G1,STL,40,D2,D1,STL,20,G1
+  .byte G2,STL,5,C2,B1,C2,B1,STL,10,A1,G1,STL,40,C2,STL,10,C4,C4,C4,E4,STL,20,C4,C4
+  .byte STL,5,D4,C4,D4,C4,STL,10,B3,A3,STL,40,B3,STL,10,B3,B3,B3,D4,STL,20,B3,B2,STL
+  .byte 5,C3,B2,C3,B2,STL,10,A2,G2,STL,40,D2,STL,10,A3,A3,A3,C4,STL,20,A3,D2,STL,5
+  .byte B2,A2,B2,A2,STL,10,G2,FS2,STL,40,G1,STL,10,B3,B3,B3,D4,STL,20,B3,G2,STL,5,A2
+  .byte G2,A2,G2,STL,10,FS2,E2,STL,20,D1,D2,D1,D2,D1,D2,D1,D2
   .byte GOT
-  .word k13_square2
+  .word Square2
 
-.export font1
+Triangle:
+  .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,45,A0
+  .byte GOT
+  .word Triangle
+
+Noise:
+  .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,45,A0
+  .byte GOT
+  .word Noise
+
 font1:
   .word font0_patterns
   .byte $04
@@ -552,35 +596,28 @@ font1:
 .include "font0_palette_source.inc"
 
 ;table of decimal powers for creating decimal strings from 8 bit numbers
-.export powerTable
 powerTable:
   .byte 100, 10, 1
 
-.export press_start_string
 press_start_string:
   .byte $0b,$0f,$11,$04,$12,$12,$1a,$12,$13,$00,$11,$13
   
-.export lda_games_string
 lda_games_string:
   .byte $0c,$01,$18,$1a,$0b,$03,$00,$1a,$06,$00,$0c,$04,$12
  
-.export copyright_c_2010_string
 copyright_c_2010_string:
   .byte $08,$2c,$02,$2d,$1a,$1d,$1b,$1c,$1b
   
-.export levelString
 levelString:
   .byte $06,$0b,$04,$15,$04,$0b,$1a
 
-.export livesString
 livesString:
   .byte $06,$0b,$08,$15,$04,$12,$1a
 
-.export gameOverString
 gameOverString:
   .byte $09,$06,$00,$0c,$04,$1a,$0e,$15,$04,$11
 
-.export titleDef
+
 titleDef:
   .word title_palette
   .word title_nametable

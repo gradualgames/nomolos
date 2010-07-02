@@ -1,27 +1,38 @@
 .ifndef LEVELDATAINDEX_INC
 LEVELDATAINDEX_INC = 1
 
-.import level_definition_table
-.import banktable
-.import attackSound
-.import hitSound
-.import getHealthSound
-.import getItemSound
-.import getHurtSound
-.import dieSound
-.import haltmusic
-.import title_music
-.import font1
-.import powerTable
-.import press_start_string
-.import lda_games_string
-.import copyright_c_2010_string
-.import levelString
-.import livesString
-.import gameOverString
-.import titleDef
-.import titlePalette
-.import titleNametable
+.global level_definition_table
+.global banktable
+.global attackSound
+.global hitSound
+.global getHealthSound
+.global getItemSound
+.global getHurtSound
+.global dieSound
+.global haltmusic
+.global title_music
+.global font1
+.global powerTable
+.global press_start_string
+.global lda_games_string
+.global copyright_c_2010_string
+.global levelString
+.global livesString
+.global gameOverString
+.global titleDef
+.global titlePalette
+.global titleNametable
+
+SOUND_EFFECT_BASE = 10
+
+.global sf_volume_envelope_silence
+.global sf_volume_envelope_loud
+.global sf_volume_envelope_1
+.global sf_volume_envelope_decay
+.global sf_volume_envelope_short_note
+.global sf_volume_envelope_fade_in
+.global sf_pitch_envelope_0
+.global sf_pitch_envelope_1
 
 .struct title
   paletteAddress .word
