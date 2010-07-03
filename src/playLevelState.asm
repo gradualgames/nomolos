@@ -20,6 +20,68 @@
 
 .proc play_level_state_update
 
+  lda state_control_params+playLevelStateControl::state
+  cmp #PLAYLEVELSTATE_KEEPPLAYING
+  beq keepPlaying
+  cmp #PLAYLEVELSTATE_PAUSE
+  beq pause
+  cmp #PLAYLEVELSTATE_SWITCHLEVEL
+  beq switchLevel
+  cmp #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
+  beq switchToLevelOutState
+
+keepPlaying:
+
+  jsr keep_playing_state
+
+  jmp stateCommandComplete
+  
+pause:
+ 
+  jsr controller_read_start
+ 
+  .scope
+  lda buffer_controller+buttons::_start
+  and #%00000011
+  cmp #1
+  bne skipStartButtonTest
+  
+  lda #PLAYLEVELSTATE_KEEPPLAYING
+  sta state_control_params+playLevelStateControl::state
+  
+skipStartButtonTest:
+  .endscope
+ 
+  jmp stateCommandComplete
+  
+switchLevel:
+  lda state_control_params+playLevelStateControl::levelNum
+  sta state_control_params+loadLevelStateControl::levelToLoad
+  lda #LOADLEVELSTATE_INIT
+  sta state_control_params+loadLevelStateControl::state
+  
+  switchState load_level_state_update, load_level_state_update_ppu
+  
+  jmp stateCommandComplete
+  
+switchToLevelOutState:
+
+  lda #LEVELOUTSTATE_INIT
+  sta state_control_params+levelOutStateControl::state
+  switchState level_out_state_update, level_out_state_update_ppu
+  
+stateCommandComplete:
+    
+  ;turn monochrome bit off
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  clear_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
+  .endif
+    
+  rts
+  
+.proc keep_playing_state
+
   ;wait for vblank to complete
   lda #0
   sta vblank_done
@@ -61,40 +123,23 @@
   jsr mapper_switch_bank
   jsr sound_update
   .endif
-    
-  lda state_control_params+playLevelStateControl::state
-  cmp #PLAYLEVELSTATE_SWITCHLEVEL
-  beq switchLevel
-  cmp #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
-  beq switchToLevelOutState
-  
-  jmp stateCommandComplete
-  
-switchLevel:
-  lda state_control_params+playLevelStateControl::levelNum
-  sta state_control_params+loadLevelStateControl::levelToLoad
-  lda #LOADLEVELSTATE_INIT
-  sta state_control_params+loadLevelStateControl::state
-  
-  switchState load_level_state_update, load_level_state_update_ppu
-  
-  jmp stateCommandComplete
-  
-switchToLevelOutState:
 
-  lda #LEVELOUTSTATE_INIT
-  sta state_control_params+levelOutStateControl::state
-  switchState level_out_state_update, level_out_state_update_ppu
+  .scope
+  lda buffer_controller+buttons::_start
+  and #%00000011
+  cmp #1
+  bne skipStartButtonTest
   
-stateCommandComplete:
-    
-  ;turn monochrome bit off
-  .ifdef DISPLAY_FRAME_CPU_USAGE
-  clear_ppu_2001_bit PPU1_DISPLAY_TYPE
-  upload_ppu_2001
-  .endif
-    
+  lda #PLAYLEVELSTATE_PAUSE
+  sta state_control_params+playLevelStateControl::state
+  
+skipStartButtonTest:
+  .endscope
+  
   rts
+
+.endproc
+  
 .endproc
   
 .proc play_level_state_update_ppu

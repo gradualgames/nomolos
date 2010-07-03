@@ -1,6 +1,7 @@
 .ifndef CONTROLLER_INC
 CONTROLLER_INC = 1
 
+.import controller_read_start
 .import controller_read
 
 .struct buttons
