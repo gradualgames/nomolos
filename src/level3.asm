@@ -23,17 +23,17 @@ level3_sprite_groups:
 
 .export level3_music
 level3_music:
-  .word song6_2_square1
-  .word song6_2_square2
-  .word song6_2_triangle
-  .word song6_2_noise
+  .word Square1
+  .word Square2
+  .word Triangle
+  .word Noise
   .word volume_envelopes
   .word pitch_envelopes
   
 volume_envelopes:
-  .word 0
-  .word 0
-  .word 0
+  .word volume_envelope_0
+  .word volume_envelope_1
+  .word volume_envelope_2
   .word 0
   .word 0
   .word 0
@@ -56,7 +56,7 @@ volume_envelopes:
   .word 0
 
 pitch_envelopes:
-  .word 0
+  .word pitch_envelope_0
   .word 0
   .word 0
   .word 0
@@ -79,18 +79,49 @@ pitch_envelopes:
   .word 0
   .word 0
   .word 0
+
+volume_envelope_0:
+  .byte 0, ENV_STOP
+
+volume_envelope_1:
+  .byte 15, ENV_LOOP
+volume_envelope_2:
+  .byte 12,10,6,4,3,4,5,8,10,8,5,3,3,ENV_STOP
+
+pitch_envelope_0:
+  .byte 0, ENV_LOOP
   
-song6_2_square1:
-  .byte TRM
-  
-song6_2_square2:
-  .byte TRM
-  
-song6_2_triangle:
-  .byte TRM
-  
-song6_2_noise:
-  .byte TRM
+Square1:
+  .byte STV,0,STL,21,A0,STV,2,STP,0,GS4,C5,GS4,F4,C4,CS4,GS3,AS3,G4,AS4,G4,E4,C4,CS4,AS3
+  .byte C4,F4,GS4,F4,C4,GS3,F3,C3,CS4,E3,F3,C4,G3,AS3,GS3,G3,STV,0,STL,126,A0,STV,2,STL
+  .byte 14,E4,F4,G4,F4,E4,STL,98,F4,STL,14,E4,F4,G4,F4,E4,STL,98,F4,STL,14,D4,DS4,F4
+  .byte DS4,D4,STL,98,C4,STL,14,B3,C4,D4,C4,B3,STL,98,C4,STL,14,B3,C4,D4,STL,21,G4,F4
+  .byte F4,DS4,DS4,D4,D4,C4,STL,126,B3,STL,14,C4,B3,C4,STL,126,D4,STL,14,C4,B3,C4,STL,126
+  .byte D4,STL,14,D4,DS4,F4,DS4,D4,STL,98,C4,STL,14,D4,DS4,F4,STL,21,G3,F4,DS4,C4,F4,D4
+  .byte C4,B3,STL,168,C4
+  .byte GOT
+  .word Square1
+
+Square2:
+  .byte STV,2,STP,0,STL,84,F2,F2,G2,G2,GS3,GS3,STL,42,AS3,GS3,G3,C3,STL,21,F2,F3,GS3,F3
+  .byte CS3,AS2,G2,E3,GS2,F3,GS3,F3,CS3,AS2,G2,E3,GS2,F3,GS3,F3,D3,F3,G2,B2,C2,C3,DS3,C3
+  .byte GS2,C3,D2,B2,DS2,C3,DS3,C3,GS2,C3,D2,B2,STL,42,DS2,C3,F2,GS2,STL,21,G2,F3,GS3,F3
+  .byte D3,F3,GS2,F3,G2,F3,GS3,F3,D3,F3,GS2,F3,G2,F3,GS3,F3,D3,F3,G2,B2,C2,C3,DS3,C3
+  .byte GS2,C3,F2,GS2,STL,84,G1,G1,STL,168,C1
+  .byte GOT
+  .word Square2
+
+Triangle:
+  .byte STV,0,STL,168,A0,STV,2,STP,0,STL,84,F3,E3,F3,C3,STL,42,CS3,C3,AS2,C3,STV,0,STL
+  .byte 255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,231,A0
+  .byte GOT
+  .word Triangle
+
+Noise:
+  .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL
+  .byte 255,A0,STL,255,A0,STL,255,A0,STL,138,A0
+  .byte GOT
+  .word Noise
 
 .export level3_palette
 level3_palette:
