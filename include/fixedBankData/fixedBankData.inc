@@ -4,6 +4,8 @@ LEVELDATAINDEX_INC = 1
 .global level_definition_table
 .global banktable
 .global attackSound
+.global attackFlailSound
+.global attackSpearSound
 .global hitSound
 .global getHealthSound
 .global getItemSound
@@ -31,6 +33,7 @@ SOUND_EFFECT_BASE = 10
 .global sf_volume_envelope_decay
 .global sf_volume_envelope_short_note
 .global sf_volume_envelope_fade_in
+.global sf_volume_envelope_fade_in_2
 .global sf_pitch_envelope_0
 .global sf_pitch_envelope_1
 

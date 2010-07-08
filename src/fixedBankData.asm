@@ -409,20 +409,37 @@ attackSound:
   .byte STL, 10
   .byte STV, SOUND_EFFECT_BASE+5
   .byte STP, SOUND_EFFECT_BASE+1
+  .byte 3
+  .byte STV, SOUND_EFFECT_BASE+0
   .byte A0
+  .byte TRM
+  
+attackFlailSound:
+  .byte STL, 10
+  .byte STV, SOUND_EFFECT_BASE+5
+  .byte STP, SOUND_EFFECT_BASE+1
+  .byte 12
+  .byte STV, SOUND_EFFECT_BASE+0
+  .byte A0
+  .byte TRM
+  
+attackSpearSound:
+  .byte STL, 20
+  .byte STV, SOUND_EFFECT_BASE+6
+  .byte STP, SOUND_EFFECT_BASE+1
+  .byte 5
   .byte STV, SOUND_EFFECT_BASE+0
   .byte A0
   .byte TRM
 
 hitSound:
-  .byte STL, 10
+  .byte STL, 2
   .byte STV, SOUND_EFFECT_BASE+3
   .byte STP, SOUND_EFFECT_BASE+1
-  .byte G2
+  .byte 11, 12, 13
   .byte STV, SOUND_EFFECT_BASE+0
   .byte A0
   .byte TRM
-
 
 getHurtSound:
   .byte STL, 1
@@ -491,7 +508,7 @@ volume_envelopes:
   .word sf_volume_envelope_short_note
 
   .word sf_volume_envelope_fade_in
-  .word 0
+  .word sf_volume_envelope_fade_in_2
   .word 0
   .word 0
   .word 0
@@ -549,6 +566,9 @@ sf_volume_envelope_short_note:
   
 sf_volume_envelope_fade_in:
   .byte 0, 1, 3, 6, 7, 8, 12, 14, 15, ENV_STOP
+  
+sf_volume_envelope_fade_in_2:
+  .byte 5, 8, 10, 10, 12, 12, 15, 15, 10, 10, 6, 6, 3, 3, 0, 0, 0, ENV_STOP
   
 sf_pitch_envelope_0:
   .byte 0, ENV_LOOP

@@ -51,7 +51,7 @@ volume_envelopes:
   .word sf_volume_envelope_short_note
 
   .word sf_volume_envelope_fade_in
-  .word 0
+  .word sf_volume_envelope_fade_in_2
   .word 0
   .word 0
   .word 0

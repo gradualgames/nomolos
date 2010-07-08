@@ -120,12 +120,12 @@ entity_will_go_right:
   
   ;otherwise, do test the lower byte
   lda entity_screen_x
-  and #%11100000
+  and #%11000000
 
   cmp #%00000000
   beq entity_not_in_death_zone
   
-  cmp #%11100000
+  cmp #%11000000
   beq entity_not_in_death_zone
   
 entity_is_in_death_zone:

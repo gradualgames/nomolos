@@ -267,18 +267,15 @@ alreadyDying:
   
 .proc nomolos_attack_spear
 
-  ;play an attack sound
-  ldy #ROMDefinitionTableStruct::attackSound
-  lda (base_address_rom_definition_table),y
+  lda #<attackSpearSound
   sta sound_param_word_0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>attackSpearSound
   sta sound_param_word_0+1
   
   lda #3
   sta sound_param_byte_0
   
-  ldx #soundeffect_one
+  ldx #soundeffect_two
   jsr stream_initialize
   
   ;turn on the attack hit box
@@ -385,11 +382,9 @@ skipNomolosFacingRight:
 .proc nomolos_attack_flail
 
   ;play an attack sound
-  ldy #ROMDefinitionTableStruct::attackSound
-  lda (base_address_rom_definition_table),y
+  lda #<attackFlailSound
   sta sound_param_word_0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>attackFlailSound
   sta sound_param_word_0+1
   
   lda #3
@@ -772,7 +767,7 @@ yesBelowCollision:
   sta nomolos_y_velocity
   lda #nomolosStartJumpHi
   sta nomolos_y_velocity+1
-
+  
   rts
   
 skipButtonATest:
@@ -977,14 +972,11 @@ skipBlinkReset:
   and #nomolosBelowCollisionTestAND
   beq below_collision_false
   ;nomolos is attacking and on the ground---don't let him
-  ;move left or right. Roll the bit into the buttons to
-  ;preserve transition data.
-  lda #0
-  ror
-  rol buffer_controller+buttons::_left
-  lda #0
-  ror
-  rol buffer_controller+buttons::_right
+  ;move left or right. Store an on-to-off transition.
+  lda #%00000010
+  sta buffer_controller+buttons::_left
+  lda #%00000010
+  sta buffer_controller+buttons::_right
   
 below_collision_false:
   
