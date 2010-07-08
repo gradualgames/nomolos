@@ -953,7 +953,8 @@ nomolosNotDying:
   ;************************************************************
   ;Update counters for temporary invincibility and for attack
   ;hit box. Call attack routine if B transitions from off to
-  ;on.
+  ;on. Do not allow left or right movement if Nomolos is on the
+  ;ground and in attack state.
   ;************************************************************
 
   ;Update blink counter and reset if zero
@@ -970,6 +971,22 @@ skipBlinkReset:
   and #nomolosAttackTestAND
   beq skipAttack
   ;attack state was on
+  
+  ;test if anything is currently beneath nomolos
+  lda nomolos_state_primary
+  and #nomolosBelowCollisionTestAND
+  beq below_collision_false
+  ;nomolos is attacking and on the ground---don't let him
+  ;move left or right. Roll the bit into the buttons to
+  ;preserve transition data.
+  lda #0
+  ror
+  rol buffer_controller+buttons::_left
+  lda #0
+  ror
+  rol buffer_controller+buttons::_right
+  
+below_collision_false:
   
   lda nomolos_state_secondary
   and #nomolosAttackTestMask
