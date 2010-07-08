@@ -44,10 +44,10 @@ spritesheet1_DeentleWalk:
 
 .export spritesheet1_Explosion
 spritesheet1_Explosion:
-  .byte $02
-  .word spritesheet1_Explosion0
-  .word spritesheet1_Explosion1
+  .byte 3
   .word spritesheet1_Explosion2
+  .word spritesheet1_Explosion1
+  .word spritesheet1_Explosion0
   .word $0000
 
 .export spritesheet1_Mouse
