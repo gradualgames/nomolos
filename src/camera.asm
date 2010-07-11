@@ -45,7 +45,6 @@
   
 ;moves the camera in response to input position
 ;expects: w0 is screen X coordinate to respond to
-;output:  w0 has been adjusted based on how far the camera was scrolled.
 .proc camera_scroll_right
 
   sec
@@ -74,8 +73,7 @@
   
   lda #1
   sta camera_scroll_direction
-  
-  
+
 :
 
   rts
@@ -83,8 +81,7 @@
 .endproc
 
 ;moves the camera in response to input position
-;expects: b0 is screen X coordinate to respond to
-;output:  b0 has been adjusted based on how far the camera was scrolled.
+;expects: w0 is screen X coordinate to respond to
 .proc camera_scroll_left
 
   sec
