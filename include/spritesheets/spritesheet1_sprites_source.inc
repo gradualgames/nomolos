@@ -195,38 +195,40 @@ spritesheet1_NomolosUseFlail1:
   .byte $18,$74,$00,$00,$08
   .byte $18,$75,$00,$08,$00
   .byte $18,$76,$00,$10,$f8
+
 .export spritesheet1_FlailBall0
 spritesheet1_FlailBall0:
   .byte $01
-  .byte $f0,$77,$00,$ea,$16
+  .byte $f0,$77,$00,$ea,$1e
 .export spritesheet1_FlailBall1
 spritesheet1_FlailBall1:
   .byte $01
-  .byte $ec,$77,$00,$00,$00
+  .byte $ec,$77,$00,$00,$08
 .export spritesheet1_FlailBall2
 spritesheet1_FlailBall2:
   .byte $01
-  .byte $f0,$77,$00,$16,$ea
+  .byte $f0,$77,$00,$16,$f2
 .export spritesheet1_FlailBall3
 spritesheet1_FlailBall3:
   .byte $01
-  .byte $00,$77,$00,$28,$d8
+  .byte $00,$77,$00,$28,$e0
 .export spritesheet1_FlailBall4
 spritesheet1_FlailBall4:
   .byte $01
-  .byte $10,$77,$00,$16,$ea
+  .byte $10,$77,$00,$16,$f2
 .export spritesheet1_FlailBall5
 spritesheet1_FlailBall5:
   .byte $01
-  .byte $14,$77,$00,$00,$00
+  .byte $14,$77,$00,$00,$08
 .export spritesheet1_FlailBall6
 spritesheet1_FlailBall6:
   .byte $01
-  .byte $10,$77,$00,$ea,$16
+  .byte $10,$77,$00,$ea,$1e
 .export spritesheet1_FlailBall7
 spritesheet1_FlailBall7:
   .byte $01
-  .byte $00,$77,$00,$d8,$28
+  .byte $00,$77,$00,$d8,$30
+  
 .export spritesheet1_NomolosFlailOverlay0
 spritesheet1_NomolosFlailOverlay0:
   .byte $04

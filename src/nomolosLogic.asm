@@ -400,6 +400,15 @@ skipNomolosFacingRight:
   ora #nomolosAttackOnOR
   sta nomolos_state_primary
   
+  ;clear the location of the hit box
+  lda #0
+  sta nomolos_attack_rect_x
+  sta nomolos_attack_rect_x+1
+  sta nomolos_attack_rect_y
+  sta nomolos_attack_rect_y+1
+  sta nomolos_attack_rect_width
+  sta nomolos_attack_rect_height
+  
   ;reset animation
   resetAnim nomolos_animation
   
@@ -585,14 +594,24 @@ skipAttackUpdate:
   
 .proc nomolos_update_attack_flail
 
-  lda #$10
+  ;store size of attack rect for flail
+  lda #$20
   sta nomolos_attack_rect_width
   lda #$20
   sta nomolos_attack_rect_height
-
+  
+  ;test the direction Nomolos is facing
+  lda nomolos_state_primary
+  and #nomolosWalkingLeftTestAND
+  beq nomolos_facing_right
+nomolos_facing_left:
+  
+  .scope
+  
   lda nomolos_counter_attack_rect
   and #1
-  beq skipNomolosFacingLeft
+  beq place_attack_rect_left
+place_attack_rect_right:
   
   clc
   lda nomolos_screen_x
@@ -602,31 +621,90 @@ skipAttackUpdate:
   adc #$ff
   sta nomolos_attack_rect_x+1
   
+  sec
   lda nomolos_screen_y
+  sbc #$08
   sta nomolos_attack_rect_y
   lda nomolos_screen_y+1
+  sbc #$00
   sta nomolos_attack_rect_y+1
 
-  jmp skipNomolosFacingRight
-skipNomolosFacingLeft:
+  jmp attack_rect_test_done
+place_attack_rect_left:
 
   clc
   lda nomolos_screen_x
-  adc #$20
+  adc #$18
   sta nomolos_attack_rect_x
   lda nomolos_screen_x+1
   adc #$00
   sta nomolos_attack_rect_x+1
 
+  sec
   lda nomolos_screen_y
+  sbc #$08
   sta nomolos_attack_rect_y
   lda nomolos_screen_y+1
+  sbc #$00
   sta nomolos_attack_rect_y+1
 
-skipNomolosFacingRight:
+attack_rect_test_done:
+  
+  .endscope
+  
+  jmp nomolos_direction_test_done
+nomolos_facing_right:
+  
+  .scope
+  
+  lda nomolos_counter_attack_rect
+  and #1
+  beq place_attack_rect_left
+place_attack_rect_right:
+  
+  clc
+  lda nomolos_screen_x
+  adc #$d8
+  sta nomolos_attack_rect_x
+  lda nomolos_screen_x+1
+  adc #$ff
+  sta nomolos_attack_rect_x+1
+  
+  sec
+  lda nomolos_screen_y
+  sbc #$08
+  sta nomolos_attack_rect_y
+  lda nomolos_screen_y+1
+  sbc #$00
+  sta nomolos_attack_rect_y+1
 
+  jmp attack_rect_test_done
+place_attack_rect_left:
+
+  clc
+  lda nomolos_screen_x
+  adc #$10
+  sta nomolos_attack_rect_x
+  lda nomolos_screen_x+1
+  adc #$00
+  sta nomolos_attack_rect_x+1
+
+  sec
+  lda nomolos_screen_y
+  sbc #$08
+  sta nomolos_attack_rect_y
+  lda nomolos_screen_y+1
+  sbc #$00
+  sta nomolos_attack_rect_y+1
+
+attack_rect_test_done:
+  
+  .endscope
+
+nomolos_direction_test_done:
+  
   dec nomolos_counter_attack_rect
-  bne skipAttackUpdate
+  bne skip_attack_update
   
   ;set attack state to off
   lda nomolos_state_primary
@@ -635,7 +713,7 @@ skipNomolosFacingRight:
   
   ;reset animation object
   resetAnim nomolos_animation
-skipAttackUpdate:
+skip_attack_update:
 
   rts
 

@@ -13,6 +13,7 @@ NOMOLOSLOGIC_INC = 1
 ;Nomolos state constants
 nomolosWalkingRightAND       = %11111110
 nomolosWalkingLeftOR         = %00000001
+nomolosWalkingLeftTestAND    = %00000001
 
 nomolosMovingOffAND          = %11111101
 nomolosMovingOnOR            = %00000010
