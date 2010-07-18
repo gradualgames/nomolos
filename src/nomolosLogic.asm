@@ -115,10 +115,10 @@
   bne skipHurt
 
   ;Lose any special weapon Nomolos may have acquired
-  lda nomolos_state_secondary
-  and #nomolosAttackSetMask
-  ora #nomolosAttackSword
-  sta nomolos_state_secondary
+  ;lda nomolos_state_secondary
+  ;and #nomolosAttackSetMask
+  ;ora #nomolosAttackSword
+  ;sta nomolos_state_secondary
   
   ;decrease nomolos' health.
   lda nomolos_status_health
@@ -191,7 +191,7 @@ skipHurt:
   sta nomolos_state_secondary
 
   ;store a frame counter value so we can pause a bit before transitioning to level out
-  lda #200
+  lda #127
   sta frame_counter
 
   ;stop all sound
@@ -936,7 +936,7 @@ yesAboveCollision:
   ;we want to transition out of this level and to an appropriate "level in"
   ;state. For now, we will just re-load the current level.
   cmp #$fe
-  bpl scaredyCatStillRising
+  bne scaredyCatStillRising
 
   lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
   sta state_control_params+playLevelStateControl::state

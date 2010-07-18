@@ -57,6 +57,8 @@ nomolosAttackSpear     = %00000100
 nomolosAttackFlailLength = 18
 nomolosAttackFlailDeadlyLength = 12
 
+nomolosTimeTilLevelOutTransition = 100
+
 nomolosAttackDirectionRightOR =  %00001000
 nomolosAttackDirectionLeftAND = %11110111
 nomolosAttackDirectionTestAND    = %00001000
