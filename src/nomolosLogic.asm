@@ -1554,7 +1554,7 @@ do_not_draw_flail:
 
   resetAnim nomolos_animation
 
-  jsr nomolos_draw_walking
+  jsr nomolos_draw_jumping_or_walking
 
   rts
 
@@ -1813,6 +1813,14 @@ attackSwitchDone:
 
 skipDrawNomolosFighting:
 
+  jsr nomolos_draw_jumping_or_walking
+
+dontDrawNomolos:
+
+  rts
+.endproc
+
+.proc nomolos_draw_jumping_or_walking
 
   ;test if there is anything below nomolos. if there is not,
   ;draw nomolos's jumping animation.
@@ -1822,6 +1830,20 @@ skipDrawNomolosFighting:
   lsr
   lsr
   bne skipDrawNomolosJumping
+
+  jsr nomolos_draw_jumping
+  
+  rts
+  
+skipDrawNomolosJumping:
+
+  jsr nomolos_draw_walking
+  
+  rts
+
+.endproc
+
+.proc nomolos_draw_jumping
 
   resetAnim nomolos_animation
 
@@ -1866,13 +1888,7 @@ skipDrawNomolosFighting:
   jsr sprite_draw_animation_16bit
 
   rts
-skipDrawNomolosJumping:
 
-  jsr nomolos_draw_walking
-
-dontDrawNomolos:
-
-  rts
 .endproc
 
 .proc nomolos_draw_walking
