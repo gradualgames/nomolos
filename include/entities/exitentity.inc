@@ -34,17 +34,6 @@ is_touching_nomolos:
   jsr sound_upload
   .endif
   
-  ; ;turn off music by playing track #0 of haltmusic  
-; .if .defined(MUSIC_ENABLE)
-  ; lda #<haltmusic
-  ; sta ft_music_addr
-  ; lda #>haltmusic
-  ; sta ft_music_addr+1
-  ; lda #0
-  ; ldx #0
-  ; jsr ft_music_init
-; .endif  
-  
   ldy #ROMDefinitionTableStruct::NextLevel
   lda (base_address_rom_definition_table),y
   sta level_current

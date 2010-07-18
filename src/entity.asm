@@ -1,3 +1,4 @@
+.include "flags.inc"
 .include "macros.inc"
 .include "ram.inc"
 .include "zp.inc"
@@ -182,6 +183,8 @@ entity_not_in_death_zone:
 
 ;assumes b2 and b3 represent the width and height of the calling entity
 .proc entity_test_collision_hitbox
+
+  .ifdef _16BIT_COLLISIONS
   ;transfer entity rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda entity_screen_x
   sta w2
@@ -207,11 +210,59 @@ entity_not_in_death_zone:
   sta b5
     
   jsr geotests_rect_in_rect_16bit
+  .else
+  
+  ;transfer entity rectangle to w2 = top left x, y and w3 = bot right x, y
+  
+  ;left
+  lda entity_screen_x
+  sta w2
+  
+  ;right
+  clc
+  adc b2
+  sta w3
+  
+  ;top
+  lda entity_screen_y
+  sta w2+1
+  
+  ;bottom
+  clc
+  adc b3
+  sta w3+1
+  
+  ;transfer Hitbox rectangle to w4 = top left x, y and w5 = bot right x, y
+  
+  ;left
+  lda nomolos_attack_rect_x
+  sta w4
+  
+  ;right
+  clc
+  adc nomolos_attack_rect_width
+  sta w5
+  
+  ;top
+  lda nomolos_attack_rect_y
+  sta w4+1
+  
+  ;bottom
+  clc
+  adc nomolos_attack_rect_height
+  sta w5+1
+  
+  jsr geotests_rect_in_rect
+  
+  .endif
+
   rts
 .endproc
 
 ;assumes b2 and b3 represent the width and height of the current entity
 .proc entity_test_collision_nomolos
+
+  .ifdef _16BIT_COLLISIONS
   ;transfer Deentle rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda entity_screen_x
   sta w2
@@ -237,6 +288,52 @@ entity_not_in_death_zone:
   sta b5
 
   jsr geotests_rect_in_rect_16bit
+  .else
+
+  ;transfer entity rectangle to w2 = top left x, y and w3 = bot right x, y
+  
+  ;left
+  lda entity_screen_x
+  sta w2
+  
+  ;right
+  clc
+  adc b2
+  sta w3
+  
+  ;top
+  lda entity_screen_y
+  sta w2+1
+  
+  ;bottom
+  clc
+  adc b3
+  sta w3+1
+  
+  ;transfer nomolos rectangle to w4 = top left x, y and w5 = bot right x, y
+  
+  ;left
+  lda nomolos_screen_x
+  sta w4
+  
+  ;right
+  clc
+  adc #nomolosWidth
+  sta w5
+  
+  ;top
+  lda nomolos_screen_y
+  sta w4+1
+  
+  ;bottom
+  clc
+  adc #nomolosHeight
+  sta w5+1
+  
+  jsr geotests_rect_in_rect
+  
+  .endif
+
   rts
 .endproc
 
