@@ -22,7 +22,7 @@
   lda #0
   and #nomolosWalkingRightAND
   sta nomolos_state_primary
-
+  
   lda #0
   sta nomolos_x_velocity
   lda #2
@@ -114,6 +114,12 @@
   lsr
   bne skipHurt
 
+  ;Lose any special weapon Nomolos may have acquired
+  lda nomolos_state_secondary
+  and #nomolosAttackSetMask
+  ora #nomolosAttackSword
+  sta nomolos_state_secondary
+  
   ;decrease nomolos' health.
   lda nomolos_status_health
   beq skipDecreaseHealth
@@ -394,7 +400,7 @@ skipNomolosFacingRight:
   jsr stream_initialize
 
   ;turn on the attack hit box
-  lda #$0c
+  lda #nomolosAttackFlailLength
   sta nomolos_counter_attack_rect
   lda nomolos_state_primary
   ora #nomolosAttackOnOR
@@ -506,7 +512,11 @@ nomolosPawNotExtended:
 
 nomolosAttackFlailBranch:
 
-  ;lets just say he's always deadly
+  ;flail deadliness does not live as long as the counter
+  lda nomolos_counter_attack_rect
+  cmp #(nomolosAttackFlailLength - nomolosAttackFlailDeadlyLength)
+  bmi nomolosNotAttacking
+
   lda #1
 
   rts
@@ -595,9 +605,9 @@ skipAttackUpdate:
 .proc nomolos_update_attack_flail
 
   ;store size of attack rect for flail
-  lda #$20
+  lda #$38
   sta nomolos_attack_rect_width
-  lda #$20
+  lda #$28
   sta nomolos_attack_rect_height
 
   ;test the direction Nomolos is facing
@@ -605,101 +615,41 @@ skipAttackUpdate:
   and #nomolosWalkingLeftTestAND
   beq nomolos_facing_right
 nomolos_facing_left:
-
-  .scope
-
-  lda nomolos_counter_attack_rect
-  and #1
-  beq place_attack_rect_left
-place_attack_rect_right:
-
-  clc
+  
+  sec
   lda nomolos_screen_x
-  adc #$e0
+  sbc #16
   sta nomolos_attack_rect_x
   lda nomolos_screen_x+1
-  adc #$ff
+  sbc #0
   sta nomolos_attack_rect_x+1
-
+  
   sec
   lda nomolos_screen_y
-  sbc #$08
+  sbc #16
   sta nomolos_attack_rect_y
   lda nomolos_screen_y+1
-  sbc #$00
+  sbc #0
   sta nomolos_attack_rect_y+1
-
-  jmp attack_rect_test_done
-place_attack_rect_left:
-
-  clc
-  lda nomolos_screen_x
-  adc #$18
-  sta nomolos_attack_rect_x
-  lda nomolos_screen_x+1
-  adc #$00
-  sta nomolos_attack_rect_x+1
-
-  sec
-  lda nomolos_screen_y
-  sbc #$08
-  sta nomolos_attack_rect_y
-  lda nomolos_screen_y+1
-  sbc #$00
-  sta nomolos_attack_rect_y+1
-
-attack_rect_test_done:
-
-  .endscope
-
+  
   jmp nomolos_direction_test_done
 nomolos_facing_right:
 
-  .scope
-
-  lda nomolos_counter_attack_rect
-  and #1
-  beq place_attack_rect_left
-place_attack_rect_right:
-
-  clc
+  sec
   lda nomolos_screen_x
-  adc #$d8
+  sbc #24
   sta nomolos_attack_rect_x
   lda nomolos_screen_x+1
-  adc #$ff
+  sbc #0
   sta nomolos_attack_rect_x+1
-
+  
   sec
   lda nomolos_screen_y
-  sbc #$08
+  sbc #16
   sta nomolos_attack_rect_y
   lda nomolos_screen_y+1
-  sbc #$00
+  sbc #0
   sta nomolos_attack_rect_y+1
-
-  jmp attack_rect_test_done
-place_attack_rect_left:
-
-  clc
-  lda nomolos_screen_x
-  adc #$10
-  sta nomolos_attack_rect_x
-  lda nomolos_screen_x+1
-  adc #$00
-  sta nomolos_attack_rect_x+1
-
-  sec
-  lda nomolos_screen_y
-  sbc #$08
-  sta nomolos_attack_rect_y
-  lda nomolos_screen_y+1
-  sbc #$00
-  sta nomolos_attack_rect_y+1
-
-attack_rect_test_done:
-
-  .endscope
 
 nomolos_direction_test_done:
 
@@ -1537,6 +1487,11 @@ skipUpdateNomolosMoving:
 
 .proc nomolos_draw_attack_flail
 
+  ;animation does not live as long as the attack counter
+  lda nomolos_counter_attack_rect
+  cmp #(nomolosAttackFlailLength - nomolosAttackFlailDeadlyLength)
+  bmi do_not_draw_flail
+
   ;draw the flail animation and flail ball animation here
   lda #<nomolos_animation
   sta w1
@@ -1592,6 +1547,14 @@ skipUpdateNomolosMoving:
   sta w2+1
 
   jsr sprite_draw_animation_16bit
+  
+  rts
+  
+do_not_draw_flail:
+
+  resetAnim nomolos_animation
+
+  jsr nomolos_draw_walking
 
   rts
 
@@ -1905,6 +1868,15 @@ skipDrawNomolosFighting:
   rts
 skipDrawNomolosJumping:
 
+  jsr nomolos_draw_walking
+
+dontDrawNomolos:
+
+  rts
+.endproc
+
+.proc nomolos_draw_walking
+
   lda #<nomolos_animation
   sta w1
   lda #>nomolos_animation
@@ -1972,9 +1944,8 @@ skipNomolosWalkingRight:
 
 skipNomolosWalkingLeft:
 
-dontDrawNomolos:
-
   rts
+
 .endproc
 
 .proc nomolos_draw_hearts

@@ -211,7 +211,7 @@ spritesheet1_FlailBall2:
 .export spritesheet1_FlailBall3
 spritesheet1_FlailBall3:
   .byte $01
-  .byte $00,$77,$00,$28,$e0
+  .byte $00,$77,$00,$1e,$ea
 .export spritesheet1_FlailBall4
 spritesheet1_FlailBall4:
   .byte $01
@@ -227,8 +227,8 @@ spritesheet1_FlailBall6:
 .export spritesheet1_FlailBall7
 spritesheet1_FlailBall7:
   .byte $01
-  .byte $00,$77,$00,$d8,$30
-  
+  .byte $00,$77,$00,$e2,$26
+
 .export spritesheet1_NomolosFlailOverlay0
 spritesheet1_NomolosFlailOverlay0:
   .byte $04
