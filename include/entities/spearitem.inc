@@ -4,8 +4,28 @@ SPEARITEM_INC = 1
 SPEARITEM_WIDTH = $18
 SPEARITEM_HEIGHT = $08
 
+SPEARITEM_INITSTATE = $00
+SPEARITEM_SITTHERESTATE = $01
+
 .proc spear_item_update
 
+  lda entity_instances+entityRAM::state,x
+  cmp #SPEARITEM_INITSTATE
+  beq spearitem_init
+  cmp #SPEARITEM_SITTHERESTATE
+  beq spearitem_sit_there
+
+spearitem_init:
+  
+  jsr entity_kill_if_already_seen
+  
+  lda #SPEARITEM_SITTHERESTATE
+  sta entity_instances+entityRAM::state,x
+  
+  rts
+  
+spearitem_sit_there:
+  
   jsr entity_compute_screen_coordinates
 
   jsr entity_test_death_zone

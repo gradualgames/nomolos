@@ -4,7 +4,27 @@ FLAILITEM_INC = 1
 FLAILITEM_WIDTH = $10
 FLAILITEM_HEIGHT = $08
 
+FLAILITEM_INITSTATE = $00
+FLAILITEM_SITTHERESTATE = $01
+
 .proc flail_item_update
+
+  lda entity_instances+entityRAM::state,x
+  cmp #FLAILITEM_INITSTATE
+  beq flail_item_init
+  cmp #FLAILITEM_SITTHERESTATE
+  beq flail_item_sit_there
+  
+flail_item_init:
+
+  jsr entity_kill_if_already_seen
+  
+  lda #FLAILITEM_SITTHERESTATE
+  sta entity_instances+entityRAM::state,x
+  
+  rts
+  
+flail_item_sit_there:
 
   jsr entity_compute_screen_coordinates
 

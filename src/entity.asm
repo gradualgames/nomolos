@@ -12,6 +12,43 @@
 
 .segment "CODE"
 
+;compares entity's X coordinate to min and max explored camera x
+;coordinates. Kills entity if it is within this range. This can
+;be used for powerups that should only ever show up when first
+;found.
+.proc entity_kill_if_already_seen
+
+  ;compare to max explored x. if result is negative, entity should not be
+  ;killed because it is outside the range
+  sec
+  lda camera_max_scroll_x
+  sbc entity_instances+entityRAM::positionX,x
+  lda camera_max_scroll_x+1
+  sbc entity_instances+entityRAM::positionX+1,x
+  bmi do_not_kill_entity
+  
+  ;compare to min explored x. if result is positive, entity should not be
+  ;killed because it is outside the range
+  sec
+  lda camera_min_scroll_x
+  sbc entity_instances+entityRAM::positionX,x
+  lda camera_min_scroll_x+1
+  sbc entity_instances+entityRAM::positionX+1,x
+  bpl do_not_kill_entity
+  
+kill_entity:
+
+  lda #0
+  sta entity_instances+entityRAM::alive,x
+
+  rts
+
+do_not_kill_entity:
+
+  rts
+
+.endproc
+
 ;draws entity's animation.
 ;expects y to contain offset into rom definition table where animation address can be found.
 ;expects b2 to contain flags for whether to flip the sprite. e.g. #%01000000 to flip

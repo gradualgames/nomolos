@@ -22,6 +22,8 @@ mouseInit:
   
   lda #MOUSE_SITTHERESTATE
   sta entity_instances+entityRAM::state,x
+  
+  jsr entity_kill_if_already_seen
 
   rts
   

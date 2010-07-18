@@ -4,7 +4,27 @@ ONEUP_INC = 1
 ONEUP_WIDTH = $10
 ONEUP_HEIGHT = $08
 
+ONEUP_INITSTATE = $00
+ONEUP_SITTHERESTATE = $01
+
 .proc oneup_update
+
+  lda entity_instances+entityRAM::state,x
+  cmp #ONEUP_INITSTATE
+  beq oneup_init
+  cmp #ONEUP_SITTHERESTATE
+  beq oneup_sit_there
+  
+oneup_init:
+
+  jsr entity_kill_if_already_seen
+  
+  lda #ONEUP_SITTHERESTATE
+  sta entity_instances+entityRAM::state,x
+
+  rts
+  
+oneup_sit_there:
 
   jsr entity_compute_screen_coordinates
   

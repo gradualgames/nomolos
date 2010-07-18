@@ -168,6 +168,12 @@ nomolos_status_lives: .res 1
 .exportzp camera_scroll_x
 camera_scroll_x:                           .res 2
 
+.exportzp camera_max_scroll_x
+camera_max_scroll_x: .res 2
+
+.exportzp camera_min_scroll_x
+camera_min_scroll_x: .res 2
+
 .exportzp camera_scroll_direction
 camera_scroll_direction: .res 1
 
@@ -224,15 +230,6 @@ next_sprite_address: .res 1
 
 .exportzp buffer_controller
 buffer_controller: .res 8
-
-.exportzp sound_address
-sound_address: .res 2
-
-.exportzp sound_offset
-sound_offset: .res 1
-
-.exportzp ft_music_addr
-ft_music_addr: .res 2
 
 ;variables specific to level out state
 ;TODO: these should be moved to the state control params perhaps

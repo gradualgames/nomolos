@@ -57,6 +57,8 @@ ZP_INC = 1
 .importzp nomolos_status_health
 .importzp nomolos_status_lives
 .importzp camera_scroll_x
+.importzp camera_max_scroll_x
+.importzp camera_min_scroll_x
 .importzp camera_scroll_direction
 .importzp camera_scrolled_right
 .importzp base_address_map
@@ -76,9 +78,6 @@ ZP_INC = 1
 .importzp name_table_to_view
 .importzp next_sprite_address
 .importzp buffer_controller
-.importzp sound_address
-.importzp sound_offset
-.importzp ft_music_addr
 .importzp palette_step
 .importzp frame_counter
 

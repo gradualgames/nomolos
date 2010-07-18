@@ -34,10 +34,21 @@
 
   lda #$00
   sta camera_scroll_x
+  
   lda #$00
   sta camera_scroll_x+1
+  
   lda #$00
   sta column_to_update
+  
+  lda #$00
+  sta camera_min_scroll_x
+  sta camera_min_scroll_x+1
+  
+  lda #$ff
+  sta camera_max_scroll_x
+  lda #$00
+  sta camera_max_scroll_x+1
 
   rts
   
@@ -45,6 +56,7 @@
   
 ;moves the camera in response to input position
 ;expects: w0 is screen X coordinate to respond to
+;users: w1
 .proc camera_scroll_right
 
   sec
@@ -70,6 +82,33 @@
   lda camera_scroll_x+1
   adc w1+1
   sta camera_scroll_x+1
+  
+  ;compare max scroll x to current scroll x
+  
+  ;compute right side of screen
+  clc
+  lda camera_scroll_x
+  adc #250
+  sta w1
+  lda camera_scroll_x+1
+  adc #0
+  sta w1+1
+  
+  ;compare this to current max
+  sec
+  lda w1
+  sbc camera_max_scroll_x
+  lda w1+1
+  sbc camera_max_scroll_x+1
+  
+  ;if this is positive, then we must increase the max
+  bmi negative
+positive:
+  lda w1
+  sta camera_max_scroll_x
+  lda w1+1
+  sta camera_max_scroll_x+1
+negative:
   
   lda #1
   sta camera_scroll_direction
@@ -114,6 +153,21 @@
   sta camera_scroll_x
   sta camera_scroll_x+1
 skip_do_not_scroll_past_zero:
+  
+  ;compare to current minimum
+  sec
+  lda camera_scroll_x
+  sbc camera_min_scroll_x
+  lda camera_scroll_x+1
+  sbc camera_min_scroll_x+1
+  
+  bpl positive
+negative:
+  lda camera_scroll_x
+  sta camera_min_scroll_x
+  lda camera_scroll_x+1
+  sta camera_min_scroll_x+1
+positive:
   
   lda #$ff
   sta camera_scroll_direction
