@@ -787,8 +787,8 @@ yesBelowCollision:
   ;Test if current state of A button is down and previous state is up. In other words,
   ;AND with #%00000011, then test for equality to 1.
   lda buffer_controller+buttons::_a
-  and #%00000011
-  cmp #1
+  and #%00011000
+  cmp #%00001000
   bne skipButtonATest
 
   lda #nomolosStartJumpLo
