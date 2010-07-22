@@ -150,6 +150,15 @@ level2_palette:
 ;spritesheet1_palette
   .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$07,$38,$0d,$21,$21,$21
 
+.export level2_cycling_palettes
+level2_cycling_palettes:
+  .byte 4
+  .byte $0d,$07,$06,$0d,$0d,$10,$00,$07,$0d,$10,$00,$01,$0d,$10,$08,$08
+  .byte $0d,$07,$06,$0d,$0d,$10,$00,$07,$0d,$10,$00,$01,$0d,$10,$18,$08
+  .byte $0d,$07,$06,$0d,$0d,$10,$00,$07,$0d,$10,$00,$01,$0d,$10,$28,$08
+  .byte $0d,$07,$06,$0d,$0d,$10,$00,$07,$0d,$10,$00,$01,$0d,$10,$18,$08
+
+  
 .export level2_map
 level2_map = Map
 

@@ -110,8 +110,8 @@ ROMDefinitionTable1:
   .word level2_patterns
   .byte spritesheet_1_patterns_bank
   .word level2_sprite_groups
-  .word 0 ;CyclingPaletteAddress
-  .byte 0 ;CyclingPaletteSpeed
+  .word level2_cycling_palettes ;CyclingPaletteAddress
+  .byte 5 ;CyclingPaletteSpeed
   
   .word spritesheet1_NomolosWalk
   .word spritesheet1_NomolosWalkOverlay

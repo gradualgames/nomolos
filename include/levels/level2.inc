@@ -17,6 +17,7 @@ level2_sprites_Bat_chr_index = level2_sprites_Skelekin_chr_index+Skelekin_chr_si
 .import level2_sprite_groups
 .import level2_patterns
 .import level2_palette
+.import level2_cycling_palettes
 .import level2_map
 .import level2_map_column_table
 .import level2_attribute_column_table
