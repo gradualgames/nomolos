@@ -34,7 +34,7 @@
 
   lda #0
   sta nomolos_map_x
-  lda #80
+  lda #120
   sta nomolos_map_x+1
   lda #0
   sta nomolos_map_x+2

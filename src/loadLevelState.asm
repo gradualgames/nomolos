@@ -183,7 +183,12 @@ loadLevelStateInit:
   
   lda #0
   sta camera_scroll_x
+  lda #0
   sta camera_scroll_x+1
+  
+  ;we say we are scrolling to the left so entities spawn in place with the columns
+  lda #$ff
+  sta camera_scroll_direction
   
   lda #LOADLEVELSTATE_LOAD
   sta state_control_params+loadLevelStateControl::state
@@ -191,55 +196,9 @@ loadLevelStateInit:
   jmp stateSwitchComplete
   
 loadLevelStateLoad:
-
-  ;decode a column at the current scrollX.
-meta_tile_column_index = w0
   
-  ;compute meta tile column index from camera_scroll_x by dividing by 16, or shifting right by 4.
-  lda camera_scroll_x
-  sta meta_tile_column_index
-  lda camera_scroll_x+1
-  sta meta_tile_column_index+1
-  
-  lda meta_tile_column_index
-  lsr meta_tile_column_index+1
-  ror
-  lsr meta_tile_column_index+1
-  ror
-  lsr meta_tile_column_index+1
-  ror
-  lsr meta_tile_column_index+1
-  ror
-  sta meta_tile_column_index
-  
-  ;now meta_tile_column_index is the correct value for the map column decoder
-  lda meta_tile_column_index
-  sta w1
-  lda meta_tile_column_index+1
-  sta w1+1
-  
-  lda #$20
-  sta name_table_to_update
-  lda #$20
-  sta name_table_to_view
-  
-  ;compute attribute column to update based on the meta tile column index
-  lda meta_tile_column_index
-  lsr
-  and #%00000111
-  sta attribute_column_to_update
-  
-  ;compute column to update based on meta_tile_column_index
-  lda meta_tile_column_index
-  asl
-  and #%00011111
-  sta column_to_update
-  
-  ;we say we are scrolling to the left so entities spawn in place with the columns
-  lda #$ff
-  sta camera_scroll_direction
-  
-  jsr map_decode_column
+  ;left side is always right where the scroll is.
+  jsr map_decode_left_side
   
   ;directly upload everything to ppu
   jsr map_update_column_ppu
@@ -254,7 +213,9 @@ meta_tile_column_index = w0
   adc #$00
   sta camera_scroll_x+1
   
-  beq load_state_not_done
+  cmp #1
+  
+  bne load_state_not_done
   
   lda #LOADLEVELSTATE_DONE
   sta state_control_params+loadLevelStateControl::state
@@ -263,11 +224,11 @@ load_state_not_done:
   
   jmp stateSwitchComplete
 
-
 loadLevelStateDone:
 
   lda #0
   sta camera_scroll_x
+  lda #0
   sta camera_scroll_x+1
 
   ;switch to play level state.  
@@ -278,7 +239,7 @@ loadLevelStateDone:
   sta mapper_bank_next
   jsr mapper_switch_bank
   
-  jsr entity_update_all
+  ;jsr entity_update_all
   
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (base_address_rom_definition_table),y
@@ -306,11 +267,8 @@ loadLevelStateDone:
   switchState play_level_state_update, play_level_state_update_ppu
       
   waitVBlank
-
-  ;reset scroll
-  lda #0
-  sta $2005
-  sta $2005
+  
+  jsr map_update_scroll_ppu
 
   set_ppu_2000_bit PPU0_EXECUTE_NMI
   upload_ppu_2000
@@ -328,14 +286,6 @@ stateSwitchComplete:
 .endproc
 
 .proc load_level_state_update_ppu
-
-  ;lda #$20
-  ;sta $2006
-  ;lda #0
-  ;sta $2006
-  ;lda #0
-  ;sta $2005
-  ;sta $2005
 
   rts  
 .endproc
