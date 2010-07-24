@@ -36,7 +36,8 @@
   sta nomolos_map_x
   lda #120
   sta nomolos_map_x+1
-  lda #0
+  ldy #ROMDefinitionTableStruct::starting_screen
+  lda (base_address_rom_definition_table),y
   sta nomolos_map_x+2
 
   lda #0

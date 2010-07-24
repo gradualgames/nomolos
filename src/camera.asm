@@ -1,6 +1,7 @@
 ;global headers
 
 .include "camera.inc"
+.include "fixedBankData.inc"
 
 ;modules
 .include "zp.inc"
@@ -35,21 +36,25 @@
   lda #$00
   sta camera_scroll_x
   
-  lda #$00
+  ldy #ROMDefinitionTableStruct::starting_screen
+  lda (base_address_rom_definition_table),y
   sta camera_scroll_x+1
   
   lda #$00
-  sta column_to_update
-  
-  lda #$00
   sta camera_min_scroll_x
+  ldy #ROMDefinitionTableStruct::starting_screen
+  lda (base_address_rom_definition_table),y
   sta camera_min_scroll_x+1
   
-  lda #$ff
+  ;max scroll x starts out one screen over
+  clc
+  lda camera_min_scroll_x
+  adc #0
   sta camera_max_scroll_x
-  lda #$00
+  lda camera_min_scroll_x+1
+  adc #1
   sta camera_max_scroll_x+1
-
+  
   rts
   
 .endproc
@@ -85,7 +90,7 @@
   
   ;compare max scroll x to current scroll x
   
-  ;compute right side of screen
+  ;compute right side of "already seen" window
   clc
   lda camera_scroll_x
   adc #250
@@ -154,18 +159,27 @@ negative:
   sta camera_scroll_x+1
 skip_do_not_scroll_past_zero:
   
+  ;compute left side of "already seen" window
+  clc
+  lda camera_scroll_x
+  adc #5
+  sta w1
+  lda camera_scroll_x+1
+  adc #0
+  sta w1+1
+  
   ;compare to current minimum
   sec
-  lda camera_scroll_x
+  lda w1
   sbc camera_min_scroll_x
-  lda camera_scroll_x+1
+  lda w1+1
   sbc camera_min_scroll_x+1
   
   bpl positive
 negative:
-  lda camera_scroll_x
+  lda w1
   sta camera_min_scroll_x
-  lda camera_scroll_x+1
+  lda w1+1
   sta camera_min_scroll_x+1
 positive:
   

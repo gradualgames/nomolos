@@ -181,9 +181,11 @@ loadLevelStateInit:
   set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
   
+  ;set camera scroll at starting screen
   lda #0
   sta camera_scroll_x
-  lda #0
+  ldy #ROMDefinitionTableStruct::starting_screen
+  lda (base_address_rom_definition_table),y
   sta camera_scroll_x+1
   
   ;we say we are scrolling to the left so entities spawn in place with the columns
@@ -209,13 +211,9 @@ loadLevelStateLoad:
   lda camera_scroll_x
   adc #$10
   sta camera_scroll_x
-  lda camera_scroll_x+1
-  adc #$00
-  sta camera_scroll_x+1
   
-  cmp #1
-  
-  bne load_state_not_done
+  ;if carry is clear here, we haven't finished loading the whole starting screen
+  bcc load_state_not_done
   
   lda #LOADLEVELSTATE_DONE
   sta state_control_params+loadLevelStateControl::state
@@ -226,9 +224,11 @@ load_state_not_done:
 
 loadLevelStateDone:
 
+  ;set camera scroll at starting screen
   lda #0
   sta camera_scroll_x
-  lda #0
+  ldy #ROMDefinitionTableStruct::starting_screen
+  lda (base_address_rom_definition_table),y
   sta camera_scroll_x+1
 
   ;switch to play level state.  

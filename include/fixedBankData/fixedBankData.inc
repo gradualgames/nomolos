@@ -107,6 +107,7 @@ SOUND_EFFECT_BASE = 10
   hitSound .word
   palette .word
 
+  starting_screen .byte
   map .word
   map_column_table .word
   attribute_column_table .word

@@ -75,6 +75,7 @@ ROMDefinitionTable0:
   .word hitSound
   .word level1_palette
 
+  .byte 0
   .word level1_map
   .word level1_map_column_table
   .word level1_attribute_column_table
@@ -155,6 +156,7 @@ ROMDefinitionTable1:
   .word hitSound
   .word level2_palette
 
+  .byte 0
   .word level2_map
   .word level2_map_column_table
   .word level2_attribute_column_table
@@ -233,6 +235,7 @@ ROMDefinitionTable2:
   .word hitSound
   .word level3_palette
 
+  .byte 0
   .word level3_map
   .word level3_map_column_table
   .word level3_attribute_column_table
