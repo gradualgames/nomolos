@@ -490,6 +490,7 @@ title_music:
   .word Noise
   .word volume_envelopes
   .word pitch_envelopes
+  .word duty_envelopes
 
 volume_envelopes:
   .word volume_envelope_0
@@ -541,6 +542,10 @@ pitch_envelopes:
   .word 0
   .word 0
 
+duty_envelopes:
+  .word duty_envelope_0
+  .word duty_envelope_1
+  
 volume_envelope_0:
   .byte 0, ENV_STOP
 
@@ -552,6 +557,11 @@ volume_envelope_2:
 pitch_envelope_0:
   .byte 0, ENV_LOOP
 
+duty_envelope_0:
+  .byte 0, ENV_LOOP
+duty_envelope_1:
+  .byte -128,-128,-128,-128,-128,-128,-128,-128,ENV_LOOP
+  
 sf_volume_envelope_silence:
   .byte 0, ENV_STOP
 
@@ -578,27 +588,27 @@ sf_pitch_envelope_0:
   
 sf_pitch_envelope_1: 
   .byte 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, -1, -2, -3, -4, -5, ENV_LOOP
-  
+
 Square1:
-  .byte STV,2,STP,0,STL,20,G4,D4,STL,5,C4,B3,C4,B3,STL,10,A3,G3,FS3,E3,D3,C3,B2,C3
-  .byte STL,50,D3,STL,10,G3,FS3,B3,A3,E4,D4,G4,FS4,C5,B4,A4,G4,FS4,STL,20,G4,G3,STL,10
-  .byte FS3,B3,A3,E4,D4,G4,FS4,C5,B4,A4,G4,FS4,STL,20,G4,D4,STL,10,E4,E3,E3,E3,E3,E3
-  .byte E3,G3,STL,20,E3,E4,STL,5,FS4,E4,FS4,E4,STL,10,D4,C4,D4,D3,D3,D3,D3,D3,D3,FS3
-  .byte STL,20,D3,D4,STL,5,E4,D4,E4,D4,STL,10,C4,B3,C4,D3,D3,D3,D3,D3,D3,FS3,STL,20
-  .byte D3,C4,STL,5,D4,C4,D4,C4,STL,10,B3,A3,B3,G2,G2,G2,G2,G2,G2,B2,STL,20,G2,B3
-  .byte STL,5,C4,B3,C4,B3,STL,10,A3,G3,D4,A3,FS3,D3,B3,D3,B2,G2,D4,A3,FS3,D3,B3,D3
-  .byte B2,G2
+  .byte STV,2,STP,0,SDU,0,STL,20,G4,D4,STL,5,C4,B3,C4,B3,STL,10,A3,G3,FS3,E3,D3,C3
+  .byte B2,C3,STL,50,D3,STL,10,G3,FS3,B3,A3,E4,D4,G4,FS4,C5,B4,A4,G4,FS4,STL,20,G4,G3
+  .byte STL,10,FS3,B3,A3,E4,D4,G4,FS4,C5,B4,A4,G4,FS4,STL,20,G4,D4,STL,10,E4,E3,E3,E3
+  .byte E3,E3,E3,G3,STL,20,E3,E4,STL,5,FS4,E4,FS4,E4,STL,10,D4,C4,D4,D3,D3,D3,D3,D3
+  .byte D3,FS3,STL,20,D3,D4,STL,5,E4,D4,E4,D4,STL,10,C4,B3,C4,D3,D3,D3,D3,D3,D3,FS3
+  .byte STL,20,D3,C4,STL,5,D4,C4,D4,C4,STL,10,B3,A3,B3,G2,G2,G2,G2,G2,G2,B2,STL,20
+  .byte G2,B3,STL,5,C4,B3,C4,B3,STL,10,A3,G3,D4,A3,FS3,D3,B3,D3,B2,G2,D4,A3,FS3,D3
+  .byte B3,D3,B2,G2
   .byte GOT
   .word Square1
 
 Square2:
-  .byte STV,0,STL,120,A0,STV,2,STP,0,STL,20,G2,D2,STL,5,C2,B1,C2,B1,STL,10,A1,G1,STL
-  .byte 40,D2,D1,STL,20,G1,G2,STL,5,C2,B1,C2,B1,STL,10,A1,G1,STL,40,D2,D1,STL,20,G1
-  .byte G2,STL,5,C2,B1,C2,B1,STL,10,A1,G1,STL,40,C2,STL,10,C4,C4,C4,E4,STL,20,C4,C4
-  .byte STL,5,D4,C4,D4,C4,STL,10,B3,A3,STL,40,B3,STL,10,B3,B3,B3,D4,STL,20,B3,B2,STL
-  .byte 5,C3,B2,C3,B2,STL,10,A2,G2,STL,40,D2,STL,10,A3,A3,A3,C4,STL,20,A3,D2,STL,5
-  .byte B2,A2,B2,A2,STL,10,G2,FS2,STL,40,G1,STL,10,B3,B3,B3,D4,STL,20,B3,G2,STL,5,A2
-  .byte G2,A2,G2,STL,10,FS2,E2,STL,20,D1,D2,D1,D2,D1,D2,D1,D2
+  .byte STV,0,STL,120,A0,STV,2,STP,0,SDU,0,STL,20,G2,D2,STL,5,C2,B1,C2,B1,STL,10,A1
+  .byte G1,STL,40,D2,D1,STL,20,G1,G2,STL,5,C2,B1,C2,B1,STL,10,A1,G1,STL,40,D2,D1,STL
+  .byte 20,G1,G2,STL,5,C2,B1,C2,B1,STL,10,A1,G1,STL,40,C2,STL,10,C4,C4,C4,E4,STL,20
+  .byte C4,C4,STL,5,D4,C4,D4,C4,STL,10,B3,A3,STL,40,B3,STL,10,B3,B3,B3,D4,STL,20,B3
+  .byte B2,STL,5,C3,B2,C3,B2,STL,10,A2,G2,STL,40,D2,STL,10,A3,A3,A3,C4,STL,20,A3,D2
+  .byte STL,5,B2,A2,B2,A2,STL,10,G2,FS2,STL,40,G1,STL,10,B3,B3,B3,D4,STL,20,B3,G2,STL
+  .byte 5,A2,G2,A2,G2,STL,10,FS2,E2,STL,20,D1,D2,D1,D2,D1,D2,D1,D2
   .byte GOT
   .word Square2
 

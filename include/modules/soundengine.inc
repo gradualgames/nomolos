@@ -9,6 +9,7 @@
 .globalzp sound_param_word_2
 .globalzp base_address_volume_envelopes
 .globalzp base_address_pitch_envelopes
+.globalzp base_address_duty_envelopes
 .globalzp stream_byte
 
 .global sound_initialize
@@ -146,8 +147,8 @@ TRM = 5+OPCODES_BASE
 
 ;opcodes read from volume and pitch envelopes
 
-ENV_STOP = %10000000
-ENV_LOOP = %10000001
+ENV_STOP = %10000001
+ENV_LOOP = %10000010
 
 ;note length constants
 

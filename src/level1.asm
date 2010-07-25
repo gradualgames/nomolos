@@ -32,7 +32,8 @@ level1_music:
   .word Noise
   .word volume_envelopes
   .word pitch_envelopes
-
+  .word duty_envelopes
+  
 volume_envelopes:
   .word volume_envelope_0
   .word volume_envelope_1
@@ -83,6 +84,10 @@ pitch_envelopes:
   .word 0
   .word 0
 
+duty_envelopes:
+  .word duty_envelope_0
+  .word duty_envelope_1
+  
 volume_envelope_0:
   .byte 0, ENV_STOP
 
@@ -96,6 +101,11 @@ volume_envelope_3:
 pitch_envelope_0:
   .byte 0, ENV_LOOP
 
+duty_envelope_0:
+  .byte 0, ENV_LOOP
+duty_envelope_1:
+  .byte 0,0,0,64,64,64,-128,-128,-128,-64,-64,-64,ENV_LOOP
+  
 Square1:
   .byte STV,2,STP,0,STL,10,FS3,GS3,A3,B3,CS4,CS3,F3,CS3,STL,60,FS3,STL,20,GS3,STL,10,A3,FS3
   .byte B3,GS3,CS4,A3,GS3,FS3,STL,20,F3,CS4,STL,5,D4,CS4,D4,CS4,D4,CS4,D4,CS4,STL,10,CS4,B3

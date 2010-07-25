@@ -19,7 +19,8 @@ sound_param_word_1: .res 2
 sound_param_word_2: .res 2
 
 base_address_volume_envelopes: .res 2
-base_address_pitch_envelopes: .res 2
+base_address_pitch_envelopes:  .res 2
+base_address_duty_envelopes:   .res 2
 
 stream_byte: .res 1
 
@@ -192,24 +193,25 @@ stream_callback_table_hi: .hibytes stream_callback_table
   ;load volume offset
   ldy streams+stream::volume_offset,x
   
-  ;load volume value for this frame, but hard code flags and duty for now
+  ;load volume value for this frame, but hard code flags and zero-out duty
   lda (sound_local_word_0),y
   cmp #ENV_STOP
   beq volume_stop
   cmp #ENV_LOOP
-  beq volume_loop
+  bne skip_volume_loop
   
+  ;we hit a loop opcode, reset offset and re-load value
+  lda #0
+  sta streams+stream::volume_offset,x
+  tay
+  
+skip_volume_loop:
+
   lda #%00110000
   ora (sound_local_word_0),y
   sta streams+stream::channel_registers,x
 
   inc streams+stream::volume_offset,x  
-  
-  jmp volume_stop
-volume_loop:
-
-  lda #0
-  sta streams+stream::volume_offset,x
   
 volume_stop:
   
@@ -231,7 +233,14 @@ volume_stop:
   cmp #ENV_STOP
   beq pitch_stop
   cmp #ENV_LOOP
-  beq pitch_loop
+  bne skip_pitch_loop
+  
+  ;we hit a loop opcode, reset offset and re-load value
+  lda #0
+  sta streams+stream::pitch_offset,x
+  tay
+  
+skip_pitch_loop:
  
   ;test sign
   lda (sound_local_word_0),y
@@ -263,13 +272,46 @@ pitch_delta_test_done:
   ;move pitch offset along
   inc streams+stream::pitch_offset,x
   
-  jmp pitch_stop
-pitch_loop:
-
-  lda #0
-  sta streams+stream::pitch_offset,x
-  
 pitch_stop:
+
+duty_code:
+  ;load duty index
+  lda streams+stream::duty_index,x
+  asl
+  tay
+  ;load duty address
+  lda (base_address_duty_envelopes),y
+  sta sound_local_word_0
+  iny
+  lda (base_address_duty_envelopes),y
+  sta sound_local_word_0+1
+  ;load duty offset
+  ldy streams+stream::duty_offset,x
+  
+  ;load duty value for this frame, but hard code flags and duty for now
+  lda (sound_local_word_0),y
+  cmp #ENV_STOP
+  beq duty_stop
+  cmp #ENV_LOOP
+  bne skip_duty_loop
+  
+  ;we hit a loop opcode, reset offset and re-load value
+  lda #0
+  sta streams+stream::duty_offset,x
+  tay
+  
+skip_duty_loop:
+  
+  ;or the duty value into the register
+  lda streams+stream::channel_registers,x
+  and #%00111111
+  ora (sound_local_word_0),y
+  sta streams+stream::channel_registers,x
+  
+  ;move duty offset along
+  inc streams+stream::duty_offset,x  
+  
+duty_stop:
 
   rts
 .endproc
@@ -307,19 +349,20 @@ square_2_play_note = square_1_play_note
   cmp #ENV_STOP
   beq volume_stop
   cmp #ENV_LOOP
-  beq volume_loop
+  bne skip_volume_loop
+  
+  ;we hit a loop opcode, reset offset and re-load value
+  lda #0
+  sta streams+stream::volume_offset,x
+  tay
+  
+skip_volume_loop:
   
   lda #%10000000
   ora (sound_local_word_0),y
   sta streams+stream::channel_registers,x
 
   inc streams+stream::volume_offset,x  
-  
-  jmp volume_stop
-volume_loop:
-
-  lda #0
-  sta streams+stream::volume_offset,x
   
 volume_stop:
   
@@ -341,7 +384,14 @@ volume_stop:
   cmp #ENV_STOP
   beq pitch_stop
   cmp #ENV_LOOP
-  beq pitch_loop
+  bne skip_pitch_loop
+  
+  ;we hit a loop opcode, reset offset and re-load value
+  lda #0
+  sta streams+stream::pitch_offset,x
+  tay
+  
+skip_pitch_loop:
  
   ;test sign
   lda (sound_local_word_0),y
@@ -373,12 +423,6 @@ pitch_delta_test_done:
   ;move pitch offset along
   inc streams+stream::pitch_offset,x
   
-  jmp pitch_stop
-pitch_loop:
-
-  lda #0
-  sta streams+stream::pitch_offset,x
-  
 pitch_stop:
 
   rts
@@ -407,14 +451,25 @@ pitch_stop:
   
   ;load volume value for this frame, hard code disable flags
   lda (sound_local_word_0),y
-  bmi volume_envelope_finished
+  cmp #ENV_STOP
+  beq volume_stop
+  cmp #ENV_LOOP
+  bne skip_volume_loop
+  
+  ;we hit a loop opcode, reset offset and re-load value
+  lda #0
+  sta streams+stream::volume_offset,x
+  tay
+  
+skip_volume_loop:
+
   lda #%00110000  
   ora (sound_local_word_0),y
   sta streams+stream::channel_registers,x
   
   ;move volume offset along
   inc streams+stream::volume_offset,x
-volume_envelope_finished:
+volume_stop:
   
   rts
 .endproc
@@ -460,6 +515,19 @@ volume_envelope_finished:
 .endproc
 
 .proc stream_set_duty_envelope
+
+  advance_stream_read_address
+  ;load byte at read address
+  lda streams+stream::read_address,x
+  sta sound_local_word_0
+  lda streams+stream::read_address+1,x
+  sta sound_local_word_0+1
+  ldy #0
+  lda (sound_local_word_0),y
+  sta streams+stream::duty_index,x
+  lda #0
+  sta streams+stream::duty_offset,x
+
   rts
 .endproc
  
@@ -609,6 +677,14 @@ no_noise:
   iny
   lda (song_address),y
   sta base_address_pitch_envelopes+1
+  
+  ;load duty envelopes
+  iny
+  lda (song_address),y
+  sta base_address_duty_envelopes
+  iny
+  lda (song_address),y
+  sta base_address_duty_envelopes+1
 
   rts
   
