@@ -20,6 +20,7 @@ FILES           = nomolos \
                   level1 \
                   level2 \
                   level3 \
+                  boss1 \
                   entities \
                   spritesheet1 \
                   loadLevelState \

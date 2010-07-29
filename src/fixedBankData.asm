@@ -1,6 +1,7 @@
 .include "level1.inc"
 .include "level2.inc"
 .include "level3.inc"
+.include "boss1.inc"
 .include "entities.inc"
 .include "soundengine.inc"
 .include "fixedBankData.inc"
@@ -21,6 +22,8 @@ Level2:
   .word ROMDefinitionTable1
 Level3:
   .word ROMDefinitionTable2
+Boss1:
+  .word ROMDefinitionTable3
 
 ;ROM definition table
 ROMDefinitionTable0:
@@ -244,7 +247,7 @@ ROMDefinitionTable2:
 
   .word EntityDefinitionTable
   .word level3_music
-  .byte level_1_index
+  .byte boss_1_index
   
   .byte level3_sprites_Nomolos_chr_index
   .byte 0 ;level3_sprites_Deentle_chr_index
@@ -260,6 +263,85 @@ ROMDefinitionTable2:
   .byte level3_sprites_Dragon_chr_index
   .byte level3_sprites_IceBall_chr_index
   .byte level3_sprites_Shark_chr_index
+  
+;ROM definition table
+ROMDefinitionTable3:
+  .byte spritesheet_1_bank
+  .byte boss_1_bank
+  .byte boss_1_patterns_bank  
+  .word boss1_patterns
+  .byte spritesheet_1_patterns_bank
+  .word boss1_sprite_groups
+  .word 0 ;CyclingPaletteAddress
+  .byte 0 ;CyclingPaletteSpeed
+  
+  .word spritesheet1_NomolosWalk
+  .word spritesheet1_NomolosWalkOverlay
+  .word spritesheet1_NomolosJump
+  .word spritesheet1_NomolosJumpOverlay
+  .word spritesheet1_NomolosFight
+  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_NomolosUseFlail
+  .word spritesheet1_NomolosFlailOverlay
+  .word spritesheet1_NomolosUseSpear
+  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_FlailBall
+  .word spritesheet1_Spear0
+  .word spritesheet1_SlumpedArmor0
+  .word spritesheet1_SlumpedArmorOverlay0
+  .word spritesheet1_ScardyCat0
+  .word spritesheet1_ScardyCatOverlay0
+
+  .word spritesheet1_Heart0
+  .word spritesheet1_Spear0
+  .word 0 ;spritesheet1_GrankFly
+  .word 0 ;spritesheet1_BeedieBlob
+  .word 0 ;spritesheet1_FlailItem0
+  .word 0 ;spritesheet1_DeentleWalk
+  .word spritesheet1_Explosion
+  .word 0 ;spritesheet1_Mouse
+  .word 0 ;spritesheet1_OneUp0
+  .word 0 ;spritesheet1_SkelekinWalk
+  .word 0 ;spritesheet1_BatFly
+  .word 0 ;Batree
+  .word 0 ;OwlFly
+  .word 0 ;OwlAttack
+  .word 0 ;SnufferRun
+  .word 0 ;SnufferBite
+  .word 0 ;spritesheet1_SnailCrawl
+  .word 0 ;spritesheet1_DragonFly
+  .word spritesheet1_IceBallFly
+  .word 0 ;spritesheet1_SharkLeap
+
+  .word attackSound
+  .word hitSound
+  .word boss1_palette
+
+  .byte 0
+  .word boss1_map
+  .word boss1_map_column_table
+  .word boss1_attribute_column_table
+  .word boss1_meta_tile_column_table
+  .word boss1_meta_tile_table
+
+  .word EntityDefinitionTable
+  .word boss1_music
+  .byte level_1_index
+  
+  .byte boss1_sprites_Nomolos_chr_index
+  .byte 0 ;boss1_sprites_Deentle_chr_index
+  .byte boss1_sprites_Explosion_chr_index
+  .byte 0 ;boss1_sprites_Beedie_chr_index
+  .byte 0 ;boss1_sprites_Grank_chr_index
+  .byte 0 ;boss1_sprites_Bat_chr_index
+  .byte 0 ;boss1_sprites_Skelekin_chr_index
+  .byte 0 ;boss1_sprites_Batree_chr_index
+  .byte 0 ;boss1_sprites_Owl_chr_index
+  .byte 0 ;boss1_sprites_Snuffer_chr_index
+  .byte 0 ;boss1_sprites_Snail_chr_index  
+  .byte 0 ;boss1_sprites_Dragon_chr_index
+  .byte boss1_sprites_IceBall_chr_index
+  .byte 0 ;boss1_sprites_Shark_chr_index
   
 ;Entities
 EntityDefinitionTable:
@@ -292,7 +374,7 @@ ExitLevelEntity:
   .byte $00
   .byte $f9
   .byte %00000000
-  .byte $01
+  .byte $02
   .byte $00
   .byte $00
 OneUpEntity:
