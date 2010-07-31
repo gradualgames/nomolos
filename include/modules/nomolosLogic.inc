@@ -1,6 +1,7 @@
 .ifndef NOMOLOSLOGIC_INC
 NOMOLOSLOGIC_INC = 1
 
+.global nomolos_module_init
 .global nomolos_init
 .global nomolos_update
 .global nomolos_draw

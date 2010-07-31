@@ -12,6 +12,8 @@
 .include "level2.inc"
 .include "ppu.inc"
 .include "fixedBankData.inc"
+.include "nomolosLogic.inc"
+.include "sprite.inc"
 
 .segment "HEADER"
 .byte "NES",$1a   ;iNES header
@@ -48,25 +50,12 @@ reset:
   ldx #$FF  
   txs
   
-  ;turn off all graphics  
+  ;turn off all graphics and clear our PPU registers
   lda #$00
-  sta ppu_2001
+  sta ppu_2000
+  sta ppu_2001  
+  upload_ppu_2000
   upload_ppu_2001
-  
-  ;clear 2K RAM
-  lda #$00
-  ldx #$00
-:
-  sta $0000, x
-  sta $0100, x
-  sta $0200, x
-  sta $0300, x
-  sta $0400, x
-  sta $0500, x
-  sta $0600, x
-  sta $0700, x
-  inx
-  bne :-
   
   ;wait for PPU to be ready
   waitVBlank
@@ -76,11 +65,10 @@ reset:
   set_ppu_2001_bit PPU1_SPRITE_CLIPPING
   set_ppu_2001_bit PPU1_BACKGROUND_CLIPPING
 
+  ;initialize various modules which require a guaranteed initial state
   jsr sound_initialize
-  
-  ;lda #GAMEOVERSTATE_INIT
-  ;sta state_control_params+gameOverStateControl::state
-  ;switchState game_over_state_update, game_over_state_update_ppu
+  jsr nomolos_module_init
+  jsr sprite_module_init
   
   lda #TITLESTATE_INIT
   sta state_control_params+titleStateControl::state
@@ -88,11 +76,12 @@ reset:
   jsr switch_state
   
   ;load current level
-  ;lda #2
+  ;lda #1
   ;sta state_control_params+loadLevelStateControl::levelToLoad
   ;lda #LOADLEVELSTATE_INIT
   ;sta state_control_params+loadLevelStateControl::state  
-  ;switchState load_level_state_update, load_level_state_update_ppu
+  ;ldx #index_load_level_state
+  ;jsr switch_state
   
 loop:
 

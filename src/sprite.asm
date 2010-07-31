@@ -4,6 +4,16 @@
 
 .segment "CODE"
 
+;should be called at start of program
+.proc sprite_module_init
+
+  lda #0
+  sta next_sprite_address
+
+  rts
+
+.endproc
+
 ;draws an animation and expects to be passed parameters that sprite_draw_metasprite_16bit will use also
 ;w1: location of animation object
 ;w2: location of animation definition  

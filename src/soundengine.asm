@@ -46,6 +46,9 @@ apu_register_sets: .res 40
   lda #0
   sta apu_data_ready
   jsr sound_initialize_apu_buffer
+  
+  ;make sure all streams are killed
+  jsr sound_stop
 
   rts
 

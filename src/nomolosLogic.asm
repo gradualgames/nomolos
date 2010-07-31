@@ -13,6 +13,17 @@
 
 .segment "CODE"
 
+;this should be called when initializing the game
+.proc nomolos_module_init
+
+  lda #0
+  sta nomolos_state_secondary
+  
+  rts
+
+.endproc
+
+;this should be called at the beginning of any level
 .proc nomolos_init
 
   resetAnim nomolos_animation
@@ -21,6 +32,9 @@
   lda #0
   and #nomolosWalkingRightAND
   sta nomolos_state_primary
+  
+  lda #0
+  sta nomolos_state_secondary
   
   lda #0
   sta nomolos_x_velocity

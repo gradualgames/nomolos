@@ -1,6 +1,7 @@
 .ifndef SPRITE_INC
 SPRITE_INC = 1
 
+.global sprite_module_init
 .global sprite_draw_animation_8bit
 .global sprite_draw_animation_16bit
 .global sprite_update_animation
