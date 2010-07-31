@@ -1,4 +1,3 @@
-.include "macros.inc"
 .include "flags.inc"
 .include "zp.inc"
 .include "camera.inc"
@@ -12,6 +11,7 @@
 .include "level1.inc"
 .include "level2.inc"
 .include "ppu.inc"
+.include "fixedBankData.inc"
 
 .segment "HEADER"
 .byte "NES",$1a   ;iNES header
@@ -84,7 +84,8 @@ reset:
   
   lda #TITLESTATE_INIT
   sta state_control_params+titleStateControl::state
-  switchState title_state_update, title_state_update_ppu
+  ldx #index_title_state
+  jsr switch_state
   
   ;load current level
   ;lda #2

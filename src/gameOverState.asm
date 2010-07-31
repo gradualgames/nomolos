@@ -1,4 +1,3 @@
-.include "macros.inc"
 .include "flags.inc"
 .include "ppu.inc"
 .include "mapper.inc"
@@ -118,7 +117,8 @@ gameOverStateDone:
   ;switch to title state
   lda #TITLESTATE_INIT
   sta state_control_params+titleStateControl::state
-  switchState title_state_update, title_state_update_ppu
+  ldx #index_title_state
+  jsr switch_state
   
   jmp stateCommandComplete
   

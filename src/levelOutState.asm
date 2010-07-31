@@ -1,4 +1,3 @@
-.include "macros.inc"
 .include "flags.inc"
 .include "ppu.inc"
 .include "mapper.inc"
@@ -66,14 +65,16 @@ levelOutStateFadeOut:
   
   lda #LEVELINSTATE_INIT
   sta state_control_params+levelOutStateControl::state
-  switchState level_in_state_update, level_in_state_update_ppu
+  ldx #index_level_in_state
+  jsr switch_state
   jmp skipIncPaletteStep
   
 livesNegativeMeansGameOver:
 
   lda #GAMEOVERSTATE_INIT
   sta state_control_params+gameOverStateControl::state
-  switchState game_over_state_update, game_over_state_update_ppu
+  ldx #index_game_over_state
+  jsr switch_state
   jmp skipIncPaletteStep
 
 :

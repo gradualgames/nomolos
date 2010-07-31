@@ -1,6 +1,16 @@
 .ifndef LEVELDATAINDEX_INC
 LEVELDATAINDEX_INC = 1
 
+;state table
+index_title_state          = 0 * 4
+index_level_in_state       = 1 * 4
+index_level_out_state      = 2 * 4
+index_load_level_state     = 3 * 4
+index_game_over_state      = 4 * 4
+index_play_level_state     = 5 * 4
+
+.global switch_state
+.global state_table
 .global level_definition_table
 .global banktable
 .global attackSound

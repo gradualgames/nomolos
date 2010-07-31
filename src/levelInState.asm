@@ -1,4 +1,3 @@
-.include "macros.inc"
 .include "flags.inc"
 .include "loadLevelState.inc"
 .include "ppu.inc"
@@ -189,7 +188,8 @@ levelInStateDone:
   lda #LOADLEVELSTATE_INIT
   sta state_control_params+loadLevelStateControl::state
   
-  switchState load_level_state_update, load_level_state_update_ppu
+  ldx #index_load_level_state
+  jsr switch_state
   
 stateCommandComplete:
 

@@ -5,6 +5,13 @@
 .include "entities.inc"
 .include "soundengine.inc"
 .include "fixedBankData.inc"
+.include "titleState.inc"
+.include "levelInState.inc"
+.include "levelOutState.inc"
+.include "loadLevelState.inc"
+.include "gameOverState.inc"
+.include "playLevelState.inc"
+.include "zp.inc"
 
 .segment "ROM4"
 
@@ -12,6 +19,42 @@
 .include "title_patterns_source.inc"
 
 .segment "CODE"
+
+;this routine takes the value in the accumulator and
+;looks up a state in the state table and then changes the current
+;update and ppu routines to the values found there.
+;inputs: x is assumed to contain index of state
+.proc switch_state
+
+  ;load address of update routine
+  lda state_table,x
+  sta update
+  lda state_table+1,x
+  sta update+1
+  
+  ;load address of ppu update routine
+  lda state_table+2,x
+  sta update_ppu
+  lda state_table+3,x
+  sta update_ppu+1
+
+  rts
+.endproc
+
+;state table
+state_table:
+  .word title_state_update
+  .word title_state_update_ppu
+  .word level_in_state_update
+  .word level_in_state_update_ppu
+  .word level_out_state_update
+  .word level_out_state_update_ppu
+  .word load_level_state_update
+  .word load_level_state_update_ppu
+  .word game_over_state_update
+  .word game_over_state_update_ppu
+  .word play_level_state_update
+  .word play_level_state_update_ppu
 
 ;level definitions
 

@@ -1,6 +1,5 @@
 .include "flags.inc"
 .include "soundengine.inc"
-.include "macros.inc"
 .include "controller.inc"
 .include "ppu.inc"
 .include "mapper.inc"
@@ -173,7 +172,8 @@ titleStateDone:
   sta level_current
   lda #LEVELINSTATE_INIT
   sta state_control_params+levelOutStateControl::state
-  switchState level_in_state_update, level_in_state_update_ppu
+  ldx #index_level_in_state
+  jsr switch_state
   
 :
 

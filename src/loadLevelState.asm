@@ -1,4 +1,3 @@
-.include "macros.inc"
 .include "flags.inc"
 .include "soundengine.inc"
 .include "sound.inc"
@@ -269,8 +268,9 @@ loadLevelStateDone:
   lda #PLAYLEVELSTATE_KEEPPLAYING
   sta state_control_params+playLevelStateControl::state
   
-  switchState play_level_state_update, play_level_state_update_ppu
-      
+  ldx #index_play_level_state
+  jsr switch_state
+
   waitVBlank
   
   jsr map_update_scroll_ppu

@@ -1,5 +1,4 @@
 .include "flags.inc"
-.include "macros.inc"
 .include "ppu.inc"
 .include "mapper.inc"
 .include "soundengine.inc"
@@ -60,7 +59,8 @@ switchLevel:
   lda #LOADLEVELSTATE_INIT
   sta state_control_params+loadLevelStateControl::state
   
-  switchState load_level_state_update, load_level_state_update_ppu
+  ldx #index_load_level_state
+  jsr switch_state
   
   jmp stateCommandComplete
   
@@ -68,7 +68,8 @@ switchToLevelOutState:
 
   lda #LEVELOUTSTATE_INIT
   sta state_control_params+levelOutStateControl::state
-  switchState level_out_state_update, level_out_state_update_ppu
+  ldx #index_level_out_state
+  jsr switch_state
   
 stateCommandComplete:
     

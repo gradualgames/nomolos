@@ -1,5 +1,5 @@
 .ifndef LOADLEVELSTATE_INC
-LEVEL1_INC = 1
+LOADLEVELSTATE_INC = 1
 
 .global load_level_state_update
 .global load_level_state_update_ppu
