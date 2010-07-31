@@ -177,8 +177,8 @@ camera_min_scroll_x: .res 2
 .exportzp camera_scroll_direction
 camera_scroll_direction: .res 1
 
-.exportzp camera_scrolled_right
-camera_scrolled_right:                       .res 2
+.exportzp camera_scroll_enabled
+camera_scroll_enabled: .res 1
 
 .exportzp base_address_entity_definition_table
 base_address_entity_definition_table:  .res 2

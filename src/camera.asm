@@ -55,6 +55,10 @@
   adc #1
   sta camera_max_scroll_x+1
   
+  ;camera enabled by default
+  lda #1
+  sta camera_scroll_enabled
+  
   rts
   
 .endproc
@@ -63,6 +67,9 @@
 ;expects: w0 is screen X coordinate to respond to
 ;users: w1
 .proc camera_scroll_right
+
+  lda camera_scroll_enabled
+  beq do_not_scroll
 
   sec
   lda w0
@@ -119,6 +126,7 @@ negative:
   sta camera_scroll_direction
 
 :
+do_not_scroll:
 
   rts
 
@@ -127,6 +135,9 @@ negative:
 ;moves the camera in response to input position
 ;expects: w0 is screen X coordinate to respond to
 .proc camera_scroll_left
+
+  lda camera_scroll_enabled
+  beq do_not_scroll
 
   sec
   lda w0
@@ -187,6 +198,7 @@ positive:
   sta camera_scroll_direction
   
 :
+do_not_scroll:
 
   rts
 .endproc

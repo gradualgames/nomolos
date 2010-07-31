@@ -286,10 +286,6 @@ name_table_to_update_test_done:
   
   jsr map_decode_column
   
-  ;flag the ppu upload routines that we scrolled left
-  lda #0
-  sta camera_scrolled_right
-  
   ;restore previous bank
   pla
   sta mapper_bank_next
@@ -374,10 +370,6 @@ name_table_to_update_test_done:
   sta column_to_update
   
   jsr map_decode_column
-  
-  ;flag the ppu upload routines that we scrolled right
-  lda #1
-  sta camera_scrolled_right
   
   ;restore previous bank
   pla

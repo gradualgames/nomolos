@@ -60,7 +60,7 @@ ZP_INC = 1
 .importzp camera_max_scroll_x
 .importzp camera_min_scroll_x
 .importzp camera_scroll_direction
-.importzp camera_scrolled_right
+.importzp camera_scroll_enabled
 .importzp base_address_map
 .importzp base_address_map_column_table
 .importzp base_address_attribute_column_table

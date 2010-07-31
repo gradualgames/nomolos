@@ -188,6 +188,11 @@ loadLevelStateInit:
   lda (base_address_rom_definition_table),y
   sta camera_scroll_x+1
   
+  ;load whether camera scroll is enabled for gameplay
+  ldy #ROMDefinitionTableStruct::camera_scroll_enabled
+  lda (base_address_rom_definition_table),y
+  sta camera_scroll_enabled
+  
   ;we say we are scrolling to the left so entities spawn in place with the columns
   lda #$ff
   sta camera_scroll_direction

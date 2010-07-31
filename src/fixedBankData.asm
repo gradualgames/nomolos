@@ -77,8 +77,12 @@ ROMDefinitionTable0:
   .word attackSound
   .word hitSound
   .word level1_palette
-
-  .byte 0
+ 
+  .byte 120 ;nomolos_start_x
+  .byte 90  ;nomolos_start_y
+ 
+  .byte 1 ;camera_scroll_enabled
+  .byte 0 ;starting_screen
   .word level1_map
   .word level1_map_column_table
   .word level1_attribute_column_table
@@ -159,7 +163,11 @@ ROMDefinitionTable1:
   .word hitSound
   .word level2_palette
 
-  .byte 0
+  .byte 120 ;nomolos_start_x
+  .byte 90  ;nomolos_start_y
+  
+  .byte 1 ;camera_scroll_enabled
+  .byte 0 ;starting_screen
   .word level2_map
   .word level2_map_column_table
   .word level2_attribute_column_table
@@ -238,7 +246,11 @@ ROMDefinitionTable2:
   .word hitSound
   .word level3_palette
 
-  .byte 0
+  .byte 30  ;nomolos_start_x
+  .byte 100 ;nomolos_start_y
+  
+  .byte 1 ;camera_scroll_enabled
+  .byte 0 ;starting_screen
   .word level3_map
   .word level3_map_column_table
   .word level3_attribute_column_table
@@ -317,7 +329,11 @@ ROMDefinitionTable3:
   .word hitSound
   .word boss1_palette
 
-  .byte 0
+  .byte 20   ;nomolos_start_x
+  .byte 160  ;nomolos_start_y
+  
+  .byte 0 ;camera_scroll_enabled
+  .byte 0 ;starting_screen
   .word boss1_map
   .word boss1_map_column_table
   .word boss1_attribute_column_table

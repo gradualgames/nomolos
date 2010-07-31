@@ -34,7 +34,8 @@
 
   lda #0
   sta nomolos_map_x
-  lda #120
+  ldy #ROMDefinitionTableStruct::nomolos_start_x
+  lda (base_address_rom_definition_table),y
   sta nomolos_map_x+1
   ldy #ROMDefinitionTableStruct::starting_screen
   lda (base_address_rom_definition_table),y
@@ -42,7 +43,8 @@
 
   lda #0
   sta nomolos_map_y
-  lda #90
+  ldy #ROMDefinitionTableStruct::nomolos_start_y
+  lda (base_address_rom_definition_table),y
   sta nomolos_map_y+1
   lda #0
   sta nomolos_map_y+2

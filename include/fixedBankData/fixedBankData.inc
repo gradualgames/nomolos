@@ -107,6 +107,10 @@ SOUND_EFFECT_BASE = 10
   hitSound .word
   palette .word
 
+  nomolos_start_x .byte
+  nomolos_start_y .byte
+  
+  camera_scroll_enabled .byte
   starting_screen .byte
   map .word
   map_column_table .word
