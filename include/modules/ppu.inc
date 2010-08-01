@@ -1,17 +1,16 @@
 .ifndef PPU_INC
 PPU_INC = 1
 
-.global ppu_create_decimal_string
-.global ppu_display_string
-.global ppu_set_vram_address
-.global ppu_load_chr_amount
-.global ppu_load_chr_groups
-.global ppu_load_name_table
-.global ppu_clear_name_table
-.global ppu_fade_out_palette
-.global ppu_load_palette
-.global ppu_load_palette_bg
-.global ppu_load_palette_spr
+.import ppu_create_decimal_string
+.import ppu_display_string
+.import ppu_set_vram_address
+.import ppu_load_chr_amount
+.import ppu_load_chr_groups
+.import ppu_load_name_table
+.import ppu_clear_name_table
+.import ppu_load_palette
+.import ppu_load_palette_bg
+.import ppu_load_palette_spr
 
 ;bit positions for PPU control register $2000
 PPU0_EXECUTE_NMI = 7
@@ -35,6 +34,14 @@ PPU1_BACKGROUND_VISIBILITY = 3
 PPU1_SPRITE_CLIPPING = 2
 PPU1_BACKGROUND_CLIPPING = 1
 PPU1_DISPLAY_TYPE = 0
+
+  ; ;now let's write a string!
+  ; lda #$20
+  ; ;at location 13, 10
+  ; ora #%00000010
+  ; sta $2006
+  ; lda #%00001010
+  ; sta $2006
 
 .macro set_ppu_2006 nametable, row, column
 
