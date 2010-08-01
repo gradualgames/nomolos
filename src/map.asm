@@ -744,8 +744,22 @@ do_not_spawn_entity:
 
 .export map_update_scroll_ppu
 .proc map_update_scroll_ppu
-  lda name_table_to_view  
+
+  ;make sure our ppu_2000 is consistent with name_table_to_view
+  clear_ppu_2000_bit PPU0_NAMETABLE_ADDRESS0
+  clear_ppu_2000_bit PPU0_NAMETABLE_ADDRESS1
   
+  lda name_table_to_view
+  ;get out the bit that determines whether it is table 1 or 2
+  and #$04
+  ;move it into the position of PPU0_NAMETABLE_ADDRESS0
+  lsr
+  lsr
+  ;combine this value with the current value of ppu_2000
+  ora ppu_2000
+  sta ppu_2000
+
+  lda name_table_to_view
   sta $2006
   lda #$00
   sta $2006
