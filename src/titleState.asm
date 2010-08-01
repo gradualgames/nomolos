@@ -137,8 +137,10 @@ titleStateRun:
   sta $2005
   sta $2005
   
-  ;turn on nmi
+  ;turn on nmi and make sure we're looking at the nametable we just loaded
   set_ppu_2000_bit PPU0_EXECUTE_NMI
+  clear_ppu_2000_bit PPU0_NAMETABLE_ADDRESS0
+  clear_ppu_2000_bit PPU0_NAMETABLE_ADDRESS1
   upload_ppu_2000
   
   ;turn sprite and background visibility on

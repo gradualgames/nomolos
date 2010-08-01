@@ -34,9 +34,6 @@
   sta nomolos_state_primary
   
   lda #0
-  sta nomolos_state_secondary
-  
-  lda #0
   sta nomolos_x_velocity
   lda #2
   sta nomolos_x_velocity+1
