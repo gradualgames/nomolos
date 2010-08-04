@@ -8,7 +8,6 @@
 .include "levelInState.inc"
 .include "zp.inc"
 .include "nomolosLogic.inc"
-.include "levelOutState.inc"
 .include "titleState.inc"
 
 .segment "CODE"
@@ -171,7 +170,7 @@ titleStateDone:
   lda #startingLevel
   sta level_current
   lda #LEVELINSTATE_INIT
-  sta state_control_params+levelOutStateControl::state
+  sta state_control_params+levelInStateControl::state
   ldx #index_level_in_state
   jsr switch_state
   

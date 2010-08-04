@@ -4,7 +4,8 @@
 .include "soundengine.inc"
 .include "loadLevelState.inc"
 .include "sound.inc"
-.include "levelOutState.inc"
+.include "levelInState.inc"
+.include "gameOverState.inc"
 .include "controller.inc"
 .include "map.inc"
 .include "sprite.inc"
@@ -24,8 +25,6 @@
   beq keepPlaying
   cmp #PLAYLEVELSTATE_PAUSE
   beq pause
-  cmp #PLAYLEVELSTATE_SWITCHLEVEL
-  beq switchLevel
   cmp #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
   beq switchToLevelOutState
 
@@ -53,22 +52,23 @@ skipStartButtonTest:
  
   jmp stateCommandComplete
   
-switchLevel:
-  lda state_control_params+playLevelStateControl::levelNum
-  sta state_control_params+loadLevelStateControl::levelToLoad
-  lda #LOADLEVELSTATE_INIT
-  sta state_control_params+loadLevelStateControl::state
-  
-  ldx #index_load_level_state
-  jsr switch_state
-  
-  jmp stateCommandComplete
-  
 switchToLevelOutState:
 
-  lda #LEVELOUTSTATE_INIT
-  sta state_control_params+levelOutStateControl::state
-  ldx #index_level_out_state
+  lda nomolos_status_lives
+  
+  bmi livesNegativeMeansGameOver
+  
+  lda #LEVELINSTATE_INIT
+  sta state_control_params+levelInStateControl::state
+  ldx #index_level_in_state
+  jsr switch_state
+  jmp stateCommandComplete
+  
+livesNegativeMeansGameOver:
+
+  lda #GAMEOVERSTATE_INIT
+  sta state_control_params+gameOverStateControl::state
+  ldx #index_game_over_state
   jsr switch_state
   
 stateCommandComplete:

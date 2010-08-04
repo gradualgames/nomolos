@@ -25,7 +25,6 @@ FILES           = nomolos \
                   spritesheet1 \
                   loadLevelState \
                   playLevelState \
-                  levelOutState \
                   levelInState \
                   gameOverState \
                   titleState \

@@ -7,7 +7,6 @@
 .include "fixedBankData.inc"
 .include "titleState.inc"
 .include "levelInState.inc"
-.include "levelOutState.inc"
 .include "loadLevelState.inc"
 .include "gameOverState.inc"
 .include "playLevelState.inc"
@@ -47,8 +46,6 @@ state_table:
   .word title_state_update_ppu
   .word level_in_state_update
   .word level_in_state_update_ppu
-  .word level_out_state_update
-  .word level_out_state_update_ppu
   .word load_level_state_update
   .word load_level_state_update_ppu
   .word game_over_state_update

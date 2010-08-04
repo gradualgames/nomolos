@@ -25,17 +25,21 @@
 gameOverStateInit:
 
   waitVBlank
-  
+
   ;turn sprite and background visibility off
   clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
-  
+
+  ;turn off inc32 since we are manipulating palette in this state
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+
   lda #GAMEOVERSTATE_RUN
   sta state_control_params+gameOverStateControl::state
 
   jmp stateCommandComplete
-  
+
 gameOverStateRun:
 
   ;clear the sprites
