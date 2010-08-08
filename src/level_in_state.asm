@@ -221,7 +221,7 @@ levelInStateRun:
   sta w0+1
   jsr fade_in_palette
 
-  lda #200
+  lda #64
   sta frame_counter
 
   lda #LEVELINSTATE_DONE

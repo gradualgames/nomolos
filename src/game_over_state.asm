@@ -134,6 +134,10 @@ gameOverStateRun:
   sta ppu_2005+1
   upload_ppu_2005
 
+  ;turn on nmi
+  set_ppu_2000_bit PPU0_EXECUTE_NMI
+  upload_ppu_2000
+  
   ;turn on sprite and background visibility
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
@@ -149,7 +153,7 @@ gameOverStateRun:
   lda #GAMEOVERSTATE_DONE
   sta state_control_params+gameOverStateControl::state
 
-  lda #200
+  lda #64
   sta frame_counter
 
   jmp stateCommandComplete
@@ -182,6 +186,9 @@ stateCommandComplete:
 .proc game_over_state_update_ppu
 
   dec frame_counter
+  
+  lda #1
+  sta vblank_done
 
   rts
 .endproc
