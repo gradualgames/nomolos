@@ -1,5 +1,5 @@
-.ifndef LEVELDATAINDEX_INC
-LEVELDATAINDEX_INC = 1
+.ifndef FIXEDBANKDATA_INC
+FIXEDBANKDATA_INC = 1
 
 ;state table
 index_title_state          = 0 * 4
@@ -10,10 +10,10 @@ index_play_level_state     = 4 * 4
 
 .global level_definition_table
 .global banktable
-.global attackSound
+.global attack_sound
 .global attackFlailSound
 .global attackSpearSound
-.global hitSound
+.global hit_sound
 .global getHealthSound
 .global getItemSound
 .global getHurtSound
@@ -21,16 +21,16 @@ index_play_level_state     = 4 * 4
 .global haltmusic
 .global title_music
 .global font1
-.global powerTable
+.global power_table
 .global press_start_string
 .global lda_games_string
 .global copyright_c_2010_string
-.global levelString
-.global livesString
-.global gameOverString
-.global titleDef
-.global titlePalette
-.global titleNametable
+.global level_string
+.global lives_string
+.global game_over_string
+.global title_definition
+.global title_palette
+.global title_name_table
 
 SOUND_EFFECT_BASE = 10
 
@@ -45,73 +45,73 @@ SOUND_EFFECT_BASE = 10
 .global sf_pitch_envelope_1
 
 .struct title
-  paletteAddress .word
-  nametableAddress .word
-  chrAddress .word
-  chrPrgRomBank .byte
+  palette_address .word
+  name_table_address .word
+  chr_address .word
+  chr_prg_rom_bank .byte
 .endstruct
 
 .struct level
-  romDefinitionTable .word
+  level_data_table .word
 .endstruct
 
 .struct font
-  chrAddress .word
-  chrPrgRomBank .byte
-  digitTable .byte 10
+  chr_address .word
+  chr_prg_rom_bank .byte
+  digit_table .byte 10
   palette .byte 32
 .endstruct
 
-.struct ROMDefinitionTableStruct
-  NomolosAndEntityBank .byte
-  LevelAndMusicBank .byte
-  LevelPatternsBank .byte
-  LevelPatternsAddress .word
-  SpritePatternsBank .byte
-  SpritePatternsAddress .word
-  CyclingPaletteAddress .word
-  CyclingPaletteSpeed .byte
+.struct level_data_struct
+  nomolos_entity_bank .byte
+  level_music_bank .byte
+  level_patterns_bank .byte
+  level_patterns_address .word
+  sprite_patterns_bank .byte
+  sprite_patterns_address .word
+  cycling_palette_address .word
+  cycling_palette_speed .byte
   
-  NomolosWalk .word
-  NomolosWalkOverlay .word
-  NomolosJump .word
-  NomolosJumpOverlay .word
-  NomolosFight .word
-  NomolosFightOverlay .word
-  NomolosFlail .word
-  NomolosFlailOverlay .word
-  NomolosSpear .word
-  NomolosSpearOverlay .word
-  FlailBall .word
-  SpearFly .word
-  SlumpedArmor .word
-  SlumpedArmorOverlay .word
-  ScaredyCat .word
-  ScaredyCatOverlay .word
+  nomolos_walk .word
+  nomolos_walk_overlay .word
+  nomolos_jump .word
+  nomolos_jump_overlay .word
+  nomolos_fight .word
+  nomolos_fight_overlay .word
+  nomolos_flail .word
+  nomolos_flail_overlay .word
+  nomolos_spear .word
+  nomolos_spear_overlay .word
+  nomolos_flail_ball .word
+  nomolos_spear_fly .word
+  nomolos_slumped_armor .word
+  nomolos_slumped_armor_overlay .word
+  nomolos_scaredy_cat .word
+  nomolos_scaredy_cat_overlay .word
   
-  Heart0 .word
-  Spear0 .word
-  GrankFly .word
-  BeedieBlob .word
-  FlailItem0 .word
-  DeentleWalk .word
-  Explosion .word
-  Mouse .word
-  OneUp0 .word
-  SkelekinWalk .word
-  BatFly .word
-  Batree .word
-  OwlFly .word
-  OwlAttack .word
-  SnufferRun .word
-  SnufferBite .word
-  SnailCrawl .word
-  DragonFly .word
-  IceBallFly .word
-  SharkLeap .word
+  heart_0 .word
+  spear_0 .word
+  grank_fly .word
+  beedie_blob .word
+  flail_0 .word
+  deentle_walk .word
+  explosion .word
+  mouse .word
+  one_up_0 .word
+  skelekin_walk .word
+  bat_fly .word
+  batree .word
+  owl_fly .word
+  owl_attack .word
+  snuffer_run .word
+  snuffer_bite .word
+  snail_crawl .word
+  dragon_fly .word
+  ice_ball_fly .word
+  shark_leap .word
   
-  attackSound .word
-  hitSound .word
+  attack_sound .word
+  hit_sound .word
   palette .word
 
   nomolos_start_x .byte
@@ -125,24 +125,24 @@ SOUND_EFFECT_BASE = 10
   meta_tile_column_table .word
   meta_tile_table .word
   
-  EntityDefinitionTable .word
+  entity_definition_table .word
   music .word
-  NextLevel .byte
+  next_level .byte
   
-  NomolosOffset .byte
-  DeentleOffset .byte
-  ExplosionOffset .byte
-  BeedieOffset .byte
-  GrankOffset .byte
+  nomolos_offset .byte
+  deentle_offset .byte
+  explosion_offset .byte
+  beedie_offset .byte
+  grank_offset .byte
   BatOffset .byte
-  SkelekinOffset .byte
-  BatreeOffset .byte
-  OwlOffset .byte
-  SnufferOffset .byte
-  SnailOffset .byte
-  DragonOffset .byte
-  IceBallOffset .byte
-  SharkOffset .byte
+  skelekin_offset .byte
+  batree_offset .byte
+  owl_offset .byte
+  snuffer_offset .byte
+  snail_offset .byte
+  dragon_offset .byte
+  ice_ball_offset .byte
+  shark_offset .byte
 
 .endstruct
 

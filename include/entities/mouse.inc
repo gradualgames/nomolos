@@ -73,13 +73,13 @@ mouseSitThere:
   lda w1
   sta b1
   
-  ldy #ROMDefinitionTableStruct::NomolosOffset
+  ldy #level_data_struct::nomolos_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
   
   lda #0
   sta b2  
-  ldy #ROMDefinitionTableStruct::Mouse
+  ldy #level_data_struct::mouse
   jsr entity_draw_anim
 
   

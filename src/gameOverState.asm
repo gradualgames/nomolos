@@ -90,14 +90,14 @@ gameOverStateRun:
   jsr ppu_load_palette
   
   ;switch to PRG block containing font1
-  lda font1+font::chrPrgRomBank
+  lda font1+font::chr_prg_rom_bank
   sta mapper_bank_next
   jsr mapper_switch_bank
   
   ;load chr data
-  lda font1+font::chrAddress
+  lda font1+font::chr_address
   sta w0
-  lda font1+font::chrAddress+1
+  lda font1+font::chr_address+1
   sta w0+1
   
   lda #$00
@@ -108,9 +108,9 @@ gameOverStateRun:
 
   ;display GAME OVER string
   set_ppu_2006 $20, 14, 11
-  lda #<gameOverString
+  lda #<game_over_string
   sta w0
-  lda #>gameOverString
+  lda #>game_over_string
   sta w0+1
   jsr ppu_display_string
 

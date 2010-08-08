@@ -140,7 +140,7 @@ killSnuffer:
   
 snuffer_draw:
 
-  lda #ROMDefinitionTableStruct::SnufferRun
+  lda #level_data_struct::snuffer_run
   sta entity_locals+snuffer_locals::anim_index,x
 
   jsr entity_compute_screen_coordinates
@@ -159,7 +159,7 @@ snuffer_draw:
   
   jsr nomolos_hurt
   
-  lda #ROMDefinitionTableStruct::SnufferBite
+  lda #level_data_struct::snuffer_bite
   sta entity_locals+snuffer_locals::anim_index,x
   
   jsr entity_reset_anim
@@ -181,9 +181,9 @@ snuffer_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -199,7 +199,7 @@ snuffer_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::SnufferOffset
+  ldy #level_data_struct::snuffer_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 

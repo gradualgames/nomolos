@@ -67,11 +67,11 @@ skipJmpNotTouching:
   
 notTouching:
 
-  ldy #ROMDefinitionTableStruct::NomolosOffset
+  ldy #level_data_struct::nomolos_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #ROMDefinitionTableStruct::OneUp0
+  ldy #level_data_struct::one_up_0
   lda (base_address_rom_definition_table),y
   sta w0
   iny

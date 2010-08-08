@@ -76,21 +76,21 @@ titleStateRun:
   lda #$00
   sta ppu_2006+1
   upload_ppu_2006
-  lda titleDef+title::nametableAddress
+  lda title_definition+title::name_table_address
   sta w0
-  lda titleDef+title::nametableAddress+1
+  lda title_definition+title::name_table_address+1
   sta w0+1
   jsr ppu_load_name_table
   
   ;now switch to the prg bank containing the chr data of the title screen.
-  lda titleDef+title::chrPrgRomBank
+  lda title_definition+title::chr_prg_rom_bank
   sta mapper_bank_next
   jsr mapper_switch_bank
   
   ;now load the chr data
-  lda titleDef+title::chrAddress
+  lda title_definition+title::chr_address
   sta w0
-  lda titleDef+title::chrAddress+1
+  lda title_definition+title::chr_address+1
   sta w0+1
   
   lda #$00
@@ -127,9 +127,9 @@ titleStateRun:
   jsr ppu_display_string
   
   ;now that nametable loaded, load the new palette faded out
-  lda titleDef+title::paletteAddress
+  lda title_definition+title::palette_address
   sta w0
-  lda titleDef+title::paletteAddress+1
+  lda title_definition+title::palette_address+1
   sta w0+1
   
   lda #0
@@ -173,9 +173,9 @@ titleStateRun:
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
   
-  lda titleDef+title::paletteAddress
+  lda title_definition+title::palette_address
   sta w0
-  lda titleDef+title::paletteAddress+1
+  lda title_definition+title::palette_address+1
   sta w0+1
   
   jsr fade_in_palette
@@ -207,9 +207,9 @@ titleStateDone:
   .endif
   
   ;create dynamic palette from rom palette
-  lda titleDef+title::paletteAddress
+  lda title_definition+title::palette_address
   sta w0
-  lda titleDef+title::paletteAddress+1
+  lda title_definition+title::palette_address+1
   sta w0+1
   
   jsr fade_out_palette

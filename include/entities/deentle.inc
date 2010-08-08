@@ -144,9 +144,9 @@ deentle_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -162,11 +162,11 @@ deentle_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::DeentleOffset
+  ldy #level_data_struct::deentle_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #ROMDefinitionTableStruct::DeentleWalk
+  ldy #level_data_struct::deentle_walk
   jsr entity_draw_anim
 
 deentleOffscreen:

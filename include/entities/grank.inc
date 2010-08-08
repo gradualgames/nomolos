@@ -254,9 +254,9 @@ grank_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -272,11 +272,11 @@ grank_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::GrankOffset
+  ldy #level_data_struct::grank_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #ROMDefinitionTableStruct::GrankFly
+  ldy #level_data_struct::grank_fly
   lda #0
   sta b2
   jsr entity_draw_anim

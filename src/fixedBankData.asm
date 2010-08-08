@@ -39,19 +39,19 @@ ROMDefinitionTable0:
   .word level1_patterns
   .byte spritesheet_1_patterns_bank
   .word level1_sprite_groups
-  .word 0 ;CyclingPaletteAddress
-  .byte 0 ;CyclingPaletteSpeed
+  .word 0 ;cycling_palette_address
+  .byte 0 ;cycling_palette_speed
   
   .word spritesheet1_NomolosWalk
-  .word spritesheet1_NomolosWalkOverlay
-  .word spritesheet1_NomolosJump
-  .word spritesheet1_NomolosJumpOverlay
-  .word spritesheet1_NomolosFight
-  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_nomolos_walk_overlay
+  .word spritesheet1_nomolos_jump
+  .word spritesheet1_nomolos_jump_overlay
+  .word spritesheet1_nomolos_fight
+  .word spritesheet1_nomolos_fight_overlay
   .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_NomolosFlailOverlay
+  .word spritesheet1_nomolos_flail_overlay
   .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_nomolos_fight_overlay
   .word spritesheet1_FlailBall
   .word spritesheet1_Spear0
   .word spritesheet1_SlumpedArmor0
@@ -80,8 +80,8 @@ ROMDefinitionTable0:
   .word $0000 ;spritesheet1_IceBallFly
   .word $0000 ;spritesheet1_SharkLeap
 
-  .word attackSound
-  .word hitSound
+  .word attack_sound
+  .word hit_sound
   .word level1_palette
  
   .byte 120 ;nomolos_start_x
@@ -95,7 +95,7 @@ ROMDefinitionTable0:
   .word level1_meta_tile_column_table
   .word level1_meta_tile_table
 
-  .word EntityDefinitionTable
+  .word entity_definition_table
   
   .word level1_music
   
@@ -124,19 +124,19 @@ ROMDefinitionTable1:
   .word level2_patterns
   .byte spritesheet_1_patterns_bank
   .word level2_sprite_groups
-  .word level2_cycling_palettes ;CyclingPaletteAddress
-  .byte 5 ;CyclingPaletteSpeed
+  .word level2_cycling_palettes ;cycling_palette_address
+  .byte 5 ;cycling_palette_speed
   
   .word spritesheet1_NomolosWalk
-  .word spritesheet1_NomolosWalkOverlay
-  .word spritesheet1_NomolosJump
-  .word spritesheet1_NomolosJumpOverlay
-  .word spritesheet1_NomolosFight
-  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_nomolos_walk_overlay
+  .word spritesheet1_nomolos_jump
+  .word spritesheet1_nomolos_jump_overlay
+  .word spritesheet1_nomolos_fight
+  .word spritesheet1_nomolos_fight_overlay
   .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_NomolosFlailOverlay
+  .word spritesheet1_nomolos_flail_overlay
   .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_nomolos_fight_overlay
   .word spritesheet1_FlailBall
   .word spritesheet1_Spear0
   .word spritesheet1_SlumpedArmor0
@@ -155,7 +155,7 @@ ROMDefinitionTable1:
   .word spritesheet1_OneUp0
   .word spritesheet1_SkelekinWalk
   .word spritesheet1_BatFly
-  .word $0000 ;Batree
+  .word $0000 ;batree
   .word $0000 ;spritesheet1_OwlFly
   .word $0000 ;spritesheet1_OwlAttack
   .word $0000 ;spritesheet1_SnufferRun
@@ -165,8 +165,8 @@ ROMDefinitionTable1:
   .word $0000 ;spritesheet1_IceBallFly
   .word $0000 ;spritesheet1_SharkLeap
 
-  .word attackSound
-  .word hitSound
+  .word attack_sound
+  .word hit_sound
   .word level2_palette
 
   .byte 120 ;nomolos_start_x
@@ -180,7 +180,7 @@ ROMDefinitionTable1:
   .word level2_meta_tile_column_table
   .word level2_meta_tile_table
 
-  .word EntityDefinitionTable
+  .word entity_definition_table
   .word level2_music
   .byte level_3_index
 
@@ -207,19 +207,19 @@ ROMDefinitionTable2:
   .word level3_patterns
   .byte spritesheet_1_patterns_bank
   .word level3_sprite_groups
-  .word level3_cycling_palettes ;CyclingPaletteAddress
-  .byte 10 ;CyclingPaletteSpeed
+  .word level3_cycling_palettes ;cycling_palette_address
+  .byte 10 ;cycling_palette_speed
   
   .word spritesheet1_NomolosWalk
-  .word spritesheet1_NomolosWalkOverlay
-  .word spritesheet1_NomolosJump
-  .word spritesheet1_NomolosJumpOverlay
-  .word spritesheet1_NomolosFight
-  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_nomolos_walk_overlay
+  .word spritesheet1_nomolos_jump
+  .word spritesheet1_nomolos_jump_overlay
+  .word spritesheet1_nomolos_fight
+  .word spritesheet1_nomolos_fight_overlay
   .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_NomolosFlailOverlay
+  .word spritesheet1_nomolos_flail_overlay
   .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_nomolos_fight_overlay
   .word spritesheet1_FlailBall
   .word spritesheet1_Spear0
   .word spritesheet1_SlumpedArmor0
@@ -238,18 +238,18 @@ ROMDefinitionTable2:
   .word spritesheet1_OneUp0
   .word spritesheet1_SkelekinWalk
   .word spritesheet1_BatFly
-  .word $0000 ;Batree
-  .word $0000 ;OwlFly
-  .word $0000 ;OwlAttack
-  .word $0000 ;SnufferRun
-  .word $0000 ;SnufferBite
+  .word $0000 ;batree
+  .word $0000 ;owl_fly
+  .word $0000 ;owl_attack
+  .word $0000 ;snuffer_run
+  .word $0000 ;snuffer_bite
   .word spritesheet1_SnailCrawl
   .word spritesheet1_DragonFly
   .word spritesheet1_IceBallFly
   .word spritesheet1_SharkLeap
 
-  .word attackSound
-  .word hitSound
+  .word attack_sound
+  .word hit_sound
   .word level3_palette
 
   .byte 30  ;nomolos_start_x
@@ -263,7 +263,7 @@ ROMDefinitionTable2:
   .word level3_meta_tile_column_table
   .word level3_meta_tile_table
 
-  .word EntityDefinitionTable
+  .word entity_definition_table
   .word level3_music
   .byte boss_1_index
   
@@ -290,19 +290,19 @@ ROMDefinitionTable3:
   .word boss1_patterns
   .byte spritesheet_1_patterns_bank
   .word boss1_sprite_groups
-  .word 0 ;CyclingPaletteAddress
-  .byte 0 ;CyclingPaletteSpeed
+  .word 0 ;cycling_palette_address
+  .byte 0 ;cycling_palette_speed
   
   .word spritesheet1_NomolosWalk
-  .word spritesheet1_NomolosWalkOverlay
-  .word spritesheet1_NomolosJump
-  .word spritesheet1_NomolosJumpOverlay
-  .word spritesheet1_NomolosFight
-  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_nomolos_walk_overlay
+  .word spritesheet1_nomolos_jump
+  .word spritesheet1_nomolos_jump_overlay
+  .word spritesheet1_nomolos_fight
+  .word spritesheet1_nomolos_fight_overlay
   .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_NomolosFlailOverlay
+  .word spritesheet1_nomolos_flail_overlay
   .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_NomolosFightOverlay
+  .word spritesheet1_nomolos_fight_overlay
   .word spritesheet1_FlailBall
   .word spritesheet1_Spear0
   .word spritesheet1_SlumpedArmor0
@@ -321,18 +321,18 @@ ROMDefinitionTable3:
   .word 0 ;spritesheet1_OneUp0
   .word 0 ;spritesheet1_SkelekinWalk
   .word 0 ;spritesheet1_BatFly
-  .word 0 ;Batree
-  .word 0 ;OwlFly
-  .word 0 ;OwlAttack
-  .word 0 ;SnufferRun
-  .word 0 ;SnufferBite
+  .word 0 ;batree
+  .word 0 ;owl_fly
+  .word 0 ;owl_attack
+  .word 0 ;snuffer_run
+  .word 0 ;snuffer_bite
   .word 0 ;spritesheet1_SnailCrawl
   .word 0 ;spritesheet1_DragonFly
   .word spritesheet1_IceBallFly
   .word 0 ;spritesheet1_SharkLeap
 
-  .word attackSound
-  .word hitSound
+  .word attack_sound
+  .word hit_sound
   .word boss1_palette
 
   .byte 40   ;nomolos_start_x
@@ -346,7 +346,7 @@ ROMDefinitionTable3:
   .word boss1_meta_tile_column_table
   .word boss1_meta_tile_table
 
-  .word EntityDefinitionTable
+  .word entity_definition_table
   .word boss1_music
   .byte level_1_index
   
@@ -366,7 +366,7 @@ ROMDefinitionTable3:
   .byte 0 ;boss1_sprites_Shark_chr_index
   
 ;Entities
-EntityDefinitionTable:
+entity_definition_table:
 DeentleEntity:
   .word deentle_update
   .byte $00
@@ -455,7 +455,7 @@ BatEntity:
   .byte $0A
   .byte $00
   .byte $00
-Batree:
+batree:
   .word batree_update
   .byte $00
   .byte $18
@@ -512,7 +512,7 @@ Shark:
   .byte $00
   .byte $00
   
-attackSound:
+attack_sound:
   .byte STL, 10
   .byte STV, SOUND_EFFECT_BASE+5
   .byte STP, SOUND_EFFECT_BASE+1
@@ -539,7 +539,7 @@ attackSpearSound:
   .byte A0
   .byte TRM
 
-hitSound:
+hit_sound:
   .byte STL, 2
   .byte STV, SOUND_EFFECT_BASE+3
   .byte STP, SOUND_EFFECT_BASE+1
@@ -733,7 +733,7 @@ font1:
 .include "font0_palette_source.inc"
 
 ;table of decimal powers for creating decimal strings from 8 bit numbers
-powerTable:
+power_table:
   .byte 100, 10, 1
 
 press_start_string:
@@ -745,17 +745,17 @@ lda_games_string:
 copyright_c_2010_string:
   .byte $08,$2c,$02,$2d,$1a,$1d,$1b,$1c,$1b
   
-levelString:
+level_string:
   .byte $06,$0b,$04,$15,$04,$0b,$1a
 
-livesString:
+lives_string:
   .byte $06,$0b,$08,$15,$04,$12,$1a
 
-gameOverString:
+game_over_string:
   .byte $09,$06,$00,$0c,$04,$1a,$0e,$15,$04,$11
 
 
-titleDef:
+title_definition:
   .word title_palette
   .word title_nametable
   .word title_patterns

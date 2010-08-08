@@ -43,7 +43,7 @@ playLevelStateInit:
   jsr keep_playing_state
 
   ;fade in the palette
-  ldy #ROMDefinitionTableStruct::palette
+  ldy #level_data_struct::palette
   lda (base_address_rom_definition_table),y
   sta w0
   iny
@@ -92,7 +92,7 @@ switchToLevelOutState:
   ;Fade out the palette then switch to game over or level outro
   ;****************************************************************
 
-  ldy #ROMDefinitionTableStruct::palette
+  ldy #level_data_struct::palette
   lda (base_address_rom_definition_table),y
   sta w0
   iny
@@ -170,7 +170,7 @@ stateCommandComplete:
   
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  ldy #level_data_struct::level_music_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank

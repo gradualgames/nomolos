@@ -34,7 +34,7 @@ is_touching_nomolos:
   jsr sound_upload
   .endif
   
-  ldy #ROMDefinitionTableStruct::NextLevel
+  ldy #level_data_struct::next_level
   lda (base_address_rom_definition_table),y
   sta level_current
   lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE

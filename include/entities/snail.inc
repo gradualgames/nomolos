@@ -191,9 +191,9 @@ snail_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -209,11 +209,11 @@ snail_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::SnailOffset
+  ldy #level_data_struct::snail_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #ROMDefinitionTableStruct::SnailCrawl
+  ldy #level_data_struct::snail_crawl
   lda entity_locals+snail_locals::direction,x
   cmp #0
   bne snail_moving_right

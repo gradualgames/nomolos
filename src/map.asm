@@ -42,7 +42,7 @@ skip_leave_map_test_collision:
   ;switch to the level and music bank
   lda mapper_bank_current  ;save current bank
   pha
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  ldy #level_data_struct::level_music_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
@@ -229,7 +229,7 @@ meta_tile_column_index = w0
   ;switch to the level and music bank
   lda mapper_bank_current  ;save current bank
   pha
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  ldy #level_data_struct::level_music_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
@@ -303,7 +303,7 @@ meta_tile_column_index = w0
   ;switch to the level and music bank
   lda mapper_bank_current  ;save current bank
   pha
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  ldy #level_data_struct::level_music_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank

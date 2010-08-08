@@ -36,13 +36,13 @@
   lda #$00
   sta camera_scroll_x
   
-  ldy #ROMDefinitionTableStruct::starting_screen
+  ldy #level_data_struct::starting_screen
   lda (base_address_rom_definition_table),y
   sta camera_scroll_x+1
   
   lda #$00
   sta camera_min_scroll_x
-  ldy #ROMDefinitionTableStruct::starting_screen
+  ldy #level_data_struct::starting_screen
   lda (base_address_rom_definition_table),y
   sta camera_min_scroll_x+1
   

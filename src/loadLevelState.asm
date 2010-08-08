@@ -62,19 +62,19 @@ loadLevelStateInit:
   tax
   
   ;Load location of the rom definition table for this level
-  lda level_definition_table+level::romDefinitionTable,x
+  lda level_definition_table+level::level_data_table,x
   sta base_address_rom_definition_table
-  lda level_definition_table+level::romDefinitionTable+1,x
+  lda level_definition_table+level::level_data_table+1,x
   sta base_address_rom_definition_table+1
   
   ;first bank switch to the PRG rom bank containing the level's chr data
-  ldy #ROMDefinitionTableStruct::LevelPatternsBank
+  ldy #level_data_struct::level_patterns_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
   
   ;now load the address of the chr data from the level definition table
-  ldy #ROMDefinitionTableStruct::LevelPatternsAddress
+  ldy #level_data_struct::level_patterns_address
   lda (base_address_rom_definition_table),y
   sta w0
   iny
@@ -89,13 +89,13 @@ loadLevelStateInit:
   jsr ppu_load_chr_amount
   
   ;bank switch to the bank containing sprite chr data
-  ldy #ROMDefinitionTableStruct::SpritePatternsBank
+  ldy #level_data_struct::sprite_patterns_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
   
   ;now load the address of the chr data from the level definition table
-  ldy #ROMDefinitionTableStruct::SpritePatternsAddress
+  ldy #level_data_struct::sprite_patterns_address
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -111,47 +111,47 @@ loadLevelStateInit:
   jsr ppu_load_chr_groups
   
   ;load PRG bank into $8000
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  ldy #level_data_struct::level_music_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
 
-  ldy #ROMDefinitionTableStruct::map
+  ldy #level_data_struct::map
   lda (base_address_rom_definition_table),y
   sta base_address_map
   iny
   lda (base_address_rom_definition_table),y
   sta base_address_map+1
   
-  ldy #ROMDefinitionTableStruct::map_column_table
+  ldy #level_data_struct::map_column_table
   lda (base_address_rom_definition_table),y
   sta base_address_map_column_table
   iny
   lda (base_address_rom_definition_table),y
   sta base_address_map_column_table+1
   
-  ldy #ROMDefinitionTableStruct::attribute_column_table
+  ldy #level_data_struct::attribute_column_table
   lda (base_address_rom_definition_table),y
   sta base_address_attribute_column_table
   iny
   lda (base_address_rom_definition_table),y
   sta base_address_attribute_column_table+1
   
-  ldy #ROMDefinitionTableStruct::meta_tile_column_table
+  ldy #level_data_struct::meta_tile_column_table
   lda (base_address_rom_definition_table),y
   sta base_address_meta_tile_column_table
   iny
   lda (base_address_rom_definition_table),y
   sta base_address_meta_tile_column_table+1
   
-  ldy #ROMDefinitionTableStruct::meta_tile_table
+  ldy #level_data_struct::meta_tile_table
   lda (base_address_rom_definition_table),y
   sta base_address_meta_tile_table
   iny
   lda (base_address_rom_definition_table),y
   sta base_address_meta_tile_table+1
   
-  ldy #ROMDefinitionTableStruct::EntityDefinitionTable
+  ldy #level_data_struct::entity_definition_table
   lda (base_address_rom_definition_table),y
   sta base_address_entity_definition_table
   iny
@@ -159,7 +159,7 @@ loadLevelStateInit:
   sta base_address_entity_definition_table+1
   
   .ifdef MUSIC_ENABLE
-  ldy #ROMDefinitionTableStruct::music
+  ldy #level_data_struct::music
   lda (base_address_rom_definition_table),y
   sta sound_param_word_1
   iny
@@ -168,7 +168,7 @@ loadLevelStateInit:
   jsr song_initialize
   .endif
   
-  ldy #ROMDefinitionTableStruct::palette
+  ldy #level_data_struct::palette
   lda (base_address_rom_definition_table),y
   sta w0
   iny
@@ -199,12 +199,12 @@ loadLevelStateInit:
   ;set camera scroll at starting screen
   lda #0
   sta camera_scroll_x
-  ldy #ROMDefinitionTableStruct::starting_screen
+  ldy #level_data_struct::starting_screen
   lda (base_address_rom_definition_table),y
   sta camera_scroll_x+1
   
   ;load whether camera scroll is enabled for gameplay
-  ldy #ROMDefinitionTableStruct::camera_scroll_enabled
+  ldy #level_data_struct::camera_scroll_enabled
   lda (base_address_rom_definition_table),y
   sta camera_scroll_enabled
   
@@ -247,26 +247,26 @@ loadLevelStateDone:
   ;set camera scroll at starting screen
   lda #0
   sta camera_scroll_x
-  ldy #ROMDefinitionTableStruct::starting_screen
+  ldy #level_data_struct::starting_screen
   lda (base_address_rom_definition_table),y
   sta camera_scroll_x+1
 
   ;switch to play level state.  
   ;keep any new entities positioned where they need to be
   ;switch to the actor and entity bank
-  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
+  ldy #level_data_struct::nomolos_entity_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
   
   jsr entity_update_all
   
-  ldy #ROMDefinitionTableStruct::LevelAndMusicBank
+  ldy #level_data_struct::level_music_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
   
-  ldy #ROMDefinitionTableStruct::CyclingPaletteAddress
+  ldy #level_data_struct::cycling_palette_address
   lda (base_address_rom_definition_table),y
   sta state_control_params+playLevelStateControl::cycling_palette_address
   iny
@@ -276,7 +276,7 @@ loadLevelStateDone:
   lda #0
   sta state_control_params+playLevelStateControl::palette_cycle_index
   
-  ldy #ROMDefinitionTableStruct::CyclingPaletteSpeed
+  ldy #level_data_struct::cycling_palette_speed
   lda (base_address_rom_definition_table),y
   sta state_control_params+playLevelStateControl::cycling_palette_speed
   sta state_control_params+playLevelStateControl::palette_cycle_counter

@@ -285,9 +285,9 @@ beedie_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -303,11 +303,11 @@ beedie_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::BeedieOffset
+  ldy #level_data_struct::beedie_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #ROMDefinitionTableStruct::BeedieBlob
+  ldy #level_data_struct::beedie_blob
   lda #0
   sta b2
   jsr entity_draw_anim

@@ -339,7 +339,7 @@ dragon_draw:
   jsr entity_test_death_zone
   beq killDragon
   
-  lda #ROMDefinitionTableStruct::DragonFly
+  lda #level_data_struct::dragon_fly
   sta entity_locals+dragon_locals::anim_index,x
   ;load dragon width and height
   lda #DRAGON_WIDTH
@@ -351,7 +351,7 @@ dragon_draw:
   bne :+
   
   jsr nomolos_hurt
-  lda #ROMDefinitionTableStruct::DragonFly
+  lda #level_data_struct::dragon_fly
   sta entity_locals+dragon_locals::anim_index,x
   
   jsr entity_reset_anim
@@ -373,9 +373,9 @@ dragon_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -391,7 +391,7 @@ dragon_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::DragonOffset
+  ldy #level_data_struct::dragon_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 

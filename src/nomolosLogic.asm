@@ -44,16 +44,16 @@
 
   lda #0
   sta nomolos_map_x
-  ldy #ROMDefinitionTableStruct::nomolos_start_x
+  ldy #level_data_struct::nomolos_start_x
   lda (base_address_rom_definition_table),y
   sta nomolos_map_x+1
-  ldy #ROMDefinitionTableStruct::starting_screen
+  ldy #level_data_struct::starting_screen
   lda (base_address_rom_definition_table),y
   sta nomolos_map_x+2
 
   lda #0
   sta nomolos_map_y
-  ldy #ROMDefinitionTableStruct::nomolos_start_y
+  ldy #level_data_struct::nomolos_start_y
   lda (base_address_rom_definition_table),y
   sta nomolos_map_y+1
   lda #0
@@ -373,7 +373,7 @@ skipNomolosFacingRight:
 .proc nomolos_attack_sword
 
   ;play an attack sound
-  ldy #ROMDefinitionTableStruct::attackSound
+  ldy #level_data_struct::attack_sound
   lda (base_address_rom_definition_table),y
   sta sound_param_word_0
   iny
@@ -1406,7 +1406,7 @@ notRight:
 .proc nomolos_update_animation
 
   ;switch to the actor and entity bank
-  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
+  ldy #level_data_struct::nomolos_entity_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
@@ -1418,7 +1418,7 @@ notRight:
 
   lda nomolos_state_primary
   and #nomolosAttackTestAND
-  beq skipUpdateNomolosFighting
+  beq skipUpdatenomolos_fighting
 
   lda nomolos_state_secondary
   and #nomolosAttackTestMask
@@ -1431,7 +1431,7 @@ notRight:
   jmp attackSwitchDone
 
 nomolosAttackSpearBranch:
-  ldy #ROMDefinitionTableStruct::NomolosSpear
+  ldy #level_data_struct::nomolos_spear
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1443,7 +1443,7 @@ nomolosAttackSpearBranch:
   jmp attackSwitchDone
 
 nomolosAttackSwordBranch:
-  ldy #ROMDefinitionTableStruct::NomolosFight
+  ldy #level_data_struct::nomolos_fight
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1456,7 +1456,7 @@ nomolosAttackSwordBranch:
 
 nomolosAttackFlailBranch:
 
-  ldy #ROMDefinitionTableStruct::NomolosFlail
+  ldy #level_data_struct::nomolos_flail
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1470,7 +1470,7 @@ nomolosAttackFlailBranch:
   lda #>nomolos_weapon_animation
   sta w1+1
 
-  ldy #ROMDefinitionTableStruct::FlailBall
+  ldy #level_data_struct::nomolos_flail_ball
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1481,12 +1481,12 @@ nomolosAttackFlailBranch:
 
 attackSwitchDone:
   rts
-skipUpdateNomolosFighting:
+skipUpdatenomolos_fighting:
 
   lda nomolos_state_primary
   and #nomolosMovingTestAND
   beq skipUpdateNomolosMoving
-  ldy #ROMDefinitionTableStruct::NomolosWalk
+  ldy #level_data_struct::nomolos_walk
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1513,7 +1513,7 @@ skipUpdateNomolosMoving:
   lda #>nomolos_animation
   sta w1+1
 
-  ldy #ROMDefinitionTableStruct::NomolosFlail
+  ldy #level_data_struct::nomolos_flail
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1540,7 +1540,7 @@ skipUpdateNomolosMoving:
 
   jsr sprite_draw_animation_16bit
 
-  ldy #ROMDefinitionTableStruct::NomolosFlailOverlay
+  ldy #level_data_struct::nomolos_flail_overlay
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1554,7 +1554,7 @@ skipUpdateNomolosMoving:
   lda #>nomolos_weapon_animation
   sta w1+1
 
-  ldy #ROMDefinitionTableStruct::FlailBall
+  ldy #level_data_struct::nomolos_flail_ball
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1582,7 +1582,7 @@ do_not_draw_flail:
   lda #>nomolos_animation
   sta w1+1
 
-  ldy #ROMDefinitionTableStruct::NomolosFight
+  ldy #level_data_struct::nomolos_fight
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1609,7 +1609,7 @@ do_not_draw_flail:
 
   jsr sprite_draw_animation_16bit
 
-  ldy #ROMDefinitionTableStruct::NomolosFightOverlay
+  ldy #level_data_struct::nomolos_fight_overlay
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1629,7 +1629,7 @@ do_not_draw_flail:
   lda #>nomolos_animation
   sta w1+1
 
-  ldy #ROMDefinitionTableStruct::NomolosSpear
+  ldy #level_data_struct::nomolos_spear
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1657,7 +1657,7 @@ do_not_draw_flail:
 
   jsr sprite_draw_animation_16bit
 
-  ldy #ROMDefinitionTableStruct::NomolosFightOverlay
+  ldy #level_data_struct::nomolos_fight_overlay
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1676,7 +1676,7 @@ do_not_draw_flail:
   lda nomolos_attack_rect_y+1
   sta w4+1
 
-  ldy #ROMDefinitionTableStruct::SpearFly
+  ldy #level_data_struct::nomolos_spear_fly
   lda (base_address_rom_definition_table),y
   sta w0
   iny
@@ -1693,7 +1693,7 @@ do_not_draw_flail:
 .proc nomolos_draw
 
   ;load Nomolos' sprite group offset.
-  ldy #ROMDefinitionTableStruct::NomolosOffset
+  ldy #level_data_struct::nomolos_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
@@ -1706,7 +1706,7 @@ do_not_draw_flail:
   beq nomolosNotAttackedDying
 
   ;if we're in dying state, we will only ever draw the slumped armor and the scaredy cat graphic and return.
-  ldy #ROMDefinitionTableStruct::SlumpedArmor
+  ldy #level_data_struct::nomolos_slumped_armor
   lda (base_address_rom_definition_table),y
   sta w0
   iny
@@ -1729,7 +1729,7 @@ do_not_draw_flail:
   ;draw the slumped armor
   jsr sprite_draw_metasprite_16bit
 
-  ldy #ROMDefinitionTableStruct::SlumpedArmorOverlay
+  ldy #level_data_struct::nomolos_slumped_armor_overlay
   lda (base_address_rom_definition_table),y
   sta w0
   iny
@@ -1739,7 +1739,7 @@ do_not_draw_flail:
   ;draw the slumped armor overlay
   jsr sprite_draw_metasprite_16bit
 
-  ldy #ROMDefinitionTableStruct::ScaredyCat
+  ldy #level_data_struct::nomolos_scaredy_cat
   lda (base_address_rom_definition_table),y
   sta w0
   iny
@@ -1759,7 +1759,7 @@ do_not_draw_flail:
   ;draw the scaredy cat
   jsr sprite_draw_metasprite_16bit
 
-  ldy #ROMDefinitionTableStruct::ScaredyCatOverlay
+  ldy #level_data_struct::nomolos_scaredy_cat_overlay
   lda (base_address_rom_definition_table),y
   sta w0
   iny
@@ -1793,7 +1793,7 @@ skipBlinkCheck:
   ;regardless of whether he is in the air.
   lda nomolos_state_primary
   and #nomolosAttackTestAND
-  beq skipDrawNomolosFighting
+  beq skipDrawnomolos_fighting
 
   lda nomolos_state_secondary
   and #nomolosAttackTestMask
@@ -1826,7 +1826,7 @@ attackSwitchDone:
 
   rts
 
-skipDrawNomolosFighting:
+skipDrawnomolos_fighting:
 
   jsr nomolos_draw_jumping_or_walking
 
@@ -1844,13 +1844,13 @@ dontDrawNomolos:
   lsr
   lsr
   lsr
-  bne skipDrawNomolosJumping
+  bne skipDrawnomolos_jumping
 
   jsr nomolos_draw_jumping
   
   rts
   
-skipDrawNomolosJumping:
+skipDrawnomolos_jumping:
 
   jsr nomolos_draw_walking
   
@@ -1867,7 +1867,7 @@ skipDrawNomolosJumping:
   lda #>nomolos_animation
   sta w1+1
 
-  ldy #ROMDefinitionTableStruct::NomolosJump
+  ldy #level_data_struct::nomolos_jump
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1893,7 +1893,7 @@ skipDrawNomolosJumping:
 
   jsr sprite_draw_animation_16bit
 
-  ldy #ROMDefinitionTableStruct::NomolosJumpOverlay
+  ldy #level_data_struct::nomolos_jump_overlay
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1915,8 +1915,8 @@ skipDrawNomolosJumping:
 
   lda nomolos_state_primary
   and #1
-  bne skipNomolosWalkingRight
-  ldy #ROMDefinitionTableStruct::NomolosWalkOverlay
+  bne skipnomolos_walkingRight
+  ldy #level_data_struct::nomolos_walk_overlay
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1935,7 +1935,7 @@ skipDrawNomolosJumping:
   sta w4+1
   jsr sprite_draw_animation_16bit
 
-  ldy #ROMDefinitionTableStruct::NomolosWalk
+  ldy #level_data_struct::nomolos_walk
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1944,9 +1944,9 @@ skipDrawNomolosJumping:
 
   jsr sprite_draw_animation_16bit
 
-  jmp skipNomolosWalkingLeft
-skipNomolosWalkingRight:
-  ldy #ROMDefinitionTableStruct::NomolosWalkOverlay
+  jmp skipnomolos_walkingLeft
+skipnomolos_walkingRight:
+  ldy #level_data_struct::nomolos_walk_overlay
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1965,7 +1965,7 @@ skipNomolosWalkingRight:
   sta w4+1
   jsr sprite_draw_animation_16bit
 
-  ldy #ROMDefinitionTableStruct::NomolosWalk
+  ldy #level_data_struct::nomolos_walk
   lda (base_address_rom_definition_table),y
   sta w2
   iny
@@ -1973,7 +1973,7 @@ skipNomolosWalkingRight:
   sta w2+1
   jsr sprite_draw_animation_16bit
 
-skipNomolosWalkingLeft:
+skipnomolos_walkingLeft:
 
   rts
 
@@ -1989,7 +1989,7 @@ skipNomolosWalkingLeft:
   sta b1
   lda #0
   sta b2
-  ldy #ROMDefinitionTableStruct::Heart0
+  ldy #level_data_struct::heart_0
   lda (base_address_rom_definition_table),y
   sta w0
   iny

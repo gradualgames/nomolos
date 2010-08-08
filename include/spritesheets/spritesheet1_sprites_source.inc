@@ -32,8 +32,8 @@ spritesheet1_NomolosWalk2:
   .byte $10,$15,$00,$08,$00
   .byte $18,$16,$00,$00,$08
   .byte $18,$17,$00,$08,$00
-.export spritesheet1_NomolosJump0
-spritesheet1_NomolosJump0:
+.export spritesheet1_nomolos_jump0
+spritesheet1_nomolos_jump0:
   .byte $08
   .byte $00,$18,$00,$00,$08
   .byte $00,$19,$00,$08,$00
@@ -43,29 +43,29 @@ spritesheet1_NomolosJump0:
   .byte $10,$1d,$00,$08,$00
   .byte $18,$1e,$00,$00,$08
   .byte $18,$1f,$00,$08,$00
-.export spritesheet1_NomolosWalkOverlay0
-spritesheet1_NomolosWalkOverlay0:
+.export spritesheet1_nomolos_walk_overlay0
+spritesheet1_nomolos_walk_overlay0:
   .byte $04
   .byte $01,$20,$01,$00,$08
   .byte $01,$21,$01,$08,$00
   .byte $09,$22,$01,$00,$08
   .byte $09,$23,$01,$08,$00
-.export spritesheet1_NomolosWalkOverlay1
-spritesheet1_NomolosWalkOverlay1:
+.export spritesheet1_nomolos_walk_overlay1
+spritesheet1_nomolos_walk_overlay1:
   .byte $04
   .byte $01,$24,$01,$00,$08
   .byte $01,$25,$01,$08,$00
   .byte $09,$26,$01,$00,$08
   .byte $09,$27,$01,$08,$00
-.export spritesheet1_NomolosWalkOverlay2
-spritesheet1_NomolosWalkOverlay2:
+.export spritesheet1_nomolos_walk_overlay2
+spritesheet1_nomolos_walk_overlay2:
   .byte $04
   .byte $01,$24,$01,$00,$08
   .byte $01,$28,$01,$08,$00
   .byte $09,$26,$01,$00,$08
   .byte $09,$27,$01,$08,$00
-.export spritesheet1_NomolosJumpOverlay0
-spritesheet1_NomolosJumpOverlay0:
+.export spritesheet1_nomolos_jump_overlay0
+spritesheet1_nomolos_jump_overlay0:
   .byte $04
   .byte $01,$20,$01,$00,$08
   .byte $01,$29,$01,$08,$00
@@ -112,8 +112,8 @@ spritesheet1_ScardyCatOverlay0:
   .byte $08,$3e,$01,$08,$00
   .byte $10,$3f,$01,$00,$08
   .byte $10,$40,$01,$08,$00
-.export spritesheet1_NomolosFight0
-spritesheet1_NomolosFight0:
+.export spritesheet1_nomolos_fight0
+spritesheet1_nomolos_fight0:
   .byte $0a
   .byte $f8,$41,$00,$00,$08
   .byte $f8,$42,$00,$08,$00
@@ -125,8 +125,8 @@ spritesheet1_NomolosFight0:
   .byte $10,$48,$00,$08,$00
   .byte $18,$49,$00,$00,$08
   .byte $18,$4a,$00,$08,$00
-.export spritesheet1_NomolosFight1
-spritesheet1_NomolosFight1:
+.export spritesheet1_nomolos_fight1
+spritesheet1_nomolos_fight1:
   .byte $10
   .byte $00,$4b,$00,$00,$08
   .byte $00,$4c,$00,$08,$00
@@ -144,15 +144,15 @@ spritesheet1_NomolosFight1:
   .byte $18,$57,$00,$08,$00
   .byte $18,$58,$00,$10,$f8
   .byte $18,$42,$00,$18,$f0
-.export spritesheet1_NomolosFightOverlay0
-spritesheet1_NomolosFightOverlay0:
+.export spritesheet1_nomolos_fight_overlay0
+spritesheet1_nomolos_fight_overlay0:
   .byte $04
   .byte $01,$59,$01,$00,$08
   .byte $01,$5a,$01,$08,$00
   .byte $09,$42,$00,$00,$08
   .byte $09,$5b,$01,$08,$00
-.export spritesheet1_NomolosFightOverlay1
-spritesheet1_NomolosFightOverlay1:
+.export spritesheet1_nomolos_fight_overlay1
+spritesheet1_nomolos_fight_overlay1:
   .byte $04
   .byte $01,$5c,$01,$00,$08
   .byte $01,$5d,$01,$08,$00
@@ -229,8 +229,8 @@ spritesheet1_FlailBall7:
   .byte $01
   .byte $00,$77,$00,$e2,$26
 
-.export spritesheet1_NomolosFlailOverlay0
-spritesheet1_NomolosFlailOverlay0:
+.export spritesheet1_nomolos_flail_overlay0
+spritesheet1_nomolos_flail_overlay0:
   .byte $04
   .byte $01,$59,$01,$03,$05
   .byte $01,$5a,$01,$0b,$fd

@@ -369,7 +369,7 @@ entity_not_in_death_zone:
 .proc entity_update_all
 
   ;switch to the actor and entity bank
-  ldy #ROMDefinitionTableStruct::NomolosAndEntityBank
+  ldy #level_data_struct::nomolos_entity_bank
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank

@@ -251,7 +251,7 @@ owl_draw:
   jsr entity_test_death_zone
   beq killOwl
   
-  lda #ROMDefinitionTableStruct::OwlFly
+  lda #level_data_struct::owl_fly
   sta entity_locals+owl_locals::anim_index,x
   ;load owl width and height
   lda #OWL_WIDTH
@@ -263,7 +263,7 @@ owl_draw:
   bne :+
   
   jsr nomolos_hurt
-  lda #ROMDefinitionTableStruct::OwlAttack
+  lda #level_data_struct::owl_attack
   sta entity_locals+owl_locals::anim_index,x
   
   jsr entity_reset_anim
@@ -285,9 +285,9 @@ owl_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -303,7 +303,7 @@ owl_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::OwlOffset
+  ldy #level_data_struct::owl_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 

@@ -244,9 +244,9 @@ bat_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -262,11 +262,11 @@ bat_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::BatOffset
+  ldy #level_data_struct::BatOffset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #ROMDefinitionTableStruct::BatFly
+  ldy #level_data_struct::bat_fly
   jsr entity_draw_anim
 
 batOffscreen:

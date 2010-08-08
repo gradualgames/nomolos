@@ -192,9 +192,9 @@ batree_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -210,11 +210,11 @@ batree_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::BatreeOffset
+  ldy #level_data_struct::batree_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #ROMDefinitionTableStruct::Batree
+  ldy #level_data_struct::batree
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:

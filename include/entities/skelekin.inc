@@ -145,9 +145,9 @@ skelekin_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -163,7 +163,7 @@ skelekin_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::SkelekinOffset
+  ldy #level_data_struct::skelekin_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
@@ -177,7 +177,7 @@ skelekin_moving_right:
   lda #%00000000
   sta b2
 skelekin_direction_test_done:
-  ldy #ROMDefinitionTableStruct::SkelekinWalk
+  ldy #level_data_struct::skelekin_walk
   jsr entity_draw_anim
 
 skelekinOffscreen:

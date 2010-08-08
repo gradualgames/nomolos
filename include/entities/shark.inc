@@ -244,9 +244,9 @@ shark_draw:
   txa
   pha
   
-  lda #<hitSound
+  lda #<hit_sound
   sta sound_param_word_0
-  lda #>hitSound
+  lda #>hit_sound
   sta sound_param_word_0+1
   
   lda #3
@@ -262,11 +262,11 @@ shark_draw:
   
 nomolosNotAttacking:
 
-  ldy #ROMDefinitionTableStruct::SharkOffset
+  ldy #level_data_struct::shark_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #ROMDefinitionTableStruct::SharkLeap
+  ldy #level_data_struct::shark_leap
 
   lda entity_locals+shark_locals::directionFlag,x
   bne entity_facing_right

@@ -96,14 +96,14 @@ levelInStateRun:
   jsr ppu_load_palette
   
   ;switch to PRG block containing font1
-  lda font1+font::chrPrgRomBank
+  lda font1+font::chr_prg_rom_bank
   sta mapper_bank_next
   jsr mapper_switch_bank
   
   ;load chr data
-  lda font1+font::chrAddress
+  lda font1+font::chr_address
   sta w0
-  lda font1+font::chrAddress+1
+  lda font1+font::chr_address+1
   sta w0+1
   
   lda #$00
@@ -119,13 +119,13 @@ levelInStateRun:
   clc
   adc #1
   sta b0
-  lda #<(font1+font::digitTable)
+  lda #<(font1+font::digit_table)
   sta w0
-  lda #>(font1+font::digitTable)
+  lda #>(font1+font::digit_table)
   sta w0+1
-  lda #<powerTable
+  lda #<power_table
   sta w1
-  lda #>powerTable
+  lda #>power_table
   sta w1+1
   lda #<ppu_string_buffer
   sta w2
@@ -137,9 +137,9 @@ levelInStateRun:
   ;now let's write a string!
   set_ppu_2006 $20, 13, 11
   
-  lda #<levelString
+  lda #<level_string
   sta w0
-  lda #>levelString
+  lda #>level_string
   sta w0+1
   
   jsr ppu_display_string
@@ -153,22 +153,22 @@ levelInStateRun:
   
   ;display lives remaining string
   set_ppu_2006 $20, 14, 11
-  lda #<livesString
+  lda #<lives_string
   sta w0
-  lda #>livesString
+  lda #>lives_string
   sta w0+1
   jsr ppu_display_string
   
   ;create decimal string for nomolos_status_lives variable
   lda nomolos_status_lives
   sta b0
-  lda #<(font1+font::digitTable)
+  lda #<(font1+font::digit_table)
   sta w0
-  lda #>(font1+font::digitTable)
+  lda #>(font1+font::digit_table)
   sta w0+1
-  lda #<powerTable
+  lda #<power_table
   sta w1
-  lda #>powerTable
+  lda #>power_table
   sta w1+1
   lda #<ppu_string_buffer
   sta w2

@@ -8,25 +8,25 @@ spritesheet1_NomolosWalk:
   .word spritesheet1_NomolosWalk2
   .word $0000
 
-.export spritesheet1_NomolosJump
-spritesheet1_NomolosJump:
+.export spritesheet1_nomolos_jump
+spritesheet1_nomolos_jump:
   .byte $0a
-  .word spritesheet1_NomolosJump0
+  .word spritesheet1_nomolos_jump0
   .word $0000
 
-.export spritesheet1_NomolosWalkOverlay
-spritesheet1_NomolosWalkOverlay:
+.export spritesheet1_nomolos_walk_overlay
+spritesheet1_nomolos_walk_overlay:
   .byte $0a
-  .word spritesheet1_NomolosWalkOverlay0
-  .word spritesheet1_NomolosWalkOverlay1
-  .word spritesheet1_NomolosWalkOverlay0
-  .word spritesheet1_NomolosWalkOverlay2
+  .word spritesheet1_nomolos_walk_overlay0
+  .word spritesheet1_nomolos_walk_overlay1
+  .word spritesheet1_nomolos_walk_overlay0
+  .word spritesheet1_nomolos_walk_overlay2
   .word $0000
 
-.export spritesheet1_NomolosJumpOverlay
-spritesheet1_NomolosJumpOverlay:
+.export spritesheet1_nomolos_jump_overlay
+spritesheet1_nomolos_jump_overlay:
   .byte $0a
-  .word spritesheet1_NomolosJumpOverlay0
+  .word spritesheet1_nomolos_jump_overlay0
   .word $0000
 
 .export spritesheet1_Heart
@@ -56,18 +56,18 @@ spritesheet1_Mouse:
   .word spritesheet1_Mouse0
   .word $0000
 
-.export spritesheet1_NomolosFight
-spritesheet1_NomolosFight:
+.export spritesheet1_nomolos_fight
+spritesheet1_nomolos_fight:
   .byte $06
-  .word spritesheet1_NomolosFight0
-  .word spritesheet1_NomolosFight1
+  .word spritesheet1_nomolos_fight0
+  .word spritesheet1_nomolos_fight1
   .word $0000
 
-.export spritesheet1_NomolosFightOverlay
-spritesheet1_NomolosFightOverlay:
+.export spritesheet1_nomolos_fight_overlay
+spritesheet1_nomolos_fight_overlay:
   .byte $06
-  .word spritesheet1_NomolosFightOverlay0
-  .word spritesheet1_NomolosFightOverlay1
+  .word spritesheet1_nomolos_fight_overlay0
+  .word spritesheet1_nomolos_fight_overlay1
   .word $0000
 
 .export spritesheet1_NomolosUseFlail
@@ -90,11 +90,11 @@ spritesheet1_FlailBall:
   .word spritesheet1_FlailBall7
   .word $0000
 
-.export spritesheet1_NomolosFlailOverlay
-spritesheet1_NomolosFlailOverlay:
+.export spritesheet1_nomolos_flail_overlay
+spritesheet1_nomolos_flail_overlay:
   .byte $06
-  .word spritesheet1_NomolosFlailOverlay0
-  .word spritesheet1_NomolosFlailOverlay0
+  .word spritesheet1_nomolos_flail_overlay0
+  .word spritesheet1_nomolos_flail_overlay0
   .word $0000
 
 .export spritesheet1_FlailItem
