@@ -1,7 +1,7 @@
 .include "soundengine.inc"
 .include "spritesheet1.inc"
 .include "entities.inc"
-.include "fixedBankData.inc"
+.include "fixed_bank_data.inc"
 
 .segment "CODE"
 

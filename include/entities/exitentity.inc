@@ -38,7 +38,7 @@ is_touching_nomolos:
   lda (base_address_rom_definition_table),y
   sta level_current
   lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
-  sta state_control_params+playLevelStateControl::state
+  sta state_control_params+play_level_state_control::state
 
   rts
 

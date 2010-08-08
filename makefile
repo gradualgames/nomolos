@@ -16,18 +16,18 @@ BIN_DIR     = bin
 OUTPUT_NAME     = nomolos
 NES_FILE        = $(OUTPUT_NAME).nes
 FILES           = nomolos \
-                  nomolosLogic \
+                  nomolos_logic \
                   level1 \
                   level2 \
                   level3 \
                   boss1 \
                   entities \
                   spritesheet1 \
-                  loadLevelState \
-                  playLevelState \
-                  levelInState \
-                  gameOverState \
-                  titleState \
+                  load_level_state \
+                  play_level_state \
+                  level_in_state \
+                  game_over_state \
+                  title_state \
                   map \
                   camera \
                   sprite \
@@ -38,7 +38,7 @@ FILES           = nomolos \
                   zp \
                   mapper \
                   ppu \
-                  fixedBankData \
+                  fixed_bank_data \
                   statemanager
 OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))
 LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
@@ -52,7 +52,7 @@ INCLUDE_FLAGS = -I include \
                 -I include/entities \
                 -I include/spritesheets \
                 -I include/levels \
-                -I include/fixedBankData \
+                -I include/fixed_bank_data \
                 -I include/global
 ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) --dbgfile $(DEBUG_FILE) -o

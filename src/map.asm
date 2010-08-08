@@ -3,7 +3,7 @@
 .include "mapper.inc"
 .include "sound.inc"
 .include "entity.inc"
-.include "fixedBankData.inc"
+.include "fixed_bank_data.inc"
 
 .segment "CODE"
 

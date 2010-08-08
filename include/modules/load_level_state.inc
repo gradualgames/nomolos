@@ -8,7 +8,7 @@ LOADLEVELSTATE_INIT = %00000000
 LOADLEVELSTATE_LOAD = %00000001
 LOADLEVELSTATE_DONE = %00000010
 
-.struct loadLevelStateControl
+.struct load_level_stateControl
   state .byte
   levelToLoad .byte
 .endstruct

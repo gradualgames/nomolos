@@ -6,10 +6,10 @@
 .include "camera.inc"
 .include "soundengine.inc"
 .include "zp.inc"
-.include "fixedBankData.inc"
-.include "nomolosLogic.inc"
+.include "fixed_bank_data.inc"
+.include "nomolos_logic.inc"
 .include "controller.inc"
-.include "playLevelState.inc"
+.include "play_level_state.inc"
 
 .segment "CODE"
 
@@ -948,7 +948,7 @@ yesAboveCollision:
   bne scaredyCatStillRising
 
   lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
-  sta state_control_params+playLevelStateControl::state
+  sta state_control_params+play_level_state_control::state
 
 scaredyCatStillRising:
 
@@ -960,7 +960,7 @@ nomolosNotAttackedDying:
   bne skipLevelOutState
 
   lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
-  sta state_control_params+playLevelStateControl::state
+  sta state_control_params+play_level_state_control::state
 
 skipLevelOutState:
 

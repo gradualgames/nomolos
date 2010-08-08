@@ -1,6 +1,6 @@
 .include "zp.inc"
 .include "ram.inc"
-.include "fixedBankData.inc"
+.include "fixed_bank_data.inc"
 .include "ppu.inc"
 
 .segment "CODE"

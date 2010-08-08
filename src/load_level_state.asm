@@ -3,34 +3,34 @@
 .include "sound.inc"
 .include "ppu.inc"
 .include "mapper.inc"
-.include "fixedBankData.inc"
+.include "fixed_bank_data.inc"
 .include "camera.inc"
-.include "nomolosLogic.inc"
-.include "playLevelState.inc"
+.include "nomolos_logic.inc"
+.include "play_level_state.inc"
 .include "map.inc"
 .include "sprite.inc"
 .include "entity.inc"
 .include "zp.inc"
 .include "ram.inc"
-.include "loadLevelState.inc"
+.include "load_level_state.inc"
 .include "statemanager.inc"
 
 .segment "CODE"
 
 .proc load_level_state_update
-  lda state_control_params+loadLevelStateControl::state
+  lda state_control_params+load_level_stateControl::state
   cmp #LOADLEVELSTATE_INIT
-  beq loadLevelStateInit
+  beq load_level_stateInit
   cmp #LOADLEVELSTATE_LOAD
   bne :+
-  jmp loadLevelStateLoad
+  jmp load_level_stateLoad
 :
   cmp #LOADLEVELSTATE_DONE
   bne :+
-  jmp loadLevelStateDone
+  jmp load_level_stateDone
 :
 
-loadLevelStateInit:
+load_level_stateInit:
 
   ;****************************************************************
   ;Wait for vblank, then turn off nmi and all graphics.
@@ -55,7 +55,7 @@ loadLevelStateInit:
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
 
-  lda state_control_params+loadLevelStateControl::levelToLoad
+  lda state_control_params+load_level_stateControl::levelToLoad
   ;multiply accumulator by 2
   asl
   ;transfer to x for indexing
@@ -213,11 +213,11 @@ loadLevelStateInit:
   sta camera_scroll_direction
 
   lda #LOADLEVELSTATE_LOAD
-  sta state_control_params+loadLevelStateControl::state
+  sta state_control_params+load_level_stateControl::state
 
   jmp stateSwitchComplete
 
-loadLevelStateLoad:
+load_level_stateLoad:
 
   ;left side is always right where the scroll is.
   jsr map_decode_left_side
@@ -236,13 +236,13 @@ loadLevelStateLoad:
   bcc load_state_not_done
 
   lda #LOADLEVELSTATE_DONE
-  sta state_control_params+loadLevelStateControl::state
+  sta state_control_params+load_level_stateControl::state
 
 load_state_not_done:
 
   jmp stateSwitchComplete
 
-loadLevelStateDone:
+load_level_stateDone:
 
   ;set camera scroll at starting screen
   lda #0
@@ -268,18 +268,18 @@ loadLevelStateDone:
 
   ldy #level_data_struct::cycling_palette_address
   lda (base_address_rom_definition_table),y
-  sta state_control_params+playLevelStateControl::cycling_palette_address
+  sta state_control_params+play_level_state_control::cycling_palette_address
   iny
   lda (base_address_rom_definition_table),y
-  sta state_control_params+playLevelStateControl::cycling_palette_address+1
+  sta state_control_params+play_level_state_control::cycling_palette_address+1
 
   lda #0
-  sta state_control_params+playLevelStateControl::palette_cycle_index
+  sta state_control_params+play_level_state_control::palette_cycle_index
 
   ldy #level_data_struct::cycling_palette_speed
   lda (base_address_rom_definition_table),y
-  sta state_control_params+playLevelStateControl::cycling_palette_speed
-  sta state_control_params+playLevelStateControl::palette_cycle_counter
+  sta state_control_params+play_level_state_control::cycling_palette_speed
+  sta state_control_params+play_level_state_control::palette_cycle_counter
 
   ;****************************************************************
   ;Wait for vblank, reset VRAM and scroll registers, turn nmi and
@@ -299,7 +299,7 @@ loadLevelStateDone:
   upload_ppu_2001
 
   lda #PLAYLEVELSTATE_INIT
-  sta state_control_params+playLevelStateControl::state
+  sta state_control_params+play_level_state_control::state
 
   ldx #index_play_level_state
   jsr switch_state

@@ -1,5 +1,5 @@
 .include "zp.inc"
-.include "fixedBankData.inc"
+.include "fixed_bank_data.inc"
 
 .segment "CODE"
 

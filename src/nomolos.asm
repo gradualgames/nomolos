@@ -1,18 +1,18 @@
 .include "flags.inc"
 .include "zp.inc"
 .include "camera.inc"
-.include "nomolosLogic.inc"
-.include "loadLevelState.inc"
-.include "levelInState.inc"
-.include "gameOverState.inc"
-.include "titleState.inc"
+.include "nomolos_logic.inc"
+.include "load_level_state.inc"
+.include "level_in_state.inc"
+.include "game_over_state.inc"
+.include "title_state.inc"
 .include "entity.inc"
 .include "soundengine.inc"
 .include "level1.inc"
 .include "level2.inc"
 .include "ppu.inc"
-.include "fixedBankData.inc"
-.include "nomolosLogic.inc"
+.include "fixed_bank_data.inc"
+.include "nomolos_logic.inc"
 .include "sprite.inc"
 .include "statemanager.inc"
 
@@ -74,15 +74,15 @@ reset:
   jsr sprite_module_init
 
   lda #TITLESTATE_INIT
-  sta state_control_params+titleStateControl::state
+  sta state_control_params+title_stateControl::state
   ldx #index_title_state
   jsr switch_state
 
   ;load current level
   ;lda #3
-  ;sta state_control_params+loadLevelStateControl::levelToLoad
+  ;sta state_control_params+load_level_stateControl::levelToLoad
   ;lda #LOADLEVELSTATE_INIT
-  ;sta state_control_params+loadLevelStateControl::state
+  ;sta state_control_params+load_level_stateControl::state
   ;ldx #index_load_level_state
   ;jsr switch_state
 

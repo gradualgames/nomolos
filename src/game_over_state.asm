@@ -1,13 +1,13 @@
 .include "flags.inc"
 .include "ppu.inc"
 .include "mapper.inc"
-.include "fixedBankData.inc"
+.include "fixed_bank_data.inc"
 .include "sprite.inc"
-.include "levelInState.inc"
+.include "level_in_state.inc"
 .include "zp.inc"
 .include "ram.inc"
-.include "titleState.inc"
-.include "gameOverState.inc"
+.include "title_state.inc"
+.include "game_over_state.inc"
 .include "statemanager.inc"
 
 .segment "CODE"
@@ -168,7 +168,7 @@ gameOverStateDone:
 
   ;switch to title state
   lda #TITLESTATE_INIT
-  sta state_control_params+titleStateControl::state
+  sta state_control_params+title_stateControl::state
   ldx #index_title_state
   jsr switch_state
 

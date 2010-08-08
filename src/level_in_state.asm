@@ -1,12 +1,12 @@
 .include "flags.inc"
-.include "loadLevelState.inc"
+.include "load_level_state.inc"
 .include "ppu.inc"
 .include "mapper.inc"
-.include "fixedBankData.inc"
+.include "fixed_bank_data.inc"
 .include "sprite.inc"
 .include "zp.inc"
 .include "ram.inc"
-.include "levelInState.inc"
+.include "level_in_state.inc"
 .include "statemanager.inc"
 
 .segment "CODE"
@@ -243,9 +243,9 @@ levelInStateDone:
 
   ;load current level
   lda level_current
-  sta state_control_params+loadLevelStateControl::levelToLoad
+  sta state_control_params+load_level_stateControl::levelToLoad
   lda #LOADLEVELSTATE_INIT
-  sta state_control_params+loadLevelStateControl::state
+  sta state_control_params+load_level_stateControl::state
 
   ldx #index_load_level_state
   jsr switch_state

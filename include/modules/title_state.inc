@@ -8,7 +8,7 @@ TITLESTATE_INIT = %00000000
 TITLESTATE_RUN =  %00000001
 TITLESTATE_DONE = %00000010
 
-.struct titleStateControl
+.struct title_stateControl
   state .byte
 .endstruct
 

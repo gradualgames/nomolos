@@ -1,7 +1,7 @@
 .ifndef CAMERA_INC
 CAMERA_INC = 1
 
-.include "nomolosLogic.inc"
+.include "nomolos_logic.inc"
 
 .global camera_to_screen_coords
 .global camera_reset

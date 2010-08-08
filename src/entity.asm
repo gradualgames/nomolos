@@ -5,7 +5,7 @@
 .include "mapper.inc"
 .include "camera.inc"
 .include "geotests.inc"
-.include "fixedBankData.inc"
+.include "fixed_bank_data.inc"
 .include "entity.inc"
 
 .include "sprite.inc"

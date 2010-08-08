@@ -3,34 +3,34 @@
 .include "controller.inc"
 .include "ppu.inc"
 .include "mapper.inc"
-.include "fixedBankData.inc"
+.include "fixed_bank_data.inc"
 .include "sprite.inc"
-.include "levelInState.inc"
+.include "level_in_state.inc"
 .include "zp.inc"
 .include "ram.inc"
-.include "nomolosLogic.inc"
-.include "titleState.inc"
+.include "nomolos_logic.inc"
+.include "title_state.inc"
 .include "statemanager.inc"
 
 .segment "CODE"
 
 .proc title_state_update
 
-  lda state_control_params+titleStateControl::state
+  lda state_control_params+title_stateControl::state
   cmp #TITLESTATE_INIT
   bne :+
-  jmp  titleStateInit
+  jmp  title_stateInit
 :
   cmp #TITLESTATE_RUN
   bne :+
-  jmp titleStateRun
+  jmp title_stateRun
 :
   cmp #TITLESTATE_DONE
   bne :+
-  jmp titleStateDone
+  jmp title_stateDone
 :
 
-titleStateInit:
+title_stateInit:
 
   ;****************************************************************
   ;Wait for vblank, then turn off nmi and all graphics.
@@ -55,11 +55,11 @@ titleStateInit:
   upload_ppu_2001
 
   lda #TITLESTATE_RUN
-  sta state_control_params+titleStateControl::state
+  sta state_control_params+title_stateControl::state
 
   jmp stateCommandComplete
 
-titleStateRun:
+title_stateRun:
 
   ;****************************************************************
   ;Clear sprite memory, load title graphics, load faded out palette
@@ -190,11 +190,11 @@ titleStateRun:
 .endif
 
   lda #TITLESTATE_DONE
-  sta state_control_params+titleStateControl::state
+  sta state_control_params+title_stateControl::state
 
   jmp stateCommandComplete
 
-titleStateDone:
+title_stateDone:
 
   jsr controller_read
   lda buffer_controller+buttons::_start

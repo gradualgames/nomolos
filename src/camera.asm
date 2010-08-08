@@ -1,7 +1,7 @@
 ;global headers
 
 .include "camera.inc"
-.include "fixedBankData.inc"
+.include "fixed_bank_data.inc"
 
 ;modules
 .include "zp.inc"

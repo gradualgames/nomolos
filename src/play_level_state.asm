@@ -2,27 +2,27 @@
 .include "ppu.inc"
 .include "mapper.inc"
 .include "soundengine.inc"
-.include "loadLevelState.inc"
+.include "load_level_state.inc"
 .include "sound.inc"
-.include "levelInState.inc"
-.include "gameOverState.inc"
+.include "level_in_state.inc"
+.include "game_over_state.inc"
 .include "controller.inc"
 .include "map.inc"
 .include "sprite.inc"
 .include "entity.inc"
 .include "camera.inc"
-.include "nomolosLogic.inc"
+.include "nomolos_logic.inc"
 .include "zp.inc"
 .include "ram.inc"
-.include "playLevelState.inc"
-.include "fixedBankData.inc"
+.include "play_level_state.inc"
+.include "fixed_bank_data.inc"
 .include "statemanager.inc"
 
 .segment "CODE"
 
 .proc play_level_state_update
 
-  lda state_control_params+playLevelStateControl::state
+  lda state_control_params+play_level_state_control::state
   cmp #PLAYLEVELSTATE_INIT
   beq playLevelStateInit
   cmp #PLAYLEVELSTATE_KEEPPLAYING
@@ -54,7 +54,7 @@ playLevelStateInit:
 
   ;switch to the play state
   lda #PLAYLEVELSTATE_KEEPPLAYING
-  sta state_control_params+playLevelStateControl::state
+  sta state_control_params+play_level_state_control::state
 
   jmp stateCommandComplete
 
@@ -79,7 +79,7 @@ pause:
   bne skipStartButtonTest
 
   lda #PLAYLEVELSTATE_KEEPPLAYING
-  sta state_control_params+playLevelStateControl::state
+  sta state_control_params+play_level_state_control::state
 
 skipStartButtonTest:
   .endscope
@@ -184,7 +184,7 @@ stateCommandComplete:
   bne skipStartButtonTest
 
   lda #PLAYLEVELSTATE_PAUSE
-  sta state_control_params+playLevelStateControl::state
+  sta state_control_params+play_level_state_control::state
 
 skipStartButtonTest:
   .endscope
@@ -238,10 +238,10 @@ ppu_data_not_ready:
 .proc palette_handler
 
   .scope palette_cycling_block
-cycling_palette_address = state_control_params+playLevelStateControl::cycling_palette_address
-cycling_palette_speed = state_control_params+playLevelStateControl::cycling_palette_speed
-palette_cycle_index = state_control_params+playLevelStateControl::palette_cycle_index
-palette_cycle_counter = state_control_params+playLevelStateControl::palette_cycle_counter
+cycling_palette_address = state_control_params+play_level_state_control::cycling_palette_address
+cycling_palette_speed = state_control_params+play_level_state_control::cycling_palette_speed
+palette_cycle_index = state_control_params+play_level_state_control::palette_cycle_index
+palette_cycle_counter = state_control_params+play_level_state_control::palette_cycle_counter
 
   ;if upper byte of cycling palette address is zero, this level does not do palette cycling
   lda cycling_palette_address+1
