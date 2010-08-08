@@ -14,18 +14,18 @@ explosion_update:
   beq explosionInit
   cmp #EXPLOSION_EXPLODESTATE
   beq explosionExplode
-  
+
 explosionInit:
 
   ;reset the explosion animation object
   jsr entity_reset_anim
-  
+
   ;set state to explode
   lda #EXPLOSION_EXPLODESTATE
   sta entity_instances+entityRAM::state,x
-  
+
   rts
-  
+
 explosionExplode:
 
   jsr entity_compute_screen_coordinates
@@ -33,10 +33,10 @@ explosionExplode:
   ldy #level_data_struct::explosion_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
-  
+
   ldy #level_data_struct::explosion
   jsr entity_draw_anim
-  
+
   lda entity_instances+entityRAM::animationObject+1,x
   cmp #2
   bne @skipFrameCounterTest
@@ -46,11 +46,11 @@ explosionExplode:
 @skipFrameCounterTest:
 
   rts
-  
+
 explosionDie:
 
   jsr entity_kill
 
   rts
-  
+
 .endif

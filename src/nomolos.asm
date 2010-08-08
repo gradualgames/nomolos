@@ -26,7 +26,7 @@
 .segment "STACK"
 .export stack
 stack:  .res 256
-  
+
 .segment "BSS"
 .export sprite
 sprite: .res 256
@@ -45,25 +45,25 @@ dynamic_palette: .res 32
 reset:
   ;set interrupt disable flag
   sei
-  
+
   ;clear binary encoded decimal flag
   cld
-  
+
   ;initialize stack
-  ldx #$FF  
+  ldx #$FF
   txs
-  
+
   ;turn off all graphics and clear our PPU registers
   lda #$00
   sta ppu_2000
-  sta ppu_2001  
+  sta ppu_2001
   upload_ppu_2000
   upload_ppu_2001
-  
+
   ;wait for PPU to be ready
   waitVBlank
   waitVBlank
-  
+
   ;initialize ppu registers with settings we're never going to change
   set_ppu_2001_bit PPU1_SPRITE_CLIPPING
   set_ppu_2001_bit PPU1_BACKGROUND_CLIPPING
@@ -72,26 +72,26 @@ reset:
   jsr sound_initialize
   jsr nomolos_module_init
   jsr sprite_module_init
-  
+
   lda #TITLESTATE_INIT
   sta state_control_params+titleStateControl::state
   ldx #index_title_state
   jsr switch_state
-  
+
   ;load current level
   ;lda #3
   ;sta state_control_params+loadLevelStateControl::levelToLoad
   ;lda #LOADLEVELSTATE_INIT
-  ;sta state_control_params+loadLevelStateControl::state  
+  ;sta state_control_params+loadLevelStateControl::state
   ;ldx #index_load_level_state
   ;jsr switch_state
-  
+
 loop:
 
   jsr indirect_jsr_update
-  
+
   jmp loop
-  
+
 .proc indirect_jsr_update
   jmp (update)
 .endproc
@@ -104,7 +104,7 @@ vblank:
   tya
   pha
   php
-  
+
   jsr indirect_jsr_update_ppu
 
   plp
@@ -116,11 +116,11 @@ vblank:
 
 irq:
   rti
-  
+
 .proc indirect_jsr_update_ppu
   jmp (update_ppu)
 .endproc
-  
+
 .segment "VECTORS"
   .word vblank
   .word reset

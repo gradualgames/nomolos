@@ -8,7 +8,7 @@ PLAYLEVELSTATE_INIT        =           %00000000
 PLAYLEVELSTATE_KEEPPLAYING =           %00000001
 PLAYLEVELSTATE_PAUSE       =           %00000010
 PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000011
-  
+
 .struct playLevelStateControl
   state .byte                   ;flags for whether to switch to a different level
   levelNum .byte                ;index of level to load

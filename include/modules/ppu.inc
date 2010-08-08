@@ -48,7 +48,7 @@ PPU1_DISPLAY_TYPE = 0
   sta $2006
 
 .endmacro
-  
+
 .macro set_ppu_2000_bit bit_position
 
   ;load the current state of the ppu register
@@ -105,7 +105,7 @@ PPU1_DISPLAY_TYPE = 0
   sta $2005
   lda ppu_2005+1
   sta $2005
-  
+
 .endmacro
 
 .macro upload_ppu_2006

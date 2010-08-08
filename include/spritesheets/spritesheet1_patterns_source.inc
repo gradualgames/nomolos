@@ -1,4 +1,4 @@
-  
+
 .export spritesheet1_Nomolos_chr
 spritesheet1_Nomolos_chr:
   .word $0830

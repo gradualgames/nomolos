@@ -35,13 +35,13 @@ Boss1:
 ROMDefinitionTable0:
   .byte spritesheet_1_bank
   .byte level_1_bank
-  .byte level_1_patterns_bank  
+  .byte level_1_patterns_bank
   .word level1_patterns
   .byte spritesheet_1_patterns_bank
   .word level1_sprite_groups
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
-  
+
   .word spritesheet1_NomolosWalk
   .word spritesheet1_nomolos_walk_overlay
   .word spritesheet1_nomolos_jump
@@ -59,7 +59,7 @@ ROMDefinitionTable0:
   .word spritesheet1_ScardyCat0
   .word spritesheet1_ScardyCatOverlay0
   .word spritesheet1_Heart0
-  
+
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
   .word spritesheet1_BeedieBlob
@@ -83,10 +83,10 @@ ROMDefinitionTable0:
   .word attack_sound
   .word hit_sound
   .word level1_palette
- 
+
   .byte 120 ;nomolos_start_x
   .byte 191  ;nomolos_start_y
- 
+
   .byte 1 ;camera_scroll_enabled
   .byte 0 ;starting_screen
   .word level1_map
@@ -96,9 +96,9 @@ ROMDefinitionTable0:
   .word level1_meta_tile_table
 
   .word entity_definition_table
-  
+
   .word level1_music
-  
+
   .byte level_2_index
 
   .byte level1_sprites_Nomolos_chr_index
@@ -120,13 +120,13 @@ ROMDefinitionTable0:
 ROMDefinitionTable1:
   .byte spritesheet_1_bank
   .byte level_2_bank
-  .byte level_2_patterns_bank  
+  .byte level_2_patterns_bank
   .word level2_patterns
   .byte spritesheet_1_patterns_bank
   .word level2_sprite_groups
   .word level2_cycling_palettes ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
-  
+
   .word spritesheet1_NomolosWalk
   .word spritesheet1_nomolos_walk_overlay
   .word spritesheet1_nomolos_jump
@@ -171,7 +171,7 @@ ROMDefinitionTable1:
 
   .byte 120 ;nomolos_start_x
   .byte 90  ;nomolos_start_y
-  
+
   .byte 1 ;camera_scroll_enabled
   .byte 0 ;starting_screen
   .word level2_map
@@ -203,13 +203,13 @@ ROMDefinitionTable1:
 ROMDefinitionTable2:
   .byte spritesheet_1_bank
   .byte level_3_bank
-  .byte level_3_patterns_bank  
+  .byte level_3_patterns_bank
   .word level3_patterns
   .byte spritesheet_1_patterns_bank
   .word level3_sprite_groups
   .word level3_cycling_palettes ;cycling_palette_address
   .byte 10 ;cycling_palette_speed
-  
+
   .word spritesheet1_NomolosWalk
   .word spritesheet1_nomolos_walk_overlay
   .word spritesheet1_nomolos_jump
@@ -254,7 +254,7 @@ ROMDefinitionTable2:
 
   .byte 30  ;nomolos_start_x
   .byte 100 ;nomolos_start_y
-  
+
   .byte 1 ;camera_scroll_enabled
   .byte 0 ;starting_screen
   .word level3_map
@@ -266,7 +266,7 @@ ROMDefinitionTable2:
   .word entity_definition_table
   .word level3_music
   .byte boss_1_index
-  
+
   .byte level3_sprites_Nomolos_chr_index
   .byte 0 ;level3_sprites_Deentle_chr_index
   .byte level3_sprites_Explosion_chr_index
@@ -277,22 +277,22 @@ ROMDefinitionTable2:
   .byte 0 ;level3_sprites_Batree_chr_index
   .byte 0 ;level3_sprites_Owl_chr_index
   .byte 0 ;level3_sprites_Snuffer_chr_index
-  .byte level3_sprites_Snail_chr_index  
+  .byte level3_sprites_Snail_chr_index
   .byte level3_sprites_Dragon_chr_index
   .byte level3_sprites_IceBall_chr_index
   .byte level3_sprites_Shark_chr_index
-  
+
 ;ROM definition table
 ROMDefinitionTable3:
   .byte spritesheet_1_bank
   .byte boss_1_bank
-  .byte boss_1_patterns_bank  
+  .byte boss_1_patterns_bank
   .word boss1_patterns
   .byte spritesheet_1_patterns_bank
   .word boss1_sprite_groups
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
-  
+
   .word spritesheet1_NomolosWalk
   .word spritesheet1_nomolos_walk_overlay
   .word spritesheet1_nomolos_jump
@@ -337,7 +337,7 @@ ROMDefinitionTable3:
 
   .byte 40   ;nomolos_start_x
   .byte 159  ;nomolos_start_y
-  
+
   .byte 0 ;camera_scroll_enabled
   .byte 0 ;starting_screen
   .word boss1_map
@@ -349,7 +349,7 @@ ROMDefinitionTable3:
   .word entity_definition_table
   .word boss1_music
   .byte level_1_index
-  
+
   .byte boss1_sprites_Nomolos_chr_index
   .byte 0 ;boss1_sprites_Deentle_chr_index
   .byte boss1_sprites_Explosion_chr_index
@@ -360,11 +360,11 @@ ROMDefinitionTable3:
   .byte 0 ;boss1_sprites_Batree_chr_index
   .byte 0 ;boss1_sprites_Owl_chr_index
   .byte 0 ;boss1_sprites_Snuffer_chr_index
-  .byte 0 ;boss1_sprites_Snail_chr_index  
+  .byte 0 ;boss1_sprites_Snail_chr_index
   .byte 0 ;boss1_sprites_Dragon_chr_index
   .byte boss1_sprites_IceBall_chr_index
   .byte 0 ;boss1_sprites_Shark_chr_index
-  
+
 ;Entities
 entity_definition_table:
 DeentleEntity:
@@ -511,7 +511,7 @@ Shark:
   .byte $05
   .byte $00
   .byte $00
-  
+
 attack_sound:
   .byte STL, 10
   .byte STV, SOUND_EFFECT_BASE+5
@@ -520,7 +520,7 @@ attack_sound:
   .byte STV, SOUND_EFFECT_BASE+0
   .byte A0
   .byte TRM
-  
+
 attackFlailSound:
   .byte STL, 10
   .byte STV, SOUND_EFFECT_BASE+5
@@ -529,7 +529,7 @@ attackFlailSound:
   .byte STV, SOUND_EFFECT_BASE+0
   .byte A0
   .byte TRM
-  
+
 attackSpearSound:
   .byte STL, 20
   .byte STV, SOUND_EFFECT_BASE+6
@@ -587,7 +587,7 @@ getItemSound:
 banktable:
   .byte $00, $01, $02, $03, $04, $05, $06, $07
 
-title_music: 
+title_music:
   .word Square1
   .word Square2
   .word Triangle
@@ -602,7 +602,7 @@ volume_envelopes:
   .word volume_envelope_2
   .word 0
   .word 0
-  
+
   .word 0
   .word 0
   .word 0
@@ -627,13 +627,13 @@ pitch_envelopes:
   .word 0
   .word 0
   .word 0
-  
+
   .word 0
   .word 0
   .word 0
   .word 0
   .word 0
-  
+
   .word sf_pitch_envelope_0
   .word sf_pitch_envelope_1
   .word 0
@@ -649,7 +649,7 @@ pitch_envelopes:
 duty_envelopes:
   .word duty_envelope_0
   .word duty_envelope_1
-  
+
 volume_envelope_0:
   .byte 0, ENV_STOP
 
@@ -665,7 +665,7 @@ duty_envelope_0:
   .byte 0, ENV_LOOP
 duty_envelope_1:
   .byte -128,-128,-128,-128,-128,-128,-128,-128,ENV_LOOP
-  
+
 sf_volume_envelope_silence:
   .byte 0, ENV_STOP
 
@@ -674,23 +674,23 @@ sf_volume_envelope_loud:
 
 sf_volume_envelope_1:
   .byte 14, 12, 11, 9, 7, 6, 4, 2, 1, 0, 0, 2, 3, 5, 8, 6, 3, 1, ENV_STOP
-  
+
 sf_volume_envelope_decay:
   .byte 15, 14, 12, 8, 7, 6, 3, 1, 0, ENV_STOP
-  
+
 sf_volume_envelope_short_note:
   .byte 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0, ENV_STOP
-  
+
 sf_volume_envelope_fade_in:
   .byte 0, 1, 3, 6, 7, 8, 12, 14, 15, ENV_STOP
-  
+
 sf_volume_envelope_fade_in_2:
   .byte 5, 8, 10, 10, 12, 12, 15, 15, 10, 10, 6, 6, 3, 3, 0, 0, 0, ENV_STOP
-  
+
 sf_pitch_envelope_0:
   .byte 0, ENV_LOOP
-  
-sf_pitch_envelope_1: 
+
+sf_pitch_envelope_1:
   .byte 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, -1, -2, -3, -4, -5, ENV_LOOP
 
 Square1:
@@ -738,13 +738,13 @@ power_table:
 
 press_start_string:
   .byte $0b,$0f,$11,$04,$12,$12,$1a,$12,$13,$00,$11,$13
-  
+
 lda_games_string:
   .byte $0c,$01,$18,$1a,$0b,$03,$00,$1a,$06,$00,$0c,$04,$12
- 
+
 copyright_c_2010_string:
   .byte $08,$2c,$02,$2d,$1a,$1d,$1b,$1c,$1b
-  
+
 level_string:
   .byte $06,$0b,$04,$15,$04,$0b,$1a
 

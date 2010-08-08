@@ -169,10 +169,10 @@ _QUARTER = 2*_8TH
   pitch_offset .byte
   duty_index .byte
   duty_offset .byte
-  
+
   channel .byte
   channel_registers .byte 4
-  
+
   read_address .word
 
 .endstruct
@@ -183,7 +183,7 @@ soundeffect_one = (stream_size * 4)
 soundeffect_two = (stream_size * 5)
 
 .macro advance_stream_read_address
- 
+
   clc
   lda streams+stream::read_address,x
   adc #1

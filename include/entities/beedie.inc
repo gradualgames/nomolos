@@ -40,19 +40,19 @@ beedie_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
-  
+
   ;set vertical velocity to zero
   lda #0
   sta entity_locals+beedieLocals::y_velocity,x
-  
+
   ;set rest counter
   lda #BEEDIE_RESTCOUNTER_RESTLENGTH
   sta entity_locals+beedieLocals::restCounter,x
-  
+
   ;set direction flag
   lda #BEEDIE_DIRECTIONFLAG_LEFT
   sta entity_locals+beedieLocals::directionFlag,x
-  
+
   ;switch state to "jump"
   lda #BEEDIE_JUMPSTATE
   sta entity_instances+entityRAM::state,x
@@ -63,7 +63,7 @@ beedie_restState:
   ;decrement rest counter
   dec entity_locals+beedieLocals::restCounter,x
   bne stillResting
-  
+
   ;on rest counter = 0, jump to jump state init and set vertical velocity
   lda #$0a
   sta entity_locals+beedieLocals::y_velocity,x
@@ -71,14 +71,14 @@ beedie_restState:
   sta entity_locals+beedieLocals::y_velocity+1,x
   lda #BEEDIE_JUMPSTATE
   sta entity_instances+entityRAM::state,x
-  
+
 stillResting:
 
   jsr entity_compute_screen_coordinates
   jsr beedie_draw
 
   rts
-  
+
 beedie_jumpState:
 
   jsr entity_compute_screen_coordinates
@@ -114,7 +114,7 @@ noLeftCollision:
   lda entity_instances+entityRAM::positionX+1,x
   sbc #0
   sta entity_instances+entityRAM::positionX+1,x
-  
+
   jmp beedieDirectionTestDone
 beedieGoingRight:
 
@@ -161,7 +161,7 @@ beedieDirectionTestDone:
   adc #0
   sta entity_locals+beedieLocals::y_velocity+1,x
 stopAccelerating:
-  
+
   ;add vertical velocity to 24 bit Y coordinate with sign extension
   clc
   lda entity_locals+beedieLocals::y_velocity,x
@@ -182,7 +182,7 @@ signExtend:
   adc entity_instances+entityRAM::positionY+1,x
   sta entity_instances+entityRAM::positionY+1,x
 signExtendAddDone:
-  
+
   ;perform collision detection and eject if necessary
   ;load the entity's X coordinate + 8
   clc
@@ -204,15 +204,15 @@ signExtendAddDone:
   adc #0
   sta entity_locals+beedieLocals::y_collisionPointBottom+1,x
   sta w1+1
-  
+
   jsr map_test_collision
   lda b1
   beq noBottomCollision
-  
+
   lda #0
   sta entity_locals+beedieLocals::y_velocity,x
   sta entity_locals+beedieLocals::y_velocity+1,x
-  
+
   ;there was a collision beneath the beedie. calculate penetration distance and eject.
   lda entity_locals+beedieLocals::y_collisionPointBottom,x
   and #penetration_calculation_mask
@@ -224,13 +224,13 @@ signExtendAddDone:
   lda entity_instances+entityRAM::positionY+1,x
   sbc #0
   sta entity_instances+entityRAM::positionY+1,x
-  
+
   ;set rest counter and transition to rest state. set direction bit based on Nomolos' location.
   lda #BEEDIE_RESTCOUNTER_RESTLENGTH
   sta entity_locals+beedieLocals::restCounter,x
   lda #BEEDIE_RESTSTATE
   sta entity_instances+entityRAM::state,x
-  
+
   lda entity_screen_x
   sec
   sbc nomolos_screen_x
@@ -245,62 +245,62 @@ followToRight:
   lda #BEEDIE_DIRECTIONFLAG_RIGHT
   sta entity_locals+beedieLocals::directionFlag,x
 followTestDone:
-  
-noBottomCollision:  
-  
+
+noBottomCollision:
+
   jsr beedie_draw
 
   rts
-  
+
 beedie_draw:
 
   jsr entity_test_death_zone
   beq killBeedie
-  
+
   ;load beedie width and height
   lda #BEEDIE_WIDTH
   sta b2
   lda #BEEDIE_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
-  
+
   bne :+
-  
+
   jsr nomolos_hurt
-  
+
 :
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
-  
+
   ;load beedie width and height
   lda #BEEDIE_WIDTH
   sta b2
   lda #BEEDIE_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
-  
+
   bne nomolosNotAttacking
-  
+
   ;play a hit sound
   txa
   pha
-  
+
   lda #<hit_sound
   sta sound_param_word_0
   lda #>hit_sound
   sta sound_param_word_0+1
-  
+
   lda #3
   sta sound_param_byte_0
-  
+
   ldx #soundeffect_two
   jsr stream_initialize
-  
+
   pla
   tax
-  
+
   jmp killBeedie
-  
+
 nomolosNotAttacking:
 
   ldy #level_data_struct::beedie_offset
@@ -314,12 +314,12 @@ nomolosNotAttacking:
 
 beedieOffscreen:
   rts
-  
+
 killBeedie:
 
   ;make it dead
   jsr entity_kill
-  
+
   ;spawn an explosion entity
   lda #entity_index_explosion
   sta b0
@@ -330,14 +330,14 @@ killBeedie:
   ;get out high byte of positionX
   lda entity_instances+entityRAM::positionX+1,x
   sta w0+1
-  
+
   ;get out positionY
   lda entity_instances+entityRAM::positionY,x
   sta b1
-  
+
   jsr entity_spawn
 
   rts
 .endproc
-  
+
 .endif

@@ -194,7 +194,7 @@ spritesheet1_DragonFly:
   .word spritesheet1_Dragon2
   .word spritesheet1_Dragon1
   .word $0000
-  
+
 .export spritesheet1_IceBallFly
 spritesheet1_IceBallFly:
   .byte $02

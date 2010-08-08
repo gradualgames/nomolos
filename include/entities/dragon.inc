@@ -42,27 +42,27 @@ dragon_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
-  
+
   ;set x velocity to 0
   lda #0
   sta entity_locals+dragon_locals::x_velocity,x
   sta entity_locals+dragon_locals::x_velocity+1,x
-  
+
   ;set y velocity to 0
   sta entity_locals+dragon_locals::y_velocity,x
   sta entity_locals+dragon_locals::y_velocity+1,x
-  
+
   ;switch state to "fly"
   lda #DRAGON_FLYSTATE
   sta entity_instances+entityRAM::state,x
-  
+
   ;set fly_hover counter
   lda #DRAGON_TIME_TIL_STATE_SWITCH
   sta entity_locals+dragon_locals::fly_hover,x
-  
+
   lda #DRAGON_TIME_TIL_SHOOT_ICEBALL
   sta entity_locals+dragon_locals::shoot_iceball,x
-  
+
   rts
 
 dragon_hoverState:
@@ -70,7 +70,7 @@ dragon_hoverState:
   .scope
   dec entity_locals+dragon_locals::shoot_iceball,x
   bne do_not_shoot_iceball
-  
+
   ;spawn an explosion entity
   lda #entity_index_iceball
   sta b0
@@ -84,61 +84,61 @@ dragon_hoverState:
   lda entity_instances+entityRAM::positionX+1,x
   adc #0
   sta w0+1
-  
+
   ;get out positionY
   lda entity_instances+entityRAM::positionY,x
   sta b1
-  
+
   jsr entity_spawn
-  
+
   lda #DRAGON_TIME_TIL_SHOOT_ICEBALL
   sta entity_locals+dragon_locals::shoot_iceball,x
-  
+
 do_not_shoot_iceball:
   .endscope
 
   .scope
   dec entity_locals+dragon_locals::fly_hover,x
   bne do_not_switch_state
-  
+
   lda #DRAGON_FLYSTATE
   sta entity_instances+entityRAM::state,x
-  
+
   lda #DRAGON_TIME_TIL_STATE_SWITCH
   sta entity_locals+dragon_locals::fly_hover,x
-  
+
   lda #0
   sta entity_locals+dragon_locals::x_velocity,x
   sta entity_locals+dragon_locals::x_velocity+1,x
   sta entity_locals+dragon_locals::y_velocity,x
   sta entity_locals+dragon_locals::y_velocity+1,x
-  
+
 do_not_switch_state:
   .endscope
 
   jsr entity_compute_screen_coordinates
-  
+
   jsr dragon_draw
 
   rts
-  
+
 dragon_flyState:
 
   .scope
   dec entity_locals+dragon_locals::fly_hover,x
   bne do_not_switch_state
-  
+
   lda #DRAGON_HOVERSTATE
   sta entity_instances+entityRAM::state,x
-  
+
   lda #DRAGON_TIME_TIL_STATE_SWITCH
   sta entity_locals+dragon_locals::fly_hover,x
-  
+
 do_not_switch_state:
   .endscope
 
   jsr entity_compute_screen_coordinates
-  
+
   ;add x velocity to 24 bit X coordinate with sign extension
 .scope addXVelocity
   clc
@@ -190,7 +190,7 @@ signExtendAddDone:
   sbc nomolos_screen_y
   lda entity_screen_y+1
   sbc nomolos_screen_y+1
-  
+
   bmi followDown
 followUp:
 
@@ -205,7 +205,7 @@ followUp:
 
   jmp followVertTestDone
 followDown:
-  
+
   ;add to y velocity
   lda entity_locals+dragon_locals::y_velocity,x
   clc
@@ -224,7 +224,7 @@ followVertTestDone:
   sbc nomolos_screen_x+1
   bmi followToRight
 followToLeft:
-  
+
   ;subtract from x velocity
   lda entity_locals+dragon_locals::x_velocity,x
   sec
@@ -233,10 +233,10 @@ followToLeft:
   lda entity_locals+dragon_locals::x_velocity+1,x
   sbc #0
   sta entity_locals+dragon_locals::x_velocity+1,x
-  
+
   jmp followTestDone
 followToRight:
-  
+
   ;add to x velocity
   lda entity_locals+dragon_locals::x_velocity,x
   clc
@@ -245,76 +245,76 @@ followToRight:
   lda entity_locals+dragon_locals::x_velocity+1,x
   adc #0
   sta entity_locals+dragon_locals::x_velocity+1,x
-  
+
 followTestDone:
 
   ;keep x and y velocity under control
   lda entity_locals+dragon_locals::x_velocity+1,x  ;high byte is "pixel speed"
   bpl xVelocityPositive
 xVelocityNegative:
-.scope 
-  
+.scope
+
   cmp #(-DRAGON_MAXHORIZSPEED)
   bpl notMaxHoriz
-  
+
   lda #(-DRAGON_MAXHORIZSPEED)
   sta entity_locals+dragon_locals::x_velocity+1,x
-  
+
 notMaxHoriz:
 .endscope
-  
+
   jmp xVelocityTestDone
 xVelocityPositive:
 .scope
   cmp #(DRAGON_MAXHORIZSPEED)
   bmi notMaxHoriz
-  
+
   lda #(DRAGON_MAXHORIZSPEED)
   sta entity_locals+dragon_locals::x_velocity+1,x
-  
+
 notMaxHoriz:
 .endscope
 
 xVelocityTestDone:
-  
+
   ;keep x and y velocity under control
   lda entity_locals+dragon_locals::y_velocity+1,x  ;high byte is "pixel speed"
   bpl yVelocityPositive
 yVelocityNegative:
-.scope 
-  
+.scope
+
   cmp #(-DRAGON_MAXVERTSPEED)
   bpl notMaxVert
-  
+
   lda #(-DRAGON_MAXVERTSPEED)
   sta entity_locals+dragon_locals::y_velocity+1,x
-  
+
 notMaxVert:
 .endscope
-  
+
   jmp yVelocityTestDone
 yVelocityPositive:
 .scope
   cmp #(DRAGON_MAXVERTSPEED)
   bmi notMaxVert
-  
+
   lda #(DRAGON_MAXVERTSPEED)
   sta entity_locals+dragon_locals::y_velocity+1,x
-  
+
 notMaxVert:
 .endscope
 
 yVelocityTestDone:
-  
+
   jsr dragon_draw
 
   rts
- 
+
 killDragon:
 
   ;make it dead
   jsr entity_kill
-  
+
   ;spawn an explosion entity
   lda #entity_index_explosion
   sta b0
@@ -325,20 +325,20 @@ killDragon:
   ;get out high byte of positionX
   lda entity_instances+entityRAM::positionX+1,x
   sta w0+1
-  
+
   ;get out positionY
   lda entity_instances+entityRAM::positionY,x
   sta b1
-  
+
   jsr entity_spawn
 
   rts
-  
+
 dragon_draw:
 
   jsr entity_test_death_zone
   beq killDragon
-  
+
   lda #level_data_struct::dragon_fly
   sta entity_locals+dragon_locals::anim_index,x
   ;load dragon width and height
@@ -347,48 +347,48 @@ dragon_draw:
   lda #DRAGON_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
-  
+
   bne :+
-  
+
   jsr nomolos_hurt
   lda #level_data_struct::dragon_fly
   sta entity_locals+dragon_locals::anim_index,x
-  
+
   jsr entity_reset_anim
-  
+
 :
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
-  
+
   ;load dragon width and height
   lda #DRAGON_WIDTH
   sta b2
   lda #DRAGON_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
-  
+
   bne nomolosNotAttacking
-  
+
   ;play a hit sound
   txa
   pha
-  
+
   lda #<hit_sound
   sta sound_param_word_0
   lda #>hit_sound
   sta sound_param_word_0+1
-  
+
   lda #3
   sta sound_param_byte_0
-  
+
   ldx #soundeffect_two
   jsr stream_initialize
-  
+
   pla
   tax
-  
+
   jmp killDragon
-  
+
 nomolosNotAttacking:
 
   ldy #level_data_struct::dragon_offset
@@ -410,7 +410,7 @@ entity_facing_test_done:
 
 dragonOffscreen:
   rts
-  
+
 .endproc
-  
+
 .endif

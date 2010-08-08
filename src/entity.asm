@@ -26,7 +26,7 @@
   lda camera_max_scroll_x+1
   sbc entity_instances+entityRAM::positionX+1,x
   bmi do_not_kill_entity
-  
+
   ;compare to min explored x. if result is positive, entity should not be
   ;killed because it is outside the range
   sec
@@ -35,7 +35,7 @@
   lda camera_min_scroll_x+1
   sbc entity_instances+entityRAM::positionX+1,x
   bpl do_not_kill_entity
-  
+
 kill_entity:
 
   lda #0
@@ -58,7 +58,7 @@ do_not_kill_entity:
   sta w1
   lda #>(entity_instances+entityRAM::animationObject)
   sta w1+1
-  
+
   ;get the index into a
   txa
   clc
@@ -67,17 +67,17 @@ do_not_kill_entity:
   sta w1
   lda w1+1
   adc #0
-  sta w1+1 
-  
+  sta w1+1
+
   ;load address of deentle animation definition into w2
   lda (base_address_rom_definition_table),y
   sta w2
   iny
   lda (base_address_rom_definition_table),y
   sta w2+1
-  
-  jsr sprite_update_animation  
-  
+
+  jsr sprite_update_animation
+
   lda entity_screen_x
   sta w3
   lda entity_screen_x+1
@@ -86,7 +86,7 @@ do_not_kill_entity:
   sta w4
   lda entity_screen_y+1
   sta w4+1
-  
+
   jsr sprite_draw_animation_16bit
   rts
 .endproc
@@ -109,14 +109,14 @@ do_not_kill_entity:
   ;save x
   txa
   pha
-  
+
   ;get zero based index of entity
   lda entity_instances+entityRAM::index,x
 
-  ;decrement counter for this entity  
+  ;decrement counter for this entity
   tax
   dec entity_counters,x
-  
+
   ;restore x
   pla
   tax
@@ -143,7 +143,7 @@ entity_will_go_right:
   ;clear negative flag
   lda #$01
   rts
-  
+
 .endproc
 
 ;tests whether an entity is a certain distance offscreen
@@ -154,24 +154,24 @@ entity_will_go_right:
   ;if upper byte is zero, the entity is not in the death zone (it is on screen)
   lda entity_screen_x+1
   beq entity_not_in_death_zone
-  
+
   ;otherwise, do test the lower byte
   lda entity_screen_x
   and #%11000000
 
   cmp #%00000000
   beq entity_not_in_death_zone
-  
+
   cmp #%11000000
   beq entity_not_in_death_zone
-  
+
 entity_is_in_death_zone:
 
   ;set zero flag so beq will take a branch in following code
   lda #0
 
   rts
-  
+
 entity_not_in_death_zone:
 
   ;clear zero flag so beq will not take a branch in following code
@@ -193,7 +193,7 @@ entity_not_in_death_zone:
   sta w3
   lda entity_screen_y+1
   sta w3+1
-  
+
   ;transfer Hitbox rectangle to w4 = left and w5 = top and b4 = width and b5 = height
   lda nomolos_attack_rect_x
   sta w4
@@ -207,52 +207,52 @@ entity_not_in_death_zone:
   sta b4
   lda nomolos_attack_rect_height
   sta b5
-    
+
   jsr geotests_rect_in_rect_16bit
   .else
-  
+
   ;transfer entity rectangle to w2 = top left x, y and w3 = bot right x, y
-  
+
   ;left
   lda entity_screen_x
   sta w2
-  
+
   ;right
   clc
   adc b2
   sta w3
-  
+
   ;top
   lda entity_screen_y
   sta w2+1
-  
+
   ;bottom
   clc
   adc b3
   sta w3+1
-  
+
   ;transfer Hitbox rectangle to w4 = top left x, y and w5 = bot right x, y
-  
+
   ;left
   lda nomolos_attack_rect_x
   sta w4
-  
+
   ;right
   clc
   adc nomolos_attack_rect_width
   sta w5
-  
+
   ;top
   lda nomolos_attack_rect_y
   sta w4+1
-  
+
   ;bottom
   clc
   adc nomolos_attack_rect_height
   sta w5+1
-  
+
   jsr geotests_rect_in_rect
-  
+
   .endif
 
   rts
@@ -271,7 +271,7 @@ entity_not_in_death_zone:
   sta w3
   lda entity_screen_y+1
   sta w3+1
-  
+
   ;transfer Nomolos rectangle to w4 = left and w5 = top and b4 = width and b5 = height
   lda nomolos_screen_x
   sta w4
@@ -290,47 +290,47 @@ entity_not_in_death_zone:
   .else
 
   ;transfer entity rectangle to w2 = top left x, y and w3 = bot right x, y
-  
+
   ;left
   lda entity_screen_x
   sta w2
-  
+
   ;right
   clc
   adc b2
   sta w3
-  
+
   ;top
   lda entity_screen_y
   sta w2+1
-  
+
   ;bottom
   clc
   adc b3
   sta w3+1
-  
+
   ;transfer nomolos rectangle to w4 = top left x, y and w5 = bot right x, y
-  
+
   ;left
   lda nomolos_screen_x
   sta w4
-  
+
   ;right
   clc
   adc #nomolos_width
   sta w5
-  
+
   ;top
   lda nomolos_screen_y
   sta w4+1
-  
+
   ;bottom
   clc
   adc #nomolos_height
   sta w5+1
-  
+
   jsr geotests_rect_in_rect
-  
+
   .endif
 
   rts
@@ -343,7 +343,7 @@ entity_not_in_death_zone:
   ;get out high byte of positionX
   lda entity_instances+entityRAM::positionX+1,x
   sta w0+1
-  
+
   ;get out positionY
   lda entity_instances+entityRAM::positionY,x
   sta w1
@@ -377,10 +377,10 @@ entity_not_in_death_zone:
   ;start at last entity
   ldy #last_entity
 nextEntity:
-  ;save y 
-  tya  
+  ;save y
+  tya
   pha
-  
+
   ;multiply by 4 to get the entity RAM object offset
   asl
   asl
@@ -399,7 +399,7 @@ nextEntity:
   asl
   tay
   ;now y points to the entity definition
-  
+
   ;load low byte of update routine
   lda (base_address_entity_definition_table),y
   ;might as well use w0..
@@ -413,7 +413,7 @@ nextEntity:
 
   ;jump to the entity update routine indirectly
   jsr indirectJsrW0
-  
+
   ;entities are expected to return here.
 skipUpdate:
   ;restore y
@@ -424,9 +424,9 @@ skipUpdate:
   bpl nextEntity
 
   rts
-  
+
 .endproc
-  
+
 .proc indirectJsrW0
   jmp (w0)
 .endproc
@@ -457,7 +457,7 @@ skipUpdate:
   bpl :-
   rts
 .endproc
-  
+
 ;This routine spawns a single entity. It works by first searching
 ;for the first "dead" entity in the entity_instances. When it finds this
 ;dead entity, it fills it according to the entityRAM struct.
@@ -468,14 +468,14 @@ skipUpdate:
 ;b1 = positionY
 
 do_not_spawn:
-  
+
   ;restore regs
   pla
   tay
   pla
   tax
   pla
-  
+
   rts
 
 .proc entity_spawn
@@ -484,16 +484,16 @@ do_not_spawn:
   pha
   txa
   pha
-  tya 
+  tya
   pha
 
   ;if 0 is passed in, we are not to spawn an entity.
   lda b0
   beq do_not_spawn
-  
+
   ;subtract from entity index to get zero based entity index
   dec b0
-  
+
   ;if entity counter for specified entity is greater than max allowed, do not spawn.
   lda b0
   tax
@@ -511,7 +511,7 @@ do_not_spawn:
   lda (base_address_entity_definition_table),y
   cmp entity_counters,x
   beq do_not_spawn
-  
+
   ;start at the last entity
   ldy #last_entity
 :
@@ -529,49 +529,49 @@ do_not_spawn:
   ;when we get here we are pointing at a dead entity with x
   tya
   bmi do_not_spawn
-  
+
   ;save x
   txa
   pha
-  
+
   ;get entity index into x
   lda b0
   tax
-  
+
   ;increment the entity count
   inc entity_counters,x
-  
+
   ;restore x
   pla
   tax
-  
+
   ;make the entity alive. ALIVE! MUA HUAH HAH HAH
   lda #$01
   sta entity_instances+entityRAM::alive,x
-  
+
   ;store the kind of entity this is
   lda b0
   sta entity_instances+entityRAM::index,x
-  
+
   ;now that we know the kind of entity this is, we must look up
   ;the entity and pull out its initialXOffset and initialYOffset,
   ;add these to the input parameters, and store them in positionX and positionY.
-  
+
   ;a holds the entity index, so multiply it by 8 to get an entity offset
   asl
   asl
   asl
   ;put the entity offset into y
   tay
-  
+
   ;skip the UpdateRoutine, we're not interested in it here
   iny
   iny
-  
+
   ;store the initial X offset in b2 for now
   lda (base_address_entity_definition_table),y
   sta b2
-  
+
   ;load the low byte of the x parameter, and do a 16 bit subtract from this
   sec
   lda w0
@@ -579,30 +579,30 @@ do_not_spawn:
   sta w0
   lda w0+1
   sbc #0
-  sta w0+1  
+  sta w0+1
 
   ;now w0 should have the spawnPositionX value
   lda w0
   sta entity_instances+entityRAM::spawnPositionX,x
   lda w0+1
   sta entity_instances+entityRAM::spawnPositionX+1,x
-  
+
   ;load initial y offset
   iny
   ;load the initial y offset and store it in b2 for now
   lda (base_address_entity_definition_table),y
   sta b2
-  
+
   ;subtract this from the y parameter
   sec
   lda b1
   sbc b2
   sta b1  ;store result in y parameter
-  
+
   ;now b1 should have the spawnPositionY value
   lda b1
   sta entity_instances+entityRAM::spawnPositionY,x
-  
+
   ;load positionXFine
   lda #$00
   sta entity_instances+entityRAM::positionXFine,x
@@ -611,7 +611,7 @@ do_not_spawn:
   sta entity_instances+entityRAM::positionX,x
   lda w0+1
   sta entity_instances+entityRAM::positionX+1,x
-  
+
   ;load positionYFine
   lda #$00
   sta entity_instances+entityRAM::positionYFine,x
@@ -620,18 +620,18 @@ do_not_spawn:
   sta entity_instances+entityRAM::positionY,x
   lda #0
   sta entity_instances+entityRAM::positionY+1,x
-  
+
   ;point to the initial state
   iny
   ;load initial state
-  lda (base_address_entity_definition_table),y  
+  lda (base_address_entity_definition_table),y
   ;point to state variable in entity entry
   ;store the initial state there
   sta entity_instances+entityRAM::state,x
-  
+
   ;at this point the entity should be fully spawned and ready
   ;to have its update routine called.
-  
+
   ;restore regs
   pla
   tay

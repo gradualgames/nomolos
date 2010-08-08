@@ -25,7 +25,7 @@ skelekin_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
-  
+
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:
@@ -40,7 +40,7 @@ entity_facing_right:
   sta entity_instances+entityRAM::state,x
 
 entity_facing_test_done:
-  
+
   rts
 
 skelekin_moveRightState:
@@ -79,7 +79,7 @@ no_right_collision:
   rts
 
 skelekin_moveLeftState:
- 
+
   lda entity_instances+entityRAM::positionX,x
   sta w0
   lda entity_instances+entityRAM::positionX+1,x
@@ -97,7 +97,7 @@ skelekin_moveLeftState:
   lda #SKELEKIN_MOVERIGHTSTATE
   sta entity_instances+entityRAM::state,x
 no_left_collision:
- 
+
   sec
   lda entity_instances+entityRAM::positionX,x
   sbc #$01
@@ -109,58 +109,58 @@ no_left_collision:
   jsr skelekin_draw
 
   rts
-  
+
 skelekin_draw:
 
   jsr entity_compute_screen_coordinates
 
   jsr entity_test_death_zone
   beq killSkelekin
-  
+
   ;load skelekin width and height
   lda #SKELEKIN_WIDTH
   sta b2
   lda #SKELEKIN_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
-  
+
   bne :+
-  
+
   jsr nomolos_hurt
-  
+
 :
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
-  
+
   ;load skelekin width and height
   lda #SKELEKIN_WIDTH
   sta b2
   lda #SKELEKIN_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
-  
+
   bne nomolosNotAttacking
-  
+
   ;play a hit sound
   txa
   pha
-  
+
   lda #<hit_sound
   sta sound_param_word_0
   lda #>hit_sound
   sta sound_param_word_0+1
-  
+
   lda #3
   sta sound_param_byte_0
-  
+
   ldx #soundeffect_two
   jsr stream_initialize
-  
+
   pla
   tax
-  
+
   jmp killSkelekin
-  
+
 nomolosNotAttacking:
 
   ldy #level_data_struct::skelekin_offset
@@ -182,12 +182,12 @@ skelekin_direction_test_done:
 
 skelekinOffscreen:
   rts
-  
+
 killSkelekin:
 
   ;make it dead
   jsr entity_kill
-  
+
   ;spawn an explosion entity
   lda #entity_index_explosion
   sta b0
@@ -198,15 +198,15 @@ killSkelekin:
   ;get out high byte of positionX
   lda entity_instances+entityRAM::positionX+1,x
   sta w0+1
-  
+
   ;get out positionY
   lda entity_instances+entityRAM::positionY,x
   sta b1
-  
+
   jsr entity_spawn
 
   rts
 
 .endproc
-  
+
 .endif

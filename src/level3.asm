@@ -30,7 +30,7 @@ level3_music:
   .word volume_envelopes
   .word pitch_envelopes
   .word duty_envelopes
-  
+
 volume_envelopes:
   .word volume_envelope_0
   .word volume_envelope_1
@@ -62,13 +62,13 @@ pitch_envelopes:
   .word 0
   .word 0
   .word 0
-  
+
   .word 0
   .word 0
   .word 0
   .word 0
   .word 0
-  
+
   .word sf_pitch_envelope_0
   .word sf_pitch_envelope_1
   .word 0
@@ -84,7 +84,7 @@ pitch_envelopes:
 duty_envelopes:
   .word duty_envelope_0
   .word duty_envelope_1
-  
+
 volume_envelope_0:
   .byte 0, ENV_STOP
 
@@ -95,7 +95,7 @@ volume_envelope_2:
 
 pitch_envelope_0:
   .byte 0, ENV_LOOP
-  
+
 duty_envelope_0:
   .byte 0, ENV_LOOP
 duty_envelope_1:
@@ -145,19 +145,19 @@ level3_cycling_palettes:
   .byte $0d,$03,$12,$21,$0d,$12,$20,$21,$0d,$24,$14,$04,$0d,$13,$33,$23
   .byte $0d,$03,$12,$21,$0d,$20,$21,$12,$0d,$24,$14,$04,$0d,$13,$33,$23
   .byte $0d,$03,$12,$21,$0d,$21,$12,$20,$0d,$24,$14,$04,$0d,$13,$33,$23
-  
+
 .export level3_map
 level3_map = Map
 
 .export level3_map_column_table
 level3_map_column_table = MapColumnTable
-  
+
 .export level3_attribute_column_table
 level3_attribute_column_table = AttributeColumnTable
 
 .export level3_meta_tile_column_table
 level3_meta_tile_column_table = MetaTileColumnTable
-  
+
 .export level3_meta_tile_table
 level3_meta_tile_table = MetaTileTable
 

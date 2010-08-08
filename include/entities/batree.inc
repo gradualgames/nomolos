@@ -29,11 +29,11 @@ batree_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
-  
+
   ;set initial batspawn_counter
   lda #BATREE_BATSPAWN_INTERVAL
   sta entity_locals+batree_locals::batspawn_counter,x
-  
+
   ;switch state to "run"
   lda #BATREE_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
@@ -49,7 +49,7 @@ batree_moveRightState:
   lda entity_instances+entityRAM::positionX+1,x
   adc #0
   sta entity_instances+entityRAM::positionX+1,x
-  
+
   ;do PositionX - spawnPositionX
   sec
   lda entity_instances+entityRAM::positionX,x
@@ -58,7 +58,7 @@ batree_moveRightState:
   lda entity_instances+entityRAM::positionX+1,x
   sbc entity_instances+entityRAM::spawnPositionX+1,x
   sta w0+1
-  
+
   ;difference is in w0, subtract our desired delta distance from it
   sec
   lda w0
@@ -68,14 +68,14 @@ batree_moveRightState:
   sbc #0
   sta w0+1
   bne dontSwitchToLeftState
-  
+
   lda #BATREE_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
-  
+
 dontSwitchToLeftState:
 
   jsr batree_draw
-  
+
   jsr batree_update_batspawn_counter
 
   rts
@@ -90,16 +90,16 @@ batree_moveLeftState:
   lda entity_instances+entityRAM::positionX+1,x
   sbc #0
   sta entity_instances+entityRAM::positionX+1,x
-  
+
   ;do spawnPositionX - PositionX
   sec
   lda entity_instances+entityRAM::spawnPositionX,x
-  sbc entity_instances+entityRAM::positionX,x 
+  sbc entity_instances+entityRAM::positionX,x
   sta w0
   lda entity_instances+entityRAM::spawnPositionX+1,x
-  sbc entity_instances+entityRAM::positionX+1,x 
+  sbc entity_instances+entityRAM::positionX+1,x
   sta w0+1
-  
+
   ;difference is in w0, subtract our desired delta distance from it
   sec
   lda w0
@@ -108,25 +108,25 @@ batree_moveLeftState:
   lda w0+1
   sbc #0
   sta w0+1
-  
+
   bne dontSwitchToRightState
-  
+
   lda #BATREE_MOVERIGHTSTATE
   sta entity_instances+entityRAM::state,x
-  
+
 dontSwitchToRightState:
 
   jsr batree_draw
-  
+
   jsr batree_update_batspawn_counter
 
   rts
-  
+
 batree_update_batspawn_counter:
 
   dec entity_locals+batree_locals::batspawn_counter,x
   bne do_not_spawn_bat
-  
+
   ;spawn bat at location of batree
 ;This routine spawns a single entity. It works by first searching
 ;for the first "dead" entity in the entity_instances. When it finds this
@@ -148,66 +148,66 @@ batree_update_batspawn_counter:
   lda #entity_index_bat
   sta b0
   jsr entity_spawn
-  
+
   ;reset bat spawn counter
   lda #BATREE_BATSPAWN_INTERVAL
   sta entity_locals+batree_locals::batspawn_counter,x
-  
+
 do_not_spawn_bat:
 
   rts
-  
+
 batree_draw:
 
   jsr entity_compute_screen_coordinates
 
   jsr entity_test_death_zone
   beq killBatree
-  
+
   ;load batree width and height
   lda #BATREE_WIDTH
   sta b2
   lda #BATREE_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
-  
+
   bne :+
-  
+
   jsr nomolos_hurt
-  
+
 :
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
-  
+
   ;load batree width and height
   lda #BATREE_WIDTH
   sta b2
   lda #BATREE_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
-  
+
   bne nomolosNotAttacking
-  
+
   ;play a hit sound
   txa
   pha
-  
+
   lda #<hit_sound
   sta sound_param_word_0
   lda #>hit_sound
   sta sound_param_word_0+1
-  
+
   lda #3
   sta sound_param_byte_0
-  
+
   ldx #soundeffect_two
   jsr stream_initialize
-  
+
   pla
   tax
-  
+
   jmp killBatree
-  
+
 nomolosNotAttacking:
 
   ldy #level_data_struct::batree_offset
@@ -229,12 +229,12 @@ entity_facing_test_done:
   jsr entity_draw_anim
 batreeOffscreen:
   rts
-  
+
 killBatree:
 
   ;make it dead
   jsr entity_kill
-  
+
   ;spawn an explosion entity
   lda #entity_index_explosion
   sta b0
@@ -245,14 +245,14 @@ killBatree:
   ;get out high byte of positionX
   lda entity_instances+entityRAM::positionX+1,x
   sta w0+1
-  
+
   ;get out positionY
   lda entity_instances+entityRAM::positionY,x
   sta b1
-  
+
   jsr entity_spawn
 
   rts
 .endproc
-  
+
 .endif

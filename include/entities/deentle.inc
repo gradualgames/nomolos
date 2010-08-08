@@ -24,7 +24,7 @@ deentle_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
-  
+
   ;switch state to "run"
   lda #DEENTLE_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
@@ -40,7 +40,7 @@ deentle_moveRightState:
   lda entity_instances+entityRAM::positionX+1,x
   adc #0
   sta entity_instances+entityRAM::positionX+1,x
-  
+
   ;do PositionX - spawnPositionX
   sec
   lda entity_instances+entityRAM::positionX,x
@@ -49,7 +49,7 @@ deentle_moveRightState:
   lda entity_instances+entityRAM::positionX+1,x
   sbc entity_instances+entityRAM::spawnPositionX+1,x
   sta w0+1
-  
+
   ;difference is in w0, subtract our desired delta distance from it
   sec
   lda w0
@@ -59,10 +59,10 @@ deentle_moveRightState:
   sbc #0
   sta w0+1
   bne dontSwitchToLeftState
-  
+
   lda #DEENTLE_MOVELEFTSTATE
   sta entity_instances+entityRAM::state,x
-  
+
 dontSwitchToLeftState:
 
   jsr deentle_draw
@@ -79,16 +79,16 @@ deentle_moveLeftState:
   lda entity_instances+entityRAM::positionX+1,x
   sbc #0
   sta entity_instances+entityRAM::positionX+1,x
-  
+
   ;do spawnPositionX - PositionX
   sec
   lda entity_instances+entityRAM::spawnPositionX,x
-  sbc entity_instances+entityRAM::positionX,x 
+  sbc entity_instances+entityRAM::positionX,x
   sta w0
   lda entity_instances+entityRAM::spawnPositionX+1,x
-  sbc entity_instances+entityRAM::positionX+1,x 
+  sbc entity_instances+entityRAM::positionX+1,x
   sta w0+1
-  
+
   ;difference is in w0, subtract our desired delta distance from it
   sec
   lda w0
@@ -97,69 +97,69 @@ deentle_moveLeftState:
   lda w0+1
   sbc #0
   sta w0+1
-  
+
   bne dontSwitchToRightState
-  
+
   lda #DEENTLE_MOVERIGHTSTATE
   sta entity_instances+entityRAM::state,x
-  
+
 dontSwitchToRightState:
 
   jsr deentle_draw
 
   rts
-  
+
 deentle_draw:
 
   jsr entity_compute_screen_coordinates
 
   jsr entity_test_death_zone
   beq killDeentle
-  
+
   ;load deentle width and height
   lda #DEENTLE_WIDTH
   sta b2
   lda #DEENTLE_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
-  
+
   bne :+
-  
+
   jsr nomolos_hurt
-  
+
 :
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
-  
+
   ;load deentle width and height
   lda #DEENTLE_WIDTH
   sta b2
   lda #DEENTLE_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
-  
+
   bne nomolosNotAttacking
-  
+
   ;play a hit sound
   txa
   pha
-  
+
   lda #<hit_sound
   sta sound_param_word_0
   lda #>hit_sound
   sta sound_param_word_0+1
-  
+
   lda #3
   sta sound_param_byte_0
-  
+
   ldx #soundeffect_two
   jsr stream_initialize
-  
+
   pla
   tax
-  
+
   jmp killDeentle
-  
+
 nomolosNotAttacking:
 
   ldy #level_data_struct::deentle_offset
@@ -171,12 +171,12 @@ nomolosNotAttacking:
 
 deentleOffscreen:
   rts
-  
+
 killDeentle:
 
   ;make it dead
   jsr entity_kill
-  
+
   ;spawn an explosion entity
   lda #entity_index_explosion
   sta b0
@@ -187,14 +187,14 @@ killDeentle:
   ;get out high byte of positionX
   lda entity_instances+entityRAM::positionX+1,x
   sta w0+1
-  
+
   ;get out positionY
   lda entity_instances+entityRAM::positionY,x
   sta b1
-  
+
   jsr entity_spawn
 
   rts
 .endproc
-  
+
 .endif

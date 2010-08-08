@@ -35,17 +35,17 @@ snail_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
-  
+
   lda #0
   sta entity_locals+snail_locals::direction,x
   lda #SNAIL_DISTANCE_TIL_SWITCH_STATE
   sta entity_locals+snail_locals::move_stop,x
   lda #SNAIL_DISTANCE_TIL_ABOUT_FACE
   sta entity_locals+snail_locals::distance,x
-  
+
   lda #SNAIL_MOVESTATE
   sta entity_instances+entityRAM::state,x
-  
+
   rts
 
 snail_moveState:
@@ -53,31 +53,31 @@ snail_moveState:
   .scope
   dec entity_locals+snail_locals::move_stop,x
   bne do_not_switch_state
-  
+
   lda #SNAIL_DISTANCE_TIL_SWITCH_STATE
   sta entity_locals+snail_locals::move_stop,x
-  
+
   lda #SNAIL_STOPSTATE
   sta entity_instances+entityRAM::state,x
-  
+
 do_not_switch_state:
   .endscope
-  
+
   dec entity_locals+snail_locals::distance,x
   bne do_not_flip_direction
-  
+
   lda entity_locals+snail_locals::direction,x
   eor #$ff
   sta entity_locals+snail_locals::direction,x
-  
+
   lda #SNAIL_DISTANCE_TIL_ABOUT_FACE
   sta entity_locals+snail_locals::distance,x
-  
+
 do_not_flip_direction:
 
   lda entity_locals+snail_locals::direction,x
   bne move_right
-  
+
 move_left:
 
   sec
@@ -116,25 +116,25 @@ snail_stopState:
   .scope
   dec entity_locals+snail_locals::move_stop,x
   bne do_not_switch_state
-  
+
   lda #SNAIL_DISTANCE_TIL_SWITCH_STATE
   sta entity_locals+snail_locals::move_stop,x
-  
+
   lda #SNAIL_MOVESTATE
   sta entity_instances+entityRAM::state,x
-  
+
 do_not_switch_state:
   .endscope
 
   jsr snail_draw
-  
+
   rts
-  
+
 killSnail:
 
   ;make it dead
   jsr entity_kill
-  
+
   ;spawn an explosion entity
   lda #entity_index_explosion
   sta b0
@@ -145,68 +145,68 @@ killSnail:
   ;get out high byte of positionX
   lda entity_instances+entityRAM::positionX+1,x
   sta w0+1
-  
+
   ;get out positionY
   lda entity_instances+entityRAM::positionY,x
   sta b1
-  
+
   jsr entity_spawn
 
   rts
-  
+
 snail_draw:
 
   jsr entity_compute_screen_coordinates
 
   jsr entity_test_death_zone
   beq killSnail
-  
+
   ;load snail width and height
   lda #SNAIL_WIDTH
   sta b2
   lda #SNAIL_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
-  
+
   bne :+
-  
+
   jsr nomolos_hurt
-  
+
   jsr entity_reset_anim
-  
+
 :
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
-  
+
   ;load snail width and height
   lda #SNAIL_WIDTH
   sta b2
   lda #SNAIL_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
-  
+
   bne nomolosNotAttacking
-  
+
   ;play a hit sound
   txa
   pha
-  
+
   lda #<hit_sound
   sta sound_param_word_0
   lda #>hit_sound
   sta sound_param_word_0+1
-  
+
   lda #3
   sta sound_param_byte_0
-  
+
   ldx #soundeffect_two
   jsr stream_initialize
-  
+
   pla
   tax
-  
+
   jmp killSnail
-  
+
 nomolosNotAttacking:
 
   ldy #level_data_struct::snail_offset
@@ -225,10 +225,10 @@ snail_moving_right:
   sta b2
 snail_direction_test_done:
   jsr entity_draw_anim
-  
+
 snailOffscreen:
   rts
 
 .endproc
-  
+
 .endif

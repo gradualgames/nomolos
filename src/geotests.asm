@@ -30,7 +30,7 @@
   lda w3+1
   adc #0
   sta w7+1
-  
+
   ;load bottom of rectA (w7)
   ;subtract top of rectB (w5)
   sec
@@ -38,7 +38,7 @@
   sbc w5
   lda w7+1
   sbc w5+1
-  bpl :+ 
+  bpl :+
   ;clear zero flag
   lda #$ff
   rts
@@ -131,7 +131,7 @@
   sec
   ;subtract top of rectB
   sbc w4+1
-  bpl :+ 
+  bpl :+
   ;clear zero flag
   lda #$ff
   rts
@@ -184,4 +184,3 @@
 
 
 
-  

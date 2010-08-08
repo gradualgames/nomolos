@@ -46,7 +46,7 @@ apu_register_sets: .res 40
   lda #0
   sta apu_data_ready
   jsr sound_initialize_apu_buffer
-  
+
   ;make sure all streams are killed
   jsr sound_stop
 
@@ -63,16 +63,16 @@ loop:
 
   lda #0
   sta streams+stream::active,x
-  
+
   txa
   clc
   adc #stream_size
   tax
   cpx #stream_size*MAX_STREAMS
-  bne loop  
+  bne loop
 
   jsr sound_initialize_apu_buffer
-  
+
   rts
 .endproc
 
@@ -81,7 +81,7 @@ loop:
   ;apu data not ready
   lda #0
   sta apu_data_ready
-  
+
   ;copy all streams' register sets to apu registers for upload
   ldx #0
 stream_register_copy_loop:
@@ -92,7 +92,7 @@ stream_register_copy_loop:
 
   ;update the stream
   jsr stream_update
-  
+
   ;load channel number
   lda streams+stream::channel,x
   ;multiply by four to get location within apu_register_sets
@@ -109,14 +109,14 @@ stream_register_copy_loop:
   lda streams+stream::channel_registers+3,x
   sta apu_register_sets+3,y
 stream_not_active:
-  
+
   txa
   clc
   adc #stream_size
   tax
   cpx #stream_size*MAX_STREAMS
   bne stream_register_copy_loop
-  
+
   ;apu data ready
   lda #1
   sta apu_data_ready
@@ -137,7 +137,7 @@ stream_not_active:
       $0035, $0032, $002f, $002c, $002a, $0028, $0025, $0023, \
       $0021, $001f, $001d, $001c, $001a, $0019, $0017, $0016, \
       $0015, $0014, $0012, $0011, $0010, $000f, $000e, $000e
- 
+
 note_table_lo: .lobytes note_table
 note_table_hi: .hibytes note_table
 
@@ -146,7 +146,7 @@ note_table_hi: .hibytes note_table
   square_2_play_note, \
   triangle_play_note, \
   noise_play_note
-  
+
 channel_callback_table_lo: .lobytes channel_callback_table
 channel_callback_table_hi: .hibytes channel_callback_table
 
@@ -154,10 +154,10 @@ channel_callback_table_hi: .hibytes channel_callback_table
   stream_set_length, \
   stream_set_volume_envelope, \
   stream_set_pitch_envelope, \
-  stream_set_duty_envelope, \  
+  stream_set_duty_envelope, \
   stream_goto, \
   stream_terminate
-  
+
 stream_callback_table_lo: .lobytes stream_callback_table
 stream_callback_table_hi: .hibytes stream_callback_table
 
@@ -174,7 +174,7 @@ stream_callback_table_hi: .hibytes stream_callback_table
 
   ;load note index
   ldy stream_byte
-  
+
   ;load low byte of note
   lda note_table_lo,y
   ;store in low 8 bits of pitch
@@ -182,7 +182,7 @@ stream_callback_table_hi: .hibytes stream_callback_table
   ;load high byte of note
   lda note_table_hi,y
   sta streams+stream::channel_registers+3,x
-  
+
   ;load volume index
   lda streams+stream::volume_index,x
   asl
@@ -195,29 +195,29 @@ stream_callback_table_hi: .hibytes stream_callback_table
   sta sound_local_word_0+1
   ;load volume offset
   ldy streams+stream::volume_offset,x
-  
+
   ;load volume value for this frame, but hard code flags and zero-out duty
   lda (sound_local_word_0),y
   cmp #ENV_STOP
   beq volume_stop
   cmp #ENV_LOOP
   bne skip_volume_loop
-  
+
   ;we hit a loop opcode, reset offset and re-load value
   lda #0
   sta streams+stream::volume_offset,x
   tay
-  
+
 skip_volume_loop:
 
   lda #%00110000
   ora (sound_local_word_0),y
   sta streams+stream::channel_registers,x
 
-  inc streams+stream::volume_offset,x  
-  
+  inc streams+stream::volume_offset,x
+
 volume_stop:
-  
+
   ;load pitch index
   lda streams+stream::pitch_index,x
   asl
@@ -230,26 +230,26 @@ volume_stop:
   sta sound_local_word_0+1
   ;load pitch offset
   ldy streams+stream::pitch_offset,x
- 
+
   ;load pitch value
   lda (sound_local_word_0),y
   cmp #ENV_STOP
   beq pitch_stop
   cmp #ENV_LOOP
   bne skip_pitch_loop
-  
+
   ;we hit a loop opcode, reset offset and re-load value
   lda #0
   sta streams+stream::pitch_offset,x
   tay
-  
+
 skip_pitch_loop:
- 
+
   ;test sign
   lda (sound_local_word_0),y
   bmi pitch_delta_negative
 pitch_delta_positive:
- 
+
   clc
   lda streams+stream::channel_registers+2,x
   adc (sound_local_word_0),y
@@ -274,7 +274,7 @@ pitch_delta_test_done:
 
   ;move pitch offset along
   inc streams+stream::pitch_offset,x
-  
+
 pitch_stop:
 
 duty_code:
@@ -290,30 +290,30 @@ duty_code:
   sta sound_local_word_0+1
   ;load duty offset
   ldy streams+stream::duty_offset,x
-  
+
   ;load duty value for this frame, but hard code flags and duty for now
   lda (sound_local_word_0),y
   cmp #ENV_STOP
   beq duty_stop
   cmp #ENV_LOOP
   bne skip_duty_loop
-  
+
   ;we hit a loop opcode, reset offset and re-load value
   lda #0
   sta streams+stream::duty_offset,x
   tay
-  
+
 skip_duty_loop:
-  
+
   ;or the duty value into the register
   lda streams+stream::channel_registers,x
   and #%00111111
   ora (sound_local_word_0),y
   sta streams+stream::channel_registers,x
-  
+
   ;move duty offset along
-  inc streams+stream::duty_offset,x  
-  
+  inc streams+stream::duty_offset,x
+
 duty_stop:
 
   rts
@@ -325,7 +325,7 @@ square_2_play_note = square_1_play_note
 
   ;load note index
   ldy stream_byte
-  
+
   ;load low byte of note
   lda note_table_lo,y
   ;store in low 8 bits of pitch
@@ -333,12 +333,12 @@ square_2_play_note = square_1_play_note
   ;load high byte of note
   lda note_table_hi,y
   sta streams+stream::channel_registers+3,x
-  
+
   ;load volume index
   lda streams+stream::volume_index,x
   asl
   tay
-  ;load volume address    
+  ;load volume address
   lda (base_address_volume_envelopes),y
   sta sound_local_word_0
   iny
@@ -346,29 +346,29 @@ square_2_play_note = square_1_play_note
   sta sound_local_word_0+1
   ;load volume offset
   ldy streams+stream::volume_offset,x
-  
+
   ;load volume value for this frame, but hard code flags and duty for now
   lda (sound_local_word_0),y
   cmp #ENV_STOP
   beq volume_stop
   cmp #ENV_LOOP
   bne skip_volume_loop
-  
+
   ;we hit a loop opcode, reset offset and re-load value
   lda #0
   sta streams+stream::volume_offset,x
   tay
-  
+
 skip_volume_loop:
-  
+
   lda #%10000000
   ora (sound_local_word_0),y
   sta streams+stream::channel_registers,x
 
-  inc streams+stream::volume_offset,x  
-  
+  inc streams+stream::volume_offset,x
+
 volume_stop:
-  
+
   ;load pitch index
   lda streams+stream::pitch_index,x
   asl
@@ -381,26 +381,26 @@ volume_stop:
   sta sound_local_word_0+1
   ;load pitch offset
   ldy streams+stream::pitch_offset,x
- 
+
   ;load pitch value
   lda (sound_local_word_0),y
   cmp #ENV_STOP
   beq pitch_stop
   cmp #ENV_LOOP
   bne skip_pitch_loop
-  
+
   ;we hit a loop opcode, reset offset and re-load value
   lda #0
   sta streams+stream::pitch_offset,x
   tay
-  
+
 skip_pitch_loop:
- 
+
   ;test sign
   lda (sound_local_word_0),y
   bmi pitch_delta_negative
 pitch_delta_positive:
- 
+
   clc
   lda streams+stream::channel_registers+2,x
   adc (sound_local_word_0),y
@@ -425,7 +425,7 @@ pitch_delta_test_done:
 
   ;move pitch offset along
   inc streams+stream::pitch_offset,x
-  
+
 pitch_stop:
 
   rts
@@ -438,12 +438,12 @@ pitch_stop:
 
   ;note index is actually the "sound type" for noise channel
   sta streams+stream::channel_registers+2,x
-  
+
   ;load volume index
   lda streams+stream::volume_index,x
   asl
   tay
-  ;load volume address    
+  ;load volume address
   lda (base_address_volume_envelopes),y
   sta sound_local_word_0
   iny
@@ -451,36 +451,36 @@ pitch_stop:
   sta sound_local_word_0+1
   ;load volume offset
   ldy streams+stream::volume_offset,x
-  
+
   ;load volume value for this frame, hard code disable flags
   lda (sound_local_word_0),y
   cmp #ENV_STOP
   beq volume_stop
   cmp #ENV_LOOP
   bne skip_volume_loop
-  
+
   ;we hit a loop opcode, reset offset and re-load value
   lda #0
   sta streams+stream::volume_offset,x
   tay
-  
+
 skip_volume_loop:
 
-  lda #%00110000  
+  lda #%00110000
   ora (sound_local_word_0),y
   sta streams+stream::channel_registers,x
-  
+
   ;move volume offset along
   inc streams+stream::volume_offset,x
 volume_stop:
-  
+
   rts
 .endproc
 
- 
+
   ;****************************************************************
   ;these callbacks are all stream control and execute in sequence
-  ;until exhausted. 
+  ;until exhausted.
   ;****************************************************************
 
 .proc stream_set_volume_envelope
@@ -533,7 +533,7 @@ volume_stop:
 
   rts
 .endproc
- 
+
 .proc stream_set_length
 
   advance_stream_read_address
@@ -561,12 +561,12 @@ volume_stop:
   lda streams+stream::read_address+1,x
   sta sound_local_word_0+1
   ldy #0
-  lda (sound_local_word_0),y  
+  lda (sound_local_word_0),y
   sta streams+stream::read_address,x
   ldy #1
   lda (sound_local_word_0),y
   sta streams+stream::read_address+1,x
-  
+
   sec
   lda streams+stream::read_address,x
   sbc #1
@@ -590,11 +590,11 @@ volume_stop:
   ;pop current address off the stack
   pla
   pla
-  
+
   ;return from parent caller
   rts
 .endproc
- 
+
 ;expects sound_param_word_1 to contain address of a song definition,
 ;assumed to be four addresses to initialize streams on, for square1, square2, triangle and noise.
 ;any addresses found to be zero will not initialize that channel.
@@ -609,14 +609,14 @@ song_address = sound_param_word_1
   lda (song_address),y
   beq no_square_1
   sta sound_param_word_0+1
-  
+
   lda #0
   sta sound_param_byte_0
-  
+
   ldx #0
   jsr stream_initialize
 no_square_1:
-  
+
   ;load square 2 stream
   iny
   lda (song_address),y
@@ -625,14 +625,14 @@ no_square_1:
   lda (song_address),y
   beq no_square_2
   sta sound_param_word_0+1
-  
+
   lda #1
   sta sound_param_byte_0
-  
+
   ldx #16
   jsr stream_initialize
 no_square_2:
-  
+
   ;load triangle stream
   iny
   lda (song_address),y
@@ -641,14 +641,14 @@ no_square_2:
   lda (song_address),y
   beq no_triangle
   sta sound_param_word_0+1
-  
+
   lda #2
   sta sound_param_byte_0
-  
+
   ldx #32
   jsr stream_initialize
 no_triangle:
-  
+
   ;load noise stream
   iny
   lda (song_address),y
@@ -657,10 +657,10 @@ no_triangle:
   lda (song_address),y
   beq no_noise
   sta sound_param_word_0+1
-  
+
   lda #3
   sta sound_param_byte_0
-  
+
   ldx #48
   jsr stream_initialize
 no_noise:
@@ -672,7 +672,7 @@ no_noise:
   iny
   lda (song_address),y
   sta base_address_volume_envelopes+1
-  
+
   ;load pitch envelopes
   iny
   lda (song_address),y
@@ -680,7 +680,7 @@ no_noise:
   iny
   lda (song_address),y
   sta base_address_pitch_envelopes+1
-  
+
   ;load duty envelopes
   iny
   lda (song_address),y
@@ -690,9 +690,9 @@ no_noise:
   sta base_address_duty_envelopes+1
 
   rts
-  
+
 .endproc
- 
+
 ;expects x to contain the offset of the stream instance to initialize
 ;expects sound_param_byte_0 to contain the channel on which to play the stream.
 ;expects sound_param_word_0 to contain the starting read address of the stream to
@@ -704,14 +704,14 @@ starting_read_address = sound_param_word_0
   ;set stream to be active
   lda #1
   sta streams+stream::active,x
-  
+
   ;set a default note length (20 frames)
   lda #20
   sta streams+stream::length,x
-  
+
   ;set initial frame counter
   sta streams+stream::frame_counter,x
-  
+
   ;set initial envelope indices
   lda #0
   sta streams+stream::volume_index,x
@@ -720,11 +720,11 @@ starting_read_address = sound_param_word_0
   sta streams+stream::volume_offset,x
   sta streams+stream::pitch_offset,x
   sta streams+stream::duty_offset,x
-  
+
   ;set channel
   lda channel
   sta streams+stream::channel,x
-  
+
   ;set initial read address
   lda starting_read_address
   sta streams+stream::read_address,x
@@ -733,7 +733,7 @@ starting_read_address = sound_param_word_0
 
   rts
 .endproc
- 
+
 ;updates a single stream
 ;expects x to be pointing to a stream instance as an offset from streams
 .proc stream_update
@@ -745,17 +745,17 @@ read_address = sound_local_word_1
   sta read_address
   lda streams+stream::read_address+1,x
   sta read_address+1
-  
+
   ;load next byte from stream data
   ldy #0
   lda (read_address),y
   sta stream_byte
-  
+
   ;is this byte a note or a stream opcode?
   cmp #OPCODES_BASE
   bpl process_opcode
 process_note:
-  
+
   ;determine which channel callback to use
   lda streams+stream::channel,x
   tay
@@ -763,29 +763,29 @@ process_note:
   sta callback_address
   lda channel_callback_table_hi,y
   sta callback_address+1
-  
+
   ;call the channel callback!
   jsr indirect_jsr_callback_address
-  
+
   ;decrement the frame counter. on zero, advance the stream's read address.
   dec streams+stream::frame_counter,x
   bne frame_counter_not_zero
-  
+
   ;reset the frame counter
   lda streams+stream::length,x
   sta streams+stream::frame_counter,x
-  
+
   ;reset volume, pitch, and duty offsets
   lda #0
   sta streams+stream::volume_offset,x
   sta streams+stream::pitch_offset,x
   sta streams+stream::duty_offset,x
-  
+
   ;advance the stream's read address.
   advance_stream_read_address
-  
+
 frame_counter_not_zero:
-  
+
   rts
 process_opcode:
 
@@ -800,24 +800,24 @@ process_opcode:
   sta callback_address+1
   ;call the callback!
   jsr indirect_jsr_callback_address
-  
+
   ;advance the stream's read address.
   advance_stream_read_address
-  
+
   ;immediately process the next opcode or note. The idea here is that
   ;all stream control opcodes will execute during the current frame as "setup"
   ;for the next note. All notes will execute once per frame and will always
   ;return from this routine. This leaves the problem, how would the stream
-  ;control opcode "terminate" work? It works by pulling the current return 
+  ;control opcode "terminate" work? It works by pulling the current return
   ;address off the stack and then performing an rts, effectively returning
   ;from its caller, this routine.
   jmp stream_update
-  
+
 .proc indirect_jsr_callback_address
   jmp (callback_address)
   rts
 .endproc
-  
+
 .endproc
 
 .proc sound_initialize_apu_buffer
@@ -829,20 +829,20 @@ process_opcode:
   ;set Saw Envelope Disable and Length Counter Disable to 1 for square 1.
   lda #%00110000
   sta apu_register_sets
-  
+
   lda #$08    ;set Negate flag on the sweep unit
   sta apu_register_sets+1
-  
+
   ;set period to C9, which is a C#...just in case nobody writes to him
   lda #$C9
   sta apu_register_sets+2
-  
+
   ;make sure the old value starts out different from the first default value
   sta apu_square_1_old
-  
+
   lda #$00
   sta apu_register_sets+3
-  
+
   ;****************************************************************
   ;Initialize Square 2
   ;****************************************************************
@@ -850,44 +850,44 @@ process_opcode:
   ;set Saw Envelope Disable and Length Counter Disable to 1 for square 2.
   lda #%00110000
   sta apu_register_sets+4
-  
+
   lda #$08    ;set Negate flag on the sweep unit
   sta apu_register_sets+5
-  
+
   ;set period to C9, which is a C#...just in case nobody writes to him
   lda #$C9
   sta apu_register_sets+6
-  
+
   ;make sure the old value starts out different from the first default value
   sta apu_square_2_old
-  
+
   lda #$00
   sta apu_register_sets+7
-  
+
   ;****************************************************************
   ;Initialize Triangle
   ;****************************************************************
   lda #%10000000
   sta apu_register_sets+8
-  
+
   lda #$C9
   sta apu_register_sets+10
-  
+
   lda #$00
   sta apu_register_sets+11
-  
+
   ;****************************************************************
   ;Initialize Noise
   ;****************************************************************
   lda #%00110000
   sta apu_register_sets+12
-  
+
   lda #%00000000
   sta apu_register_sets+13
-  
+
   lda #%00000000
   sta apu_register_sets+14
-  
+
   rts
 .endproc
 
@@ -897,12 +897,12 @@ process_opcode:
   beq apu_data_not_ready
 
   jsr sound_upload_apu_register_sets
-  
+
 apu_data_not_ready:
 
   rts
 .endproc
-  
+
 ;adapted from MetalSlime's Nerdy Nights sound engine
 .proc sound_upload_apu_register_sets
 square1:
@@ -915,7 +915,7 @@ square1:
   lda apu_register_sets+3
   cmp apu_square_1_old       ;compare to last write
   beq square2                ;don't write this frame if they were equal
-  sta $4003  
+  sta $4003
   sta apu_square_1_old       ;save the value we just wrote to $4003
 square2:
   lda apu_register_sets+4
@@ -943,7 +943,7 @@ noise:
   sta $400E
   lda apu_register_sets+15
   sta $400F
-  
+
   ;clear out all volume values from this frame in case a sound effect is killed suddenly
   lda #%00110000
   sta apu_register_sets
@@ -951,6 +951,6 @@ noise:
   sta apu_register_sets+12
   lda #%10000000
   sta apu_register_sets+8
-  
+
   rts
 .endproc

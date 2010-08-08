@@ -20,7 +20,7 @@
 .include "oneup.inc"
 .include "exitentity.inc"
 .include "mouse.inc"
-.include "explosion.inc"  
+.include "explosion.inc"
 .include "deentle.inc"
 .include "flailitem.inc"
 .include "beedie.inc"

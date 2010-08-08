@@ -18,7 +18,7 @@
 
   lda #0
   sta nomolos_state_secondary
-  
+
   rts
 
 .endproc
@@ -58,7 +58,7 @@
   sta nomolos_map_y+1
   lda #0
   sta nomolos_map_y+2
-  
+
   jsr nomolos_compute_screen_coordinates
 
   lda #3
@@ -624,7 +624,7 @@ skipAttackUpdate:
   and #nomolos_walking_left_test
   beq nomolos_facing_right
 nomolos_facing_left:
-  
+
   sec
   lda nomolos_screen_x
   sbc #16
@@ -632,7 +632,7 @@ nomolos_facing_left:
   lda nomolos_screen_x+1
   sbc #0
   sta nomolos_attack_rect_x+1
-  
+
   sec
   lda nomolos_screen_y
   sbc #16
@@ -640,7 +640,7 @@ nomolos_facing_left:
   lda nomolos_screen_y+1
   sbc #0
   sta nomolos_attack_rect_y+1
-  
+
   jmp nomolos_direction_test_done
 nomolos_facing_right:
 
@@ -651,7 +651,7 @@ nomolos_facing_right:
   lda nomolos_screen_x+1
   sbc #0
   sta nomolos_attack_rect_x+1
-  
+
   sec
   lda nomolos_screen_y
   sbc #16
@@ -1246,7 +1246,7 @@ skip_nomolos_do_not_go_past_zero:
   lda nomolos_screen_x+1
   sta w0+1
   jsr camera_scroll_left
-  
+
   jsr nomolos_compute_screen_coordinates
 
 notLeft:
@@ -1358,9 +1358,9 @@ skipJmpNotRight:
   lda nomolos_screen_x+1
   sta w0+1
   jsr camera_scroll_right
-  
+
   jsr nomolos_compute_screen_coordinates
-  
+
 notRight:
 
   ;************************************************************
@@ -1556,9 +1556,9 @@ skipUpdateNomolosMoving:
   sta w2+1
 
   jsr sprite_draw_animation_16bit
-  
+
   rts
-  
+
 do_not_draw_flail:
 
   resetAnim nomolos_animation
@@ -1841,13 +1841,13 @@ dontDrawNomolos:
   bne skipDrawnomolos_jumping
 
   jsr nomolos_draw_jumping
-  
+
   rts
-  
+
 skipDrawnomolos_jumping:
 
   jsr nomolos_draw_walking
-  
+
   rts
 
 .endproc

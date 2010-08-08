@@ -474,7 +474,7 @@ spritesheet1_Snuffer2:
   .byte $10,$1c,$01,$08,$10
   .byte $10,$1d,$01,$10,$08
   .byte $10,$63,$00,$18,$00
-  
+
 .export spritesheet1_Skelekin0
 spritesheet1_Skelekin0:
   .byte $08

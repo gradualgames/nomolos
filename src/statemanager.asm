@@ -21,7 +21,7 @@
   sta vblank_done
 : lda vblank_done
   beq :-
-  
+
   rts
 
 .endproc
@@ -37,7 +37,7 @@
   sta update
   lda state_table+1,x
   sta update+1
-  
+
   ;load address of ppu update routine
   lda state_table+2,x
   sta update_ppu
@@ -77,20 +77,20 @@ state_table:
 
   lda #1
   sta palette_step
-  
+
 fading_loop:
 
   ;load up the dynamic palette with brightness in b3
   lda palette_step
   sta b3
   jsr ppu_load_dynamic_palette_brightness
-  
+
   ;wait for vblank
   ldx #FADING_SPEED
 : jsr wait_vblank_flag
   dex
   bne :-
-  
+
   inc palette_step
   lda palette_step
   cmp #5
@@ -101,10 +101,10 @@ fading_loop:
   sta update_ppu+1
   pla
   sta update_ppu
-  
+
   rts
 .endproc
-  
+
 ;expects w0 to point to the palette to fade out from
 .proc fade_out_palette
 
@@ -122,20 +122,20 @@ fading_loop:
 
   lda #4
   sta palette_step
-  
+
 fading_loop:
 
   ;load up the dynamic palette with brightness in b3
   lda palette_step
   sta b3
   jsr ppu_load_dynamic_palette_brightness
-  
+
   ;wait for vblank
   ldx #FADING_SPEED
 : jsr wait_vblank_flag
   dex
   bne :-
-  
+
   dec palette_step
   bpl fading_loop
 
@@ -144,7 +144,7 @@ fading_loop:
   sta update_ppu+1
   pla
   sta update_ppu
-  
+
   rts
 .endproc
 
@@ -157,45 +157,45 @@ fading_loop:
   pha
 
   jsr sprite_update_all
-  
+
   ;save current palette address
   lda w0
   pha
   lda w0+1
   pha
-  
+
   lda #<dynamic_palette
   sta w0
   lda #>dynamic_palette
   sta w0+1
-  
+
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
-  
+
   jsr ppu_load_palette
-  
+
   ;restore previous palette address
   pla
   sta w0+1
   pla
   sta w0
-  
+
   set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
-  
+
   ;restore 2006 and 2005 to what we had written them to previously
   upload_ppu_2006
   upload_ppu_2005
-  
+
   lda #1
   sta vblank_done
-  
+
   pla
   tax
   pla
   tay
   pla
-  
+
   rts
 .endproc
 

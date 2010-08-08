@@ -23,7 +23,7 @@ level2_sprite_groups:
 .segment "ROM1"
 
 .export level2_music
-level2_music: 
+level2_music:
   .word Square1
   .word Square2
   .word Triangle
@@ -39,7 +39,7 @@ volume_envelopes:
   .word volume_envelope_3
   .word volume_envelope_4
   .word volume_envelope_5
-  
+
   .word volume_envelope_6
   .word 0
   .word 0
@@ -63,13 +63,13 @@ pitch_envelopes:
   .word 0
   .word 0
   .word 0
-  
+
   .word 0
   .word 0
   .word 0
   .word 0
   .word 0
-  
+
   .word sf_pitch_envelope_0
   .word sf_pitch_envelope_1
   .word 0
@@ -84,7 +84,7 @@ pitch_envelopes:
 
 duty_envelopes:
   .word duty_envelope_0
-  
+
 volume_envelope_0:
   .byte 0, ENV_STOP
 
@@ -167,19 +167,19 @@ level2_cycling_palettes:
   .byte $0d,$07,$06,$0d,$0d,$10,$00,$07,$0d,$10,$00,$01,$0d,$10,$28,$08
   .byte $0d,$07,$06,$0d,$0d,$10,$00,$07,$0d,$10,$00,$01,$0d,$10,$18,$08
 
-  
+
 .export level2_map
 level2_map = Map
 
 .export level2_map_column_table
 level2_map_column_table = MapColumnTable
-  
+
 .export level2_attribute_column_table
 level2_attribute_column_table = AttributeColumnTable
 
 .export level2_meta_tile_column_table
 level2_meta_tile_column_table = MetaTileColumnTable
-  
+
 .export level2_meta_tile_table
 level2_meta_tile_table = MetaTileTable
 

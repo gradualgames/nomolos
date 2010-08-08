@@ -14,9 +14,9 @@
   lda banktable,x        ;read a byte from the banktable
   sta banktable,x        ;and write it back, switching banks at $8000
   sta mapper_bank_current        ;store off the current bank
- 
+
   pla
-  tax 
+  tax
   rts
 .endproc
-  
+

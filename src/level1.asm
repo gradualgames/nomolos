@@ -18,14 +18,14 @@ level1_sprite_groups:
   .word spritesheet1_Owl_chr
   .word spritesheet1_Snuffer_chr
 
-.segment "ROM3"  
+.segment "ROM3"
 
 .include "level1_patterns_source.inc"
 
 .segment "ROM0"
 
 .export level1_music
-level1_music: 
+level1_music:
   .word Square1
   .word Square2
   .word Triangle
@@ -33,14 +33,14 @@ level1_music:
   .word volume_envelopes
   .word pitch_envelopes
   .word duty_envelopes
-  
+
 volume_envelopes:
   .word volume_envelope_0
   .word volume_envelope_1
   .word volume_envelope_2
   .word volume_envelope_3
   .word 0
-  
+
   .word 0
   .word 0
   .word 0
@@ -65,13 +65,13 @@ pitch_envelopes:
   .word 0
   .word 0
   .word 0
-  
+
   .word 0
   .word 0
   .word 0
   .word 0
   .word 0
-  
+
   .word sf_pitch_envelope_0
   .word sf_pitch_envelope_1
   .word 0
@@ -87,7 +87,7 @@ pitch_envelopes:
 duty_envelopes:
   .word duty_envelope_0
   .word duty_envelope_1
-  
+
 volume_envelope_0:
   .byte 0, ENV_STOP
 
@@ -105,7 +105,7 @@ duty_envelope_0:
   .byte 0, ENV_LOOP
 duty_envelope_1:
   .byte 0,0,0,64,64,64,-128,-128,-128,-64,-64,-64,ENV_LOOP
-  
+
 Square1:
   .byte STV,2,STP,0,STL,10,FS3,GS3,A3,B3,CS4,CS3,F3,CS3,STL,60,FS3,STL,20,GS3,STL,10,A3,FS3
   .byte B3,GS3,CS4,A3,GS3,FS3,STL,20,F3,CS4,STL,5,D4,CS4,D4,CS4,D4,CS4,D4,CS4,STL,10,CS4,B3
@@ -160,13 +160,13 @@ level1_map = Map
 
 .export level1_map_column_table
 level1_map_column_table = MapColumnTable
-  
+
 .export level1_attribute_column_table
 level1_attribute_column_table = AttributeColumnTable
 
 .export level1_meta_tile_column_table
 level1_meta_tile_column_table = MetaTileColumnTable
-  
+
 .export level1_meta_tile_table
 level1_meta_tile_table = MetaTileTable
 

@@ -19,78 +19,78 @@ mouseInit:
 
   ;reset the animation object
   jsr entity_reset_anim
-  
+
   lda #MOUSE_SITTHERESTATE
   sta entity_instances+entityRAM::state,x
-  
+
   jsr entity_kill_if_already_seen
 
   rts
-  
+
 mouseSitThere:
 
   jsr entity_compute_screen_coordinates
 
   jsr entity_test_death_zone
   beq mouseDie
-  
+
   ;load entity width and height
   lda #MOUSE_WIDTH
   sta b2
   lda #MOUSE_HEIGHT
   sta b3
   jsr entity_test_collision_nomolos
-  
+
   bne @notTouching
-  
+
   lda #1
   jsr nomolos_add_health
-  
+
   ;play get health sound
   txa
   pha
-  
+
   lda #<getHealthSound
   sta sound_param_word_0
   lda #>getHealthSound
   sta sound_param_word_0+1
-  
+
   lda #0
   sta sound_param_byte_0
-  
+
   ldx #soundeffect_two
   jsr stream_initialize
-  
+
   pla
   tax
-  
+
   jmp mouseDie
-  
+
 @notTouching:
 
   lda w0
   sta b0
   lda w1
   sta b1
-  
+
   ldy #level_data_struct::nomolos_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
-  
+
   lda #0
-  sta b2  
+  sta b2
   ldy #level_data_struct::mouse
   jsr entity_draw_anim
 
-  
+
 mouseOffScreen:
-  
+
   rts
-  
+
 mouseDie:
 
   jsr entity_kill
 
   rts
-  
+
 .endif
