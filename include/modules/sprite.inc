@@ -22,7 +22,7 @@ SPRITE_INC = 1
   currentFrame .byte
 .endstruct
 
-.macro resetAnim animAddr
+.macro reset_anim animAddr
 
   lda #$01
   sta animAddr

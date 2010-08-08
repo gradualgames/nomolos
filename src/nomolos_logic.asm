@@ -26,8 +26,8 @@
 ;this should be called at the beginning of any level
 .proc nomolos_init
 
-  resetAnim nomolos_animation
-  resetAnim nomolos_weapon_animation
+  reset_anim nomolos_animation
+  reset_anim nomolos_weapon_animation
 
   lda #0
   and #nomolos_walking_right_clear
@@ -301,7 +301,7 @@ alreadyDying:
   sta nomolos_state_primary
 
   ;reset animation
-  resetAnim nomolos_animation
+  reset_anim nomolos_animation
 
   ;set initial location for the hit box
   lda #$20
@@ -388,7 +388,7 @@ skipNomolosFacingRight:
   sta nomolos_state_primary
 
   ;reset animation
-  resetAnim nomolos_animation
+  reset_anim nomolos_animation
 
   rts
 
@@ -425,10 +425,10 @@ skipNomolosFacingRight:
   sta nomolos_attack_rect_height
 
   ;reset animation
-  resetAnim nomolos_animation
+  reset_anim nomolos_animation
 
   ;reset weapon animation
-  resetAnim nomolos_weapon_animation
+  reset_anim nomolos_weapon_animation
 
   rts
 
@@ -604,7 +604,7 @@ skipNomolosFacingRight:
   sta nomolos_state_primary
 
   ;reset animation object
-  resetAnim nomolos_animation
+  reset_anim nomolos_animation
 skipAttackUpdate:
 
   rts
@@ -671,7 +671,7 @@ nomolos_direction_test_done:
   sta nomolos_state_primary
 
   ;reset animation object
-  resetAnim nomolos_animation
+  reset_anim nomolos_animation
 skip_attack_update:
 
   rts
@@ -717,7 +717,7 @@ nomolosDirectionTestDone:
   sta nomolos_state_primary
 
   ;reset animation object
-  resetAnim nomolos_animation
+  reset_anim nomolos_animation
 skipAttackUpdate:
   rts
 
@@ -1140,7 +1140,7 @@ ySpeedTestDone:
   ;if attack is on, do not reset the animation
   and #nomolos_attack_test
   bne @skipResetAnim
-  resetAnim nomolos_animation
+  reset_anim nomolos_animation
 @skipResetAnim:
 
   lda nomolos_state_primary
@@ -1261,7 +1261,7 @@ notLeft:
   ;if attack is on, do not reset the animation
   and #nomolos_attack_test
   bne @skipResetAnim
-  resetAnim nomolos_animation
+  reset_anim nomolos_animation
 @skipResetAnim:
 
   lda nomolos_state_primary
@@ -1561,7 +1561,7 @@ skipUpdateNomolosMoving:
 
 do_not_draw_flail:
 
-  resetAnim nomolos_animation
+  reset_anim nomolos_animation
 
   jsr nomolos_draw_jumping_set_walking
 
@@ -1854,7 +1854,7 @@ skipDrawnomolos_jumping:
 
 .proc nomolos_draw_jumping
 
-  resetAnim nomolos_animation
+  reset_anim nomolos_animation
 
   lda #<nomolos_animation
   sta w1
