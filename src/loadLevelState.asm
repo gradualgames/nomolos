@@ -32,6 +32,10 @@
   
 loadLevelStateInit:
 
+  ;****************************************************************
+  ;Wait for vblank, then turn off nmi and all graphics.
+  ;****************************************************************
+
   ;wait for vblank so we can turn off graphics, switch chr banks without graphical glitches
   waitVBlank
   
@@ -277,16 +281,15 @@ loadLevelStateDone:
   sta state_control_params+playLevelStateControl::cycling_palette_speed
   sta state_control_params+playLevelStateControl::palette_cycle_counter
   
-  lda #PLAYLEVELSTATE_INIT
-  sta state_control_params+playLevelStateControl::state
-  
-  ldx #index_play_level_state
-  jsr switch_state
-
+  ;****************************************************************
+  ;Wait for vblank, reset VRAM and scroll registers, turn nmi and
+  ;graphics back on, then fade in the current palette.
+  ;****************************************************************
   waitVBlank
   
   jsr map_update_scroll_ppu
 
+  ;turn nmi back on
   set_ppu_2000_bit PPU0_EXECUTE_NMI
   upload_ppu_2000
      
@@ -294,6 +297,12 @@ loadLevelStateDone:
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
+  
+  lda #PLAYLEVELSTATE_INIT
+  sta state_control_params+playLevelStateControl::state
+  
+  ldx #index_play_level_state
+  jsr switch_state
 
   jmp stateSwitchComplete
   

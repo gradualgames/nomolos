@@ -34,6 +34,10 @@
 
 playLevelStateInit:
 
+  ;****************************************************************
+  ;Fade in the palette, then switch to the play level state.
+  ;****************************************************************
+  
   ;perform one iteration of the gameplay loop to get sprites onto the screen
   ;before fade-in
   jsr keep_playing_state
@@ -55,6 +59,10 @@ playLevelStateInit:
   jmp stateCommandComplete
   
 keepPlaying:
+
+  ;****************************************************************
+  ;Call the play level state handler
+  ;****************************************************************
 
   jsr keep_playing_state
 
@@ -79,6 +87,10 @@ skipStartButtonTest:
   jmp stateCommandComplete
   
 switchToLevelOutState:
+
+  ;****************************************************************
+  ;Fade out the palette then switch to game over or level outro
+  ;****************************************************************
 
   ldy #ROMDefinitionTableStruct::palette
   lda (base_address_rom_definition_table),y
@@ -118,6 +130,9 @@ stateCommandComplete:
   
 .endproc
 
+;****************************************************************
+;The play level state handler
+;****************************************************************
 .proc keep_playing_state
 
   ;wait for vblank to complete
@@ -178,6 +193,9 @@ skipStartButtonTest:
 
 .endproc
 
+;****************************************************************
+;The play level state ppu routine
+;****************************************************************
 .proc play_level_state_update_ppu
 
   pha
@@ -213,6 +231,10 @@ ppu_data_not_ready:
   rts
 .endproc
 
+;****************************************************************
+;Special routine for handling palette cycling if it is present
+;in current level
+;****************************************************************
 .proc palette_handler
 
   .scope palette_cycling_block

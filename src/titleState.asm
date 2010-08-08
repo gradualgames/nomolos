@@ -32,12 +32,16 @@
   
 titleStateInit:
 
+  ;****************************************************************
+  ;Wait for vblank, then turn off nmi and all graphics.
+  ;****************************************************************
+
   ;this init state should be similar to the level in state, only we won't be
   ;clearing the nametable, we'll be loading it from a particular location.
   waitVBlank
   
-  ;keep nmi on
-  set_ppu_2000_bit PPU0_EXECUTE_NMI
+  ;turn off nmi
+  clear_ppu_2000_bit PPU0_EXECUTE_NMI
   ;turn off inc32, we're just loading a nametable in this state
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   ;load sprite pattern table from $1000
@@ -57,6 +61,10 @@ titleStateInit:
   
 titleStateRun:
 
+  ;****************************************************************
+  ;Clear sprite memory, load title graphics, load faded out palette
+  ;****************************************************************
+
   ;clear the sprites
   jsr sprite_clear_all
   ;update sprites
@@ -64,9 +72,10 @@ titleStateRun:
 
   ;load the title nametable and attribute table.
   lda #$20
-  sta $2006
+  sta ppu_2006
   lda #$00
-  sta $2006
+  sta ppu_2006+1
+  upload_ppu_2006
   lda titleDef+title::nametableAddress
   sta w0
   lda titleDef+title::nametableAddress+1
@@ -85,8 +94,9 @@ titleStateRun:
   sta w0+1
   
   lda #$00
-  sta $2006
-  sta $2006
+  sta ppu_2006
+  sta ppu_2006+1
+  upload_ppu_2006
   
   jsr ppu_load_chr_amount
   
@@ -131,8 +141,16 @@ titleStateRun:
   lda #>dynamic_palette
   sta w0+1
   
-  jsr wait_vblank_flag
+  waitVBlank
   jsr ppu_load_palette
+  
+  ;****************************************************************
+  ;Set VRAM and scroll registers to point to first nametable and
+  ;scroll to 0, 0. Then switch on nmi and all graphics and fade in
+  ;the palette using the dynamic palette upload nmi routine in
+  ;the state manager module.
+  ;Start title music playing.
+  ;****************************************************************
   
   ;reset scroll
   lda #$20
@@ -195,6 +213,11 @@ titleStateDone:
   sta w0+1
   
   jsr fade_out_palette
+  
+  ;****************************************************************
+  ;Set initial game state, such as what level to start on and
+  ;how many lives Nomolos has. Switch to the level in state.
+  ;****************************************************************
   
   ;start was pressed, now we want to switch to level in state
   ;set current level and switch to "level in" state

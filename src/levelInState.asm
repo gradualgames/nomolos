@@ -28,6 +28,9 @@
   
 levelInStateInit:
 
+  ;****************************************************************
+  ;Wait for vblank, then turn off nmi and all graphics.
+  ;****************************************************************
   waitVBlank
   
   ;turn sprite and background visibility off
@@ -35,6 +38,8 @@ levelInStateInit:
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
   
+  ;turn off nmi
+  clear_ppu_2000_bit PPU0_EXECUTE_NMI
   ;turn off inc32 since we are manipulating palette in this state
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
@@ -46,6 +51,12 @@ levelInStateInit:
 
 levelInStateRun:
 
+
+  ;****************************************************************
+  ;Clear sprites and nametable, then load font graphics and write
+  ;some strings to the screen introducing the level.
+  ;****************************************************************
+
   ;rendering should be off so we can do what we want with the PPU
 
   ;clear the sprites
@@ -55,9 +66,10 @@ levelInStateRun:
 
   ;clear the nametable
   lda #$20
-  sta $2006
+  sta ppu_2006
   lda #$00
-  sta $2006
+  sta ppu_2006+1
+  upload_ppu_2006
   
   lda #26
   sta b0
@@ -95,8 +107,9 @@ levelInStateRun:
   sta w0+1
   
   lda #$00
-  sta $2006
-  sta $2006
+  sta ppu_2006
+  sta ppu_2006+1
+  upload_ppu_2006
   
   jsr ppu_load_chr_amount
   
@@ -172,6 +185,11 @@ levelInStateRun:
   
   jsr ppu_display_string
 
+  ;****************************************************************
+  ;Wait for vblank, reset VRAM and scroll registers, turn nmi and
+  ;graphics back on, then fade in the current palette.
+  ;****************************************************************
+  
   ;wait for vblank so when we turn graphics back on we don't get ugly scrambling =)
   waitVBlank
   
@@ -186,6 +204,10 @@ levelInStateRun:
   sta ppu_2005
   sta ppu_2005+1
   upload_ppu_2005
+  
+  ;turn on nmi
+  set_ppu_2000_bit PPU0_EXECUTE_NMI
+  upload_ppu_2000
   
   ;turn on sprite and background visibility
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
