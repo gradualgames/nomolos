@@ -5,8 +5,10 @@
 .include "sprite.inc"
 .include "levelInState.inc"
 .include "zp.inc"
+.include "ram.inc"
 .include "titleState.inc"
 .include "gameOverState.inc"
+.include "statemanager.inc"
 
 .segment "CODE"
 
@@ -64,7 +66,17 @@ gameOverStateRun:
   sta w0
   lda #>(font1+font::palette)
   sta w0+1
+  
+  lda #0
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
+  
   waitVBlank
+  
+  lda #<dynamic_palette
+  sta w0
+  lda #>dynamic_palette
+  sta w0+1
   jsr ppu_load_palette
   
   ;switch to PRG block containing font1
@@ -96,14 +108,28 @@ gameOverStateRun:
   waitVBlank
   
   ;reset scroll
+  lda #$20
+  sta ppu_2006
+  lda #$00
+  sta ppu_2006
+  upload_ppu_2006
+  
   lda #0
-  sta $2005
-  sta $2005
+  sta ppu_2005
+  sta ppu_2005+1
+  upload_ppu_2005
   
   ;turn on sprite and background visibility
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
+  
+  ;fade in the palette
+  lda #<(font1+font::palette)
+  sta w0
+  lda #>(font1+font::palette)
+  sta w0+1
+  jsr fade_in_palette
   
   lda #GAMEOVERSTATE_DONE
   sta state_control_params+gameOverStateControl::state
@@ -118,6 +144,13 @@ gameOverStateDone:
   lda frame_counter
   bne stateCommandComplete
 
+  ;fade out the palette
+  lda #<(font1+font::palette)
+  sta w0
+  lda #>(font1+font::palette)
+  sta w0+1
+  jsr fade_out_palette
+  
   ;switch to title state
   lda #TITLESTATE_INIT
   sta state_control_params+titleStateControl::state

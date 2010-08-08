@@ -58,6 +58,8 @@
   sta nomolos_map_y+1
   lda #0
   sta nomolos_map_y+2
+  
+  jsr nomolos_compute_screen_coordinates
 
   lda #3
   sta nomolos_status_health

@@ -8,8 +8,6 @@ index_load_level_state     = 2 * 4
 index_game_over_state      = 3 * 4
 index_play_level_state     = 4 * 4
 
-.global switch_state
-.global state_table
 .global level_definition_table
 .global banktable
 .global attackSound

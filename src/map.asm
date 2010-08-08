@@ -744,14 +744,16 @@ do_not_spawn_entity:
 
 .export map_update_scroll_ppu
 .proc map_update_scroll_ppu
-  lda name_table_to_view  
-  
-  sta $2006
+  lda name_table_to_view
+  sta ppu_2006
   lda #$00
-  sta $2006
+  sta ppu_2006+1
+  upload_ppu_2006
 
   lda camera_scroll_x
-  sta $2005
+  sta ppu_2005
   lda #0
-  sta $2005
+  sta ppu_2005+1
+  upload_ppu_2005
+  
 .endproc

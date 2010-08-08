@@ -66,6 +66,12 @@ ppu_2000: .res 1
 .exportzp ppu_2001
 ppu_2001: .res 1
 
+.exportzp ppu_2005
+ppu_2005: .res 2
+
+.exportzp ppu_2006
+ppu_2006: .res 2
+
 .exportzp sprite_group_offset
 sprite_group_offset: .res 1
 

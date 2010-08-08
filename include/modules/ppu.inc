@@ -99,6 +99,24 @@ PPU1_DISPLAY_TYPE = 0
 
 .endmacro
 
+.macro upload_ppu_2005
+
+  lda ppu_2005
+  sta $2005
+  lda ppu_2005+1
+  sta $2005
+  
+.endmacro
+
+.macro upload_ppu_2006
+
+  lda ppu_2006
+  sta $2006
+  lda ppu_2006+1
+  sta $2006
+
+.endmacro
+
 .macro waitVBlank
 
 :

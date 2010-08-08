@@ -14,6 +14,7 @@
 .include "fixedBankData.inc"
 .include "nomolosLogic.inc"
 .include "sprite.inc"
+.include "statemanager.inc"
 
 .segment "HEADER"
 .byte "NES",$1a   ;iNES header
@@ -78,7 +79,7 @@ reset:
   jsr switch_state
   
   ;load current level
-  ;lda #0
+  ;lda #3
   ;sta state_control_params+loadLevelStateControl::levelToLoad
   ;lda #LOADLEVELSTATE_INIT
   ;sta state_control_params+loadLevelStateControl::state  

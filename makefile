@@ -38,7 +38,8 @@ FILES           = nomolos \
                   zp \
                   mapper \
                   ppu \
-                  fixedBankData
+                  fixedBankData \
+                  statemanager
 OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))
 LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
 CONFIG_FILE     = $(OUTPUT_NAME).cfg

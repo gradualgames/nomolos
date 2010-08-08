@@ -19,40 +19,6 @@
 
 .segment "CODE"
 
-;this routine takes the value in the accumulator and
-;looks up a state in the state table and then changes the current
-;update and ppu routines to the values found there.
-;inputs: x is assumed to contain index of state
-.proc switch_state
-
-  ;load address of update routine
-  lda state_table,x
-  sta update
-  lda state_table+1,x
-  sta update+1
-  
-  ;load address of ppu update routine
-  lda state_table+2,x
-  sta update_ppu
-  lda state_table+3,x
-  sta update_ppu+1
-
-  rts
-.endproc
-
-;state table
-state_table:
-  .word title_state_update
-  .word title_state_update_ppu
-  .word level_in_state_update
-  .word level_in_state_update_ppu
-  .word load_level_state_update
-  .word load_level_state_update_ppu
-  .word game_over_state_update
-  .word game_over_state_update_ppu
-  .word play_level_state_update
-  .word play_level_state_update_ppu
-
 ;level definitions
 
 level_definition_table:
@@ -119,7 +85,7 @@ ROMDefinitionTable0:
   .word level1_palette
  
   .byte 120 ;nomolos_start_x
-  .byte 90  ;nomolos_start_y
+  .byte 191  ;nomolos_start_y
  
   .byte 1 ;camera_scroll_enabled
   .byte 0 ;starting_screen
@@ -369,8 +335,8 @@ ROMDefinitionTable3:
   .word hitSound
   .word boss1_palette
 
-  .byte 20   ;nomolos_start_x
-  .byte 160  ;nomolos_start_y
+  .byte 40   ;nomolos_start_x
+  .byte 159  ;nomolos_start_y
   
   .byte 0 ;camera_scroll_enabled
   .byte 0 ;starting_screen

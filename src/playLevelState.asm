@@ -16,6 +16,7 @@
 .include "ram.inc"
 .include "playLevelState.inc"
 .include "fixedBankData.inc"
+.include "statemanager.inc"
 
 .segment "CODE"
 
@@ -33,6 +34,21 @@
 
 playLevelStateInit:
 
+  ;perform one iteration of the gameplay loop to get sprites onto the screen
+  ;before fade-in
+  jsr keep_playing_state
+
+  ;fade in the palette
+  ldy #ROMDefinitionTableStruct::palette
+  lda (base_address_rom_definition_table),y
+  sta w0
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w0+1
+  
+  jsr fade_in_palette
+
+  ;switch to the play state
   lda #PLAYLEVELSTATE_KEEPPLAYING
   sta state_control_params+playLevelStateControl::state
   
@@ -63,6 +79,13 @@ skipStartButtonTest:
   jmp stateCommandComplete
   
 switchToLevelOutState:
+
+  ldy #ROMDefinitionTableStruct::palette
+  lda (base_address_rom_definition_table),y
+  sta w0
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w0+1
 
   jsr fade_out_palette
 
@@ -150,17 +173,6 @@ stateCommandComplete:
   
 skipStartButtonTest:
   .endscope
-  
-  rts
-
-.endproc
-
-.proc wait_vblank_flag
-
-  lda #0
-  sta vblank_done
-: lda vblank_done
-  beq :-
   
   rts
 
@@ -280,77 +292,4 @@ palette_cycling_off:
   .endscope
   rts
 
-.endproc
-  
-;nmi routine for uploading the dynamic palette
-.proc ppu_upload_dynamic_palette_ppu
-  pha
-  tya
-  pha
-  txa
-  pha
-
-  lda #<dynamic_palette
-  sta w0
-  lda #>dynamic_palette
-  sta w0+1
-  
-  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
-  upload_ppu_2000
-  
-  jsr ppu_load_palette
-  
-  set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
-  upload_ppu_2000
-  
-  jsr map_update_scroll_ppu
-  
-  lda #1
-  sta vblank_done
-  
-  pla
-  tax
-  pla
-  tay
-  pla
-  
-  rts
-.endproc
-  
-.proc fade_out_palette
-
-  ;switch to nmi routine for uploading the dynamic palette
-  lda #<ppu_upload_dynamic_palette_ppu
-  sta update_ppu
-  lda #>ppu_upload_dynamic_palette_ppu
-  sta update_ppu+1
-
-  lda #4
-  sta palette_step
-  
-fading_loop:
-
-  ;create dynamic palette from rom palette
-  ldy #ROMDefinitionTableStruct::palette
-  lda (base_address_rom_definition_table),y
-  sta w0
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w0+1
-  
-  ;load up the dynamic palette with brightness in b3
-  lda palette_step
-  sta b3
-  jsr ppu_load_dynamic_palette_brightness
-  
-  ;wait for vblank
-  ldx #5
-: jsr wait_vblank_flag
-  dex
-  bne :-
-  
-  dec palette_step
-  bpl fading_loop
-
-  rts
 .endproc

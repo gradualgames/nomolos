@@ -10,6 +10,7 @@
 .include "ram.inc"
 .include "nomolosLogic.inc"
 .include "titleState.inc"
+.include "statemanager.inc"
 
 .segment "CODE"
 
@@ -48,15 +49,6 @@ titleStateInit:
   ;turn off background visibility
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
-  
-  ;load title screen music
-.ifdef MUSIC_ENABLE
-  lda #<title_music
-  sta sound_param_word_1
-  lda #>title_music
-  sta sound_param_word_1+1
-  jsr song_initialize
-.endif
   
   lda #TITLESTATE_RUN
   sta state_control_params+titleStateControl::state
@@ -124,18 +116,35 @@ titleStateRun:
   
   jsr ppu_display_string
   
-  ;now that nametable loaded, load the new palette.
+  ;now that nametable loaded, load the new palette faded out
   lda titleDef+title::paletteAddress
   sta w0
   lda titleDef+title::paletteAddress+1
   sta w0+1
-  waitVBlank
-  jsr ppu_load_palette_bg
+  
+  lda #0
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
+  
+  lda #<dynamic_palette
+  sta w0
+  lda #>dynamic_palette
+  sta w0+1
+  
+  jsr wait_vblank_flag
+  jsr ppu_load_palette
   
   ;reset scroll
+  lda #$20
+  sta ppu_2006
+  lda #$00
+  sta ppu_2006
+  upload_ppu_2006
+  
   lda #0
-  sta $2005
-  sta $2005
+  sta ppu_2005
+  sta ppu_2005+1
+  upload_ppu_2005
   
   ;turn on nmi
   set_ppu_2000_bit PPU0_EXECUTE_NMI
@@ -145,6 +154,22 @@ titleStateRun:
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
+  
+  lda titleDef+title::paletteAddress
+  sta w0
+  lda titleDef+title::paletteAddress+1
+  sta w0+1
+  
+  jsr fade_in_palette
+  
+  ;load title screen music
+.ifdef MUSIC_ENABLE
+  lda #<title_music
+  sta sound_param_word_1
+  lda #>title_music
+  sta sound_param_word_1+1
+  jsr song_initialize
+.endif
   
   lda #TITLESTATE_DONE
   sta state_control_params+titleStateControl::state
@@ -162,6 +187,12 @@ titleStateDone:
   jsr sound_stop
   jsr sound_upload
   .endif
+  
+  ;create dynamic palette from rom palette
+  lda titleDef+title::paletteAddress
+  sta w0
+  lda titleDef+title::paletteAddress+1
+  sta w0+1
   
   jsr fade_out_palette
   
@@ -185,98 +216,16 @@ stateCommandComplete:
 
   rts
 .endproc
-  
-.proc fade_out_palette
 
-  ;switch to nmi routine for uploading the dynamic palette
-  lda #<ppu_upload_dynamic_palette_ppu
-  sta update_ppu
-  lda #>ppu_upload_dynamic_palette_ppu
-  sta update_ppu+1
-
-  lda #4
-  sta palette_step
-  
-fading_loop:
-
-  ;create dynamic palette from rom palette
-  lda titleDef+title::paletteAddress
-  sta w0
-  lda titleDef+title::paletteAddress+1
-  sta w0+1
-  
-  ;load up the dynamic palette with brightness in b3
-  lda palette_step
-  sta b3
-  jsr ppu_load_dynamic_palette_brightness
-  
-  ;wait for vblank
-  ldx #05
-: jsr wait_vblank_flag
-  dex
-  bne :-
-  
-  dec palette_step
-  bpl fading_loop
-
-  rts
-.endproc
-  
-.proc wait_vblank_flag
-
-  lda #0
-  sta vblank_done
-: lda vblank_done
-  beq :-
-  
-  rts
-
-.endproc
-  
-;nmi routine for uploading the dynamic palette
-.proc ppu_upload_dynamic_palette_ppu
-  pha
-  tya
-  pha
-  txa
-  pha
-
-  lda #<dynamic_palette
-  sta w0
-  lda #>dynamic_palette
-  sta w0+1
-  
-  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
-  upload_ppu_2000
-  
-  jsr ppu_load_palette_bg
-  
-  set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
-  upload_ppu_2000
-  
-  ;reset scroll
-  lda #0
-  sta $2005
-  sta $2005
-  
-  lda #1
-  sta vblank_done
-  
-  pla
-  tax
-  pla
-  tay
-  pla
-  
-  rts
-.endproc
-  
 .proc title_state_update_ppu
 
   .ifdef MUSIC_ENABLE
   jsr sound_update
   jsr sound_upload
   .endif
+  
+  lda #1
+  sta vblank_done
 
   rts
 .endproc

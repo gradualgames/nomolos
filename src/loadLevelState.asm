@@ -11,7 +11,9 @@
 .include "sprite.inc"
 .include "entity.inc"
 .include "zp.inc"
+.include "ram.inc"
 .include "loadLevelState.inc"
+.include "statemanager.inc"
 
 .segment "CODE"
 
@@ -168,8 +170,18 @@ loadLevelStateInit:
   iny
   lda (base_address_rom_definition_table),y
   sta w0+1
+  
+  ;load palette faded all the way out
+  lda #0
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
 
   waitVBlank
+  
+  lda #<dynamic_palette
+  sta w0
+  lda #>dynamic_palette
+  sta w0+1
   jsr ppu_load_palette
   jsr sprite_clear_all
   jsr entity_init_all
@@ -243,7 +255,7 @@ loadLevelStateDone:
   sta mapper_bank_next
   jsr mapper_switch_bank
   
-  ;jsr entity_update_all
+  jsr entity_update_all
   
   ldy #ROMDefinitionTableStruct::LevelAndMusicBank
   lda (base_address_rom_definition_table),y
