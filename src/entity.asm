@@ -22,24 +22,24 @@
   ;killed because it is outside the range
   sec
   lda camera_max_scroll_x
-  sbc entity_instances+entityRAM::positionX,x
+  sbc entity_instances+entity_instance::positionX,x
   lda camera_max_scroll_x+1
-  sbc entity_instances+entityRAM::positionX+1,x
+  sbc entity_instances+entity_instance::positionX+1,x
   bmi do_not_kill_entity
 
   ;compare to min explored x. if result is positive, entity should not be
   ;killed because it is outside the range
   sec
   lda camera_min_scroll_x
-  sbc entity_instances+entityRAM::positionX,x
+  sbc entity_instances+entity_instance::positionX,x
   lda camera_min_scroll_x+1
-  sbc entity_instances+entityRAM::positionX+1,x
+  sbc entity_instances+entity_instance::positionX+1,x
   bpl do_not_kill_entity
 
 kill_entity:
 
   lda #0
-  sta entity_instances+entityRAM::alive,x
+  sta entity_instances+entity_instance::alive,x
 
   rts
 
@@ -54,9 +54,9 @@ do_not_kill_entity:
 ;expects b2 to contain flags for whether to flip the sprite. e.g. #%01000000 to flip
 .proc entity_draw_anim
   ;load address of animation object into w1
-  lda #<(entity_instances+entityRAM::animationObject)
+  lda #<(entity_instances+entity_instance::animationObject)
   sta w1
-  lda #>(entity_instances+entityRAM::animationObject)
+  lda #>(entity_instances+entity_instance::animationObject)
   sta w1+1
 
   ;get the index into a
@@ -93,25 +93,25 @@ do_not_kill_entity:
 
 .proc entity_reset_anim
   lda #1
-  sta entity_instances+entityRAM::animationObject,x
+  sta entity_instances+entity_instance::animationObject,x
   lda #$ff
-  sta entity_instances+entityRAM::animationObject+1,x
+  sta entity_instances+entity_instance::animationObject+1,x
   rts
 .endproc
 
 ;kills current entity located at entity_instances,x.
-;also decrements entity count at entity_counters + value at entity_instances+entityRAM::index,x
+;also decrements entity count at entity_counters + value at entity_instances+entity_instance::index,x
 .proc entity_kill
 
   lda #0
-  sta entity_instances+entityRAM::alive,x
+  sta entity_instances+entity_instance::alive,x
 
   ;save x
   txa
   pha
 
   ;get zero based index of entity
-  lda entity_instances+entityRAM::index,x
+  lda entity_instances+entity_instance::index,x
 
   ;decrement counter for this entity
   tax
@@ -131,9 +131,9 @@ do_not_kill_entity:
   ;compare entity x position to nomolos x position to decide direction
   sec
   lda nomolos_map_x+1
-  sbc entity_instances+entityRAM::positionX,x
+  sbc entity_instances+entity_instance::positionX,x
   lda nomolos_map_x+2
-  sbc entity_instances+entityRAM::positionX+1,x
+  sbc entity_instances+entity_instance::positionX+1,x
   bpl entity_will_go_right
 entity_will_go_left:
   ;set negative flag
@@ -338,16 +338,16 @@ entity_not_in_death_zone:
 
 .proc entity_compute_screen_coordinates
   ;get out low byte of positionX
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   sta w0+1
 
   ;get out positionY
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sta w1
-  lda entity_instances+entityRAM::positionY+1,x
+  lda entity_instances+entity_instance::positionY+1,x
   sta w1+1
   jsr camera_to_screen_coords
 
@@ -387,12 +387,12 @@ nextEntity:
   asl
   asl
   tax
-  lda entity_instances+entityRAM::alive,x
+  lda entity_instances+entity_instance::alive,x
   beq skipUpdate
   ;if we arrive here, x points to a live entity
 
   ;load the entity index
-  lda entity_instances+entityRAM::index,x
+  lda entity_instances+entity_instance::index,x
   ;multiply the entity index by 8
   asl
   asl
@@ -452,7 +452,7 @@ skipUpdate:
   asl
   tay
   lda #$00
-  sta entity_instances+entityRAM::alive, y
+  sta entity_instances+entity_instance::alive, y
   dex
   bpl :-
   rts
@@ -460,7 +460,7 @@ skipUpdate:
 
 ;This routine spawns a single entity. It works by first searching
 ;for the first "dead" entity in the entity_instances. When it finds this
-;dead entity, it fills it according to the entityRAM struct.
+;dead entity, it fills it according to the entity_instance struct.
 
 ;the following parameters are expected:
 ;b0 = index of entity definition to spawn
@@ -521,7 +521,7 @@ do_not_spawn:
   asl
   asl
   tax
-  lda entity_instances+entityRAM::alive,x
+  lda entity_instances+entity_instance::alive,x
   beq :+  ;found a dead entity, jump out with current value of x
   dey
   bpl :-
@@ -547,11 +547,11 @@ do_not_spawn:
 
   ;make the entity alive. ALIVE! MUA HUAH HAH HAH
   lda #$01
-  sta entity_instances+entityRAM::alive,x
+  sta entity_instances+entity_instance::alive,x
 
   ;store the kind of entity this is
   lda b0
-  sta entity_instances+entityRAM::index,x
+  sta entity_instances+entity_instance::index,x
 
   ;now that we know the kind of entity this is, we must look up
   ;the entity and pull out its initialXOffset and initialYOffset,
@@ -583,9 +583,9 @@ do_not_spawn:
 
   ;now w0 should have the spawnPositionX value
   lda w0
-  sta entity_instances+entityRAM::spawnPositionX,x
+  sta entity_instances+entity_instance::spawnPositionX,x
   lda w0+1
-  sta entity_instances+entityRAM::spawnPositionX+1,x
+  sta entity_instances+entity_instance::spawnPositionX+1,x
 
   ;load initial y offset
   iny
@@ -601,25 +601,25 @@ do_not_spawn:
 
   ;now b1 should have the spawnPositionY value
   lda b1
-  sta entity_instances+entityRAM::spawnPositionY,x
+  sta entity_instances+entity_instance::spawnPositionY,x
 
   ;load positionXFine
   lda #$00
-  sta entity_instances+entityRAM::positionXFine,x
+  sta entity_instances+entity_instance::positionXFine,x
   ;load positionX
   lda w0
-  sta entity_instances+entityRAM::positionX,x
+  sta entity_instances+entity_instance::positionX,x
   lda w0+1
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 
   ;load positionYFine
   lda #$00
-  sta entity_instances+entityRAM::positionYFine,x
+  sta entity_instances+entity_instance::positionYFine,x
   ;load positionY
   lda b1
-  sta entity_instances+entityRAM::positionY,x
+  sta entity_instances+entity_instance::positionY,x
   lda #0
-  sta entity_instances+entityRAM::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
 
   ;point to the initial state
   iny
@@ -627,7 +627,7 @@ do_not_spawn:
   lda (base_address_entity_definition_table),y
   ;point to state variable in entity entry
   ;store the initial state there
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   ;at this point the entity should be fully spawned and ready
   ;to have its update routine called.

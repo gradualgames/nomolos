@@ -61,8 +61,8 @@ reset:
   upload_ppu_2001
 
   ;wait for PPU to be ready
-  waitVBlank
-  waitVBlank
+  wait_vblank
+  wait_vblank
 
   ;initialize ppu registers with settings we're never going to change
   set_ppu_2001_bit PPU1_SPRITE_CLIPPING

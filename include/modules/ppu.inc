@@ -117,7 +117,7 @@ PPU1_DISPLAY_TYPE = 0
 
 .endmacro
 
-.macro waitVBlank
+.macro wait_vblank
 
 :
   bit $2002

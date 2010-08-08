@@ -9,7 +9,7 @@ ONEUP_SITTHERESTATE = $01
 
 .proc oneup_update
 
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   cmp #ONEUP_INITSTATE
   beq oneup_init
   cmp #ONEUP_SITTHERESTATE
@@ -20,7 +20,7 @@ oneup_init:
   jsr entity_kill_if_already_seen
 
   lda #ONEUP_SITTHERESTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   rts
 

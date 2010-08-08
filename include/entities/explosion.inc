@@ -9,7 +9,7 @@ EXPLOSION_EXPLODESTATE = 1
 
 explosion_update:
 
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   cmp #EXPLOSION_INITSTATE
   beq explosionInit
   cmp #EXPLOSION_EXPLODESTATE
@@ -22,7 +22,7 @@ explosionInit:
 
   ;set state to explode
   lda #EXPLOSION_EXPLODESTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   rts
 
@@ -37,10 +37,10 @@ explosionExplode:
   ldy #level_data_struct::explosion
   jsr entity_draw_anim
 
-  lda entity_instances+entityRAM::animationObject+1,x
+  lda entity_instances+entity_instance::animationObject+1,x
   cmp #2
   bne @skipFrameCounterTest
-  lda entity_instances+entityRAM::animationObject,x
+  lda entity_instances+entity_instance::animationObject,x
   cmp #1
   beq explosionDie
 @skipFrameCounterTest:

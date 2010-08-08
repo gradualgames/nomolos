@@ -14,7 +14,7 @@ ENTITY_INC = 1
 .global entity_test_collision_nomolos
 .global entity_test_collision_hitbox
 
-.struct entityRAM
+.struct entity_instance
   alive .byte
   index .byte
   spawnPositionX .word

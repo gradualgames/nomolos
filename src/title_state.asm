@@ -38,7 +38,7 @@ title_stateInit:
 
   ;this init state should be similar to the level in state, only we won't be
   ;clearing the nametable, we'll be loading it from a particular location.
-  waitVBlank
+  wait_vblank
 
   ;turn off nmi
   clear_ppu_2000_bit PPU0_EXECUTE_NMI
@@ -141,7 +141,7 @@ title_stateRun:
   lda #>dynamic_palette
   sta w0+1
 
-  waitVBlank
+  wait_vblank
   jsr ppu_load_palette
 
   ;****************************************************************

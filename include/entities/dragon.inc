@@ -29,7 +29,7 @@ DRAGON_MAXHORIZSPEED = 4
 .proc dragon_update
 
   ;load current state
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   ;figure out what state to jump to
   cmp #DRAGON_INITSTATE
   beq dragon_initState
@@ -54,7 +54,7 @@ dragon_initState:
 
   ;switch state to "fly"
   lda #DRAGON_FLYSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   ;set fly_hover counter
   lda #DRAGON_TIME_TIL_STATE_SWITCH
@@ -77,16 +77,16 @@ dragon_hoverState:
 
   ;get out low byte of positionX
   clc
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   adc #DRAGON_HALFWIDTH
   sta w0
   ;get out high byte of positionX
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc #0
   sta w0+1
 
   ;get out positionY
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sta b1
 
   jsr entity_spawn
@@ -102,7 +102,7 @@ do_not_shoot_iceball:
   bne do_not_switch_state
 
   lda #DRAGON_FLYSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   lda #DRAGON_TIME_TIL_STATE_SWITCH
   sta entity_locals+dragon_locals::fly_hover,x
@@ -129,7 +129,7 @@ dragon_flyState:
   bne do_not_switch_state
 
   lda #DRAGON_HOVERSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   lda #DRAGON_TIME_TIL_STATE_SWITCH
   sta entity_locals+dragon_locals::fly_hover,x
@@ -143,22 +143,22 @@ do_not_switch_state:
 .scope addXVelocity
   clc
   lda entity_locals+dragon_locals::x_velocity,x
-  adc entity_instances+entityRAM::positionXFine,x
-  sta entity_instances+entityRAM::positionXFine,x
+  adc entity_instances+entity_instance::positionXFine,x
+  sta entity_instances+entity_instance::positionXFine,x
   lda entity_locals+dragon_locals::x_velocity+1,x
   bmi signExtend
-  adc entity_instances+entityRAM::positionX,x
-  sta entity_instances+entityRAM::positionX,x
+  adc entity_instances+entity_instance::positionX,x
+  sta entity_instances+entity_instance::positionX,x
   lda #0
-  adc entity_instances+entityRAM::positionX+1,x
-  sta entity_instances+entityRAM::positionX+1,x
+  adc entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
   jmp signExtendAddDone
 signExtend:
-  adc entity_instances+entityRAM::positionX,x
-  sta entity_instances+entityRAM::positionX,x
+  adc entity_instances+entity_instance::positionX,x
+  sta entity_instances+entity_instance::positionX,x
   lda #$ff
-  adc entity_instances+entityRAM::positionX+1,x
-  sta entity_instances+entityRAM::positionX+1,x
+  adc entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 signExtendAddDone:
 .endscope
 
@@ -166,22 +166,22 @@ signExtendAddDone:
 .scope addYVelocity
   clc
   lda entity_locals+dragon_locals::y_velocity,x
-  adc entity_instances+entityRAM::positionYFine,x
-  sta entity_instances+entityRAM::positionYFine,x
+  adc entity_instances+entity_instance::positionYFine,x
+  sta entity_instances+entity_instance::positionYFine,x
   lda entity_locals+dragon_locals::y_velocity+1,x
   bmi signExtend
-  adc entity_instances+entityRAM::positionY,x
-  sta entity_instances+entityRAM::positionY,x
+  adc entity_instances+entity_instance::positionY,x
+  sta entity_instances+entity_instance::positionY,x
   lda #0
-  adc entity_instances+entityRAM::positionY+1,x
-  sta entity_instances+entityRAM::positionY+1,x
+  adc entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
   jmp signExtendAddDone
 signExtend:
-  adc entity_instances+entityRAM::positionY,x
-  sta entity_instances+entityRAM::positionY,x
+  adc entity_instances+entity_instance::positionY,x
+  sta entity_instances+entity_instance::positionY,x
   lda #$ff
-  adc entity_instances+entityRAM::positionY+1,x
-  sta entity_instances+entityRAM::positionY+1,x
+  adc entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
 signExtendAddDone:
 .endscope
 
@@ -320,14 +320,14 @@ killDragon:
   sta b0
 
   ;get out low byte of positionX
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   sta w0+1
 
   ;get out positionY
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sta b1
 
   jsr entity_spawn

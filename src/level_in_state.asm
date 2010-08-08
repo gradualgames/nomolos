@@ -31,7 +31,7 @@ levelInStateInit:
   ;****************************************************************
   ;Wait for vblank, then turn off nmi and all graphics.
   ;****************************************************************
-  waitVBlank
+  wait_vblank
 
   ;turn sprite and background visibility off
   clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY
@@ -87,7 +87,7 @@ levelInStateRun:
   sta b3
   jsr ppu_load_dynamic_palette_brightness
 
-  waitVBlank
+  wait_vblank
 
   lda #<dynamic_palette
   sta w0
@@ -191,7 +191,7 @@ levelInStateRun:
   ;****************************************************************
 
   ;wait for vblank so when we turn graphics back on we don't get ugly scrambling =)
-  waitVBlank
+  wait_vblank
 
   ;reset scroll
   lda #$20

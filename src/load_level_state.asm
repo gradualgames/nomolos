@@ -37,7 +37,7 @@ load_level_stateInit:
   ;****************************************************************
 
   ;wait for vblank so we can turn off graphics, switch chr banks without graphical glitches
-  waitVBlank
+  wait_vblank
 
   ;turn off nmi while loading level
   clear_ppu_2000_bit PPU0_EXECUTE_NMI
@@ -180,7 +180,7 @@ load_level_stateInit:
   sta b3
   jsr ppu_load_dynamic_palette_brightness
 
-  waitVBlank
+  wait_vblank
 
   lda #<dynamic_palette
   sta w0
@@ -285,7 +285,7 @@ load_level_stateDone:
   ;Wait for vblank, reset VRAM and scroll registers, turn nmi and
   ;graphics back on, then fade in the current palette.
   ;****************************************************************
-  waitVBlank
+  wait_vblank
 
   jsr map_update_scroll_ppu
 

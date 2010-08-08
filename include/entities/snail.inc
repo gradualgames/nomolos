@@ -22,7 +22,7 @@ SNAIL_STOPSTATE = 2
 .proc snail_update
 
   ;load current state
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   ;figure out what state to jump to
   cmp #SNAIL_INITSTATE
   beq snail_initState
@@ -44,7 +44,7 @@ snail_initState:
   sta entity_locals+snail_locals::distance,x
 
   lda #SNAIL_MOVESTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   rts
 
@@ -58,7 +58,7 @@ snail_moveState:
   sta entity_locals+snail_locals::move_stop,x
 
   lda #SNAIL_STOPSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
 do_not_switch_state:
   .endscope
@@ -81,29 +81,29 @@ do_not_flip_direction:
 move_left:
 
   sec
-  lda entity_instances+entityRAM::positionXFine,x
+  lda entity_instances+entity_instance::positionXFine,x
   sbc #SNAIL_SPEED
-  sta entity_instances+entityRAM::positionXFine,x
-  lda entity_instances+entityRAM::positionX,x
+  sta entity_instances+entity_instance::positionXFine,x
+  lda entity_instances+entity_instance::positionX,x
   sbc #0
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   sbc #0
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 
   jmp direction_test_done
 move_right:
 
   clc
-  lda entity_instances+entityRAM::positionXFine,x
+  lda entity_instances+entity_instance::positionXFine,x
   adc #SNAIL_SPEED
-  sta entity_instances+entityRAM::positionXFine,x
-  lda entity_instances+entityRAM::positionX,x
+  sta entity_instances+entity_instance::positionXFine,x
+  lda entity_instances+entity_instance::positionX,x
   adc #0
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc #0
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 
 direction_test_done:
 
@@ -121,7 +121,7 @@ snail_stopState:
   sta entity_locals+snail_locals::move_stop,x
 
   lda #SNAIL_MOVESTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
 do_not_switch_state:
   .endscope
@@ -140,14 +140,14 @@ killSnail:
   sta b0
 
   ;get out low byte of positionX
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   sta w0+1
 
   ;get out positionY
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sta b1
 
   jsr entity_spawn

@@ -11,7 +11,7 @@ DEENTLE_MOVELEFTSTATE = 2
 .proc deentle_update
 
   ;load current state
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   ;figure out what state to jump to
   cmp #DEENTLE_INITSTATE
   beq deentle_initState
@@ -27,27 +27,27 @@ deentle_initState:
 
   ;switch state to "run"
   lda #DEENTLE_MOVELEFTSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
   rts
 
 deentle_moveRightState:
 
   ;add 1 to PositionX
   clc
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   adc #1
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc #0
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 
   ;do PositionX - spawnPositionX
   sec
-  lda entity_instances+entityRAM::positionX,x
-  sbc entity_instances+entityRAM::spawnPositionX,x
+  lda entity_instances+entity_instance::positionX,x
+  sbc entity_instances+entity_instance::spawnPositionX,x
   sta w0
-  lda entity_instances+entityRAM::positionX+1,x
-  sbc entity_instances+entityRAM::spawnPositionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
+  sbc entity_instances+entity_instance::spawnPositionX+1,x
   sta w0+1
 
   ;difference is in w0, subtract our desired delta distance from it
@@ -61,7 +61,7 @@ deentle_moveRightState:
   bne dontSwitchToLeftState
 
   lda #DEENTLE_MOVELEFTSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
 dontSwitchToLeftState:
 
@@ -73,20 +73,20 @@ deentle_moveLeftState:
 
   ;sub 1 from PositionX
   sec
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sbc #1
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   sbc #0
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 
   ;do spawnPositionX - PositionX
   sec
-  lda entity_instances+entityRAM::spawnPositionX,x
-  sbc entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::spawnPositionX,x
+  sbc entity_instances+entity_instance::positionX,x
   sta w0
-  lda entity_instances+entityRAM::spawnPositionX+1,x
-  sbc entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::spawnPositionX+1,x
+  sbc entity_instances+entity_instance::positionX+1,x
   sta w0+1
 
   ;difference is in w0, subtract our desired delta distance from it
@@ -101,7 +101,7 @@ deentle_moveLeftState:
   bne dontSwitchToRightState
 
   lda #DEENTLE_MOVERIGHTSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
 dontSwitchToRightState:
 
@@ -182,14 +182,14 @@ killDeentle:
   sta b0
 
   ;get out low byte of positionX
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   sta w0+1
 
   ;get out positionY
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sta b1
 
   jsr entity_spawn

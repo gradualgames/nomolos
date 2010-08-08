@@ -22,7 +22,7 @@ BAT_MAX_DESCENT_VELOCITY = $02
 .proc bat_update
 
   ;load current state
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   ;figure out what state to jump to
   cmp #BAT_INITSTATE
   beq bat_initState
@@ -55,7 +55,7 @@ bat_descent_state:
   bmi do_not_switch_to_trough_state
 
   lda #BAT_TROUGH_STATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
 do_not_switch_to_trough_state:
 
@@ -79,7 +79,7 @@ bat_trough_state:
   bne do_not_switch_to_ascent_state
 
   lda #BAT_ASCENT_STATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
 do_not_switch_to_ascent_state:
 
@@ -103,7 +103,7 @@ bat_ascent_state:
   bpl do_not_switch_to_crest_state
 
   lda #BAT_CREST_STATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
 do_not_switch_to_crest_state:
 
@@ -127,7 +127,7 @@ bat_crest_state:
   bne do_not_switch_to_descent_state
 
   lda #BAT_DESCENT_STATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
 do_not_switch_to_descent_state:
 
@@ -151,9 +151,9 @@ bat_init:
   ;compare entity x position to nomolos x position to decide direction
   sec
   lda nomolos_map_x+1
-  sbc entity_instances+entityRAM::positionX,x
+  sbc entity_instances+entity_instance::positionX,x
   lda nomolos_map_x+2
-  sbc entity_instances+entityRAM::positionX+1,x
+  sbc entity_instances+entity_instance::positionX+1,x
   bpl bat_will_go_right
 bat_will_go_left:
   lda #$ff
@@ -169,7 +169,7 @@ bat_direction_test_done:
 
   ;switch state to "trough"
   lda #BAT_TROUGH_STATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   rts
 
@@ -177,33 +177,33 @@ bat_move:
 
   ;move bat horizontally
   clc
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   adc entity_locals+bat_locals::x_velocity,x
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc entity_locals+bat_locals::x_velocity+1,x
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 
   ;add y velocity to 24 bit Y coordinate with sign extension
 .scope addYVelocity
   clc
   lda entity_locals+bat_locals::y_velocity,x
-  adc entity_instances+entityRAM::positionYFine,x
-  sta entity_instances+entityRAM::positionYFine,x
+  adc entity_instances+entity_instance::positionYFine,x
+  sta entity_instances+entity_instance::positionYFine,x
   lda entity_locals+bat_locals::y_velocity+1,x
   bmi signExtend
-  adc entity_instances+entityRAM::positionY,x
-  sta entity_instances+entityRAM::positionY,x
+  adc entity_instances+entity_instance::positionY,x
+  sta entity_instances+entity_instance::positionY,x
   lda #0
-  adc entity_instances+entityRAM::positionY+1,x
-  sta entity_instances+entityRAM::positionY+1,x
+  adc entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
   jmp signExtendAddDone
 signExtend:
-  adc entity_instances+entityRAM::positionY,x
-  sta entity_instances+entityRAM::positionY,x
+  adc entity_instances+entity_instance::positionY,x
+  sta entity_instances+entity_instance::positionY,x
   lda #$ff
-  adc entity_instances+entityRAM::positionY+1,x
-  sta entity_instances+entityRAM::positionY+1,x
+  adc entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
 signExtendAddDone:
 .endscope
 
@@ -282,14 +282,14 @@ killBat:
   sta b0
 
   ;get out low byte of positionX
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   sta w0+1
 
   ;get out positionY
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sta b1
 
   jsr entity_spawn

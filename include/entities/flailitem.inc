@@ -9,7 +9,7 @@ FLAILITEM_SITTHERESTATE = $01
 
 .proc flail_item_update
 
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   cmp #FLAILITEM_INITSTATE
   beq flail_item_init
   cmp #FLAILITEM_SITTHERESTATE
@@ -20,7 +20,7 @@ flail_item_init:
   jsr entity_kill_if_already_seen
 
   lda #FLAILITEM_SITTHERESTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   rts
 

@@ -9,7 +9,7 @@ MOUSE_SITTHERESTATE = 1
 
 mouse_update:
 
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   cmp #MOUSE_INITSTATE
   beq mouseInit
   cmp #MOUSE_SITTHERESTATE
@@ -21,7 +21,7 @@ mouseInit:
   jsr entity_reset_anim
 
   lda #MOUSE_SITTHERESTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   jsr entity_kill_if_already_seen
 

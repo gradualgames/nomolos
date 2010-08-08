@@ -9,7 +9,7 @@ SPEARITEM_SITTHERESTATE = $01
 
 .proc spear_item_update
 
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   cmp #SPEARITEM_INITSTATE
   beq spearitem_init
   cmp #SPEARITEM_SITTHERESTATE
@@ -20,7 +20,7 @@ spearitem_init:
   jsr entity_kill_if_already_seen
 
   lda #SPEARITEM_SITTHERESTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   rts
 

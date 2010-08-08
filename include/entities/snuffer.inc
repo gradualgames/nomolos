@@ -16,7 +16,7 @@ SNUFFER_MOVELEFTSTATE = 2
 .proc snuffer_update
 
   ;load current state
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   ;figure out what state to jump to
   cmp #SNUFFER_INITSTATE
   beq snuffer_initState
@@ -35,13 +35,13 @@ snuffer_initState:
 entity_facing_left:
 
   lda #SNUFFER_MOVELEFTSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   jmp entity_facing_test_done
 entity_facing_right:
 
   lda #SNUFFER_MOVERIGHTSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
 entity_facing_test_done:
 
@@ -50,33 +50,33 @@ entity_facing_test_done:
 snuffer_moveRightState:
 
   clc
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   adc #SNUFFER_WIDTH
   sta w0
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc #$00
   sta w0+1
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   clc
   adc #SNUFFER_HALFHEIGHT
   sta w1
-  lda entity_instances+entityRAM::positionY+1,x
+  lda entity_instances+entity_instance::positionY+1,x
   adc #0
   sta w1+1
   jsr map_test_collision
   lda b1
   beq no_right_collision
   lda #SNUFFER_MOVELEFTSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 no_right_collision:
 
   clc
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   adc #$02
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc #$00
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 
   jsr snuffer_draw
 
@@ -84,31 +84,31 @@ no_right_collision:
 
 snuffer_moveLeftState:
 
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sta w0
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   sta w0+1
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   clc
   adc #SNUFFER_HALFHEIGHT
   sta w1
-  lda entity_instances+entityRAM::positionY+1,x
+  lda entity_instances+entity_instance::positionY+1,x
   adc #0
   sta w1+1
   jsr map_test_collision
   lda b1
   beq no_left_collision
   lda #SNUFFER_MOVERIGHTSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 no_left_collision:
 
   sec
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sbc #$02
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   sbc #$00
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 
   jsr snuffer_draw
 
@@ -124,14 +124,14 @@ killSnuffer:
   sta b0
 
   ;get out low byte of positionX
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   sta w0+1
 
   ;get out positionY
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sta b1
 
   jsr entity_spawn
@@ -204,7 +204,7 @@ nomolosNotAttacking:
   sta sprite_group_offset
 
   ldy entity_locals+snuffer_locals::anim_index,x
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   cmp #SNUFFER_MOVELEFTSTATE
   bne snuffer_moving_right
   lda #%01000000

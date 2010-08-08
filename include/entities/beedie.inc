@@ -27,7 +27,7 @@ BEEDIE_JUMPSTATE = 2
 .proc beedie_update
 
   ;load current state
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   ;figure out what state to jump to
   cmp #BEEDIE_INITSTATE
   beq beedie_initState
@@ -55,7 +55,7 @@ beedie_initState:
 
   ;switch state to "jump"
   lda #BEEDIE_JUMPSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
   rts
 
 beedie_restState:
@@ -70,7 +70,7 @@ beedie_restState:
   lda #$fd
   sta entity_locals+beedieLocals::y_velocity+1,x
   lda #BEEDIE_JUMPSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
 stillResting:
 
@@ -89,15 +89,15 @@ beedie_jumpState:
 beedieGoingLeft:
 
   ;test for collision on left side of beedie. reverse direction if true
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sta w0
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   sta w0+1
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   clc
   adc #BEEDIE_HALFHEIGHT
   sta w1
-  lda entity_instances+entityRAM::positionY+1,x
+  lda entity_instances+entity_instance::positionY+1,x
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -107,30 +107,30 @@ beedieGoingLeft:
   sta entity_locals+beedieLocals::directionFlag,x
 noLeftCollision:
 
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sec
   sbc #1
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   sbc #0
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 
   jmp beedieDirectionTestDone
 beedieGoingRight:
 
   ;test for collision on right side of beedie. reverse direction if true
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   clc
   adc #BEEDIE_WIDTH
   sta w0
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc #0
   sta w0+1
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   clc
   adc #BEEDIE_HALFHEIGHT
   sta w1
-  lda entity_instances+entityRAM::positionY+1,x
+  lda entity_instances+entity_instance::positionY+1,x
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -140,13 +140,13 @@ beedieGoingRight:
   sta entity_locals+beedieLocals::directionFlag,x
 noRightCollision:
 
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   clc
   adc #1
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc #0
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 beedieDirectionTestDone:
 
   ;increment the vertical velocity
@@ -165,42 +165,42 @@ stopAccelerating:
   ;add vertical velocity to 24 bit Y coordinate with sign extension
   clc
   lda entity_locals+beedieLocals::y_velocity,x
-  adc entity_instances+entityRAM::positionYFine,x
-  sta entity_instances+entityRAM::positionYFine,x
+  adc entity_instances+entity_instance::positionYFine,x
+  sta entity_instances+entity_instance::positionYFine,x
   lda entity_locals+beedieLocals::y_velocity+1,x
   bmi signExtend
-  adc entity_instances+entityRAM::positionY,x
-  sta entity_instances+entityRAM::positionY,x
+  adc entity_instances+entity_instance::positionY,x
+  sta entity_instances+entity_instance::positionY,x
   lda #0
-  adc entity_instances+entityRAM::positionY+1,x
-  sta entity_instances+entityRAM::positionY+1,x
+  adc entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
   jmp signExtendAddDone
 signExtend:
-  adc entity_instances+entityRAM::positionY,x
-  sta entity_instances+entityRAM::positionY,x
+  adc entity_instances+entity_instance::positionY,x
+  sta entity_instances+entity_instance::positionY,x
   lda #$ff
-  adc entity_instances+entityRAM::positionY+1,x
-  sta entity_instances+entityRAM::positionY+1,x
+  adc entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
 signExtendAddDone:
 
   ;perform collision detection and eject if necessary
   ;load the entity's X coordinate + 8
   clc
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   adc #BEEDIE_HALFWIDTH
   sta entity_locals+beedieLocals::x_collisionPointBottom,x
   sta w0
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc #0
   sta entity_locals+beedieLocals::x_collisionPointBottom+1,x
   sta w0+1
   ;load the entity's Y coordinate + height
   clc
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   adc #BEEDIE_HEIGHT
   sta entity_locals+beedieLocals::y_collisionPointBottom,x
   sta w1
-  lda entity_instances+entityRAM::positionY+1,x
+  lda entity_instances+entity_instance::positionY+1,x
   adc #0
   sta entity_locals+beedieLocals::y_collisionPointBottom+1,x
   sta w1+1
@@ -218,18 +218,18 @@ signExtendAddDone:
   and #penetration_calculation_mask
   sta entity_locals+beedieLocals::y_belowPenetration,x
   sec
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sbc entity_locals+beedieLocals::y_belowPenetration,x
-  sta entity_instances+entityRAM::positionY,x
-  lda entity_instances+entityRAM::positionY+1,x
+  sta entity_instances+entity_instance::positionY,x
+  lda entity_instances+entity_instance::positionY+1,x
   sbc #0
-  sta entity_instances+entityRAM::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
 
   ;set rest counter and transition to rest state. set direction bit based on Nomolos' location.
   lda #BEEDIE_RESTCOUNTER_RESTLENGTH
   sta entity_locals+beedieLocals::restCounter,x
   lda #BEEDIE_RESTSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
 
   lda entity_screen_x
   sec
@@ -325,14 +325,14 @@ killBeedie:
   sta b0
 
   ;get out low byte of positionX
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   sta w0+1
 
   ;get out positionY
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sta b1
 
   jsr entity_spawn

@@ -27,7 +27,7 @@ SHARK_JUMPSTATE = 2
 .proc shark_update
 
   ;load current state
-  lda entity_instances+entityRAM::state,x
+  lda entity_instances+entity_instance::state,x
   ;figure out what state to jump to
   cmp #SHARK_INITSTATE
   beq shark_initState
@@ -55,7 +55,7 @@ shark_initState:
   
   ;switch state to "jump"
   lda #SHARK_JUMPSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
   rts
 
 shark_restState:
@@ -70,7 +70,7 @@ shark_restState:
   lda #$fc
   sta entity_locals+shark_locals::y_velocity+1,x
   lda #SHARK_JUMPSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
   
   ;reset anim for the arc of the shark's jump to look realistic
   jsr entity_reset_anim
@@ -91,24 +91,24 @@ shark_jumpState:
   bne sharkGoingRight
 sharkGoingLeft:
 
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sec
   sbc #2
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   sbc #0
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
   
   jmp sharkDirectionTestDone
 sharkGoingRight:
 
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   clc
   adc #2
-  sta entity_instances+entityRAM::positionX,x
-  lda entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc #0
-  sta entity_instances+entityRAM::positionX+1,x
+  sta entity_instances+entity_instance::positionX+1,x
 sharkDirectionTestDone:
 
   ;increment the vertical velocity
@@ -127,42 +127,42 @@ stopAccelerating:
   ;add vertical velocity to 24 bit Y coordinate with sign extension
   clc
   lda entity_locals+shark_locals::y_velocity,x
-  adc entity_instances+entityRAM::positionYFine,x
-  sta entity_instances+entityRAM::positionYFine,x
+  adc entity_instances+entity_instance::positionYFine,x
+  sta entity_instances+entity_instance::positionYFine,x
   lda entity_locals+shark_locals::y_velocity+1,x
   bmi signExtend
-  adc entity_instances+entityRAM::positionY,x
-  sta entity_instances+entityRAM::positionY,x
+  adc entity_instances+entity_instance::positionY,x
+  sta entity_instances+entity_instance::positionY,x
   lda #0
-  adc entity_instances+entityRAM::positionY+1,x
-  sta entity_instances+entityRAM::positionY+1,x
+  adc entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
   jmp signExtendAddDone
 signExtend:
-  adc entity_instances+entityRAM::positionY,x
-  sta entity_instances+entityRAM::positionY,x
+  adc entity_instances+entity_instance::positionY,x
+  sta entity_instances+entity_instance::positionY,x
   lda #$ff
-  adc entity_instances+entityRAM::positionY+1,x
-  sta entity_instances+entityRAM::positionY+1,x
+  adc entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
 signExtendAddDone:
   
   ;perform collision detection and eject if necessary
   ;load the entity's X coordinate + 8
   clc
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   adc #SHARK_HALFWIDTH
   sta entity_locals+shark_locals::x_collisionPointBottom,x
   sta w0
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   adc #0
   sta entity_locals+shark_locals::x_collisionPointBottom+1,x
   sta w0+1
   ;load the entity's Y coordinate + height
   clc
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   adc #SHARK_HEIGHT
   sta entity_locals+shark_locals::y_collisionPointBottom,x
   sta w1
-  lda entity_instances+entityRAM::positionY+1,x
+  lda entity_instances+entity_instance::positionY+1,x
   adc #0
   sta entity_locals+shark_locals::y_collisionPointBottom+1,x
   sta w1+1
@@ -180,18 +180,18 @@ signExtendAddDone:
   and #penetration_calculation_mask
   sta entity_locals+shark_locals::y_belowPenetration,x
   sec
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sbc entity_locals+shark_locals::y_belowPenetration,x
-  sta entity_instances+entityRAM::positionY,x
-  lda entity_instances+entityRAM::positionY+1,x
+  sta entity_instances+entity_instance::positionY,x
+  lda entity_instances+entity_instance::positionY+1,x
   sbc #0
-  sta entity_instances+entityRAM::positionY+1,x
+  sta entity_instances+entity_instance::positionY+1,x
   
   ;set rest counter and transition to rest state. set direction bit based on Nomolos' location.
   lda #SHARK_RESTCOUNTER_RESTLENGTH
   sta entity_locals+shark_locals::restCounter,x
   lda #SHARK_RESTSTATE
-  sta entity_instances+entityRAM::state,x
+  sta entity_instances+entity_instance::state,x
   
   lda entity_screen_x
   sec
@@ -294,14 +294,14 @@ killShark:
   sta b0
 
   ;get out low byte of positionX
-  lda entity_instances+entityRAM::positionX,x
+  lda entity_instances+entity_instance::positionX,x
   sta w0
   ;get out high byte of positionX
-  lda entity_instances+entityRAM::positionX+1,x
+  lda entity_instances+entity_instance::positionX+1,x
   sta w0+1
   
   ;get out positionY
-  lda entity_instances+entityRAM::positionY,x
+  lda entity_instances+entity_instance::positionY,x
   sta b1
   
   jsr entity_spawn
