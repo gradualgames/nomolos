@@ -215,7 +215,7 @@ signExtendAddDone:
   
   ;there was a collision beneath the beedie. calculate penetration distance and eject.
   lda entity_locals+beedieLocals::y_collisionPointBottom,x
-  and #penetrationCalculationMask
+  and #penetration_calculation_mask
   sta entity_locals+beedieLocals::y_belowPenetration,x
   sec
   lda entity_instances+entityRAM::positionY,x

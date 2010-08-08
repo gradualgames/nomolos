@@ -177,7 +177,7 @@ signExtendAddDone:
   
   ;there was a collision beneath the shark. calculate penetration distance and eject.
   lda entity_locals+shark_locals::y_collisionPointBottom,x
-  and #penetrationCalculationMask
+  and #penetration_calculation_mask
   sta entity_locals+shark_locals::y_belowPenetration,x
   sec
   lda entity_instances+entityRAM::positionY,x

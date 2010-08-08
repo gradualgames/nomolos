@@ -8,7 +8,7 @@ CAMERA_INC = 1
 .global camera_scroll_right
 .global camera_scroll_left
 
-scrollReactRight = 128-(nomolosWidth>>1)
-scrollReactLeft = 128-(nomolosWidth>>1)
+scrollReactRight = 128-(nomolos_width>>1)
+scrollReactLeft = 128-(nomolos_width>>1)
 
 .endif

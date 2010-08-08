@@ -281,9 +281,9 @@ entity_not_in_death_zone:
   sta w5
   lda nomolos_screen_y+1
   sta w5+1
-  lda #nomolosWidth
+  lda #nomolos_width
   sta b4
-  lda #nomolosHeight
+  lda #nomolos_height
   sta b5
 
   jsr geotests_rect_in_rect_16bit
@@ -317,7 +317,7 @@ entity_not_in_death_zone:
   
   ;right
   clc
-  adc #nomolosWidth
+  adc #nomolos_width
   sta w5
   
   ;top
@@ -326,7 +326,7 @@ entity_not_in_death_zone:
   
   ;bottom
   clc
-  adc #nomolosHeight
+  adc #nomolos_height
   sta w5+1
   
   jsr geotests_rect_in_rect
@@ -375,7 +375,7 @@ entity_not_in_death_zone:
   jsr mapper_switch_bank
 
   ;start at last entity
-  ldy #lastEntity
+  ldy #last_entity
 nextEntity:
   ;save y 
   tya  
@@ -513,7 +513,7 @@ do_not_spawn:
   beq do_not_spawn
   
   ;start at the last entity
-  ldy #lastEntity
+  ldy #last_entity
 :
   tya
   asl

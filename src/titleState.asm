@@ -222,9 +222,9 @@ titleStateDone:
   ;start was pressed, now we want to switch to level in state
   ;set current level and switch to "level in" state
   ;start out Nomolos with 3 lives.
-  lda #nomolosStartingLives
+  lda #nomolos_starting_lives
   sta nomolos_status_lives
-  lda #startingLevel
+  lda #starting_level
   sta level_current
   lda #LEVELINSTATE_INIT
   sta state_control_params+levelInStateControl::state

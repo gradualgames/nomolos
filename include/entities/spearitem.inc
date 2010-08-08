@@ -43,8 +43,8 @@ spearitem_sit_there:
 skipJmpNotTouching:
       
   lda nomolos_state_secondary
-  and #nomolosAttackSetMask
-  ora #nomolosAttackSpear
+  and #nomolos_attack_set_mask
+  ora #nomolos_attack_state_spear
   sta nomolos_state_secondary
       
   ;play a get item sound

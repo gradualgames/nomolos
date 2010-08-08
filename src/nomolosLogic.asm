@@ -30,7 +30,7 @@
   resetAnim nomolos_weapon_animation
 
   lda #0
-  and #nomolosWalkingRightAND
+  and #nomolos_walking_right_and
   sta nomolos_state_primary
 
   lda #0
@@ -86,9 +86,9 @@
   adc nomolos_status_lives
   sta nomolos_status_lives
 
-  cmp #maxLives
+  cmp #max_lives
   bmi :+
-  lda #maxLives
+  lda #max_lives
   sta nomolos_status_lives
 :
   rts
@@ -103,10 +103,10 @@
   adc nomolos_status_health
   sta nomolos_status_health
 
-  cmp #maxHealth  ;if result is negative, that means nomolos_status_health - maxHealth was negative, which means we're less than maxHealth
+  cmp #max_health  ;if result is negative, that means nomolos_status_health - max_health was negative, which means we're less than max_health
                   ;negative is less, positive is more
   bmi :+
-  lda #maxHealth
+  lda #max_health
   sta nomolos_status_health
 :
 
@@ -124,17 +124,11 @@
 
   ;if blinking is on, skip this whole routine
   lda nomolos_state_primary
-  and #nomolosBlinkingTestAND
+  and #nomolos_blinking_test_and
   lsr
   lsr
   bne skipHurt
 
-  ;Lose any special weapon Nomolos may have acquired
-  ;lda nomolos_state_secondary
-  ;and #nomolosAttackSetMask
-  ;ora #nomolosAttackSword
-  ;sta nomolos_state_secondary
-  
   ;decrease nomolos' health.
   lda nomolos_status_health
   beq skipDecreaseHealth
@@ -161,16 +155,16 @@ nomolosNotDead:
 skipDecreaseHealth:
 
   ;make nomolos bounce a little bit.
-  lda #nomolosHurtBounceLo
+  lda #nomolos_hurt_bounce_lo
   sta nomolos_y_velocity
-  lda #nomolosHurtBounceHi
+  lda #nomolos_hurt_bounce_hi
   sta nomolos_y_velocity+1
 
   ;turn on blinking
   lda #$60
   sta nomolos_counter_temp_invincibility_blink
   lda nomolos_state_primary
-  ora #nomolosBlinkingOnOR
+  ora #nomolos_blinking_on_or
   sta nomolos_state_primary
 
 skipHurt:
@@ -184,12 +178,12 @@ skipHurt:
 
   ;make certain we're not already dying...
   lda nomolos_state_primary
-  and #nomolosDyingTestAND
+  and #nomolos_dying_test_and
   bne alreadyDying
 
   ;lose special weapon if any
   lda nomolos_state_secondary
-  and #nomolosAttackSetMask
+  and #nomolos_attack_set_mask
   sta nomolos_state_secondary
 
   ;decrease Nomolos' lives
@@ -197,12 +191,12 @@ skipHurt:
 
   ;make nomolos die.
   lda nomolos_state_primary
-  ora #nomolosDyingOnOR
+  ora #nomolos_dying_on_or
   sta nomolos_state_primary
 
   ;make sure all following logic knows that this is death by falling.
   lda nomolos_state_secondary
-  and #nomolosFellDyingAND
+  and #nomolos_fell_dying_and
   sta nomolos_state_secondary
 
   ;store a frame counter value so we can pause a bit before transitioning to level out
@@ -241,17 +235,17 @@ alreadyDying:
 
   ;lose special weapon if any
   lda nomolos_state_secondary
-  and #nomolosAttackSetMask
+  and #nomolos_attack_set_mask
   sta nomolos_state_secondary
 
   ;make nomolos die.
   lda nomolos_state_primary
-  ora #nomolosDyingOnOR
+  ora #nomolos_dying_on_or
   sta nomolos_state_primary
 
   ;make sure all following logic knows that this is death by being attacked
   lda nomolos_state_secondary
-  ora #nomolosAttackedDyingOR
+  ora #nomolos_attacked_dying_or
   sta nomolos_state_secondary
 
   ;transfer current screen coordinates to scaredy cat coordinates.
@@ -303,7 +297,7 @@ alreadyDying:
   lda #$0c
   sta nomolos_counter_attack_rect
   lda nomolos_state_primary
-  ora #nomolosAttackOnOR
+  ora #nomolos_attack_on_or
   sta nomolos_state_primary
 
   ;reset animation
@@ -337,7 +331,7 @@ alreadyDying:
 
   ;flag that the spear is moving to the left
   lda nomolos_state_secondary
-  and #nomolosAttackDirectionLeftAND
+  and #nomolos_attack_direction_left_and
   sta nomolos_state_secondary
 
   jmp skipNomolosFacingRight
@@ -361,7 +355,7 @@ skipNomolosFacingLeft:
 
   ;flag that the spear is moving to the right
   lda nomolos_state_secondary
-  ora #nomolosAttackDirectionRightOR
+  ora #nomolos_attack_direction_right_or
   sta nomolos_state_secondary
 
 skipNomolosFacingRight:
@@ -390,7 +384,7 @@ skipNomolosFacingRight:
   lda #$0c
   sta nomolos_counter_attack_rect
   lda nomolos_state_primary
-  ora #nomolosAttackOnOR
+  ora #nomolos_attack_on_or
   sta nomolos_state_primary
 
   ;reset animation
@@ -415,10 +409,10 @@ skipNomolosFacingRight:
   jsr stream_initialize
 
   ;turn on the attack hit box
-  lda #nomolosAttackFlailLength
+  lda #nomolos_attack_flail_length
   sta nomolos_counter_attack_rect
   lda nomolos_state_primary
-  ora #nomolosAttackOnOR
+  ora #nomolos_attack_on_or
   sta nomolos_state_primary
 
   ;clear the location of the hit box
@@ -445,16 +439,16 @@ skipNomolosFacingRight:
 
   ;if attacking is on, skip this whole routine
   lda nomolos_state_primary
-  and #nomolosAttackTestAND
+  and #nomolos_attack_test_and
   bne skipAttack
 
   lda nomolos_state_secondary
-  and #nomolosAttackTestMask
-  cmp #nomolosAttackSword
+  and #nomolos_attack_test_mask
+  cmp #nomolos_attack_state_sword
   beq nomolosAttackSwordBranch
-  cmp #nomolosAttackFlail
+  cmp #nomolos_attack_state_flail
   beq nomolosAttackFlailBranch
-  cmp #nomolosAttackSpear
+  cmp #nomolos_attack_state_spear
   beq nomolosAttackSpearBranch
   jmp attackSwitchDone
 
@@ -489,16 +483,16 @@ skipAttack:
 .proc nomolos_is_deadly
 
   lda nomolos_state_primary
-  and #nomolosAttackTestAND
+  and #nomolos_attack_test_and
   beq nomolosNotAttacking
 
   lda nomolos_state_secondary
-  and #nomolosAttackTestMask
-  cmp #nomolosAttackSword
+  and #nomolos_attack_test_mask
+  cmp #nomolos_attack_state_sword
   beq nomolosAttackSwordBranch
-  cmp #nomolosAttackFlail
+  cmp #nomolos_attack_state_flail
   beq nomolosAttackFlailBranch
-  cmp #nomolosAttackSpear
+  cmp #nomolos_attack_state_spear
   beq nomolosAttackSpearBranch
   jmp attackSwitchDone
 
@@ -529,7 +523,7 @@ nomolosAttackFlailBranch:
 
   ;flail deadliness does not live as long as the counter
   lda nomolos_counter_attack_rect
-  cmp #(nomolosAttackFlailLength - nomolosAttackFlailDeadlyLength)
+  cmp #(nomolos_attack_flail_length - nomolos_attack_flail_deadly_length)
   bmi nomolosNotAttacking
 
   lda #1
@@ -552,7 +546,7 @@ nomolosNotAttacking:
   lda b0
   beq :+
   lda nomolos_state_primary
-  ora #nomolosHurtByMapOnOR
+  ora #nomolos_hurt_by_map_on_or
   sta nomolos_state_primary
 :
   rts
@@ -606,7 +600,7 @@ skipNomolosFacingRight:
 
   ;set attack state to off
   lda nomolos_state_primary
-  and #nomolosAttackOffAND
+  and #nomolos_attack_off_and
   sta nomolos_state_primary
 
   ;reset animation object
@@ -627,7 +621,7 @@ skipAttackUpdate:
 
   ;test the direction Nomolos is facing
   lda nomolos_state_primary
-  and #nomolosWalkingLeftTestAND
+  and #nomolos_walking_left_test_and
   beq nomolos_facing_right
 nomolos_facing_left:
   
@@ -673,7 +667,7 @@ nomolos_direction_test_done:
 
   ;set attack state to off
   lda nomolos_state_primary
-  and #nomolosAttackOffAND
+  and #nomolos_attack_off_and
   sta nomolos_state_primary
 
   ;reset animation object
@@ -688,7 +682,7 @@ skip_attack_update:
 
   ;move the spear in the direction flagged by secondary state
   lda nomolos_state_secondary
-  and #nomolosAttackDirectionTestAND
+  and #nomolos_attack_direction_test_and
   bne nomolosAttackRight
 nomolosAttackLeft:
 
@@ -719,7 +713,7 @@ nomolosDirectionTestDone:
 
   ;set attack state to off
   lda nomolos_state_primary
-  and #nomolosAttackOffAND
+  and #nomolos_attack_off_and
   sta nomolos_state_primary
 
   ;reset animation object
@@ -738,7 +732,7 @@ skipAttackUpdate:
   sta w0+1
   lda nomolos_map_y+1
   clc
-  adc #(nomolosHeight+1)
+  adc #(nomolos_height+1)
   sta w1
   lda nomolos_map_y+2
   adc #0
@@ -758,7 +752,7 @@ skipAttackUpdate:
   sta w0+1
   lda nomolos_map_y+1
   clc
-  adc #(nomolosHeight+1)
+  adc #(nomolos_height+1)
   sta w1
   lda nomolos_map_y+2
   adc #0
@@ -777,8 +771,8 @@ yesBelowCollision:
   ;Set below collision flag.
   lda nomolos_map_y+1
   clc
-  adc #(nomolosHeight+1)
-  and #penetrationCalculationMask
+  adc #(nomolos_height+1)
+  and #penetration_calculation_mask
   sta nomolos_below_ejection_distance
 
   ;eject by penetration distance
@@ -791,7 +785,7 @@ yesBelowCollision:
   sta nomolos_map_y+2
 
   lda nomolos_state_primary
-  ora #nomolosBelowCollisionOnOR
+  ora #nomolos_below_collision_on_or
   sta nomolos_state_primary
 
   ;************************************************************
@@ -806,9 +800,9 @@ yesBelowCollision:
   cmp #1
   bne skipButtonATest
 
-  lda #nomolosStartJumpLo
+  lda #nomolos_start_jump_lo
   sta nomolos_y_velocity
-  lda #nomolosStartJumpHi
+  lda #nomolos_start_jump_hi
   sta nomolos_y_velocity+1
 
   rts
@@ -878,7 +872,7 @@ yesAboveCollision:
   ;Calculate penetration distance and store it in abovePenetrationDistance.
   ;Set above collision flag.
   lda nomolos_map_y+1
-  and #penetrationCalculationMask
+  and #penetration_calculation_mask
   sta nomolos_above_ejection_distance
   lda #$0f  ;we subtract the above penetration distance from the height of a tile.
   sec
@@ -895,7 +889,7 @@ yesAboveCollision:
   sta nomolos_map_y+2
 
   lda nomolos_state_primary
-  ora #nomolosAboveCollisionOnOR
+  ora #nomolos_above_collision_on_or
   sta nomolos_state_primary
 
   ;reset velocity
@@ -924,7 +918,7 @@ yesAboveCollision:
   ;that we do not want to respond to when dying is true.
   ;************************************************************
   lda nomolos_state_primary
-  and #nomolosDyingTestAND
+  and #nomolos_dying_test_and
   beq nomolosNotDying
 
   ;clear buttons we don't want to respond to during dying state.
@@ -935,7 +929,7 @@ yesAboveCollision:
   sta buffer_controller+buttons::_right
 
   lda nomolos_state_secondary
-  and #nomolosAttackedDyingTestAND
+  and #nomolos_attacked_dying_test_and
   beq nomolosNotAttackedDying
 
   ;move scaredy cat graphic upwards.
@@ -980,10 +974,10 @@ nomolosNotDying:
   ;Load result of "hurt by map" flag and hurt nomolos if true.
   ;************************************************************
   lda nomolos_state_primary
-  and #nomolosHurtByMapTestAND
+  and #nomolos_hurt_by_map_test_and
   beq @notHurtByMap
   lda nomolos_state_primary
-  and #nomolosHurtByMapOffAND
+  and #nomolos_hurt_by_map_off_and
   sta nomolos_state_primary
   jsr nomolos_hurt
 @notHurtByMap:
@@ -1000,19 +994,19 @@ nomolosNotDying:
   bne skipBlinkReset
 
   lda nomolos_state_primary
-  and #nomolosBlinkingOffAND
+  and #nomolos_blinking_off_and
   sta nomolos_state_primary
 skipBlinkReset:
 
   ;Update hitbox counter if attack state on
   lda nomolos_state_primary
-  and #nomolosAttackTestAND
+  and #nomolos_attack_test_and
   beq skipAttack
   ;attack state was on
 
   ;test if anything is currently beneath nomolos
   lda nomolos_state_primary
-  and #nomolosBelowCollisionTestAND
+  and #nomolos_below_collision_test_and
   beq below_collision_false
   ;nomolos is attacking and on the ground---don't let him
   ;move left or right. Store an on-to-off transition.
@@ -1024,12 +1018,12 @@ skipBlinkReset:
 below_collision_false:
 
   lda nomolos_state_secondary
-  and #nomolosAttackTestMask
-  cmp #nomolosAttackSword
+  and #nomolos_attack_test_mask
+  cmp #nomolos_attack_state_sword
   beq nomolosAttackSwordBranch
-  cmp #nomolosAttackFlail
+  cmp #nomolos_attack_state_flail
   beq nomolosAttackFlailBranch
-  cmp #nomolosAttackSpear
+  cmp #nomolos_attack_state_spear
   beq nomolosAttackSpearBranch
   jmp attackSwitchDone
 
@@ -1066,7 +1060,7 @@ skipAttack:
   ;************************************************************
 
   ;Compare vertical speed max to current vertical speed.
-  lda #nomolosVerticalSpeedMax
+  lda #nomolos_vertical_speed_max
   sec
   sbc nomolos_y_velocity+1
   ;we want to skip the following code if the result was negative
@@ -1075,10 +1069,10 @@ skipAttack:
   ;  nomolos_y_velocity = nomolos_y_velocity + nomolosVerticalAcceleration
   lda nomolos_y_velocity
   clc
-  adc #nomolosVerticalAccelerationLo
+  adc #nomolos_vertical_acceleration_lo
   sta nomolos_y_velocity
   lda nomolos_y_velocity+1
-  adc #nomolosVerticalAccelerationHi
+  adc #nomolos_vertical_acceleration_hi
   sta nomolos_y_velocity+1
 DoNotIncrementSpeed:
   jsr nomolos_compute_screen_coordinates
@@ -1112,8 +1106,8 @@ noSignExtend:
   ;************************************************************
   ;clear the collision flags
   lda nomolos_state_primary
-  and #nomolosBelowCollisionOffAND
-  and #nomolosAboveCollisionOffAND
+  and #nomolos_below_collision_off_and
+  and #nomolos_above_collision_off_and
   sta nomolos_state_primary
 
   lda nomolos_y_velocity+1
@@ -1144,13 +1138,13 @@ ySpeedTestDone:
 
   lda nomolos_state_primary
   ;if attack is on, do not reset the animation
-  and #nomolosAttackTestAND
+  and #nomolos_attack_test_and
   bne @skipResetAnim
   resetAnim nomolos_animation
 @skipResetAnim:
 
   lda nomolos_state_primary
-  and #nomolosMovingOffAND       ;state not moving
+  and #nomolos_moving_off_and       ;state not moving
   sta nomolos_state_primary
 @skipMoveOff:
 
@@ -1162,8 +1156,8 @@ ySpeedTestDone:
   jmp notLeft
 skipJmpNotLeft:
   lda nomolos_state_primary
-  ora #nomolosWalkingLeftOR
-  ora #nomolosMovingOnOR
+  ora #nomolos_walking_left_or
+  ora #nomolos_moving_on_or
 
   sta nomolos_state_primary
 
@@ -1265,13 +1259,13 @@ notLeft:
 
   lda nomolos_state_primary
   ;if attack is on, do not reset the animation
-  and #nomolosAttackTestAND
+  and #nomolos_attack_test_and
   bne @skipResetAnim
   resetAnim nomolos_animation
 @skipResetAnim:
 
   lda nomolos_state_primary
-  and #nomolosMovingOffAND       ;state not moving
+  and #nomolos_moving_off_and       ;state not moving
   sta nomolos_state_primary
 @skipMoveOff:
 
@@ -1284,8 +1278,8 @@ notLeft:
 skipJmpNotRight:
 
   lda nomolos_state_primary
-  and #nomolosWalkingRightAND ;state is walking right
-  ora #nomolosMovingOnOR       ;state is moving
+  and #nomolos_walking_right_and ;state is walking right
+  ora #nomolos_moving_on_or       ;state is moving
   sta nomolos_state_primary
 
   ;test collision with map
@@ -1417,16 +1411,16 @@ notRight:
   sta w1+1
 
   lda nomolos_state_primary
-  and #nomolosAttackTestAND
+  and #nomolos_attack_test_and
   beq skipUpdatenomolos_fighting
 
   lda nomolos_state_secondary
-  and #nomolosAttackTestMask
-  cmp #nomolosAttackSword
+  and #nomolos_attack_test_mask
+  cmp #nomolos_attack_state_sword
   beq nomolosAttackSwordBranch
-  cmp #nomolosAttackFlail
+  cmp #nomolos_attack_state_flail
   beq nomolosAttackFlailBranch
-  cmp #nomolosAttackSpear
+  cmp #nomolos_attack_state_spear
   beq nomolosAttackSpearBranch
   jmp attackSwitchDone
 
@@ -1484,7 +1478,7 @@ attackSwitchDone:
 skipUpdatenomolos_fighting:
 
   lda nomolos_state_primary
-  and #nomolosMovingTestAND
+  and #nomolos_moving_test_and
   beq skipUpdateNomolosMoving
   ldy #level_data_struct::nomolos_walk
   lda (base_address_rom_definition_table),y
@@ -1504,7 +1498,7 @@ skipUpdateNomolosMoving:
 
   ;animation does not live as long as the attack counter
   lda nomolos_counter_attack_rect
-  cmp #(nomolosAttackFlailLength - nomolosAttackFlailDeadlyLength)
+  cmp #(nomolos_attack_flail_length - nomolos_attack_flail_deadly_length)
   bmi do_not_draw_flail
 
   ;draw the flail animation and flail ball animation here
@@ -1640,7 +1634,7 @@ do_not_draw_flail:
   clc
   lda nomolos_state_secondary
   eor #$ff
-  and #nomolosAttackDirectionTestAND
+  and #nomolos_attack_direction_test_and
   rol
   rol
   rol
@@ -1698,11 +1692,11 @@ do_not_draw_flail:
   sta sprite_group_offset
 
   lda nomolos_state_primary
-  and #nomolosDyingTestAND
+  and #nomolos_dying_test_and
   beq nomolosNotDying
 
   lda nomolos_state_secondary
-  and #nomolosAttackedDyingTestAND
+  and #nomolos_attacked_dying_test_and
   beq nomolosNotAttackedDying
 
   ;if we're in dying state, we will only ever draw the slumped armor and the scaredy cat graphic and return.
@@ -1775,7 +1769,7 @@ nomolosNotAttackedDying:
 nomolosNotDying:
 
   lda nomolos_state_primary
-  and #nomolosBlinkingTestAND
+  and #nomolos_blinking_test_and
   lsr
   lsr
   beq skipBlinkCheck
@@ -1792,16 +1786,16 @@ skipBlinkCheck:
   ;test if nomolos is fighting. if he is, always draw him fighting
   ;regardless of whether he is in the air.
   lda nomolos_state_primary
-  and #nomolosAttackTestAND
+  and #nomolos_attack_test_and
   beq skipDrawnomolos_fighting
 
   lda nomolos_state_secondary
-  and #nomolosAttackTestMask
-  cmp #nomolosAttackSword
+  and #nomolos_attack_test_mask
+  cmp #nomolos_attack_state_sword
   beq nomolosAttackSwordBranch
-  cmp #nomolosAttackFlail
+  cmp #nomolos_attack_state_flail
   beq nomolosAttackFlailBranch
-  cmp #nomolosAttackSpear
+  cmp #nomolos_attack_state_spear
   beq nomolosAttackSpearBranch
 
 nomolosAttackSpearBranch:
@@ -1840,7 +1834,7 @@ dontDrawNomolos:
   ;test if there is anything below nomolos. if there is not,
   ;draw nomolos's jumping animation.
   lda nomolos_state_primary
-  and #nomolosBelowCollisionTestAND
+  and #nomolos_below_collision_test_and
   lsr
   lsr
   lsr

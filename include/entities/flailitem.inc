@@ -43,8 +43,8 @@ flail_item_sit_there:
 skipJmpNotTouching:
       
   lda nomolos_state_secondary
-  and #nomolosAttackSetMask
-  ora #nomolosAttackFlail
+  and #nomolos_attack_set_mask
+  ora #nomolos_attack_state_flail
   sta nomolos_state_secondary
       
   ;play a get item sound
