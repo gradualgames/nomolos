@@ -349,7 +349,7 @@ input_brightness = b3
 
 return_black:
 
-  lda #$3f
+  lda #$0d
   sta color
 
   rts
