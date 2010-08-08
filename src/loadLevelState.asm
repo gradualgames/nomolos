@@ -265,7 +265,7 @@ loadLevelStateDone:
   sta state_control_params+playLevelStateControl::cycling_palette_speed
   sta state_control_params+playLevelStateControl::palette_cycle_counter
   
-  lda #PLAYLEVELSTATE_KEEPPLAYING
+  lda #PLAYLEVELSTATE_INIT
   sta state_control_params+playLevelStateControl::state
   
   ldx #index_play_level_state

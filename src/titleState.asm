@@ -7,6 +7,7 @@
 .include "sprite.inc"
 .include "levelInState.inc"
 .include "zp.inc"
+.include "ram.inc"
 .include "nomolosLogic.inc"
 .include "titleState.inc"
 
@@ -162,6 +163,8 @@ titleStateDone:
   jsr sound_upload
   .endif
   
+  jsr fade_out_palette
+  
   ;start was pressed, now we want to switch to level in state
   ;set current level and switch to "level in" state
   ;start out Nomolos with 3 lives.
@@ -180,6 +183,91 @@ titleStateDone:
   
 stateCommandComplete:
 
+  rts
+.endproc
+  
+.proc fade_out_palette
+
+  ;switch to nmi routine for uploading the dynamic palette
+  lda #<ppu_upload_dynamic_palette_ppu
+  sta update_ppu
+  lda #>ppu_upload_dynamic_palette_ppu
+  sta update_ppu+1
+
+  lda #4
+  sta palette_step
+  
+fading_loop:
+
+  ;create dynamic palette from rom palette
+  lda titleDef+title::paletteAddress
+  sta w0
+  lda titleDef+title::paletteAddress+1
+  sta w0+1
+  
+  ;load up the dynamic palette with brightness in b3
+  lda palette_step
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
+  
+  ;wait for vblank
+  ldx #05
+: jsr wait_vblank_flag
+  dex
+  bne :-
+  
+  dec palette_step
+  bpl fading_loop
+
+  rts
+.endproc
+  
+.proc wait_vblank_flag
+
+  lda #0
+  sta vblank_done
+: lda vblank_done
+  beq :-
+  
+  rts
+
+.endproc
+  
+;nmi routine for uploading the dynamic palette
+.proc ppu_upload_dynamic_palette_ppu
+  pha
+  tya
+  pha
+  txa
+  pha
+
+  lda #<dynamic_palette
+  sta w0
+  lda #>dynamic_palette
+  sta w0+1
+  
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+  
+  jsr ppu_load_palette_bg
+  
+  set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+  
+  ;reset scroll
+  lda #0
+  sta $2005
+  sta $2005
+  
+  lda #1
+  sta vblank_done
+  
+  pla
+  tax
+  pla
+  tay
+  pla
+  
   rts
 .endproc
   

@@ -13,6 +13,7 @@
 .include "camera.inc"
 .include "nomolosLogic.inc"
 .include "zp.inc"
+.include "ram.inc"
 .include "playLevelState.inc"
 .include "fixedBankData.inc"
 
@@ -21,6 +22,8 @@
 .proc play_level_state_update
 
   lda state_control_params+playLevelStateControl::state
+  cmp #PLAYLEVELSTATE_INIT
+  beq playLevelStateInit
   cmp #PLAYLEVELSTATE_KEEPPLAYING
   beq keepPlaying
   cmp #PLAYLEVELSTATE_PAUSE
@@ -28,6 +31,13 @@
   cmp #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
   beq switchToLevelOutState
 
+playLevelStateInit:
+
+  lda #PLAYLEVELSTATE_KEEPPLAYING
+  sta state_control_params+playLevelStateControl::state
+  
+  jmp stateCommandComplete
+  
 keepPlaying:
 
   jsr keep_playing_state
@@ -53,6 +63,8 @@ skipStartButtonTest:
   jmp stateCommandComplete
   
 switchToLevelOutState:
+
+  jsr fade_out_palette
 
   lda nomolos_status_lives
   
@@ -81,6 +93,8 @@ stateCommandComplete:
     
   rts
   
+.endproc
+
 .proc keep_playing_state
 
   ;wait for vblank to complete
@@ -140,9 +154,18 @@ skipStartButtonTest:
   rts
 
 .endproc
+
+.proc wait_vblank_flag
+
+  lda #0
+  sta vblank_done
+: lda vblank_done
+  beq :-
   
+  rts
+
 .endproc
-  
+
 .proc play_level_state_update_ppu
 
   pha
@@ -150,10 +173,36 @@ skipStartButtonTest:
   pha
   txa
   pha
-
+  
   lda ppu_data_ready
   beq ppu_data_not_ready
   
+  jsr palette_handler
+  jsr sprite_update_all
+  jsr map_update_column_ppu
+  jsr map_update_attribute_ppu
+  jsr map_update_scroll_ppu
+  
+  .ifdef MUSIC_ENABLE
+  jsr sound_upload
+  .endif
+  
+ppu_data_not_ready:
+  
+  lda #1
+  sta vblank_done
+  
+  pla
+  tax
+  pla
+  tay
+  pla
+
+  rts
+.endproc
+
+.proc palette_handler
+
   .scope palette_cycling_block
 cycling_palette_address = state_control_params+playLevelStateControl::cycling_palette_address
 cycling_palette_speed = state_control_params+playLevelStateControl::cycling_palette_speed
@@ -229,17 +278,32 @@ do_not_increment_cycle_index:
 palette_cycling_off:
   
   .endscope
+  rts
+
+.endproc
   
-  jsr sprite_update_all
-  jsr map_update_column_ppu
-  jsr map_update_attribute_ppu
+;nmi routine for uploading the dynamic palette
+.proc ppu_upload_dynamic_palette_ppu
+  pha
+  tya
+  pha
+  txa
+  pha
+
+  lda #<dynamic_palette
+  sta w0
+  lda #>dynamic_palette
+  sta w0+1
+  
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+  
+  jsr ppu_load_palette
+  
+  set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+  
   jsr map_update_scroll_ppu
-  
-  .ifdef MUSIC_ENABLE
-  jsr sound_upload
-  .endif
-  
-ppu_data_not_ready:
   
   lda #1
   sta vblank_done
@@ -249,7 +313,44 @@ ppu_data_not_ready:
   pla
   tay
   pla
-
+  
   rts
 .endproc
   
+.proc fade_out_palette
+
+  ;switch to nmi routine for uploading the dynamic palette
+  lda #<ppu_upload_dynamic_palette_ppu
+  sta update_ppu
+  lda #>ppu_upload_dynamic_palette_ppu
+  sta update_ppu+1
+
+  lda #4
+  sta palette_step
+  
+fading_loop:
+
+  ;create dynamic palette from rom palette
+  ldy #ROMDefinitionTableStruct::palette
+  lda (base_address_rom_definition_table),y
+  sta w0
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w0+1
+  
+  ;load up the dynamic palette with brightness in b3
+  lda palette_step
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
+  
+  ;wait for vblank
+  ldx #5
+: jsr wait_vblank_flag
+  dex
+  bne :-
+  
+  dec palette_step
+  bpl fading_loop
+
+  rts
+.endproc

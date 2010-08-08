@@ -1,5 +1,7 @@
 .include "zp.inc"
+.include "ram.inc"
 .include "fixedBankData.inc"
+.include "ppu.inc"
 
 .segment "CODE"
 
@@ -17,7 +19,6 @@
 ; b2 - current digit
 ; b3 - index in dest buffer
 ; b4 - whether a nonzero digit has been encountered yet.
-.export ppu_create_decimal_string
 .proc ppu_create_decimal_string
  
   ;digit count
@@ -135,7 +136,6 @@ skipUpperZeroDigit:
  
 ;assumes VRAM is already pointing to where the text should start
 ;assumes w0 contains address of string to draw
-.export ppu_display_string
 .proc ppu_display_string
   ;load number of characters in string
   ldy #0
@@ -158,7 +158,6 @@ skipUpperZeroDigit:
 ;loads a specified amount of chr data into VRAM starting at the current VRAM location.
 ;expects w0 to contain the address of the chr data.
 ;uses w1 to contain the number of bytes to copy from this location.
-.export ppu_load_chr_amount
 .proc ppu_load_chr_amount
 
   ;save y
@@ -213,7 +212,6 @@ loadChrLoop:
 ;expects w2 to contain the address of the chr group set.
 ;the group set consists of a count for the number of groups (up to 255)
 ;and then word addresses thereafter.
-.export ppu_load_chr_groups
 .proc ppu_load_chr_groups
 group_set_address = w2
 group_address = w0
@@ -245,7 +243,6 @@ load_group_loop:
   
 ;loads a nametable and attribute table located at address in w0
 ;assumes VRAM points to the nametable that is to be loaded
-.export ppu_load_name_table
 .proc ppu_load_name_table
   ldy #$00
   ldx #$04
@@ -265,7 +262,6 @@ load_group_loop:
 ;expects VRAM to already be pointing to the nametable we want to clear.
 ;input: b0 - value to clear nametable with
 ;       b1 - value to clear attribute table with
-.export ppu_clear_name_table
 .proc ppu_clear_name_table
   ;clear the nametable
   lda #$20
@@ -302,8 +298,88 @@ load_group_loop:
   rts
 .endproc
   
+brightness_table:
+  .byte $00, $00, $00, $00
+  .byte $00, $10, $10, $10
+  .byte $00, $10, $20, $20
+  .byte $00, $10, $20, $30
+  
+.proc ppu_adjust_color_brightness
+color = b0
+color_brightness = b1
+color_hue = b2
+input_brightness = b3
+
+  lda input_brightness
+  beq return_black
+  
+  ;get current brightness of color
+  lda color
+  and #%00110000
+  sta color_brightness
+  
+  ;get hue of color
+  lda color
+  and #%00001111
+  sta color_hue
+  
+  cmp #$0e
+  beq return_black
+  cmp #$0f
+  beq return_black
+  
+  ;use color's brightness and input brightness to index into brightness_table
+  ;and produce the adjusted color
+  lda color_brightness
+  lsr
+  lsr
+  clc
+  adc input_brightness
+  tax
+  ;subtract one because brightness will be 1 thru 4 and 0 means drop to black
+  ;we want the values 0, 1, 2, 3 not 1 ,2 ,3 ,4
+  dex
+  lda brightness_table,x
+  ora color_hue
+  
+  ;return adjusted color
+  sta color
+
+  rts
+
+return_black:
+
+  lda #$3f
+  sta color
+
+  rts
+  
+.endproc
+  
+;expects w0 to have address of palette to transfer to dynamic palette
+;expects b3 to contain desired brightness level
+.proc ppu_load_dynamic_palette_brightness
+
+  ldy #$1f
+
+: 
+  ;load a color from the palette
+  lda (w0),y
+
+  ;adjust that color's brightness based on input (b3)
+  sta b0
+  jsr ppu_adjust_color_brightness
+  lda b0
+  ;store it to dynamic palette
+  sta dynamic_palette,y
+
+  dey
+  bpl :-
+
+  rts
+.endproc
+  
 ;expects w0 to have address of palette
-.export ppu_load_palette
 .proc ppu_load_palette
   ldy #0
   lda #$3F
@@ -320,7 +396,6 @@ load_group_loop:
   rts
 .endproc
 
-.export ppu_load_palette_bg
 .proc ppu_load_palette_bg
   ldy #0
   lda #$3F
@@ -337,7 +412,6 @@ load_group_loop:
   rts
 .endproc
 
-.export ppu_load_palette_spr
 .proc ppu_load_palette_spr
   ldy #0
   lda #$3F

@@ -4,9 +4,9 @@ PLAYLEVELSTATE_INC = 1
 .global play_level_state_update
 .global play_level_state_update_ppu
 
-PLAYLEVELSTATE_KEEPPLAYING =           %00000000
-PLAYLEVELSTATE_PAUSE       =           %00000001
-PLAYLEVELSTATE_SWITCHLEVEL =           %00000010
+PLAYLEVELSTATE_INIT        =           %00000000
+PLAYLEVELSTATE_KEEPPLAYING =           %00000001
+PLAYLEVELSTATE_PAUSE       =           %00000010
 PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000011
   
 .struct playLevelStateControl

@@ -36,6 +36,8 @@ entity_instances: .res 256
 entity_locals: .res 256
 .export entity_counters
 entity_counters: .res 32
+.export dynamic_palette
+dynamic_palette: .res 32
 
 .segment "CODE"
 
@@ -76,7 +78,7 @@ reset:
   jsr switch_state
   
   ;load current level
-  ;lda #1
+  ;lda #0
   ;sta state_control_params+loadLevelStateControl::levelToLoad
   ;lda #LOADLEVELSTATE_INIT
   ;sta state_control_params+loadLevelStateControl::state  
