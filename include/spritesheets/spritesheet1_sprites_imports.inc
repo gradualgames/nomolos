@@ -62,3 +62,4 @@
 .import spritesheet1_Shark0
 .import spritesheet1_Shark1
 .import spritesheet1_Shark2
+.import spritesheet1_Stalactite0

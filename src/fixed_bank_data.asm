@@ -79,6 +79,7 @@ ROMDefinitionTable0:
   .word $0000 ;spritesheet1_DragonFly
   .word $0000 ;spritesheet1_IceBallFly
   .word $0000 ;spritesheet1_SharkLeap
+  .word $0000 ;spritesheet1_Stalactite0
 
   .word attack_sound
   .word hit_sound
@@ -115,6 +116,7 @@ ROMDefinitionTable0:
   .byte 0 ;level1_sprites_Dragon_chr_index
   .byte 0 ;level1_sprites_IceBall_chr_index
   .byte 0 ;level1_sprites_Shark_chr_index
+  .byte 0 ;level1_sprites_Stalactite_chr_index
 
 ;ROM definition table
 ROMDefinitionTable1:
@@ -164,6 +166,7 @@ ROMDefinitionTable1:
   .word $0000 ;spritesheet1_DragonFly
   .word $0000 ;spritesheet1_IceBallFly
   .word $0000 ;spritesheet1_SharkLeap
+  .word $0000 ;spritesheet1_Stalactite0
 
   .word attack_sound
   .word hit_sound
@@ -198,6 +201,7 @@ ROMDefinitionTable1:
   .byte 0 ;level2_sprites_Dragon_chr_index
   .byte 0 ;level2_sprites_IceBall_chr_index
   .byte 0 ;level2_sprites_Shark_chr_index
+  .byte 0 ;level2_sprites_Stalactite_chr_index
 
 ;ROM definition table
 ROMDefinitionTable2:
@@ -247,6 +251,7 @@ ROMDefinitionTable2:
   .word spritesheet1_DragonFly
   .word spritesheet1_IceBallFly
   .word spritesheet1_SharkLeap
+  .word $0000 ;spritesheet1_Stalactite0
 
   .word attack_sound
   .word hit_sound
@@ -281,6 +286,7 @@ ROMDefinitionTable2:
   .byte level3_sprites_Dragon_chr_index
   .byte level3_sprites_IceBall_chr_index
   .byte level3_sprites_Shark_chr_index
+  .byte 0 ;level3_sprites_Stalactite_chr_index
 
 ;ROM definition table
 ROMDefinitionTable3:
@@ -330,6 +336,7 @@ ROMDefinitionTable3:
   .word 0 ;spritesheet1_DragonFly
   .word spritesheet1_IceBallFly
   .word 0 ;spritesheet1_SharkLeap
+  .word spritesheet1_Stalactite0
 
   .word attack_sound
   .word hit_sound
@@ -364,6 +371,7 @@ ROMDefinitionTable3:
   .byte 0 ;boss1_sprites_Dragon_chr_index
   .byte boss1_sprites_IceBall_chr_index
   .byte 0 ;boss1_sprites_Shark_chr_index
+  .byte boss1_sprites_Stalactite_chr_index
 
 ;Entities
 entity_definition_table:

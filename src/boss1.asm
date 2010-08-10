@@ -11,6 +11,7 @@ boss1_sprite_groups:
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_Explosion_chr
   .word spritesheet1_IceBall_chr
+  .word spritesheet1_Stalactite_chr
 
 .segment "ROM4"
 

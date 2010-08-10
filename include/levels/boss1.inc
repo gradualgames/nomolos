@@ -8,6 +8,7 @@ boss_1_patterns_bank = 4
 boss1_sprites_Nomolos_chr_index = 0
 boss1_sprites_Explosion_chr_index = boss1_sprites_Nomolos_chr_index+Explosion_chr_size
 boss1_sprites_IceBall_chr_index = boss1_sprites_Explosion_chr_index+IceBall_chr_size
+boss1_sprites_Stalactite_chr_index = boss1_sprites_IceBall_chr_index+Stalactite_chr_size
 
 .include "spritesheet1.inc"
 .import boss1_sprite_groups

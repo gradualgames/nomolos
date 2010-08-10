@@ -619,5 +619,12 @@ spritesheet1_Shark2:
   .byte $08,$0f,$03,$00,$10
   .byte $08,$10,$03,$08,$08
   .byte $08,$11,$02,$10,$00
+.export spritesheet1_Stalactite0
+spritesheet1_Stalactite0:
+  .byte $04
+  .byte $00,$00,$02,$00,$08
+  .byte $00,$01,$02,$08,$00
+  .byte $08,$02,$02,$00,$08
+  .byte $08,$03,$02,$08,$00
 
 

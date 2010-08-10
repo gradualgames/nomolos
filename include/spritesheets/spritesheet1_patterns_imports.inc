@@ -12,3 +12,4 @@
 .import spritesheet1_Dragon_chr
 .import spritesheet1_IceBall_chr
 .import spritesheet1_Shark_chr
+.import spritesheet1_Stalactite_chr
