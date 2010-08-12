@@ -49,12 +49,10 @@ DEBUG_FILE      = $(OUTPUT_NAME).dbg
 
 #Switches
 INCLUDE_FLAGS = -I include \
-                -I include/modules \
                 -I include/entities \
                 -I include/spritesheets \
                 -I include/levels \
-                -I include/fixed_bank_data \
-                -I include/global
+                -I include/fixed_bank_data
 ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) --dbgfile $(DEBUG_FILE) -o
 NAMELIST_GENERATOR_FLAGS = -rom $(NES_FILE) \
