@@ -15,7 +15,9 @@ BIN_DIR     = bin
 #Files
 OUTPUT_NAME     = nomolos
 NES_FILE        = $(OUTPUT_NAME).nes
-FILES           = nomolos \
+FILES           = zp \
+                  ram \
+                  nomolos \
                   nomolos_logic \
                   level1 \
                   level2 \
@@ -35,8 +37,6 @@ FILES           = nomolos \
                   controller \
                   soundengine \
                   geotests \
-                  zp \
-                  ram \
                   mapper \
                   ppu \
                   fixed_bank_data \
