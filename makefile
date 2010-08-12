@@ -36,6 +36,7 @@ FILES           = nomolos \
                   soundengine \
                   geotests \
                   zp \
+                  ram \
                   mapper \
                   ppu \
                   fixed_bank_data \

@@ -23,23 +23,6 @@
 .byte $21         ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #2 (UnROM)
 .byte $00         ;Rest of Mapper #2 bits (all 0)
 
-.segment "STACK"
-.export stack
-stack:  .res 256
-
-.segment "BSS"
-.export sprite
-sprite: .res 256
-
-.export entity_instances
-entity_instances: .res 256
-.export entity_locals
-entity_locals: .res 256
-.export entity_counters
-entity_counters: .res 32
-.export dynamic_palette
-dynamic_palette: .res 32
-
 .segment "CODE"
 
 reset:
