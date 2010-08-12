@@ -35,3 +35,4 @@
 .include "dragon.inc"
 .include "iceball.inc"
 .include "shark.inc"
+.include "stalactite.inc"

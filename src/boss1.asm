@@ -7,7 +7,7 @@
 
 .export boss1_sprite_groups
 boss1_sprite_groups:
-  .byte $03
+  .byte $04
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_Explosion_chr
   .word spritesheet1_IceBall_chr
@@ -135,8 +135,8 @@ Noise:
 .export boss1_palette
 boss1_palette:
   .byte $0d,$12,$32,$22,$0d,$33,$23,$13,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
-  .byte $0d,$0d,$27,$20,$0d,$04,$11,$0d,$0d,$0d,$20,$06,$0d,$0d,$20,$32
-
+  .byte $0d,$0d,$17,$20,$0d,$04,$11,$0d,$0d,$12,$21,$20,$0d,$32,$20,$18
+  
 .export boss1_cycling_palettes
 boss1_cycling_palettes:
   .byte 3
@@ -160,20 +160,22 @@ boss1_meta_tile_column_table = MetaTileColumnTable
 boss1_meta_tile_table = MetaTileTable
 
 Map:
-  .byte $00,$01,$01,$02,$03,$04,$05,$06
+  .byte $00,$01,$02,$03,$04,$05,$06,$07
 MapColumnTable:
   .byte $00,$00,$01,$00
   .byte $00,$01,$01,$00
-  .byte $00,$01,$02,$00
-  .byte $00,$03,$04,$00
-  .byte $00,$05,$06,$00
-  .byte $00,$07,$08,$00
-  .byte $00,$09,$00,$00
+  .byte $00,$02,$01,$00
+  .byte $00,$01,$03,$00
+  .byte $00,$04,$05,$00
+  .byte $00,$06,$07,$00
+  .byte $00,$08,$09,$00
+  .byte $00,$0a,$00,$00
 AttributeColumnTable:
   .byte $00,$00,$00,$00,$00,$00,$05,$00
 MetaTileColumnTable:
   .byte $35,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$34,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$34,$00,$00,$00
+  .byte $36,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$34,$00,$00,$00
   .byte $00,$00,$00,$04,$09,$0e,$13,$00,$00,$00,$00,$2c,$34,$00,$00,$00
   .byte $00,$00,$01,$05,$0a,$0f,$14,$17,$1b,$20,$26,$2d,$34,$00,$00,$00
   .byte $00,$00,$02,$06,$0b,$10,$15,$18,$1c,$21,$27,$2e,$34,$00,$00,$00
@@ -291,3 +293,5 @@ MetaTile52:
   .byte $01,$00,$01,$9d,$9e,$9f,$a0,$00
 MetaTile53:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_exit
+MetaTile54:
+  .byte $00,$00,$00,$00,$00,$00,$00,entity_index_stalactite

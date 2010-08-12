@@ -519,7 +519,15 @@ Shark:
   .byte $05
   .byte $00
   .byte $00
-
+Stalactite:
+  .word stalactite_update
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $05
+  .byte $00
+  .byte $00
+  
 attack_sound:
   .byte STL, 10
   .byte STV, SOUND_EFFECT_BASE+5
