@@ -746,7 +746,8 @@ font1:
   .word font0_patterns
   .byte $04
   .byte $1b,$1c,$1d,$1e,$1f,$20,$21,$22,$23,$24
-.include "font0_palette_source.inc"
+  .byte $0d,$20,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
+  .byte $0d,$20,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
 
 ;table of decimal powers for creating decimal strings from 8 bit numbers
 power_table:
@@ -777,5 +778,8 @@ title_definition:
   .word title_patterns
   .byte $04
 
-.include "title_palette_source.inc"
+title_palette:
+  .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
+  .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
+
 .include "title_nametable_source.inc"
