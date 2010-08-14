@@ -219,8 +219,27 @@ attribute_column_to_update: .res 1
 .exportzp buffer_column
 buffer_column:  .res 60
 
+;the following variable is only used during boss play.
+;thus it can occupy the same address as the map column buffer.
+.exportzp buffer_rectangle
+buffer_rectangle = buffer_column
+
 .exportzp buffer_meta_tile
 buffer_meta_tile:    .res 4
+
+;the following four variables are only used during boss play.
+;thus they can occupy some of zp that was being used by the map.
+.exportzp buffer_rectangle_x
+buffer_rectangle_x = buffer_meta_tile
+
+.exportzp buffer_rectangle_y
+buffer_rectangle_y = buffer_meta_tile+1
+
+.exportzp buffer_rectangle_width
+buffer_rectangle_width = buffer_meta_tile+2
+
+.exportzp buffer_rectangle_height
+buffer_rectangle_height = buffer_meta_tile+3
 
 .exportzp column_to_update
 column_to_update:    .res 1

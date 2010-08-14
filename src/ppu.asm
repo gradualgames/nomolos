@@ -5,6 +5,135 @@
 
 .segment "CODE"
 
+;Copies a rectangular region of tile numbers to buffer_rectangle in zp,
+;and buffer_rectangle_x, buffer_rectangle_y, buffer_rectangle_width,
+;buffer_rectangle_height, ready to b uploaded by ppu_upload_rectangular_region.
+;expects b0 and b1 to contain the x and y coordinate, and w0 to contain the
+;address of the region to draw.
+.proc ppu_draw_rectangular_region
+region_width = buffer_rectangle_width
+region_height = buffer_rectangle_height
+tile_index = b4
+
+  ;store x and y coordinate
+  lda b0
+  sta buffer_rectangle_x
+  lda b1
+  sta buffer_rectangle_y
+  
+  ;get width of region
+  ldy #0
+  lda (w0),y
+  sta region_width
+  beq do_not_draw
+  ;get height of region
+  iny
+  lda (w0),y
+  sta region_height
+  beq do_not_draw
+  iny
+  
+  lda #2
+  sta tile_index
+  
+  ;start copying region to buffer
+  ldy region_height
+row_loop:
+  
+  ldx region_width
+column_loop:
+  
+  ;save y
+  tya
+  pha
+  
+  ldy tile_index
+  
+  ;get tile value
+  lda (w0),y
+  
+  ;y is 2 ahead of where we need to be. store the tile value in the buffer.
+  sta buffer_rectangle-2,y
+  
+  ;restore y
+  pla
+  tay
+  
+  ;next tile.
+  inc tile_index
+  
+  dex
+  bne column_loop
+  
+  dey
+  bne row_loop
+do_not_draw:
+  
+  rts
+.endproc
+
+;Uploads buffer_rectangle to the ppu using buffer_rectangle_x, buffer_rectangle_y
+;buffer_rectangle_width and buffer_rectangle_height as parameters.
+.proc ppu_upload_rectangular_region
+row = b0
+column = b1
+buffer_index = b2
+
+  ;load top left of rectangle
+  lda buffer_rectangle_y
+  sta row
+  lda buffer_rectangle_x
+  sta column
+  
+  ;start at beginning of buffer
+  lda #0
+  sta buffer_index
+
+  ldy buffer_rectangle_height
+  beq do_not_draw
+row_loop:
+
+  ;point VRAM at next row
+  set_ppu_2006_abs name_table_to_view, row, column
+
+  ldx buffer_rectangle_width
+  beq do_not_draw
+column_loop:
+
+  ;save x
+  txa
+  pha
+  
+  ;get buffer index
+  ldx buffer_index
+  
+  ;store next tile value in VRAM
+  lda buffer_rectangle,x
+  sta $2007
+  
+  inc buffer_index
+  
+  ;restore x
+  pla
+  tax
+
+  dex
+  bne column_loop
+  
+  ;move on to next row
+  inc row
+  
+  dey
+  bne row_loop
+
+do_not_draw:
+  lda #0
+  sta buffer_rectangle_width
+  sta buffer_rectangle_height
+  
+  rts
+.endproc
+
 ;Creates a decimal string based on a digit table and a power table
 ;and an input 8 bit value.
 ;Input:

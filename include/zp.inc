@@ -75,6 +75,11 @@ ZP_INC = 1
 .importzp attribute_column_to_update
 .importzp buffer_column
 .importzp buffer_meta_tile
+.importzp buffer_rectangle
+.importzp buffer_rectangle_x
+.importzp buffer_rectangle_y
+.importzp buffer_rectangle_width
+.importzp buffer_rectangle_height
 .importzp column_to_update
 .importzp name_table_to_update
 .importzp name_table_to_view

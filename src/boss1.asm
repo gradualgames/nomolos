@@ -17,17 +17,6 @@ boss1_sprite_groups:
 
 .include "boss1_patterns_source.inc"
 
-.segment "ROM2"
-
-;these should be drawn at location 22, 22 in the nametable
-boss1_tail_up_tiles:
-  .byte $08,$06,$66,$29,$67,$68,$29,$1f,$60,$61,$6f,$29,$70,$71,$29,$29,$1f,$6b,$76,$29,$77,$78,$79,$29,$29,$1f,$7f,$7f,$80,$81,$82,$83
-  .byte $29,$29,$93,$94,$95,$96,$97,$98,$8a,$8b,$a9,$aa,$ab,$ac,$9d,$9e,$9f,$a0
-
-boss1_tail_down_tiles:
-  .byte $08,$06,$66,$29,$5e,$5f,$29,$1f,$60,$61,$6f,$29,$69,$6a,$29,$29,$1f,$6b,$76,$29,$69,$69,$72,$29,$29,$1f,$7f,$7f,$69,$69,$69,$7a
-  .byte $29,$29,$84,$85,$86,$87,$88,$89,$8a,$8b,$99,$9a,$9b,$9c,$9d,$9e,$9f,$a0
-
 .segment "ROM1"
 
 .export boss1_music

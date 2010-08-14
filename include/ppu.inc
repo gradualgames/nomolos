@@ -1,6 +1,8 @@
 .ifndef PPU_INC
 PPU_INC = 1
 
+.global ppu_draw_rectangular_region
+.global ppu_upload_rectangular_region
 .global ppu_create_decimal_string
 .global ppu_display_string
 .global ppu_set_vram_address
@@ -45,6 +47,30 @@ PPU1_DISPLAY_TYPE = 0
   lda #column
   ;or in the lower three bits of row
   ora #<(row << 5)
+  sta $2006
+
+.endmacro
+
+;also sets ppu 2006 but uses absolute rather than immediate addressing
+.macro set_ppu_2006_abs nametable, row, column
+
+  ;get the upper two bits of row
+  lda row
+  lsr
+  lsr
+  lsr
+  ;or in the nametable bits
+  ora nametable
+  sta $2006
+  ;get the lower three bits of row
+  lda row
+  asl
+  asl
+  asl
+  asl
+  asl
+  ;or in the column
+  ora column
   sta $2006
 
 .endmacro

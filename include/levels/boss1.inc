@@ -12,8 +12,6 @@ boss1_INC = 1
 .import boss1_meta_tile_column_table
 .import boss1_meta_tile_table
 .import boss1_music
-.import boss1_tail_up_tiles
-.import boss1_tail_down_tiles
 
 boss_1_index = 3
 boss_1_bank = 1

@@ -30,6 +30,11 @@
   lda #>play_level_state_update_boss_ppu
   sta update_ppu+1
   
+  ;make sure the boss ppu routine doesn't start uploading bogus rectangles
+  lda #0
+  sta buffer_rectangle_width
+  sta buffer_rectangle_height
+  
   ;switch to boss mode
   lda #PLAYLEVELSTATE_BOSSMODE
   sta state_control_params+play_level_state_control::state
@@ -422,6 +427,13 @@ palette_cycling_off:
   beq ppu_data_not_ready
 
   jsr sprite_update_all
+  
+  ;turn off inc32
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+  
+  jsr ppu_upload_rectangular_region
+  
   jsr map_update_scroll_ppu
 
   .ifdef MUSIC_ENABLE
