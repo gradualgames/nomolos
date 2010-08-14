@@ -10,69 +10,36 @@ STALACTITE_WIDTH = $10
 STALACTITE_HEIGHT = $10
 
 STALACTITE_INITSTATE = 0
-STALACTITE_FLYSTATE = 1
+STALACTITE_FALLSTATE = 1
 
 stalactite_update:
 
   lda entity_instances+entity_instance::state,x
   cmp #STALACTITE_INITSTATE
   beq stalactite_init
-  cmp #STALACTITE_FLYSTATE
-  beq stalactite_fly
+  cmp #STALACTITE_FALLSTATE
+  beq stalactite_fall
 
 stalactite_init:
 
   ;reset the stalactite animation object
   jsr entity_reset_anim
 
-  ;set state to fly
-  lda #STALACTITE_FLYSTATE
+  lda #0
+  sta entity_locals+stalactite_locals::x_velocity,x
+  sta entity_locals+stalactite_locals::x_velocity+1,x
+  lda #2
+  sta entity_locals+stalactite_locals::y_velocity,x
+  lda #0
+  sta entity_locals+stalactite_locals::y_velocity+1,x
+  
+  ;set state to fall
+  lda #STALACTITE_FALLSTATE
   sta entity_instances+entity_instance::state,x
-
-  ;compare entity x position to nomolos x position to decide direction
-  .scope
-  sec
-  lda nomolos_map_x+1
-  sbc entity_instances+entity_instance::positionX,x
-  lda nomolos_map_x+2
-  sbc entity_instances+entity_instance::positionX+1,x
-  bpl will_go_right
-will_go_left:
-  lda #$ff
-  sta entity_locals+stalactite_locals::x_velocity,x
-  sta entity_locals+stalactite_locals::x_velocity+1,x
-  jmp direction_test_done
-will_go_right:
-  lda #$01
-  sta entity_locals+stalactite_locals::x_velocity,x
-  lda #$00
-  sta entity_locals+stalactite_locals::x_velocity+1,x
-direction_test_done:
-  .endscope
-
-  .scope
-  sec
-  lda nomolos_map_y+1
-  sbc entity_instances+entity_instance::positionY,x
-  lda nomolos_map_y+2
-  sbc entity_instances+entity_instance::positionY+1,x
-  bpl will_go_up
-will_go_down:
-  lda #$ff
-  sta entity_locals+stalactite_locals::y_velocity,x
-  sta entity_locals+stalactite_locals::y_velocity+1,x
-  jmp direction_test_done
-will_go_up:
-  lda #$01
-  sta entity_locals+stalactite_locals::y_velocity,x
-  lda #$00
-  sta entity_locals+stalactite_locals::y_velocity+1,x
-direction_test_done:
-  .endscope
 
   rts
 
-stalactite_fly:
+stalactite_fall:
 
   jsr entity_compute_screen_coordinates
 
