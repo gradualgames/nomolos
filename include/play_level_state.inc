@@ -1,13 +1,15 @@
 .ifndef PLAYLEVELSTATE_INC
 PLAYLEVELSTATE_INC = 1
 
+.global play_level_state_init_boss_mode
 .global play_level_state_update
 .global play_level_state_update_ppu
 
 PLAYLEVELSTATE_INIT        =           %00000000
 PLAYLEVELSTATE_KEEPPLAYING =           %00000001
-PLAYLEVELSTATE_PAUSE       =           %00000010
-PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000011
+PLAYLEVELSTATE_BOSSMODE    =           %00000010
+PLAYLEVELSTATE_PAUSE       =           %00000011
+PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000100
 
 .struct play_level_state_control
   state .byte                   ;flags for whether to switch to a different level

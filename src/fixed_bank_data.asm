@@ -527,6 +527,14 @@ Stalactite:
   .byte $05
   .byte $00
   .byte $00
+DragonBoss:
+  .word dragonboss_update
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $05
+  .byte $00
+  .byte $00
   
 attack_sound:
   .byte STL, 10

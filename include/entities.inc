@@ -17,6 +17,7 @@
 .global iceball_update
 .global shark_update
 .global stalactite_update
+.global dragonboss_update
 
 ;entity indices
 entity_index_deentle = 1
@@ -38,3 +39,4 @@ entity_index_dragon = 16
 entity_index_iceball = 17
 entity_index_shark = 18
 entity_index_stalactite = 19
+entity_index_dragonboss = 20

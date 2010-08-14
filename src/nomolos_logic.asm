@@ -18,6 +18,9 @@
 
   lda #0
   sta nomolos_state_secondary
+  
+  lda #0
+  sta nomolos_status_lives
 
   rts
 

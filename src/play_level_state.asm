@@ -20,19 +20,38 @@
 
 .segment "CODE"
 
+;initializes boss mode by swapping out usual nmi routine with boss nmi routine
+;and changes the current play state to PLAYLEVELSTATE_BOSSMODE.
+.proc play_level_state_init_boss_mode
+
+  ;switch to boss nmi routine
+  lda #<play_level_state_update_boss_ppu
+  sta update_ppu
+  lda #>play_level_state_update_boss_ppu
+  sta update_ppu+1
+  
+  ;switch to boss mode
+  lda #PLAYLEVELSTATE_BOSSMODE
+  sta state_control_params+play_level_state_control::state
+
+  rts
+.endproc
+
 .proc play_level_state_update
 
   lda state_control_params+play_level_state_control::state
   cmp #PLAYLEVELSTATE_INIT
-  beq playLevelStateInit
+  beq play_level_state_init
   cmp #PLAYLEVELSTATE_KEEPPLAYING
   beq keepPlaying
+  cmp #PLAYLEVELSTATE_BOSSMODE
+  beq playBoss
   cmp #PLAYLEVELSTATE_PAUSE
   beq pause
   cmp #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
   beq switchToLevelOutState
 
-playLevelStateInit:
+play_level_state_init:
 
   ;****************************************************************
   ;Fade in the palette, then switch to the play level state.
@@ -68,6 +87,16 @@ keepPlaying:
 
   jmp stateCommandComplete
 
+playBoss:
+
+  ;****************************************************************
+  ;Call the play boss state handler
+  ;****************************************************************
+
+  jsr boss_state
+  
+  jmp stateCommandComplete
+  
 pause:
 
   jsr controller_read_start
@@ -194,6 +223,68 @@ skipStartButtonTest:
 .endproc
 
 ;****************************************************************
+;The play boss state handler
+;****************************************************************
+.proc boss_state
+
+  ;wait for vblank to complete
+  lda #0
+  sta vblank_done
+: lda vblank_done
+  beq :-
+
+  ;turn monochrome bit on
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  set_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
+  .endif
+
+  ;ppu data is not ready
+  lda #0
+  sta ppu_data_ready
+
+  ;camera has not scrolled yet
+  sta camera_scroll_direction
+
+  jsr controller_read
+
+  jsr sprite_clear_all
+
+  jsr nomolos_update
+  jsr nomolos_draw
+  jsr nomolos_draw_hearts
+  jsr entity_update_all
+
+  ;ppu data is ready
+  lda #1
+  sta ppu_data_ready
+
+  .ifdef MUSIC_ENABLE
+  ;switch to the level and music bank
+  ldy #level_data_struct::level_music_bank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+  jsr sound_update
+  .endif
+
+  .scope
+  lda buffer_controller+buttons::_start
+  and #%00000011
+  cmp #1
+  bne skipStartButtonTest
+
+  lda #PLAYLEVELSTATE_PAUSE
+  sta state_control_params+play_level_state_control::state
+
+skipStartButtonTest:
+  .endscope
+
+  rts
+ 
+.endproc
+
+;****************************************************************
 ;The play level state ppu routine
 ;****************************************************************
 .proc play_level_state_update_ppu
@@ -314,4 +405,39 @@ palette_cycling_off:
   .endscope
   rts
 
+.endproc
+
+;****************************************************************
+;The play level state boss ppu routine
+;****************************************************************
+.proc play_level_state_update_boss_ppu
+
+  pha
+  tya
+  pha
+  txa
+  pha
+
+  lda ppu_data_ready
+  beq ppu_data_not_ready
+
+  jsr sprite_update_all
+  jsr map_update_scroll_ppu
+
+  .ifdef MUSIC_ENABLE
+  jsr sound_upload
+  .endif
+
+ppu_data_not_ready:
+
+  lda #1
+  sta vblank_done
+
+  pla
+  tax
+  pla
+  tay
+  pla
+
+  rts
 .endproc
