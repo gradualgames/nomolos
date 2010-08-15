@@ -91,6 +91,9 @@ dragonboss_tailupstate:
 
   jsr entity_spawn
 
+  lda #entity_index_stalactite
+  sta b0
+  
   lda #150
   sta w0
   lda #0
