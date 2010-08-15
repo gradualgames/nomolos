@@ -12,7 +12,8 @@ DRAGONBOSS_HEIGHT = $10
 
 DRAGONBOSS_INITSTATE = 0
 DRAGONBOSS_INITBOSSMODESTATE = 1
-DRAGONBOSS_RUNSTATE = 2
+DRAGONBOSS_TAILUPSTATE = 2
+DRAGONBOSS_TAILDOWNSTATE = 3
 
 ;these should be drawn at location 22, 22 in the nametable
 boss1_tail_up_tiles:
@@ -30,15 +31,19 @@ dragonboss_update:
   beq dragonboss_init
   cmp #DRAGONBOSS_INITBOSSMODESTATE
   beq dragonboss_initbossmodestate
-  cmp #DRAGONBOSS_RUNSTATE
-  beq dragonboss_runstate
+  cmp #DRAGONBOSS_TAILUPSTATE
+  beq dragonboss_tailupstate
+  cmp #DRAGONBOSS_TAILDOWNSTATE
+  beq dragonboss_taildownstate
 
 dragonboss_init:
 
   ;reset the dragonboss animation object
   jsr entity_reset_anim
   
-  lda #100
+  ;must wait one frame before initializing boss mode, or the load level
+  ;state will replace the boss nmi routine with the normal play state nmi routine
+  lda #1
   sta entity_locals+dragonboss_locals::state_switch_counter,x
   
   lda #DRAGONBOSS_INITBOSSMODESTATE
@@ -55,6 +60,73 @@ dragonboss_initbossmodestate:
   
   jsr play_level_state_init_boss_mode
 
+  lda #100
+  sta entity_locals+dragonboss_locals::state_switch_counter,x
+  
+  lda #DRAGONBOSS_TAILDOWNSTATE
+  sta entity_instances+entity_instance::state,x
+
+do_not_switch_to_init_boss_mode_state:
+
+  rts
+  
+dragonboss_tailupstate:
+
+  jsr dragonboss_drawface
+
+  dec entity_locals+dragonboss_locals::state_switch_counter,x
+  bne do_not_switch_to_taildownstate
+  
+  ;spawn a couple of stalactite entities
+  lda #entity_index_stalactite
+  sta b0
+
+  lda #50
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #0
+  sta b1
+
+  jsr entity_spawn
+
+  lda #150
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #0
+  sta b1
+
+  jsr entity_spawn
+  
+  lda #100
+  sta entity_locals+dragonboss_locals::state_switch_counter,x
+  
+  lda #22
+  sta b0
+  lda #20
+  sta b1
+  lda #<boss1_tail_up_tiles
+  sta w0
+  lda #>boss1_tail_up_tiles
+  sta w0+1
+  jsr ppu_draw_rectangular_region
+  
+  lda #DRAGONBOSS_TAILDOWNSTATE
+  sta entity_instances+entity_instance::state,x
+do_not_switch_to_taildownstate:
+
+  rts
+  
+dragonboss_taildownstate:
+
+  jsr dragonboss_drawface
+  
+  dec entity_locals+dragonboss_locals::state_switch_counter,x
+  bne do_not_switch_to_tailupstate
+  
   lda #22
   sta b0
   lda #20
@@ -65,16 +137,13 @@ dragonboss_initbossmodestate:
   sta w0+1
   jsr ppu_draw_rectangular_region
   
-  lda #DRAGONBOSS_RUNSTATE
-  sta entity_instances+entity_instance::state,x
-
-do_not_switch_to_init_boss_mode_state:
-
-  rts
+  lda #100
+  sta entity_locals+dragonboss_locals::state_switch_counter,x
   
-dragonboss_runstate:
-
-  jsr dragonboss_drawface
+  lda #DRAGONBOSS_TAILUPSTATE
+  sta entity_instances+entity_instance::state,x
+  
+do_not_switch_to_tailupstate:
 
   rts
 

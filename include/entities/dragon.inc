@@ -71,7 +71,7 @@ dragon_hoverState:
   dec entity_locals+dragon_locals::shoot_iceball,x
   bne do_not_shoot_iceball
 
-  ;spawn an explosion entity
+  ;spawn an iceball entity
   lda #entity_index_iceball
   sta b0
 
