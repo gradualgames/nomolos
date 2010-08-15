@@ -35,6 +35,10 @@
   sta buffer_rectangle_width
   sta buffer_rectangle_height
   
+  ;make sure the boss ppu routine doesn't upload dynamic palette right away
+  lda #0
+  sta state_control_params+play_level_state_control::upload_dynamic_palette
+  
   ;switch to boss mode
   lda #PLAYLEVELSTATE_BOSSMODE
   sta state_control_params+play_level_state_control::state
@@ -431,6 +435,18 @@ palette_cycling_off:
   ;turn off inc32
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
+  
+  lda state_control_params+play_level_state_control::upload_dynamic_palette
+  beq do_not_upload_dynamic_palette
+  
+  lda #<dynamic_palette
+  sta w0
+  lda #>dynamic_palette
+  sta w0+1
+  
+  jsr ppu_load_palette
+  
+do_not_upload_dynamic_palette:
   
   jsr ppu_upload_rectangular_region
   

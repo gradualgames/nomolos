@@ -18,6 +18,7 @@ PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000100
   palette_cycle_counter .byte   ;frame counter for palette cycling
   palette_cycle_index .byte     ;index into array of cycled palettes
   cycling_palette_speed .byte   ;what the cycle counter gets reset to
+  upload_dynamic_palette .byte  ;flag to upload the dynamic palette
 .endstruct
 
 .endif

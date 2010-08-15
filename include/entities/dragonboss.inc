@@ -14,6 +14,7 @@ DRAGONBOSS_INITSTATE = 0
 DRAGONBOSS_INITBOSSMODESTATE = 1
 DRAGONBOSS_TAILUPSTATE = 2
 DRAGONBOSS_TAILDOWNSTATE = 3
+DRAGONBOSS_GLOWINGEYESSTATE = 4
 
 ;these should be drawn at location 22, 22 in the nametable
 boss1_tail_up_tiles:
@@ -35,6 +36,8 @@ dragonboss_update:
   beq dragonboss_tailupstate
   cmp #DRAGONBOSS_TAILDOWNSTATE
   beq dragonboss_taildownstate
+  cmp #DRAGONBOSS_GLOWINGEYESSTATE
+  beq dragonboss_glowingeyesstate
 
 dragonboss_init:
 
@@ -71,6 +74,48 @@ do_not_switch_to_init_boss_mode_state:
   rts
   
 dragonboss_tailupstate:
+
+  jsr dragonboss_tailupstate_handler
+
+  rts
+  
+dragonboss_taildownstate:
+
+  jsr dragonboss_drawface
+  
+  dec entity_locals+dragonboss_locals::state_switch_counter,x
+  bne do_not_switch_to_tailupstate
+  
+  lda #22
+  sta b0
+  lda #20
+  sta b1
+  lda #<boss1_tail_down_tiles
+  sta w0
+  lda #>boss1_tail_down_tiles
+  sta w0+1
+  jsr ppu_draw_rectangular_region
+  
+  lda #100
+  sta entity_locals+dragonboss_locals::state_switch_counter,x
+  
+  lda #DRAGONBOSS_GLOWINGEYESSTATE
+  sta entity_instances+entity_instance::state,x
+  
+do_not_switch_to_tailupstate:
+
+  rts
+
+dragonboss_glowingeyesstate:
+
+  jsr dragonboss_drawface
+  
+  lda #DRAGONBOSS_TAILUPSTATE
+  sta entity_instances+entity_instance::state,x
+
+  rts
+  
+dragonboss_tailupstate_handler:
 
   jsr dragonboss_drawface
 
@@ -123,33 +168,6 @@ do_not_switch_to_taildownstate:
 
   rts
   
-dragonboss_taildownstate:
-
-  jsr dragonboss_drawface
-  
-  dec entity_locals+dragonboss_locals::state_switch_counter,x
-  bne do_not_switch_to_tailupstate
-  
-  lda #22
-  sta b0
-  lda #20
-  sta b1
-  lda #<boss1_tail_down_tiles
-  sta w0
-  lda #>boss1_tail_down_tiles
-  sta w0+1
-  jsr ppu_draw_rectangular_region
-  
-  lda #100
-  sta entity_locals+dragonboss_locals::state_switch_counter,x
-  
-  lda #DRAGONBOSS_TAILUPSTATE
-  sta entity_instances+entity_instance::state,x
-  
-do_not_switch_to_tailupstate:
-
-  rts
-
 dragonboss_drawface:
 
   ldy #level_data_struct::dragonboss_offset
