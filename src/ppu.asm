@@ -85,6 +85,10 @@ buffer_index = b2
   lda buffer_rectangle_x
   sta column
   
+  ;point VRAM at first row
+  set_ppu_2006_abs name_table_to_view, row, column
+  upload_ppu_2006
+  
   ;start at beginning of buffer
   lda #0
   sta buffer_index
@@ -92,9 +96,6 @@ buffer_index = b2
   ldy buffer_rectangle_height
   beq do_not_draw
 row_loop:
-
-  ;point VRAM at next row
-  set_ppu_2006_abs name_table_to_view, row, column
 
   ldx buffer_rectangle_width
   beq do_not_draw
@@ -120,8 +121,15 @@ column_loop:
   dex
   bne column_loop
   
-  ;move on to next row
-  inc row
+  ;point VRAM at next row
+  clc
+  lda ppu_2006+1
+  adc #%00100000
+  sta ppu_2006+1
+  lda ppu_2006
+  adc #0
+  sta ppu_2006
+  upload_ppu_2006
   
   dey
   bne row_loop

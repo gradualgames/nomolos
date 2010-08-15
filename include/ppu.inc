@@ -61,7 +61,7 @@ PPU1_DISPLAY_TYPE = 0
   lsr
   ;or in the nametable bits
   ora nametable
-  sta $2006
+  sta ppu_2006
   ;get the lower three bits of row
   lda row
   asl
@@ -71,7 +71,7 @@ PPU1_DISPLAY_TYPE = 0
   asl
   ;or in the column
   ora column
-  sta $2006
+  sta ppu_2006+1
 
 .endmacro
 
