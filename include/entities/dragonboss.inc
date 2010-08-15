@@ -38,7 +38,7 @@ dragonboss_init:
   ;reset the dragonboss animation object
   jsr entity_reset_anim
   
-  lda #10
+  lda #100
   sta entity_locals+dragonboss_locals::state_switch_counter,x
   
   lda #DRAGONBOSS_INITBOSSMODESTATE
