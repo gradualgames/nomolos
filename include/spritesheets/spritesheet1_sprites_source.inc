@@ -626,5 +626,14 @@ spritesheet1_Stalactite0:
   .byte $00,$01,$02,$08,$00
   .byte $08,$02,$02,$00,$08
   .byte $08,$03,$02,$08,$00
-
+.export spritesheet1_DragonFace0
+spritesheet1_DragonFace0:
+  .byte $03
+  .byte $00,$00,$03,$00,$10
+  .byte $00,$01,$00,$08,$08
+  .byte $00,$02,$03,$10,$00
+.export spritesheet1_DragonFace1
+spritesheet1_DragonFace1:
+  .byte $01
+  .byte $00,$03,$03,$00,$00
 

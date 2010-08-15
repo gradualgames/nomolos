@@ -48,6 +48,8 @@ dragonboss_init:
 
 dragonboss_initbossmodestate:
 
+  jsr dragonboss_drawface
+
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_init_boss_mode_state
   
@@ -72,6 +74,56 @@ do_not_switch_to_init_boss_mode_state:
   
 dragonboss_runstate:
 
+  jsr dragonboss_drawface
+
   rts
 
+dragonboss_drawface:
+
+  ldy #level_data_struct::dragonboss_offset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
+  ldy #level_data_struct::dragonboss_eyes
+  lda (base_address_rom_definition_table),y
+  sta w0
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w0+1
+
+  lda #112
+  sta w3
+  lda #0
+  sta w3+1
+  lda #87
+  sta w4
+  lda #0
+  sta w4+1
+
+  jsr sprite_draw_metasprite_16bit
+  
+  ldy #level_data_struct::dragonboss_offset
+  lda (base_address_rom_definition_table),y
+  sta sprite_group_offset
+
+  ldy #level_data_struct::dragonboss_nose
+  lda (base_address_rom_definition_table),y
+  sta w0
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w0+1
+
+  lda #120
+  sta w3
+  lda #0
+  sta w3+1
+  lda #111
+  sta w4
+  lda #0
+  sta w4+1
+
+  jsr sprite_draw_metasprite_16bit
+
+  rts
+  
 .endif

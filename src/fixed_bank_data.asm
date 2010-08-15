@@ -68,18 +68,20 @@ ROMDefinitionTable0:
   .word spritesheet1_Explosion
   .word spritesheet1_Mouse
   .word spritesheet1_OneUp0
-  .word $0000 ;Skelekin
+  .word 0 ;Skelekin
   .word spritesheet1_BatFly
   .word spritesheet1_Batree
   .word spritesheet1_OwlFly
   .word spritesheet1_OwlAttack
   .word spritesheet1_SnufferRun
   .word spritesheet1_SnufferBite
-  .word $0000 ;spritesheet1_SnailCrawl
-  .word $0000 ;spritesheet1_DragonFly
-  .word $0000 ;spritesheet1_IceBallFly
-  .word $0000 ;spritesheet1_SharkLeap
-  .word $0000 ;spritesheet1_Stalactite0
+  .word 0 ;spritesheet1_SnailCrawl
+  .word 0 ;spritesheet1_DragonFly
+  .word 0 ;spritesheet1_IceBallFly
+  .word 0 ;spritesheet1_SharkLeap
+  .word 0 ;spritesheet1_Stalactite0
+  .word 0 ;dragonboss_eyes
+  .word 0 ;dragonboss_nose
 
   .word attack_sound
   .word hit_sound
@@ -117,6 +119,7 @@ ROMDefinitionTable0:
   .byte 0 ;level1_sprites_IceBall_chr_index
   .byte 0 ;level1_sprites_Shark_chr_index
   .byte 0 ;level1_sprites_Stalactite_chr_index
+  .byte 0 ;dragonboss_offset
 
 ;ROM definition table
 ROMDefinitionTable1:
@@ -167,7 +170,9 @@ ROMDefinitionTable1:
   .word $0000 ;spritesheet1_IceBallFly
   .word $0000 ;spritesheet1_SharkLeap
   .word $0000 ;spritesheet1_Stalactite0
-
+  .word 0 ;dragonboss_eyes
+  .word 0 ;dragonboss_nose
+  
   .word attack_sound
   .word hit_sound
   .word level2_palette
@@ -202,6 +207,7 @@ ROMDefinitionTable1:
   .byte 0 ;level2_sprites_IceBall_chr_index
   .byte 0 ;level2_sprites_Shark_chr_index
   .byte 0 ;level2_sprites_Stalactite_chr_index
+  .byte 0 ;dragonboss_offset
 
 ;ROM definition table
 ROMDefinitionTable2:
@@ -252,6 +258,8 @@ ROMDefinitionTable2:
   .word spritesheet1_IceBallFly
   .word spritesheet1_SharkLeap
   .word $0000 ;spritesheet1_Stalactite0
+  .word $0000 ;dragonboss_eyes
+  .word $0000 ;dragonboss_nose
 
   .word attack_sound
   .word hit_sound
@@ -287,6 +295,7 @@ ROMDefinitionTable2:
   .byte level3_sprites_IceBall_chr_index
   .byte level3_sprites_Shark_chr_index
   .byte 0 ;level3_sprites_Stalactite_chr_index
+  .byte 0 ;dragonboss_offset
 
 ;ROM definition table
 ROMDefinitionTable3:
@@ -337,6 +346,8 @@ ROMDefinitionTable3:
   .word spritesheet1_IceBallFly
   .word 0 ;spritesheet1_SharkLeap
   .word spritesheet1_Stalactite0
+  .word spritesheet1_DragonFace0
+  .word spritesheet1_DragonFace1
 
   .word attack_sound
   .word hit_sound
@@ -372,6 +383,7 @@ ROMDefinitionTable3:
   .byte boss1_sprites_IceBall_chr_index
   .byte 0 ;boss1_sprites_Shark_chr_index
   .byte boss1_sprites_Stalactite_chr_index
+  .byte boss1_sprites_DragonFace_chr_index
 
 ;Entities
 entity_definition_table:

@@ -15,6 +15,10 @@ region_width = buffer_rectangle_width
 region_height = buffer_rectangle_height
 tile_index = b4
 
+  ;save x
+  txa
+  pha
+
   ;store x and y coordinate
   lda b0
   sta buffer_rectangle_x
@@ -68,6 +72,10 @@ column_loop:
   dey
   bne row_loop
 do_not_draw:
+  
+  ;restore x
+  pla
+  tax
   
   rts
 .endproc

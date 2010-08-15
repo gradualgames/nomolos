@@ -110,6 +110,8 @@ SOUND_EFFECT_BASE = 10
   ice_ball_fly .word
   shark_leap .word
   stalactite_fall .word
+  dragonboss_eyes .word
+  dragonboss_nose .word
   
   attack_sound .word
   hit_sound .word
@@ -145,6 +147,7 @@ SOUND_EFFECT_BASE = 10
   ice_ball_offset .byte
   shark_offset .byte
   stalactite_offset .byte
+  dragonboss_offset .byte
 
 .endstruct
 
