@@ -102,7 +102,7 @@ dragonboss_taildownstate:
   sta w0+1
   jsr ppu_draw_rectangular_region
   
-  lda #175
+  lda #110
   sta entity_locals+dragonboss_locals::state_switch_counter,x
   
   lda #DRAGONBOSS_GLOWINGEYESSTATE
