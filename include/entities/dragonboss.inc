@@ -15,6 +15,7 @@ DRAGONBOSS_INITBOSSMODESTATE = 1
 DRAGONBOSS_TAILUPSTATE = 2
 DRAGONBOSS_TAILDOWNSTATE = 3
 DRAGONBOSS_GLOWINGEYESSTATE = 4
+DRAGONBOSS_SPITICEBALLSSTATE = 5
 
 ;these should be drawn at location 22, 22 in the nametable
 boss1_tail_up_tiles:
@@ -41,6 +42,8 @@ dragonboss_update:
   beq dragonboss_taildownstate
   cmp #DRAGONBOSS_GLOWINGEYESSTATE
   beq dragonboss_glowingeyesstate
+  cmp #DRAGONBOSS_SPITICEBALLSSTATE
+  beq dragonboss_spiticeballsstate
 
 dragonboss_init:
 
@@ -109,8 +112,31 @@ do_not_switch_to_tailupstate:
 
   rts
 
+dragonboss_spiticeballsstate:
+
+  jsr dragonboss_drawface
+  
+  lda #entity_index_iceball
+  sta b0
+
+  lda #110
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #110
+  sta b1
+
+  jsr entity_spawn
+  
+  lda #DRAGONBOSS_TAILUPSTATE
+  sta entity_instances+entity_instance::state,x
+
+  rts
+  
 dragonboss_glowingeyesstate:
 
+  .scope
   jsr dragonboss_drawface
   
   ldy #level_data_struct::palette
@@ -131,7 +157,7 @@ dragonboss_glowingeyesstate:
   cmp #64
   bpl pause_before_glow
   cmp #32
-  beq switch_to_tail_up_state
+  beq switch_state
   and #%00011100
   lsr
   lsr
@@ -146,12 +172,13 @@ dragonboss_glowingeyesstate:
   sta state_control_params+play_level_state_control::upload_dynamic_palette
   
 pause_before_glow:
+  .endscope
   
   rts
   
-switch_to_tail_up_state:
+switch_state:
   
-  lda #DRAGONBOSS_TAILUPSTATE
+  lda #DRAGONBOSS_SPITICEBALLSSTATE
   sta entity_instances+entity_instance::state,x
 
   rts
