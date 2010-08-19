@@ -40,3 +40,15 @@ entity_index_iceball = 17
 entity_index_shark = 18
 entity_index_stalactite = 19
 entity_index_dragonboss = 20
+
+;entity structs. Only parameterizable entities have structs here.
+.struct iceball_locals
+  x_velocity .word
+  y_velocity .word
+.endstruct
+
+ICEBALL_WIDTH = $10
+ICEBALL_HEIGHT = $10
+
+ICEBALL_INITSTATE = 0
+ICEBALL_FLYSTATE = 1

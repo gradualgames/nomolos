@@ -114,23 +114,7 @@ do_not_switch_to_tailupstate:
 
 dragonboss_spiticeballsstate:
 
-  jsr dragonboss_drawface
-  
-  lda #entity_index_iceball
-  sta b0
-
-  lda #110
-  sta w0
-  lda #0
-  sta w0+1
-  
-  lda #110
-  sta b1
-
-  jsr entity_spawn
-  
-  lda #DRAGONBOSS_TAILUPSTATE
-  sta entity_instances+entity_instance::state,x
+  jsr dragonboss_spiticeballsstate_handler
 
   rts
   
@@ -183,6 +167,132 @@ switch_state:
 
   rts
   
+dragonboss_spiticeballsstate_handler:
+
+  jsr dragonboss_drawface
+  
+  ;****************************************************************
+  ;Spawn and parameterize an iceball
+  ;****************************************************************
+  lda #entity_index_iceball
+  sta b0
+
+  lda #110
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #110
+  sta b1
+
+  jsr entity_spawn
+  
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the iceball we just spawned
+  lda #$fd
+  sta entity_locals+iceball_locals::x_velocity,y
+  lda #$ff
+  sta entity_locals+iceball_locals::x_velocity+1,y
+  lda #2
+  sta entity_locals+iceball_locals::y_velocity,y
+  lda #0
+  sta entity_locals+iceball_locals::y_velocity+1,y
+  
+  ;reset the iceball's animation
+  lda #1
+  sta entity_instances+entity_instance::animationObject,y
+  lda #$ff
+  sta entity_instances+entity_instance::animationObject+1,y
+  
+  lda #ICEBALL_FLYSTATE
+  sta entity_instances+entity_instance::state,y
+  
+  ;****************************************************************
+  ;Spawn and parameterize an iceball
+  ;****************************************************************
+  lda #entity_index_iceball
+  sta b0
+
+  lda #110
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #110
+  sta b1
+
+  jsr entity_spawn
+  
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the iceball we just spawned
+  lda #$fe
+  sta entity_locals+iceball_locals::x_velocity,y
+  lda #$ff
+  sta entity_locals+iceball_locals::x_velocity+1,y
+  lda #2
+  sta entity_locals+iceball_locals::y_velocity,y
+  lda #0
+  sta entity_locals+iceball_locals::y_velocity+1,y
+  
+  ;reset the iceball's animation
+  lda #1
+  sta entity_instances+entity_instance::animationObject,y
+  lda #$ff
+  sta entity_instances+entity_instance::animationObject+1,y
+  
+  lda #ICEBALL_FLYSTATE
+  sta entity_instances+entity_instance::state,y
+  
+  ;****************************************************************
+  ;Spawn and parameterize an iceball
+  ;****************************************************************
+  lda #entity_index_iceball
+  sta b0
+
+  lda #110
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #110
+  sta b1
+
+  jsr entity_spawn
+  
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the iceball we just spawned
+  lda #$ff
+  sta entity_locals+iceball_locals::x_velocity,y
+  lda #$ff
+  sta entity_locals+iceball_locals::x_velocity+1,y
+  lda #2
+  sta entity_locals+iceball_locals::y_velocity,y
+  lda #0
+  sta entity_locals+iceball_locals::y_velocity+1,y
+  
+  ;reset the iceball's animation
+  lda #1
+  sta entity_instances+entity_instance::animationObject,y
+  lda #$ff
+  sta entity_instances+entity_instance::animationObject+1,y
+  
+  lda #ICEBALL_FLYSTATE
+  sta entity_instances+entity_instance::state,y
+  
+  lda #DRAGONBOSS_TAILUPSTATE
+  sta entity_instances+entity_instance::state,x
+
+  rts
+  
 dragonboss_tailupstate_handler:
 
   jsr dragonboss_drawface
@@ -194,7 +304,7 @@ dragonboss_tailupstate_handler:
   lda #entity_index_stalactite
   sta b0
 
-  lda #50
+  lda nomolos_screen_x
   sta w0
   lda #0
   sta w0+1
@@ -207,7 +317,24 @@ dragonboss_tailupstate_handler:
   lda #entity_index_stalactite
   sta b0
   
-  lda #150
+  clc
+  lda nomolos_screen_x
+  adc #50
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #0
+  sta b1
+
+  jsr entity_spawn
+  
+  lda #entity_index_stalactite
+  sta b0
+  
+  sec
+  lda nomolos_screen_x
+  sbc #50
   sta w0
   lda #0
   sta w0+1

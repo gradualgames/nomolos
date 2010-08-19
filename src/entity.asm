@@ -467,6 +467,9 @@ skipUpdate:
 ;w0 = positionX
 ;b1 = positionY
 
+;the following outputs can be retrieved after calling this function:
+;b3 - index of entity instance just spawned
+
 do_not_spawn:
 
   ;restore regs
@@ -544,6 +547,9 @@ do_not_spawn:
   ;restore x
   pla
   tax
+  
+  ;store the index of the spawned entity instance for whomever needs it after
+  sta b3
 
   ;make the entity alive. ALIVE! MUA HUAH HAH HAH
   lda #$01

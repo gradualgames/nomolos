@@ -1,17 +1,6 @@
 .ifndef ICEBALL_INC
 ICEBALL_INC = 1
 
-.struct iceball_locals
-  x_velocity .word
-  y_velocity .word
-.endstruct
-
-ICEBALL_WIDTH = $10
-ICEBALL_HEIGHT = $10
-
-ICEBALL_INITSTATE = 0
-ICEBALL_FLYSTATE = 1
-
 iceball_update:
 
   lda entity_instances+entity_instance::state,x
