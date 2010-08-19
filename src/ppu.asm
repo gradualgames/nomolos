@@ -1,6 +1,7 @@
 .include "zp.inc"
 .include "ram.inc"
 .include "fixed_bank_data.inc"
+.include "mapper.inc"
 .include "ppu.inc"
 
 .segment "CODE"
@@ -455,6 +456,10 @@ color_brightness = b1
 color_hue = b2
 input_brightness = b3
 
+  ;save x
+  txa
+  pha
+
   lda input_brightness
   beq return_black
 
@@ -489,6 +494,10 @@ input_brightness = b3
 
   ;return adjusted color
   sta color
+  
+  ;restore x
+  pla
+  tax
 
   rts
 
@@ -496,7 +505,33 @@ return_black:
 
   lda #$0d
   sta color
+  
+  ;restore x
+  pla
+  tax
 
+  rts
+
+.endproc
+
+;wrapper for below function to allow entities to call from separate bank
+.proc ppu_load_dynamic_palette_brightness_preserve_calling_bank
+
+  ;switch to the level and music bank
+  lda mapper_bank_current  ;save current bank
+  pha
+  ldy #level_data_struct::level_music_bank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+  
+  jsr ppu_load_dynamic_palette_brightness
+  
+  ;restore previous bank
+  pla
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+  
   rts
 
 .endproc

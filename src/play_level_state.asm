@@ -446,6 +446,13 @@ palette_cycling_off:
   
   jsr ppu_load_palette
   
+  ;turn on inc32
+  set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+  
+  lda #0
+  sta state_control_params+play_level_state_control::upload_dynamic_palette
+  
 do_not_upload_dynamic_palette:
   
   jsr ppu_upload_rectangular_region
