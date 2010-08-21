@@ -61,13 +61,21 @@ reset:
   ;ldx #index_title_state
   ;jsr switch_state
 
-  ;load current level
+  ;load a level with intro
   lda #3
-  sta state_control_params+load_level_stateControl::levelToLoad
-  lda #LOADLEVELSTATE_INIT
-  sta state_control_params+load_level_stateControl::state
-  ldx #index_load_level_state
+  sta level_current
+  lda #LEVELINSTATE_INIT
+  sta state_control_params+levelInStateControl::state
+  ldx #index_level_in_state
   jsr switch_state
+  
+  ;load a level directly
+  ;lda #3
+  ;sta state_control_params+load_level_stateControl::levelToLoad
+  ;lda #LOADLEVELSTATE_INIT
+  ;sta state_control_params+load_level_stateControl::state
+  ;ldx #index_load_level_state
+  ;jsr switch_state
 
 loop:
 

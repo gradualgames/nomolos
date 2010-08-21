@@ -120,6 +120,7 @@ SOUND_EFFECT_BASE = 10
   nomolos_start_x .byte
   nomolos_start_y .byte
   
+  intro_string .word
   camera_scroll_enabled .byte
   starting_screen .byte
   map .word

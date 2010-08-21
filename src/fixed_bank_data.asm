@@ -31,6 +31,16 @@ Level3:
 Boss1:
   .word ROMDefinitionTable3
 
+;level intro strings
+level1_intro_string:
+  .byte $07,$0b,$04,$15,$04,$0b,$1a,$1c
+level2_intro_string:
+  .byte $07,$0b,$04,$15,$04,$0b,$1a,$1d
+level3_intro_string:
+  .byte $07,$0b,$04,$15,$04,$0b,$1a,$1e
+boss1_intro_string:
+  .byte $06,$0d,$0e,$06,$00,$11,$03
+  
 ;ROM definition table
 ROMDefinitionTable0:
   .byte spritesheet_1_bank
@@ -90,6 +100,7 @@ ROMDefinitionTable0:
   .byte 120 ;nomolos_start_x
   .byte 191  ;nomolos_start_y
 
+  .word level1_intro_string
   .byte 1 ;camera_scroll_enabled
   .byte 0 ;starting_screen
   .word level1_map
@@ -180,6 +191,7 @@ ROMDefinitionTable1:
   .byte 120 ;nomolos_start_x
   .byte 90  ;nomolos_start_y
 
+  .word level2_intro_string
   .byte 1 ;camera_scroll_enabled
   .byte 0 ;starting_screen
   .word level2_map
@@ -268,6 +280,7 @@ ROMDefinitionTable2:
   .byte 30  ;nomolos_start_x
   .byte 100 ;nomolos_start_y
 
+  .word level3_intro_string
   .byte 1 ;camera_scroll_enabled
   .byte 0 ;starting_screen
   .word level3_map
@@ -356,6 +369,7 @@ ROMDefinitionTable3:
   .byte 40   ;nomolos_start_x
   .byte 159  ;nomolos_start_y
 
+  .word boss1_intro_string
   .byte 0 ;camera_scroll_enabled
   .byte 0 ;starting_screen
   .word boss1_map

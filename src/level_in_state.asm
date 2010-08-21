@@ -134,19 +134,26 @@ levelInStateRun:
 
   jsr ppu_create_decimal_string
 
+  lda level_current
+  ;multiply accumulator by 2
+  asl
+  ;transfer to x for indexing
+  tax
+
+  ;Load location of the rom definition table for this level
+  lda level_definition_table+level::level_data_table,x
+  sta base_address_rom_definition_table
+  lda level_definition_table+level::level_data_table+1,x
+  sta base_address_rom_definition_table+1
+  
   ;now let's write a string!
   set_ppu_2006 $20, 13, 11
 
-  lda #<level_string
+  ldy #level_data_struct::intro_string
+  lda (base_address_rom_definition_table),y
   sta w0
-  lda #>level_string
-  sta w0+1
-
-  jsr ppu_display_string
-
-  lda #<ppu_string_buffer
-  sta w0
-  lda #>ppu_string_buffer
+  iny
+  lda (base_address_rom_definition_table),y
   sta w0+1
 
   jsr ppu_display_string
