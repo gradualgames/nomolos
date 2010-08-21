@@ -21,7 +21,7 @@ boss1_sprite_groups:
 .segment "ROM1"
 
 .export boss1_music
-boss1_music:
+boss1_music: 
   .word Square1
   .word Square2
   .word Triangle
@@ -34,10 +34,9 @@ volume_envelopes:
   .word volume_envelope_0
   .word volume_envelope_1
   .word volume_envelope_2
+  .word volume_envelope_3
+  .word volume_envelope_4
   .word 0
-  .word 0
-  .word 0
-
   .word 0
   .word 0
   .word 0
@@ -82,7 +81,6 @@ pitch_envelopes:
 
 duty_envelopes:
   .word duty_envelope_0
-  .word duty_envelope_1
 
 volume_envelope_0:
   .byte 0, ENV_STOP
@@ -90,46 +88,51 @@ volume_envelope_0:
 volume_envelope_1:
   .byte 15, ENV_LOOP
 volume_envelope_2:
-  .byte 12,10,6,4,3,4,5,8,10,8,5,3,3,ENV_STOP
+  .byte 13,11,10,8,5,1,ENV_STOP
+volume_envelope_3:
+  .byte 5,11,11,7,3,ENV_STOP
+volume_envelope_4:
+  .byte 2,3,3,5,7,10,12,ENV_STOP
 
 pitch_envelope_0:
   .byte 0, ENV_LOOP
 
 duty_envelope_0:
   .byte 0, ENV_LOOP
-duty_envelope_1:
-  .byte -128,ENV_LOOP
 
 Square1:
-  .byte STV,0,STL,21,A0,STV,2,STP,0,SDU,1,GS4,C5,GS4,F4,C4,CS4,GS3,AS3,G4,AS4,G4,E4,C4
-  .byte CS4,AS3,C4,F4,GS4,F4,C4,GS3,F3,C3,CS4,E3,F3,C4,G3,AS3,GS3,G3,STV,0,STL,126,A0,STV
-  .byte 2,STL,14,E4,F4,G4,F4,E4,STL,98,F4,STL,14,E4,F4,G4,F4,E4,STL,98,F4,STL,14,D4
-  .byte DS4,F4,DS4,D4,STL,98,C4,STL,14,B3,C4,D4,C4,B3,STL,98,C4,STL,14,B3,C4,D4,STL,21
-  .byte G4,F4,F4,DS4,DS4,D4,D4,C4,STL,126,B3,STL,14,C4,B3,C4,STL,126,D4,STL,14,C4,B3,C4
-  .byte STL,126,D4,STL,14,D4,DS4,F4,DS4,D4,STL,98,C4,STL,14,D4,DS4,F4,STL,21,G3,F4,DS4,C4
-  .byte F4,D4,C4,B3,STL,168,C4
+  .byte STV,2,STP,0,SDU,0,STL,6,D1,E1,F1,A1,F1,A1,D2,A1,F1,A1,F1,E1,D1,E1,F1,A1
+  .byte F1,A1,D2,A1,F1,A1,F1,E1,CS1,E1,F1,A1,F1,A1,CS2,A1,F1,A1,F1,E1,CS1,E1,F1,A1
+  .byte F1,A1,CS2,A1,F1,A1,F1,E1,D1,E1,F1,A1,F1,A1,D2,A1,F1,A1,F1,E1,D1,E1,F1,A1
+  .byte F1,A1,D2,A1,F1,A1,F1,E1,CS1,E1,F1,A1,F1,A1,CS2,A1,F1,A1,F1,E1,CS1,E1,F1,A1
+  .byte F1,A1,CS2,A1,F1,A1,F1,E1,D1,E1,F1,A1,F1,A1,D2,A1,F1,A1,F1,E1,D1,E1,F1,A1
+  .byte F1,A1,D2,A1,F1,A1,F1,E1,G1,A1,AS1,D2,AS1,D2,G2,D2,AS1,D2,AS1,A1,G1,A1,AS1,D2
+  .byte AS1,D2,G2,D2,AS1,D2,AS1,A1,C1,D1,E1,G1,E1,G1,C2,G1,E1,G1,E1,D1,C1,D1,E1,G1
+  .byte E1,G1,C2,G1,E1,G1,E1,D1,F1,G1,A1,C2,A1,C2,F2,C2,A1,C2,A1,G1,F1,G1,A1,C2
+  .byte A1,C2,F2,C2,A1,C2,A1,G1,AS2,C3,D3,F3,D3,F3,AS3,F3,D3,F3,D3,C3,AS2,C3,D3,F3
+  .byte D3,F3,AS3,F3,D3,F3,D3,C3,E2,F2,G2,CS3,G2,CS3,E3,CS3,G2,CS3,G2,F2,E2,F2,G2,CS3
+  .byte G2,CS3,E3,CS3,G2,CS3,G2,F2,A2,F3,D3,F3,D3,F3,A2,F3,D3,F3,D3,F3,A2,F3,D3,F3
+  .byte D3,F3,A2,F3,D3,F3,D3,F3,A2,E3,D3,E3,D3,E3,A2,E3,D3,E3,D3,E3,A2,E3,CS3,E3
+  .byte CS3,E3,CS3,E3,A2,E3,CS3,E3
   .byte GOT
   .word Square1
 
 Square2:
-  .byte STV,2,STP,0,SDU,1,STL,84,F2,F2,G2,G2,GS3,GS3,STL,42,AS3,GS3,G3,C3,STL,21,F2,F3
-  .byte GS3,F3,CS3,AS2,G2,E3,GS2,F3,GS3,F3,CS3,AS2,G2,E3,GS2,F3,GS3,F3,D3,F3,G2,B2,C2,C3
-  .byte DS3,C3,GS2,C3,D2,B2,DS2,C3,DS3,C3,GS2,C3,D2,B2,STL,42,DS2,C3,F2,GS2,STL,21,G2,F3
-  .byte GS3,F3,D3,F3,GS2,F3,G2,F3,GS3,F3,D3,F3,GS2,F3,G2,F3,GS3,F3,D3,F3,G2,B2,C2,C3
-  .byte DS3,C3,GS2,C3,F2,GS2,STL,84,G1,G1,STL,168,C1
+  .byte STV,3,STP,0,SDU,0,STL,48,D2,STL,24,E2,F2,D2,STL,12,E2,F2,STL,72,E2,A2,STL,48
+  .byte D2,STL,24,E2,F2,D2,STL,12,E2,F2,STL,72,E2,A2,STL,24,D2,E2,F2,D2,E2,F2,STL,48
+  .byte AS2,STL,24,A2,STL,72,G2,STL,24,C2,D2,E2,C2,D2,E2,STL,48,A2,STL,24,G2,STL,72,F2
+  .byte STL,12,F2,AS1,F2,AS1,F2,AS1,F2,AS1,F2,AS1,F2,AS1,CS2,G1,CS2,G2,CS3,G2,CS3,G2,CS3,G2
+  .byte CS3,STV,2,G2,STV,4,STL,72,A2,STL,24,G2,A2,AS2,STL,72,A2,CS3
   .byte GOT
   .word Square2
 
 Triangle:
-  .byte STV,0,STL,168,A0,STV,2,STP,0,SDU,1,STL,84,F3,E3,F3,C3,STL,42,CS3,C3,AS2,C3,STV
-  .byte 0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,231
-  .byte A0
+  .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,198,A0
   .byte GOT
   .word Triangle
 
 Noise:
-  .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL
-  .byte 255,A0,STL,255,A0,STL,255,A0,STL,138,A0
+  .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,198,A0
   .byte GOT
   .word Noise
 
