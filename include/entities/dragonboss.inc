@@ -5,10 +5,13 @@ DRAGONBOSS_INC = 1
 
 .struct dragonboss_locals
   state_switch_counter .byte
+  substate_switch_counter .byte
+  health .byte
+  substate .byte
 .endstruct
 
-DRAGONBOSS_WIDTH = $10
-DRAGONBOSS_HEIGHT = $10
+DRAGONBOSS_WIDTH = 32
+DRAGONBOSS_HEIGHT = 48
 
 DRAGONBOSS_INITSTATE = 0
 DRAGONBOSS_INITBOSSMODESTATE = 1
@@ -16,6 +19,9 @@ DRAGONBOSS_TAILUPSTATE = 2
 DRAGONBOSS_TAILDOWNSTATE = 3
 DRAGONBOSS_GLOWINGEYESSTATE = 4
 DRAGONBOSS_SPITICEBALLSSTATE = 5
+
+DRAGONBOSS_SUBSTATE_NOT_ATTACKED = 0
+DRAGONBOSS_SUBSTATE_ATTACKED = 1
 
 ;these should be drawn at location 22, 22 in the nametable
 boss1_tail_up_tiles:
@@ -28,6 +34,9 @@ boss1_tail_down_tiles:
 
 boss1_glowing_eyes_color_sequence:
   .byte $05, $15, $25, $35, $25, $15, $05, $05
+  
+boss1_attacked_color_sequence:
+  .byte $02, $12, $22, $32, $22, $12, $02, $02
   
 dragonboss_update:
 
@@ -55,6 +64,14 @@ dragonboss_init:
   lda #1
   sta entity_locals+dragonboss_locals::state_switch_counter,x
   
+  ;start dragon out with a certain amount of health
+  lda #10
+  sta entity_locals+dragonboss_locals::health,x
+  
+  ;dragon boss's substate starts out as not attacked
+  lda #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
+  sta entity_locals+dragonboss_locals::substate,x
+  
   lda #DRAGONBOSS_INITBOSSMODESTATE
   sta entity_instances+entity_instance::state,x
 
@@ -62,7 +79,7 @@ dragonboss_init:
 
 dragonboss_initbossmodestate:
 
-  jsr dragonboss_drawface
+  jsr dragonboss_substate_handler
 
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_init_boss_mode_state
@@ -87,7 +104,7 @@ dragonboss_tailupstate:
   
 dragonboss_taildownstate:
 
-  jsr dragonboss_drawface
+  jsr dragonboss_substate_handler
   
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_tailupstate
@@ -101,6 +118,9 @@ dragonboss_taildownstate:
   lda #>boss1_tail_down_tiles
   sta w0+1
   jsr ppu_draw_rectangular_region
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
+  sta state_control_params+play_level_state_control::upload_ppu_data
   
   lda #110
   sta entity_locals+dragonboss_locals::state_switch_counter,x
@@ -121,7 +141,6 @@ dragonboss_spiticeballsstate:
 dragonboss_glowingeyesstate:
 
   .scope
-  jsr dragonboss_drawface
   
   ldy #level_data_struct::palette
   lda (base_address_rom_definition_table),y
@@ -152,11 +171,13 @@ dragonboss_glowingeyesstate:
   
   sta dynamic_palette + $1f
   
-  lda #1
-  sta state_control_params+play_level_state_control::upload_dynamic_palette
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
   
 pause_before_glow:
   .endscope
+  
+  jsr dragonboss_substate_handler
   
   rts
   
@@ -169,7 +190,7 @@ switch_state:
   
 dragonboss_spiticeballsstate_handler:
 
-  jsr dragonboss_drawface
+  jsr dragonboss_substate_handler
   
   ;****************************************************************
   ;Spawn and parameterize an iceball
@@ -295,7 +316,7 @@ dragonboss_spiticeballsstate_handler:
   
 dragonboss_tailupstate_handler:
 
-  jsr dragonboss_drawface
+  jsr dragonboss_substate_handler
 
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_taildownstate
@@ -357,14 +378,117 @@ dragonboss_tailupstate_handler:
   sta w0+1
   jsr ppu_draw_rectangular_region
   
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
   lda #DRAGONBOSS_TAILDOWNSTATE
   sta entity_instances+entity_instance::state,x
 do_not_switch_to_taildownstate:
 
   rts
   
+dragonboss_substate_handler:
+ 
+  lda entity_locals+dragonboss_locals::substate,x
+  cmp #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
+  beq dragonboss_substate_not_attacked
+  cmp #DRAGONBOSS_SUBSTATE_ATTACKED
+  beq dragonboss_substate_attacked
+
+dragonboss_substate_not_attacked:
+
+  jsr nomolos_is_deadly
+  beq nomolos_not_attacking
+
+  lda #112
+  sta entity_screen_x
+  lda #96
+  sta entity_screen_y
+  lda #0
+  sta entity_screen_x+1
+  sta entity_screen_y+1
+  
+  lda #DRAGONBOSS_WIDTH
+  sta b2
+  lda #DRAGONBOSS_HEIGHT
+  sta b3
+
+  jsr entity_test_collision_hitbox
+
+  bne dragonboss_not_hit
+dragonboss_hit:
+  
+  ;decrease health
+  dec entity_locals+dragonboss_locals::health,x
+  
+  ;the attacked state should live for a few frames while palette flickers
+  lda #24
+  sta entity_locals+dragonboss_locals::substate_switch_counter,x
+  
+  ;set substate to attacked
+  lda #DRAGONBOSS_SUBSTATE_ATTACKED
+  sta entity_locals+dragonboss_locals::substate,x
+  
+dragonboss_not_hit:
+  
+nomolos_not_attacking:
+
+  jmp dragonboss_substate_switch_complete
+  
+dragonboss_substate_attacked:
+  
+  ;while we are in the attacked state, we want to be flickering
+  ;the Dragon's palette somehow
+  
+  .scope
+  
+  ldy #level_data_struct::palette
+  lda (base_address_rom_definition_table),y
+  sta w0
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w0+1
+  
+  lda #4
+  sta b3
+  
+  jsr ppu_load_dynamic_palette_brightness_preserve_calling_bank
+  
+  lda entity_locals+dragonboss_locals::substate_switch_counter,x
+  and #%00000111
+
+  ;get the current color the eyes should be
+  tay
+  lda boss1_attacked_color_sequence,y
+  
+  sta dynamic_palette + $01
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
+  .endscope
+  
+  dec entity_locals+dragonboss_locals::substate_switch_counter,x
+  bne do_not_switch_to_not_attacked_state
+  
+  ;attacked state is done, switch back to not attacked state
+  lda #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
+  sta entity_locals+dragonboss_locals::substate,x
+  
+do_not_switch_to_not_attacked_state:
+  
+dragonboss_substate_switch_complete:
+  
+  jsr dragonboss_drawface
+
+  rts
+  
 dragonboss_drawface:
 
+  ;clear sprite attributes
+  lda #0
+  sta b2
+  
   ldy #level_data_struct::dragonboss_offset
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
