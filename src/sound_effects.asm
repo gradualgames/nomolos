@@ -33,6 +33,19 @@ sf_pitch_envelope_0:
 sf_pitch_envelope_1:
   .byte 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, -1, -2, -3, -4, -5, ENV_LOOP
 
+sf_pitch_envelope_2:
+  .byte 0, -10, -20, -30, -40, -50, -60, ENV_STOP
+  
+boss_hurt_sound:
+  .byte STL, 1
+  .byte STV, SOUND_EFFECT_BASE+1
+  .byte STP, SOUND_EFFECT_BASE+1
+  .byte C3, B2, A2, G2, F2, E2, D2, CS2
+  .byte C2, B1, A1, G1, F1, E1, D1, C1
+  .byte STV, SOUND_EFFECT_BASE+0
+  .byte A0
+  .byte TRM
+  
 boss_boom_sound:
   .byte STL, 20
   .byte STV, SOUND_EFFECT_BASE+7

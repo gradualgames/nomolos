@@ -8,7 +8,9 @@
 .global sf_volume_envelope_decay_slowly
 .global sf_pitch_envelope_0
 .global sf_pitch_envelope_1
+.global sf_pitch_envelope_2
 
+.global boss_hurt_sound
 .global boss_boom_sound
 .global attack_sound
 .global attack_flail_sound
@@ -41,7 +43,7 @@ SOUND_EFFECT_BASE = 10
 
   .word sf_pitch_envelope_0
   .word sf_pitch_envelope_1
-  .word 0
+  .word sf_pitch_envelope_2
   .word 0
   .word 0
 

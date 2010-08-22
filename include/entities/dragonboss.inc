@@ -19,6 +19,7 @@ DRAGONBOSS_TAILUPSTATE = 2
 DRAGONBOSS_TAILDOWNSTATE = 3
 DRAGONBOSS_GLOWINGEYESSTATE = 4
 DRAGONBOSS_SPITICEBALLSSTATE = 5
+DRAGONBOSS_DYINGSTATE = 6
 
 DRAGONBOSS_SUBSTATE_NOT_ATTACKED = 0
 DRAGONBOSS_SUBSTATE_ATTACKED = 1
@@ -53,6 +54,8 @@ dragonboss_update:
   beq dragonboss_glowingeyesstate
   cmp #DRAGONBOSS_SPITICEBALLSSTATE
   beq dragonboss_spiticeballsstate
+  cmp #DRAGONBOSS_DYINGSTATE
+  beq dragonboss_dyingstate
 
 dragonboss_init:
 
@@ -104,48 +107,7 @@ dragonboss_tailupstate:
   
 dragonboss_taildownstate:
 
-  jsr dragonboss_substate_handler
-  
-  dec entity_locals+dragonboss_locals::state_switch_counter,x
-  bne do_not_switch_to_tailupstate
-  
-  txa
-  pha
-
-  lda #<boss_boom_sound
-  sta sound_param_word_0
-  lda #>boss_boom_sound
-  sta sound_param_word_0+1
-
-  lda #3
-  sta sound_param_byte_0
-
-  ldx #soundeffect_two
-  jsr stream_initialize
-
-  pla
-  tax
-  
-  lda #22
-  sta b0
-  lda #20
-  sta b1
-  lda #<boss1_tail_down_tiles
-  sta w0
-  lda #>boss1_tail_down_tiles
-  sta w0+1
-  jsr ppu_draw_rectangular_region
-  
-  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
-  sta state_control_params+play_level_state_control::upload_ppu_data
-  
-  lda #110
-  sta entity_locals+dragonboss_locals::state_switch_counter,x
-  
-  lda #DRAGONBOSS_GLOWINGEYESSTATE
-  sta entity_instances+entity_instance::state,x
-  
-do_not_switch_to_tailupstate:
+  jsr dragonboss_taildownstate_handler
 
   rts
 
@@ -153,6 +115,12 @@ dragonboss_spiticeballsstate:
 
   jsr dragonboss_spiticeballsstate_handler
 
+  rts
+  
+dragonboss_dyingstate:
+
+  jsr dragonboss_dyingstate_handler
+  
   rts
   
 dragonboss_glowingeyesstate:
@@ -200,6 +168,59 @@ switch_state:
   
   lda #DRAGONBOSS_SPITICEBALLSSTATE
   sta entity_instances+entity_instance::state,x
+
+  rts
+  
+dragonboss_taildownstate_handler:
+  
+  jsr dragonboss_substate_handler
+  
+  dec entity_locals+dragonboss_locals::state_switch_counter,x
+  bne do_not_switch_to_tailupstate
+  
+  txa
+  pha
+
+  lda #<boss_boom_sound
+  sta sound_param_word_0
+  lda #>boss_boom_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+  
+  lda #22
+  sta b0
+  lda #20
+  sta b1
+  lda #<boss1_tail_down_tiles
+  sta w0
+  lda #>boss1_tail_down_tiles
+  sta w0+1
+  jsr ppu_draw_rectangular_region
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
+  lda #110
+  sta entity_locals+dragonboss_locals::state_switch_counter,x
+  
+  lda #DRAGONBOSS_GLOWINGEYESSTATE
+  sta entity_instances+entity_instance::state,x
+  
+do_not_switch_to_tailupstate:
+
+  rts
+  
+dragonboss_dyingstate_handler:
+
+  jsr sound_stop
 
   rts
   
@@ -433,6 +454,23 @@ dragonboss_substate_not_attacked:
   bne dragonboss_not_hit
 dragonboss_hit:
   
+  txa
+  pha
+
+  lda #<boss_hurt_sound
+  sta sound_param_word_0
+  lda #>boss_hurt_sound
+  sta sound_param_word_0+1
+
+  lda #0
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+  
   ;decrease health
   dec entity_locals+dragonboss_locals::health,x
   
@@ -473,6 +511,15 @@ dragonboss_substate_attacked:
   
   dec entity_locals+dragonboss_locals::substate_switch_counter,x
   bne do_not_switch_to_not_attacked_state
+  
+  ;find out if dragon should die now
+  lda entity_locals+dragonboss_locals::health,x
+  bne do_not_switch_to_dying_state
+  
+  lda #DRAGONBOSS_DYINGSTATE
+  sta entity_instances+entity_instance::state,x
+  
+do_not_switch_to_dying_state:
   
   ;attacked state is done, switch back to not attacked state
   lda #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
