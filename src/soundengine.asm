@@ -57,6 +57,10 @@ apu_register_sets: .res 40
 ;kill all active streams and halt sound
 .proc sound_stop
 
+  ;save x
+  txa
+  pha
+
   ;kill all streams
   ldx #0
 loop:
@@ -73,6 +77,10 @@ loop:
 
   jsr sound_initialize_apu_buffer
 
+  ;restore x
+  pla
+  tax
+  
   rts
 .endproc
 

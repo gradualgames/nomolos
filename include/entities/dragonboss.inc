@@ -220,8 +220,6 @@ do_not_switch_to_tailupstate:
   
 dragonboss_dyingstate_handler:
 
-  jsr sound_stop
-
   rts
   
 dragonboss_spiticeballsstate_handler:
@@ -515,6 +513,11 @@ dragonboss_substate_attacked:
   ;find out if dragon should die now
   lda entity_locals+dragonboss_locals::health,x
   bne do_not_switch_to_dying_state
+  
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
   
   lda #DRAGONBOSS_DYINGSTATE
   sta entity_instances+entity_instance::state,x
