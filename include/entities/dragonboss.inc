@@ -8,6 +8,7 @@ DRAGONBOSS_INC = 1
   substate_switch_counter .byte
   health .byte
   substate .byte
+  prng_seed .byte
 .endstruct
 
 DRAGONBOSS_WIDTH = 32
@@ -38,7 +39,7 @@ boss1_glowing_eyes_color_sequence:
   
 boss1_attacked_color_sequence:
   .byte $02, $12, $22, $32, $22, $12, $02, $02
-  
+
 dragonboss_update:
 
   lda entity_instances+entity_instance::state,x
@@ -70,6 +71,10 @@ dragonboss_init:
   ;start dragon out with a certain amount of health
   lda #10
   sta entity_locals+dragonboss_locals::health,x
+  
+  ;load a seed for the prng (for explosions when the Dragon dies)
+  lda #10
+  sta entity_locals+dragonboss_locals::prng_seed,x
   
   ;dragon boss's substate starts out as not attacked
   lda #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
@@ -220,7 +225,88 @@ do_not_switch_to_tailupstate:
   
 dragonboss_dyingstate_handler:
 
+  dec entity_locals+dragonboss_locals::state_switch_counter,x
+  
+  ;the following code can modify how frequently explosions appear
+  ;lda entity_locals+dragonboss_locals::state_switch_counter,x
+  ;and #%00000100
+  ;beq do_not_spawn_explosion
+
+  ;generate random coordinates for explosion entity
+  jsr dragonboss_get_next_prn
+  lsr
+  clc
+  adc #100
+  sta w0
+  lda #0
+  sta w0+1
+  
+  jsr dragonboss_get_next_prn
+  sta w1
+  lda #0
+  sta w1+1
+  
+  ;only spawn explosion if these coordinates are on the dragon (hurt tile)
+  jsr map_test_collision
+  
+  lda b0
+  
+  beq do_not_spawn_explosion
+  
+  lda #entity_index_explosion
+  sta b0
+
+  lda w1
+   
+  sta b1
+
+  jsr entity_spawn
+  
+  txa
+  pha
+
+  lda #<hit_sound
+  sta sound_param_word_0
+  lda #>hit_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+  
+do_not_spawn_explosion:
+
+  ;make the screen shake
+  lda entity_locals+dragonboss_locals::state_switch_counter,x
+  and #%00000010
+  asl
+  sta camera_scroll_x
+
   rts
+  
+.proc dragonboss_get_next_prn
+
+  ldy #10
+  
+: lda entity_locals+dragonboss_locals::prng_seed,x
+  beq doEor
+  asl
+  beq noEor ;if the input was $80, skip the EOR
+  bcc noEor
+doEor:
+  eor #$1d
+noEor:
+  sta entity_locals+dragonboss_locals::prng_seed,x
+  dey
+  bne :-
+
+  rts
+.endproc
   
 dragonboss_spiticeballsstate_handler:
 
