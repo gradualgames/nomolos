@@ -2,6 +2,7 @@
 .include "spritesheet1.inc"
 .include "entities.inc"
 .include "fixed_bank_data.inc"
+.include "sound_effects.inc"
 
 .segment "CODE"
 
@@ -45,17 +46,7 @@ volume_envelopes:
   .word 0
   .word 0
 
-  .word sf_volume_envelope_silence
-  .word sf_volume_envelope_loud
-  .word sf_volume_envelope_1
-  .word sf_volume_envelope_decay
-  .word sf_volume_envelope_short_note
-
-  .word sf_volume_envelope_fade_in
-  .word sf_volume_envelope_fade_in_2
-  .word 0
-  .word 0
-  .word 0
+  sound_effect_volume_addresses
 
 pitch_envelopes:
   .word pitch_envelope_0
@@ -70,17 +61,7 @@ pitch_envelopes:
   .word 0
   .word 0
 
-  .word sf_pitch_envelope_0
-  .word sf_pitch_envelope_1
-  .word 0
-  .word 0
-  .word 0
-
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
+  sound_effect_pitch_addresses
 
 duty_envelopes:
   .word duty_envelope_0

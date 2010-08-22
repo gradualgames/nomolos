@@ -36,6 +36,7 @@ FILES           = zp \
                   entity \
                   controller \
                   soundengine \
+                  sound_effects \
                   geotests \
                   mapper \
                   ppu \

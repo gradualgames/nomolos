@@ -11,7 +11,6 @@
 .include "entity.inc"
 .include "camera.inc"
 .include "sprite.inc"
-.include "sound.inc"
 
 .segment "ROM3"
 

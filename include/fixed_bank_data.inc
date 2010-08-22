@@ -10,14 +10,6 @@ index_play_level_state     = 4 * 4
 
 .global level_definition_table
 .global banktable
-.global attack_sound
-.global attackFlailSound
-.global attackSpearSound
-.global hit_sound
-.global getHealthSound
-.global getItemSound
-.global getHurtSound
-.global dieSound
 .global haltmusic
 .global title_music
 .global font1
@@ -31,18 +23,6 @@ index_play_level_state     = 4 * 4
 .global title_definition
 .global title_palette
 .global title_name_table
-
-SOUND_EFFECT_BASE = 10
-
-.global sf_volume_envelope_silence
-.global sf_volume_envelope_loud
-.global sf_volume_envelope_1
-.global sf_volume_envelope_decay
-.global sf_volume_envelope_short_note
-.global sf_volume_envelope_fade_in
-.global sf_volume_envelope_fade_in_2
-.global sf_pitch_envelope_0
-.global sf_pitch_envelope_1
 
 .struct title
   palette_address .word

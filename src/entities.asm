@@ -11,9 +11,9 @@
 .include "entity.inc"
 .include "camera.inc"
 .include "sprite.inc"
-.include "sound.inc"
 .include "entities.inc"
 .include "play_level_state.inc"
+.include "sound_effects.inc"
 
 .segment "ROM2"
 

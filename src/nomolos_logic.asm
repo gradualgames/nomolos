@@ -10,6 +10,7 @@
 .include "nomolos_logic.inc"
 .include "controller.inc"
 .include "play_level_state.inc"
+.include "sound_effects.inc"
 
 .segment "CODE"
 

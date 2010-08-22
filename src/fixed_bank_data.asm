@@ -11,6 +11,7 @@
 .include "game_over_state.inc"
 .include "play_level_state.inc"
 .include "zp.inc"
+.include "sound_effects.inc"
 
 .segment "ROM4"
 
@@ -562,77 +563,6 @@ DragonBoss:
   .byte $00
   .byte $00
   
-attack_sound:
-  .byte STL, 10
-  .byte STV, SOUND_EFFECT_BASE+5
-  .byte STP, SOUND_EFFECT_BASE+1
-  .byte 3
-  .byte STV, SOUND_EFFECT_BASE+0
-  .byte A0
-  .byte TRM
-
-attackFlailSound:
-  .byte STL, 10
-  .byte STV, SOUND_EFFECT_BASE+5
-  .byte STP, SOUND_EFFECT_BASE+1
-  .byte 12
-  .byte STV, SOUND_EFFECT_BASE+0
-  .byte A0
-  .byte TRM
-
-attackSpearSound:
-  .byte STL, 20
-  .byte STV, SOUND_EFFECT_BASE+6
-  .byte STP, SOUND_EFFECT_BASE+1
-  .byte 5
-  .byte STV, SOUND_EFFECT_BASE+0
-  .byte A0
-  .byte TRM
-
-hit_sound:
-  .byte STL, 2
-  .byte STV, SOUND_EFFECT_BASE+3
-  .byte STP, SOUND_EFFECT_BASE+1
-  .byte 11, 12, 13
-  .byte STV, SOUND_EFFECT_BASE+0
-  .byte A0
-  .byte TRM
-
-getHurtSound:
-  .byte STL, 1
-  .byte STV, SOUND_EFFECT_BASE+1
-  .byte STP, SOUND_EFFECT_BASE+1
-  .byte C5, B4, A4, G4, F4, E4, D4, C4
-  .byte STV, SOUND_EFFECT_BASE+0
-  .byte A0
-  .byte TRM
-
-dieSound:
-  .byte STL, 1
-  .byte STV, SOUND_EFFECT_BASE+1
-  .byte STP, SOUND_EFFECT_BASE+1
-  .byte C6, B5, A5, G5, F5, E5, D5, CS5
-  .byte C5, B4, A4, G4, F4, E4, D4, C4
-  .byte STV, SOUND_EFFECT_BASE+0
-  .byte A0
-  .byte TRM
-
-getHealthSound:
-  .byte STL, 1
-  .byte STV, SOUND_EFFECT_BASE+1
-  .byte STP, SOUND_EFFECT_BASE+1
-  .byte A4,C5,E4,A3,C6,E7
-  .byte A4,C5,E4,A3,C6,E7
-  .byte TRM
-
-getItemSound:
-  .byte STL, 1
-  .byte STV, SOUND_EFFECT_BASE+1
-  .byte STP, SOUND_EFFECT_BASE+1
-  .byte A4, AS4, B4, C5, CS5, D5, DS5, E5
-  .byte A4, AS4, B4, C5, CS5, D5, DS5, E5
-  .byte TRM
-
 ;miscellaneous data
 banktable:
   .byte $00, $01, $02, $03, $04, $05, $06, $07
@@ -659,17 +589,7 @@ volume_envelopes:
   .word 0
   .word 0
 
-  .word sf_volume_envelope_silence
-  .word sf_volume_envelope_loud
-  .word sf_volume_envelope_1
-  .word sf_volume_envelope_decay
-  .word sf_volume_envelope_short_note
-
-  .word sf_volume_envelope_fade_in
-  .word sf_volume_envelope_fade_in_2
-  .word 0
-  .word 0
-  .word 0
+  sound_effect_volume_addresses
 
 pitch_envelopes:
   .word pitch_envelope_0
@@ -684,18 +604,8 @@ pitch_envelopes:
   .word 0
   .word 0
 
-  .word sf_pitch_envelope_0
-  .word sf_pitch_envelope_1
-  .word 0
-  .word 0
-  .word 0
-
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-
+  sound_effect_pitch_addresses
+  
 duty_envelopes:
   .word duty_envelope_0
   .word duty_envelope_1
@@ -715,33 +625,6 @@ duty_envelope_0:
   .byte 0, ENV_LOOP
 duty_envelope_1:
   .byte -128,-128,-128,-128,-128,-128,-128,-128,ENV_LOOP
-
-sf_volume_envelope_silence:
-  .byte 0, ENV_STOP
-
-sf_volume_envelope_loud:
-  .byte 15, ENV_STOP
-
-sf_volume_envelope_1:
-  .byte 14, 12, 11, 9, 7, 6, 4, 2, 1, 0, 0, 2, 3, 5, 8, 6, 3, 1, ENV_STOP
-
-sf_volume_envelope_decay:
-  .byte 15, 14, 12, 8, 7, 6, 3, 1, 0, ENV_STOP
-
-sf_volume_envelope_short_note:
-  .byte 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0, ENV_STOP
-
-sf_volume_envelope_fade_in:
-  .byte 0, 1, 3, 6, 7, 8, 12, 14, 15, ENV_STOP
-
-sf_volume_envelope_fade_in_2:
-  .byte 5, 8, 10, 10, 12, 12, 15, 15, 10, 10, 6, 6, 3, 3, 0, 0, 0, ENV_STOP
-
-sf_pitch_envelope_0:
-  .byte 0, ENV_LOOP
-
-sf_pitch_envelope_1:
-  .byte 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, -1, -2, -3, -4, -5, ENV_LOOP
 
 Square1:
   .byte STV,2,STP,0,SDU,0,STL,20,G4,D4,STL,5,C4,B3,C4,B3,STL,10,A3,G3,FS3,E3,D3,C3
