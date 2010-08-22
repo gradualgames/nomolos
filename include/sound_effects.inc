@@ -5,9 +5,11 @@
 .global sf_volume_envelope_short_note
 .global sf_volume_envelope_fade_in
 .global sf_volume_envelope_fade_in_2
+.global sf_volume_envelope_decay_slowly
 .global sf_pitch_envelope_0
 .global sf_pitch_envelope_1
 
+.global boss_boom_sound
 .global attack_sound
 .global attack_flail_sound
 .global attack_spear_sound
@@ -29,7 +31,7 @@ SOUND_EFFECT_BASE = 10
 
   .word sf_volume_envelope_fade_in
   .word sf_volume_envelope_fade_in_2
-  .word 0
+  .word sf_volume_envelope_decay_slowly
   .word 0
   .word 0
 

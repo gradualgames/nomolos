@@ -24,11 +24,23 @@ sf_volume_envelope_fade_in:
 sf_volume_envelope_fade_in_2:
   .byte 5, 8, 10, 10, 12, 12, 15, 15, 10, 10, 6, 6, 3, 3, 0, 0, 0, ENV_STOP
 
+sf_volume_envelope_decay_slowly:
+  .byte 15, 15, 14, 14, 13, 13, 12, 12, 11, 11, 10, 10, 9, 8, 6, 4, 2, 1, 0, ENV_STOP
+  
 sf_pitch_envelope_0:
   .byte 0, ENV_LOOP
 
 sf_pitch_envelope_1:
   .byte 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, -1, -2, -3, -4, -5, ENV_LOOP
+
+boss_boom_sound:
+  .byte STL, 20
+  .byte STV, SOUND_EFFECT_BASE+7
+  .byte STP, SOUND_EFFECT_BASE+0
+  .byte 15
+  .byte STV, SOUND_EFFECT_BASE+0
+  .byte A0
+  .byte TRM
 
 attack_sound:
   .byte STL, 10

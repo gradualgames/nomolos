@@ -109,6 +109,23 @@ dragonboss_taildownstate:
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_tailupstate
   
+  txa
+  pha
+
+  lda #<boss_boom_sound
+  sta sound_param_word_0
+  lda #>boss_boom_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+  
   lda #22
   sta b0
   lda #20
@@ -164,6 +181,16 @@ dragonboss_glowingeyesstate:
   
 pause_before_glow:
   .endscope
+  
+  ;make the screen shake for a little bit right after the tail slams
+  ;to the ground
+  lda entity_locals+dragonboss_locals::state_switch_counter,x
+  cmp #80
+  bmi do_not_vibrate
+  and #%00000001
+  asl
+  sta camera_scroll_x
+do_not_vibrate:
   
   jsr dragonboss_substate_handler
   
@@ -476,7 +503,9 @@ dragonboss_drawface:
   lda (base_address_rom_definition_table),y
   sta w0+1
 
+  sec
   lda #112
+  sbc camera_scroll_x
   sta w3
   lda #0
   sta w3+1
@@ -498,7 +527,9 @@ dragonboss_drawface:
   lda (base_address_rom_definition_table),y
   sta w0+1
 
+  sec
   lda #120
+  sbc camera_scroll_x
   sta w3
   lda #0
   sta w3+1
