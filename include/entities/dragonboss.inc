@@ -58,6 +58,9 @@ dragonboss_update:
   cmp #DRAGONBOSS_DYINGSTATE
   beq dragonboss_dyingstate
 
+;****************************************************************
+;The Init state
+;****************************************************************
 dragonboss_init:
 
   ;reset the dragonboss animation object
@@ -85,6 +88,15 @@ dragonboss_init:
 
   rts
 
+;****************************************************************
+;The Init Bossmode state
+;This state waits a couple of frames before telling the play
+;level state to switch to boss mode. This is because entity
+;update functions do get called before the play level state is
+;entered. If we initialized boss mode before play level state is
+;entered, then the boss nmi routine would get replaced by the
+;normal play level state nmi routine.
+;****************************************************************
 dragonboss_initbossmodestate:
 
   jsr dragonboss_substate_handler
@@ -128,6 +140,16 @@ dragonboss_dyingstate:
   
   rts
   
+;****************************************************************
+;The Glowing Eyes state
+;This state modifies the color of the Dragon's eyes to make them
+;appear to glow briefly before he spits fireballs towards
+;Nomolos. This serves as a warning that the Dragon is about to
+;attack. This state occurs right after the tail is slammed to the
+;ground, so it also shakes the screen for a little bit, adding
+;a nice feeling of power to the Dragon having slammed its tail
+;to the ground.
+;****************************************************************
 dragonboss_glowingeyesstate:
 
   .scope
@@ -176,6 +198,13 @@ switch_state:
 
   rts
   
+;****************************************************************
+;The Tail Down state handler
+;This state pauses until state_switch_counter has reached zero,
+;and then it draws the Dragon's tail in the "down" position,
+;accompanied by a "boom" sound effect. It then transitions to
+;the "glowing eyes" state.
+;****************************************************************
 dragonboss_taildownstate_handler:
   
   jsr dragonboss_substate_handler
@@ -223,6 +252,14 @@ do_not_switch_to_tailupstate:
 
   rts
   
+;****************************************************************
+;The Dying state handler
+;This state shakes the screen, and generates dozens of explosions
+;randomly all over the Dragon's body. We use a pseudo random
+;number generator to get coordinates for explosions, and if the
+;coordinates happen to lie on a "hurt" tile we spawn the
+;explosion.
+;****************************************************************
 dragonboss_dyingstate_handler:
 
   dec entity_locals+dragonboss_locals::state_switch_counter,x
@@ -289,6 +326,12 @@ do_not_spawn_explosion:
 
   rts
   
+;****************************************************************
+;This is a simple pseudo random number generator borrowed from
+;the Commodore 64 codebase. It is used here to generate
+;explosions all over the Dragon's body when it enters the dying
+;state.
+;****************************************************************
 .proc dragonboss_get_next_prn
 
   ldy #10
@@ -308,6 +351,11 @@ noEor:
   rts
 .endproc
   
+;****************************************************************
+;The Spit Iceballs state handler
+;This state spawns three ice-balls and parameterizes them to fly
+;down and to the left.
+;****************************************************************
 dragonboss_spiticeballsstate_handler:
 
   jsr dragonboss_substate_handler
@@ -434,6 +482,14 @@ dragonboss_spiticeballsstate_handler:
 
   rts
   
+;****************************************************************
+;The Tail Up State handler
+;While the Dragon's tail is in the air, some icy stalactites are
+;starting to form on the ceiling for the next time the Dragon
+;slams his tail on the ground. This state waits until the state
+;switch counter has reached zero to transition to the Tail Up
+;state.
+;****************************************************************
 dragonboss_tailupstate_handler:
 
   jsr dragonboss_substate_handler
@@ -507,6 +563,12 @@ do_not_switch_to_taildownstate:
 
   rts
   
+;****************************************************************
+;The dragon boss's sub-state handler. This is responsible for
+;managing state that can change concurrently with the top-level
+;state, primarily how to fade the palette in and out to signify
+;that the Dragon has been struck by Nomolos.
+;****************************************************************
 dragonboss_substate_handler:
  
   lda entity_locals+dragonboss_locals::substate,x
@@ -622,6 +684,9 @@ dragonboss_substate_switch_complete:
 
   rts
   
+;****************************************************************
+;This routine draws the Dragon's face overlay as sprites.
+;****************************************************************
 dragonboss_drawface:
 
   ;clear sprite attributes

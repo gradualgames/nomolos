@@ -43,12 +43,6 @@ gameOverStateInit:
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
 
-  ;stop all sound
-  .ifdef MUSIC_ENABLE
-  jsr sound_stop
-  jsr sound_upload
-  .endif
-  
   lda #GAMEOVERSTATE_RUN
   sta state_control_params+gameOverStateControl::state
 

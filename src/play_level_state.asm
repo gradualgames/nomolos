@@ -51,13 +51,13 @@
   cmp #PLAYLEVELSTATE_INIT
   beq play_level_state_init
   cmp #PLAYLEVELSTATE_KEEPPLAYING
-  beq keepPlaying
+  beq keep_playing
   cmp #PLAYLEVELSTATE_BOSSMODE
   beq playBoss
   cmp #PLAYLEVELSTATE_PAUSE
   beq pause
   cmp #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
-  beq switchToLevelOutState
+  beq switch_to_level_in_state
 
 play_level_state_init:
 
@@ -83,9 +83,9 @@ play_level_state_init:
   lda #PLAYLEVELSTATE_KEEPPLAYING
   sta state_control_params+play_level_state_control::state
 
-  jmp stateCommandComplete
+  jmp state_switch_complete
 
-keepPlaying:
+keep_playing:
 
   ;****************************************************************
   ;Call the play level state handler
@@ -93,7 +93,7 @@ keepPlaying:
 
   jsr keep_playing_state
 
-  jmp stateCommandComplete
+  jmp state_switch_complete
 
 playBoss:
 
@@ -103,7 +103,7 @@ playBoss:
 
   jsr boss_state
   
-  jmp stateCommandComplete
+  jmp state_switch_complete
   
 pause:
 
@@ -113,22 +113,28 @@ pause:
   lda buffer_controller+buttons::_start
   and #%00000011
   cmp #1
-  bne skipStartButtonTest
+  bne skip_start_button_test
 
   lda #PLAYLEVELSTATE_KEEPPLAYING
   sta state_control_params+play_level_state_control::state
 
-skipStartButtonTest:
+skip_start_button_test:
   .endscope
 
-  jmp stateCommandComplete
+  jmp state_switch_complete
 
-switchToLevelOutState:
+switch_to_level_in_state:
 
   ;****************************************************************
-  ;Fade out the palette then switch to game over or level outro
+  ;Fade out the palette then switch to game over or level intro
   ;****************************************************************
 
+  ;stop all sound
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
+  
   ldy #level_data_struct::palette
   lda (base_address_rom_definition_table),y
   sta w0
@@ -140,22 +146,22 @@ switchToLevelOutState:
 
   lda nomolos_status_lives
 
-  bmi livesNegativeMeansGameOver
+  bmi lives_negative_means_game_over
 
   lda #LEVELINSTATE_INIT
   sta state_control_params+levelInStateControl::state
   ldx #index_level_in_state
   jsr switch_state
-  jmp stateCommandComplete
+  jmp state_switch_complete
 
-livesNegativeMeansGameOver:
+lives_negative_means_game_over:
 
   lda #GAMEOVERSTATE_INIT
   sta state_control_params+gameOverStateControl::state
   ldx #index_game_over_state
   jsr switch_state
 
-stateCommandComplete:
+state_switch_complete:
 
   ;turn monochrome bit off
   .ifdef DISPLAY_FRAME_CPU_USAGE
@@ -218,12 +224,12 @@ stateCommandComplete:
   lda buffer_controller+buttons::_start
   and #%00000011
   cmp #1
-  bne skipStartButtonTest
+  bne skip_start_button_test
 
   lda #PLAYLEVELSTATE_PAUSE
   sta state_control_params+play_level_state_control::state
 
-skipStartButtonTest:
+skip_start_button_test:
   .endscope
 
   rts
@@ -280,12 +286,12 @@ skipStartButtonTest:
   lda buffer_controller+buttons::_start
   and #%00000011
   cmp #1
-  bne skipStartButtonTest
+  bne skip_start_button_test
 
   lda #PLAYLEVELSTATE_PAUSE
   sta state_control_params+play_level_state_control::state
 
-skipStartButtonTest:
+skip_start_button_test:
   .endscope
 
   rts
