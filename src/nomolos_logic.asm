@@ -138,9 +138,9 @@
   beq skipDecreaseHealth
 
   ;play a get hurt sound
-  lda #<getHurtSound
+  lda #<get_hurt_sound
   sta sound_param_word_0
-  lda #>getHurtSound
+  lda #>get_hurt_sound
   sta sound_param_word_0+1
 
   lda #0
@@ -214,9 +214,9 @@ skipHurt:
   .endif
 
   ;play a die sound
-  lda #<dieSound
+  lda #<die_sound
   sta sound_param_word_0
-  lda #>dieSound
+  lda #>die_sound
   sta sound_param_word_0+1
 
   lda #0
@@ -269,9 +269,9 @@ alreadyDying:
   .endif
 
   ;play a die sound
-  lda #<dieSound
+  lda #<die_sound
   sta sound_param_word_0
-  lda #>dieSound
+  lda #>die_sound
   sta sound_param_word_0+1
 
   lda #0
@@ -286,9 +286,9 @@ alreadyDying:
 
 .proc nomolos_attack_spear
 
-  lda #<attackSpearSound
+  lda #<attack_spear_sound
   sta sound_param_word_0
-  lda #>attackSpearSound
+  lda #>attack_spear_sound
   sta sound_param_word_0+1
 
   lda #3
@@ -401,9 +401,9 @@ skipNomolosFacingRight:
 .proc nomolos_attack_flail
 
   ;play an attack sound
-  lda #<attackFlailSound
+  lda #<attack_flail_sound
   sta sound_param_word_0
-  lda #>attackFlailSound
+  lda #>attack_flail_sound
   sta sound_param_word_0+1
 
   lda #3

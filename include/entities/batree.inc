@@ -41,22 +41,22 @@ batree_initState:
 
 batree_moveRightState:
 
-  ;add 1 to PositionX
+  ;add 1 to position_x
   clc
-  lda entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::position_x,x
   adc #1
-  sta entity_instances+entity_instance::positionX,x
-  lda entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
   adc #0
-  sta entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x+1,x
 
-  ;do PositionX - spawnPositionX
+  ;do position_x - spawn_position_x
   sec
-  lda entity_instances+entity_instance::positionX,x
-  sbc entity_instances+entity_instance::spawnPositionX,x
+  lda entity_instances+entity_instance::position_x,x
+  sbc entity_instances+entity_instance::spawn_position_x,x
   sta w0
-  lda entity_instances+entity_instance::positionX+1,x
-  sbc entity_instances+entity_instance::spawnPositionX+1,x
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc entity_instances+entity_instance::spawn_position_x+1,x
   sta w0+1
 
   ;difference is in w0, subtract our desired delta distance from it
@@ -82,22 +82,22 @@ dontSwitchToLeftState:
 
 batree_moveLeftState:
 
-  ;sub 1 from PositionX
+  ;sub 1 from position_x
   sec
-  lda entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::position_x,x
   sbc #1
-  sta entity_instances+entity_instance::positionX,x
-  lda entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
   sbc #0
-  sta entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x+1,x
 
-  ;do spawnPositionX - PositionX
+  ;do spawn_position_x - position_x
   sec
-  lda entity_instances+entity_instance::spawnPositionX,x
-  sbc entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::spawn_position_x,x
+  sbc entity_instances+entity_instance::position_x,x
   sta w0
-  lda entity_instances+entity_instance::spawnPositionX+1,x
-  sbc entity_instances+entity_instance::positionX+1,x
+  lda entity_instances+entity_instance::spawn_position_x+1,x
+  sbc entity_instances+entity_instance::position_x+1,x
   sta w0+1
 
   ;difference is in w0, subtract our desired delta distance from it
@@ -134,14 +134,14 @@ batree_update_batspawn_counter:
 
 ;the following parameters are expected:
 ;b0 = index of entity definition to spawn
-;w0 = positionX
-;b1 = positionY
+;w0 = position_x
+;b1 = position_y
 
-  lda entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::position_x,x
   sta w0
-  lda entity_instances+entity_instance::positionX+1,x
+  lda entity_instances+entity_instance::position_x+1,x
   sta w0+1
-  lda entity_instances+entity_instance::positionY,x
+  lda entity_instances+entity_instance::position_y,x
   clc
   adc #16
   sta b1
@@ -239,15 +239,15 @@ killBatree:
   lda #entity_index_explosion
   sta b0
 
-  ;get out low byte of positionX
-  lda entity_instances+entity_instance::positionX,x
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
   sta w0
-  ;get out high byte of positionX
-  lda entity_instances+entity_instance::positionX+1,x
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
   sta w0+1
 
-  ;get out positionY
-  lda entity_instances+entity_instance::positionY,x
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
   sta b1
 
   jsr entity_spawn

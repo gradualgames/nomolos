@@ -81,29 +81,29 @@ do_not_flip_direction:
 move_left:
 
   sec
-  lda entity_instances+entity_instance::positionXFine,x
+  lda entity_instances+entity_instance::position_x_fine,x
   sbc #SNAIL_SPEED
-  sta entity_instances+entity_instance::positionXFine,x
-  lda entity_instances+entity_instance::positionX,x
+  sta entity_instances+entity_instance::position_x_fine,x
+  lda entity_instances+entity_instance::position_x,x
   sbc #0
-  sta entity_instances+entity_instance::positionX,x
-  lda entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
   sbc #0
-  sta entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x+1,x
 
   jmp direction_test_done
 move_right:
 
   clc
-  lda entity_instances+entity_instance::positionXFine,x
+  lda entity_instances+entity_instance::position_x_fine,x
   adc #SNAIL_SPEED
-  sta entity_instances+entity_instance::positionXFine,x
-  lda entity_instances+entity_instance::positionX,x
+  sta entity_instances+entity_instance::position_x_fine,x
+  lda entity_instances+entity_instance::position_x,x
   adc #0
-  sta entity_instances+entity_instance::positionX,x
-  lda entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
   adc #0
-  sta entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x+1,x
 
 direction_test_done:
 
@@ -139,15 +139,15 @@ killSnail:
   lda #entity_index_explosion
   sta b0
 
-  ;get out low byte of positionX
-  lda entity_instances+entity_instance::positionX,x
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
   sta w0
-  ;get out high byte of positionX
-  lda entity_instances+entity_instance::positionX+1,x
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
   sta w0+1
 
-  ;get out positionY
-  lda entity_instances+entity_instance::positionY,x
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
   sta b1
 
   jsr entity_spawn

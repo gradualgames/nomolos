@@ -39,7 +39,7 @@ attack_sound:
   .byte A0
   .byte TRM
 
-attackFlailSound:
+attack_flail_sound:
   .byte STL, 10
   .byte STV, SOUND_EFFECT_BASE+5
   .byte STP, SOUND_EFFECT_BASE+1
@@ -48,7 +48,7 @@ attackFlailSound:
   .byte A0
   .byte TRM
 
-attackSpearSound:
+attack_spear_sound:
   .byte STL, 20
   .byte STV, SOUND_EFFECT_BASE+6
   .byte STP, SOUND_EFFECT_BASE+1
@@ -66,7 +66,7 @@ hit_sound:
   .byte A0
   .byte TRM
 
-getHurtSound:
+get_hurt_sound:
   .byte STL, 1
   .byte STV, SOUND_EFFECT_BASE+1
   .byte STP, SOUND_EFFECT_BASE+1
@@ -75,7 +75,7 @@ getHurtSound:
   .byte A0
   .byte TRM
 
-dieSound:
+die_sound:
   .byte STL, 1
   .byte STV, SOUND_EFFECT_BASE+1
   .byte STP, SOUND_EFFECT_BASE+1
@@ -85,7 +85,7 @@ dieSound:
   .byte A0
   .byte TRM
 
-getHealthSound:
+get_health_sound:
   .byte STL, 1
   .byte STV, SOUND_EFFECT_BASE+1
   .byte STP, SOUND_EFFECT_BASE+1
@@ -93,7 +93,7 @@ getHealthSound:
   .byte A4,C5,E4,A3,C6,E7
   .byte TRM
 
-getItemSound:
+get_item_sound:
   .byte STL, 1
   .byte STV, SOUND_EFFECT_BASE+1
   .byte STP, SOUND_EFFECT_BASE+1

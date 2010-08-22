@@ -17,14 +17,14 @@ ENTITY_INC = 1
 .struct entity_instance
   alive .byte
   index .byte
-  spawnPositionX .word
-  spawnPositionY .byte
-  positionXFine .byte
-  positionX .word
-  positionYFine .byte
-  positionY .word
+  spawn_position_x .word
+  spawn_position_y .byte
+  position_x_fine .byte
+  position_x .word
+  position_y_fine .byte
+  position_y .word
   state .byte
-  animationObject .word
+  animation_object .word
   extra .byte 2
 .endstruct
 

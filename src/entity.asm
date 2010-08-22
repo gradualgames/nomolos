@@ -22,18 +22,18 @@
   ;killed because it is outside the range
   sec
   lda camera_max_scroll_x
-  sbc entity_instances+entity_instance::positionX,x
+  sbc entity_instances+entity_instance::position_x,x
   lda camera_max_scroll_x+1
-  sbc entity_instances+entity_instance::positionX+1,x
+  sbc entity_instances+entity_instance::position_x+1,x
   bmi do_not_kill_entity
 
   ;compare to min explored x. if result is positive, entity should not be
   ;killed because it is outside the range
   sec
   lda camera_min_scroll_x
-  sbc entity_instances+entity_instance::positionX,x
+  sbc entity_instances+entity_instance::position_x,x
   lda camera_min_scroll_x+1
-  sbc entity_instances+entity_instance::positionX+1,x
+  sbc entity_instances+entity_instance::position_x+1,x
   bpl do_not_kill_entity
 
 kill_entity:
@@ -54,9 +54,9 @@ do_not_kill_entity:
 ;expects b2 to contain flags for whether to flip the sprite. e.g. #%01000000 to flip
 .proc entity_draw_anim
   ;load address of animation object into w1
-  lda #<(entity_instances+entity_instance::animationObject)
+  lda #<(entity_instances+entity_instance::animation_object)
   sta w1
-  lda #>(entity_instances+entity_instance::animationObject)
+  lda #>(entity_instances+entity_instance::animation_object)
   sta w1+1
 
   ;get the index into a
@@ -93,9 +93,9 @@ do_not_kill_entity:
 
 .proc entity_reset_anim
   lda #1
-  sta entity_instances+entity_instance::animationObject,x
+  sta entity_instances+entity_instance::animation_object,x
   lda #$ff
-  sta entity_instances+entity_instance::animationObject+1,x
+  sta entity_instances+entity_instance::animation_object+1,x
   rts
 .endproc
 
@@ -131,9 +131,9 @@ do_not_kill_entity:
   ;compare entity x position to nomolos x position to decide direction
   sec
   lda nomolos_map_x+1
-  sbc entity_instances+entity_instance::positionX,x
+  sbc entity_instances+entity_instance::position_x,x
   lda nomolos_map_x+2
-  sbc entity_instances+entity_instance::positionX+1,x
+  sbc entity_instances+entity_instance::position_x+1,x
   bpl entity_will_go_right
 entity_will_go_left:
   ;set negative flag
@@ -337,17 +337,17 @@ entity_not_in_death_zone:
 .endproc
 
 .proc entity_compute_screen_coordinates
-  ;get out low byte of positionX
-  lda entity_instances+entity_instance::positionX,x
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
   sta w0
-  ;get out high byte of positionX
-  lda entity_instances+entity_instance::positionX+1,x
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
   sta w0+1
 
-  ;get out positionY
-  lda entity_instances+entity_instance::positionY,x
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
   sta w1
-  lda entity_instances+entity_instance::positionY+1,x
+  lda entity_instances+entity_instance::position_y+1,x
   sta w1+1
   jsr camera_to_screen_coords
 
@@ -464,8 +464,8 @@ skipUpdate:
 
 ;the following parameters are expected:
 ;b0 = index of entity definition to spawn
-;w0 = positionX
-;b1 = positionY
+;w0 = position_x
+;b1 = position_y
 
 ;the following outputs can be retrieved after calling this function:
 ;b3 - index of entity instance just spawned
@@ -561,7 +561,7 @@ do_not_spawn:
 
   ;now that we know the kind of entity this is, we must look up
   ;the entity and pull out its initialXOffset and initialYOffset,
-  ;add these to the input parameters, and store them in positionX and positionY.
+  ;add these to the input parameters, and store them in position_x and position_y.
 
   ;a holds the entity index, so multiply it by 8 to get an entity offset
   asl
@@ -587,11 +587,11 @@ do_not_spawn:
   sbc #0
   sta w0+1
 
-  ;now w0 should have the spawnPositionX value
+  ;now w0 should have the spawn_position_x value
   lda w0
-  sta entity_instances+entity_instance::spawnPositionX,x
+  sta entity_instances+entity_instance::spawn_position_x,x
   lda w0+1
-  sta entity_instances+entity_instance::spawnPositionX+1,x
+  sta entity_instances+entity_instance::spawn_position_x+1,x
 
   ;load initial y offset
   iny
@@ -605,27 +605,27 @@ do_not_spawn:
   sbc b2
   sta b1  ;store result in y parameter
 
-  ;now b1 should have the spawnPositionY value
+  ;now b1 should have the spawn_position_y value
   lda b1
-  sta entity_instances+entity_instance::spawnPositionY,x
+  sta entity_instances+entity_instance::spawn_position_y,x
 
-  ;load positionXFine
+  ;load position_x_fine
   lda #$00
-  sta entity_instances+entity_instance::positionXFine,x
-  ;load positionX
+  sta entity_instances+entity_instance::position_x_fine,x
+  ;load position_x
   lda w0
-  sta entity_instances+entity_instance::positionX,x
+  sta entity_instances+entity_instance::position_x,x
   lda w0+1
-  sta entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x+1,x
 
-  ;load positionYFine
+  ;load position_y_fine
   lda #$00
-  sta entity_instances+entity_instance::positionYFine,x
-  ;load positionY
+  sta entity_instances+entity_instance::position_y_fine,x
+  ;load position_y
   lda b1
-  sta entity_instances+entity_instance::positionY,x
+  sta entity_instances+entity_instance::position_y,x
   lda #0
-  sta entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::position_y+1,x
 
   ;point to the initial state
   iny

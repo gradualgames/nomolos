@@ -50,9 +50,9 @@ mouseSitThere:
   txa
   pha
 
-  lda #<getHealthSound
+  lda #<get_health_sound
   sta sound_param_word_0
-  lda #>getHealthSound
+  lda #>get_health_sound
   sta sound_param_word_0+1
 
   lda #0

@@ -49,9 +49,9 @@ skipJmpNotTouching:
   txa
   pha
 
-  lda #<getItemSound
+  lda #<get_item_sound
   sta sound_param_word_0
-  lda #>getItemSound
+  lda #>get_item_sound
   sta sound_param_word_0+1
 
   lda #0

@@ -37,10 +37,10 @@ explosionExplode:
   ldy #level_data_struct::explosion
   jsr entity_draw_anim
 
-  lda entity_instances+entity_instance::animationObject+1,x
+  lda entity_instances+entity_instance::animation_object+1,x
   cmp #2
   bne @skipFrameCounterTest
-  lda entity_instances+entity_instance::animationObject,x
+  lda entity_instances+entity_instance::animation_object,x
   cmp #1
   beq explosionDie
 @skipFrameCounterTest:

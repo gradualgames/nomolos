@@ -31,12 +31,12 @@ stalactite_init:
 
   ;move stalactite offscreen
   sec
-  lda entity_instances+entity_instance::positionY,x
+  lda entity_instances+entity_instance::position_y,x
   sbc #$10
-  sta entity_instances+entity_instance::positionY,x
-  lda entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
   sbc #$00
-  sta entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::position_y+1,x
   
   ;start velocity out slow
   lda #0
@@ -88,7 +88,7 @@ stalactite_fall:
   
   jsr stalactite_draw
 
-  lda entity_instances+entity_instance::positionY+1,x
+  lda entity_instances+entity_instance::position_y+1,x
   bne stalactiteDie
   
   rts
@@ -142,22 +142,22 @@ stalactite_move:
 .scope addYVelocity
   clc
   lda entity_locals+stalactite_locals::y_velocity,x
-  adc entity_instances+entity_instance::positionYFine,x
-  sta entity_instances+entity_instance::positionYFine,x
+  adc entity_instances+entity_instance::position_y_fine,x
+  sta entity_instances+entity_instance::position_y_fine,x
   lda entity_locals+stalactite_locals::y_velocity+1,x
   bmi signExtend
-  adc entity_instances+entity_instance::positionY,x
-  sta entity_instances+entity_instance::positionY,x
+  adc entity_instances+entity_instance::position_y,x
+  sta entity_instances+entity_instance::position_y,x
   lda #0
-  adc entity_instances+entity_instance::positionY+1,x
-  sta entity_instances+entity_instance::positionY+1,x
+  adc entity_instances+entity_instance::position_y+1,x
+  sta entity_instances+entity_instance::position_y+1,x
   jmp signExtendAddDone
 signExtend:
-  adc entity_instances+entity_instance::positionY,x
-  sta entity_instances+entity_instance::positionY,x
+  adc entity_instances+entity_instance::position_y,x
+  sta entity_instances+entity_instance::position_y,x
   lda #$ff
-  adc entity_instances+entity_instance::positionY+1,x
-  sta entity_instances+entity_instance::positionY+1,x
+  adc entity_instances+entity_instance::position_y+1,x
+  sta entity_instances+entity_instance::position_y+1,x
 signExtendAddDone:
 .endscope
 

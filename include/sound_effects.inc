@@ -9,13 +9,13 @@
 .global sf_pitch_envelope_1
 
 .global attack_sound
-.global attackFlailSound
-.global attackSpearSound
+.global attack_flail_sound
+.global attack_spear_sound
 .global hit_sound
-.global getHealthSound
-.global getItemSound
-.global getHurtSound
-.global dieSound
+.global get_health_sound
+.global get_item_sound
+.global get_hurt_sound
+.global die_sound
 
 SOUND_EFFECT_BASE = 10
 

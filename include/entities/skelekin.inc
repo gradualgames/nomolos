@@ -46,17 +46,17 @@ entity_facing_test_done:
 skelekin_moveRightState:
 
   clc
-  lda entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::position_x,x
   adc #SKELEKIN_WIDTH
   sta w0
-  lda entity_instances+entity_instance::positionX+1,x
+  lda entity_instances+entity_instance::position_x+1,x
   adc #$00
   sta w0+1
-  lda entity_instances+entity_instance::positionY,x
+  lda entity_instances+entity_instance::position_y,x
   clc
   adc #SKELEKIN_HALFHEIGHT
   sta w1
-  lda entity_instances+entity_instance::positionY+1,x
+  lda entity_instances+entity_instance::position_y+1,x
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -67,12 +67,12 @@ skelekin_moveRightState:
 no_right_collision:
 
   clc
-  lda entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::position_x,x
   adc #$01
-  sta entity_instances+entity_instance::positionX,x
-  lda entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
   adc #$00
-  sta entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x+1,x
 
   jsr skelekin_draw
 
@@ -80,15 +80,15 @@ no_right_collision:
 
 skelekin_moveLeftState:
 
-  lda entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::position_x,x
   sta w0
-  lda entity_instances+entity_instance::positionX+1,x
+  lda entity_instances+entity_instance::position_x+1,x
   sta w0+1
-  lda entity_instances+entity_instance::positionY,x
+  lda entity_instances+entity_instance::position_y,x
   clc
   adc #SKELEKIN_HALFHEIGHT
   sta w1
-  lda entity_instances+entity_instance::positionY+1,x
+  lda entity_instances+entity_instance::position_y+1,x
   adc #0
   sta w1+1
   jsr map_test_collision
@@ -99,12 +99,12 @@ skelekin_moveLeftState:
 no_left_collision:
 
   sec
-  lda entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::position_x,x
   sbc #$01
-  sta entity_instances+entity_instance::positionX,x
-  lda entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
   sbc #$00
-  sta entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x+1,x
 
   jsr skelekin_draw
 
@@ -192,15 +192,15 @@ killSkelekin:
   lda #entity_index_explosion
   sta b0
 
-  ;get out low byte of positionX
-  lda entity_instances+entity_instance::positionX,x
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
   sta w0
-  ;get out high byte of positionX
-  lda entity_instances+entity_instance::positionX+1,x
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
   sta w0+1
 
-  ;get out positionY
-  lda entity_instances+entity_instance::positionY,x
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
   sta b1
 
   jsr entity_spawn

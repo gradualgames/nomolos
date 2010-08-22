@@ -22,9 +22,9 @@ iceball_init:
   .scope
   sec
   lda nomolos_map_x+1
-  sbc entity_instances+entity_instance::positionX,x
+  sbc entity_instances+entity_instance::position_x,x
   lda nomolos_map_x+2
-  sbc entity_instances+entity_instance::positionX+1,x
+  sbc entity_instances+entity_instance::position_x+1,x
   bpl will_go_right
 will_go_left:
   lda #$ff
@@ -42,9 +42,9 @@ direction_test_done:
   .scope
   sec
   lda nomolos_map_y+1
-  sbc entity_instances+entity_instance::positionY,x
+  sbc entity_instances+entity_instance::position_y,x
   lda nomolos_map_y+2
-  sbc entity_instances+entity_instance::positionY+1,x
+  sbc entity_instances+entity_instance::position_y+1,x
   bpl will_go_up
 will_go_down:
   lda #$ff
@@ -82,20 +82,20 @@ iceball_fly:
 :
 
   clc
-  lda entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::position_x,x
   adc entity_locals+iceball_locals::x_velocity,x
-  sta entity_instances+entity_instance::positionX,x
-  lda entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
   adc entity_locals+iceball_locals::x_velocity+1,x
-  sta entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x+1,x
 
   clc
-  lda entity_instances+entity_instance::positionY,x
+  lda entity_instances+entity_instance::position_y,x
   adc entity_locals+iceball_locals::y_velocity,x
-  sta entity_instances+entity_instance::positionY,x
-  lda entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
   adc entity_locals+iceball_locals::y_velocity+1,x
-  sta entity_instances+entity_instance::positionY+1,x
+  sta entity_instances+entity_instance::position_y+1,x
 
   ldy #level_data_struct::ice_ball_offset
   lda (base_address_rom_definition_table),y
@@ -104,7 +104,7 @@ iceball_fly:
   ldy #level_data_struct::ice_ball_fly
   jsr entity_draw_anim
 
-  lda entity_instances+entity_instance::animationObject+1,x
+  lda entity_instances+entity_instance::animation_object+1,x
 
   rts
 

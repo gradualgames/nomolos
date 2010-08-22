@@ -212,9 +212,9 @@ dragonboss_spiticeballsstate_handler:
   
   ;reset the iceball's animation
   lda #1
-  sta entity_instances+entity_instance::animationObject,y
+  sta entity_instances+entity_instance::animation_object,y
   lda #$ff
-  sta entity_instances+entity_instance::animationObject+1,y
+  sta entity_instances+entity_instance::animation_object+1,y
   
   lda #ICEBALL_FLYSTATE
   sta entity_instances+entity_instance::state,y
@@ -251,9 +251,9 @@ dragonboss_spiticeballsstate_handler:
   
   ;reset the iceball's animation
   lda #1
-  sta entity_instances+entity_instance::animationObject,y
+  sta entity_instances+entity_instance::animation_object,y
   lda #$ff
-  sta entity_instances+entity_instance::animationObject+1,y
+  sta entity_instances+entity_instance::animation_object+1,y
   
   lda #ICEBALL_FLYSTATE
   sta entity_instances+entity_instance::state,y
@@ -290,9 +290,9 @@ dragonboss_spiticeballsstate_handler:
   
   ;reset the iceball's animation
   lda #1
-  sta entity_instances+entity_instance::animationObject,y
+  sta entity_instances+entity_instance::animation_object,y
   lda #$ff
-  sta entity_instances+entity_instance::animationObject+1,y
+  sta entity_instances+entity_instance::animation_object+1,y
   
   lda #ICEBALL_FLYSTATE
   sta entity_instances+entity_instance::state,y

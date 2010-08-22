@@ -151,9 +151,9 @@ bat_init:
   ;compare entity x position to nomolos x position to decide direction
   sec
   lda nomolos_map_x+1
-  sbc entity_instances+entity_instance::positionX,x
+  sbc entity_instances+entity_instance::position_x,x
   lda nomolos_map_x+2
-  sbc entity_instances+entity_instance::positionX+1,x
+  sbc entity_instances+entity_instance::position_x+1,x
   bpl bat_will_go_right
 bat_will_go_left:
   lda #$ff
@@ -177,33 +177,33 @@ bat_move:
 
   ;move bat horizontally
   clc
-  lda entity_instances+entity_instance::positionX,x
+  lda entity_instances+entity_instance::position_x,x
   adc entity_locals+bat_locals::x_velocity,x
-  sta entity_instances+entity_instance::positionX,x
-  lda entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
   adc entity_locals+bat_locals::x_velocity+1,x
-  sta entity_instances+entity_instance::positionX+1,x
+  sta entity_instances+entity_instance::position_x+1,x
 
   ;add y velocity to 24 bit Y coordinate with sign extension
 .scope addYVelocity
   clc
   lda entity_locals+bat_locals::y_velocity,x
-  adc entity_instances+entity_instance::positionYFine,x
-  sta entity_instances+entity_instance::positionYFine,x
+  adc entity_instances+entity_instance::position_y_fine,x
+  sta entity_instances+entity_instance::position_y_fine,x
   lda entity_locals+bat_locals::y_velocity+1,x
   bmi signExtend
-  adc entity_instances+entity_instance::positionY,x
-  sta entity_instances+entity_instance::positionY,x
+  adc entity_instances+entity_instance::position_y,x
+  sta entity_instances+entity_instance::position_y,x
   lda #0
-  adc entity_instances+entity_instance::positionY+1,x
-  sta entity_instances+entity_instance::positionY+1,x
+  adc entity_instances+entity_instance::position_y+1,x
+  sta entity_instances+entity_instance::position_y+1,x
   jmp signExtendAddDone
 signExtend:
-  adc entity_instances+entity_instance::positionY,x
-  sta entity_instances+entity_instance::positionY,x
+  adc entity_instances+entity_instance::position_y,x
+  sta entity_instances+entity_instance::position_y,x
   lda #$ff
-  adc entity_instances+entity_instance::positionY+1,x
-  sta entity_instances+entity_instance::positionY+1,x
+  adc entity_instances+entity_instance::position_y+1,x
+  sta entity_instances+entity_instance::position_y+1,x
 signExtendAddDone:
 .endscope
 
@@ -281,15 +281,15 @@ killBat:
   lda #entity_index_explosion
   sta b0
 
-  ;get out low byte of positionX
-  lda entity_instances+entity_instance::positionX,x
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
   sta w0
-  ;get out high byte of positionX
-  lda entity_instances+entity_instance::positionX+1,x
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
   sta w0+1
 
-  ;get out positionY
-  lda entity_instances+entity_instance::positionY,x
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
   sta b1
 
   jsr entity_spawn
