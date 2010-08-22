@@ -11,7 +11,7 @@ DRAGONBOSS_INC = 1
 .endstruct
 
 DRAGONBOSS_WIDTH = 32
-DRAGONBOSS_HEIGHT = 48
+DRAGONBOSS_HEIGHT = 8
 
 DRAGONBOSS_INITSTATE = 0
 DRAGONBOSS_INITBOSSMODESTATE = 1
@@ -141,18 +141,6 @@ dragonboss_spiticeballsstate:
 dragonboss_glowingeyesstate:
 
   .scope
-  
-  ldy #level_data_struct::palette
-  lda (base_address_rom_definition_table),y
-  sta w0
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w0+1
-  
-  lda #4
-  sta b3
-  
-  jsr ppu_load_dynamic_palette_brightness_preserve_calling_bank
   
   dec entity_locals+dragonboss_locals::state_switch_counter,x
 
@@ -441,18 +429,6 @@ dragonboss_substate_attacked:
   ;the Dragon's palette somehow
   
   .scope
-  
-  ldy #level_data_struct::palette
-  lda (base_address_rom_definition_table),y
-  sta w0
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w0+1
-  
-  lda #4
-  sta b3
-  
-  jsr ppu_load_dynamic_palette_brightness_preserve_calling_bank
   
   lda entity_locals+dragonboss_locals::substate_switch_counter,x
   and #%00000111
