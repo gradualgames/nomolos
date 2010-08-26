@@ -10,6 +10,7 @@ PPU_INC = 1
 .global ppu_load_chr_groups
 .global ppu_load_name_table
 .global ppu_clear_name_table
+.global ppu_adjust_color_brightness
 .global ppu_load_dynamic_palette_brightness
 .global ppu_load_dynamic_palette_brightness_preserve_calling_bank
 .global ppu_load_palette

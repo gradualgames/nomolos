@@ -6,6 +6,7 @@ DRAGONBOSS_INC = 1
 .struct dragonboss_locals
   state_switch_counter .byte
   substate_switch_counter .byte
+  brightness_counter .byte
   health .byte
   substate .byte
   prng_seed .byte
@@ -24,6 +25,7 @@ DRAGONBOSS_DYINGSTATE = 6
 
 DRAGONBOSS_SUBSTATE_NOT_ATTACKED = 0
 DRAGONBOSS_SUBSTATE_ATTACKED = 1
+DRAGONBOSS_SUBSTATE_DYING = 2
 
 ;these should be drawn at location 22, 22 in the nametable
 boss1_tail_up_tiles:
@@ -261,6 +263,8 @@ do_not_switch_to_tailupstate:
 ;explosion.
 ;****************************************************************
 dragonboss_dyingstate_handler:
+
+  jsr dragonboss_substate_handler
 
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   
@@ -576,6 +580,8 @@ dragonboss_substate_handler:
   beq dragonboss_substate_not_attacked
   cmp #DRAGONBOSS_SUBSTATE_ATTACKED
   beq dragonboss_substate_attacked
+  cmp #DRAGONBOSS_SUBSTATE_DYING
+  beq dragonboss_substate_dying
 
 dragonboss_substate_not_attacked:
 
@@ -636,6 +642,37 @@ nomolos_not_attacking:
   
 dragonboss_substate_attacked:
   
+  jsr dragonboss_substate_attacked_handler
+ 
+  jmp dragonboss_substate_switch_complete
+  
+do_not_switch_to_dying_state:
+  
+  ;attacked state is done, switch back to not attacked state
+  lda #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
+  sta entity_locals+dragonboss_locals::substate,x
+  
+do_not_switch_to_not_attacked_state:
+
+  jmp dragonboss_substate_switch_complete
+  
+dragonboss_substate_dying:
+
+  jsr dragonboss_substate_dying_handler
+
+  jmp dragonboss_substate_switch_complete
+  
+dragonboss_substate_switch_complete:
+  
+  jsr dragonboss_drawface
+
+  rts
+  
+;****************************************************************
+;Dragon boss's substate attacked handler
+;****************************************************************
+.proc dragonboss_substate_attacked_handler
+
   ;while we are in the attacked state, we want to be flickering
   ;the Dragon's palette somehow
   
@@ -670,19 +707,75 @@ dragonboss_substate_attacked:
   lda #DRAGONBOSS_DYINGSTATE
   sta entity_instances+entity_instance::state,x
   
-do_not_switch_to_dying_state:
+  lda #$fe
+  sta entity_locals+dragonboss_locals::substate_switch_counter,x
   
-  ;attacked state is done, switch back to not attacked state
-  lda #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
+  lda #4
+  sta entity_locals+dragonboss_locals::brightness_counter,x
+  
+  lda #DRAGONBOSS_SUBSTATE_DYING
   sta entity_locals+dragonboss_locals::substate,x
-  
-do_not_switch_to_not_attacked_state:
-  
-dragonboss_substate_switch_complete:
-  
-  jsr dragonboss_drawface
 
   rts
+
+.endproc
+  
+;****************************************************************
+;Dragon boss's substate dying handler
+;****************************************************************
+.proc dragonboss_substate_dying_handler
+
+  dec entity_locals+dragonboss_locals::substate_switch_counter,x
+  dec entity_locals+dragonboss_locals::substate_switch_counter,x
+  bne do_not_decrement_brightness_counter
+  
+  dec entity_locals+dragonboss_locals::brightness_counter,x
+  
+do_not_decrement_brightness_counter:
+  
+  ldy #3
+darken_dragon_palette_loop:
+  lda dynamic_palette,y
+  sta b0
+  
+  lda entity_locals+dragonboss_locals::brightness_counter,x
+  sta b3
+  
+  jsr ppu_adjust_color_brightness
+  
+  lda b0
+  sta dynamic_palette,y
+  
+  lda dynamic_palette+28,y
+  sta b0
+  
+  lda entity_locals+dragonboss_locals::brightness_counter,x
+  sta b3
+  
+  jsr ppu_adjust_color_brightness
+  
+  lda b0
+  sta dynamic_palette+28,y
+  
+  dey
+  bpl darken_dragon_palette_loop
+
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
+  ;if the dragon has faded all the way out, kill the entity
+  lda entity_locals+dragonboss_locals::brightness_counter,x
+  beq dragonboss_dead
+  
+  rts
+  
+dragonboss_dead:
+
+  jsr entity_kill
+
+  rts
+
+.endproc
   
 ;****************************************************************
 ;This routine draws the Dragon's face overlay as sprites.
