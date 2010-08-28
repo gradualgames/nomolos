@@ -11,6 +11,7 @@ DRAGONBOSS_INC = 1
   substate .byte
   drawstate .byte
   prng_seed .byte
+  erase_row .byte
 .endstruct
 
 DRAGONBOSS_WIDTH = 32
@@ -24,6 +25,7 @@ DRAGONBOSS_GLOWINGEYESSTATE = 4
 DRAGONBOSS_SPITICEBALLSSTATE = 5
 DRAGONBOSS_CLOSEMOUTHSTATE = 6
 DRAGONBOSS_DYINGSTATE = 7
+DRAGONBOSS_ERASESTATE = 8
 
 DRAGONBOSS_SUBSTATE_NOT_ATTACKED = 0
 DRAGONBOSS_SUBSTATE_ATTACKED = 1
@@ -48,6 +50,10 @@ boss1_tail_down_tiles:
   .byte $06,$06,$74,$2a,$6c,$6d,$2a,$1f,$7d,$2a,$77,$78,$2a,$2a,$84,$2a,$77,$77,$80,$2a,$8d,$8d,$77,$77,$77,$88,$92,$93,$94,$95,$96,$97
   .byte $a7,$a8,$a9,$aa,$ab,$ac
 
+;this should start at 14,8
+boss1_erase_row_tiles:
+  .byte $12,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+  
 boss1_glowing_eyes_color_sequence:
   .byte $05, $15, $25, $35, $25, $15, $05, $05
   
@@ -73,6 +79,8 @@ dragonboss_update:
   beq dragonboss_closemouthstate
   cmp #DRAGONBOSS_DYINGSTATE
   beq dragonboss_dyingstate
+  cmp #DRAGONBOSS_ERASESTATE
+  beq dragonboss_erasestate
 
 ;****************************************************************
 ;The Init state
@@ -163,6 +171,12 @@ dragonboss_closemouthstate:
 dragonboss_dyingstate:
 
   jsr dragonboss_dyingstate_handler
+  
+  rts
+  
+dragonboss_erasestate:
+
+  jsr dragonboss_erasestate_handler
   
   rts
   
@@ -355,6 +369,45 @@ do_not_spawn_explosion:
   rts
   
 ;****************************************************************
+;This state just erases the Dragon graphics from the nametable.
+;This happens after the Dragon has faded out.
+;****************************************************************
+.proc dragonboss_erasestate_handler
+
+  dec entity_locals+dragonboss_locals::state_switch_counter,x
+  bne do_not_kill_dragon
+  
+  jsr entity_kill
+  
+do_not_kill_dragon:
+
+  lda entity_locals+dragonboss_locals::state_switch_counter,x
+  and #%00000111
+  bne do_not_increment_erase_row
+  
+  ;draw an erase row
+  lda #14
+  sta b0
+  lda entity_locals+dragonboss_locals::erase_row,x
+  sta b1
+  lda #<boss1_erase_row_tiles
+  sta w0
+  lda #>boss1_erase_row_tiles
+  sta w0+1
+  jsr ppu_draw_rectangular_region
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
+  inc entity_locals+dragonboss_locals::erase_row,x
+  
+do_not_increment_erase_row:
+  
+  rts
+
+.endproc
+  
+;****************************************************************
 ;This is a simple pseudo random number generator borrowed from
 ;the Commodore 64 codebase. It is used here to generate
 ;explosions all over the Dragon's body when it enters the dying
@@ -379,6 +432,10 @@ noEor:
   rts
 .endproc
   
+;****************************************************************
+;This state just draws the dragon's mouth closed and notifies
+;the sub-state machine to draw the overlay closed mouth.
+;****************************************************************
 dragonboss_closemouthstate_handler:
 
   jsr dragonboss_substate_handler
@@ -840,16 +897,23 @@ darken_dragon_palette_loop:
   lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
   sta state_control_params+play_level_state_control::upload_ppu_data
   
-  ;if the dragon has faded all the way out, kill the entity
+  ;if the dragon has faded all the way out, switch to "erase" state
   lda entity_locals+dragonboss_locals::brightness_counter,x
-  beq dragonboss_dead
+  beq dragonboss_erase
   
   rts
   
-dragonboss_dead:
+dragonboss_erase:
 
-  jsr entity_kill
+  lda #160
+  sta entity_locals+dragonboss_locals::state_switch_counter,x
 
+  lda #6
+  sta entity_locals+dragonboss_locals::erase_row,x
+  
+  lda #DRAGONBOSS_ERASESTATE
+  sta entity_instances+entity_instance::state,x
+  
   rts
 
 .endproc
