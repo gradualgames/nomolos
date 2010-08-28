@@ -27,14 +27,21 @@ DRAGONBOSS_SUBSTATE_NOT_ATTACKED = 0
 DRAGONBOSS_SUBSTATE_ATTACKED = 1
 DRAGONBOSS_SUBSTATE_DYING = 2
 
+;these should be drawn at location 14, 12 in the nametable
+boss1_mouth_shut_tiles:
+  .byte $05,$06,$19,$1a,$1b,$1c,$1d,$23,$24,$25,$29,$27,$2d,$2e,$32,$33,$00,$36,$37,$3c,$3d,$3e,$41,$47,$48,$49,$4a,$4c,$52,$53,$54,$55
+
+boss1_mouth_open_tiles:
+  .byte $05,$06,$19,$1a,$1b,$1c,$1d,$23,$24,$25,$26,$27,$2d,$2e,$2f,$30,$00,$36,$37,$38,$39,$3a,$41,$42,$43,$44,$45,$4c,$4d,$4e,$4f,$50
+
 ;these should be drawn at location 22, 22 in the nametable
 boss1_tail_up_tiles:
-  .byte $06,$06,$66,$29,$67,$68,$29,$1f,$6f,$29,$70,$71,$29,$29,$76,$29,$77,$78,$79,$29,$7f,$7f,$80,$81,$82,$83,$93,$94,$95,$96,$97,$98
-  .byte $a9,$aa,$ab,$ac,$9d,$9e
+  .byte $06,$06,$74,$2a,$75,$76,$2a,$1f,$7d,$2a,$7e,$7f,$2a,$2a,$84,$2a,$85,$86,$87,$2a,$8d,$8d,$8e,$8f,$90,$91,$a1,$a2,$a3,$a4,$a5,$a6
+  .byte $b7,$b8,$b9,$ba,$ab,$ac
 
 boss1_tail_down_tiles:
-  .byte $06,$06,$66,$29,$5e,$5f,$29,$1f,$6f,$29,$69,$6a,$29,$29,$76,$29,$69,$69,$72,$29,$7f,$7f,$69,$69,$69,$7a,$84,$85,$86,$87,$88,$89
-  .byte $99,$9a,$9b,$9c,$9d,$9e
+  .byte $06,$06,$74,$2a,$6c,$6d,$2a,$1f,$7d,$2a,$77,$78,$2a,$2a,$84,$2a,$77,$77,$80,$2a,$8d,$8d,$77,$77,$77,$88,$92,$93,$94,$95,$96,$97
+  .byte $a7,$a8,$a9,$aa,$ab,$ac
 
 boss1_glowing_eyes_color_sequence:
   .byte $05, $15, $25, $35, $25, $15, $05, $05
@@ -483,6 +490,20 @@ dragonboss_spiticeballsstate_handler:
   
   lda #DRAGONBOSS_TAILUPSTATE
   sta entity_instances+entity_instance::state,x
+  
+  ;draw dragon's mouth open
+  lda #14
+  sta b0
+  lda #10
+  sta b1
+  lda #<boss1_mouth_open_tiles
+  sta w0
+  lda #>boss1_mouth_open_tiles
+  sta w0+1
+  jsr ppu_draw_rectangular_region
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
+  sta state_control_params+play_level_state_control::upload_ppu_data
 
   rts
   
@@ -790,7 +811,7 @@ dragonboss_drawface:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #level_data_struct::dragonboss_eyes
+  ldy #level_data_struct::dragonboss_face_mouthshut
   lda (base_address_rom_definition_table),y
   sta w0
   iny
@@ -804,30 +825,6 @@ dragonboss_drawface:
   lda #0
   sta w3+1
   lda #87
-  sta w4
-  lda #0
-  sta w4+1
-
-  jsr sprite_draw_metasprite_16bit
-  
-  ldy #level_data_struct::dragonboss_offset
-  lda (base_address_rom_definition_table),y
-  sta sprite_group_offset
-
-  ldy #level_data_struct::dragonboss_nose
-  lda (base_address_rom_definition_table),y
-  sta w0
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w0+1
-
-  sec
-  lda #120
-  sbc camera_scroll_x
-  sta w3
-  lda #0
-  sta w3+1
-  lda #111
   sta w4
   lda #0
   sta w4+1

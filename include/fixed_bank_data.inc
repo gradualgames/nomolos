@@ -90,8 +90,8 @@ index_play_level_state     = 4 * 4
   ice_ball_fly .word
   shark_leap .word
   stalactite_fall .word
-  dragonboss_eyes .word
-  dragonboss_nose .word
+  dragonboss_face_mouthshut .word
+  dragonboss_face_mouthopen .word
   
   attack_sound .word
   hit_sound .word

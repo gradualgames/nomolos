@@ -91,8 +91,8 @@ ROMDefinitionTable0:
   .word 0 ;spritesheet1_IceBallFly
   .word 0 ;spritesheet1_SharkLeap
   .word 0 ;spritesheet1_Stalactite0
-  .word 0 ;dragonboss_eyes
-  .word 0 ;dragonboss_nose
+  .word 0 ;dragonboss_face_mouthshut
+  .word 0 ;dragonboss_face_mouthopen
 
   .word attack_sound
   .word hit_sound
@@ -182,8 +182,8 @@ ROMDefinitionTable1:
   .word $0000 ;spritesheet1_IceBallFly
   .word $0000 ;spritesheet1_SharkLeap
   .word $0000 ;spritesheet1_Stalactite0
-  .word 0 ;dragonboss_eyes
-  .word 0 ;dragonboss_nose
+  .word 0 ;dragonboss_face_mouthshut
+  .word 0 ;dragonboss_face_mouthopen
   
   .word attack_sound
   .word hit_sound
@@ -271,8 +271,8 @@ ROMDefinitionTable2:
   .word spritesheet1_IceBallFly
   .word spritesheet1_SharkLeap
   .word $0000 ;spritesheet1_Stalactite0
-  .word $0000 ;dragonboss_eyes
-  .word $0000 ;dragonboss_nose
+  .word $0000 ;dragonboss_face_mouthshut
+  .word $0000 ;dragonboss_face_mouthopen
 
   .word attack_sound
   .word hit_sound
