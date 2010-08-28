@@ -9,6 +9,7 @@ DRAGONBOSS_INC = 1
   brightness_counter .byte
   health .byte
   substate .byte
+  drawstate .byte
   prng_seed .byte
 .endstruct
 
@@ -21,11 +22,15 @@ DRAGONBOSS_TAILUPSTATE = 2
 DRAGONBOSS_TAILDOWNSTATE = 3
 DRAGONBOSS_GLOWINGEYESSTATE = 4
 DRAGONBOSS_SPITICEBALLSSTATE = 5
-DRAGONBOSS_DYINGSTATE = 6
+DRAGONBOSS_CLOSEMOUTHSTATE = 6
+DRAGONBOSS_DYINGSTATE = 7
 
 DRAGONBOSS_SUBSTATE_NOT_ATTACKED = 0
 DRAGONBOSS_SUBSTATE_ATTACKED = 1
 DRAGONBOSS_SUBSTATE_DYING = 2
+
+DRAGONBOSS_DRAWSTATE_MOUTH_SHUT = 0
+DRAGONBOSS_DRAWSTATE_MOUTH_OPEN = 1
 
 ;these should be drawn at location 14, 12 in the nametable
 boss1_mouth_shut_tiles:
@@ -64,6 +69,8 @@ dragonboss_update:
   beq dragonboss_glowingeyesstate
   cmp #DRAGONBOSS_SPITICEBALLSSTATE
   beq dragonboss_spiticeballsstate
+  cmp #DRAGONBOSS_CLOSEMOUTHSTATE
+  beq dragonboss_closemouthstate
   cmp #DRAGONBOSS_DYINGSTATE
   beq dragonboss_dyingstate
 
@@ -91,6 +98,10 @@ dragonboss_init:
   ;dragon boss's substate starts out as not attacked
   lda #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
   sta entity_locals+dragonboss_locals::substate,x
+  
+  ;dragon boss's mouth starts out as shut
+  lda #DRAGONBOSS_DRAWSTATE_MOUTH_SHUT
+  sta entity_locals+dragonboss_locals::drawstate,x
   
   lda #DRAGONBOSS_INITBOSSMODESTATE
   sta entity_instances+entity_instance::state,x
@@ -141,6 +152,12 @@ dragonboss_spiticeballsstate:
 
   jsr dragonboss_spiticeballsstate_handler
 
+  rts
+  
+dragonboss_closemouthstate:
+
+  jsr dragonboss_closemouthstate_handler
+  
   rts
   
 dragonboss_dyingstate:
@@ -362,6 +379,41 @@ noEor:
   rts
 .endproc
   
+dragonboss_closemouthstate_handler:
+
+  jsr dragonboss_substate_handler
+  
+  dec entity_locals+dragonboss_locals::state_switch_counter,x
+  bne do_not_switch_to_tail_up_state
+  
+  ;draw dragon's mouth closed
+  lda #14
+  sta b0
+  lda #10
+  sta b1
+  lda #<boss1_mouth_shut_tiles
+  sta w0
+  lda #>boss1_mouth_shut_tiles
+  sta w0+1
+  jsr ppu_draw_rectangular_region
+  
+  ;make sure the draw routine overlays the closed mouth sprite
+  lda #DRAGONBOSS_DRAWSTATE_MOUTH_SHUT
+  sta entity_locals+dragonboss_locals::drawstate,x
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
+  lda #100
+  sta entity_locals+dragonboss_locals::state_switch_counter,x
+  
+  lda #DRAGONBOSS_TAILUPSTATE
+  sta entity_instances+entity_instance::state,x
+  
+do_not_switch_to_tail_up_state:
+
+  rts
+  
 ;****************************************************************
 ;The Spit Iceballs state handler
 ;This state spawns three ice-balls and parameterizes them to fly
@@ -488,7 +540,7 @@ dragonboss_spiticeballsstate_handler:
   lda #ICEBALL_FLYSTATE
   sta entity_instances+entity_instance::state,y
   
-  lda #DRAGONBOSS_TAILUPSTATE
+  lda #DRAGONBOSS_CLOSEMOUTHSTATE
   sta entity_instances+entity_instance::state,x
   
   ;draw dragon's mouth open
@@ -501,6 +553,10 @@ dragonboss_spiticeballsstate_handler:
   lda #>boss1_mouth_open_tiles
   sta w0+1
   jsr ppu_draw_rectangular_region
+  
+  ;make sure the draw routine overlays the open mouth sprite
+  lda #DRAGONBOSS_DRAWSTATE_MOUTH_OPEN
+  sta entity_locals+dragonboss_locals::drawstate,x
   
   lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
   sta state_control_params+play_level_state_control::upload_ppu_data
@@ -799,7 +855,8 @@ dragonboss_dead:
 .endproc
   
 ;****************************************************************
-;This routine draws the Dragon's face overlay as sprites.
+;This routine draws the Dragon's face overlay as sprites,
+;depending on whether his mouth is open or not.
 ;****************************************************************
 dragonboss_drawface:
 
@@ -811,7 +868,20 @@ dragonboss_drawface:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
+  ;get drawing state
+  lda entity_locals+dragonboss_locals::drawstate,x
+  cmp #DRAGONBOSS_DRAWSTATE_MOUTH_SHUT
+  beq draw_mouth_shut
+  cmp #DRAGONBOSS_DRAWSTATE_MOUTH_OPEN
+  beq draw_mouth_open
+  
+draw_mouth_shut:
   ldy #level_data_struct::dragonboss_face_mouthshut
+  jmp drawstate_switch_done
+draw_mouth_open:
+  ldy #level_data_struct::dragonboss_face_mouthopen
+drawstate_switch_done:
+  
   lda (base_address_rom_definition_table),y
   sta w0
   iny
