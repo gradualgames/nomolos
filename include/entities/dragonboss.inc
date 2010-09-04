@@ -374,6 +374,10 @@ do_not_spawn_explosion:
 ;****************************************************************
 .proc dragonboss_erasestate_handler
 
+  ;make sure to clean up mess from vibrating the screen
+  lda #0
+  sta camera_scroll_x
+
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_kill_dragon
   
