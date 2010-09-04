@@ -45,6 +45,26 @@
   rts
 .endproc
 
+;initializes victory mode by changing the state param of
+;the play level state and starts playing victory music located
+;in the fixed bank
+.proc play_level_state_init_victory_mode
+
+  lda #PLAYLEVELSTATE_VICTORYMODE
+  sta state_control_params+play_level_state_control::state
+
+  ;load victory music
+.ifdef MUSIC_ENABLE
+  lda #<title_music
+  sta sound_param_word_1
+  lda #>title_music
+  sta sound_param_word_1+1
+  jsr song_initialize
+.endif
+  
+  rts
+.endproc
+
 .proc play_level_state_update
 
   lda state_control_params+play_level_state_control::state
@@ -58,6 +78,8 @@
   beq pause
   cmp #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
   beq switch_to_level_in_state
+  cmp #PLAYLEVELSTATE_VICTORYMODE
+  beq victory_mode
 
 play_level_state_init:
 
@@ -102,6 +124,16 @@ playBoss:
   ;****************************************************************
 
   jsr boss_state
+  
+  jmp state_switch_complete
+  
+victory_mode:
+
+  ;****************************************************************
+  ;Call the victory mode state handler
+  ;****************************************************************
+
+  jsr victory_state
   
   jmp state_switch_complete
   
@@ -206,6 +238,66 @@ state_switch_complete:
   jsr nomolos_draw_hearts
   jsr entity_update_all
   jsr map_decode
+
+  ;ppu data is ready
+  lda #1
+  sta ppu_data_ready
+
+  .ifdef MUSIC_ENABLE
+  ;switch to the level and music bank
+  ldy #level_data_struct::level_music_bank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+  jsr sound_update
+  .endif
+
+  .scope
+  lda buffer_controller+buttons::_start
+  and #%00000011
+  cmp #1
+  bne skip_start_button_test
+
+  lda #PLAYLEVELSTATE_PAUSE
+  sta state_control_params+play_level_state_control::state
+
+skip_start_button_test:
+  .endscope
+
+  rts
+
+.endproc
+
+;****************************************************************
+;The victory mode state handler
+;****************************************************************
+.proc victory_state
+
+  ;wait for vblank to complete
+  lda #0
+  sta vblank_done
+: lda vblank_done
+  beq :-
+
+  ;turn monochrome bit on
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  set_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
+  .endif
+
+  ;ppu data is not ready
+  lda #0
+  sta ppu_data_ready
+
+  ;camera has not scrolled yet
+  sta camera_scroll_direction
+
+  jsr sprite_clear_all
+
+  jsr nomolos_update
+  jsr nomolos_draw
+  jsr nomolos_draw_hearts
+  jsr entity_update_all
 
   ;ppu data is ready
   lda #1

@@ -905,6 +905,8 @@ darken_dragon_palette_loop:
   
 dragonboss_erase:
 
+  jsr play_level_state_init_victory_mode
+
   lda #160
   sta entity_locals+dragonboss_locals::state_switch_counter,x
 

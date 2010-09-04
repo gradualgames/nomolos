@@ -2,6 +2,7 @@
 PLAYLEVELSTATE_INC = 1
 
 .global play_level_state_init_boss_mode
+.global play_level_state_init_victory_mode
 .global play_level_state_update
 .global play_level_state_update_ppu
 
@@ -10,6 +11,7 @@ PLAYLEVELSTATE_KEEPPLAYING =           %00000001
 PLAYLEVELSTATE_BOSSMODE    =           %00000010
 PLAYLEVELSTATE_PAUSE       =           %00000011
 PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000100
+PLAYLEVELSTATE_VICTORYMODE =           %00000101
 
 PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE =    %00000000
 PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION = %00000001
