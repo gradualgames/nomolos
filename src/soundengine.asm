@@ -609,6 +609,12 @@ volume_stop:
 .proc song_initialize
 song_address = sound_param_word_1
 
+  ;save index regs
+  tya
+  pha
+  txa
+  pha
+
   ;load square 1 stream
   ldy #0
   lda (song_address),y
@@ -697,6 +703,12 @@ no_noise:
   lda (song_address),y
   sta base_address_duty_envelopes+1
 
+  ;restore index regs
+  pla
+  tax
+  pla
+  tay
+  
   rts
 
 .endproc
