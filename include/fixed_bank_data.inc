@@ -11,6 +11,7 @@ index_play_level_state     = 4 * 4
 .global level_definition_table
 .global banktable
 .global haltmusic
+.global victory_music
 .global title_music
 .global font1
 .global power_table

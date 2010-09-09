@@ -24,6 +24,7 @@ PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION = %00000001
   palette_cycle_index .byte     ;index into array of cycled palettes
   cycling_palette_speed .byte   ;what the cycle counter gets reset to
   upload_ppu_data .byte         ;flag to upload certain kinds of ppu data.
+  frame_counter .word           ;16 bit frame counter for victory mode
 .endstruct
 
 .endif

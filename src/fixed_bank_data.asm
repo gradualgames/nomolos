@@ -567,7 +567,92 @@ DragonBoss:
 banktable:
   .byte $00, $01, $02, $03, $04, $05, $06, $07
 
+.export victory_music
+victory_music: 
+.scope
+  .word Square1
+  .word Square2
+  .word Triangle
+  .word Noise
+  .word volume_envelopes
+  .word pitch_envelopes
+  .word duty_envelopes
+
+volume_envelopes:
+  .word volume_envelope_0
+  .word volume_envelope_1
+  .word volume_envelope_2
+  .word 0
+  .word 0
+  
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  
+  sound_effect_volume_addresses
+
+pitch_envelopes:
+  .word pitch_envelope_0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  
+  sound_effect_pitch_addresses
+
+duty_envelopes:
+  .word duty_envelope_0
+
+volume_envelope_0:
+  .byte 0, ENV_STOP
+
+volume_envelope_1:
+  .byte 15, ENV_LOOP
+volume_envelope_2:
+  .byte 13,12,11,10,9,8,8,6,5,4,2,2,2,ENV_STOP
+
+pitch_envelope_0:
+  .byte 0, ENV_LOOP
+
+duty_envelope_0:
+  .byte 0, ENV_LOOP
+
+Square1:
+  .byte STV,2,STP,0,SDU,0,STL,24,A1,STL,8,A1,E2,E1,STL,16,A1,STL,8,E3,A1,E2,E1,STL
+  .byte 16,A1,STL,8,CS3,A1,E2,E1,STL,16,A1,STL,8,CS3,A1,E2,E1,STL,16,A1,STL,8,E3,A1
+  .byte E2,E1,STL,16,A1,D2,GS1,A1,B1,CS2,D2,E2,E1,STL,48,A1
+  .byte GOT
+  .word Square1
+
+Square2:
+  .byte STV,0,STL,8,A0,STV,2,STP,0,SDU,0,E3,STL,24,CS4,STL,8,B3,A3,E3,STL,24,CS4,STL
+  .byte 8,B3,A3,E3,STL,24,E3,STL,8,D3,CS3,E2,STL,24,E3,STL,8,D3,CS3,E2,STL,24,CS4,STL
+  .byte 8,B3,A3,E3,FS3,D3,E3,B2,CS3,A2,B2,GS2,A2,E2,FS2,D2,E2,CS2,D2,B1,STL,4,D2,CS2
+  .byte D2,CS2,STL,8,B1,CS2,STL,16,A1
+  .byte GOT
+  .word Square2
+
+Triangle:
+  .byte STV,0,STL,255,A0,STL,177,A0
+  .byte GOT
+  .word Triangle
+
+Noise:
+  .byte STV,0,STL,255,A0,STL,177,A0
+  .byte GOT
+  .word Noise
+.endscope
+  
 title_music:
+.scope
   .word Square1
   .word Square2
   .word Triangle
@@ -658,7 +743,8 @@ Noise:
   .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,45,A0
   .byte GOT
   .word Noise
-
+.endscope
+  
 font1:
   .word font0_patterns
   .byte $04

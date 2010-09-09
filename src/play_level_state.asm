@@ -55,12 +55,25 @@
 
   ;load victory music
 .ifdef MUSIC_ENABLE
-  lda #<title_music
+  lda #<victory_music
   sta sound_param_word_1
-  lda #>title_music
+  lda #>victory_music
   sta sound_param_word_1+1
   jsr song_initialize
 .endif
+
+  ;clear buttons we don't want to respond to during victory mode.
+  lda #%00000010
+  sta buffer_controller+buttons::_a
+  sta buffer_controller+buttons::_b
+  sta buffer_controller+buttons::_left
+  sta buffer_controller+buttons::_right
+
+  ;load a frame count
+  lda #90
+  sta state_control_params+play_level_state_control::frame_counter
+  lda #4
+  sta state_control_params+play_level_state_control::frame_counter+1
   
   rts
 .endproc
@@ -272,6 +285,23 @@ skip_start_button_test:
 ;The victory mode state handler
 ;****************************************************************
 .proc victory_state
+
+  sec
+  lda state_control_params+play_level_state_control::frame_counter
+  sbc #1
+  sta state_control_params+play_level_state_control::frame_counter
+  lda state_control_params+play_level_state_control::frame_counter+1
+  sbc #0
+  sta state_control_params+play_level_state_control::frame_counter+1
+  bne do_not_switch_to_level_in_state
+  
+  ldy #level_data_struct::next_level
+  lda (base_address_rom_definition_table),y
+  sta level_current
+  lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
+  sta state_control_params+play_level_state_control::state
+  
+do_not_switch_to_level_in_state:
 
   ;wait for vblank to complete
   lda #0
