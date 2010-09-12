@@ -126,6 +126,10 @@
   rts
   .endif
 
+  ;save x
+  txa
+  pha
+  
   ;if blinking is on, skip this whole routine
   lda nomolos_state_primary
   and #nomolos_blinking_test
@@ -172,6 +176,10 @@ skipDecreaseHealth:
   sta nomolos_state_primary
 
 skipHurt:
+
+  ;restore x
+  pla
+  tax
 
   rts
 
