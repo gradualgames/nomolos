@@ -3,7 +3,7 @@ LEVEL2_INC = 1
 
 level_2_index = 1
 level_2_bank = 1
-level_2_patterns_bank = 3
+level_2_patterns_bank = 4
 
 level2_sprites_Nomolos_chr_index = 0
 level2_sprites_Deentle_chr_index = level2_sprites_Nomolos_chr_index+Nomolos_chr_size
