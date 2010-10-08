@@ -7,6 +7,8 @@ BATREE_BATSPAWN_INTERVAL = 50
 
 .struct batree_locals
   batspawn_counter .byte
+  damaged_counter  .byte
+  health           .byte
 .endstruct
 
 BATREE_INITSTATE = 0
@@ -33,7 +35,15 @@ batree_initState:
   ;set initial batspawn_counter
   lda #BATREE_BATSPAWN_INTERVAL
   sta entity_locals+batree_locals::batspawn_counter,x
+  
+  ;set damaged counter to 0
+  lda #0
+  sta entity_locals+batree_locals::damaged_counter,x
 
+  ;set health to 3
+  lda #3
+  sta entity_locals+batree_locals::health,x
+  
   ;switch state to "run"
   lda #BATREE_MOVELEFTSTATE
   sta entity_instances+entity_instance::state,x
@@ -162,7 +172,7 @@ batree_draw:
   jsr entity_compute_screen_coordinates
 
   jsr entity_test_death_zone
-  beq killBatree
+  beq kill_batree
 
   ;load batree width and height
   lda #BATREE_WIDTH
@@ -176,8 +186,11 @@ batree_draw:
   jsr nomolos_hurt
 
 :
+
+  lda entity_locals+batree_locals::damaged_counter,x
+  bne nomolos_not_attacking
   jsr nomolos_is_deadly
-  beq nomolosNotAttacking
+  beq nomolos_not_attacking
 
   ;load batree width and height
   lda #BATREE_WIDTH
@@ -186,7 +199,7 @@ batree_draw:
   sta b3
   jsr entity_test_collision_hitbox
 
-  bne nomolosNotAttacking
+  bne nomolos_not_attacking
 
   ;play a hit sound
   txa
@@ -206,9 +219,25 @@ batree_draw:
   pla
   tax
 
-  jmp killBatree
+  ;set the damaged counter, this will make the entity flash
+  lda #10
+  sta entity_locals+batree_locals::damaged_counter,x
+  
+  ;decrement the entity's health
+  dec entity_locals+batree_locals::health,x
+  
+  bne nomolos_not_attacking
+  
+  jmp kill_batree
+  
+nomolos_not_attacking:
 
-nomolosNotAttacking:
+  lda entity_locals+batree_locals::damaged_counter,x
+  beq entity_not_flashing
+  
+  dec entity_locals+batree_locals::damaged_counter,x
+  
+entity_not_flashing:
 
   ldy #level_data_struct::batree_offset
   lda (base_address_rom_definition_table),y
@@ -218,11 +247,18 @@ nomolosNotAttacking:
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:
-  lda #%01000000
+  ;make the entity flash by cycling through color attributes
+  lda entity_locals+batree_locals::damaged_counter,x
+  and #%00000011
+  ;flip the sprite
+  ora #%01000000
   sta b2
   jmp entity_facing_test_done
 entity_facing_right:
-  lda #%00000000
+  ;make the entity flash by cycling through color attributes
+  lda entity_locals+batree_locals::damaged_counter,x
+  and #%00000011
+  ;do not flip the sprite
   sta b2
 entity_facing_test_done:
 
@@ -230,7 +266,7 @@ entity_facing_test_done:
 batreeOffscreen:
   rts
 
-killBatree:
+kill_batree:
 
   ;make it dead
   jsr entity_kill

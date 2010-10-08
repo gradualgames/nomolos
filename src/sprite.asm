@@ -355,7 +355,7 @@ wrapAroundTestDoneY:
   iny
   ;copy it over but OR in b2
   lda (w0),y
-  ora b2
+  eor b2
   sta sprite+spriteStruct::attribute,x
 
   ;****************************************************************************
