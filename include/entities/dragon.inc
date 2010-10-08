@@ -12,6 +12,8 @@ DRAGON_HALFHEIGHT = $0C
   anim_index .byte
   fly_hover  .byte
   shoot_iceball .byte
+  damaged_counter  .byte
+  health           .byte
 .endstruct
 
 DRAGON_INITSTATE = 0
@@ -63,6 +65,14 @@ dragon_initState:
   lda #DRAGON_TIME_TIL_SHOOT_ICEBALL
   sta entity_locals+dragon_locals::shoot_iceball,x
 
+  ;set damaged counter to 0
+  lda #0
+  sta entity_locals+dragon_locals::damaged_counter,x
+
+  ;set health to 3
+  lda #3
+  sta entity_locals+dragon_locals::health,x
+  
   rts
 
 dragon_hoverState:
@@ -310,7 +320,7 @@ yVelocityTestDone:
 
   rts
 
-killDragon:
+kill_dragon:
 
   ;make it dead
   jsr entity_kill
@@ -337,7 +347,7 @@ killDragon:
 dragon_draw:
 
   jsr entity_test_death_zone
-  beq killDragon
+  beq kill_dragon
 
   lda #level_data_struct::dragon_fly
   sta entity_locals+dragon_locals::anim_index,x
@@ -357,6 +367,8 @@ dragon_draw:
   jsr entity_reset_anim
 
 :
+  lda entity_locals+dragon_locals::damaged_counter,x
+  bne nomolosNotAttacking
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -387,9 +399,25 @@ dragon_draw:
   pla
   tax
 
-  jmp killDragon
+  ;set the damaged counter, this will make the entity flash
+  lda #10
+  sta entity_locals+dragon_locals::damaged_counter,x
+  
+  ;decrement the entity's health
+  dec entity_locals+dragon_locals::health,x
+  
+  bne nomolosNotAttacking
+  
+  jmp kill_dragon
 
 nomolosNotAttacking:
+
+  lda entity_locals+dragon_locals::damaged_counter,x
+  beq entity_not_flashing
+  
+  dec entity_locals+dragon_locals::damaged_counter,x
+  
+entity_not_flashing:
 
   ldy #level_data_struct::dragon_offset
   lda (base_address_rom_definition_table),y
@@ -399,11 +427,18 @@ nomolosNotAttacking:
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:
-  lda #%00000000
+  ;make the entity flash by cycling through color attributes
+  lda entity_locals+dragon_locals::damaged_counter,x
+  and #%00000011
+  ;do not flip the sprite
   sta b2
   jmp entity_facing_test_done
 entity_facing_right:
-  lda #%01000000
+  ;make the entity flash by cycling through color attributes
+  lda entity_locals+dragon_locals::damaged_counter,x
+  and #%00000011
+  ;flip the sprite
+  ora #%01000000
   sta b2
 entity_facing_test_done:
   jsr entity_draw_anim
@@ -411,6 +446,11 @@ entity_facing_test_done:
 dragonOffscreen:
   rts
 
+.endproc
+
+.proc play_hit_sound
+
+  rts
 .endproc
 
 .endif
