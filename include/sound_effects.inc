@@ -10,6 +10,7 @@
 .global sf_pitch_envelope_1
 .global sf_pitch_envelope_2
 
+.global owl_hoot_sound
 .global boss_hurt_sound
 .global boss_boom_sound
 .global attack_sound

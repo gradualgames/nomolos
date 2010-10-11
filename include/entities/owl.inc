@@ -33,6 +33,24 @@ owl_initState:
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 
+  ;play a hoot sound
+  txa
+  pha
+
+  lda #<owl_hoot_sound
+  sta sound_param_word_0
+  lda #>owl_hoot_sound
+  sta sound_param_word_0+1
+
+  lda #0
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+  
   ;set x velocity to 0
   lda #0
   sta entity_locals+owl_locals::x_velocity,x

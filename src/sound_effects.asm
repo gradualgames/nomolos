@@ -36,6 +36,16 @@ sf_pitch_envelope_1:
 sf_pitch_envelope_2:
   .byte 0, -10, -20, -30, -40, -50, -60, ENV_STOP
   
+owl_hoot_sound:
+  .byte STL, 1
+  .byte STV, SOUND_EFFECT_BASE+1
+  .byte STP, SOUND_EFFECT_BASE+1
+  .byte C4, E3, B3, D3, C4
+  .byte C4, E3, B3, D3, C4
+  .byte STV, SOUND_EFFECT_BASE+0
+  .byte A0
+  .byte TRM
+  
 boss_hurt_sound:
   .byte STL, 1
   .byte STV, SOUND_EFFECT_BASE+1
