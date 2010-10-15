@@ -27,6 +27,9 @@ sf_volume_envelope_fade_in_2:
 sf_volume_envelope_decay_slowly:
   .byte 15, 15, 14, 14, 13, 13, 12, 12, 11, 11, 10, 10, 9, 8, 6, 4, 2, 1, 0, ENV_STOP
   
+sf_volume_envelope_owl:
+  .byte 4,4,6,6,11,11,10,10,8,8,6,6,4,4,0,0,ENV_STOP
+  
 sf_pitch_envelope_0:
   .byte 0, ENV_LOOP
 
@@ -36,14 +39,16 @@ sf_pitch_envelope_1:
 sf_pitch_envelope_2:
   .byte 0, -10, -20, -30, -40, -50, -60, ENV_STOP
   
+sf_pitch_envelope_3_owl:
+  .byte 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,ENV_STOP
+  
+sf_duty_envelope_0:
+  .byte 0
+sf_duty_envelope_1:
+  .byte -128,ENV_LOOP
+  
 owl_hoot_sound:
-  .byte STL, 1
-  .byte STV, SOUND_EFFECT_BASE+1
-  .byte STP, SOUND_EFFECT_BASE+1
-  .byte C4, E3, B3, D3, C4
-  .byte C4, E3, B3, D3, C4
-  .byte STV, SOUND_EFFECT_BASE+0
-  .byte A0
+  .byte STV,SOUND_EFFECT_BASE+8,STP,SOUND_EFFECT_BASE+3,SDU,SOUND_EFFECT_BASE+1,STL,15,C4
   .byte TRM
   
 boss_hurt_sound:

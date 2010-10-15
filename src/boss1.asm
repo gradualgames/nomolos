@@ -62,6 +62,18 @@ pitch_envelopes:
 
 duty_envelopes:
   .word duty_envelope_0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+  sound_effect_duty_addresses
 
 volume_envelope_0:
   .byte 0, ENV_STOP

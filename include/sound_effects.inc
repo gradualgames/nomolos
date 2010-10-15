@@ -6,9 +6,13 @@
 .global sf_volume_envelope_fade_in
 .global sf_volume_envelope_fade_in_2
 .global sf_volume_envelope_decay_slowly
+.global sf_volume_envelope_owl
 .global sf_pitch_envelope_0
 .global sf_pitch_envelope_1
 .global sf_pitch_envelope_2
+.global sf_pitch_envelope_3_owl
+.global sf_duty_envelope_0
+.global sf_duty_envelope_1
 
 .global owl_hoot_sound
 .global boss_hurt_sound
@@ -35,7 +39,7 @@ SOUND_EFFECT_BASE = 10
   .word sf_volume_envelope_fade_in
   .word sf_volume_envelope_fade_in_2
   .word sf_volume_envelope_decay_slowly
-  .word 0
+  .word sf_volume_envelope_owl
   .word 0
 
 .endmacro
@@ -45,6 +49,22 @@ SOUND_EFFECT_BASE = 10
   .word sf_pitch_envelope_0
   .word sf_pitch_envelope_1
   .word sf_pitch_envelope_2
+  .word sf_pitch_envelope_3_owl
+  .word 0
+
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+.endmacro
+
+.macro sound_effect_duty_addresses
+
+  .word sf_duty_envelope_0
+  .word sf_duty_envelope_1
+  .word 0
   .word 0
   .word 0
 
