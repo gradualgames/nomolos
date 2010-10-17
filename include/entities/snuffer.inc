@@ -6,6 +6,7 @@ SNUFFER_INC = 1
 .endstruct
 
 SNUFFER_WIDTH = $20
+SNUFFER_HALFWIDTH = $10
 SNUFFER_HEIGHT = $18
 SNUFFER_HALFHEIGHT = $0C
 
@@ -49,6 +50,8 @@ entity_facing_test_done:
 
 snuffer_moveRightState:
 
+  jsr snuffer_test_below
+
   clc
   lda entity_instances+entity_instance::position_x,x
   adc #SNUFFER_WIDTH
@@ -83,6 +86,8 @@ no_right_collision:
   rts
 
 snuffer_moveLeftState:
+
+  jsr snuffer_test_below
 
   lda entity_instances+entity_instance::position_x,x
   sta w0
@@ -138,6 +143,43 @@ killSnuffer:
 
   rts
 
+snuffer_test_below:
+
+  ;perform collision detection and eject if necessary
+  ;load the entity's X coordinate + 8
+  clc
+  lda entity_instances+entity_instance::position_x,x
+  adc #SNUFFER_HALFWIDTH
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  adc #0
+  sta w0+1
+  ;load the entity's Y coordinate + height
+  clc
+  lda entity_instances+entity_instance::position_y,x
+  adc #SNUFFER_HEIGHT
+  sta w1
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta w1+1
+
+  jsr map_test_collision
+  lda b1
+  bne bottom_collision
+  
+  ;there was nothing beneath the snuffer so move it down
+  clc
+  lda entity_instances+entity_instance::position_y,x
+  adc #3
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta entity_instances+entity_instance::position_y+1,x
+  
+bottom_collision:
+
+  rts
+  
 snuffer_draw:
 
   lda #level_data_struct::snuffer_run
