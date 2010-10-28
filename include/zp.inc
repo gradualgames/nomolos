@@ -87,5 +87,8 @@ ZP_INC = 1
 .importzp buffer_controller
 .importzp palette_step
 .importzp frame_counter
+.importzp restart_x
+.importzp restart_y
+.importzp restart_screen
 
 .endif

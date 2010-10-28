@@ -37,3 +37,4 @@
 .include "shark.inc"
 .include "stalactite.inc"
 .include "dragonboss.inc"
+.include "restart.inc"

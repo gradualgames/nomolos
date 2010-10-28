@@ -1,3 +1,6 @@
+.ifndef SOUNDENGINE_INC
+SOUNDENGINE_INC = 1
+
 .globalzp apu_data_ready
 .globalzp apu_square_1_old
 .globalzp apu_square_2_old
@@ -193,3 +196,5 @@ soundeffect_two = (stream_size * 5)
   sta streams+stream::read_address+1,x
 
 .endmacro
+
+.endif

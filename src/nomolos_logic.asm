@@ -959,7 +959,9 @@ yesAboveCollision:
   cmp #$fe
   bne scaredyCatStillRising
 
-  lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
+  lda #1
+  sta state_control_params+play_level_state_control::use_restart_point
+  lda #PLAYLEVELSTATE_SWITCHTOLEVELINSTATE
   sta state_control_params+play_level_state_control::state
 
 scaredyCatStillRising:
@@ -971,7 +973,9 @@ nomolosNotAttackedDying:
   dec frame_counter
   bne skipLevelOutState
 
-  lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
+  lda #1
+  sta state_control_params+play_level_state_control::use_restart_point
+  lda #PLAYLEVELSTATE_SWITCHTOLEVELINSTATE
   sta state_control_params+play_level_state_control::state
 
 skipLevelOutState:

@@ -12,7 +12,7 @@
 .segment "CODE"
 
 .proc level_in_state_update
-  lda state_control_params+levelInStateControl::state
+  lda state_control_params+level_in_state_control::state
   cmp #LEVELINSTATE_INIT
   bne :+
   jmp levelInStateInit
@@ -45,7 +45,7 @@ levelInStateInit:
   upload_ppu_2000
 
   lda #LEVELINSTATE_RUN
-  sta state_control_params+levelInStateControl::state
+  sta state_control_params+level_in_state_control::state
 
   jmp stateCommandComplete
 
@@ -232,7 +232,7 @@ levelInStateRun:
   sta frame_counter
 
   lda #LEVELINSTATE_DONE
-  sta state_control_params+levelInStateControl::state
+  sta state_control_params+level_in_state_control::state
 
   jmp stateCommandComplete
 
@@ -249,8 +249,10 @@ levelInStateDone:
   jsr fade_out_palette
 
   ;load current level
+  lda state_control_params+level_in_state_control::use_restart_point
+  sta state_control_params+load_level_stateControl::use_restart_point
   lda level_current
-  sta state_control_params+load_level_stateControl::levelToLoad
+  sta state_control_params+load_level_stateControl::level_to_load
   lda #LOADLEVELSTATE_INIT
   sta state_control_params+load_level_stateControl::state
 

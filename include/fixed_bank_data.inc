@@ -100,10 +100,14 @@ index_play_level_state     = 4 * 4
 
   nomolos_start_x .byte
   nomolos_start_y .byte
+  starting_screen .byte
+  
+  nomolos_restart_x .byte
+  nomolos_restart_y .byte
+  restart_screen .byte
   
   intro_string .word
-  camera_scroll_enabled .byte
-  starting_screen .byte
+  camera_scroll_enabled .byte  
   map .word
   map_column_table .word
   attribute_column_table .word

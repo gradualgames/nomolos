@@ -16,6 +16,55 @@
 
 .segment "CODE"
 
+;returns start x coordinate for Nomolos in accumulator
+.proc get_restart_x
+
+  lda state_control_params+load_level_stateControl::use_restart_point
+  bne use_restart_point
+use_start_point:
+  ldy #level_data_struct::nomolos_start_x
+  lda (base_address_rom_definition_table),y
+  sta restart_x
+  
+  rts
+use_restart_point:
+  lda restart_x
+
+  rts
+.endproc
+
+;return start y coordinate for Nomolos in accumulator
+.proc get_restart_y
+
+  lda state_control_params+load_level_stateControl::use_restart_point
+  bne use_restart_point
+use_start_point:
+  ldy #level_data_struct::nomolos_start_y
+  lda (base_address_rom_definition_table),y
+  sta restart_y
+  
+  rts
+use_restart_point:
+  lda restart_y
+  rts
+.endproc
+
+;return restart screen in accmulator
+.proc get_restart_screen
+
+  lda state_control_params+load_level_stateControl::use_restart_point
+  bne use_restart_point
+use_start_point:
+  ldy #level_data_struct::starting_screen
+  lda (base_address_rom_definition_table),y
+  sta restart_screen
+  
+  rts
+use_restart_point:
+  lda restart_screen
+  rts
+.endproc
+
 .proc load_level_state_update
   lda state_control_params+load_level_stateControl::state
   cmp #LOADLEVELSTATE_INIT
@@ -54,7 +103,7 @@ load_level_stateInit:
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
 
-  lda state_control_params+load_level_stateControl::levelToLoad
+  lda state_control_params+load_level_stateControl::level_to_load
   ;multiply accumulator by 2
   asl
   ;transfer to x for indexing
@@ -190,6 +239,12 @@ load_level_stateInit:
   jsr entity_init_all
   jsr nomolos_init
   jsr camera_reset
+  
+  ;TODO: Load start coordinates for Nomolos.
+  jsr get_restart_x
+  sta nomolos_map_x+1
+  jsr get_restart_screen
+  sta nomolos_map_x+2
 
   ;turn on inc32 for column drawing
   set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
@@ -198,8 +253,7 @@ load_level_stateInit:
   ;set camera scroll at starting screen
   lda #0
   sta camera_scroll_x
-  ldy #level_data_struct::starting_screen
-  lda (base_address_rom_definition_table),y
+  jsr get_restart_screen
   sta camera_scroll_x+1
 
   ;load whether camera scroll is enabled for gameplay
@@ -246,8 +300,7 @@ load_level_stateDone:
   ;set camera scroll at starting screen
   lda #0
   sta camera_scroll_x
-  ldy #level_data_struct::starting_screen
-  lda (base_address_rom_definition_table),y
+  jsr get_restart_screen
   sta camera_scroll_x+1
 
   ;switch to play level state.

@@ -34,10 +34,12 @@ is_touching_nomolos:
   jsr sound_upload
   .endif
 
+  lda #0
+  sta state_control_params+play_level_state_control::use_restart_point
   ldy #level_data_struct::next_level
   lda (base_address_rom_definition_table),y
   sta level_current
-  lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
+  lda #PLAYLEVELSTATE_SWITCHTOLEVELINSTATE
   sta state_control_params+play_level_state_control::state
 
   rts

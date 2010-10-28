@@ -89,7 +89,7 @@
   beq playBoss
   cmp #PLAYLEVELSTATE_PAUSE
   beq pause
-  cmp #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
+  cmp #PLAYLEVELSTATE_SWITCHTOLEVELINSTATE
   beq switch_to_level_in_state
   cmp #PLAYLEVELSTATE_VICTORYMODE
   beq victory_mode
@@ -193,8 +193,10 @@ switch_to_level_in_state:
 
   bmi lives_negative_means_game_over
 
+  lda state_control_params+play_level_state_control::use_restart_point
+  sta state_control_params+level_in_state_control::use_restart_point
   lda #LEVELINSTATE_INIT
-  sta state_control_params+levelInStateControl::state
+  sta state_control_params+level_in_state_control::state
   ldx #index_level_in_state
   jsr switch_state
   jmp state_switch_complete
@@ -298,7 +300,7 @@ skip_start_button_test:
   ldy #level_data_struct::next_level
   lda (base_address_rom_definition_table),y
   sta level_current
-  lda #PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE
+  lda #PLAYLEVELSTATE_SWITCHTOLEVELINSTATE
   sta state_control_params+play_level_state_control::state
   
 do_not_switch_to_level_in_state:

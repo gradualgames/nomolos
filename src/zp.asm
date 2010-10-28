@@ -263,3 +263,11 @@ palette_step: .res 1
 
 .exportzp frame_counter
 frame_counter: .res 1
+
+;variables to store where to restart upon losing a life
+.exportzp restart_x
+restart_x: .res 1
+.exportzp restart_y
+restart_y: .res 1
+.exportzp restart_screen
+restart_screen: .res 1

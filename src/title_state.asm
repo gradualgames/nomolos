@@ -226,8 +226,10 @@ title_stateDone:
   sta nomolos_status_lives
   lda #starting_level
   sta level_current
+  lda #0
+  sta state_control_params+level_in_state_control::use_restart_point
   lda #LEVELINSTATE_INIT
-  sta state_control_params+levelInStateControl::state
+  sta state_control_params+level_in_state_control::state
   ldx #index_level_in_state
   jsr switch_state
 

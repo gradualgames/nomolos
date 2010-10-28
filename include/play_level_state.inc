@@ -10,7 +10,7 @@ PLAYLEVELSTATE_INIT        =           %00000000
 PLAYLEVELSTATE_KEEPPLAYING =           %00000001
 PLAYLEVELSTATE_BOSSMODE    =           %00000010
 PLAYLEVELSTATE_PAUSE       =           %00000011
-PLAYLEVELSTATE_SWITCHTOLEVELOUTSTATE = %00000100
+PLAYLEVELSTATE_SWITCHTOLEVELINSTATE = %00000100
 PLAYLEVELSTATE_VICTORYMODE =           %00000101
 
 PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE =    %00000000
@@ -25,6 +25,7 @@ PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION = %00000001
   cycling_palette_speed .byte   ;what the cycle counter gets reset to
   upload_ppu_data .byte         ;flag to upload certain kinds of ppu data.
   frame_counter .word           ;16 bit frame counter for victory mode
+  use_restart_point .byte       ;this parameter gets forwarded a lot...kind of unfortunate.
 .endstruct
 
 .endif

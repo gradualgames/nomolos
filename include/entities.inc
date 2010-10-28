@@ -1,3 +1,6 @@
+.ifndef ENTITIES_INC
+ENTITIES_INC = 1
+
 .global flail_item_update
 .global oneup_update
 .global mouse_update
@@ -18,6 +21,7 @@
 .global shark_update
 .global stalactite_update
 .global dragonboss_update
+.global restart_update
 
 ;entity indices
 entity_index_deentle = 1
@@ -40,6 +44,7 @@ entity_index_iceball = 17
 entity_index_shark = 18
 entity_index_stalactite = 19
 entity_index_dragonboss = 20
+entity_index_restart = 21
 
 ;entity structs. Only parameterizable entities have structs here.
 .struct iceball_locals
@@ -52,3 +57,5 @@ ICEBALL_HEIGHT = $10
 
 ICEBALL_INITSTATE = 0
 ICEBALL_FLYSTATE = 1
+
+.endif

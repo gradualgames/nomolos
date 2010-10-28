@@ -99,11 +99,15 @@ ROMDefinitionTable0:
   .word level1_palette
 
   .byte 120 ;nomolos_start_x
-  .byte 191  ;nomolos_start_y
+  .byte 191 ;nomolos_start_y
+  .byte 0   ;starting_screen
+  
+  .byte 120 ;nomolos_restart_x
+  .byte 191 ;nomolos_restart_y
+  .byte 10  ;restart_screen
 
   .word level1_intro_string
-  .byte 1 ;camera_scroll_enabled
-  .byte 0 ;starting_screen
+  .byte 1 ;camera_scroll_enabled  
   .word level1_map
   .word level1_map_column_table
   .word level1_attribute_column_table
@@ -191,10 +195,14 @@ ROMDefinitionTable1:
 
   .byte 120 ;nomolos_start_x
   .byte 90  ;nomolos_start_y
+  .byte 0   ;starting_screen
+  
+  .byte 120 ;nomolos_restart_x
+  .byte 90  ;nomolos_restart_y
+  .byte 7   ;restart_screen
 
   .word level2_intro_string
-  .byte 1 ;camera_scroll_enabled
-  .byte 0 ;starting_screen
+  .byte 1 ;camera_scroll_enabled  
   .word level2_map
   .word level2_map_column_table
   .word level2_attribute_column_table
@@ -280,10 +288,14 @@ ROMDefinitionTable2:
 
   .byte 30  ;nomolos_start_x
   .byte 100 ;nomolos_start_y
+  .byte 0 ;starting_screen
+  
+  .byte 120 ;nomolos_restart_x
+  .byte 90  ;nomolos_restart_y
+  .byte 7   ;restart_screen
 
   .word level3_intro_string
-  .byte 1 ;camera_scroll_enabled
-  .byte 0 ;starting_screen
+  .byte 1 ;camera_scroll_enabled  
   .word level3_map
   .word level3_map_column_table
   .word level3_attribute_column_table
@@ -367,12 +379,16 @@ ROMDefinitionTable3:
   .word hit_sound
   .word boss1_palette
 
-  .byte 40   ;nomolos_start_x
-  .byte 159  ;nomolos_start_y
+  .byte 40  ;nomolos_start_x
+  .byte 159 ;nomolos_start_y
+  .byte 0   ;starting_screen
+  
+  .byte 40  ;nomolos_restart_x
+  .byte 159 ;nomolos_restart_y
+  .byte 0   ;restart_screen
 
   .word boss1_intro_string
-  .byte 0 ;camera_scroll_enabled
-  .byte 0 ;starting_screen
+  .byte 0 ;camera_scroll_enabled  
   .word boss1_map
   .word boss1_map_column_table
   .word boss1_attribute_column_table
@@ -560,6 +576,14 @@ DragonBoss:
   .byte $00
   .byte %00000000
   .byte $05
+  .byte $00
+  .byte $00
+Restart:
+  .word restart_update
+  .byte $00
+  .byte $00
+  .byte %00000000
+  .byte $01
   .byte $00
   .byte $00
   
