@@ -25,6 +25,15 @@ mouseInit:
 
   jsr entity_kill_if_already_seen
 
+  ;reposition the entity so it sits at the bottom of the tile where it was spawned
+  clc
+  lda entity_instances+entity_instance::position_y,x
+  adc #7
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta entity_instances+entity_instance::position_y+1,x
+  
   rts
 
 mouseSitThere:

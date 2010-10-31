@@ -19,6 +19,15 @@ flail_item_init:
 
   jsr entity_kill_if_already_seen
 
+  ;reposition the entity so it sits at the bottom of the tile where it was spawned
+  clc
+  lda entity_instances+entity_instance::position_y,x
+  adc #8
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta entity_instances+entity_instance::position_y+1,x
+  
   lda #FLAILITEM_SITTHERESTATE
   sta entity_instances+entity_instance::state,x
 

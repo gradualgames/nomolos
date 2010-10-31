@@ -393,8 +393,7 @@ nextEntity:
 
   ;load the entity index
   lda entity_instances+entity_instance::index,x
-  ;multiply the entity index by 8
-  asl
+  ;multiply the entity index by 4
   asl
   asl
   tay
@@ -500,15 +499,11 @@ do_not_spawn:
   ;if entity counter for specified entity is greater than max allowed, do not spawn.
   lda b0
   tax
-  ;multiply by 8 to get offset from entity definition table
-  asl
+  ;multiply by 4 to get offset from entity definition table
   asl
   asl
   tay
   ;point y at the max allowed entities entry
-  iny
-  iny
-  iny
   iny
   iny
   lda (base_address_entity_definition_table),y
@@ -563,29 +558,28 @@ do_not_spawn:
   ;the entity and pull out its initialXOffset and initialYOffset,
   ;add these to the input parameters, and store them in position_x and position_y.
 
-  ;a holds the entity index, so multiply it by 8 to get an entity offset
-  asl
-  asl
-  asl
+  ;;a holds the entity index, so multiply it by 4 to get an entity offset
+  ;asl
+  ;asl
   ;put the entity offset into y
-  tay
+  ;tay
 
-  ;skip the UpdateRoutine, we're not interested in it here
-  iny
-  iny
+  ;;skip the UpdateRoutine, we're not interested in it here
+  ;iny
+  ;iny
 
-  ;store the initial X offset in b2 for now
-  lda (base_address_entity_definition_table),y
-  sta b2
+  ; ;store the initial X offset in b2 for now
+  ; lda (base_address_entity_definition_table),y
+  ; sta b2
 
-  ;load the low byte of the x parameter, and do a 16 bit subtract from this
-  sec
-  lda w0
-  sbc b2
-  sta w0
-  lda w0+1
-  sbc #0
-  sta w0+1
+  ; ;load the low byte of the x parameter, and do a 16 bit subtract from this
+  ; sec
+  ; lda w0
+  ; sbc b2
+  ; sta w0
+  ; lda w0+1
+  ; sbc #0
+  ; sta w0+1
 
   ;now w0 should have the spawn_position_x value
   lda w0
@@ -593,17 +587,17 @@ do_not_spawn:
   lda w0+1
   sta entity_instances+entity_instance::spawn_position_x+1,x
 
-  ;load initial y offset
-  iny
-  ;load the initial y offset and store it in b2 for now
-  lda (base_address_entity_definition_table),y
-  sta b2
+  ; ;load initial y offset
+  ; iny
+  ; ;load the initial y offset and store it in b2 for now
+  ; lda (base_address_entity_definition_table),y
+  ; sta b2
 
-  ;subtract this from the y parameter
-  sec
-  lda b1
-  sbc b2
-  sta b1  ;store result in y parameter
+  ; ;subtract this from the y parameter
+  ; sec
+  ; lda b1
+  ; sbc b2
+  ; sta b1  ;store result in y parameter
 
   ;now b1 should have the spawn_position_y value
   lda b1
@@ -627,10 +621,8 @@ do_not_spawn:
   lda #0
   sta entity_instances+entity_instance::position_y+1,x
 
-  ;point to the initial state
-  iny
-  ;load initial state
-  lda (base_address_entity_definition_table),y
+  ;load initial state (always zero)
+  lda #0
   ;point to state variable in entity entry
   ;store the initial state there
   sta entity_instances+entity_instance::state,x

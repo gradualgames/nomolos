@@ -46,6 +46,15 @@ entity_facing_right:
 
 entity_facing_test_done:
 
+  ;reposition the entity
+  sec
+  lda entity_instances+entity_instance::position_y,x
+  sbc #8
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  sbc #0
+  sta entity_instances+entity_instance::position_y+1,x
+
   rts
 
 snuffer_moveRightState:

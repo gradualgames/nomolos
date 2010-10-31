@@ -418,173 +418,68 @@ ROMDefinitionTable3:
 
 ;Entities
 entity_definition_table:
-DeentleEntity:
   .word deentle_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $05
   .byte $00
-  .byte $00
-ExplosionEntity:
   .word explosion_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $0A
   .byte $00
-  .byte $00
-MouseEntity:
   .word mouse_update
-  .byte $00
-  .byte $f9
-  .byte %00000000
   .byte $0A
   .byte $00
-  .byte $00
-ExitLevelEntity:
   .word exit_level_update
-  .byte $00
-  .byte $f9
-  .byte %00000000
   .byte $02
   .byte $00
-  .byte $00
-OneUpEntity:
   .word oneup_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $0A
   .byte $00
-  .byte $00
-FlailItemEntity:
   .word flail_item_update
-  .byte $00
-  .byte $f9
-  .byte %00000000
   .byte $0A
   .byte $00
-  .byte $00
-BeedieEntity:
   .word beedie_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $05
   .byte $00
-  .byte $00
-GrankEntity:
   .word grank_update
-  .byte $00
-  .byte $e9
-  .byte %00000000
   .byte $05
   .byte $00
-  .byte $00
-SpearItemEntity:
   .word spear_item_update
-  .byte $00
-  .byte $f9
-  .byte %00000000
   .byte $0A
   .byte $00
-  .byte $00
-SkelekinEntity:
   .word skelekin_update
-  .byte $00
-  .byte $10
-  .byte %00000000
   .byte $05
   .byte $00
-  .byte $00
-BatEntity:
   .word bat_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $0A
   .byte $00
-  .byte $00
-batree:
   .word batree_update
-  .byte $00
-  .byte $18
-  .byte %00000000
   .byte $01
   .byte $00
-  .byte $00
-Owl:
   .word owl_update
-  .byte $00
-  .byte $10
-  .byte %00000000
   .byte $01
   .byte $00
-  .byte $00
-Snuffer:
   .word snuffer_update
-  .byte $00
-  .byte $08
-  .byte %00000000
   .byte $01
   .byte $00
-  .byte $00
-Snail:
   .word snail_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $01
   .byte $00
-  .byte $00
-Dragon:
   .word dragon_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $01
   .byte $00
-  .byte $00
-IceBall:
   .word iceball_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $0a
   .byte $00
-  .byte $00
-Shark:
   .word shark_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $05
   .byte $00
-  .byte $00
-Stalactite:
   .word stalactite_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $05
   .byte $00
-  .byte $00
-DragonBoss:
   .word dragonboss_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $05
   .byte $00
-  .byte $00
-Restart:
   .word restart_update
-  .byte $00
-  .byte $00
-  .byte %00000000
   .byte $01
-  .byte $00
   .byte $00
   
 ;miscellaneous data

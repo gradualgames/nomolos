@@ -44,6 +44,15 @@ batree_initState:
   lda #3
   sta entity_locals+batree_locals::health,x
   
+  ;reposition the entity so it sits at the bottom of the tile where it was spawned
+  sec
+  lda entity_instances+entity_instance::position_y,x
+  sbc #24
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  sbc #0
+  sta entity_instances+entity_instance::position_y+1,x
+  
   ;switch state to "run"
   lda #BATREE_MOVELEFTSTATE
   sta entity_instances+entity_instance::state,x
