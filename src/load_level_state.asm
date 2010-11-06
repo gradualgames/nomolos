@@ -240,11 +240,13 @@ load_level_stateInit:
   jsr nomolos_init
   jsr camera_reset
   
-  ;TODO: Load start coordinates for Nomolos.
+  ;Load start coordinates for Nomolos.
   jsr get_restart_x
   sta nomolos_map_x+1
   jsr get_restart_screen
   sta nomolos_map_x+2
+  jsr get_restart_y
+  sta nomolos_map_y+1
 
   ;turn on inc32 for column drawing
   set_ppu_2000_bit PPU0_ADDRESS_INCREMENT

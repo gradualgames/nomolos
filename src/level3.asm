@@ -139,7 +139,7 @@ level3_cycling_palettes:
   .byte $0d,$03,$12,$21,$0d,$21,$12,$20,$0d,$24,$14,$04,$0d,$13,$33,$23
 
 .export level3_map
-level3_map = Map
+level3_map = Map0
 
 .export level3_map_column_table
 level3_map_column_table = MapColumnTable
@@ -153,7 +153,7 @@ level3_meta_tile_column_table = MetaTileColumnTable
 .export level3_meta_tile_table
 level3_meta_tile_table = MetaTileTable
 
-Map:
+Map0:
   .byte $00,$01,$02,$03,$04,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0e,$0f,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$1a,$1b,$0c,$1c,$1d,$1e
   .byte $0c,$1f,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$2a,$2b,$2c,$2d,$2e,$2f,$30,$31,$32,$33,$34,$34,$35,$36,$37,$38,$39,$3a,$3b,$3c
   .byte $3d,$3e,$3f,$40,$41,$42,$43,$29,$44,$45,$46,$47,$48,$49,$4a,$4b,$4c,$4d,$4e,$4f,$50,$51,$52,$53,$54,$55,$56,$57,$58,$59,$5a,$5a

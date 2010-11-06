@@ -102,10 +102,6 @@ ROMDefinitionTable0:
   .byte 191 ;nomolos_start_y
   .byte 0   ;starting_screen
   
-  .byte 120 ;nomolos_restart_x
-  .byte 191 ;nomolos_restart_y
-  .byte 10  ;restart_screen
-
   .word level1_intro_string
   .byte 1 ;camera_scroll_enabled  
   .word level1_map
@@ -197,10 +193,6 @@ ROMDefinitionTable1:
   .byte 90  ;nomolos_start_y
   .byte 0   ;starting_screen
   
-  .byte 120 ;nomolos_restart_x
-  .byte 90  ;nomolos_restart_y
-  .byte 7   ;restart_screen
-
   .word level2_intro_string
   .byte 1 ;camera_scroll_enabled  
   .word level2_map
@@ -290,10 +282,6 @@ ROMDefinitionTable2:
   .byte 100 ;nomolos_start_y
   .byte 0 ;starting_screen
   
-  .byte 120 ;nomolos_restart_x
-  .byte 90  ;nomolos_restart_y
-  .byte 7   ;restart_screen
-
   .word level3_intro_string
   .byte 1 ;camera_scroll_enabled  
   .word level3_map
@@ -383,10 +371,6 @@ ROMDefinitionTable3:
   .byte 159 ;nomolos_start_y
   .byte 0   ;starting_screen
   
-  .byte 40  ;nomolos_restart_x
-  .byte 159 ;nomolos_restart_y
-  .byte 0   ;restart_screen
-
   .word boss1_intro_string
   .byte 0 ;camera_scroll_enabled  
   .word boss1_map
@@ -479,7 +463,7 @@ entity_definition_table:
   .byte $05
   .byte $00
   .word restart_update
-  .byte $01
+  .byte $02
   .byte $00
   
 ;miscellaneous data
