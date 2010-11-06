@@ -10,6 +10,8 @@ restart_update:
 
   ;use the restart entity's location to fill the restart point variables
   lda entity_instances+entity_instance::position_x,x
+  clc
+  adc #120
   sta restart_x
   lda entity_instances+entity_instance::position_y,x
   sta restart_y
