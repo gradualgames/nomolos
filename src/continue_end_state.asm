@@ -305,8 +305,6 @@ continue_selected:
   ;switch to load level state.
   lda #nomolos_starting_lives
   sta nomolos_status_lives
-  lda #starting_level
-  sta level_current
   lda #0
   sta state_control_params+level_in_state_control::use_restart_point
   lda #LEVELINSTATE_INIT
