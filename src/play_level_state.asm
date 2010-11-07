@@ -5,6 +5,7 @@
 .include "load_level_state.inc"
 .include "level_in_state.inc"
 .include "game_over_state.inc"
+.include "continue_end_state.inc"
 .include "controller.inc"
 .include "map.inc"
 .include "sprite.inc"
@@ -203,9 +204,9 @@ switch_to_level_in_state:
 
 lives_negative_means_game_over:
 
-  lda #GAMEOVERSTATE_INIT
-  sta state_control_params+gameOverStateControl::state
-  ldx #index_game_over_state
+  lda #CONTINUEENDSTATE_INIT
+  sta state_control_params+continue_end_state_control::state
+  ldx #index_continue_end_state
   jsr switch_state
 
 state_switch_complete:

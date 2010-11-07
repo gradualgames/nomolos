@@ -30,6 +30,7 @@ FILES           = zp \
                   level_in_state \
                   game_over_state \
                   title_state \
+                  continue_end_state \
                   map \
                   camera \
                   sprite \

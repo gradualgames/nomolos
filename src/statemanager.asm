@@ -2,6 +2,7 @@
 .include "level_in_state.inc"
 .include "load_level_state.inc"
 .include "game_over_state.inc"
+.include "continue_end_state.inc"
 .include "play_level_state.inc"
 .include "statemanager.inc"
 .include "zp.inc"
@@ -59,6 +60,8 @@ state_table:
   .word game_over_state_update_ppu
   .word play_level_state_update
   .word play_level_state_update_ppu
+  .word continue_end_state_update
+  .word continue_end_state_update_ppu
 
 ;expects w0 to point to palette to fade in to
 .proc fade_in_palette
