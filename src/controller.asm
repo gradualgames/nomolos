@@ -43,7 +43,8 @@
   rol buffer_controller+1
 
   lda $4016          ; Select
-  sta buffer_controller+2
+  ror
+  rol buffer_controller+2
 
   lda $4016          ; Start
   ror

@@ -10,6 +10,8 @@
 .include "continue_end_state.inc"
 .include "statemanager.inc"
 .include "soundengine.inc"
+.include "controller.inc"
+.include "nomolos_logic.inc"
 
 .segment "CODE"
 
@@ -24,12 +26,18 @@ heart:
   beq continue_end_state_init
   cmp #CONTINUEENDSTATE_RUN
   beq continue_end_state_run
+  cmp #CONTINUEENDSTATE_SELECT
+  beq continue_end_state_select
   cmp #CONTINUEENDSTATE_DONE
   bne :+
   jmp continue_end_state_done
 :
 
 continue_end_state_init:
+
+  ;continue is selected
+  lda #CONTINUE_SELECTED
+  sta state_control_params+continue_end_state_control::selected_cursor
 
   ;****************************************************************
   ;Wait for vblank, then turn off nmi and all graphics.
@@ -53,6 +61,38 @@ continue_end_state_init:
   jmp stateCommandComplete
 
 continue_end_state_run:
+
+  jsr continue_end_state_run_handler
+
+  jmp stateCommandComplete
+
+ 
+  ;****************************************************************
+  ;Check the select and start buttons for transition from off to
+  ;on. Change the location of the cursor; make a decision when the
+  ;start button is pressed.
+  ;****************************************************************
+continue_end_state_select:
+
+  jsr continue_end_state_select_handler
+
+  jmp stateCommandComplete
+  
+continue_end_state_done:
+ 
+  lda frame_counter
+  bne stateCommandComplete
+ 
+  jsr continue_end_state_done_handler
+
+  jmp stateCommandComplete
+
+stateCommandComplete:
+
+  rts
+.endproc
+
+.proc continue_end_state_run_handler
 
   ;****************************************************************
   ;Clear sprites and nametable, then load font graphics and write
@@ -127,20 +167,6 @@ continue_end_state_run:
   sta w0+1
   jsr ppu_display_string
 
-  ;display a heart icon next to the words
-  lda #CONTINUE_CURSOR_X
-  sta b0
-  lda #CONTINUE_CURSOR_Y
-  sta b1
-  lda #0
-  sta b2
-  lda #<heart
-  sta w0
-  iny
-  lda #>heart
-  sta w0+1
-  jsr sprite_draw_metasprite_8bit
-  
   ;****************************************************************
   ;Wait for vblank, reset VRAM and scroll registers, turn nmi and
   ;graphics back on, then fade in the current palette.
@@ -177,18 +203,17 @@ continue_end_state_run:
   sta w0+1
   jsr fade_in_palette
 
-  lda #CONTINUEENDSTATE_DONE
+  lda #CONTINUEENDSTATE_SELECT
   sta state_control_params+continue_end_state_control::state
 
   lda #64
   sta frame_counter
 
-  jmp stateCommandComplete
+  rts
 
-continue_end_state_done:
+.endproc
 
-  lda frame_counter
-  bne stateCommandComplete
+.proc continue_end_state_done_handler
 
   ;fade out the palette
   lda #<(font1+font::palette)
@@ -202,17 +227,116 @@ continue_end_state_done:
   sta state_control_params+title_stateControl::state
   ldx #index_title_state
   jsr switch_state
-
-  jmp stateCommandComplete
-
-stateCommandComplete:
-
+  
   rts
+
+.endproc
+
+.proc continue_end_state_select_handler
+
+  ;wait for vblank to complete
+  lda #0
+  sta vblank_done
+: lda vblank_done
+  beq :-
+
+  jsr sprite_clear_all
+  jsr controller_read
+
+  ;check for off to on transition on the select button
+  lda buffer_controller+buttons::_select
+  and #%00000011
+  cmp #%00000001
+  bne select_not_pressed
+  
+  ;flip the state of the selected cursor
+  lda state_control_params+continue_end_state_control::selected_cursor
+  eor #%00000001
+  sta state_control_params+continue_end_state_control::selected_cursor
+  
+select_not_pressed:
+  
+  lda state_control_params+continue_end_state_control::selected_cursor
+  bne display_end_cursor
+  
+  lda #CONTINUE_CURSOR_X
+  sta b0
+  lda #CONTINUE_CURSOR_Y
+  sta b1
+  
+  jmp selected_cursor_test_done
+  
+display_end_cursor:
+  lda #END_CURSOR_X
+  sta b0
+  lda #END_CURSOR_Y
+  sta b1
+  
+selected_cursor_test_done:
+  
+  lda #0
+  sta b2
+  lda #<heart
+  sta w0
+  iny
+  lda #>heart
+  sta w0+1
+  jsr sprite_draw_metasprite_8bit
+
+  ;check for off to on transition on the start button
+  lda buffer_controller+buttons::_start
+  and #%00000011
+  cmp #%00000001
+  bne start_not_pressed
+  
+  ;fade out the palette
+  lda #<(font1+font::palette)
+  sta w0
+  lda #>(font1+font::palette)
+  sta w0+1
+  jsr fade_out_palette
+  
+  ;now make a decision based on which cursor was selected
+  .scope
+  lda state_control_params+continue_end_state_control::selected_cursor
+  bne end_selected
+continue_selected:
+
+  ;switch to load level state.
+  lda #nomolos_starting_lives
+  sta nomolos_status_lives
+  lda #starting_level
+  sta level_current
+  lda #0
+  sta state_control_params+level_in_state_control::use_restart_point
+  lda #LEVELINSTATE_INIT
+  sta state_control_params+level_in_state_control::state
+  ldx #index_level_in_state
+  jsr switch_state
+  jmp selected_cursor_test_done
+end_selected:
+  
+  ;switch to title state
+  lda #TITLESTATE_INIT
+  sta state_control_params+title_stateControl::state
+  ldx #index_title_state
+  jsr switch_state
+  
+selected_cursor_test_done:
+  
+  .endscope
+  
+start_not_pressed:
+  
+  rts
+  
 .endproc
 
 .proc continue_end_state_update_ppu
 
   dec frame_counter
+  
+  jsr sprite_update_all
   
   lda #1
   sta vblank_done
