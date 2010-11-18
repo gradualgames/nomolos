@@ -44,6 +44,7 @@ beedie_initState:
   ;set vertical velocity to zero
   lda #0
   sta entity_locals+beedieLocals::y_velocity,x
+  sta entity_locals+beedieLocals::y_velocity+1,x
 
   ;set rest counter
   lda #BEEDIE_RESTCOUNTER_RESTLENGTH
