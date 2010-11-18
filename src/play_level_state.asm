@@ -153,8 +153,23 @@ victory_mode:
   
 pause:
 
+  ;wait for vblank to complete
+  lda #0
+  sta vblank_done
+: lda vblank_done
+  beq :-
+
   jsr controller_read_start
 
+  .ifdef MUSIC_ENABLE
+  ;switch to the level and music bank
+  ldy #level_data_struct::level_music_bank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+  jsr sound_update
+  .endif
+  
   .scope
   lda buffer_controller+buttons::_start
   and #%00000011
