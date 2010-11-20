@@ -1,4 +1,5 @@
 .include "level1.inc"
+.include "level1_2.inc"
 .include "level2.inc"
 .include "level3.inc"
 .include "boss1.inc"
@@ -24,13 +25,15 @@
 
 level_definition_table:
 Level1:
-  .word ROMDefinitionTable0
+  .word level1_data
+Level1_2:
+  .word level1_2data
 Level2:
-  .word ROMDefinitionTable1
+  .word level2_data
 Level3:
-  .word ROMDefinitionTable2
+  .word level3_data
 Boss1:
-  .word ROMDefinitionTable3
+  .word boss1_data
 
 ;level intro strings
 level1_intro_string:
@@ -43,7 +46,7 @@ boss1_intro_string:
   .byte $06,$0d,$0e,$06,$00,$11,$03
   
 ;ROM definition table
-ROMDefinitionTable0:
+level1_data:
   .byte spritesheet_1_bank
   .byte level_1_bank
   .byte level_1_patterns_bank
@@ -114,7 +117,7 @@ ROMDefinitionTable0:
 
   .word level1_music
 
-  .byte level_2_index
+  .byte level_1_2_index
 
   .byte level1_sprites_Nomolos_chr_index
   .byte level1_sprites_Deentle_chr_index
@@ -134,7 +137,98 @@ ROMDefinitionTable0:
   .byte 0 ;dragonboss_offset
 
 ;ROM definition table
-ROMDefinitionTable1:
+level1_2data:
+  .byte spritesheet_1_bank
+  .byte level_1_bank
+  .byte level_1_patterns_bank
+  .word level1_patterns
+  .byte spritesheet_1_patterns_bank
+  .word level1_sprite_groups
+  .word 0 ;cycling_palette_address
+  .byte 0 ;cycling_palette_speed
+
+  .word spritesheet1_NomolosWalk
+  .word spritesheet1_nomolos_walk_overlay
+  .word spritesheet1_nomolos_jump
+  .word spritesheet1_nomolos_jump_overlay
+  .word spritesheet1_nomolos_fight
+  .word spritesheet1_nomolos_fight_overlay
+  .word spritesheet1_NomolosUseFlail
+  .word spritesheet1_nomolos_flail_overlay
+  .word spritesheet1_NomolosUseSpear
+  .word spritesheet1_nomolos_fight_overlay
+  .word spritesheet1_FlailBall
+  .word spritesheet1_Spear0
+  .word spritesheet1_SlumpedArmor0
+  .word spritesheet1_SlumpedArmorOverlay0
+  .word spritesheet1_ScardyCat0
+  .word spritesheet1_ScardyCatOverlay0
+  .word spritesheet1_Heart0
+
+  .word spritesheet1_Spear0
+  .word spritesheet1_GrankFly
+  .word spritesheet1_BeedieBlob
+  .word spritesheet1_FlailItem0
+  .word spritesheet1_DeentleWalk
+  .word spritesheet1_Explosion
+  .word spritesheet1_Mouse
+  .word spritesheet1_OneUp0
+  .word 0 ;Skelekin
+  .word spritesheet1_BatFly
+  .word spritesheet1_Batree
+  .word spritesheet1_OwlFly
+  .word spritesheet1_OwlAttack
+  .word spritesheet1_SnufferRun
+  .word spritesheet1_SnufferBite
+  .word 0 ;spritesheet1_SnailCrawl
+  .word 0 ;spritesheet1_DragonFly
+  .word 0 ;spritesheet1_IceBallFly
+  .word 0 ;spritesheet1_SharkLeap
+  .word 0 ;spritesheet1_Stalactite0
+  .word 0 ;dragonboss_face_mouthshut
+  .word 0 ;dragonboss_face_mouthopen
+
+  .word attack_sound
+  .word hit_sound
+  .word level1_2palette
+
+  .byte 120 ;nomolos_start_x
+  .byte 171 ;nomolos_start_y
+  .byte 0   ;starting_screen
+  
+  .word level1_intro_string
+  .byte 1 ;camera_scroll_enabled  
+  .word level1_2map
+  .word level1_2map_column_table
+  .word level1_2attribute_column_table
+  .word level1_2meta_tile_column_table
+  .word level1_2meta_tile_table
+
+  .word entity_definition_table
+
+  .word level1_music
+
+  .byte level_2_index
+
+  .byte level1_sprites_Nomolos_chr_index
+  .byte level1_sprites_Deentle_chr_index
+  .byte level1_sprites_Explosion_chr_index
+  .byte level1_sprites_Beedie_chr_index
+  .byte level1_sprites_Grank_chr_index
+  .byte level1_sprites_Bat_chr_index
+  .byte 0 ;level1_sprites_Skelekin_chr_index
+  .byte level1_sprites_Batree_chr_index
+  .byte level1_sprites_Owl_chr_index
+  .byte level1_sprites_Snuffer_chr_index
+  .byte 0 ;level1_sprites_Snail_chr_index
+  .byte 0 ;level1_sprites_Dragon_chr_index
+  .byte 0 ;level1_sprites_IceBall_chr_index
+  .byte 0 ;level1_sprites_Shark_chr_index
+  .byte 0 ;level1_sprites_Stalactite_chr_index
+  .byte 0 ;dragonboss_offset
+  
+;ROM definition table
+level2_data:
   .byte spritesheet_1_bank
   .byte level_2_bank
   .byte level_2_patterns_bank
@@ -223,7 +317,7 @@ ROMDefinitionTable1:
   .byte 0 ;dragonboss_offset
 
 ;ROM definition table
-ROMDefinitionTable2:
+level3_data:
   .byte spritesheet_1_bank
   .byte level_3_bank
   .byte level_3_patterns_bank
@@ -312,7 +406,7 @@ ROMDefinitionTable2:
   .byte 0 ;dragonboss_offset
 
 ;ROM definition table
-ROMDefinitionTable3:
+boss1_data:
   .byte spritesheet_1_bank
   .byte boss_1_bank
   .byte boss_1_patterns_bank

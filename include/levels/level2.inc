@@ -1,7 +1,7 @@
 .ifndef LEVEL2_INC
 LEVEL2_INC = 1
 
-level_2_index = 1
+level_2_index = 2
 level_2_bank = 1
 level_2_patterns_bank = 4
 

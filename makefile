@@ -20,6 +20,7 @@ FILES           = zp \
                   nomolos \
                   nomolos_logic \
                   level1 \
+                  level1_2 \
                   level2 \
                   level3 \
                   boss1 \
