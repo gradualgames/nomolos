@@ -19,7 +19,7 @@ level1_sprite_groups:
   .word spritesheet1_Owl_chr
   .word spritesheet1_Snuffer_chr
 
-.segment "ROM3"
+.segment "ROM0"
 
 .include "level1_patterns_source.inc"
 

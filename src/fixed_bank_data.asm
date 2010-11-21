@@ -14,7 +14,7 @@
 .include "zp.inc"
 .include "sound_effects.inc"
 
-.segment "ROM4"
+.segment "ROM14"
 
 .include "font0_patterns_source.inc"
 .include "title_patterns_source.inc"
@@ -139,8 +139,8 @@ level1_data:
 ;ROM definition table
 level1_2data:
   .byte spritesheet_1_bank
-  .byte level_1_bank
-  .byte level_1_patterns_bank
+  .byte level_1_2bank
+  .byte level_1_2patterns_bank
   .word level1_patterns
   .byte spritesheet_1_patterns_bank
   .word level1_sprite_groups
@@ -562,7 +562,7 @@ entity_definition_table:
   
 ;miscellaneous data
 banktable:
-  .byte $00, $01, $02, $03, $04, $05, $06, $07
+  .byte $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $0f
 
 .export victory_music
 victory_music: 
@@ -744,7 +744,7 @@ Noise:
   
 font1:
   .word font0_patterns
-  .byte $04
+  .byte $0E
   .byte $1b,$1c,$1d,$1e,$1f,$20,$21,$22,$23,$24
   .byte $0d,$20,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
   .byte $0d,$20,$0d,$0d,$0d,$04,$2a,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
@@ -781,7 +781,7 @@ title_definition:
   .word title_palette
   .word title_nametable
   .word title_patterns
-  .byte $04
+  .byte $0E
 
 title_palette:
   .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d

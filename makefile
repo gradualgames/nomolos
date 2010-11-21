@@ -65,7 +65,7 @@ NAMELIST_GENERATOR_FLAGS = -rom $(NES_FILE) \
                            -nl 0 ROM0 8000 \
                            -nl 1 ROM1 8000 \
                            -nl 2 ROM2 8000 \
-                           -nl 7 CODE C000 \
+                           -nl 15 CODE C000 \
                            -map $(MAP_FILE) \
                            $(addprefix -lst ,$(LST_FILES))
 

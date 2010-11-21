@@ -16,11 +16,11 @@ level3_sprite_groups:
   .word spritesheet1_IceBall_chr
   .word spritesheet1_Shark_chr
 
-.segment "ROM3"
+.segment "ROM2"
 
 .include "level3_patterns_source.inc"
 
-.segment "ROM1"
+.segment "ROM2"
 
 .export level3_music
 level3_music:

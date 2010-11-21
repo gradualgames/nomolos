@@ -12,11 +12,11 @@
 .include "camera.inc"
 .include "sprite.inc"
 
-.segment "ROM3"
+.segment "ROM14"
 
 .include "spritesheet1_patterns_source.inc"
 
-.segment "ROM2"
+.segment "ROM13"
 
 .include "spritesheet1_sprites_source.inc"
 .include "spritesheet1_animations_source.inc"

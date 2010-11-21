@@ -15,7 +15,7 @@
 .include "play_level_state.inc"
 .include "sound_effects.inc"
 
-.segment "ROM2"
+.segment "ROM13"
 
 .include "oneup.inc"
 .include "exitentity.inc"

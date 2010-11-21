@@ -1,8 +1,8 @@
 .ifndef SPRITESHEET1_INC
 SPRITESHEET1_INC = 1
 
-spritesheet_1_bank = 2
-spritesheet_1_patterns_bank = 3
+spritesheet_1_bank = 13
+spritesheet_1_patterns_bank = 14
 
 Nomolos_chr_size = 131
 Deentle_chr_size = 8

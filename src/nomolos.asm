@@ -18,7 +18,7 @@
 
 .segment "HEADER"
 .byte "NES",$1a   ;iNES header
-.byte $08         ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
+.byte $10         ;# of PRG-ROM blocks. These are 16kb each. $4000 hex.
 .byte $00         ;# of CHR-ROM blocks. These are 8kb each. $2000 hex.
 .byte $21         ;Vertical mirroring. SRAM disabled. No trainer. Four-screen mirroring disabled. Mapper #2 (UnROM)
 .byte $00         ;Rest of Mapper #2 bits (all 0)
@@ -62,15 +62,19 @@ reset:
   jsr switch_state
 
   ;load a level with intro
-  ;lda #3
+  ;lda #0
   ;sta level_current
+  ;lda #3
+  ;sta nomolos_status_lives
+  ;lda #0
+  ;sta state_control_params+level_in_state_control::use_restart_point
   ;lda #LEVELINSTATE_INIT
   ;sta state_control_params+level_in_state_control::state
   ;ldx #index_level_in_state
   ;jsr switch_state
   
   ;load a level directly
-  ;lda #2
+  ;lda #0
   ;sta level_current
   ;lda #3
   ;sta nomolos_status_lives

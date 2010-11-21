@@ -2,8 +2,8 @@
 LEVEL1_2_INC = 1
 
 level_1_2_index = 1
-level_1_2_bank = 0
-level_1_2_patterns_bank = 3
+level_1_2bank = 0
+level_1_2patterns_bank = 0
 
 .include "spritesheet1.inc"
 .import level1_2palette
