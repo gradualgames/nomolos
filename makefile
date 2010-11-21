@@ -60,12 +60,11 @@ ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) --dbgfile $(DEBUG_FILE) -o
 NAMELIST_GENERATOR_FLAGS = -rom $(NES_FILE) \
                            -nl ram ZEROPAGE 0000 \
-                           -nl ram STACK 0100 \
-                           -nl ram BSS 0200 \
-                           -nl 0 ROM0 8000 \
-                           -nl 1 ROM1 8000 \
-                           -nl 2 ROM2 8000 \
-                           -nl 15 CODE C000 \
+                           -nl ram STACK    0100 \
+                           -nl ram BSS      0200 \
+                           -nl 0   ROM0     8000 \
+                           -nl 13  ROM13    8000 \
+                           -nl 15  CODE     C000 \
                            -map $(MAP_FILE) \
                            $(addprefix -lst ,$(LST_FILES))
 
