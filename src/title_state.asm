@@ -110,9 +110,9 @@ title_stateRun:
   jsr ppu_display_string
 
   set_ppu_2006 $20, 22, 10
-  lda #<lda_games_string
+  lda #<gradual_games_string
   sta w0
-  lda #>lda_games_string
+  lda #>gradual_games_string
   sta w0+1
 
   jsr ppu_display_string

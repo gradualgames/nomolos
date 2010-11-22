@@ -756,8 +756,8 @@ power_table:
 press_start_string:
   .byte $0b,$0f,$11,$04,$12,$12,$1a,$12,$13,$00,$11,$13
 
-lda_games_string:
-  .byte $0c,$01,$18,$1a,$0b,$03,$00,$1a,$06,$00,$0c,$04,$12
+gradual_games_string:
+  .byte $0d,$06,$11,$00,$03,$14,$00,$0b,$1a,$06,$00,$0c,$04,$12
 
 copyright_c_2010_string:
   .byte $08,$2c,$02,$2d,$1a,$1d,$1b,$1c,$1b
