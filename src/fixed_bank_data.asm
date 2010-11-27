@@ -193,7 +193,7 @@ level1_2data:
   .word level1_2palette
 
   .byte 120 ;nomolos_start_x
-  .byte 171 ;nomolos_start_y
+  .byte 159 ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word level1_intro_string

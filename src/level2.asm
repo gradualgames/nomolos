@@ -17,11 +17,11 @@ level2_sprite_groups:
   .word spritesheet1_Skelekin_chr
   .word spritesheet1_Bat_chr
 
-.segment "ROM1"
+.segment "ROM01"
 
 .include "level2_patterns_source.inc"
 
-.segment "ROM1"
+.segment "ROM01"
 
 .export level2_music
 level2_music:

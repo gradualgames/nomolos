@@ -15,11 +15,11 @@ boss1_sprite_groups:
   .word spritesheet1_Stalactite_chr
   .word spritesheet1_DragonFace_chr
 
-.segment "ROM2"
+.segment "ROM02"
 
 .include "boss1_patterns_source.inc"
 
-.segment "ROM2"
+.segment "ROM02"
 
 .export boss1_music
 boss1_music: 

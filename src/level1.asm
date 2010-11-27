@@ -19,11 +19,11 @@ level1_sprite_groups:
   .word spritesheet1_Owl_chr
   .word spritesheet1_Snuffer_chr
 
-.segment "ROM0"
+.segment "ROM00"
 
 .include "level1_patterns_source.inc"
 
-.segment "ROM0"
+.segment "ROM00"
 
 .export level1_music
 level1_music: 
