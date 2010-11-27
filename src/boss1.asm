@@ -15,7 +15,7 @@ boss1_sprite_groups:
   .word spritesheet1_Stalactite_chr
   .word spritesheet1_DragonFace_chr
 
-.segment "ROM02"
+.segment "ROM08"
 
 .include "boss1_patterns_source.inc"
 

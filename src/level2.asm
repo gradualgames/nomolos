@@ -17,7 +17,7 @@ level2_sprite_groups:
   .word spritesheet1_Skelekin_chr
   .word spritesheet1_Bat_chr
 
-.segment "ROM01"
+.segment "ROM08"
 
 .include "level2_patterns_source.inc"
 

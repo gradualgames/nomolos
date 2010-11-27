@@ -16,7 +16,7 @@ level3_sprite_groups:
   .word spritesheet1_IceBall_chr
   .word spritesheet1_Shark_chr
 
-.segment "ROM02"
+.segment "ROM08"
 
 .include "level3_patterns_source.inc"
 

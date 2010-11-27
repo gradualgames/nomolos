@@ -15,7 +15,7 @@ boss1_INC = 1
 
 boss_1_index = 4
 boss_1_bank = 2
-boss_1_patterns_bank = 2
+boss_1_patterns_bank = 8
 
 boss1_sprites_Nomolos_chr_index = 0
 boss1_sprites_Explosion_chr_index = boss1_sprites_Nomolos_chr_index+Nomolos_chr_size
