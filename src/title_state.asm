@@ -14,6 +14,42 @@
 
 .segment "CODE"
 
+.ifdef LEVEL_SELECTOR_ENABLED
+.proc create_selected_level_string
+  ;add one to level so level 0 is displayed as level 1, etc.
+  lda state_control_params+title_stateControl::starting_level
+  clc
+  adc #1
+  sta b0
+  lda #<(font1+font::digit_table)
+  sta w0
+  lda #>(font1+font::digit_table)
+  sta w0+1
+  lda #<power_table
+  sta w1
+  lda #>power_table
+  sta w1+1
+  lda #<ppu_string_buffer
+  sta w2
+  lda #>ppu_string_buffer
+  sta w2+1
+
+  jsr ppu_create_decimal_string
+  rts
+.endproc
+
+.proc display_selected_level_string
+  set_ppu_2006 $20, 24, 10
+  lda #<ppu_string_buffer
+  sta w0
+  lda #>ppu_string_buffer
+  sta w0+1
+
+  jsr ppu_display_string
+  rts
+.endproc
+.endif
+
 .proc title_state_update
 
   lda state_control_params+title_stateControl::state
@@ -54,6 +90,13 @@ title_stateInit:
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
 
+  ;reset the level selector counter
+  .ifdef LEVEL_SELECTOR_ENABLED
+  lda #0
+  sta state_control_params+title_stateControl::starting_level
+  jsr create_selected_level_string
+  .endif
+  
   lda #TITLESTATE_RUN
   sta state_control_params+title_stateControl::state
 
@@ -196,10 +239,43 @@ title_stateRun:
 
 title_stateDone:
 
+  ;wait for vblank to complete
+  lda #0
+  sta vblank_done
+: lda vblank_done
+  beq :-
+
   jsr controller_read
+  
+  .ifdef MUSIC_ENABLE
+  jsr sound_update
+  .endif
+  
+  .ifdef LEVEL_SELECTOR_ENABLED
+  lda buffer_controller+buttons::_select
+  and #%00000011
+  cmp #%00000001
+  bne select_button_not_hit
+  
+  ;increment the starting level counter
+  inc state_control_params+title_stateControl::starting_level
+  
+  ;make sure the level number is always valid
+  lda state_control_params+title_stateControl::starting_level
+  cmp #num_levels
+  bne do_not_reset_starting_level
+  lda #0
+  sta state_control_params+title_stateControl::starting_level
+do_not_reset_starting_level:
+  
+  jsr create_selected_level_string
+  
+select_button_not_hit:
+  .endif
+  
   lda buffer_controller+buttons::_start
   and #1
-  beq :+
+  beq start_button_not_hit
 
   .ifdef MUSIC_ENABLE
   jsr sound_stop
@@ -224,7 +300,11 @@ title_stateDone:
   ;start out Nomolos with 3 lives.
   lda #nomolos_starting_lives
   sta nomolos_status_lives
+  .ifdef LEVEL_SELECTOR_ENABLED
+  lda state_control_params+title_stateControl::starting_level
+  .else
   lda #starting_level
+  .endif
   sta level_current
   lda #0
   sta state_control_params+level_in_state_control::use_restart_point
@@ -233,7 +313,7 @@ title_stateDone:
   ldx #index_level_in_state
   jsr switch_state
 
-:
+start_button_not_hit:
 
   jmp stateCommandComplete
 
@@ -245,12 +325,19 @@ stateCommandComplete:
 .proc title_state_update_ppu
 
   .ifdef MUSIC_ENABLE
-  jsr sound_update
   jsr sound_upload
   .endif
-
+  
+  .ifdef LEVEL_SELECTOR_ENABLED
+  jsr display_selected_level_string
+  
+  lda #0
+  sta $2005
+  sta $2005
+  .endif
+  
   lda #1
   sta vblank_done
-
+  
   rts
 .endproc

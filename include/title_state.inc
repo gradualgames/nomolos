@@ -1,6 +1,8 @@
 .ifndef TITLESTATE_INC
 TITLESTATE_INC = 1
 
+.include "flags.inc"
+
 .global title_state_update
 .global title_state_update_ppu
 
@@ -10,6 +12,9 @@ TITLESTATE_DONE = %00000010
 
 .struct title_stateControl
   state .byte
+  .ifdef LEVEL_SELECTOR_ENABLED
+  starting_level .byte
+  .endif
 .endstruct
 
 .endif
