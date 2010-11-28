@@ -23,6 +23,7 @@ FILES           = zp \
                   level1_2 \
                   level2 \
                   level3 \
+                  level4 \
                   boss1 \
                   entities \
                   spritesheet1 \
