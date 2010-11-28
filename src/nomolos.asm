@@ -56,10 +56,10 @@ reset:
   jsr nomolos_module_init
   jsr sprite_module_init
 
-  ;lda #TITLESTATE_INIT
-  ;sta state_control_params+title_stateControl::state
-  ;ldx #index_title_state
-  ;jsr switch_state
+  lda #TITLESTATE_INIT
+  sta state_control_params+title_stateControl::state
+  ldx #index_title_state
+  jsr switch_state
 
   ;load a level with intro
   ;lda #0
@@ -74,18 +74,18 @@ reset:
   ;jsr switch_state
   
   ;load a level directly
-  lda #4
-  sta level_current
-  lda #3
-  sta nomolos_status_lives
-  lda #0
-  sta state_control_params+load_level_stateControl::use_restart_point
-  lda level_current
-  sta state_control_params+load_level_stateControl::level_to_load
-  lda #LOADLEVELSTATE_INIT
-  sta state_control_params+load_level_stateControl::state
-  ldx #index_load_level_state
-  jsr switch_state
+  ;lda #5
+  ;sta level_current
+  ;lda #3
+  ;sta nomolos_status_lives
+  ;lda #0
+  ;sta state_control_params+load_level_stateControl::use_restart_point
+  ;lda level_current
+  ;sta state_control_params+load_level_stateControl::level_to_load
+  ;lda #LOADLEVELSTATE_INIT
+  ;sta state_control_params+load_level_stateControl::state
+  ;ldx #index_load_level_state
+  ;jsr switch_state
 
 loop:
 
