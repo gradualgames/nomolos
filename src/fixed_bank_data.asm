@@ -35,6 +35,8 @@ level_definition_table:
 ;level intro strings
 level1_intro_string:
   .byte $07,$0b,$04,$15,$04,$0b,$1a,$1c
+level1_2_intro_string:
+  .byte $09,$0b,$04,$15,$04,$0b,$1a,$1c,$2b,$1d
 level2_intro_string:
   .byte $07,$0b,$04,$15,$04,$0b,$1a,$1d
 level3_intro_string:
@@ -195,7 +197,7 @@ level1_2data:
   .byte 159 ;nomolos_start_y
   .byte 0   ;starting_screen
   
-  .word level1_intro_string
+  .word level1_2_intro_string
   .byte 1 ;camera_scroll_enabled  
   .word level1_2map
   .word level1_2map_column_table
