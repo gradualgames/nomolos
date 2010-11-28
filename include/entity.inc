@@ -7,6 +7,7 @@ ENTITY_INC = 1
 .global entity_kill
 .global entity_test_face_nomolos
 .global entity_test_death_zone
+.global entity_item_test_death_zone
 .global entity_update_all
 .global entity_init_all
 .global entity_spawn

@@ -40,7 +40,7 @@ mouseSitThere:
 
   jsr entity_compute_screen_coordinates
 
-  jsr entity_test_death_zone
+  jsr entity_item_test_death_zone
   beq mouseDie
 
   ;load entity width and height

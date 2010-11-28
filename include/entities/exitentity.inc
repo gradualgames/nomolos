@@ -10,12 +10,6 @@ exit_level_update:
 
   jsr entity_compute_screen_coordinates
 
-  jsr entity_test_death_zone
-  bne exit_entity_do_not_die
-  jsr entity_kill
-  rts
-exit_entity_do_not_die:
-
   ;load entity width and height
   lda #EXITENTITY_WIDTH
   sta b2

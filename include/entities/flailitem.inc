@@ -37,7 +37,7 @@ flail_item_sit_there:
 
   jsr entity_compute_screen_coordinates
 
-  jsr entity_test_death_zone
+  jsr entity_item_test_death_zone
   beq flailItemDie
 
   ;load entity width and height

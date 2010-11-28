@@ -178,6 +178,35 @@ entity_not_in_death_zone:
   lda #1
 
   rts
+  
+.endproc
+
+;tests whether an entity is a certain distance offscreen
+;uses b5
+;a set zero flag indicates the entity was in a death zone.
+.proc entity_item_test_death_zone
+
+  ;if upper byte is -1, 0, or 1, the entity is not in the death zone. Anything outside of this means death.
+  lda entity_screen_x+1
+  beq entity_not_in_death_zone
+  cmp #$01
+  beq entity_not_in_death_zone
+  cmp #$ff
+  beq entity_not_in_death_zone
+
+entity_is_in_death_zone:
+
+  ;set zero flag so beq will take a branch in following code
+  lda #0
+
+  rts
+
+entity_not_in_death_zone:
+
+  ;clear zero flag so beq will not take a branch in following code
+  lda #1
+
+  rts
 .endproc
 
 ;assumes b2 and b3 represent the width and height of the calling entity
