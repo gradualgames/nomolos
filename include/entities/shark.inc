@@ -44,6 +44,7 @@ shark_initState:
   ;set vertical velocity to zero
   lda #0
   sta entity_locals+shark_locals::y_velocity,x
+  sta entity_locals+shark_locals::y_velocity+1,x
   
   ;set rest counter
   lda #SHARK_RESTCOUNTER_RESTLENGTH
