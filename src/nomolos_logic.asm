@@ -141,6 +141,11 @@
   lda nomolos_status_health
   beq skipDecreaseHealth
 
+  ;reset weapon to sword
+  lda nomolos_state_secondary
+  and #nomolos_attack_set_mask
+  sta nomolos_state_secondary
+  
   ;play a get hurt sound
   lda #<get_hurt_sound
   sta sound_param_word_0
