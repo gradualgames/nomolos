@@ -13,7 +13,6 @@ level2_2sprites_Skelekin_chr_index = level2_2sprites_Grank_chr_index+Grank_chr_s
 level2_2sprites_Bat_chr_index = level2_2sprites_Skelekin_chr_index+Skelekin_chr_size
 
 .include "spritesheet1.inc"
-.import level2_2sprite_groups
 .import level2_2patterns
 .import level2_2palette
 .import level2_2cycling_palettes

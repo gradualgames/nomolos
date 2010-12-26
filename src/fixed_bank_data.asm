@@ -328,7 +328,7 @@ level2_2data:
   .byte level_2_patterns_bank
   .word level2_patterns
   .byte spritesheet_1_patterns_bank
-  .word level2_2sprite_groups
+  .word level2_sprite_groups
   .word level2_2cycling_palettes ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 

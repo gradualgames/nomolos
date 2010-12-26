@@ -4,19 +4,6 @@
 .include "fixed_bank_data.inc"
 .include "sound_effects.inc"
 
-.segment "CODE"
-
-.export level2_2sprite_groups
-level2_2sprite_groups:
-  .byte $07
-  .word spritesheet1_Nomolos_chr
-  .word spritesheet1_Deentle_chr
-  .word spritesheet1_Explosion_chr
-  .word spritesheet1_Beedie_chr
-  .word spritesheet1_Grank_chr
-  .word spritesheet1_Skelekin_chr
-  .word spritesheet1_Bat_chr
-
 .segment "ROM01"
 
 .export level2_2music
