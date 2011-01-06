@@ -466,9 +466,9 @@ level3_data:
   .word hit_sound
   .word level3_palette
 
-  .byte 30  ;nomolos_start_x
-  .byte 100 ;nomolos_start_y
-  .byte 0 ;starting_screen
+  .byte 104 ;nomolos_start_x
+  .byte 0   ;nomolos_start_y
+  .byte 0   ;starting_screen
   
   .word level3_intro_string
   .byte 1 ;camera_scroll_enabled  
