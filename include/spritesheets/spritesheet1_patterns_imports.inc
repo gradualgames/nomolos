@@ -14,3 +14,7 @@
 .import spritesheet1_Shark_chr
 .import spritesheet1_Stalactite_chr
 .import spritesheet1_DragonFace_chr
+.import spritesheet1_FireGuy_chr
+.import spritesheet1_Phoenix_chr
+.import spritesheet1_Fireball_chr
+.import spritesheet1_Snake_chr

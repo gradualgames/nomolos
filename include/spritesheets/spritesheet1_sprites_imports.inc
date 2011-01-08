@@ -65,3 +65,12 @@
 .import spritesheet1_Stalactite0
 .import spritesheet1_DragonFace0
 .import spritesheet1_DragonFace1
+.import spritesheet1_FireGuy0
+.import spritesheet1_FireGuy1
+.import spritesheet1_Phoenix0
+.import spritesheet1_Phoenix1
+.import spritesheet1_Fireball0
+.import spritesheet1_Fireball1
+.import spritesheet1_Fireball2
+.import spritesheet1_Snake0
+.import spritesheet1_Snake1

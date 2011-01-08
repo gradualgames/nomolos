@@ -664,3 +664,100 @@ spritesheet1_DragonFace1:
   .byte $20,$0a,$03,$08,$10
   .byte $20,$01,$00,$10,$08
   .byte $20,$01,$00,$18,$00
+.export spritesheet1_FireGuy0
+spritesheet1_FireGuy0:
+  .byte $06
+  .byte $00,$00,$02,$00,$08
+  .byte $00,$01,$02,$08,$00
+  .byte $08,$02,$02,$00,$08
+  .byte $08,$03,$02,$08,$00
+  .byte $10,$04,$02,$00,$08
+  .byte $10,$05,$02,$08,$00
+.export spritesheet1_FireGuy1
+spritesheet1_FireGuy1:
+  .byte $06
+  .byte $00,$06,$02,$00,$08
+  .byte $00,$07,$02,$08,$00
+  .byte $08,$08,$02,$00,$08
+  .byte $08,$09,$02,$08,$00
+  .byte $10,$0a,$02,$00,$08
+  .byte $10,$0b,$02,$08,$00
+.export spritesheet1_Phoenix0
+spritesheet1_Phoenix0:
+  .byte $0f
+  .byte $00,$00,$02,$00,$10
+  .byte $00,$01,$02,$08,$08
+  .byte $00,$02,$02,$10,$00
+  .byte $08,$03,$02,$00,$10
+  .byte $08,$04,$02,$08,$08
+  .byte $08,$05,$02,$10,$00
+  .byte $10,$06,$02,$00,$10
+  .byte $10,$07,$02,$08,$08
+  .byte $10,$08,$02,$10,$00
+  .byte $18,$09,$02,$00,$10
+  .byte $18,$0a,$02,$08,$08
+  .byte $18,$0b,$02,$10,$00
+  .byte $20,$0c,$02,$00,$10
+  .byte $20,$0d,$02,$08,$08
+  .byte $20,$0e,$02,$10,$00
+.export spritesheet1_Phoenix1
+spritesheet1_Phoenix1:
+  .byte $0f
+  .byte $00,$0f,$02,$00,$10
+  .byte $00,$10,$02,$08,$08
+  .byte $00,$11,$02,$10,$00
+  .byte $08,$12,$02,$00,$10
+  .byte $08,$13,$02,$08,$08
+  .byte $08,$05,$02,$10,$00
+  .byte $10,$06,$02,$00,$10
+  .byte $10,$14,$02,$08,$08
+  .byte $10,$15,$02,$10,$00
+  .byte $18,$09,$02,$00,$10
+  .byte $18,$16,$02,$08,$08
+  .byte $18,$17,$02,$10,$00
+  .byte $20,$0c,$02,$00,$10
+  .byte $20,$0d,$02,$08,$08
+  .byte $20,$0e,$02,$10,$00
+.export spritesheet1_Fireball0
+spritesheet1_Fireball0:
+  .byte $04
+  .byte $00,$00,$02,$00,$08
+  .byte $00,$01,$02,$08,$00
+  .byte $08,$02,$02,$00,$08
+  .byte $08,$03,$02,$08,$00
+.export spritesheet1_Fireball1
+spritesheet1_Fireball1:
+  .byte $04
+  .byte $00,$04,$02,$00,$08
+  .byte $00,$05,$02,$08,$00
+  .byte $08,$06,$02,$00,$08
+  .byte $08,$07,$02,$08,$00
+.export spritesheet1_Fireball2
+spritesheet1_Fireball2:
+  .byte $04
+  .byte $00,$08,$02,$00,$08
+  .byte $00,$09,$02,$08,$00
+  .byte $08,$0a,$02,$00,$08
+  .byte $08,$0b,$02,$08,$00
+.export spritesheet1_Snake0
+spritesheet1_Snake0:
+  .byte $06
+  .byte $00,$00,$03,$00,$10
+  .byte $00,$01,$03,$08,$08
+  .byte $00,$02,$03,$10,$00
+  .byte $08,$03,$03,$00,$10
+  .byte $08,$04,$03,$08,$08
+  .byte $08,$05,$03,$10,$00
+.export spritesheet1_Snake1
+spritesheet1_Snake1:
+  .byte $08
+  .byte $00,$00,$03,$00,$18
+  .byte $00,$06,$03,$08,$10
+  .byte $00,$07,$03,$10,$08
+  .byte $00,$08,$03,$18,$00
+  .byte $08,$03,$03,$00,$18
+  .byte $08,$09,$03,$08,$10
+  .byte $08,$0a,$03,$10,$08
+  .byte $08,$0b,$03,$18,$00
+
+

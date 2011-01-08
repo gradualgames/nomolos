@@ -211,3 +211,26 @@ spritesheet1_SharkLeap:
   .word spritesheet1_Shark1
   .word spritesheet1_Shark2
   .word $0000
+
+.export spritesheet1_PhoenixFly
+spritesheet1_PhoenixFly:
+  .byte $0a
+  .word spritesheet1_Phoenix0
+  .word spritesheet1_Phoenix1
+  .word $0000
+
+.export spritesheet1_FireballFly
+spritesheet1_FireballFly:
+  .byte $0a
+  .word spritesheet1_Fireball2
+  .word spritesheet1_Fireball1
+  .word spritesheet1_Fireball0
+  .word spritesheet1_Fireball1
+  .word $0000
+
+.export spritesheet1_SnakeSlither
+spritesheet1_SnakeSlither:
+  .byte $0a
+  .word spritesheet1_Snake0
+  .word spritesheet1_Snake1
+  .word $0000

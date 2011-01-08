@@ -27,3 +27,6 @@
 .import spritesheet1_DragonFly
 .import spritesheet1_IceBallFly
 .import spritesheet1_SharkLeap
+.import spritesheet1_PhoenixFly
+.import spritesheet1_FireballFly
+.import spritesheet1_SnakeSlither
