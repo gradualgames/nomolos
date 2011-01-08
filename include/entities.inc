@@ -22,6 +22,7 @@ ENTITIES_INC = 1
 .global stalactite_update
 .global dragonboss_update
 .global restart_update
+.global phoenix_update
 
 ;entity indices
 entity_index_deentle = 1
@@ -45,6 +46,7 @@ entity_index_shark = 18
 entity_index_stalactite = 19
 entity_index_dragonboss = 20
 entity_index_restart = 21
+entity_index_phoenix = 22
 
 ;entity structs. Only parameterizable entities have structs here.
 .struct iceball_locals

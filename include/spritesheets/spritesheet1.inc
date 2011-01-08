@@ -20,6 +20,10 @@ IceBall_chr_size = 12
 Shark_chr_size = 18
 Stalactite_chr_size = 4
 DragonFace_chr_size = 12
+FireGuy_chr_size = 12
+Phoenix_chr_size = 24
+Fireball_chr_size = 12
+Snake_chr_size = 12
 
 .include "spritesheet1_sprites_imports.inc"
 .include "spritesheet1_animations_imports.inc"

@@ -106,6 +106,7 @@ index_continue_end_state   = 5 * 4
   stalactite_fall .word
   dragonboss_face_mouthshut .word
   dragonboss_face_mouthopen .word
+  phoenix_fly .word
   
   attack_sound .word
   hit_sound .word
@@ -143,6 +144,7 @@ index_continue_end_state   = 5 * 4
   shark_offset .byte
   stalactite_offset .byte
   dragonboss_offset .byte
+  phoenix_offset .byte
 
 .endstruct
 

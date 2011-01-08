@@ -38,3 +38,4 @@
 .include "stalactite.inc"
 .include "dragonboss.inc"
 .include "restart.inc"
+.include "phoenix.inc"
