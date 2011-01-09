@@ -230,7 +230,7 @@ spritesheet1_FireballFly:
 
 .export spritesheet1_SnakeSlither
 spritesheet1_SnakeSlither:
-  .byte $0a
+  .byte $14
   .word spritesheet1_Snake0
   .word spritesheet1_Snake1
   .word $0000

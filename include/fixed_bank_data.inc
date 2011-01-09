@@ -108,6 +108,7 @@ index_continue_end_state   = 5 * 4
   dragonboss_face_mouthopen .word
   phoenix_fly .word
   fireball_fly .word
+  snake_crawl .word
   
   attack_sound .word
   hit_sound .word
@@ -147,6 +148,7 @@ index_continue_end_state   = 5 * 4
   dragonboss_offset .byte
   phoenix_offset .byte
   fireball_offset .byte
+  snake_offset .byte
 
 .endstruct
 

@@ -8,11 +8,12 @@
 
 .export level4_sprite_groups
 level4_sprite_groups:
-  .byte $04
+  .byte $05
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_Explosion_chr
   .word spritesheet1_Phoenix_chr
   .word spritesheet1_Fireball_chr
+  .word spritesheet1_Snake_chr
 
 .segment "ROM09"
 
@@ -204,7 +205,7 @@ MetaTileColumnTable:
   .byte $00,$0c,$14,$19,$1c,$15,$15,$15,$1f,$24,$15,$15,$15,$2a,$15,$00
   .byte $00,$0b,$0f,$1a,$1c,$15,$15,$15,$20,$25,$27,$27,$28,$2a,$15,$00
   .byte $00,$06,$10,$11,$1d,$15,$15,$15,$21,$26,$15,$15,$15,$2a,$15,$00
-  .byte $01,$07,$11,$1b,$1d,$15,$15,$15,$15,$15,$15,$15,$15,$2a,$15,$00
+  .byte $01,$07,$11,$1b,$1d,$15,$15,$15,$15,$15,$15,$15,$42,$2a,$15,$00
   .byte $02,$08,$11,$18,$1d,$15,$15,$15,$15,$15,$15,$38,$3c,$2a,$15,$00
   .byte $03,$09,$12,$19,$1c,$15,$15,$15,$15,$15,$38,$3c,$3d,$2a,$15,$00
   .byte $00,$04,$14,$19,$1c,$15,$15,$15,$15,$15,$39,$3d,$3d,$2a,$15,$00
@@ -357,3 +358,5 @@ MetaTile64:
   .byte $00,$00,$00,$21,$21,$21,$21,entity_index_exit
 MetaTile65:
   .byte $00,$00,$00,$21,$21,$21,$21,entity_index_phoenix
+MetaTile66:
+  .byte $00,$00,$00,$21,$21,$21,$21,entity_index_snake

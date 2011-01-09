@@ -40,3 +40,4 @@
 .include "restart.inc"
 .include "phoenix.inc"
 .include "fireball.inc"
+.include "snake.inc"
