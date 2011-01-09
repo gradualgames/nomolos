@@ -221,7 +221,7 @@ spritesheet1_PhoenixFly:
 
 .export spritesheet1_FireballFly
 spritesheet1_FireballFly:
-  .byte $0a
+  .byte $02
   .word spritesheet1_Fireball2
   .word spritesheet1_Fireball1
   .word spritesheet1_Fireball0

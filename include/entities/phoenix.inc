@@ -11,7 +11,7 @@ PHOENIX_HALFHEIGHT = $14
   y_velocity .word
   anim_index .byte
   fly_hover  .byte
-  ;shoot_iceball .byte
+  shoot_fireball .byte
   damaged_counter  .byte
   health           .byte
 .endstruct
@@ -21,7 +21,7 @@ PHOENIX_FLYSTATE = 1
 PHOENIX_HOVERSTATE = 2
 
 PHOENIX_TIME_TIL_STATE_SWITCH = 40
-;PHOENIX_TIME_TIL_SHOOT_ICEBALL = 50
+PHOENIX_TIME_TIL_SHOOT_FIREBALL = 50
 
 PHOENIX_VERTSPEED = 20
 PHOENIX_MAXVERTSPEED = 1
@@ -62,8 +62,8 @@ phoenix_initState:
   lda #PHOENIX_TIME_TIL_STATE_SWITCH
   sta entity_locals+phoenix_locals::fly_hover,x
 
-  ;lda #PHOENIX_TIME_TIL_SHOOT_ICEBALL
-  ;sta entity_locals+phoenix_locals::shoot_iceball,x
+  ;lda #PHOENIX_TIME_TIL_SHOOT_FIREBALL
+  sta entity_locals+phoenix_locals::shoot_fireball,x
 
   ;set damaged counter to 0
   lda #0
@@ -77,35 +77,35 @@ phoenix_initState:
 
 phoenix_hoverState:
 
-;  .scope
-  ;dec entity_locals+phoenix_locals::shoot_iceball,x
-  ;bne do_not_shoot_iceball
+ .scope
+  dec entity_locals+phoenix_locals::shoot_fireball,x
+  bne do_not_shoot_fireball
 
-  ;;spawn an iceball entity
-  ;lda #entity_index_iceball
-  ;sta b0
+  ;spawn an fireball entity
+  lda #entity_index_fireball
+  sta b0
 
-  ;;get out low byte of position_x
-  ;clc
-  ;lda entity_instances+entity_instance::position_x,x
-  ;adc #PHOENIX_HALFWIDTH
-  ;sta w0
-  ;;get out high byte of position_x
-  ;lda entity_instances+entity_instance::position_x+1,x
-  ;adc #0
-  ;sta w0+1
+  ;get out low byte of position_x
+  clc
+  lda entity_instances+entity_instance::position_x,x
+  adc #PHOENIX_HALFWIDTH
+  sta w0
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
+  adc #0
+  sta w0+1
 
-  ;;get out position_y
-  ;lda entity_instances+entity_instance::position_y,x
-  ;sta b1
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sta b1
 
-  ;jsr entity_spawn
+  jsr entity_spawn
 
-  ;lda #PHOENIX_TIME_TIL_SHOOT_ICEBALL
-  ;sta entity_locals+phoenix_locals::shoot_iceball,x
+  lda #PHOENIX_TIME_TIL_SHOOT_FIREBALL
+  sta entity_locals+phoenix_locals::shoot_fireball,x
 
-;do_not_shoot_iceball:
-;  .endscope
+do_not_shoot_fireball:
+ .endscope
 
   .scope
   dec entity_locals+phoenix_locals::fly_hover,x

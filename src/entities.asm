@@ -39,3 +39,4 @@
 .include "dragonboss.inc"
 .include "restart.inc"
 .include "phoenix.inc"
+.include "fireball.inc"
