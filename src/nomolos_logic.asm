@@ -741,33 +741,49 @@ skipAttackUpdate:
 .endproc
 
 .proc nomolos_test_collision_below
+hurt_test_counter = b3
 
+  ;count the number of hurt tests that succeed.
+  lda #0
+  sta hurt_test_counter 
+
+  ;Is there a collision at bottom right of Nomolos?
+  .scope
+  lda nomolos_map_x+1
+  clc
+  adc #$0f
+  sta w0
+  lda nomolos_map_x+2
+  adc #$00
+  sta w0+1
+  lda nomolos_map_y+1
+  clc
+  adc #(nomolos_height+1)
+  sta w1
+  lda nomolos_map_y+2
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  ;load hurt result
+  lda b0
+  beq not_hurt
+  
+  inc hurt_test_counter
+  
+not_hurt:
+  ;load solid result
+  lda b1
+  beq not_solid
+  
   lda nomolos_state_primary
-  and #nomolos_walking_left_test
-  beq nomolos_walking_right
-nomolos_walking_left:
-
-  ;Is there a collision at bottom right of Nomolos?
-  lda nomolos_map_x+1
-  clc
-  adc #$0f
-  sta w0
-  lda nomolos_map_x+2
-  adc #$00
-  sta w0+1
-  lda nomolos_map_y+1
-  clc
-  adc #(nomolos_height+1)
-  sta w1
-  lda nomolos_map_y+2
-  adc #0
-  sta w1+1
-  jsr map_test_collision
-  jsr nomolos_load_hurt_result
-  lda b1
-  bne yesBelowCollision
+  ora #nomolos_below_collision_on_set
+  sta nomolos_state_primary
+  
+not_solid:
+  .endscope
   
   ;Is there a collision at bottom left of Nomolos?
+  .scope
   lda nomolos_map_x+1
   sta w0
   lda nomolos_map_x+2
@@ -780,55 +796,40 @@ nomolos_walking_left:
   adc #0
   sta w1+1
   jsr map_test_collision
-  jsr nomolos_load_hurt_result
-  lda b1
-  bne yesBelowCollision
-
-  jmp noBelowCollision
-nomolos_walking_right:
+  ;load hurt result
+  lda b0
+  beq not_hurt
   
-  ;Is there a collision at bottom left of Nomolos?
-  lda nomolos_map_x+1
-  sta w0
-  lda nomolos_map_x+2
-  sta w0+1
-  lda nomolos_map_y+1
-  clc
-  adc #(nomolos_height+1)
-  sta w1
-  lda nomolos_map_y+2
-  adc #0
-  sta w1+1
-  jsr map_test_collision
-  jsr nomolos_load_hurt_result
-  lda b1
-  bne yesBelowCollision
+  inc hurt_test_counter
   
-  ;Is there a collision at bottom right of Nomolos?
-  lda nomolos_map_x+1
-  clc
-  adc #$0f
-  sta w0
-  lda nomolos_map_x+2
-  adc #$00
-  sta w0+1
-  lda nomolos_map_y+1
-  clc
-  adc #(nomolos_height+1)
-  sta w1
-  lda nomolos_map_y+2
-  adc #0
-  sta w1+1
-  jsr map_test_collision
-  jsr nomolos_load_hurt_result
+not_hurt:
+  ;load solid result
   lda b1
-  bne yesBelowCollision
+  beq not_solid
   
-noBelowCollision:
-  rts
+  lda nomolos_state_primary
+  ora #nomolos_below_collision_on_set
+  sta nomolos_state_primary
+  
+not_solid:
+  .endscope
+ 
+  ;load results of hurt counter
+  lda hurt_test_counter
+  cmp #2
+  bne not_hurt
+  
+  lda nomolos_state_primary
+  ora #nomolos_hurt_by_map_on_set
+  sta nomolos_state_primary
+  
+not_hurt:
 
-yesBelowCollision:
-
+  ;load collision result to determine whether we should eject
+  lda nomolos_state_primary
+  and #nomolos_below_collision_test
+  beq no_below_collision
+ 
   ;Calculate penetration distance and store it in belowPenetrationDistance.
   ;Set below collision flag.
   lda nomolos_map_y+1
@@ -867,6 +868,8 @@ yesBelowCollision:
   lda #nomolos_start_jump_hi
   sta nomolos_y_velocity+1
 
+no_below_collision:
+  
   rts
 
 skipButtonATest:
