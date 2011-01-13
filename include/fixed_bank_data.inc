@@ -109,6 +109,8 @@ index_continue_end_state   = 5 * 4
   phoenix_fly .word
   fireball_fly .word
   snake_crawl .word
+  fireguy_hide .word
+  fireguy_run .word
   
   attack_sound .word
   hit_sound .word
@@ -149,6 +151,7 @@ index_continue_end_state   = 5 * 4
   phoenix_offset .byte
   fireball_offset .byte
   snake_offset .byte
+  fireguy_offset .byte
 
 .endstruct
 
