@@ -742,22 +742,10 @@ skipAttackUpdate:
 
 .proc nomolos_test_collision_below
 
-  ;Is there a collision at bottom left of Nomolos?
-  lda nomolos_map_x+1
-  sta w0
-  lda nomolos_map_x+2
-  sta w0+1
-  lda nomolos_map_y+1
-  clc
-  adc #(nomolos_height+1)
-  sta w1
-  lda nomolos_map_y+2
-  adc #0
-  sta w1+1
-  jsr map_test_collision
-  jsr nomolos_load_hurt_result
-  lda b1
-  bne yesBelowCollision
+  lda nomolos_state_primary
+  and #nomolos_walking_left_test
+  beq nomolos_walking_right
+nomolos_walking_left:
 
   ;Is there a collision at bottom right of Nomolos?
   lda nomolos_map_x+1
@@ -778,7 +766,64 @@ skipAttackUpdate:
   jsr nomolos_load_hurt_result
   lda b1
   bne yesBelowCollision
+  
+  ;Is there a collision at bottom left of Nomolos?
+  lda nomolos_map_x+1
+  sta w0
+  lda nomolos_map_x+2
+  sta w0+1
+  lda nomolos_map_y+1
+  clc
+  adc #(nomolos_height+1)
+  sta w1
+  lda nomolos_map_y+2
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  jsr nomolos_load_hurt_result
+  lda b1
+  bne yesBelowCollision
 
+  jmp noBelowCollision
+nomolos_walking_right:
+  
+  ;Is there a collision at bottom left of Nomolos?
+  lda nomolos_map_x+1
+  sta w0
+  lda nomolos_map_x+2
+  sta w0+1
+  lda nomolos_map_y+1
+  clc
+  adc #(nomolos_height+1)
+  sta w1
+  lda nomolos_map_y+2
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  jsr nomolos_load_hurt_result
+  lda b1
+  bne yesBelowCollision
+  
+  ;Is there a collision at bottom right of Nomolos?
+  lda nomolos_map_x+1
+  clc
+  adc #$0f
+  sta w0
+  lda nomolos_map_x+2
+  adc #$00
+  sta w0+1
+  lda nomolos_map_y+1
+  clc
+  adc #(nomolos_height+1)
+  sta w1
+  lda nomolos_map_y+2
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  jsr nomolos_load_hurt_result
+  lda b1
+  bne yesBelowCollision
+  
 noBelowCollision:
   rts
 
