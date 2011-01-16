@@ -1,7 +1,6 @@
 .include "title_state.inc"
 .include "level_in_state.inc"
 .include "load_level_state.inc"
-.include "game_over_state.inc"
 .include "continue_end_state.inc"
 .include "play_level_state.inc"
 .include "statemanager.inc"
@@ -56,8 +55,6 @@ state_table:
   .word level_in_state_update_ppu
   .word load_level_state_update
   .word load_level_state_update_ppu
-  .word game_over_state_update
-  .word game_over_state_update_ppu
   .word play_level_state_update
   .word play_level_state_update_ppu
   .word continue_end_state_update

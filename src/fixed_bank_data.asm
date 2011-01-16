@@ -12,7 +12,6 @@
 .include "title_state.inc"
 .include "level_in_state.inc"
 .include "load_level_state.inc"
-.include "game_over_state.inc"
 .include "play_level_state.inc"
 .include "zp.inc"
 .include "sound_effects.inc"

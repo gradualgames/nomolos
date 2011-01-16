@@ -16,9 +16,8 @@ level_4_index   = 7
 index_title_state          = 0 * 4
 index_level_in_state       = 1 * 4
 index_load_level_state     = 2 * 4
-index_game_over_state      = 3 * 4
-index_play_level_state     = 4 * 4
-index_continue_end_state   = 5 * 4
+index_play_level_state     = 3 * 4
+index_continue_end_state   = 4 * 4
 
 .global level_definition_table
 .global banktable

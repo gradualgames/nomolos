@@ -32,7 +32,6 @@ FILES           = zp \
                   load_level_state \
                   play_level_state \
                   level_in_state \
-                  game_over_state \
                   title_state \
                   continue_end_state \
                   map \

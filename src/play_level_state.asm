@@ -4,7 +4,6 @@
 .include "soundengine.inc"
 .include "load_level_state.inc"
 .include "level_in_state.inc"
-.include "game_over_state.inc"
 .include "continue_end_state.inc"
 .include "controller.inc"
 .include "map.inc"
