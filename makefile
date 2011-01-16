@@ -44,8 +44,8 @@ FILES           = zp \
                   geotests \
                   mapper \
                   ppu \
-                  fixed_bank_data \
-                  statemanager
+                  statemanager \
+                  fixed_bank_data
 OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))
 LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
 CONFIG_FILE     = $(OUTPUT_NAME).cfg

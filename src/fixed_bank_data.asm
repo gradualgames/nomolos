@@ -16,6 +16,9 @@
 .include "zp.inc"
 .include "sound_effects.inc"
 
+;output the size of the level data struct to the console
+.out .sprintf(".sizezof(level_data_struct) is %i", .sizeof(level_data_struct))
+
 .segment "ROM14"
 
 .include "font0_patterns_source.inc"
