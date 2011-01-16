@@ -3,6 +3,7 @@
 .include "level2.inc"
 .include "level2_2.inc"
 .include "level3.inc"
+.include "level3_2.inc"
 .include "level4.inc"
 .include "boss1.inc"
 .include "entities.inc"
@@ -34,6 +35,7 @@ level_definition_table:
   .word level2_data
   .word level2_2data
   .word level3_data
+  .word level3_2data
   .word boss1_data
   .word level4_data
 
@@ -48,6 +50,8 @@ level2_2intro_string:
   .byte $09,$0b,$04,$15,$04,$0b,$1a,$1d,$2b,$1d
 level3_intro_string:
   .byte $07,$0b,$04,$15,$04,$0b,$1a,$1e
+level3_2_intro_string:
+  .byte $09,$0b,$04,$15,$04,$0b,$1a,$1e,$2b,$1d
 level4_intro_string:
   .byte $07,$0b,$04,$15,$04,$0b,$1a,$1f
 boss1_intro_string:
@@ -521,6 +525,104 @@ level3_data:
   .word level3_attribute_column_table
   .word level3_meta_tile_column_table
   .word level3_meta_tile_table
+
+  .word entity_definition_table
+  .word level3_music
+  .byte level_3_2_index
+
+  .byte level3_sprites_Nomolos_chr_index
+  .byte 0 ;level3_sprites_Deentle_chr_index
+  .byte level3_sprites_Explosion_chr_index
+  .byte level3_sprites_Beedie_chr_index
+  .byte 0 ;level3_sprites_Grank_chr_index
+  .byte level3_sprites_Bat_chr_index
+  .byte 0 ;level3_sprites_Skelekin_chr_index
+  .byte 0 ;level3_sprites_Batree_chr_index
+  .byte 0 ;level3_sprites_Owl_chr_index
+  .byte 0 ;level3_sprites_Snuffer_chr_index
+  .byte level3_sprites_Snail_chr_index
+  .byte level3_sprites_Dragon_chr_index
+  .byte level3_sprites_IceBall_chr_index
+  .byte level3_sprites_Shark_chr_index
+  .byte 0 ;level3_sprites_Stalactite_chr_index
+  .byte 0 ;dragonboss_offset
+  .byte 0 ;level3_sprites_Phoenix_chr_index
+  .byte 0 ;level3_sprites_Fireball_chr_index
+  .byte 0 ;level3_sprites_Snake_chr_index
+  .byte 0 ;level3_sprites_FireGuy_chr_index
+
+;ROM definition table
+level3_2data:
+  .byte spritesheet_1_bank
+  .byte level_3_bank
+  .byte level_3_patterns_bank
+  .word level3_patterns
+  .byte spritesheet_1_patterns_bank
+  .word level3_sprite_groups
+  .word level3_cycling_palettes ;cycling_palette_address
+  .byte 10 ;cycling_palette_speed
+
+  .word spritesheet1_NomolosWalk
+  .word spritesheet1_nomolos_walk_overlay
+  .word spritesheet1_nomolos_jump
+  .word spritesheet1_nomolos_jump_overlay
+  .word spritesheet1_nomolos_fight
+  .word spritesheet1_nomolos_fight_overlay
+  .word spritesheet1_NomolosUseFlail
+  .word spritesheet1_nomolos_flail_overlay
+  .word spritesheet1_NomolosUseSpear
+  .word spritesheet1_nomolos_fight_overlay
+  .word spritesheet1_FlailBall
+  .word spritesheet1_Spear0
+  .word spritesheet1_SlumpedArmor0
+  .word spritesheet1_SlumpedArmorOverlay0
+  .word spritesheet1_ScardyCat0
+  .word spritesheet1_ScardyCatOverlay0
+
+  .word spritesheet1_Heart0
+  .word spritesheet1_Spear0
+  .word spritesheet1_GrankFly
+  .word spritesheet1_BeedieBlob
+  .word spritesheet1_FlailItem0
+  .word spritesheet1_DeentleWalk
+  .word spritesheet1_Explosion
+  .word spritesheet1_Mouse
+  .word spritesheet1_OneUp0
+  .word spritesheet1_SkelekinWalk
+  .word spritesheet1_BatFly
+  .word $0000 ;batree
+  .word $0000 ;owl_fly
+  .word $0000 ;owl_attack
+  .word $0000 ;snuffer_run
+  .word $0000 ;snuffer_bite
+  .word spritesheet1_SnailCrawl
+  .word spritesheet1_DragonFly
+  .word spritesheet1_IceBallFly
+  .word spritesheet1_SharkLeap
+  .word $0000 ;spritesheet1_Stalactite0
+  .word $0000 ;dragonboss_face_mouthshut
+  .word $0000 ;dragonboss_face_mouthopen
+  .word $0000 ;spritesheet1_PhoenixFly
+  .word $0000 ;spritesheet1_FireballFly
+  .word $0000 ;spritesheet1_SnakeSlither
+  .word $0000 ;spritesheet1_FireGuy0
+  .word $0000 ;spritesheet1_FireGuy1
+
+  .word attack_sound
+  .word hit_sound
+  .word level3_palette
+
+  .byte 0   ;nomolos_start_x
+  .byte 191 ;nomolos_start_y
+  .byte 0   ;starting_screen
+  
+  .word level3_2_intro_string
+  .byte 1 ;camera_scroll_enabled  
+  .word level3_2_map
+  .word level3_2_map_column_table
+  .word level3_2_attribute_column_table
+  .word level3_2_meta_tile_column_table
+  .word level3_2_meta_tile_table
 
   .word entity_definition_table
   .word level3_music

@@ -20,7 +20,7 @@ level4_sprite_groups:
 
 .include "level4_patterns_source.inc"
 
-.segment "ROM02"
+.segment "ROM03"
 
 .export level4_music
 level4_music: 

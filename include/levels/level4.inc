@@ -1,7 +1,7 @@
 .ifndef LEVEL4_INC
 LEVEL4_INC = 1
 
-level_4_bank = 2
+level_4_bank = 3
 level_4_patterns_bank = 9
 
 level4_sprites_Nomolos_chr_index = 0

@@ -13,7 +13,7 @@ boss1_INC = 1
 .import boss1_meta_tile_table
 .import boss1_music
 
-boss_1_bank = 2
+boss_1_bank = 3
 boss_1_patterns_bank = 8
 
 boss1_sprites_Nomolos_chr_index = 0
