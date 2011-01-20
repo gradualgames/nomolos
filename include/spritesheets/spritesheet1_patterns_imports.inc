@@ -18,3 +18,4 @@
 .import spritesheet1_Phoenix_chr
 .import spritesheet1_Fireball_chr
 .import spritesheet1_Snake_chr
+.import spritesheet1_Thoguth_chr

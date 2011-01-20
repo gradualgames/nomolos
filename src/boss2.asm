@@ -8,12 +8,9 @@
 
 .export boss2_sprite_groups
 boss2_sprite_groups:
-  .byte $05
+  .byte $02
   .word spritesheet1_Nomolos_chr
-  .word spritesheet1_Explosion_chr
-  .word spritesheet1_IceBall_chr
-  .word spritesheet1_Stalactite_chr
-  .word spritesheet1_DragonFace_chr
+  .word spritesheet1_Thoguth_chr
 
 .segment "ROM03"
 
@@ -129,7 +126,7 @@ Noise:
 boss2_palette:
   .byte $0d,$00,$2d,$02,$0d,$07,$06,$0c,$0d,$00,$2d,$04,$0d,$00,$28,$08
 ;spritesheet1_palette
-  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$07,$38,$0d,$21,$21,$21
+  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$00,$10,$0d,$11,$21,$21
   
 .export boss2_cycling_palettes
 boss2_cycling_palettes:
@@ -154,21 +151,22 @@ boss2_meta_tile_column_table = MetaTileColumnTable
 boss2_meta_tile_table = MetaTileTable
 
 Map:
-  .byte $00,$01,$01,$01,$01,$01,$02,$03,$04,$04,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0c,$0c,$0c,$0c,$0c,$0c
+  .byte $00,$01,$01,$01,$02,$01,$03,$04,$05,$05,$06,$07,$08,$09,$0a,$0b,$0c,$0d,$0d,$0d,$0d,$0d,$0d,$0d
 MapColumnTable:
   .byte $00,$00,$01,$00
   .byte $01,$01,$01,$00
-  .byte $02,$01,$02,$00
-  .byte $03,$03,$04,$00
-  .byte $04,$05,$05,$00
-  .byte $04,$05,$06,$00
-  .byte $04,$07,$08,$00
-  .byte $05,$09,$0a,$00
-  .byte $06,$0b,$0c,$00
-  .byte $04,$08,$0d,$00
-  .byte $04,$0e,$05,$00
-  .byte $04,$05,$0f,$00
-  .byte $04,$0f,$0f,$00
+  .byte $01,$01,$02,$00
+  .byte $02,$01,$03,$00
+  .byte $03,$04,$05,$00
+  .byte $04,$06,$06,$00
+  .byte $04,$06,$07,$00
+  .byte $04,$08,$09,$00
+  .byte $05,$0a,$0b,$00
+  .byte $06,$0c,$0d,$00
+  .byte $04,$09,$0e,$00
+  .byte $04,$0f,$06,$00
+  .byte $04,$06,$10,$00
+  .byte $04,$10,$10,$00
 AttributeColumnTable:
   .byte $11,$11,$11,$11,$11,$00,$00,$05
   .byte $00,$00,$00,$00,$00,$00,$00,$05
@@ -180,6 +178,7 @@ AttributeColumnTable:
 MetaTileColumnTable:
   .byte $08,$08,$08,$08,$08,$08,$08,$08,$08,$08,$3c,$3c,$3c,$3c,$08,$00
   .byte $10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$08,$00
+  .byte $10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$10,$92,$08,$00
   .byte $08,$08,$08,$08,$08,$08,$38,$38,$38,$38,$08,$08,$08,$08,$08,$00
   .byte $08,$08,$08,$08,$08,$08,$31,$31,$31,$31,$08,$08,$08,$08,$08,$00
   .byte $08,$08,$08,$08,$08,$08,$90,$90,$90,$90,$08,$08,$08,$08,$08,$00
@@ -487,3 +486,5 @@ MetaTile144:
   .byte $01,$00,$00,$0d,$0e,$19,$1a,$00
 MetaTile145:
   .byte $00,$00,$00,$0a,$0a,$0a,$0a,entity_index_exit
+MetaTile146:
+  .byte $00,$00,$00,$00,$07,$0f,$10,entity_index_thoguth

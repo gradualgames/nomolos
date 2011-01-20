@@ -112,6 +112,10 @@ index_continue_end_state   = 4 * 4
   snake_crawl .word
   fireguy_hide .word
   fireguy_run .word
+  thoguth_stand .word
+  thoguth_overlay0 .word
+  thoguth_overlay1 .word
+  thoguth_overlay2 .word
   
   attack_sound .word
   hit_sound .word
@@ -153,6 +157,7 @@ index_continue_end_state   = 4 * 4
   fireball_offset .byte
   snake_offset .byte
   fireguy_offset .byte
+  thoguth_offset .byte
 
 .endstruct
 

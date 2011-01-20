@@ -116,6 +116,10 @@ level1_data:
   .word 0 ;spritesheet1_SnakeSlither
   .word 0 ;spritesheet1_FireGuy0
   .word 0 ;spritesheet1_FireGuy1
+  .word 0 ;spritesheet1_Thoguth0
+  .word 0 ;spritesheet1_ThoguthOverlay0
+  .word 0 ;spritesheet1_ThoguthOverlay1
+  .word 0 ;spritesheet1_ThoguthOverlay2
 
   .word attack_sound
   .word hit_sound
@@ -159,6 +163,7 @@ level1_data:
   .byte 0 ;level1_sprites_Fireball_chr_index
   .byte 0 ;level1_sprites_Snake_chr_index
   .byte 0 ;level1_sprites_FireGuy_chr_index
+  .byte 0 ;level1_sprites_Thoguth_chr_index
 
 ;ROM definition table
 level1_2data:
@@ -216,6 +221,10 @@ level1_2data:
   .word 0 ;spritesheet1_SnakeSlither
   .word 0 ;spritesheet1_FireGuy0
   .word 0 ;spritesheet1_FireGuy1
+  .word 0 ;spritesheet1_Thoguth0
+  .word 0 ;spritesheet1_ThoguthOverlay0
+  .word 0 ;spritesheet1_ThoguthOverlay1
+  .word 0 ;spritesheet1_ThoguthOverlay2
 
   .word attack_sound
   .word hit_sound
@@ -259,6 +268,7 @@ level1_2data:
   .byte 0 ;level1_sprites_Fireball_chr_index
   .byte 0 ;level1_sprites_Snake_chr_index
   .byte 0 ;level1_sprites_FireGuy_chr_index
+  .byte 0 ;level1_sprites_Thoguth_chr_index
   
 ;ROM definition table
 level2_data:
@@ -316,6 +326,10 @@ level2_data:
   .word 0 ;spritesheet1_SnakeSlither
   .word 0 ;spritesheet1_FireGuy0
   .word 0 ;spritesheet1_FireGuy1
+  .word 0 ;spritesheet1_Thoguth0
+  .word 0 ;spritesheet1_ThoguthOverlay0
+  .word 0 ;spritesheet1_ThoguthOverlay1
+  .word 0 ;spritesheet1_ThoguthOverlay2
   
   .word attack_sound
   .word hit_sound
@@ -357,6 +371,7 @@ level2_data:
   .byte 0 ;level2_sprites_Fireball_chr_index
   .byte 0 ;level2_sprites_Snake_chr_index
   .byte 0 ;level2_sprites_FireGuy_chr_index
+  .byte 0 ;level2_sprites_Thoguth_chr_index
 
 ;ROM definition table
 level2_2data:
@@ -414,6 +429,10 @@ level2_2data:
   .word 0 ;spritesheet1_SnakeSlither
   .word 0 ;spritesheet1_FireGuy0
   .word 0 ;spritesheet1_FireGuy1
+  .word 0 ;spritesheet1_Thoguth0
+  .word 0 ;spritesheet1_ThoguthOverlay0
+  .word 0 ;spritesheet1_ThoguthOverlay1
+  .word 0 ;spritesheet1_ThoguthOverlay2
   
   .word attack_sound
   .word hit_sound
@@ -455,6 +474,7 @@ level2_2data:
   .byte 0 ;level2_sprites_Fireball_chr_index
   .byte 0 ;level2_sprites_Snake_chr_index
   .byte 0 ;level2_sprites_FireGuy_chr_index
+  .byte 0 ;level2_sprites_Thoguth_chr_index
 
 ;ROM definition table
 boss2_data:
@@ -512,6 +532,10 @@ boss2_data:
   .word 0 ;spritesheet1_SnakeSlither
   .word 0 ;spritesheet1_FireGuy0
   .word 0 ;spritesheet1_FireGuy1
+  .word spritesheet1_Thoguth0
+  .word spritesheet1_ThoguthOverlay0
+  .word spritesheet1_ThoguthOverlay1
+  .word spritesheet1_ThoguthOverlay2
   
   .word attack_sound
   .word hit_sound
@@ -553,6 +577,7 @@ boss2_data:
   .byte 0 ;boss2_sprites_Fireball_chr_index
   .byte 0 ;boss2_sprites_Snake_chr_index
   .byte 0 ;boss2_sprites_FireGuy_chr_index
+  .byte boss2_sprites_Thoguth_chr_index
   
 ;ROM definition table
 level3_data:
@@ -610,6 +635,10 @@ level3_data:
   .word $0000 ;spritesheet1_SnakeSlither
   .word $0000 ;spritesheet1_FireGuy0
   .word $0000 ;spritesheet1_FireGuy1
+  .word $0000 ;spritesheet1_Thoguth0
+  .word 0 ;spritesheet1_ThoguthOverlay0
+  .word 0 ;spritesheet1_ThoguthOverlay1
+  .word 0 ;spritesheet1_ThoguthOverlay2
 
   .word attack_sound
   .word hit_sound
@@ -651,6 +680,7 @@ level3_data:
   .byte 0 ;level3_sprites_Fireball_chr_index
   .byte 0 ;level3_sprites_Snake_chr_index
   .byte 0 ;level3_sprites_FireGuy_chr_index
+  .byte 0 ;level3_sprites_Thoguth_chr_index
 
 ;ROM definition table
 level3_2data:
@@ -708,6 +738,10 @@ level3_2data:
   .word $0000 ;spritesheet1_SnakeSlither
   .word $0000 ;spritesheet1_FireGuy0
   .word $0000 ;spritesheet1_FireGuy1
+  .word $0000 ;spritesheet1_Thoguth0
+  .word 0 ;spritesheet1_ThoguthOverlay0
+  .word 0 ;spritesheet1_ThoguthOverlay1
+  .word 0 ;spritesheet1_ThoguthOverlay2
 
   .word attack_sound
   .word hit_sound
@@ -749,6 +783,7 @@ level3_2data:
   .byte 0 ;level3_sprites_Fireball_chr_index
   .byte 0 ;level3_sprites_Snake_chr_index
   .byte 0 ;level3_sprites_FireGuy_chr_index
+  .byte 0 ;level3_sprites_Thoguth_chr_index
 
 ;ROM definition table
 boss1_data:
@@ -806,6 +841,10 @@ boss1_data:
   .word 0 ;spritesheet1_SnakeSlither
   .word 0 ;spritesheet1_FireGuy0
   .word 0 ;spritesheet1_FireGuy1
+  .word 0 ;spritesheet1_Thoguth0
+  .word 0 ;spritesheet1_ThoguthOverlay0
+  .word 0 ;spritesheet1_ThoguthOverlay1
+  .word 0 ;spritesheet1_ThoguthOverlay2
 
   .word attack_sound
   .word hit_sound
@@ -847,6 +886,7 @@ boss1_data:
   .byte 0 ;boss1_sprites_Fireball_chr_index
   .byte 0 ;boss1_sprites_Snake_chr_index
   .byte 0 ;boss1_sprites_FireGuy_chr_index
+  .byte 0 ;boss1_sprites_Thoguth_chr_index
 
 ;ROM definition table
 level4_data:
@@ -904,6 +944,10 @@ level4_data:
   .word spritesheet1_SnakeSlither
   .word spritesheet1_FireGuy1
   .word spritesheet1_FireGuy0
+  .word $0000 ;spritesheet1_Thoguth0
+  .word 0 ;spritesheet1_ThoguthOverlay0
+  .word 0 ;spritesheet1_ThoguthOverlay1
+  .word 0 ;spritesheet1_ThoguthOverlay2
 
   .word attack_sound
   .word hit_sound
@@ -945,6 +989,7 @@ level4_data:
   .byte level4_sprites_Fireball_chr_index
   .byte level4_sprites_Snake_chr_index
   .byte level4_sprites_FireGuy_chr_index
+  .byte 0 ;level4_sprites_Thoguth_chr_index
   
 ;Entities
 entity_definition_table:
@@ -1022,6 +1067,9 @@ entity_definition_table:
   .byte $00
   .word fireguy_update
   .byte $02
+  .byte $00
+  .word thoguth_update
+  .byte $01
   .byte $00
   
 ;miscellaneous data

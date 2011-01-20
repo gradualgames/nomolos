@@ -26,6 +26,7 @@ ENTITIES_INC = 1
 .global fireball_update
 .global snake_update
 .global fireguy_update
+.global thoguth_update
 
 ;entity indices
 entity_index_deentle = 1
@@ -53,6 +54,7 @@ entity_index_phoenix = 22
 entity_index_fireball = 23
 entity_index_snake = 24
 entity_index_fireguy = 25
+entity_index_thoguth = 26
 
 ;entity structs. Only parameterizable entities have structs here.
 .struct iceball_locals

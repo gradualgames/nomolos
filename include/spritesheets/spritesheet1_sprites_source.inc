@@ -759,5 +759,43 @@ spritesheet1_Snake1:
   .byte $08,$09,$03,$08,$10
   .byte $08,$0a,$03,$10,$08
   .byte $08,$0b,$03,$18,$00
-
+.export spritesheet1_Thoguth0
+spritesheet1_Thoguth0:
+  .byte $12
+  .byte $00,$00,$02,$00,$10
+  .byte $00,$01,$02,$08,$08
+  .byte $00,$02,$00,$10,$00
+  .byte $08,$03,$02,$00,$10
+  .byte $08,$04,$02,$08,$08
+  .byte $08,$05,$02,$10,$00
+  .byte $10,$06,$02,$00,$10
+  .byte $10,$07,$02,$08,$08
+  .byte $10,$08,$02,$10,$00
+  .byte $18,$09,$02,$00,$10
+  .byte $18,$0a,$02,$08,$08
+  .byte $18,$0b,$02,$10,$00
+  .byte $20,$0c,$02,$00,$10
+  .byte $20,$0d,$02,$08,$08
+  .byte $20,$0e,$00,$10,$00
+  .byte $28,$0f,$02,$00,$10
+  .byte $28,$10,$00,$08,$08
+  .byte $28,$11,$00,$10,$00
+.export spritesheet1_ThoguthOverlay0
+spritesheet1_ThoguthOverlay0:
+  .byte $04
+  .byte $00,$12,$03,$00,$10
+  .byte $00,$13,$03,$08,$08
+  .byte $08,$14,$03,$00,$10
+  .byte $08,$15,$03,$08,$08
+.export spritesheet1_ThoguthOverlay1
+spritesheet1_ThoguthOverlay1:
+  .byte $04
+  .byte $10,$16,$00,$07,$09
+  .byte $10,$17,$03,$0f,$01
+  .byte $18,$18,$03,$07,$09
+  .byte $18,$19,$03,$0f,$01
+.export spritesheet1_ThoguthOverlay2
+spritesheet1_ThoguthOverlay2:
+  .byte $01
+  .byte $28,$1a,$03,$08,$08
 
