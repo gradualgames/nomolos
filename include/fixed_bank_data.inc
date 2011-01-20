@@ -1,7 +1,7 @@
 .ifndef FIXEDBANKDATA_INC
 FIXEDBANKDATA_INC = 1
 
-num_levels                 = 8
+num_levels                 = 9
 
 level_1_index   = 0
 level_1_2_index = 1
