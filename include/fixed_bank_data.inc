@@ -7,10 +7,11 @@ level_1_index   = 0
 level_1_2_index = 1
 level_2_index   = 2
 level_2_2_index = 3
-level_3_index   = 4
-level_3_2_index = 5
-boss_1_index    = 6
-level_4_index   = 7
+boss_2_index    = 4
+level_3_index   = 5
+level_3_2_index = 6
+boss_1_index    = 7
+level_4_index   = 8
 
 ;state table
 index_title_state          = 0 * 4

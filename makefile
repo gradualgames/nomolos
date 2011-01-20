@@ -23,6 +23,7 @@ FILES           = zp \
                   level1_2 \
                   level2 \
                   level2_2 \
+                  boss2 \
                   level3 \
                   level3_2 \
                   level4 \
