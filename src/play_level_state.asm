@@ -304,6 +304,8 @@ skip_start_button_test:
   sta state_control_params+play_level_state_control::frame_counter+1
   bne do_not_switch_to_level_in_state
   
+  lda #0
+  sta state_control_params+play_level_state_control::use_restart_point
   ldy #level_data_struct::next_level
   lda (base_address_rom_definition_table),y
   sta level_current
