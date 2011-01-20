@@ -790,8 +790,8 @@ spritesheet1_ThoguthOverlay0:
 .export spritesheet1_ThoguthOverlay1
 spritesheet1_ThoguthOverlay1:
   .byte $02
-  .byte $10,$16,$03,$08,$01
-  .byte $18,$17,$03,$08,$01
+  .byte $10,$16,$03,$0f,$01
+  .byte $18,$17,$03,$0f,$01
 .export spritesheet1_ThoguthOverlay2
 spritesheet1_ThoguthOverlay2:
   .byte $01
