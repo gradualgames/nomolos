@@ -67,24 +67,6 @@ index_continue_end_state   = 4 * 4
   cycling_palette_address .word
   cycling_palette_speed .byte
   
-  nomolos_walk .word
-  nomolos_walk_overlay .word
-  nomolos_jump .word
-  nomolos_jump_overlay .word
-  nomolos_fight .word
-  nomolos_fight_overlay .word
-  nomolos_flail .word
-  nomolos_flail_overlay .word
-  nomolos_spear .word
-  nomolos_spear_overlay .word
-  nomolos_flail_ball .word
-  nomolos_spear_fly .word
-  nomolos_slumped_armor .word
-  nomolos_slumped_armor_overlay .word
-  nomolos_scaredy_cat .word
-  nomolos_scaredy_cat_overlay .word
-  
-  heart_0 .word
   spear_0 .word
   grank_fly .word
   beedie_blob .word

@@ -11,6 +11,7 @@
 .include "controller.inc"
 .include "play_level_state.inc"
 .include "sound_effects.inc"
+.include "spritesheet1.inc"
 
 .segment "CODE"
 
@@ -1494,11 +1495,9 @@ notRight:
   jmp attackSwitchDone
 
 nomolosAttackSpearBranch:
-  ldy #level_data_struct::nomolos_spear
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_NomolosUseSpear
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_NomolosUseSpear
   sta w2+1
 
   jsr sprite_update_animation
@@ -1506,11 +1505,9 @@ nomolosAttackSpearBranch:
   jmp attackSwitchDone
 
 nomolosAttackSwordBranch:
-  ldy #level_data_struct::nomolos_fight
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_nomolos_fight
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_nomolos_fight
   sta w2+1
 
   jsr sprite_update_animation
@@ -1519,11 +1516,9 @@ nomolosAttackSwordBranch:
 
 nomolosAttackFlailBranch:
 
-  ldy #level_data_struct::nomolos_flail
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_NomolosUseFlail
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_NomolosUseFlail
   sta w2+1
 
   jsr sprite_update_animation
@@ -1533,11 +1528,9 @@ nomolosAttackFlailBranch:
   lda #>nomolos_weapon_animation
   sta w1+1
 
-  ldy #level_data_struct::nomolos_flail_ball
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_FlailBall
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_FlailBall
   sta w2+1
 
   jsr sprite_update_animation
@@ -1549,11 +1542,9 @@ skipUpdatenomolos_fighting:
   lda nomolos_state_primary
   and #nomolos_moving_test
   beq skipUpdateNomolosMoving
-  ldy #level_data_struct::nomolos_walk
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_NomolosWalk
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_NomolosWalk
   sta w2+1
 
   jsr sprite_update_animation
@@ -1576,11 +1567,9 @@ skipUpdateNomolosMoving:
   lda #>nomolos_animation
   sta w1+1
 
-  ldy #level_data_struct::nomolos_flail
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_NomolosUseFlail
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_NomolosUseFlail
   sta w2+1
 
   ;get the direction bit into bit 6 of b2 for horiz flip
@@ -1603,11 +1592,9 @@ skipUpdateNomolosMoving:
 
   jsr sprite_draw_animation_16bit
 
-  ldy #level_data_struct::nomolos_flail_overlay
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_nomolos_flail_overlay
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_nomolos_flail_overlay
   sta w2+1
 
   jsr sprite_draw_animation_16bit
@@ -1617,11 +1604,9 @@ skipUpdateNomolosMoving:
   lda #>nomolos_weapon_animation
   sta w1+1
 
-  ldy #level_data_struct::nomolos_flail_ball
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_FlailBall
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_FlailBall
   sta w2+1
 
   jsr sprite_draw_animation_16bit
@@ -1645,11 +1630,9 @@ do_not_draw_flail:
   lda #>nomolos_animation
   sta w1+1
 
-  ldy #level_data_struct::nomolos_fight
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_nomolos_fight
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_nomolos_fight
   sta w2+1
 
   ;get the direction bit into bit 6 of b2 for horiz flip
@@ -1672,11 +1655,9 @@ do_not_draw_flail:
 
   jsr sprite_draw_animation_16bit
 
-  ldy #level_data_struct::nomolos_fight_overlay
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_nomolos_fight_overlay
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_nomolos_fight_overlay
   sta w2+1
 
   jsr sprite_draw_animation_16bit
@@ -1692,11 +1673,9 @@ do_not_draw_flail:
   lda #>nomolos_animation
   sta w1+1
 
-  ldy #level_data_struct::nomolos_spear
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_NomolosUseSpear
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_NomolosUseSpear
   sta w2+1
 
   ;get the direction bit into bit 6 of b2 for horiz flip
@@ -1720,11 +1699,9 @@ do_not_draw_flail:
 
   jsr sprite_draw_animation_16bit
 
-  ldy #level_data_struct::nomolos_fight_overlay
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_nomolos_fight_overlay
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_nomolos_fight_overlay
   sta w2+1
 
   jsr sprite_draw_animation_16bit
@@ -1739,11 +1716,9 @@ do_not_draw_flail:
   lda nomolos_attack_rect_y+1
   sta w4+1
 
-  ldy #level_data_struct::nomolos_spear_fly
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_Spear0
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_Spear0
   sta w0+1
 
   jsr sprite_draw_metasprite_16bit
@@ -1769,11 +1744,9 @@ do_not_draw_flail:
   beq nomolosNotAttackedDying
 
   ;if we're in dying state, we will only ever draw the slumped armor and the scaredy cat graphic and return.
-  ldy #level_data_struct::nomolos_slumped_armor
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_SlumpedArmor0
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_SlumpedArmor0
   sta w0+1
 
   ;get Nomolos' screen coordinates.
@@ -1792,21 +1765,17 @@ do_not_draw_flail:
   ;draw the slumped armor
   jsr sprite_draw_metasprite_16bit
 
-  ldy #level_data_struct::nomolos_slumped_armor_overlay
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_SlumpedArmorOverlay0
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_SlumpedArmorOverlay0
   sta w0+1
 
   ;draw the slumped armor overlay
   jsr sprite_draw_metasprite_16bit
 
-  ldy #level_data_struct::nomolos_scaredy_cat
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_ScardyCat0
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_ScardyCat0
   sta w0+1
 
   ;get Nomolos' screen coordinates.
@@ -1822,11 +1791,9 @@ do_not_draw_flail:
   ;draw the scaredy cat
   jsr sprite_draw_metasprite_16bit
 
-  ldy #level_data_struct::nomolos_scaredy_cat_overlay
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_ScardyCatOverlay0
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_ScardyCatOverlay0
   sta w0+1
 
   ;draw the scaredy cat overlay
@@ -1930,11 +1897,9 @@ skipDrawnomolos_jumping:
   lda #>nomolos_animation
   sta w1+1
 
-  ldy #level_data_struct::nomolos_jump
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_nomolos_jump
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_nomolos_jump
   sta w2+1
 
   ;get the direction bit into bit 6 of b2 for horiz flip
@@ -1956,11 +1921,9 @@ skipDrawnomolos_jumping:
 
   jsr sprite_draw_animation_16bit
 
-  ldy #level_data_struct::nomolos_jump_overlay
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_nomolos_jump_overlay
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_nomolos_jump_overlay
   sta w2+1
 
   jsr sprite_draw_animation_16bit
@@ -1979,11 +1942,10 @@ skipDrawnomolos_jumping:
   lda nomolos_state_primary
   and #1
   bne skipnomolos_walkingRight
-  ldy #level_data_struct::nomolos_walk_overlay
-  lda (base_address_rom_definition_table),y
+
+  lda #<spritesheet1_nomolos_walk_overlay
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_nomolos_walk_overlay
   sta w2+1
   lda #%00000000
   sta b2
@@ -1998,22 +1960,18 @@ skipDrawnomolos_jumping:
   sta w4+1
   jsr sprite_draw_animation_16bit
 
-  ldy #level_data_struct::nomolos_walk
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_NomolosWalk
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_NomolosWalk
   sta w2+1
 
   jsr sprite_draw_animation_16bit
 
   jmp skipnomolos_walkingLeft
 skipnomolos_walkingRight:
-  ldy #level_data_struct::nomolos_walk_overlay
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_nomolos_walk_overlay
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_nomolos_walk_overlay
   sta w2+1
   lda #%01000000
   sta b2
@@ -2028,11 +1986,9 @@ skipnomolos_walkingRight:
   sta w4+1
   jsr sprite_draw_animation_16bit
 
-  ldy #level_data_struct::nomolos_walk
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_NomolosWalk
   sta w2
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_NomolosWalk
   sta w2+1
   jsr sprite_draw_animation_16bit
 
@@ -2052,11 +2008,9 @@ skipnomolos_walkingLeft:
   sta b1
   lda #0
   sta b2
-  ldy #level_data_struct::heart_0
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_Heart0
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_Heart0
   sta w0+1
 drawNextHeart:
   jsr sprite_draw_metasprite_8bit

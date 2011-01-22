@@ -71,24 +71,6 @@ level1_data:
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
 
-  .word spritesheet1_NomolosWalk
-  .word spritesheet1_nomolos_walk_overlay
-  .word spritesheet1_nomolos_jump
-  .word spritesheet1_nomolos_jump_overlay
-  .word spritesheet1_nomolos_fight
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_nomolos_flail_overlay
-  .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_FlailBall
-  .word spritesheet1_Spear0
-  .word spritesheet1_SlumpedArmor0
-  .word spritesheet1_SlumpedArmorOverlay0
-  .word spritesheet1_ScardyCat0
-  .word spritesheet1_ScardyCatOverlay0
-  .word spritesheet1_Heart0
-
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
   .word spritesheet1_BeedieBlob
@@ -175,24 +157,6 @@ level1_2data:
   .word level1_sprite_groups
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
-
-  .word spritesheet1_NomolosWalk
-  .word spritesheet1_nomolos_walk_overlay
-  .word spritesheet1_nomolos_jump
-  .word spritesheet1_nomolos_jump_overlay
-  .word spritesheet1_nomolos_fight
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_nomolos_flail_overlay
-  .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_FlailBall
-  .word spritesheet1_Spear0
-  .word spritesheet1_SlumpedArmor0
-  .word spritesheet1_SlumpedArmorOverlay0
-  .word spritesheet1_ScardyCat0
-  .word spritesheet1_ScardyCatOverlay0
-  .word spritesheet1_Heart0
 
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
@@ -281,24 +245,6 @@ level2_data:
   .word level2_cycling_palettes ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
-  .word spritesheet1_NomolosWalk
-  .word spritesheet1_nomolos_walk_overlay
-  .word spritesheet1_nomolos_jump
-  .word spritesheet1_nomolos_jump_overlay
-  .word spritesheet1_nomolos_fight
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_nomolos_flail_overlay
-  .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_FlailBall
-  .word spritesheet1_Spear0
-  .word spritesheet1_SlumpedArmor0
-  .word spritesheet1_SlumpedArmorOverlay0
-  .word spritesheet1_ScardyCat0
-  .word spritesheet1_ScardyCatOverlay0
-
-  .word spritesheet1_Heart0
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
   .word spritesheet1_BeedieBlob
@@ -384,24 +330,6 @@ level2_2data:
   .word level2_2cycling_palettes ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
-  .word spritesheet1_NomolosWalk
-  .word spritesheet1_nomolos_walk_overlay
-  .word spritesheet1_nomolos_jump
-  .word spritesheet1_nomolos_jump_overlay
-  .word spritesheet1_nomolos_fight
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_nomolos_flail_overlay
-  .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_FlailBall
-  .word spritesheet1_Spear0
-  .word spritesheet1_SlumpedArmor0
-  .word spritesheet1_SlumpedArmorOverlay0
-  .word spritesheet1_ScardyCat0
-  .word spritesheet1_ScardyCatOverlay0
-
-  .word spritesheet1_Heart0
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
   .word spritesheet1_BeedieBlob
@@ -487,24 +415,6 @@ boss2_data:
   .word 0 ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
-  .word spritesheet1_NomolosWalk
-  .word spritesheet1_nomolos_walk_overlay
-  .word spritesheet1_nomolos_jump
-  .word spritesheet1_nomolos_jump_overlay
-  .word spritesheet1_nomolos_fight
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_nomolos_flail_overlay
-  .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_FlailBall
-  .word spritesheet1_Spear0
-  .word spritesheet1_SlumpedArmor0
-  .word spritesheet1_SlumpedArmorOverlay0
-  .word spritesheet1_ScardyCat0
-  .word spritesheet1_ScardyCatOverlay0
-
-  .word spritesheet1_Heart0
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
   .word spritesheet1_BeedieBlob
@@ -590,24 +500,6 @@ level3_data:
   .word level3_cycling_palettes ;cycling_palette_address
   .byte 10 ;cycling_palette_speed
 
-  .word spritesheet1_NomolosWalk
-  .word spritesheet1_nomolos_walk_overlay
-  .word spritesheet1_nomolos_jump
-  .word spritesheet1_nomolos_jump_overlay
-  .word spritesheet1_nomolos_fight
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_nomolos_flail_overlay
-  .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_FlailBall
-  .word spritesheet1_Spear0
-  .word spritesheet1_SlumpedArmor0
-  .word spritesheet1_SlumpedArmorOverlay0
-  .word spritesheet1_ScardyCat0
-  .word spritesheet1_ScardyCatOverlay0
-
-  .word spritesheet1_Heart0
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
   .word spritesheet1_BeedieBlob
@@ -693,24 +585,6 @@ level3_2data:
   .word level3_cycling_palettes ;cycling_palette_address
   .byte 10 ;cycling_palette_speed
 
-  .word spritesheet1_NomolosWalk
-  .word spritesheet1_nomolos_walk_overlay
-  .word spritesheet1_nomolos_jump
-  .word spritesheet1_nomolos_jump_overlay
-  .word spritesheet1_nomolos_fight
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_nomolos_flail_overlay
-  .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_FlailBall
-  .word spritesheet1_Spear0
-  .word spritesheet1_SlumpedArmor0
-  .word spritesheet1_SlumpedArmorOverlay0
-  .word spritesheet1_ScardyCat0
-  .word spritesheet1_ScardyCatOverlay0
-
-  .word spritesheet1_Heart0
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
   .word spritesheet1_BeedieBlob
@@ -796,24 +670,6 @@ boss1_data:
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
 
-  .word spritesheet1_NomolosWalk
-  .word spritesheet1_nomolos_walk_overlay
-  .word spritesheet1_nomolos_jump
-  .word spritesheet1_nomolos_jump_overlay
-  .word spritesheet1_nomolos_fight
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_nomolos_flail_overlay
-  .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_FlailBall
-  .word spritesheet1_Spear0
-  .word spritesheet1_SlumpedArmor0
-  .word spritesheet1_SlumpedArmorOverlay0
-  .word spritesheet1_ScardyCat0
-  .word spritesheet1_ScardyCatOverlay0
-
-  .word spritesheet1_Heart0
   .word spritesheet1_Spear0
   .word 0 ;spritesheet1_GrankFly
   .word 0 ;spritesheet1_BeedieBlob
@@ -899,24 +755,6 @@ level4_data:
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
 
-  .word spritesheet1_NomolosWalk
-  .word spritesheet1_nomolos_walk_overlay
-  .word spritesheet1_nomolos_jump
-  .word spritesheet1_nomolos_jump_overlay
-  .word spritesheet1_nomolos_fight
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_NomolosUseFlail
-  .word spritesheet1_nomolos_flail_overlay
-  .word spritesheet1_NomolosUseSpear
-  .word spritesheet1_nomolos_fight_overlay
-  .word spritesheet1_FlailBall
-  .word spritesheet1_Spear0
-  .word spritesheet1_SlumpedArmor0
-  .word spritesheet1_SlumpedArmorOverlay0
-  .word spritesheet1_ScardyCat0
-  .word spritesheet1_ScardyCatOverlay0
-
-  .word spritesheet1_Heart0
   .word spritesheet1_Spear0
   .word spritesheet1_GrankFly
   .word spritesheet1_BeedieBlob
