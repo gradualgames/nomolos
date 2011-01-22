@@ -186,7 +186,10 @@ skelekin_moving_right:
   lda #%00000000
   sta b2
 skelekin_direction_test_done:
-  ldy #level_data_struct::skelekin_walk
+  lda #<spritesheet1_SkelekinWalk
+  sta w2
+  lda #>spritesheet1_SkelekinWalk
+  sta w2+1
   jsr entity_draw_anim
 
 skelekinOffscreen:

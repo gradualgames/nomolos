@@ -9,7 +9,7 @@ PHOENIX_HALFHEIGHT = $14
 .struct phoenix_locals
   x_velocity .word
   y_velocity .word
-  anim_index .byte
+  anim_index .word
   fly_hover  .byte
   shoot_fireball .byte
   damaged_counter  .byte
@@ -349,8 +349,10 @@ phoenix_draw:
   jsr entity_test_death_zone
   beq kill_phoenix
 
-  lda #level_data_struct::phoenix_fly
+  lda #<spritesheet1_PhoenixFly
   sta entity_locals+phoenix_locals::anim_index,x
+  lda #>spritesheet1_PhoenixFly
+  sta entity_locals+phoenix_locals::anim_index+1,x
   ;load phoenix width and height
   lda #PHOENIX_WIDTH
   sta b2
@@ -361,8 +363,10 @@ phoenix_draw:
   bne :+
 
   jsr nomolos_hurt
-  lda #level_data_struct::phoenix_fly
+  lda #<spritesheet1_PhoenixFly
   sta entity_locals+phoenix_locals::anim_index,x
+  lda #>spritesheet1_PhoenixFly
+  sta entity_locals+phoenix_locals::anim_index+1,x
 
   jsr entity_reset_anim
 
@@ -423,7 +427,10 @@ entity_not_flashing:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy entity_locals+phoenix_locals::anim_index,x
+  lda entity_locals+phoenix_locals::anim_index,x
+  sta w2
+  lda entity_locals+phoenix_locals::anim_index+1,x
+  sta w2+1
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:

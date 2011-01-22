@@ -82,11 +82,9 @@ notTouching:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #level_data_struct::spear_0
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_Spear0
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_Spear0
   sta w0+1
 
   lda entity_screen_x

@@ -67,38 +67,6 @@ index_continue_end_state   = 4 * 4
   cycling_palette_address .word
   cycling_palette_speed .byte
   
-  spear_0 .word
-  grank_fly .word
-  beedie_blob .word
-  flail_0 .word
-  deentle_walk .word
-  explosion .word
-  mouse .word
-  one_up_0 .word
-  skelekin_walk .word
-  bat_fly .word
-  batree .word
-  owl_fly .word
-  owl_attack .word
-  snuffer_run .word
-  snuffer_bite .word
-  snail_crawl .word
-  dragon_fly .word
-  ice_ball_fly .word
-  shark_leap .word
-  stalactite_fall .word
-  dragonboss_face_mouthshut .word
-  dragonboss_face_mouthopen .word
-  phoenix_fly .word
-  fireball_fly .word
-  snake_crawl .word
-  fireguy_hide .word
-  fireguy_run .word
-  thoguth_stand .word
-  thoguth_overlay0 .word
-  thoguth_overlay1 .word
-  thoguth_overlay2 .word
-  
   attack_sound .word
   hit_sound .word
   palette .word

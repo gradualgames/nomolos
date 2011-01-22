@@ -7,7 +7,7 @@ OWL_HEIGHT = $18
 .struct owl_locals
   x_velocity .word
   y_velocity .word
-  anim_index .byte
+  anim_address .word
 .endstruct
 
 OWL_INITSTATE = 0
@@ -269,8 +269,10 @@ owl_draw:
   jsr entity_test_death_zone
   beq killOwl
 
-  lda #level_data_struct::owl_fly
-  sta entity_locals+owl_locals::anim_index,x
+  lda #<spritesheet1_OwlFly
+  sta entity_locals+owl_locals::anim_address,x
+  lda #>spritesheet1_OwlFly
+  sta entity_locals+owl_locals::anim_address+1,x
   ;load owl width and height
   lda #OWL_WIDTH
   sta b2
@@ -281,8 +283,10 @@ owl_draw:
   bne :+
 
   jsr nomolos_hurt
-  lda #level_data_struct::owl_attack
-  sta entity_locals+owl_locals::anim_index,x
+  lda #<spritesheet1_OwlAttack
+  sta entity_locals+owl_locals::anim_address,x
+  lda #>spritesheet1_OwlAttack
+  sta entity_locals+owl_locals::anim_address+1,x
 
   jsr entity_reset_anim
 
@@ -325,7 +329,10 @@ nomolosNotAttacking:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy entity_locals+owl_locals::anim_index,x
+  lda entity_locals+owl_locals::anim_address,x
+  sta w2
+  lda entity_locals+owl_locals::anim_address+1,x
+  sta w2+1
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:

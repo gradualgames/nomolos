@@ -308,7 +308,10 @@ nomolosNotAttacking:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #level_data_struct::beedie_blob
+  lda #<spritesheet1_BeedieBlob
+  sta w2
+  lda #>spritesheet1_BeedieBlob
+  sta w2+1
   lda #0
   sta b2
   jsr entity_draw_anim

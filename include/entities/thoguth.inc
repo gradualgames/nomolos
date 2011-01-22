@@ -42,11 +42,9 @@ thoguth_sit_there:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #level_data_struct::thoguth_stand
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_Thoguth0
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_Thoguth0
   sta w0+1
 
   lda entity_screen_x
@@ -60,29 +58,23 @@ thoguth_sit_there:
 
   jsr sprite_draw_metasprite_16bit
   
-  ldy #level_data_struct::thoguth_overlay0
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_ThoguthOverlay0
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_ThoguthOverlay0
+  sta w0+1
+  
+  jsr sprite_draw_metasprite_16bit
+  
+  lda #<spritesheet1_ThoguthOverlay1
+  sta w0
+  lda #>spritesheet1_ThoguthOverlay1
   sta w0+1
 
   jsr sprite_draw_metasprite_16bit
   
-  ldy #level_data_struct::thoguth_overlay1
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_ThoguthOverlay2
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w0+1
-
-  jsr sprite_draw_metasprite_16bit
-  
-  ldy #level_data_struct::thoguth_overlay2
-  lda (base_address_rom_definition_table),y
-  sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_ThoguthOverlay2
   sta w0+1
 
   jsr sprite_draw_metasprite_16bit

@@ -71,38 +71,6 @@ level1_data:
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
 
-  .word spritesheet1_Spear0
-  .word spritesheet1_GrankFly
-  .word spritesheet1_BeedieBlob
-  .word spritesheet1_FlailItem0
-  .word spritesheet1_DeentleWalk
-  .word spritesheet1_Explosion
-  .word spritesheet1_Mouse
-  .word spritesheet1_OneUp0
-  .word 0 ;Skelekin
-  .word spritesheet1_BatFly
-  .word spritesheet1_Batree
-  .word spritesheet1_OwlFly
-  .word spritesheet1_OwlAttack
-  .word spritesheet1_SnufferRun
-  .word spritesheet1_SnufferBite
-  .word 0 ;spritesheet1_SnailCrawl
-  .word 0 ;spritesheet1_DragonFly
-  .word 0 ;spritesheet1_IceBallFly
-  .word 0 ;spritesheet1_SharkLeap
-  .word 0 ;spritesheet1_Stalactite0
-  .word 0 ;dragonboss_face_mouthshut
-  .word 0 ;dragonboss_face_mouthopen
-  .word 0 ;spritesheet1_PhoenixFly
-  .word 0 ;spritesheet1_FireballFly
-  .word 0 ;spritesheet1_SnakeSlither
-  .word 0 ;spritesheet1_FireGuy0
-  .word 0 ;spritesheet1_FireGuy1
-  .word 0 ;spritesheet1_Thoguth0
-  .word 0 ;spritesheet1_ThoguthOverlay0
-  .word 0 ;spritesheet1_ThoguthOverlay1
-  .word 0 ;spritesheet1_ThoguthOverlay2
-
   .word attack_sound
   .word hit_sound
   .word level1_palette
@@ -157,38 +125,6 @@ level1_2data:
   .word level1_sprite_groups
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
-
-  .word spritesheet1_Spear0
-  .word spritesheet1_GrankFly
-  .word spritesheet1_BeedieBlob
-  .word spritesheet1_FlailItem0
-  .word spritesheet1_DeentleWalk
-  .word spritesheet1_Explosion
-  .word spritesheet1_Mouse
-  .word spritesheet1_OneUp0
-  .word 0 ;Skelekin
-  .word spritesheet1_BatFly
-  .word spritesheet1_Batree
-  .word spritesheet1_OwlFly
-  .word spritesheet1_OwlAttack
-  .word spritesheet1_SnufferRun
-  .word spritesheet1_SnufferBite
-  .word 0 ;spritesheet1_SnailCrawl
-  .word 0 ;spritesheet1_DragonFly
-  .word 0 ;spritesheet1_IceBallFly
-  .word 0 ;spritesheet1_SharkLeap
-  .word 0 ;spritesheet1_Stalactite0
-  .word 0 ;dragonboss_face_mouthshut
-  .word 0 ;dragonboss_face_mouthopen
-  .word 0 ;spritesheet1_PhoenixFly
-  .word 0 ;spritesheet1_FireballFly
-  .word 0 ;spritesheet1_SnakeSlither
-  .word 0 ;spritesheet1_FireGuy0
-  .word 0 ;spritesheet1_FireGuy1
-  .word 0 ;spritesheet1_Thoguth0
-  .word 0 ;spritesheet1_ThoguthOverlay0
-  .word 0 ;spritesheet1_ThoguthOverlay1
-  .word 0 ;spritesheet1_ThoguthOverlay2
 
   .word attack_sound
   .word hit_sound
@@ -245,38 +181,6 @@ level2_data:
   .word level2_cycling_palettes ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
-  .word spritesheet1_Spear0
-  .word spritesheet1_GrankFly
-  .word spritesheet1_BeedieBlob
-  .word spritesheet1_FlailItem0
-  .word spritesheet1_DeentleWalk
-  .word spritesheet1_Explosion
-  .word spritesheet1_Mouse
-  .word spritesheet1_OneUp0
-  .word spritesheet1_SkelekinWalk
-  .word spritesheet1_BatFly
-  .word $0000 ;batree
-  .word $0000 ;spritesheet1_OwlFly
-  .word $0000 ;spritesheet1_OwlAttack
-  .word $0000 ;spritesheet1_SnufferRun
-  .word $0000 ;spritesheet1_SnufferBite
-  .word $0000 ;spritesheet1_SnailCrawl
-  .word $0000 ;spritesheet1_DragonFly
-  .word $0000 ;spritesheet1_IceBallFly
-  .word $0000 ;spritesheet1_SharkLeap
-  .word $0000 ;spritesheet1_Stalactite0
-  .word 0 ;dragonboss_face_mouthshut
-  .word 0 ;dragonboss_face_mouthopen
-  .word 0 ;spritesheet1_PhoenixFly
-  .word 0 ;spritesheet1_FireballFly
-  .word 0 ;spritesheet1_SnakeSlither
-  .word 0 ;spritesheet1_FireGuy0
-  .word 0 ;spritesheet1_FireGuy1
-  .word 0 ;spritesheet1_Thoguth0
-  .word 0 ;spritesheet1_ThoguthOverlay0
-  .word 0 ;spritesheet1_ThoguthOverlay1
-  .word 0 ;spritesheet1_ThoguthOverlay2
-  
   .word attack_sound
   .word hit_sound
   .word level2_palette
@@ -330,38 +234,6 @@ level2_2data:
   .word level2_2cycling_palettes ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
-  .word spritesheet1_Spear0
-  .word spritesheet1_GrankFly
-  .word spritesheet1_BeedieBlob
-  .word spritesheet1_FlailItem0
-  .word spritesheet1_DeentleWalk
-  .word spritesheet1_Explosion
-  .word spritesheet1_Mouse
-  .word spritesheet1_OneUp0
-  .word spritesheet1_SkelekinWalk
-  .word spritesheet1_BatFly
-  .word $0000 ;batree
-  .word $0000 ;spritesheet1_OwlFly
-  .word $0000 ;spritesheet1_OwlAttack
-  .word $0000 ;spritesheet1_SnufferRun
-  .word $0000 ;spritesheet1_SnufferBite
-  .word $0000 ;spritesheet1_SnailCrawl
-  .word $0000 ;spritesheet1_DragonFly
-  .word $0000 ;spritesheet1_IceBallFly
-  .word $0000 ;spritesheet1_SharkLeap
-  .word $0000 ;spritesheet1_Stalactite0
-  .word 0 ;dragonboss_face_mouthshut
-  .word 0 ;dragonboss_face_mouthopen
-  .word 0 ;spritesheet1_PhoenixFly
-  .word 0 ;spritesheet1_FireballFly
-  .word 0 ;spritesheet1_SnakeSlither
-  .word 0 ;spritesheet1_FireGuy0
-  .word 0 ;spritesheet1_FireGuy1
-  .word 0 ;spritesheet1_Thoguth0
-  .word 0 ;spritesheet1_ThoguthOverlay0
-  .word 0 ;spritesheet1_ThoguthOverlay1
-  .word 0 ;spritesheet1_ThoguthOverlay2
-  
   .word attack_sound
   .word hit_sound
   .word level2_2palette
@@ -415,38 +287,6 @@ boss2_data:
   .word 0 ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
-  .word spritesheet1_Spear0
-  .word spritesheet1_GrankFly
-  .word spritesheet1_BeedieBlob
-  .word spritesheet1_FlailItem0
-  .word spritesheet1_DeentleWalk
-  .word spritesheet1_Explosion
-  .word spritesheet1_Mouse
-  .word spritesheet1_OneUp0
-  .word spritesheet1_SkelekinWalk
-  .word spritesheet1_BatFly
-  .word $0000 ;batree
-  .word $0000 ;spritesheet1_OwlFly
-  .word $0000 ;spritesheet1_OwlAttack
-  .word $0000 ;spritesheet1_SnufferRun
-  .word $0000 ;spritesheet1_SnufferBite
-  .word $0000 ;spritesheet1_SnailCrawl
-  .word $0000 ;spritesheet1_DragonFly
-  .word $0000 ;spritesheet1_IceBallFly
-  .word $0000 ;spritesheet1_SharkLeap
-  .word $0000 ;spritesheet1_Stalactite0
-  .word 0 ;dragonboss_face_mouthshut
-  .word 0 ;dragonboss_face_mouthopen
-  .word 0 ;spritesheet1_PhoenixFly
-  .word 0 ;spritesheet1_FireballFly
-  .word 0 ;spritesheet1_SnakeSlither
-  .word 0 ;spritesheet1_FireGuy0
-  .word 0 ;spritesheet1_FireGuy1
-  .word spritesheet1_Thoguth0
-  .word spritesheet1_ThoguthOverlay0
-  .word spritesheet1_ThoguthOverlay1
-  .word spritesheet1_ThoguthOverlay2
-  
   .word attack_sound
   .word hit_sound
   .word boss2_palette
@@ -499,38 +339,6 @@ level3_data:
   .word level3_sprite_groups
   .word level3_cycling_palettes ;cycling_palette_address
   .byte 10 ;cycling_palette_speed
-
-  .word spritesheet1_Spear0
-  .word spritesheet1_GrankFly
-  .word spritesheet1_BeedieBlob
-  .word spritesheet1_FlailItem0
-  .word spritesheet1_DeentleWalk
-  .word spritesheet1_Explosion
-  .word spritesheet1_Mouse
-  .word spritesheet1_OneUp0
-  .word spritesheet1_SkelekinWalk
-  .word spritesheet1_BatFly
-  .word $0000 ;batree
-  .word $0000 ;owl_fly
-  .word $0000 ;owl_attack
-  .word $0000 ;snuffer_run
-  .word $0000 ;snuffer_bite
-  .word spritesheet1_SnailCrawl
-  .word spritesheet1_DragonFly
-  .word spritesheet1_IceBallFly
-  .word spritesheet1_SharkLeap
-  .word $0000 ;spritesheet1_Stalactite0
-  .word $0000 ;dragonboss_face_mouthshut
-  .word $0000 ;dragonboss_face_mouthopen
-  .word $0000 ;spritesheet1_PhoenixFly
-  .word $0000 ;spritesheet1_FireballFly
-  .word $0000 ;spritesheet1_SnakeSlither
-  .word $0000 ;spritesheet1_FireGuy0
-  .word $0000 ;spritesheet1_FireGuy1
-  .word $0000 ;spritesheet1_Thoguth0
-  .word 0 ;spritesheet1_ThoguthOverlay0
-  .word 0 ;spritesheet1_ThoguthOverlay1
-  .word 0 ;spritesheet1_ThoguthOverlay2
 
   .word attack_sound
   .word hit_sound
@@ -585,38 +393,6 @@ level3_2data:
   .word level3_cycling_palettes ;cycling_palette_address
   .byte 10 ;cycling_palette_speed
 
-  .word spritesheet1_Spear0
-  .word spritesheet1_GrankFly
-  .word spritesheet1_BeedieBlob
-  .word spritesheet1_FlailItem0
-  .word spritesheet1_DeentleWalk
-  .word spritesheet1_Explosion
-  .word spritesheet1_Mouse
-  .word spritesheet1_OneUp0
-  .word spritesheet1_SkelekinWalk
-  .word spritesheet1_BatFly
-  .word $0000 ;batree
-  .word $0000 ;owl_fly
-  .word $0000 ;owl_attack
-  .word $0000 ;snuffer_run
-  .word $0000 ;snuffer_bite
-  .word spritesheet1_SnailCrawl
-  .word spritesheet1_DragonFly
-  .word spritesheet1_IceBallFly
-  .word spritesheet1_SharkLeap
-  .word $0000 ;spritesheet1_Stalactite0
-  .word $0000 ;dragonboss_face_mouthshut
-  .word $0000 ;dragonboss_face_mouthopen
-  .word $0000 ;spritesheet1_PhoenixFly
-  .word $0000 ;spritesheet1_FireballFly
-  .word $0000 ;spritesheet1_SnakeSlither
-  .word $0000 ;spritesheet1_FireGuy0
-  .word $0000 ;spritesheet1_FireGuy1
-  .word $0000 ;spritesheet1_Thoguth0
-  .word 0 ;spritesheet1_ThoguthOverlay0
-  .word 0 ;spritesheet1_ThoguthOverlay1
-  .word 0 ;spritesheet1_ThoguthOverlay2
-
   .word attack_sound
   .word hit_sound
   .word level3_palette
@@ -670,38 +446,6 @@ boss1_data:
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
 
-  .word spritesheet1_Spear0
-  .word 0 ;spritesheet1_GrankFly
-  .word 0 ;spritesheet1_BeedieBlob
-  .word 0 ;spritesheet1_FlailItem0
-  .word 0 ;spritesheet1_DeentleWalk
-  .word spritesheet1_Explosion
-  .word 0 ;spritesheet1_Mouse
-  .word 0 ;spritesheet1_OneUp0
-  .word 0 ;spritesheet1_SkelekinWalk
-  .word 0 ;spritesheet1_BatFly
-  .word 0 ;batree
-  .word 0 ;owl_fly
-  .word 0 ;owl_attack
-  .word 0 ;snuffer_run
-  .word 0 ;snuffer_bite
-  .word 0 ;spritesheet1_SnailCrawl
-  .word 0 ;spritesheet1_DragonFly
-  .word spritesheet1_IceBallFly
-  .word 0 ;spritesheet1_SharkLeap
-  .word spritesheet1_Stalactite0
-  .word spritesheet1_DragonFace0
-  .word spritesheet1_DragonFace1
-  .word 0 ;spritesheet1_PhoenixFly
-  .word 0 ;spritesheet1_FireballFly
-  .word 0 ;spritesheet1_SnakeSlither
-  .word 0 ;spritesheet1_FireGuy0
-  .word 0 ;spritesheet1_FireGuy1
-  .word 0 ;spritesheet1_Thoguth0
-  .word 0 ;spritesheet1_ThoguthOverlay0
-  .word 0 ;spritesheet1_ThoguthOverlay1
-  .word 0 ;spritesheet1_ThoguthOverlay2
-
   .word attack_sound
   .word hit_sound
   .word boss1_palette
@@ -754,38 +498,6 @@ level4_data:
   .word level4_sprite_groups
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
-
-  .word spritesheet1_Spear0
-  .word spritesheet1_GrankFly
-  .word spritesheet1_BeedieBlob
-  .word spritesheet1_FlailItem0
-  .word spritesheet1_DeentleWalk
-  .word spritesheet1_Explosion
-  .word spritesheet1_Mouse
-  .word spritesheet1_OneUp0
-  .word spritesheet1_SkelekinWalk
-  .word spritesheet1_BatFly
-  .word $0000 ;batree
-  .word $0000 ;owl_fly
-  .word $0000 ;owl_attack
-  .word $0000 ;snuffer_run
-  .word $0000 ;snuffer_bite
-  .word spritesheet1_SnailCrawl
-  .word spritesheet1_DragonFly
-  .word spritesheet1_IceBallFly
-  .word spritesheet1_SharkLeap
-  .word $0000 ;spritesheet1_Stalactite0
-  .word $0000 ;dragonboss_face_mouthshut
-  .word $0000 ;dragonboss_face_mouthopen
-  .word spritesheet1_PhoenixFly
-  .word spritesheet1_FireballFly
-  .word spritesheet1_SnakeSlither
-  .word spritesheet1_FireGuy1
-  .word spritesheet1_FireGuy0
-  .word $0000 ;spritesheet1_Thoguth0
-  .word 0 ;spritesheet1_ThoguthOverlay0
-  .word 0 ;spritesheet1_ThoguthOverlay1
-  .word 0 ;spritesheet1_ThoguthOverlay2
 
   .word attack_sound
   .word hit_sound

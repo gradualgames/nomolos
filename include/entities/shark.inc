@@ -267,7 +267,10 @@ nomolosNotAttacking:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #level_data_struct::shark_leap
+  lda #<spritesheet1_SharkLeap
+  sta w2
+  lda #>spritesheet1_SharkLeap
+  sta w2+1
 
   lda entity_locals+shark_locals::directionFlag,x
   bne entity_facing_right

@@ -9,7 +9,7 @@ DRAGON_HALFHEIGHT = $0C
 .struct dragon_locals
   x_velocity .word
   y_velocity .word
-  anim_index .byte
+  anim_address .word
   fly_hover  .byte
   shoot_iceball .byte
   damaged_counter  .byte
@@ -349,8 +349,10 @@ dragon_draw:
   jsr entity_test_death_zone
   beq kill_dragon
 
-  lda #level_data_struct::dragon_fly
-  sta entity_locals+dragon_locals::anim_index,x
+  lda #<spritesheet1_DragonFly
+  sta entity_locals+dragon_locals::anim_address,x
+  lda #>spritesheet1_DragonFly
+  sta entity_locals+dragon_locals::anim_address+1,x
   ;load dragon width and height
   lda #DRAGON_WIDTH
   sta b2
@@ -361,9 +363,10 @@ dragon_draw:
   bne :+
 
   jsr nomolos_hurt
-  lda #level_data_struct::dragon_fly
-  sta entity_locals+dragon_locals::anim_index,x
-
+  lda #<spritesheet1_DragonFly
+  sta entity_locals+dragon_locals::anim_address,x
+  lda #>spritesheet1_DragonFly
+  sta entity_locals+dragon_locals::anim_address+1,x
   jsr entity_reset_anim
 
 :
@@ -423,7 +426,10 @@ entity_not_flashing:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy entity_locals+dragon_locals::anim_index,x
+  lda entity_locals+dragon_locals::anim_address,x
+  sta w2
+  lda entity_locals+dragon_locals::anim_address+1,x
+  sta w2+1
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:

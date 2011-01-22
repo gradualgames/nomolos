@@ -2,7 +2,7 @@
 SNUFFER_INC = 1
 
 .struct snuffer_locals
-  anim_index .byte
+  anim_address .word
 .endstruct
 
 SNUFFER_WIDTH = $20
@@ -191,8 +191,10 @@ bottom_collision:
   
 snuffer_draw:
 
-  lda #level_data_struct::snuffer_run
-  sta entity_locals+snuffer_locals::anim_index,x
+  lda #<spritesheet1_SnufferRun
+  sta entity_locals+snuffer_locals::anim_address,x
+  lda #>spritesheet1_SnufferRun
+  sta entity_locals+snuffer_locals::anim_address+1,x
 
   jsr entity_compute_screen_coordinates
 
@@ -210,8 +212,10 @@ snuffer_draw:
 
   jsr nomolos_hurt
 
-  lda #level_data_struct::snuffer_bite
-  sta entity_locals+snuffer_locals::anim_index,x
+  lda #<spritesheet1_SnufferBite
+  sta entity_locals+snuffer_locals::anim_address,x
+  lda #>spritesheet1_SnufferBite
+  sta entity_locals+snuffer_locals::anim_address+1,x
 
   jsr entity_reset_anim
 
@@ -254,7 +258,10 @@ nomolosNotAttacking:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy entity_locals+snuffer_locals::anim_index,x
+  lda entity_locals+snuffer_locals::anim_address,x
+  sta w2
+  lda entity_locals+snuffer_locals::anim_address+1,x
+  sta w2+1
   lda entity_instances+entity_instance::state,x
   cmp #SNUFFER_MOVELEFTSTATE
   bne snuffer_moving_right

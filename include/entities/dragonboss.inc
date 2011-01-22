@@ -946,18 +946,18 @@ dragonboss_drawface:
   beq draw_mouth_open
   
 draw_mouth_shut:
-  ldy #level_data_struct::dragonboss_face_mouthshut
+  lda #<spritesheet1_DragonFace0
+  sta w0
+  lda #>spritesheet1_DragonFace0
+  sta w0+1
   jmp drawstate_switch_done
 draw_mouth_open:
-  ldy #level_data_struct::dragonboss_face_mouthopen
+  lda #<spritesheet1_DragonFace1
+  sta w0
+  lda #>spritesheet1_DragonFace1
+  sta w0+1
 drawstate_switch_done:
   
-  lda (base_address_rom_definition_table),y
-  sta w0
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w0+1
-
   sec
   lda #112
   sbc camera_scroll_x

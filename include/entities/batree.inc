@@ -252,7 +252,10 @@ entity_not_flashing:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #level_data_struct::batree
+  lda #<spritesheet1_Batree
+  sta w2
+  lda #>spritesheet1_Batree
+  sta w2+1
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:

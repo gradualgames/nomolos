@@ -50,7 +50,7 @@ do_not_kill_entity:
 .endproc
 
 ;draws entity's animation.
-;expects y to contain offset into rom definition table where animation address can be found.
+;expects w2 to contain address of animation to draw
 ;expects b2 to contain flags for whether to flip the sprite. e.g. #%01000000 to flip
 .proc entity_draw_anim
   ;load address of animation object into w1
@@ -68,13 +68,6 @@ do_not_kill_entity:
   lda w1+1
   adc #0
   sta w1+1
-
-  ;load address of deentle animation definition into w2
-  lda (base_address_rom_definition_table),y
-  sta w2
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w2+1
 
   jsr sprite_update_animation
 

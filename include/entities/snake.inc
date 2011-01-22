@@ -213,7 +213,10 @@ nomolosNotAttacking:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #level_data_struct::snake_crawl
+  lda #<spritesheet1_SnakeSlither
+  sta w2
+  lda #>spritesheet1_SnakeSlither
+  sta w2+1
   lda entity_locals+snake_locals::direction,x
   cmp #0
   bne snake_moving_right

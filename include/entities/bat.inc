@@ -266,7 +266,10 @@ nomolosNotAttacking:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #level_data_struct::bat_fly
+  lda #<spritesheet1_BatFly
+  sta w2
+  lda #>spritesheet1_BatFly
+  sta w2+1
   jsr entity_draw_anim
 
 batOffscreen:

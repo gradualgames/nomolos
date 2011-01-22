@@ -88,7 +88,10 @@ mouseSitThere:
 
   lda #0
   sta b2
-  ldy #level_data_struct::mouse
+  lda #<spritesheet1_Mouse
+  sta w2
+  lda #>spritesheet1_Mouse
+  sta w2+1
   jsr entity_draw_anim
 
 

@@ -117,11 +117,9 @@ stalactite_draw:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #level_data_struct::stalactite_fall
-  lda (base_address_rom_definition_table),y
+  lda #<spritesheet1_Stalactite0
   sta w0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>spritesheet1_Stalactite0
   sta w0+1
 
   lda entity_screen_x

@@ -112,7 +112,10 @@ fireball_fly:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  ldy #level_data_struct::fireball_fly
+  lda #<spritesheet1_FireballFly
+  sta w2
+  lda #>spritesheet1_FireballFly
+  sta w2+1
   jsr entity_draw_anim
 
   lda entity_instances+entity_instance::animation_object+1,x

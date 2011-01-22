@@ -243,18 +243,18 @@ fireguy_direction_test_done:
   cmp #FIREGUY_STOPSTATE
   beq not_stop_state
 move_state:
-  ldy #level_data_struct::fireguy_run
+  lda #<spritesheet1_FireGuy0
+  sta w0
+  lda #>spritesheet1_FireGuy0
+  sta w0+1
   jmp fireguy_state_test_done
 not_stop_state:
-  ldy #level_data_struct::fireguy_hide
+  lda #<spritesheet1_FireGuy1
+  sta w0
+  lda #>spritesheet1_FireGuy1
+  sta w0+1
 fireguy_state_test_done:
   
-  lda (base_address_rom_definition_table),y
-  sta w0
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w0+1
-
   lda entity_screen_x
   sta w3
   lda entity_screen_x+1
