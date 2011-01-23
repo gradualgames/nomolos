@@ -896,6 +896,11 @@ do_not_switch_to_not_attacked_state:
   jsr sound_upload
   .endif
   
+  ;make Nomolos invincible the instant we transition the Dragon into dying state
+  lda nomolos_state_primary
+  ora #nomolos_invincibility_on_set
+  sta nomolos_state_primary
+  
   lda #DRAGONBOSS_DYINGSTATE
   sta entity_instances+entity_instance::state,x
   

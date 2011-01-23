@@ -20,9 +20,9 @@ nomolos_moving_off_clear              = %11111101
 nomolos_moving_on_set                 = %00000010
 nomolos_moving_test                   = %00000010
 
-nomolos_blinking_on_set               = %00000100
-nomolos_blinking_off_clear            = %11111011
-nomolos_blinking_test                 = %00000100
+nomolos_invincibility_on_set               = %00000100
+nomolos_invincibility_off_clear            = %11111011
+nomolos_invincibility_test                 = %00000100
 
 nomolos_below_collision_on_set        = %00001000
 nomolos_below_collision_off_clear     = %11110111

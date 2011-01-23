@@ -35,9 +35,9 @@
   reset_anim nomolos_weapon_animation
 
   lda #0
-  and #nomolos_walking_right_clear
   sta nomolos_state_primary
-
+  sta nomolos_counter_temp_invincibility_blink
+  
   lda #0
   sta nomolos_x_velocity
   lda #2
@@ -131,9 +131,9 @@
   txa
   pha
   
-  ;if blinking is on, skip this whole routine
+  ;if invincibility is on, skip this whole routine
   lda nomolos_state_primary
-  and #nomolos_blinking_test
+  and #nomolos_invincibility_test
   lsr
   lsr
   bne skipHurt
@@ -174,11 +174,11 @@ skipDecreaseHealth:
   lda #nomolos_hurt_bounce_hi
   sta nomolos_y_velocity+1
 
-  ;turn on blinking
+  ;turn on blinking and invincibility.
   lda #$60
   sta nomolos_counter_temp_invincibility_blink
   lda nomolos_state_primary
-  ora #nomolos_blinking_on_set
+  ora #nomolos_invincibility_on_set
   sta nomolos_state_primary
 
 skipHurt:
@@ -1059,14 +1059,16 @@ nomolosNotDying:
   ;ground and in attack state.
   ;************************************************************
 
-  ;Update blink counter and reset if zero
+  ;Update blink counter if nonzero and reset if zero
+  lda nomolos_counter_temp_invincibility_blink
+  beq skipBlinkLogic
   dec nomolos_counter_temp_invincibility_blink
-  bne skipBlinkReset
+  bne skipBlinkLogic
 
   lda nomolos_state_primary
-  and #nomolos_blinking_off_clear
+  and #nomolos_invincibility_off_clear
   sta nomolos_state_primary
-skipBlinkReset:
+skipBlinkLogic:
 
   ;Update hitbox counter if attack state on
   lda nomolos_state_primary
@@ -1804,20 +1806,15 @@ nomolosNotAttackedDying:
   rts
 nomolosNotDying:
 
-  lda nomolos_state_primary
-  and #nomolos_blinking_test
-  lsr
-  lsr
-  beq skipBlinkCheck
-
   ;check blink counter
   lda nomolos_counter_temp_invincibility_blink
+  beq skipReturn
   and #%00000011
   bne skipReturn
   rts
 skipReturn:
 
-skipBlinkCheck:
+;skipBlinkCheck:
 
   ;test if nomolos is fighting. if he is, always draw him fighting
   ;regardless of whether he is in the air.
