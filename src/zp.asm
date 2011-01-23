@@ -90,11 +90,8 @@ mapper_bank_next: .res 1
 .exportzp ppu_string_buffer
 ppu_string_buffer: .res 8
 
-.exportzp vblank_done
-vblank_done:  .res 1
-
-.exportzp ppu_data_ready
-ppu_data_ready: .res 1
+.exportzp nmi_counter
+nmi_counter: .res 1
 
 .exportzp update
 update:     .res 2

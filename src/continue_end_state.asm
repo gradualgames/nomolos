@@ -234,11 +234,8 @@ stateCommandComplete:
 
 .proc continue_end_state_select_handler
 
-  ;wait for vblank to complete
-  lda #0
-  sta vblank_done
-: lda vblank_done
-  beq :-
+: lda nmi_counter
+  bne :-
 
   jsr sprite_clear_all
   jsr controller_read
@@ -332,12 +329,15 @@ start_not_pressed:
 
 .proc continue_end_state_update_ppu
 
+  lda nmi_counter
+  beq nmi_counter_zero
+
   dec frame_counter
   
   jsr sprite_update_all
   
-  lda #1
-  sta vblank_done
-
+  dec nmi_counter
+nmi_counter_zero:
+  
   rts
 .endproc

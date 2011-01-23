@@ -100,6 +100,9 @@ play_level_state_init:
   ;Fade in the palette, then switch to the play level state.
   ;****************************************************************
 
+  lda #0
+  sta nmi_counter
+  
   ;perform one iteration of the gameplay loop to get sprites onto the screen
   ;before fade-in
   jsr keep_playing_state
@@ -152,12 +155,9 @@ victory_mode:
   
 pause:
 
-  ;wait for vblank to complete
-  lda #0
-  sta vblank_done
-: lda vblank_done
+: lda nmi_counter
   beq :-
-
+ 
   jsr controller_read_start
 
   .scope
@@ -172,6 +172,8 @@ pause:
 skip_start_button_test:
   .endscope
 
+  inc nmi_counter
+  
   jmp state_switch_complete
 
 switch_to_level_in_state:
@@ -216,11 +218,11 @@ lives_negative_means_game_over:
 
 state_switch_complete:
 
-  ;turn monochrome bit off
-  .ifdef DISPLAY_FRAME_CPU_USAGE
-  clear_ppu_2001_bit PPU1_DISPLAY_TYPE
-  upload_ppu_2001
-  .endif
+  ; ;turn monochrome bit off
+  ; .ifdef DISPLAY_FRAME_CPU_USAGE
+  ; clear_ppu_2001_bit PPU1_DISPLAY_TYPE
+  ; upload_ppu_2001
+  ; .endif
 
   rts
 
@@ -231,21 +233,15 @@ state_switch_complete:
 ;****************************************************************
 .proc keep_playing_state
 
-  ;wait for vblank to complete
-  lda #0
-  sta vblank_done
-: lda vblank_done
-  beq :-
+  ;wait til ppu data has been consumed
+: lda nmi_counter
+  bne :-
 
   ;turn monochrome bit on
   .ifdef DISPLAY_FRAME_CPU_USAGE
   set_ppu_2001_bit PPU1_DISPLAY_TYPE
   upload_ppu_2001
   .endif
-
-  ;ppu data is not ready
-  lda #0
-  sta ppu_data_ready
 
   ;camera has not scrolled yet
   sta camera_scroll_direction
@@ -259,10 +255,6 @@ state_switch_complete:
   jsr nomolos_draw_hearts
   jsr entity_update_all
   jsr map_decode
-
-  ;ppu data is ready
-  lda #1
-  sta ppu_data_ready
 
   ;switch to the level and music bank
   ldy #level_data_struct::level_music_bank
@@ -286,6 +278,15 @@ state_switch_complete:
 skip_start_button_test:
   .endscope
 
+  ;indicate to the nmi that data must be consumed now
+  inc nmi_counter
+  
+  ;turn monochrome bit off
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  clear_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
+  .endif
+  
   rts
 
 .endproc
@@ -294,6 +295,10 @@ skip_start_button_test:
 ;The victory mode state handler
 ;****************************************************************
 .proc victory_state
+
+  ;wait for nmi to reset counter
+: lda nmi_counter
+  bne :-
 
   sec
   lda state_control_params+play_level_state_control::frame_counter
@@ -314,21 +319,11 @@ skip_start_button_test:
   
 do_not_switch_to_level_in_state:
 
-  ;wait for vblank to complete
-  lda #0
-  sta vblank_done
-: lda vblank_done
-  beq :-
-
-  ;turn monochrome bit on
-  .ifdef DISPLAY_FRAME_CPU_USAGE
-  set_ppu_2001_bit PPU1_DISPLAY_TYPE
-  upload_ppu_2001
-  .endif
-
-  ;ppu data is not ready
-  lda #0
-  sta ppu_data_ready
+  ; ;turn monochrome bit on
+  ; .ifdef DISPLAY_FRAME_CPU_USAGE
+  ; set_ppu_2001_bit PPU1_DISPLAY_TYPE
+  ; upload_ppu_2001
+  ; .endif
 
   ;camera has not scrolled yet
   sta camera_scroll_direction
@@ -339,10 +334,6 @@ do_not_switch_to_level_in_state:
   jsr nomolos_draw
   jsr nomolos_draw_hearts
   jsr entity_update_all
-
-  ;ppu data is ready
-  lda #1
-  sta ppu_data_ready
 
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank
@@ -365,6 +356,9 @@ do_not_switch_to_level_in_state:
 skip_start_button_test:
   .endscope
 
+  ;indicate to nmi that data has been prepared
+  inc nmi_counter
+  
   rts
 
 .endproc
@@ -374,21 +368,15 @@ skip_start_button_test:
 ;****************************************************************
 .proc boss_state
 
-  ;wait for vblank to complete
-  lda #0
-  sta vblank_done
-: lda vblank_done
-  beq :-
+  ;wait for nmi to reset counter
+: lda nmi_counter
+  bne :-
 
-  ;turn monochrome bit on
-  .ifdef DISPLAY_FRAME_CPU_USAGE
-  set_ppu_2001_bit PPU1_DISPLAY_TYPE
-  upload_ppu_2001
-  .endif
-
-  ;ppu data is not ready
-  lda #0
-  sta ppu_data_ready
+  ; ;turn monochrome bit on
+  ; .ifdef DISPLAY_FRAME_CPU_USAGE
+  ; set_ppu_2001_bit PPU1_DISPLAY_TYPE
+  ; upload_ppu_2001
+  ; .endif
 
   ;camera has not scrolled yet
   sta camera_scroll_direction
@@ -402,10 +390,6 @@ skip_start_button_test:
   jsr nomolos_draw_hearts
   jsr entity_update_all
 
-  ;ppu data is ready
-  lda #1
-  sta ppu_data_ready
-
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank
   ldy #level_data_struct::level_music_bank
@@ -427,6 +411,8 @@ skip_start_button_test:
 skip_start_button_test:
   .endscope
 
+  inc nmi_counter
+  
   rts
  
 .endproc
@@ -442,9 +428,9 @@ skip_start_button_test:
   txa
   pha
 
-  lda ppu_data_ready
-  beq ppu_data_not_ready
-
+  lda nmi_counter
+  beq nmi_counter_zero
+  
   jsr palette_handler
   jsr sprite_update_all
   jsr map_update_column_ppu
@@ -454,11 +440,9 @@ skip_start_button_test:
   .ifdef MUSIC_ENABLE
   jsr sound_upload
   .endif
-
-ppu_data_not_ready:
-
-  lda #1
-  sta vblank_done
+  
+  dec nmi_counter
+nmi_counter_zero:
 
   pla
   tax
@@ -565,8 +549,8 @@ palette_cycling_off:
   txa
   pha
 
-  lda ppu_data_ready
-  beq ppu_data_not_ready
+  lda nmi_counter
+  beq nmi_counter_zero
 
   jsr sprite_update_all
   
@@ -606,10 +590,9 @@ upload_ppu_data_switch_complete:
   jsr sound_upload
   .endif
 
-ppu_data_not_ready:
-
-  lda #1
-  sta vblank_done
+  dec nmi_counter
+  
+nmi_counter_zero:
 
   pla
   tax

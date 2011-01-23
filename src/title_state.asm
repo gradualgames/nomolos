@@ -238,12 +238,9 @@ title_stateRun:
   jmp stateCommandComplete
 
 title_stateDone:
-
-  ;wait for vblank to complete
-  lda #0
-  sta vblank_done
-: lda vblank_done
-  beq :-
+  
+: lda nmi_counter
+  bne :-
 
   jsr controller_read
   
@@ -315,6 +312,8 @@ select_button_not_hit:
 
 start_button_not_hit:
 
+  inc nmi_counter
+
   jmp stateCommandComplete
 
 stateCommandComplete:
@@ -323,6 +322,9 @@ stateCommandComplete:
 .endproc
 
 .proc title_state_update_ppu
+
+  lda nmi_counter
+  beq nmi_counter_zero
 
   .ifdef MUSIC_ENABLE
   jsr sound_upload
@@ -336,8 +338,9 @@ stateCommandComplete:
   sta $2005
   .endif
   
-  lda #1
-  sta vblank_done
+  dec nmi_counter
+  
+nmi_counter_zero:
   
   rts
 .endproc

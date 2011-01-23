@@ -31,8 +31,7 @@ ZP_INC = 1
 .importzp mapper_bank_current
 .importzp mapper_bank_next
 .importzp ppu_string_buffer
-.importzp vblank_done
-.importzp ppu_data_ready
+.importzp nmi_counter
 .importzp update
 .importzp update_ppu
 .importzp state_control_params

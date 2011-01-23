@@ -14,13 +14,11 @@
 
 .segment "CODE"
 
-;this routine waits for the vblank_done flag to be set.
+;this routine waits for the nmi counter to reach zero.
 .proc wait_vblank_flag
 
-  lda #0
-  sta vblank_done
-: lda vblank_done
-  beq :-
+: lda nmi_counter
+  bne :-
 
   rts
 
@@ -87,7 +85,8 @@ fading_loop:
 
   ;wait for vblank
   ldx #FADING_SPEED
-: jsr wait_vblank_flag
+: inc nmi_counter
+  jsr wait_vblank_flag
   dex
   bne :-
 
@@ -132,7 +131,8 @@ fading_loop:
 
   ;wait for vblank
   ldx #FADING_SPEED
-: jsr wait_vblank_flag
+: inc nmi_counter
+  jsr wait_vblank_flag
   dex
   bne :-
 
@@ -156,6 +156,9 @@ fading_loop:
   txa
   pha
 
+  lda nmi_counter
+  beq nmi_counter_zero
+  
   jsr sprite_update_all
 
   ;save current palette address
@@ -186,10 +189,10 @@ fading_loop:
   ;restore 2006 and 2005 to what we had written them to previously
   upload_ppu_2006
   upload_ppu_2005
-
-  lda #1
-  sta vblank_done
-
+  
+  dec nmi_counter
+nmi_counter_zero:
+  
   pla
   tax
   pla
