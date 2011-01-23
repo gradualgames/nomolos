@@ -80,7 +80,8 @@ level1_data:
   .byte 0   ;starting_screen
   
   .word level1_intro_string
-  .byte 1 ;camera_scroll_enabled  
+  .byte 16 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled  
   .word level1_map
   .word level1_map_column_table
   .word level1_attribute_column_table
@@ -135,7 +136,8 @@ level1_2data:
   .byte 0   ;starting_screen
   
   .word level1_2_intro_string
-  .byte 1 ;camera_scroll_enabled  
+  .byte 16 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled  
   .word level1_2map
   .word level1_2map_column_table
   .word level1_2attribute_column_table
@@ -190,7 +192,8 @@ level2_data:
   .byte 0   ;starting_screen
   
   .word level2_intro_string
-  .byte 1 ;camera_scroll_enabled  
+  .byte 16 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled  
   .word level2_map
   .word level2_map_column_table
   .word level2_attribute_column_table
@@ -243,7 +246,8 @@ level2_2data:
   .byte 0   ;starting_screen
   
   .word level2_2intro_string
-  .byte 1 ;camera_scroll_enabled  
+  .byte 16 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled  
   .word level2_2map
   .word level2_2map_column_table
   .word level2_2attribute_column_table
@@ -296,7 +300,8 @@ boss2_data:
   .byte 0   ;starting_screen
   
   .word boss2_intro_string
-  .byte 1 ;camera_scroll_enabled  
+  .byte 32 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled  
   .word boss2_map
   .word boss2_map_column_table
   .word boss2_attribute_column_table
@@ -349,7 +354,8 @@ level3_data:
   .byte 0   ;starting_screen
   
   .word level3_intro_string
-  .byte 1 ;camera_scroll_enabled  
+  .byte 16 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled  
   .word level3_map
   .word level3_map_column_table
   .word level3_attribute_column_table
@@ -402,7 +408,8 @@ level3_2data:
   .byte 0   ;starting_screen
   
   .word level3_2_intro_string
-  .byte 1 ;camera_scroll_enabled  
+  .byte 16 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled  
   .word level3_2_map
   .word level3_2_map_column_table
   .word level3_2_attribute_column_table
@@ -455,7 +462,8 @@ boss1_data:
   .byte 0   ;starting_screen
   
   .word boss1_intro_string
-  .byte 0 ;camera_scroll_enabled  
+  .byte 32 ;columns_to_load
+  .byte 0  ;camera_scroll_enabled  
   .word boss1_map
   .word boss1_map_column_table
   .word boss1_attribute_column_table
@@ -508,7 +516,8 @@ level4_data:
   .byte 0 ;starting_screen
   
   .word level4_intro_string
-  .byte 1 ;camera_scroll_enabled  
+  .byte 16 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled  
   .word level4_map
   .word level4_map_column_table
   .word level4_attribute_column_table

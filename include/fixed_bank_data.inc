@@ -76,6 +76,7 @@ index_continue_end_state   = 4 * 4
   starting_screen .byte
   
   intro_string .word
+  columns_to_load .byte
   camera_scroll_enabled .byte  
   map .word
   map_column_table .word

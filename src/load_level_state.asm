@@ -262,7 +262,8 @@ load_level_stateInit:
   ;we load two screens, primarily to ensure that boss arenas can shake
   ;and show correct tiles, and also to clean up garbage tiles from
   ;previous level
-  lda #32
+  ldy #level_data_struct::columns_to_load
+  lda (base_address_rom_definition_table),y
   sta state_control_params+load_level_stateControl::column_counter
 
   ;load whether camera scroll is enabled for gameplay
