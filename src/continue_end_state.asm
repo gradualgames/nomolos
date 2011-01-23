@@ -323,6 +323,8 @@ selected_cursor_test_done:
   
 start_not_pressed:
   
+  inc nmi_counter
+  
   rts
   
 .endproc
