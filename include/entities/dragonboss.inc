@@ -30,6 +30,7 @@ DRAGONBOSS_ERASESTATE = 8
 DRAGONBOSS_SUBSTATE_NOT_ATTACKED = 0
 DRAGONBOSS_SUBSTATE_ATTACKED = 1
 DRAGONBOSS_SUBSTATE_DYING = 2
+DRAGONBOSS_SUBSTATE_ERASE = 3
 
 DRAGONBOSS_DRAWSTATE_MOUTH_SHUT = 0
 DRAGONBOSS_DRAWSTATE_MOUTH_OPEN = 1
@@ -62,6 +63,8 @@ boss1_attacked_color_sequence:
 
 dragonboss_update:
 
+  jsr dragonboss_substate_handler
+
   lda entity_instances+entity_instance::state,x
   cmp #DRAGONBOSS_INITSTATE
   beq dragonboss_init
@@ -82,10 +85,82 @@ dragonboss_update:
   cmp #DRAGONBOSS_ERASESTATE
   beq dragonboss_erasestate
 
+dragonboss_init:
+
+  jsr dragonboss_initstate_handler
+  
+  jsr dragonboss_drawface
+  
+  rts
+  
+dragonboss_initbossmodestate:
+
+  jsr dragonboss_initbossmodestate_handler
+  
+  jsr dragonboss_drawface
+
+  rts
+  
+dragonboss_tailupstate:
+
+  jsr dragonboss_tailupstate_handler
+
+  jsr dragonboss_drawface
+  
+  rts
+  
+dragonboss_taildownstate:
+
+  jsr dragonboss_taildownstate_handler
+
+  jsr dragonboss_drawface
+  
+  rts
+
+dragonboss_glowingeyesstate:
+
+  jsr dragonboss_glowingeyesstate_handler
+  
+  jsr dragonboss_drawface
+
+  rts
+  
+dragonboss_spiticeballsstate:
+
+  jsr dragonboss_spiticeballsstate_handler
+
+  jsr dragonboss_drawface
+  
+  rts
+  
+dragonboss_closemouthstate:
+
+  jsr dragonboss_closemouthstate_handler
+  
+  jsr dragonboss_drawface
+  
+  rts
+  
+dragonboss_dyingstate:
+
+  jsr dragonboss_dyingstate_handler
+
+  jsr dragonboss_drawface
+  
+  rts
+  
+dragonboss_erasestate:
+
+  jsr dragonboss_erasestate_handler
+  
+  jsr dragonboss_drawface
+  
+  rts
+  
 ;****************************************************************
 ;The Init state
 ;****************************************************************
-dragonboss_init:
+.proc dragonboss_initstate_handler
 
   ;reset the dragonboss animation object
   jsr entity_reset_anim
@@ -115,7 +190,8 @@ dragonboss_init:
   sta entity_instances+entity_instance::state,x
 
   rts
-
+.endproc
+  
 ;****************************************************************
 ;The Init Bossmode state
 ;This state waits a couple of frames before telling the play
@@ -125,9 +201,7 @@ dragonboss_init:
 ;entered, then the boss nmi routine would get replaced by the
 ;normal play level state nmi routine.
 ;****************************************************************
-dragonboss_initbossmodestate:
-
-  jsr dragonboss_substate_handler
+.proc dragonboss_initbossmodestate_handler
 
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_init_boss_mode_state
@@ -141,44 +215,9 @@ dragonboss_initbossmodestate:
   sta entity_instances+entity_instance::state,x
 
 do_not_switch_to_init_boss_mode_state:
-
   rts
   
-dragonboss_tailupstate:
-
-  jsr dragonboss_tailupstate_handler
-
-  rts
-  
-dragonboss_taildownstate:
-
-  jsr dragonboss_taildownstate_handler
-
-  rts
-
-dragonboss_spiticeballsstate:
-
-  jsr dragonboss_spiticeballsstate_handler
-
-  rts
-  
-dragonboss_closemouthstate:
-
-  jsr dragonboss_closemouthstate_handler
-  
-  rts
-  
-dragonboss_dyingstate:
-
-  jsr dragonboss_dyingstate_handler
-  
-  rts
-  
-dragonboss_erasestate:
-
-  jsr dragonboss_erasestate_handler
-  
-  rts
+.endproc
   
 ;****************************************************************
 ;The Glowing Eyes state
@@ -190,7 +229,7 @@ dragonboss_erasestate:
 ;a nice feeling of power to the Dragon having slammed its tail
 ;to the ground.
 ;****************************************************************
-dragonboss_glowingeyesstate:
+.proc dragonboss_glowingeyesstate_handler
 
   .scope
   
@@ -227,8 +266,6 @@ pause_before_glow:
   sta camera_scroll_x
 do_not_vibrate:
   
-  jsr dragonboss_substate_handler
-  
   rts
   
 switch_state:
@@ -237,6 +274,7 @@ switch_state:
   sta entity_instances+entity_instance::state,x
 
   rts
+.endproc
   
 ;****************************************************************
 ;The Tail Down state handler
@@ -246,8 +284,6 @@ switch_state:
 ;the "glowing eyes" state.
 ;****************************************************************
 dragonboss_taildownstate_handler:
-  
-  jsr dragonboss_substate_handler
   
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_tailupstate
@@ -301,8 +337,6 @@ do_not_switch_to_tailupstate:
 ;explosion.
 ;****************************************************************
 dragonboss_dyingstate_handler:
-
-  jsr dragonboss_substate_handler
 
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   
@@ -442,8 +476,6 @@ noEor:
 ;****************************************************************
 dragonboss_closemouthstate_handler:
 
-  jsr dragonboss_substate_handler
-  
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_tail_up_state
   
@@ -482,8 +514,6 @@ do_not_switch_to_tail_up_state:
 ;****************************************************************
 dragonboss_spiticeballsstate_handler:
 
-  jsr dragonboss_substate_handler
-  
   ;****************************************************************
   ;Spawn and parameterize an iceball
   ;****************************************************************
@@ -634,8 +664,6 @@ dragonboss_spiticeballsstate_handler:
 ;****************************************************************
 dragonboss_tailupstate_handler:
 
-  jsr dragonboss_substate_handler
-
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_taildownstate
   
@@ -720,8 +748,41 @@ dragonboss_substate_handler:
   beq dragonboss_substate_attacked
   cmp #DRAGONBOSS_SUBSTATE_DYING
   beq dragonboss_substate_dying
+  cmp #DRAGONBOSS_SUBSTATE_ERASE
+  beq dragonboss_substate_erase
 
 dragonboss_substate_not_attacked:
+
+  jsr dragonboss_substate_not_attacked_handler
+
+  jmp dragonboss_substate_switch_complete
+  
+dragonboss_substate_attacked:
+  
+  jsr dragonboss_substate_attacked_handler
+ 
+  jmp dragonboss_substate_switch_complete
+  
+dragonboss_substate_dying:
+
+  jsr dragonboss_substate_dying_handler
+
+  jmp dragonboss_substate_switch_complete
+  
+dragonboss_substate_erase:
+
+  jsr dragonboss_substate_erase_handler
+  
+  jmp dragonboss_substate_switch_complete
+  
+dragonboss_substate_switch_complete:
+  
+  rts
+  
+;****************************************************************
+;Dragon boss's substate not attacked handler
+;****************************************************************
+.proc dragonboss_substate_not_attacked_handler
 
   jsr nomolos_is_deadly
   beq nomolos_not_attacking
@@ -776,35 +837,8 @@ dragonboss_not_hit:
   
 nomolos_not_attacking:
 
-  jmp dragonboss_substate_switch_complete
-  
-dragonboss_substate_attacked:
-  
-  jsr dragonboss_substate_attacked_handler
- 
-  jmp dragonboss_substate_switch_complete
-  
-do_not_switch_to_dying_state:
-  
-  ;attacked state is done, switch back to not attacked state
-  lda #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
-  sta entity_locals+dragonboss_locals::substate,x
-  
-do_not_switch_to_not_attacked_state:
-
-  jmp dragonboss_substate_switch_complete
-  
-dragonboss_substate_dying:
-
-  jsr dragonboss_substate_dying_handler
-
-  jmp dragonboss_substate_switch_complete
-  
-dragonboss_substate_switch_complete:
-  
-  jsr dragonboss_drawface
-
   rts
+.endproc
   
 ;****************************************************************
 ;Dragon boss's substate attacked handler
@@ -833,6 +867,11 @@ dragonboss_substate_switch_complete:
   dec entity_locals+dragonboss_locals::substate_switch_counter,x
   bne do_not_switch_to_not_attacked_state
   
+  lda #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
+  sta entity_locals+dragonboss_locals::substate,x
+  
+do_not_switch_to_not_attacked_state:
+  
   ;find out if dragon should die now
   lda entity_locals+dragonboss_locals::health,x
   bne do_not_switch_to_dying_state
@@ -853,7 +892,8 @@ dragonboss_substate_switch_complete:
   
   lda #DRAGONBOSS_SUBSTATE_DYING
   sta entity_locals+dragonboss_locals::substate,x
-
+do_not_switch_to_dying_state:
+  
   rts
 
 .endproc
@@ -920,6 +960,19 @@ dragonboss_erase:
   lda #DRAGONBOSS_ERASESTATE
   sta entity_instances+entity_instance::state,x
   
+  lda #DRAGONBOSS_SUBSTATE_ERASE
+  sta entity_locals+dragonboss_locals::substate,x
+  
+  rts
+
+.endproc
+  
+;****************************************************************
+;Dragon boss's substate erase handler
+;this substate does nothing
+;****************************************************************
+.proc dragonboss_substate_erase_handler
+
   rts
 
 .endproc
