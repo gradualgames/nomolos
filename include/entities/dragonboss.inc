@@ -900,6 +900,10 @@ do_not_switch_to_not_attacked_state:
   lda nomolos_state_primary
   ora #nomolos_invincibility_on_set
   sta nomolos_state_primary
+  lda #0
+  ;ensure that the invincibility blinking counter is already zero so it does not
+  ;reset invincibility to "off" after the dragon has already started dying
+  sta nomolos_counter_temp_invincibility_blink
   
   lda #DRAGONBOSS_DYINGSTATE
   sta entity_instances+entity_instance::state,x
