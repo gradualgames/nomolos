@@ -231,6 +231,13 @@ do_not_switch_to_init_boss_mode_state:
 ;****************************************************************
 .proc dragonboss_glowingeyesstate_handler
 
+  ;since we upload a nametable region right before transitioning to
+  ;this state, there is a possibility that the palette was not uploaded
+  ;during palette cycling from being attacked. So, we ensure that we
+  ;upload the current dynamic palette here.
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+
   .scope
   
   dec entity_locals+dragonboss_locals::state_switch_counter,x
@@ -285,8 +292,15 @@ switch_state:
 ;****************************************************************
 dragonboss_taildownstate_handler:
   
+  ;since we upload a nametable region right before transitioning to
+  ;this state, there is a possibility that the palette was not uploaded
+  ;during palette cycling from being attacked. So, we ensure that we
+  ;upload the current dynamic palette here.
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+
   dec entity_locals+dragonboss_locals::state_switch_counter,x
-  bne do_not_switch_to_tailupstate
+  bne do_not_switch_state
   
   txa
   pha
@@ -324,7 +338,7 @@ dragonboss_taildownstate_handler:
   lda #DRAGONBOSS_GLOWINGEYESSTATE
   sta entity_instances+entity_instance::state,x
   
-do_not_switch_to_tailupstate:
+do_not_switch_state:
 
   rts
   
@@ -472,7 +486,8 @@ noEor:
   
 ;****************************************************************
 ;This state just draws the dragon's mouth closed and notifies
-;the sub-state machine to draw the overlay closed mouth.
+;the sub-state machine to draw the overlay closed mouth. It
+;then switches to the tail up state.
 ;****************************************************************
 dragonboss_closemouthstate_handler:
 
@@ -659,8 +674,8 @@ dragonboss_spiticeballsstate_handler:
 ;While the Dragon's tail is in the air, some icy stalactites are
 ;starting to form on the ceiling for the next time the Dragon
 ;slams his tail on the ground. This state waits until the state
-;switch counter has reached zero to transition to the Tail Up
-;state.
+;switch counter has reached zero to upload the tail up graphics
+;and then switch to the tail down state.
 ;****************************************************************
 dragonboss_tailupstate_handler:
 
