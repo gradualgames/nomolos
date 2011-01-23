@@ -491,6 +491,13 @@ noEor:
 ;****************************************************************
 dragonboss_closemouthstate_handler:
 
+  ;since we upload a nametable region right before transitioning to
+  ;this state, there is a possibility that the palette was not uploaded
+  ;during palette cycling from being attacked. So, we ensure that we
+  ;upload the current dynamic palette here.
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_tail_up_state
   
@@ -678,6 +685,13 @@ dragonboss_spiticeballsstate_handler:
 ;and then switch to the tail down state.
 ;****************************************************************
 dragonboss_tailupstate_handler:
+
+  ;since we upload a nametable region right before transitioning to
+  ;this state, there is a possibility that the palette was not uploaded
+  ;during palette cycling from being attacked. So, we ensure that we
+  ;upload the current dynamic palette here.
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
 
   dec entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_taildownstate
