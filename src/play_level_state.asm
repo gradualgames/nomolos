@@ -218,12 +218,6 @@ lives_negative_means_game_over:
 
 state_switch_complete:
 
-  ; ;turn monochrome bit off
-  ; .ifdef DISPLAY_FRAME_CPU_USAGE
-  ; clear_ppu_2001_bit PPU1_DISPLAY_TYPE
-  ; upload_ppu_2001
-  ; .endif
-
   rts
 
 .endproc
@@ -244,6 +238,7 @@ state_switch_complete:
   .endif
 
   ;camera has not scrolled yet
+  lda #0
   sta camera_scroll_direction
 
   jsr controller_read
@@ -300,6 +295,12 @@ skip_start_button_test:
 : lda nmi_counter
   bne :-
 
+  ;turn monochrome bit on
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  set_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
+  .endif
+  
   sec
   lda state_control_params+play_level_state_control::frame_counter
   sbc #1
@@ -319,13 +320,8 @@ skip_start_button_test:
   
 do_not_switch_to_level_in_state:
 
-  ; ;turn monochrome bit on
-  ; .ifdef DISPLAY_FRAME_CPU_USAGE
-  ; set_ppu_2001_bit PPU1_DISPLAY_TYPE
-  ; upload_ppu_2001
-  ; .endif
-
   ;camera has not scrolled yet
+  lda #0
   sta camera_scroll_direction
 
   jsr sprite_clear_all
@@ -359,6 +355,12 @@ skip_start_button_test:
   ;indicate to nmi that data has been prepared
   inc nmi_counter
   
+  ;turn monochrome bit off
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  clear_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
+  .endif
+  
   rts
 
 .endproc
@@ -372,13 +374,14 @@ skip_start_button_test:
 : lda nmi_counter
   bne :-
 
-  ; ;turn monochrome bit on
-  ; .ifdef DISPLAY_FRAME_CPU_USAGE
-  ; set_ppu_2001_bit PPU1_DISPLAY_TYPE
-  ; upload_ppu_2001
-  ; .endif
+  ;turn monochrome bit on
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  set_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
+  .endif
 
   ;camera has not scrolled yet
+  lda #0
   sta camera_scroll_direction
 
   jsr controller_read
@@ -412,6 +415,12 @@ skip_start_button_test:
   .endscope
 
   inc nmi_counter
+  
+  ;turn monochrome bit off
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  clear_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
+  .endif
   
   rts
  
