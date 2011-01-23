@@ -12,6 +12,7 @@ LOADLEVELSTATE_DONE = %00000010
   state .byte
   level_to_load .byte
   use_restart_point .byte
+  column_counter .byte
 .endstruct
 
 .endif

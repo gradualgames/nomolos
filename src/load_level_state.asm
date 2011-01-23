@@ -257,6 +257,13 @@ load_level_stateInit:
   sta camera_scroll_x
   jsr get_restart_screen
   sta camera_scroll_x+1
+  
+  ;set counter for how many columns to load beyond the leftmost one
+  ;we load two screens, primarily to ensure that boss arenas can shake
+  ;and show correct tiles, and also to clean up garbage tiles from
+  ;previous level
+  lda #32
+  sta state_control_params+load_level_stateControl::column_counter
 
   ;load whether camera scroll is enabled for gameplay
   ldy #level_data_struct::camera_scroll_enabled
@@ -286,9 +293,13 @@ load_level_stateLoad:
   lda camera_scroll_x
   adc #$10
   sta camera_scroll_x
+  lda camera_scroll_x+1
+  adc #$00
+  sta camera_scroll_x+1
 
-  ;if carry is clear here, we haven't finished loading the whole starting screen
-  bcc load_state_not_done
+  ;decrement the column counter until zero
+  dec state_control_params+load_level_stateControl::column_counter
+  bne load_state_not_done
 
   lda #LOADLEVELSTATE_DONE
   sta state_control_params+load_level_stateControl::state
@@ -305,6 +316,15 @@ load_level_stateDone:
   jsr get_restart_screen
   sta camera_scroll_x+1
 
+  ;re-decode the left most column to ensure the correct nametable is being shown.
+  
+  ;left side is always right where the scroll is.
+  jsr map_decode_left_side
+
+  ;directly upload everything to ppu
+  jsr map_update_column_ppu
+  jsr map_update_attribute_ppu
+  
   ;switch to play level state.
   ;keep any new entities positioned where they need to be
   ;switch to the actor and entity bank

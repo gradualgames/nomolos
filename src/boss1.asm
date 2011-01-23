@@ -157,7 +157,7 @@ boss1_meta_tile_column_table = MetaTileColumnTable
 boss1_meta_tile_table = MetaTileTable
 
 Map:
-  .byte $00,$00,$00,$01,$02,$03,$04,$05,$06
+  .byte $00,$00,$00,$01,$02,$03,$04,$05,$06,$00,$00,$00,$00,$00,$00,$00
 MapColumnTable:
   .byte $00,$00,$00,$00
   .byte $00,$00,$01,$00
@@ -165,10 +165,9 @@ MapColumnTable:
   .byte $00,$04,$05,$00
   .byte $00,$06,$07,$00
   .byte $00,$08,$00,$00
-  .byte $01,$09,$ffffffff,$00
+  .byte $00,$09,$00,$00
 AttributeColumnTable:
   .byte $00,$00,$00,$00,$00,$00,$50,$00
-  .byte $00,$00,$00,$00,$00,$00,$10,$00
 MetaTileColumnTable:
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$40,$00,$00
   .byte $00,$00,$00,$00,$04,$09,$0f,$19,$00,$00,$00,$00,$39,$40,$00,$00
