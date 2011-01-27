@@ -83,10 +83,37 @@ stillResting:
 
   rts
   
+killShark:
+
+  ;make it dead
+  jsr entity_kill
+  
+  ;spawn an explosion entity
+  lda #entity_index_explosion
+  sta b0
+
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+  
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sta b1
+  
+  jsr entity_spawn
+
+  rts
+  
 shark_jumpState:
 
   jsr entity_compute_screen_coordinates
 
+  jsr entity_test_death_zone
+  beq killShark
+  
   ;slide shark in the direction he is facing
   lda entity_locals+shark_locals::directionFlag,x
   bne sharkGoingRight
@@ -288,29 +315,6 @@ entity_facing_test_done:
 sharkOffscreen:
   rts
   
-killShark:
-
-  ;make it dead
-  jsr entity_kill
-  
-  ;spawn an explosion entity
-  lda #entity_index_explosion
-  sta b0
-
-  ;get out low byte of position_x
-  lda entity_instances+entity_instance::position_x,x
-  sta w0
-  ;get out high byte of position_x
-  lda entity_instances+entity_instance::position_x+1,x
-  sta w0+1
-  
-  ;get out position_y
-  lda entity_instances+entity_instance::position_y,x
-  sta b1
-  
-  jsr entity_spawn
-
-  rts
 .endproc
   
 .endif

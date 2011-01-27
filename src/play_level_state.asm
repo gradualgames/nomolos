@@ -156,7 +156,7 @@ victory_mode:
 pause:
 
 : lda nmi_counter
-  beq :-
+  bne :-
  
   jsr controller_read_start
 
