@@ -44,3 +44,4 @@
 .include "snake.inc"
 .include "fireguy.inc"
 .include "thoguth.inc"
+.include "fireballspawner.inc"

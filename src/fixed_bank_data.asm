@@ -504,8 +504,8 @@ level4_data:
   .word level4_patterns
   .byte spritesheet_1_patterns_bank
   .word level4_sprite_groups
-  .word 0 ;cycling_palette_address
-  .byte 0 ;cycling_palette_speed
+  .word 0  ;level4_cycling_palettes ;cycling_palette_address
+  .byte 0  ;cycling_palette_speed
 
   .word attack_sound
   .word hit_sound
@@ -629,6 +629,9 @@ entity_definition_table:
   .byte $00
   .word thoguth_update
   .byte $01
+  .byte $00
+  .word fireballspawner_update
+  .byte $03
   .byte $00
   
 ;miscellaneous data

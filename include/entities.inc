@@ -27,6 +27,7 @@ ENTITIES_INC = 1
 .global snake_update
 .global fireguy_update
 .global thoguth_update
+.global fireballspawner_update
 
 ;entity indices
 entity_index_deentle = 1
@@ -55,6 +56,7 @@ entity_index_fireball = 23
 entity_index_snake = 24
 entity_index_fireguy = 25
 entity_index_thoguth = 26
+entity_index_fireballspawner = 27
 
 ;entity structs. Only parameterizable entities have structs here.
 .struct iceball_locals
@@ -67,5 +69,22 @@ ICEBALL_HEIGHT = $10
 
 ICEBALL_INITSTATE = 0
 ICEBALL_FLYSTATE = 1
+
+.struct fireball_locals
+  x_velocity .word
+  y_velocity .word
+  y_belowPenetration .byte
+  x_collisionPointBottom .word
+  y_collisionPointBottom .word
+  restCounter .byte
+.endstruct
+
+FIREBALL_WIDTH = $10
+FIREBALL_HALFWIDTH = $08
+FIREBALL_HEIGHT = $10
+FIREBALL_HALFHEIGHT = $08
+
+FIREBALL_INITSTATE = 0
+FIREBALL_JUMPSTATE = 1
 
 .endif

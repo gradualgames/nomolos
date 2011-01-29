@@ -15,6 +15,7 @@ level4_sprites_FireGuy_chr_index = level4_sprites_Snake_chr_index+Snake_chr_size
 .import level4_sprite_groups
 .import level4_patterns
 .import level4_palette
+.import level4_cycling_palettes
 .import level4_map
 .import level4_map_column_table
 .import level4_attribute_column_table
