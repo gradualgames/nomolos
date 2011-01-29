@@ -1,10 +1,10 @@
 .ifndef RAM_INC
 RAM_INC = 1
 
-.import entity_instances
-.import entity_locals
-.import entity_counters
-.import sprite
-.import dynamic_palette
+.global entity_instances
+.global entity_locals
+.global entity_counters
+.global sprite
+.global dynamic_palette
 
 .endif
