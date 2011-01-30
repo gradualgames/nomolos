@@ -11,10 +11,12 @@ FIREGUY_WIDTH = $18
 FIREGUY_HEIGHT = $10
 FIREGUY_HALFHEIGHT = $08
 
-FIREGUY_DISTANCE_TIL_ABOUT_FACE = 160
+FIREGUY_SPEED_FINE = 0
+FIREGUY_SPEED_LO   = 2
+
+FIREGUY_DISTANCE_TIL_ABOUT_FACE = 64
 FIREGUY_DISTANCE_TIL_SWITCH_TO_STOP_STATE = 150
 FIREGUY_DISTANCE_TIL_SWITCH_TO_MOVE_STATE = 50
-FIREGUY_SPEED = 255
 
 FIREGUY_INITSTATE = 0
 FIREGUY_MOVESTATE = 1
@@ -97,10 +99,10 @@ move_left:
 
   sec
   lda entity_instances+entity_instance::position_x_fine,x
-  sbc #FIREGUY_SPEED
+  sbc #FIREGUY_SPEED_FINE
   sta entity_instances+entity_instance::position_x_fine,x
   lda entity_instances+entity_instance::position_x,x
-  sbc #0
+  sbc #FIREGUY_SPEED_LO
   sta entity_instances+entity_instance::position_x,x
   lda entity_instances+entity_instance::position_x+1,x
   sbc #0
@@ -111,10 +113,10 @@ move_right:
 
   clc
   lda entity_instances+entity_instance::position_x_fine,x
-  adc #FIREGUY_SPEED
+  adc #FIREGUY_SPEED_FINE
   sta entity_instances+entity_instance::position_x_fine,x
   lda entity_instances+entity_instance::position_x,x
-  adc #0
+  adc #FIREGUY_SPEED_LO
   sta entity_instances+entity_instance::position_x,x
   lda entity_instances+entity_instance::position_x+1,x
   adc #0
