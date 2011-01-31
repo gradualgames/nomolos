@@ -35,7 +35,7 @@ followToLeft:
   ;set x velocity
   lda #$00
   sta entity_locals+fireball_locals::x_velocity,x
-  lda #$ff
+  lda #$fe
   sta entity_locals+fireball_locals::x_velocity+1,x
 
   jmp followTestDone

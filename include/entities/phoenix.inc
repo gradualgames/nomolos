@@ -21,7 +21,7 @@ PHOENIX_FLYSTATE = 1
 PHOENIX_HOVERSTATE = 2
 
 PHOENIX_TIME_TIL_STATE_SWITCH = 255
-PHOENIX_TIME_TIL_SHOOT_FIREBALL = 20
+PHOENIX_TIME_TIL_SHOOT_FIREBALL = 40
 
 PHOENIX_VERTSPEED = 10
 PHOENIX_MAXVERTSPEED = 1
@@ -62,7 +62,7 @@ phoenix_initState:
   lda #PHOENIX_TIME_TIL_STATE_SWITCH
   sta entity_locals+phoenix_locals::fly_hover,x
 
-  ;lda #PHOENIX_TIME_TIL_SHOOT_FIREBALL
+  lda #PHOENIX_TIME_TIL_SHOOT_FIREBALL
   sta entity_locals+phoenix_locals::shoot_fireball,x
 
   ;set damaged counter to 0
