@@ -176,7 +176,7 @@ Noise:
 
 .export level4_palette
 level4_palette:
-  .byte $0d,$27,$17,$07,$0d,$05,$07,$16,$0d,$08,$18,$28,$0d,$07,$25,$15
+  .byte $0d,$07,$17,$27,$0d,$07,$05,$16,$0d,$08,$18,$28,$0d,$07,$15,$25
   .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$27,$16,$0d,$0d,$06,$18
 
 .export level4_cycling_palettes
@@ -699,17 +699,17 @@ MetaTile39:
 MetaTile40:
   .byte $03,$00,$00,$73,$74,$7f,$80,$00
 MetaTile41:
-  .byte $02,$00,$01,$a7,$a8,$b1,$b2,$00
+  .byte $02,$00,$01,$b3,$b4,$bd,$be,$00
 MetaTile42:
-  .byte $02,$00,$01,$a9,$aa,$b3,$b4,$00
+  .byte $02,$00,$01,$b5,$b6,$bf,$c0,$00
 MetaTile43:
-  .byte $00,$01,$00,$ab,$ac,$b5,$b6,$00
+  .byte $00,$01,$00,$b7,$b8,$c1,$c2,$00
 MetaTile44:
-  .byte $02,$00,$01,$ad,$ae,$b7,$b8,$00
+  .byte $02,$00,$01,$b9,$ba,$c3,$c4,$00
 MetaTile45:
-  .byte $00,$01,$00,$af,$b0,$b9,$ba,$00
+  .byte $00,$01,$00,$bb,$bc,$c5,$c6,$00
 MetaTile46:
-  .byte $00,$00,$01,$bb,$bc,$bd,$be,$00
+  .byte $00,$00,$01,$c7,$c8,$c9,$ca,$00
 MetaTile47:
   .byte $03,$00,$01,$71,$72,$7d,$7e,$00
 MetaTile48:
@@ -729,21 +729,21 @@ MetaTile54:
 MetaTile55:
   .byte $03,$00,$01,$85,$86,$8b,$8c,$00
 MetaTile56:
-  .byte $01,$00,$00,$21,$21,$21,$91,$00
+  .byte $01,$00,$00,$21,$21,$21,$9d,$00
 MetaTile57:
-  .byte $01,$00,$00,$8d,$8e,$92,$93,$00
+  .byte $01,$00,$00,$93,$94,$9e,$9f,$00
 MetaTile58:
-  .byte $01,$00,$00,$8f,$90,$94,$95,$00
+  .byte $01,$00,$00,$95,$96,$a0,$a1,$00
 MetaTile59:
-  .byte $01,$00,$00,$21,$21,$96,$21,$00
+  .byte $01,$00,$00,$21,$21,$a2,$21,$00
 MetaTile60:
-  .byte $01,$00,$00,$97,$98,$9f,$a0,$00
+  .byte $01,$00,$00,$a3,$a4,$ab,$ac,$00
 MetaTile61:
-  .byte $01,$00,$00,$99,$9a,$a1,$a2,$00
+  .byte $01,$00,$00,$a5,$a6,$ad,$ae,$00
 MetaTile62:
-  .byte $01,$00,$00,$9b,$9c,$a3,$a4,$00
+  .byte $01,$00,$00,$a7,$a8,$af,$b0,$00
 MetaTile63:
-  .byte $01,$00,$00,$9d,$9e,$a5,$a6,$00
+  .byte $01,$00,$00,$a9,$aa,$b1,$b2,$00
 MetaTile64:
   .byte $00,$00,$00,$21,$21,$21,$21,entity_index_exit
 MetaTile65:
@@ -763,9 +763,9 @@ MetaTile71:
 MetaTile72:
   .byte $00,$00,$00,$21,$21,$21,$21,entity_index_fireballspawner
 MetaTile73:
-  .byte $01,$00,$00,$9b,$9c,$a3,$a4,entity_index_fireballspawner
+  .byte $01,$00,$00,$a7,$a8,$af,$b0,entity_index_fireballspawner
 MetaTile74:
-  .byte $01,$00,$00,$99,$9a,$a1,$a2,$00
+  .byte $01,$00,$00,$a5,$a6,$ad,$ae,$00
 MetaTile75:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_exit
 MetaTile76:
@@ -773,4 +773,10 @@ MetaTile76:
 MetaTile77:
   .byte $00,$00,$00,$21,$21,$21,$21,entity_index_restart
 MetaTile78:
-  .byte $00,$01,$00,$ab,$ac,$b5,$b6,entity_index_fireballspawner
+  .byte $00,$01,$00,$b7,$b8,$c1,$c2,entity_index_fireballspawner
+MetaTile79:
+  .byte $03,$00,$00,$8d,$8e,$97,$98,$00
+MetaTile80:
+  .byte $03,$00,$00,$8f,$90,$99,$9a,$00
+MetaTile81:
+  .byte $03,$00,$00,$91,$92,$9b,$9c,$00

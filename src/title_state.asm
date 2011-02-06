@@ -40,6 +40,14 @@
 
 .proc display_selected_level_string
   set_ppu_2006 $20, 24, 10
+  lda #<spaces_string
+  sta w0
+  lda #>spaces_string
+  sta w0+1
+  
+  jsr ppu_display_string
+
+  set_ppu_2006 $20, 24, 10
   lda #<ppu_string_buffer
   sta w0
   lda #>ppu_string_buffer
@@ -231,6 +239,10 @@ title_stateRun:
   sta sound_param_word_1+1
   jsr song_initialize
 .endif
+
+  ;turn off inc32
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
 
   lda #TITLESTATE_DONE
   sta state_control_params+title_stateControl::state

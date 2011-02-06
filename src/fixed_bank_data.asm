@@ -6,6 +6,7 @@
 .include "level3.inc"
 .include "level3_2.inc"
 .include "level4.inc"
+.include "level4_2.inc"
 .include "boss1.inc"
 .include "entities.inc"
 .include "soundengine.inc"
@@ -30,15 +31,16 @@
 ;level definitions
 
 level_definition_table:
-  .word level1_data
-  .word level1_2data
-  .word level2_data
-  .word level2_2data
-  .word boss2_data
-  .word level3_data
-  .word level3_2data
-  .word boss1_data
-  .word level4_data
+  .word level_1_1_data
+  .word level_1_2_data
+  .word level_2_1_data
+  .word level_2_2_data
+  .word boss_2_data
+  .word level_3_1_data
+  .word level_3_2_data
+  .word boss_1_data
+  .word level_4_1_data
+  .word level_4_2_data
 
 ;level intro strings
 level1_intro_string:
@@ -57,11 +59,13 @@ level3_2_intro_string:
   .byte $09,$0b,$04,$15,$04,$0b,$1a,$1e,$2b,$1d
 level4_intro_string:
   .byte $07,$0b,$04,$15,$04,$0b,$1a,$1f
+level_4_2_intro_string:
+  .byte $09,$0b,$04,$15,$04,$0b,$1a,$1f,$2b,$1d
 boss1_intro_string:
   .byte $06,$0d,$0e,$06,$00,$11,$03
   
 ;ROM definition table
-level1_data:
+level_1_1_data:
   .byte spritesheet_1_bank
   .byte level_1_bank
   .byte level_1_patterns_bank
@@ -117,7 +121,7 @@ level1_data:
   .byte 0 ;level1_sprites_Thoguth_chr_index
 
 ;ROM definition table
-level1_2data:
+level_1_2_data:
   .byte spritesheet_1_bank
   .byte level_1_2bank
   .byte level_1_2patterns_bank
@@ -173,7 +177,7 @@ level1_2data:
   .byte 0 ;level1_sprites_Thoguth_chr_index
   
 ;ROM definition table
-level2_data:
+level_2_1_data:
   .byte spritesheet_1_bank
   .byte level_2_bank
   .byte level_2_patterns_bank
@@ -227,7 +231,7 @@ level2_data:
   .byte 0 ;level2_sprites_Thoguth_chr_index
 
 ;ROM definition table
-level2_2data:
+level_2_2_data:
   .byte spritesheet_1_bank
   .byte level2_2bank
   .byte level_2_patterns_bank
@@ -281,7 +285,7 @@ level2_2data:
   .byte 0 ;level2_sprites_Thoguth_chr_index
 
 ;ROM definition table
-boss2_data:
+boss_2_data:
   .byte spritesheet_1_bank
   .byte boss2_bank
   .byte level_2_patterns_bank
@@ -335,7 +339,7 @@ boss2_data:
   .byte boss2_sprites_Thoguth_chr_index
   
 ;ROM definition table
-level3_data:
+level_3_1_data:
   .byte spritesheet_1_bank
   .byte level_3_bank
   .byte level_3_patterns_bank
@@ -389,7 +393,7 @@ level3_data:
   .byte 0 ;level3_sprites_Thoguth_chr_index
 
 ;ROM definition table
-level3_2data:
+level_3_2_data:
   .byte spritesheet_1_bank
   .byte level_3_bank
   .byte level_3_patterns_bank
@@ -443,7 +447,7 @@ level3_2data:
   .byte 0 ;level3_sprites_Thoguth_chr_index
 
 ;ROM definition table
-boss1_data:
+boss_1_data:
   .byte spritesheet_1_bank
   .byte boss_1_bank
   .byte boss_1_patterns_bank
@@ -497,7 +501,7 @@ boss1_data:
   .byte 0 ;boss1_sprites_Thoguth_chr_index
 
 ;ROM definition table
-level4_data:
+level_4_1_data:
   .byte spritesheet_1_bank
   .byte level_4_bank
   .byte level_4_patterns_bank
@@ -523,6 +527,60 @@ level4_data:
   .word level4_attribute_column_table
   .word level4_meta_tile_column_table
   .word level4_meta_tile_table
+
+  .word entity_definition_table
+  .word level4_music
+  .byte level_1_index
+
+  .byte level4_sprites_Nomolos_chr_index
+  .byte 0 ;level4_sprites_Deentle_chr_index
+  .byte level4_sprites_Explosion_chr_index
+  .byte 0 ;level4_sprites_Beedie_chr_index
+  .byte 0 ;level4_sprites_Grank_chr_index
+  .byte 0 ;level4_sprites_Bat_chr_index
+  .byte 0 ;level4_sprites_Skelekin_chr_index
+  .byte 0 ;level4_sprites_Batree_chr_index
+  .byte 0 ;level4_sprites_Owl_chr_index
+  .byte 0 ;level4_sprites_Snuffer_chr_index
+  .byte 0 ;level4_sprites_Snail_chr_index
+  .byte 0 ;level4_sprites_Dragon_chr_index
+  .byte 0 ;level4_sprites_IceBall_chr_index
+  .byte 0 ;level4_sprites_Shark_chr_index
+  .byte 0 ;level4_sprites_Stalactite_chr_index
+  .byte 0 ;dragonboss_offset
+  .byte level4_sprites_Phoenix_chr_index
+  .byte level4_sprites_Fireball_chr_index
+  .byte level4_sprites_Snake_chr_index
+  .byte level4_sprites_FireGuy_chr_index
+  .byte 0 ;level4_sprites_Thoguth_chr_index
+  
+;ROM definition table
+level_4_2_data:
+  .byte spritesheet_1_bank
+  .byte level_4_bank
+  .byte level_4_patterns_bank
+  .word level4_patterns
+  .byte spritesheet_1_patterns_bank
+  .word level4_sprite_groups
+  .word 0  ;level4_cycling_palettes ;cycling_palette_address
+  .byte 0  ;cycling_palette_speed
+
+  .word attack_sound
+  .word hit_sound
+  .word level_4_2_palette
+
+  .byte 30  ;nomolos_start_x
+  .byte 100 ;nomolos_start_y
+  .byte 0 ;starting_screen
+  
+  .word level_4_2_intro_string
+  .byte 16 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled  
+  .word level_4_2_map
+  .word level_4_2_map_column_table
+  .word level_4_2_attribute_column_table
+  .word level_4_2_meta_tile_column_table
+  .word level_4_2_meta_tile_table
 
   .word entity_definition_table
   .word level4_music
@@ -827,6 +885,9 @@ font1:
 power_table:
   .byte 100, 10, 1
 
+spaces_string:
+  .byte $03,$1a,$1a,$1a
+  
 press_start_string:
   .byte $0b,$0f,$11,$04,$12,$12,$1a,$12,$13,$00,$11,$13
 

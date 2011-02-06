@@ -1,7 +1,7 @@
 .ifndef FIXEDBANKDATA_INC
 FIXEDBANKDATA_INC = 1
 
-num_levels                 = 9
+num_levels                 = 10
 
 level_1_index   = 0
 level_1_2_index = 1
@@ -12,6 +12,7 @@ level_3_index   = 5
 level_3_2_index = 6
 boss_1_index    = 7
 level_4_index   = 8
+level_4_2_index = 9
 
 ;state table
 index_title_state          = 0 * 4
@@ -35,6 +36,7 @@ index_continue_end_state   = 4 * 4
 .global game_over_string
 .global continue_string
 .global end_string
+.global spaces_string
 .global title_definition
 .global title_palette
 .global title_name_table
