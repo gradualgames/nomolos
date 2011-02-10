@@ -75,6 +75,5 @@
 .import spritesheet1_Snake0
 .import spritesheet1_Snake1
 .import spritesheet1_Thoguth0
-.import spritesheet1_ThoguthOverlay0
-.import spritesheet1_ThoguthOverlay1
-.import spritesheet1_ThoguthOverlay2
+.import spritesheet1_Thoguth1
+.import spritesheet1_Thoguth2

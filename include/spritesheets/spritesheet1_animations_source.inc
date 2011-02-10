@@ -234,3 +234,12 @@ spritesheet1_SnakeSlither:
   .word spritesheet1_Snake0
   .word spritesheet1_Snake1
   .word $0000
+
+.export spritesheet1_ThoguthMarch
+spritesheet1_ThoguthMarch:
+  .byte $0a
+  .word spritesheet1_Thoguth0
+  .word spritesheet1_Thoguth1
+  .word spritesheet1_Thoguth0
+  .word spritesheet1_Thoguth2
+  .word $0000

@@ -30,3 +30,4 @@
 .import spritesheet1_PhoenixFly
 .import spritesheet1_FireballFly
 .import spritesheet1_SnakeSlither
+.import spritesheet1_ThoguthMarch
