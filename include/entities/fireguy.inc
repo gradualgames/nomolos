@@ -7,14 +7,14 @@ FIREGUY_INC = 1
   distance  .byte
 .endstruct
 
-FIREGUY_WIDTH = $18
-FIREGUY_HEIGHT = $10
+FIREGUY_WIDTH = $10
+FIREGUY_HEIGHT = $18
 FIREGUY_HALFHEIGHT = $08
 
 FIREGUY_SPEED_FINE = 0
 FIREGUY_SPEED_LO   = 2
 
-FIREGUY_DISTANCE_TIL_ABOUT_FACE = 64
+FIREGUY_DISTANCE_TIL_ABOUT_FACE = 48
 FIREGUY_DISTANCE_TIL_SWITCH_TO_STOP_STATE = 150
 FIREGUY_DISTANCE_TIL_SWITCH_TO_MOVE_STATE = 50
 
@@ -65,6 +65,25 @@ fireguy_initState:
 
   rts
 
+fireguy_stopState:
+
+  .scope
+  dec entity_locals+fireguy_locals::move_stop,x
+  bne do_not_switch_state
+
+  lda #FIREGUY_DISTANCE_TIL_SWITCH_TO_MOVE_STATE
+  sta entity_locals+fireguy_locals::move_stop,x
+
+  lda #FIREGUY_MOVESTATE
+  sta entity_instances+entity_instance::state,x
+
+do_not_switch_state:
+  .endscope
+
+  jsr fireguy_draw
+
+  rts
+  
 fireguy_moveState:
 
   .scope
@@ -97,6 +116,25 @@ do_not_flip_direction:
 
 move_left:
 
+  clc
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+  lda entity_instances+entity_instance::position_y,x
+  clc
+  adc #FIREGUY_HEIGHT
+  sta w1
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  lda b1
+  bne no_left_pit
+  lda #1
+  sta entity_locals+fireguy_locals::direction,x
+no_left_pit:
+
   sec
   lda entity_instances+entity_instance::position_x_fine,x
   sbc #FIREGUY_SPEED_FINE
@@ -112,6 +150,27 @@ move_left:
 move_right:
 
   clc
+  lda entity_instances+entity_instance::position_x,x
+  adc #FIREGUY_WIDTH
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  adc #0
+  sta w0+1
+  lda entity_instances+entity_instance::position_y,x
+  clc
+  adc #FIREGUY_HEIGHT
+  sta w1
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  lda b1
+  bne no_right_pit
+  lda #0
+  sta entity_locals+fireguy_locals::direction,x
+no_right_pit:
+
+  clc
   lda entity_instances+entity_instance::position_x_fine,x
   adc #FIREGUY_SPEED_FINE
   sta entity_instances+entity_instance::position_x_fine,x
@@ -123,25 +182,6 @@ move_right:
   sta entity_instances+entity_instance::position_x+1,x
 
 direction_test_done:
-
-  jsr fireguy_draw
-
-  rts
-
-fireguy_stopState:
-
-  .scope
-  dec entity_locals+fireguy_locals::move_stop,x
-  bne do_not_switch_state
-
-  lda #FIREGUY_DISTANCE_TIL_SWITCH_TO_MOVE_STATE
-  sta entity_locals+fireguy_locals::move_stop,x
-
-  lda #FIREGUY_MOVESTATE
-  sta entity_instances+entity_instance::state,x
-
-do_not_switch_state:
-  .endscope
 
   jsr fireguy_draw
 

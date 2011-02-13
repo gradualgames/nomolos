@@ -48,6 +48,25 @@ snake_initState:
 
   rts
 
+snake_stopState:
+
+  .scope
+  dec entity_locals+snake_locals::move_stop,x
+  bne do_not_switch_state
+
+  lda #SNAKE_DISTANCE_TIL_SWITCH_STATE
+  sta entity_locals+snake_locals::move_stop,x
+
+  lda #SNAKE_MOVESTATE
+  sta entity_instances+entity_instance::state,x
+
+do_not_switch_state:
+  .endscope
+
+  jsr snake_draw
+
+  rts
+  
 snake_moveState:
 
   .scope
@@ -80,6 +99,25 @@ do_not_flip_direction:
 
 move_left:
 
+  clc
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+  lda entity_instances+entity_instance::position_y,x
+  clc
+  adc #SNAKE_HEIGHT
+  sta w1
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  lda b1
+  bne no_left_pit
+  lda #1
+  sta entity_locals+snake_locals::direction,x
+no_left_pit:
+
   sec
   lda entity_instances+entity_instance::position_x_fine,x
   sbc #SNAKE_SPEED
@@ -95,6 +133,27 @@ move_left:
 move_right:
 
   clc
+  lda entity_instances+entity_instance::position_x,x
+  adc #SNAKE_WIDTH
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  adc #0
+  sta w0+1
+  lda entity_instances+entity_instance::position_y,x
+  clc
+  adc #SNAKE_HEIGHT
+  sta w1
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  lda b1
+  bne no_right_pit
+  lda #0
+  sta entity_locals+snake_locals::direction,x
+no_right_pit:
+
+  clc
   lda entity_instances+entity_instance::position_x_fine,x
   adc #SNAKE_SPEED
   sta entity_instances+entity_instance::position_x_fine,x
@@ -106,25 +165,6 @@ move_right:
   sta entity_instances+entity_instance::position_x+1,x
 
 direction_test_done:
-
-  jsr snake_draw
-
-  rts
-
-snake_stopState:
-
-  .scope
-  dec entity_locals+snake_locals::move_stop,x
-  bne do_not_switch_state
-
-  lda #SNAKE_DISTANCE_TIL_SWITCH_STATE
-  sta entity_locals+snake_locals::move_stop,x
-
-  lda #SNAKE_MOVESTATE
-  sta entity_instances+entity_instance::state,x
-
-do_not_switch_state:
-  .endscope
 
   jsr snake_draw
 

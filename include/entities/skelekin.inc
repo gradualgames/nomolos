@@ -54,6 +54,14 @@ entity_facing_test_done:
 
 skelekin_moveRightState:
 
+  jmp skelekin_moveRightState_handler
+  
+skelekin_moveLeftState:
+
+  jmp skelekin_moveLeftState_handler
+  
+skelekin_moveRightState_handler:
+
   clc
   lda entity_instances+entity_instance::position_x,x
   adc #SKELEKIN_WIDTH
@@ -77,6 +85,27 @@ no_right_collision:
 
   clc
   lda entity_instances+entity_instance::position_x,x
+  adc #SKELEKIN_WIDTH
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  adc #$00
+  sta w0+1
+  lda entity_instances+entity_instance::position_y,x
+  clc
+  adc #SKELEKIN_HEIGHT
+  sta w1
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  lda b1
+  bne no_right_pit
+  lda #SKELEKIN_MOVELEFTSTATE
+  sta entity_instances+entity_instance::state,x
+no_right_pit:
+
+  clc
+  lda entity_instances+entity_instance::position_x,x
   adc #$01
   sta entity_instances+entity_instance::position_x,x
   lda entity_instances+entity_instance::position_x+1,x
@@ -87,7 +116,7 @@ no_right_collision:
 
   rts
 
-skelekin_moveLeftState:
+skelekin_moveLeftState_handler:
 
   lda entity_instances+entity_instance::position_x,x
   sta w0
@@ -106,6 +135,25 @@ skelekin_moveLeftState:
   lda #SKELEKIN_MOVERIGHTSTATE
   sta entity_instances+entity_instance::state,x
 no_left_collision:
+
+  clc
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+  lda entity_instances+entity_instance::position_y,x
+  clc
+  adc #SKELEKIN_HEIGHT
+  sta w1
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta w1+1
+  jsr map_test_collision
+  lda b1
+  bne no_left_pit
+  lda #SKELEKIN_MOVERIGHTSTATE
+  sta entity_instances+entity_instance::state,x
+no_left_pit:
 
   sec
   lda entity_instances+entity_instance::position_x,x
