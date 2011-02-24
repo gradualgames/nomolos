@@ -238,8 +238,23 @@ spritesheet1_SnakeSlither:
 .export spritesheet1_ThoguthMarch
 spritesheet1_ThoguthMarch:
   .byte $0a
-  .word spritesheet1_Thoguth0
-  .word spritesheet1_Thoguth1
-  .word spritesheet1_Thoguth0
-  .word spritesheet1_Thoguth2
+  .word spritesheet1_ThoguthMarch0
+  .word spritesheet1_ThoguthMarch1
+  .word spritesheet1_ThoguthMarch0
+  .word spritesheet1_ThoguthMarch2
+  .word $0000
+
+.export spritesheet1_ThoguthHammerfall
+spritesheet1_ThoguthHammerfall:
+  .byte $0a
+  .word spritesheet1_ThoguthHammerfall0
+  .word spritesheet1_ThoguthHammerfall1
+  .word spritesheet1_ThoguthHammerfall2
+  .word $0000
+
+.export spritesheet1_ThoguthLightning
+spritesheet1_ThoguthLightning:
+  .byte $0a
+  .word spritesheet1_ThoguthLightning0
+  .word spritesheet1_ThoguthLightning1
   .word $0000

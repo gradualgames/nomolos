@@ -31,3 +31,5 @@
 .import spritesheet1_FireballFly
 .import spritesheet1_SnakeSlither
 .import spritesheet1_ThoguthMarch
+.import spritesheet1_ThoguthHammerfall
+.import spritesheet1_ThoguthLightning

@@ -74,6 +74,11 @@
 .import spritesheet1_Fireball2
 .import spritesheet1_Snake0
 .import spritesheet1_Snake1
-.import spritesheet1_Thoguth0
-.import spritesheet1_Thoguth1
-.import spritesheet1_Thoguth2
+.import spritesheet1_ThoguthMarch0
+.import spritesheet1_ThoguthMarch1
+.import spritesheet1_ThoguthMarch2
+.import spritesheet1_ThoguthHammerfall0
+.import spritesheet1_ThoguthHammerfall1
+.import spritesheet1_ThoguthHammerfall2
+.import spritesheet1_ThoguthLightning0
+.import spritesheet1_ThoguthLightning1

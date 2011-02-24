@@ -759,8 +759,8 @@ spritesheet1_Snake1:
   .byte $08,$09,$03,$08,$10
   .byte $08,$0a,$03,$10,$08
   .byte $08,$0b,$03,$18,$00
-.export spritesheet1_Thoguth0
-spritesheet1_Thoguth0:
+.export spritesheet1_ThoguthMarch0
+spritesheet1_ThoguthMarch0:
   .byte $12
   .byte $00,$00,$02,$00,$10
   .byte $00,$01,$02,$08,$08
@@ -780,8 +780,8 @@ spritesheet1_Thoguth0:
   .byte $28,$0f,$02,$00,$10
   .byte $28,$10,$02,$08,$08
   .byte $28,$11,$00,$10,$00
-.export spritesheet1_Thoguth1
-spritesheet1_Thoguth1:
+.export spritesheet1_ThoguthMarch1
+spritesheet1_ThoguthMarch1:
   .byte $12
   .byte $00,$12,$02,$00,$10
   .byte $00,$13,$02,$08,$08
@@ -801,8 +801,8 @@ spritesheet1_Thoguth1:
   .byte $28,$20,$02,$00,$10
   .byte $28,$21,$02,$08,$08
   .byte $28,$22,$02,$10,$00
-.export spritesheet1_Thoguth2
-spritesheet1_Thoguth2:
+.export spritesheet1_ThoguthMarch2
+spritesheet1_ThoguthMarch2:
   .byte $12
   .byte $00,$23,$02,$00,$10
   .byte $00,$24,$02,$08,$08
@@ -813,13 +813,114 @@ spritesheet1_Thoguth2:
   .byte $10,$29,$02,$00,$10
   .byte $10,$2a,$02,$08,$08
   .byte $10,$2b,$02,$10,$00
-  .byte $18,$1a,$02,$00,$10
-  .byte $18,$1b,$02,$08,$08
-  .byte $18,$1c,$02,$10,$00
-  .byte $20,$1d,$02,$00,$10
-  .byte $20,$2c,$02,$08,$08
-  .byte $20,$1f,$02,$10,$00
+  .byte $18,$2c,$00,$00,$10
+  .byte $18,$2d,$02,$08,$08
+  .byte $18,$2e,$02,$10,$00
+  .byte $20,$2f,$02,$00,$10
+  .byte $20,$30,$02,$08,$08
+  .byte $20,$31,$02,$10,$00
   .byte $28,$20,$02,$00,$10
   .byte $28,$21,$02,$08,$08
   .byte $28,$22,$02,$10,$00
+.export spritesheet1_ThoguthHammerfall0
+spritesheet1_ThoguthHammerfall0:
+  .byte $15
+  .byte $f8,$32,$02,$00,$10
+  .byte $f8,$33,$02,$08,$08
+  .byte $f8,$25,$00,$10,$00
+  .byte $00,$34,$02,$00,$10
+  .byte $00,$35,$02,$08,$08
+  .byte $00,$36,$02,$10,$00
+  .byte $08,$37,$02,$00,$10
+  .byte $08,$38,$02,$08,$08
+  .byte $08,$39,$02,$10,$00
+  .byte $10,$3a,$02,$00,$10
+  .byte $10,$3b,$02,$08,$08
+  .byte $10,$3c,$02,$10,$00
+  .byte $18,$3d,$00,$00,$10
+  .byte $18,$3e,$02,$08,$08
+  .byte $18,$3f,$02,$10,$00
+  .byte $20,$40,$02,$00,$10
+  .byte $20,$41,$02,$08,$08
+  .byte $20,$42,$00,$10,$00
+  .byte $28,$43,$02,$00,$10
+  .byte $28,$44,$02,$08,$08
+  .byte $28,$45,$02,$10,$00
+.export spritesheet1_ThoguthHammerfall1
+spritesheet1_ThoguthHammerfall1:
+  .byte $18
+  .byte $00,$12,$02,$00,$10
+  .byte $00,$13,$02,$08,$08
+  .byte $00,$02,$00,$10,$00
+  .byte $00,$25,$00,$18,$f8
+  .byte $08,$14,$02,$00,$10
+  .byte $08,$15,$02,$08,$08
+  .byte $08,$46,$02,$10,$00
+  .byte $08,$47,$02,$18,$f8
+  .byte $10,$48,$02,$00,$10
+  .byte $10,$49,$02,$08,$08
+  .byte $10,$4a,$02,$10,$00
+  .byte $10,$4b,$02,$18,$f8
+  .byte $18,$4c,$02,$00,$10
+  .byte $18,$4d,$02,$08,$08
+  .byte $18,$4e,$02,$10,$00
+  .byte $18,$25,$00,$18,$f8
+  .byte $20,$4f,$02,$00,$10
+  .byte $20,$50,$02,$08,$08
+  .byte $20,$51,$02,$10,$00
+  .byte $20,$25,$00,$18,$f8
+  .byte $28,$52,$02,$00,$10
+  .byte $28,$53,$02,$08,$08
+  .byte $28,$54,$02,$10,$00
+  .byte $28,$25,$00,$18,$f8
+.export spritesheet1_ThoguthHammerfall2
+spritesheet1_ThoguthHammerfall2:
+  .byte $19
+  .byte $08,$25,$00,$00,$10
+  .byte $08,$23,$02,$08,$08
+  .byte $08,$24,$02,$10,$00
+  .byte $08,$25,$00,$18,$f8
+  .byte $08,$25,$00,$20,$f0
+  .byte $10,$25,$00,$00,$10
+  .byte $10,$55,$02,$08,$08
+  .byte $10,$56,$02,$10,$00
+  .byte $10,$28,$02,$18,$f8
+  .byte $10,$25,$00,$20,$f0
+  .byte $18,$57,$00,$00,$10
+  .byte $18,$58,$02,$08,$08
+  .byte $18,$59,$02,$10,$00
+  .byte $18,$5a,$02,$18,$f8
+  .byte $18,$25,$00,$20,$f0
+  .byte $20,$5b,$02,$00,$10
+  .byte $20,$5c,$02,$08,$08
+  .byte $20,$5d,$02,$10,$00
+  .byte $20,$5e,$02,$18,$f8
+  .byte $20,$5f,$00,$20,$f0
+  .byte $28,$60,$02,$00,$10
+  .byte $28,$61,$02,$08,$08
+  .byte $28,$62,$02,$10,$00
+  .byte $28,$63,$02,$18,$f8
+  .byte $28,$64,$02,$20,$f0
+.export spritesheet1_ThoguthLightning0
+spritesheet1_ThoguthLightning0:
+  .byte $0a
+  .byte $00,$65,$03,$00,$08
+  .byte $00,$25,$00,$08,$00
+  .byte $08,$66,$03,$00,$08
+  .byte $08,$25,$00,$08,$00
+  .byte $10,$67,$03,$00,$08
+  .byte $10,$68,$03,$08,$00
+  .byte $18,$69,$03,$00,$08
+  .byte $18,$6a,$03,$08,$00
+  .byte $20,$25,$00,$00,$08
+  .byte $20,$6b,$03,$08,$00
+.export spritesheet1_ThoguthLightning1
+spritesheet1_ThoguthLightning1:
+  .byte $06
+  .byte $00,$6c,$03,$00,$08
+  .byte $00,$25,$00,$08,$00
+  .byte $08,$6d,$03,$00,$08
+  .byte $08,$6e,$03,$08,$00
+  .byte $10,$6f,$03,$00,$08
+  .byte $10,$70,$03,$08,$00
 
