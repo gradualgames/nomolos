@@ -305,7 +305,7 @@ boss_2_data:
   
   .word boss2_intro_string
   .byte 32 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 0  ;camera_scroll_enabled  
   .word boss2_map
   .word boss2_map_column_table
   .word boss2_attribute_column_table
@@ -316,9 +316,9 @@ boss_2_data:
   .word boss2_music
   .byte level_3_index
 
-  .byte 0 ;boss2_sprites_Nomolos_chr_index
+  .byte boss2_sprites_Nomolos_chr_index
   .byte 0 ;boss2_sprites_Deentle_chr_index
-  .byte 0 ;boss2_sprites_Explosion_chr_index
+  .byte boss2_sprites_Explosion_chr_index
   .byte 0 ;boss2_sprites_Beedie_chr_index
   .byte 0 ;boss2_sprites_Grank_chr_index
   .byte 0 ;boss2_sprites_Bat_chr_index
