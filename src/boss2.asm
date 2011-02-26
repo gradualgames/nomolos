@@ -489,3 +489,5 @@ MetaTile145:
   .byte $00,$00,$00,$0a,$0a,$0a,$0a,entity_index_exit
 MetaTile146:
   .byte $00,$00,$00,$00,$07,$0f,$10,entity_index_thoguth
+MetaTile147:
+  .byte $00,$00,$00,$00,$07,$0f,$10,entity_index_lightningbolt

@@ -214,6 +214,10 @@ signExtendAddDone:
   pla
   tax
   
+  jsr spawn_lightningbolts
+
+  jsr entity_spawn
+  
 noBottomCollision:
 
   jsr thoguth_draw
@@ -470,6 +474,59 @@ thoguth_direction_test_done:
 thoguthOffscreen:
   rts
 
+spawn_lightningbolts:
+  ;****************************************************************
+  ;Spawn and parameterize a lightning bolt
+  ;****************************************************************
+  lda #entity_index_lightningbolt
+  sta b0
+
+  lda entity_instances+entity_instance::position_x,x
+  sec
+  sbc #50
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #0
+  sta b1
+
+  jsr entity_spawn
+
+  ;****************************************************************
+  ;Spawn and parameterize a lightning bolt
+  ;****************************************************************
+  lda #entity_index_lightningbolt
+  sta b0
+
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #0
+  sta b1
+
+  jsr entity_spawn
+  
+  ;****************************************************************
+  ;Spawn and parameterize a lightning bolt
+  ;****************************************************************
+  lda #entity_index_lightningbolt
+  sta b0
+
+  lda entity_instances+entity_instance::position_x,x
+  clc
+  adc #50
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #0
+  sta b1
+  
+  rts
+  
 .endproc
 
 .endif

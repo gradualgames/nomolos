@@ -691,6 +691,9 @@ entity_definition_table:
   .word fireballspawner_update
   .byte $03
   .byte $00
+  .word lightningbolt_update
+  .byte $03
+  .byte $00
   
 ;miscellaneous data
 banktable:

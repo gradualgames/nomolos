@@ -254,7 +254,7 @@ spritesheet1_ThoguthHammerfall:
 
 .export spritesheet1_ThoguthLightning
 spritesheet1_ThoguthLightning:
-  .byte $0a
+  .byte $03
   .word spritesheet1_ThoguthLightning0
   .word spritesheet1_ThoguthLightning1
   .word $0000
