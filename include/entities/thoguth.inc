@@ -225,8 +225,6 @@ signExtendAddDone:
   tax
   
   jsr spawn_lightningbolts
-
-  jsr entity_spawn
   
 noBottomCollision:
 
@@ -563,6 +561,8 @@ spawn_lightningbolts:
   
   lda #0
   sta b1
+  
+  jsr entity_spawn
   
   rts
   
