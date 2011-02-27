@@ -10,6 +10,8 @@ THOGUTH_INC = 1
   move_stop .byte
   jump_slam .byte
   distance  .byte
+  health .byte
+  damaged_counter .byte
 .endstruct
 
 THOGUTH_WIDTH = $18
@@ -70,6 +72,14 @@ thoguth_initState_handler:
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 
+  ;initial health
+  lda #10
+  sta entity_locals+thoguth_locals::health,x
+  
+  ;initial damaged counter
+  lda #0
+  sta entity_locals+thoguth_locals::damaged_counter,x
+  
   ;reposition the entity so it sits at the bottom of the tile where it was spawned
   sec
   lda entity_instances+entity_instance::position_y,x
@@ -402,6 +412,11 @@ thoguth_draw:
   jsr entity_reset_anim
 
 :
+  
+  ;only check for a hit if the damaged counter is all the way down
+  lda entity_locals+thoguth_locals::damaged_counter,x
+  bne damaged_counter_not_zero
+  
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -414,6 +429,10 @@ thoguth_draw:
 
   bne nomolosNotAttacking
 
+  ;set damaged counter
+  lda #20
+  sta entity_locals+thoguth_locals::damaged_counter,x
+  
   ;play a hit sound
   txa
   pha
@@ -431,10 +450,21 @@ thoguth_draw:
 
   pla
   tax
+  
+  dec entity_locals+thoguth_locals::health,x
+  bne health_not_zero
 
   jmp killThoguth
-
+health_not_zero:
+damaged_counter_not_zero:
 nomolosNotAttacking:
+
+  lda entity_locals+thoguth_locals::damaged_counter,x
+  beq entity_not_flashing
+  
+  dec entity_locals+thoguth_locals::damaged_counter,x
+  
+entity_not_flashing:
 
   ldy #level_data_struct::thoguth_offset
   lda (base_address_rom_definition_table),y
@@ -462,11 +492,20 @@ state_test_done:
   lda entity_locals+thoguth_locals::direction,x
   cmp #0
   bne thoguth_moving_right
-  lda #%01000000
+  
+  lda entity_locals+thoguth_locals::damaged_counter,x
+  and #%00000011
+  
+  
+  ora #%01000000
   sta b2
   jmp thoguth_direction_test_done
 thoguth_moving_right:
-  lda #%00000000
+  
+  lda entity_locals+thoguth_locals::damaged_counter,x
+  and #%00000011
+  
+  ora #%00000000
   sta b2
 thoguth_direction_test_done:
   jsr entity_draw_anim
