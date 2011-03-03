@@ -34,6 +34,9 @@ explosionExplode:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
+  lda #0
+  sta b2
+  
   lda #<spritesheet1_Explosion
   sta w2
   lda #>spritesheet1_Explosion

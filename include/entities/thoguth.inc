@@ -9,9 +9,11 @@ THOGUTH_INC = 1
   direction .byte
   move_stop .byte
   jump_slam .byte
+  dying_counter .byte
   distance  .byte
   health .byte
   damaged_counter .byte
+  prng_seed .byte
 .endstruct
 
 THOGUTH_WIDTH = $18
@@ -25,11 +27,12 @@ THOGUTH_DISTANCE_TIL_ABOUT_FACE = 120
 MOVE_STOP_INTERVAL = 100
 THOGUTH_SPEED = 255
 
-THOGUTH_INITSTATE = 0
-THOGUTH_MOVESTATE = 1
-THOGUTH_STOPSTATE = 2
-THOGUTH_JUMPSTATE = 3
-THOGUTH_SLAMSTATE = 4
+THOGUTH_INITSTATE  = 0
+THOGUTH_MOVESTATE  = 1
+THOGUTH_STOPSTATE  = 2
+THOGUTH_JUMPSTATE  = 3
+THOGUTH_SLAMSTATE  = 4
+THOGUTH_DYINGSTATE = 5
 
 .proc thoguth_update
 
@@ -46,6 +49,8 @@ THOGUTH_SLAMSTATE = 4
   beq thoguth_jumpState
   cmp #THOGUTH_SLAMSTATE
   beq thoguth_slamState
+  cmp #THOGUTH_DYINGSTATE
+  beq thoguth_dyingState
 
 thoguth_initState:
 
@@ -67,11 +72,19 @@ thoguth_slamState:
 
   jmp thoguth_slamState_handler
   
+thoguth_dyingState:
+
+  jmp thoguth_dyingState_handler
+  
 thoguth_initState_handler:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 
+  ;disable camera scroll
+  lda #0
+  sta camera_scroll_enabled
+  
   ;initial health
   lda #10
   sta entity_locals+thoguth_locals::health,x
@@ -361,6 +374,81 @@ direction_test_done:
 
   rts
 
+thoguth_dyingState_handler:
+
+  dec entity_locals+thoguth_locals::dying_counter,x
+  bne dying_counter_not_zero
+  
+  jmp killThoguth
+  
+dying_counter_not_zero:
+
+  lda entity_locals+thoguth_locals::dying_counter,x
+  and #%00000010
+  ;asl
+  sta camera_scroll_x
+do_not_vibrate:
+
+  lda entity_locals+thoguth_locals::dying_counter,x
+  and #%00000011
+  bne skip_spawn_explosion
+  
+  ;spawn an explosion entity
+  lda #entity_index_explosion
+  sta b0
+
+  jsr thoguth_get_next_prn
+  
+  lda entity_locals+thoguth_locals::prng_seed,x
+  and #%00000111
+  sta b3
+  
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  clc
+  adc b3
+  sta w0
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+
+  jsr thoguth_get_next_prn
+  
+  lda entity_locals+thoguth_locals::prng_seed,x
+  and #%00011111
+  sta b3
+  
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  clc
+  adc b3
+  sta b1
+
+  jsr entity_spawn
+  
+  ;play a hit sound
+  txa
+  pha
+
+  lda #<hit_sound
+  sta sound_param_word_0
+  lda #>hit_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+skip_spawn_explosion:
+
+  jmp thoguth_draw
+
+  rts
+  
 killThoguth:
 
   ;restore camera scroll
@@ -369,26 +457,34 @@ killThoguth:
 
   ;make it dead
   jsr entity_kill
-
-  ;spawn an explosion entity
-  lda #entity_index_explosion
-  sta b0
-
-  ;get out low byte of position_x
-  lda entity_instances+entity_instance::position_x,x
-  sta w0
-  ;get out high byte of position_x
-  lda entity_instances+entity_instance::position_x+1,x
-  sta w0+1
-
-  ;get out position_y
-  lda entity_instances+entity_instance::position_y,x
-  sta b1
-
-  jsr entity_spawn
-
+  
+  ;load victory music
+.ifdef MUSIC_ENABLE
+  lda #<victory_music
+  sta sound_param_word_1
+  lda #>victory_music
+  sta sound_param_word_1+1
+  jsr song_initialize
+.endif
+  
   rts
 
+thoguth_get_next_prn:
+  ldy #10
+  
+: lda entity_locals+thoguth_locals::prng_seed,x
+  beq doEor
+  asl
+  beq noEor ;if the input was $80, skip the EOR
+  bcc noEor
+doEor:
+  eor #$1d
+noEor:
+  sta entity_locals+thoguth_locals::prng_seed,x
+  dey
+  bne :-
+  rts
+  
 thoguth_draw:
 
   jsr entity_compute_screen_coordinates
@@ -406,8 +502,6 @@ thoguth_draw:
   bne :+
 
   jsr nomolos_hurt
-
-  jsr entity_reset_anim
 
 :
   
@@ -452,7 +546,19 @@ thoguth_draw:
   dec entity_locals+thoguth_locals::health,x
   bne health_not_zero
 
-  jmp killThoguth
+  ;switch to dying state
+  lda #255
+  sta entity_locals+thoguth_locals::dying_counter,x
+  
+  ;stop sound
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
+  
+  lda #THOGUTH_DYINGSTATE
+  sta entity_instances+entity_instance::state,x
+
 health_not_zero:
 damaged_counter_not_zero:
 nomolosNotAttacking:
