@@ -48,6 +48,11 @@ THOGUTH_KILLSTATE = 8
 row_of_black_tiles:
 .byte $04, $01, $0a, $0a, $0a, $0a
 
+;a patch of red brick tiles to cover up garbage tiles uploaded to the ppu
+;when we revert to play level state
+patch_tiles:
+.byte $01,$04,$0d,$19,$0d,$19
+
 .proc thoguth_update
 
   ;load current state
@@ -163,9 +168,9 @@ thoguth_stopState_handler:
 do_not_switch_state:
   .endscope
 
-  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
-
+  jsr thoguth_hurt_nomolos
+  
   rts
   
 thoguth_jumpState_handler:
@@ -274,9 +279,9 @@ signExtendAddDone:
   
 noBottomCollision:
 
-  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
-
+  jsr thoguth_hurt_nomolos
+  
   rts
   
 thoguth_slamState_handler:
@@ -297,8 +302,8 @@ thoguth_slamState_handler:
   lda #THOGUTH_MOVESTATE
   sta entity_instances+entity_instance::state,x
   
-  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
+  jsr thoguth_hurt_nomolos
   
   rts
   
@@ -311,8 +316,8 @@ do_not_switch_state:
   lda #2
   sta entity_instances+entity_instance::animation_object+animation::currentFrame,x
 
-  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
+  jsr thoguth_hurt_nomolos
 
   ;shake the screen during slam state
   lda entity_locals+thoguth_locals::jump_slam,x
@@ -338,8 +343,8 @@ thoguth_moveState_handler:
   lda #THOGUTH_JUMPSTATE
   sta entity_instances+entity_instance::state,x
   
-  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
+  jsr thoguth_hurt_nomolos
   
   rts
   
@@ -356,8 +361,8 @@ do_not_switch_state:
   lda #THOGUTH_STOPSTATE
   sta entity_instances+entity_instance::state,x
   
-  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
+  jsr thoguth_hurt_nomolos
   
   rts
 
@@ -408,9 +413,9 @@ move_right:
 
 direction_test_done:
 
-  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
-
+  jsr thoguth_hurt_nomolos
+  
   rts
 
 thoguth_dyingState_handler:
@@ -588,17 +593,23 @@ thoguth_killState_handler:
   ;restore play level nmi routine
   jsr play_level_state_init_play_mode
 
-  ;change the nametable to update. We do this because some garbage tiles
-  ;may be left over in the column buffer/nametable region, and we want
-  ;these to be uploaded to the offscreen nametable. Since we've re-enabled
-  ;the play level state, once scrolling resumes, these garbage tiles will
-  ;be overwritten.
-  lda #$24
-  sta name_table_to_update
+  ;draw patch tiles into column buffer to cover up
+  ;garbage tiles left over from erasing the exit door.
+  ;we do not have any logic to prevent the ppu from uploading
+  ;potentially bad column data, but this is the only situation
+  ;where that has been a problem so we'll leave it here for now.
+  lda #0
+  sta b0
+  sta b1
+  lda #<patch_tiles
+  sta w0
+  lda #>patch_tiles
+  sta w0+1
+  jsr ppu_draw_rectangular_region
   
   clc
   lda base_address_map
-  adc #$08
+  adc #$10
   sta base_address_map
   lda base_address_map+1
   adc #$00
