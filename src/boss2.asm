@@ -127,7 +127,7 @@ Noise:
 boss2_palette:
   .byte $0d,$00,$2d,$02,$0d,$07,$06,$0c,$0d,$00,$2d,$04,$0d,$00,$28,$08
 ;spritesheet1_palette
-  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$0c,$11,$0d,$11,$21,$21
+  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$0c,$11,$0d,$04,$14,$33
 
 .export boss2_cycling_palettes
 boss2_cycling_palettes:
