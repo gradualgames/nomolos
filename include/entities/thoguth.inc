@@ -588,6 +588,14 @@ thoguth_killState_handler:
   ;restore play level nmi routine
   jsr play_level_state_init_play_mode
 
+  ;change the nametable to update. We do this because some garbage tiles
+  ;may be left over in the column buffer/nametable region, and we want
+  ;these to be uploaded to the offscreen nametable. Since we've re-enabled
+  ;the play level state, once scrolling resumes, these garbage tiles will
+  ;be overwritten.
+  lda #$24
+  sta name_table_to_update
+  
   clc
   lda base_address_map
   adc #$08
