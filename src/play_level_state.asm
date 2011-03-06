@@ -19,6 +19,32 @@
 
 .segment "CODE"
 
+;used by some bosses to revert
+.proc play_level_state_init_play_mode
+
+  set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+
+  lda #0
+  sta nmi_counter
+
+  ;camera has not scrolled yet
+  lda #0
+  sta camera_scroll_direction
+
+  ;switch to play nmi routine
+  lda #<play_level_state_update_ppu
+  sta update_ppu
+  lda #>play_level_state_update_ppu
+  sta update_ppu+1
+  
+  lda #PLAYLEVELSTATE_KEEPPLAYING
+  sta state_control_params+play_level_state_control::state
+  
+  rts
+
+.endproc
+
 ;initializes boss mode by swapping out usual nmi routine with boss nmi routine
 ;and changes the current play state to PLAYLEVELSTATE_BOSSMODE.
 .proc play_level_state_init_boss_mode

@@ -16,6 +16,12 @@ THOGUTH_INC = 1
   prng_seed .byte
 .endstruct
 
+.struct thoguth_victorystate_locals
+  victory_counter .word
+  open_exit_counter .byte
+  open_exit_row .byte
+.endstruct
+
 THOGUTH_WIDTH = $18
 THOGUTH_HALFWIDTH = $0C
 THOGUTH_HEIGHT = $30
@@ -33,6 +39,14 @@ THOGUTH_STOPSTATE  = 2
 THOGUTH_JUMPSTATE  = 3
 THOGUTH_SLAMSTATE  = 4
 THOGUTH_DYINGSTATE = 5
+THOGUTH_VICTORYSTATE = 6
+THOGUTH_OPENEXITSTATE = 7
+THOGUTH_KILLSTATE = 8
+
+;nametable region for opening the door at the back of Thoguth's arena
+;row by row
+row_of_black_tiles:
+.byte $04, $01, $0a, $0a, $0a, $0a
 
 .proc thoguth_update
 
@@ -51,6 +65,12 @@ THOGUTH_DYINGSTATE = 5
   beq thoguth_slamState
   cmp #THOGUTH_DYINGSTATE
   beq thoguth_dyingState
+  cmp #THOGUTH_VICTORYSTATE
+  beq thoguth_victoryState
+  cmp #THOGUTH_OPENEXITSTATE
+  beq thoguth_openExitState
+  cmp #THOGUTH_KILLSTATE
+  beq thoguth_killState
 
 thoguth_initState:
 
@@ -75,6 +95,18 @@ thoguth_slamState:
 thoguth_dyingState:
 
   jmp thoguth_dyingState_handler
+  
+thoguth_victoryState:
+
+  jmp thoguth_victoryState_handler
+  
+thoguth_openExitState:
+
+  jmp thoguth_openExitState_handler
+  
+thoguth_killState:
+
+  jmp thoguth_killState_handler
   
 thoguth_initState_handler:
 
@@ -131,6 +163,7 @@ thoguth_stopState_handler:
 do_not_switch_state:
   .endscope
 
+  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
 
   rts
@@ -241,6 +274,7 @@ signExtendAddDone:
   
 noBottomCollision:
 
+  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
 
   rts
@@ -263,6 +297,7 @@ thoguth_slamState_handler:
   lda #THOGUTH_MOVESTATE
   sta entity_instances+entity_instance::state,x
   
+  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
   
   rts
@@ -276,6 +311,7 @@ do_not_switch_state:
   lda #2
   sta entity_instances+entity_instance::animation_object+animation::currentFrame,x
 
+  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
 
   ;shake the screen during slam state
@@ -302,6 +338,7 @@ thoguth_moveState_handler:
   lda #THOGUTH_JUMPSTATE
   sta entity_instances+entity_instance::state,x
   
+  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
   
   rts
@@ -319,6 +356,7 @@ do_not_switch_state:
   lda #THOGUTH_STOPSTATE
   sta entity_instances+entity_instance::state,x
   
+  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
   
   rts
@@ -370,6 +408,7 @@ move_right:
 
 direction_test_done:
 
+  jsr thoguth_hurt_nomolos
   jsr thoguth_draw
 
   rts
@@ -379,7 +418,23 @@ thoguth_dyingState_handler:
   dec entity_locals+thoguth_locals::dying_counter,x
   bne dying_counter_not_zero
   
-  jmp killThoguth
+  ;load victory music
+.ifdef MUSIC_ENABLE
+  lda #<victory_music
+  sta sound_param_word_1
+  lda #>victory_music
+  sta sound_param_word_1+1
+  jsr song_initialize
+.endif
+  
+  ;load up victory state counter
+  lda #90
+  sta entity_locals+thoguth_victorystate_locals::victory_counter,x
+  lda #4
+  sta entity_locals+thoguth_victorystate_locals::victory_counter+1,x
+  
+  lda #THOGUTH_VICTORYSTATE
+  sta entity_instances+entity_instance::state,x
   
 dying_counter_not_zero:
 
@@ -449,23 +504,104 @@ skip_spawn_explosion:
 
   rts
   
-killThoguth:
+thoguth_victoryState_handler:
 
+  ;victory music should be playing
+
+  ;initialize the boss mode nmi handler so we can upload
+  ;nametable regions to open the door after defeating Thoguth
+  jsr play_level_state_init_boss_mode
+  
+  ;decrement victory state counter
+  sec
+  lda entity_locals+thoguth_victorystate_locals::victory_counter,x
+  sbc #1
+  sta entity_locals+thoguth_victorystate_locals::victory_counter,x
+  lda entity_locals+thoguth_victorystate_locals::victory_counter+1,x
+  sbc #0
+  sta entity_locals+thoguth_victorystate_locals::victory_counter+1,x
+  bne victory_state_counter_not_zero
+  
+  ;stop all sound
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
+  
+  ;set the current row for opening the exit
+  lda #19
+  sta entity_locals+thoguth_victorystate_locals::open_exit_row,x
+  
+  lda #0
+  sta entity_locals+thoguth_victorystate_locals::open_exit_counter,x
+  
+  lda #THOGUTH_OPENEXITSTATE
+  sta entity_instances+entity_instance::state,x
+  
+victory_state_counter_not_zero:
+  
+  rts
+  
+thoguth_openExitState_handler:
+
+  ;draw the exit tiles somehow
+  
+  ;decrement the open exit counter
+  ;dec entity_locals+thoguth_victorystate_locals::open_exit_counter,x
+  
+  ;load the open exit counter
+  ;lda entity_locals+thoguth_victorystate_locals::open_exit_counter,x
+  
+  ;and #%00000011
+  ;bne do_not_draw_next_row
+  
+  ;draw the row
+  lda #28
+  sta b0
+  lda entity_locals+thoguth_victorystate_locals::open_exit_row,x
+  sta b1
+  lda #<row_of_black_tiles
+  sta w0
+  lda #>row_of_black_tiles
+  sta w0+1
+  jsr ppu_draw_rectangular_region
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
+  ;decrement row itself
+  dec entity_locals+thoguth_victorystate_locals::open_exit_row,x
+  
+  lda entity_locals+thoguth_victorystate_locals::open_exit_row,x
+  cmp #11
+  bne do_not_kill_thoguth
+  lda #THOGUTH_KILLSTATE
+  sta entity_instances+entity_instance::state,x
+do_not_kill_thoguth:
+  
+do_not_draw_next_row:
+
+  rts
+  
+thoguth_killState_handler:
+
+  ;restore play level nmi routine
+  jsr play_level_state_init_play_mode
+
+  clc
+  lda base_address_map
+  adc #$08
+  sta base_address_map
+  lda base_address_map+1
+  adc #$00
+  sta base_address_map+1
+  
   ;restore camera scroll
   lda #1
   sta camera_scroll_enabled
 
   ;make it dead
   jsr entity_kill
-  
-  ;load victory music
-.ifdef MUSIC_ENABLE
-  lda #<victory_music
-  sta sound_param_word_1
-  lda #>victory_music
-  sta sound_param_word_1+1
-  jsr song_initialize
-.endif
   
   rts
 
@@ -485,12 +621,7 @@ noEor:
   bne :-
   rts
   
-thoguth_draw:
-
-  jsr entity_compute_screen_coordinates
-
-  jsr entity_test_death_zone
-  beq killThoguth
+thoguth_hurt_nomolos:
 
   ;load thoguth width and height
   lda #THOGUTH_WIDTH
@@ -504,6 +635,17 @@ thoguth_draw:
   jsr nomolos_hurt
 
 :
+  rts
+  
+thoguth_draw:
+
+  jsr entity_compute_screen_coordinates
+
+  jsr entity_test_death_zone
+  bne do_not_switch_to_kill_state
+  lda #THOGUTH_KILLSTATE
+  sta entity_instances+entity_instance::state,x
+do_not_switch_to_kill_state:
   
   ;only check for a hit if the damaged counter is all the way down
   lda entity_locals+thoguth_locals::damaged_counter,x

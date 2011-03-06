@@ -1,6 +1,7 @@
 .ifndef PLAYLEVELSTATE_INC
 PLAYLEVELSTATE_INC = 1
 
+.global play_level_state_init_play_mode
 .global play_level_state_init_boss_mode
 .global play_level_state_init_victory_mode
 .global play_level_state_update
