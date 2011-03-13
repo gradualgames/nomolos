@@ -530,7 +530,7 @@ level_4_1_data:
 
   .word entity_definition_table
   .word level4_music
-  .byte level_1_index
+  .byte level_4_2_index
 
   .byte level4_sprites_Nomolos_chr_index
   .byte 0 ;level4_sprites_Deentle_chr_index

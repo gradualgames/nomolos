@@ -13,7 +13,7 @@ boss2_sprite_groups:
   .word spritesheet1_Explosion_chr
   .word spritesheet1_Thoguth_chr
 
-.segment "ROM03"
+.segment "ROM02"
 
 .export boss2_music
 boss2_music: 
