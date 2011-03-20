@@ -7,9 +7,10 @@
 
 .export boss3_sprite_groups
 boss3_sprite_groups:
-  .byte $03
+  .byte $04
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_Explosion_chr
+  .word spritesheet1_Grank_chr
   .word spritesheet1_GrubselimBoj_chr
 
 .segment "ROM04"
@@ -165,7 +166,7 @@ AttributeColumnTable:
   .byte $aa,$aa,$aa,$6a,$55,$55,$55,$05
   .byte $aa,$aa,$6a,$55,$55,$55,$55,$05
   .byte $aa,$6a,$55,$55,$5d,$55,$55,$05
-  .byte $aa,$5a,$55,$55,$5f,$55,$55,$05
+  .byte $aa,$58,$55,$55,$5f,$55,$55,$05
   .byte $aa,$9a,$55,$55,$57,$55,$55,$05
   .byte $aa,$aa,$9a,$55,$55,$55,$55,$05
   .byte $aa,$aa,$aa,$9a,$55,$55,$55,$05
@@ -184,7 +185,7 @@ MetaTileColumnTable:
   .byte $3d,$3d,$3d,$3d,$3d,$56,$5e,$5f,$5f,$5f,$5f,$5f,$5f,$5f,$5f,$00
   .byte $3d,$3d,$3d,$3d,$56,$5e,$5f,$5f,$5f,$5f,$5f,$5f,$5f,$5f,$5f,$00
   .byte $3d,$3d,$3d,$56,$5e,$5f,$5f,$5f,$42,$5f,$5f,$5f,$5f,$5f,$5f,$00
-  .byte $3d,$3d,$3d,$57,$5f,$5f,$5f,$5f,$43,$5f,$5f,$5f,$5f,$5f,$5f,$00
+  .byte $3d,$3d,$79,$57,$5f,$5f,$5f,$5f,$43,$5f,$5f,$5f,$5f,$5f,$5f,$00
   .byte $3d,$3d,$3d,$58,$5f,$5f,$5f,$5f,$43,$5f,$5f,$5f,$5f,$5f,$5f,$00
   .byte $3d,$3d,$3d,$59,$61,$5f,$5f,$5f,$44,$5f,$5f,$5f,$5f,$5f,$5f,$00
   .byte $3d,$3d,$3d,$3d,$59,$61,$5f,$5f,$5f,$5f,$5f,$5f,$5f,$5f,$5f,$00
@@ -441,3 +442,5 @@ MetaTile119:
   .byte $02,$00,$00,$91,$92,$9b,$9c,$00
 MetaTile120:
   .byte $00,$00,$00,$21,$21,$21,$21,entity_index_exit
+MetaTile121:
+  .byte $00,$00,$00,$21,$21,$21,$21,entity_index_grubselimboj

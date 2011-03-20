@@ -82,3 +82,7 @@
 .import spritesheet1_ThoguthHammerfall2
 .import spritesheet1_ThoguthLightning0
 .import spritesheet1_ThoguthLightning1
+.import spritesheet1_GrubselimBojEyes0
+.import spritesheet1_GrubselimBojEyes1
+.import spritesheet1_GrubselimBojMouth0
+.import spritesheet1_GrubselimBojMouth1

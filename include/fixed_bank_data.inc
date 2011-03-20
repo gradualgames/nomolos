@@ -112,6 +112,7 @@ index_continue_end_state   = 4 * 4
   snake_offset .byte
   fireguy_offset .byte
   thoguth_offset .byte
+  grubselimboj_offset .byte
 
 .endstruct
 

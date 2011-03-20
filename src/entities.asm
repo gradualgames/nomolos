@@ -46,3 +46,4 @@
 .include "thoguth.inc"
 .include "fireballspawner.inc"
 .include "lightningbolt.inc"
+.include "grubselimboj.inc"

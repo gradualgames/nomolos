@@ -923,4 +923,36 @@ spritesheet1_ThoguthLightning1:
   .byte $08,$6e,$03,$08,$00
   .byte $10,$6f,$03,$00,$08
   .byte $10,$70,$03,$08,$00
-
+.export spritesheet1_GrubselimBojEyes0
+spritesheet1_GrubselimBojEyes0:
+  .byte $04
+  .byte $00,$00,$02,$00,$18
+  .byte $00,$01,$02,$08,$10
+  .byte $00,$02,$02,$10,$08
+  .byte $00,$03,$02,$18,$00
+.export spritesheet1_GrubselimBojEyes1
+spritesheet1_GrubselimBojEyes1:
+  .byte $04
+  .byte $00,$04,$02,$00,$18
+  .byte $00,$05,$02,$08,$10
+  .byte $00,$06,$02,$10,$08
+  .byte $00,$07,$02,$18,$00
+.export spritesheet1_GrubselimBojMouth0
+spritesheet1_GrubselimBojMouth0:
+  .byte $08
+  .byte $00,$08,$02,$00,$18
+  .byte $00,$09,$02,$08,$10
+  .byte $00,$0a,$02,$10,$08
+  .byte $00,$0b,$02,$18,$00
+  .byte $08,$0c,$02,$00,$18
+  .byte $08,$0d,$02,$08,$10
+  .byte $08,$0e,$02,$10,$08
+  .byte $08,$0f,$02,$18,$00
+.export spritesheet1_GrubselimBojMouth1
+spritesheet1_GrubselimBojMouth1:
+  .byte $04
+  .byte $00,$10,$02,$00,$18
+  .byte $00,$11,$02,$08,$10
+  .byte $00,$12,$02,$10,$08
+  .byte $00,$13,$02,$18,$00
+  
