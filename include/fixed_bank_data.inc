@@ -1,7 +1,7 @@
 .ifndef FIXEDBANKDATA_INC
 FIXEDBANKDATA_INC = 1
 
-num_levels                 = 10
+num_levels                 = 11
 
 level_1_index   = 0
 level_1_2_index = 1
@@ -13,6 +13,7 @@ level_3_2_index = 6
 boss_1_index    = 7
 level_4_index   = 8
 level_4_2_index = 9
+boss_3_index    = 10
 
 ;state table
 index_title_state          = 0 * 4

@@ -7,6 +7,7 @@
 .include "level3_2.inc"
 .include "level4.inc"
 .include "level4_2.inc"
+.include "boss3.inc"
 .include "boss1.inc"
 .include "entities.inc"
 .include "soundengine.inc"
@@ -41,6 +42,7 @@ level_definition_table:
   .word boss_1_data
   .word level_4_1_data
   .word level_4_2_data
+  .word boss_3_data
 
 ;level intro strings
 level1_intro_string:
@@ -53,6 +55,8 @@ level2_2intro_string:
   .byte $09,$0b,$04,$15,$04,$0b,$1a,$1d,$2b,$1d
 boss2_intro_string:
   .byte $07,$13,$07,$0e,$06,$14,$13,$07
+boss3_intro_string:
+  .byte $0d,$06,$11,$14,$01,$12,$04,$0b,$08,$0c,$1a,$01,$0e,$09
 level3_intro_string:
   .byte $07,$0b,$04,$15,$04,$0b,$1a,$1e
 level3_2_intro_string:
@@ -584,7 +588,7 @@ level_4_2_data:
 
   .word entity_definition_table
   .word level4_music
-  .byte level_1_index
+  .byte boss_3_index
 
   .byte level4_sprites_Nomolos_chr_index
   .byte 0 ;level4_sprites_Deentle_chr_index
@@ -607,6 +611,61 @@ level_4_2_data:
   .byte level4_sprites_Snake_chr_index
   .byte level4_sprites_FireGuy_chr_index
   .byte 0 ;level4_sprites_Thoguth_chr_index
+  
+;ROM definition table
+boss_3_data:
+  .byte spritesheet_1_bank
+  .byte boss3_bank
+  .byte level_4_patterns_bank
+  .word level4_patterns
+  .byte spritesheet_1_patterns_bank
+  .word boss3_sprite_groups
+  .word 0 ;cycling_palette_address
+  .byte 5 ;cycling_palette_speed
+
+  .word attack_sound
+  .word hit_sound
+  .word boss3_palette
+
+  .byte 20 ;nomolos_start_x
+  .byte 50 ;nomolos_start_y
+  .byte 0  ;starting_screen
+  
+  .word boss3_intro_string
+  .byte 32 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled  
+  .word boss3_map
+  .word boss3_map_column_table
+  .word boss3_attribute_column_table
+  .word boss3_meta_tile_column_table
+  .word boss3_meta_tile_table
+
+  .word entity_definition_table
+  .word boss3_music
+  .byte level_1_index
+
+  .byte boss3_sprites_Nomolos_chr_index
+  .byte 0 ;boss3_sprites_Deentle_chr_index
+  .byte boss3_sprites_Explosion_chr_index
+  .byte 0 ;boss3_sprites_Beedie_chr_index
+  .byte 0 ;boss3_sprites_Grank_chr_index
+  .byte 0 ;boss3_sprites_Bat_chr_index
+  .byte 0 ;boss3_sprites_Skelekin_chr_index
+  .byte 0 ;boss3_sprites_Batree_chr_index
+  .byte 0 ;boss3_sprites_Owl_chr_index
+  .byte 0 ;boss3_sprites_Snuffer_chr_index
+  .byte 0 ;boss3_sprites_Snail_chr_index
+  .byte 0 ;boss3_sprites_Dragon_chr_index
+  .byte 0 ;boss3_sprites_IceBall_chr_index
+  .byte 0 ;boss3_sprites_Shark_chr_index
+  .byte 0 ;boss3_sprites_Stalactite_chr_index
+  .byte 0 ;dragonboss_offset
+  .byte 0 ;boss3_sprites_Phoenix_chr_index
+  .byte 0 ;boss3_sprites_Fireball_chr_index
+  .byte 0 ;boss3_sprites_Snake_chr_index
+  .byte 0 ;boss3_sprites_FireGuy_chr_index
+  .byte 0 ;boss3_sprites_Thoguth_chr_index
+  .byte boss3_sprites_GrubselimBoj_chr_index
   
 ;Entities
 entity_definition_table:
