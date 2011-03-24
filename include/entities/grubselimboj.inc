@@ -2,20 +2,30 @@
 GRUBSELIMBOJ_INC = 1
 
 GRUBSELIMBOJ_WIDTH = $20
-GRUBSELIMBOJ_HEIGHT = $10
+GRUBSELIMBOJ_HEIGHT = $20
+
+GRUBSELIMBOJ_PROXIMITY_WIDTH = $60
+GRUBSELIMBOJ_PROXIMITY_HEIGHT = $60
+GRUBSELIMBOJ_PROXIMITY_ADJUST_X = $20
+GRUBSELIMBOJ_PROXIMITY_ADJUST_Y = $20
 
 .struct grubselimboj_locals
   x_velocity .word
   y_velocity .word
+  counter    .word
 .endstruct
 
 GRUBSELIMBOJ_INITSTATE = 0
 GRUBSELIMBOJ_FLYSTATE = 1
+GRUBSELIMBOJ_RETURNINGSTATE = 2
 
 GRUBSELIMBOJ_VERTSPEED = 10
 GRUBSELIMBOJ_MAXVERTSPEED = 2
 GRUBSELIMBOJ_HORIZSPEED = 10
 GRUBSELIMBOJ_MAXHORIZSPEED = 3
+
+GOAL_X = 160
+GOAL_Y = 80
 
 .proc grubselimboj_update
 
@@ -26,6 +36,8 @@ GRUBSELIMBOJ_MAXHORIZSPEED = 3
   beq grubselimboj_initState
   cmp #GRUBSELIMBOJ_FLYSTATE
   beq grubselimboj_flyState
+  cmp #GRUBSELIMBOJ_RETURNINGSTATE
+  beq grubselimboj_returningState
 
 grubselimboj_initState:
 
@@ -41,60 +53,69 @@ grubselimboj_initState:
   sta entity_locals+grubselimboj_locals::y_velocity,x
   sta entity_locals+grubselimboj_locals::y_velocity+1,x
 
+  ;set counter to something
+  lda #$ff
+  sta entity_locals+grubselimboj_locals::counter,x
+  lda #$03
+  sta entity_locals+grubselimboj_locals::counter+1,x
+  
   ;switch state to "fly"
   lda #GRUBSELIMBOJ_FLYSTATE
   sta entity_instances+entity_instance::state,x
   rts
 
+;this state causes the Grubselim Boj face to return to its
+;"home position" on the volcano. He'll start out fast but
+;slow down as he reaches GOAL_X and GOAL_Y. This is
+;accomplished by calculating the distance on X and Y and
+;using this value as a velocity on the fractional part of
+;X and Y. To make it look reasonable we shift it left to
+;make this process a little faster.
+grubselimboj_returningState:
+
+  ;calculate distance between "goal" and X coordinate
+  sec
+  lda #<GOAL_X
+  sbc entity_instances+entity_instance::position_x,x
+  sta entity_locals+grubselimboj_locals::x_velocity,x
+  lda #>GOAL_X
+  sbc entity_instances+entity_instance::position_x+1,x
+  sta entity_locals+grubselimboj_locals::x_velocity+1,x
+  
+  ;do an 16 bit arithmetic left shift on this value
+  asl entity_locals+grubselimboj_locals::x_velocity,x
+  rol entity_locals+grubselimboj_locals::x_velocity+1,x
+  asl entity_locals+grubselimboj_locals::x_velocity,x
+  rol entity_locals+grubselimboj_locals::x_velocity+1,x
+  
+  ;calculate distance between "goal" and Y coordinate
+  sec
+  lda #<GOAL_Y
+  sbc entity_instances+entity_instance::position_y,x
+  sta entity_locals+grubselimboj_locals::y_velocity,x
+  lda #>GOAL_Y
+  sbc entity_instances+entity_instance::position_y+1,x
+  sta entity_locals+grubselimboj_locals::y_velocity+1,x
+  
+  ;do an 16 bit arithmetic left shift on this value
+  asl entity_locals+grubselimboj_locals::y_velocity,x
+  rol entity_locals+grubselimboj_locals::y_velocity+1,x
+  asl entity_locals+grubselimboj_locals::y_velocity,x
+  rol entity_locals+grubselimboj_locals::y_velocity+1,x
+  
+  jsr grubselimboj_addvelocity
+  
+  jsr entity_compute_screen_coordinates
+
+  jsr grubselimboj_draw
+
+  rts
+  
 grubselimboj_flyState:
 
   jsr entity_compute_screen_coordinates
 
-  ;add x velocity to 24 bit X coordinate with sign extension
-.scope addXVelocity
-  clc
-  lda entity_locals+grubselimboj_locals::x_velocity,x
-  adc entity_instances+entity_instance::position_x_fine,x
-  sta entity_instances+entity_instance::position_x_fine,x
-  lda entity_locals+grubselimboj_locals::x_velocity+1,x
-  bmi signExtend
-  adc entity_instances+entity_instance::position_x,x
-  sta entity_instances+entity_instance::position_x,x
-  lda #0
-  adc entity_instances+entity_instance::position_x+1,x
-  sta entity_instances+entity_instance::position_x+1,x
-  jmp signExtendAddDone
-signExtend:
-  adc entity_instances+entity_instance::position_x,x
-  sta entity_instances+entity_instance::position_x,x
-  lda #$ff
-  adc entity_instances+entity_instance::position_x+1,x
-  sta entity_instances+entity_instance::position_x+1,x
-signExtendAddDone:
-.endscope
-
-  ;add y velocity to 24 bit Y coordinate with sign extension
-.scope addYVelocity
-  clc
-  lda entity_locals+grubselimboj_locals::y_velocity,x
-  adc entity_instances+entity_instance::position_y_fine,x
-  sta entity_instances+entity_instance::position_y_fine,x
-  lda entity_locals+grubselimboj_locals::y_velocity+1,x
-  bmi signExtend
-  adc entity_instances+entity_instance::position_y,x
-  sta entity_instances+entity_instance::position_y,x
-  lda #0
-  adc entity_instances+entity_instance::position_y+1,x
-  sta entity_instances+entity_instance::position_y+1,x
-  jmp signExtendAddDone
-signExtend:
-  adc entity_instances+entity_instance::position_y,x
-  sta entity_instances+entity_instance::position_y,x
-  lda #$ff
-  adc entity_instances+entity_instance::position_y+1,x
-  sta entity_instances+entity_instance::position_y+1,x
-signExtendAddDone:
-.endscope
+  jsr grubselimboj_addvelocity
 
   lda entity_screen_y
   sec
@@ -219,12 +240,71 @@ yVelocityTestDone:
 
   jsr grubselimboj_draw
 
+  sec
+  lda entity_locals+grubselimboj_locals::counter,x
+  sbc #1
+  sta entity_locals+grubselimboj_locals::counter,x
+  lda entity_locals+grubselimboj_locals::counter+1,x
+  sbc #0
+  sta entity_locals+grubselimboj_locals::counter+1,x
+  bne do_not_switch_to_returning_state
+  lda #GRUBSELIMBOJ_RETURNINGSTATE
+  sta entity_instances+entity_instance::state,x
+do_not_switch_to_returning_state:
+  
   rts
 
-grubselimboj_draw:
+grubselimboj_addvelocity:
 
-  jsr entity_test_death_zone
-  beq killGrubselimBoj
+  ;add x velocity to 24 bit X coordinate with sign extension
+.scope addXVelocity
+  clc
+  lda entity_locals+grubselimboj_locals::x_velocity,x
+  adc entity_instances+entity_instance::position_x_fine,x
+  sta entity_instances+entity_instance::position_x_fine,x
+  lda entity_locals+grubselimboj_locals::x_velocity+1,x
+  bmi signExtend
+  adc entity_instances+entity_instance::position_x,x
+  sta entity_instances+entity_instance::position_x,x
+  lda #0
+  adc entity_instances+entity_instance::position_x+1,x
+  sta entity_instances+entity_instance::position_x+1,x
+  jmp signExtendAddDone
+signExtend:
+  adc entity_instances+entity_instance::position_x,x
+  sta entity_instances+entity_instance::position_x,x
+  lda #$ff
+  adc entity_instances+entity_instance::position_x+1,x
+  sta entity_instances+entity_instance::position_x+1,x
+signExtendAddDone:
+.endscope
+
+  ;add y velocity to 24 bit Y coordinate with sign extension
+.scope addYVelocity
+  clc
+  lda entity_locals+grubselimboj_locals::y_velocity,x
+  adc entity_instances+entity_instance::position_y_fine,x
+  sta entity_instances+entity_instance::position_y_fine,x
+  lda entity_locals+grubselimboj_locals::y_velocity+1,x
+  bmi signExtend
+  adc entity_instances+entity_instance::position_y,x
+  sta entity_instances+entity_instance::position_y,x
+  lda #0
+  adc entity_instances+entity_instance::position_y+1,x
+  sta entity_instances+entity_instance::position_y+1,x
+  jmp signExtendAddDone
+signExtend:
+  adc entity_instances+entity_instance::position_y,x
+  sta entity_instances+entity_instance::position_y,x
+  lda #$ff
+  adc entity_instances+entity_instance::position_y+1,x
+  sta entity_instances+entity_instance::position_y+1,x
+signExtendAddDone:
+.endscope
+
+  rts
+  
+grubselimboj_draw:
 
   ;load grubselimboj width and height
   lda #GRUBSELIMBOJ_WIDTH
@@ -276,11 +356,109 @@ nomolosNotAttacking:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
+  lda entity_screen_x
+  sta w3
+  lda entity_screen_x+1
+  sta w3+1
+  lda entity_screen_y
+  sta w4
+  lda entity_screen_y+1
+  sta w4+1
+  
+  lda #%00000000
+  sta b2
+  
+  jsr entity_test_face_nomolos
+  bpl entity_facing_right
+entity_facing_left:
+
+  lda #<spritesheet1_GrubselimBojEyes1
+  sta w0
+  lda #>spritesheet1_GrubselimBojEyes1
+  sta w0+1
+
+  jsr sprite_draw_metasprite_16bit
+  
+  jsr grubselimboj_draw_mouth
+
+  jmp entity_facing_test_done
+entity_facing_right:
+
   lda #<spritesheet1_GrubselimBojEyes0
   sta w0
   lda #>spritesheet1_GrubselimBojEyes0
   sta w0+1
 
+  jsr sprite_draw_metasprite_16bit
+
+  jsr grubselimboj_draw_mouth
+
+entity_facing_test_done:
+
+grubselimbojOffscreen:
+  rts
+  
+grubselimboj_draw_mouth:
+
+  ;transfer rectangle to w2 = left and w3 = top and b2 = width and b3 = height
+  lda entity_screen_x
+  sta w2
+  lda entity_screen_x+1
+  sta w2+1
+  lda entity_screen_y
+  sta w3
+  lda entity_screen_y+1
+  sta w3+1
+  lda #GRUBSELIMBOJ_PROXIMITY_WIDTH
+  sta b2
+  lda #GRUBSELIMBOJ_PROXIMITY_HEIGHT
+  sta b3
+
+  ;adjust top left of rectangle
+  sec
+  lda w2
+  sbc #GRUBSELIMBOJ_PROXIMITY_ADJUST_X
+  sta w2
+  lda w2+1
+  sbc #0
+  sta w2+1
+  
+  sec
+  lda w3
+  sbc #GRUBSELIMBOJ_PROXIMITY_ADJUST_Y
+  sta w3
+  lda w3+1
+  sbc #0
+  sta w3+1
+  
+  ;transfer Nomolos rectangle to w4 = left and w5 = top and b4 = width and b5 = height
+  lda nomolos_screen_x
+  sta w4
+  lda nomolos_screen_x+1
+  sta w4+1
+  lda nomolos_screen_y
+  sta w5
+  lda nomolos_screen_y+1
+  sta w5+1
+  lda #nomolos_width
+  sta b4
+  lda #nomolos_height
+  sta b5
+
+  jsr geotests_rect_in_rect_16bit
+  
+  beq draw_mouth_open
+  bne draw_mouth_closed
+  
+  ;zero flag set means there was a collision
+draw_mouth_open:
+  
+  lda #<spritesheet1_GrubselimBojMouth0
+  sta w0
+  lda #>spritesheet1_GrubselimBojMouth0
+  sta w0+1
+
+  ;get parameters ready for drawing mouth
   lda entity_screen_x
   sta w3
   lda entity_screen_x+1
@@ -292,12 +470,35 @@ nomolosNotAttacking:
   
   lda #0
   sta b2
+  
+  jsr sprite_draw_metasprite_16bit
+  
+  rts
+  
+draw_mouth_closed:
 
+  lda #<spritesheet1_GrubselimBojMouth1
+  sta w0
+  lda #>spritesheet1_GrubselimBojMouth1
+  sta w0+1
+
+  ;get parameters ready for drawing mouth
+  lda entity_screen_x
+  sta w3
+  lda entity_screen_x+1
+  sta w3+1
+  lda entity_screen_y
+  sta w4
+  lda entity_screen_y+1
+  sta w4+1
+  
+  lda #0
+  sta b2
+  
   jsr sprite_draw_metasprite_16bit
 
-grubselimbojOffscreen:
   rts
-
+  
 killGrubselimBoj:
 
   ;make it dead

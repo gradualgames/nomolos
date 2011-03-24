@@ -940,19 +940,19 @@ spritesheet1_GrubselimBojEyes1:
 .export spritesheet1_GrubselimBojMouth0
 spritesheet1_GrubselimBojMouth0:
   .byte $08
-  .byte $00,$08,$02,$00,$18
-  .byte $00,$09,$02,$08,$10
-  .byte $00,$0a,$02,$10,$08
-  .byte $00,$0b,$02,$18,$00
-  .byte $08,$0c,$02,$00,$18
-  .byte $08,$0d,$02,$08,$10
-  .byte $08,$0e,$02,$10,$08
-  .byte $08,$0f,$02,$18,$00
+  .byte $08,$08,$02,$00,$18
+  .byte $08,$09,$02,$08,$10
+  .byte $08,$0a,$02,$10,$08
+  .byte $08,$0b,$02,$18,$00
+  .byte $10,$0c,$02,$00,$18
+  .byte $10,$0d,$02,$08,$10
+  .byte $10,$0e,$02,$10,$08
+  .byte $10,$0f,$02,$18,$00
 .export spritesheet1_GrubselimBojMouth1
 spritesheet1_GrubselimBojMouth1:
   .byte $04
-  .byte $00,$10,$02,$00,$18
-  .byte $00,$11,$02,$08,$10
-  .byte $00,$12,$02,$10,$08
-  .byte $00,$13,$02,$18,$00
-  
+  .byte $0c,$10,$02,$00,$18
+  .byte $0c,$11,$02,$08,$10
+  .byte $0c,$12,$02,$10,$08
+  .byte $0c,$13,$02,$18,$00
+
