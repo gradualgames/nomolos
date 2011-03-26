@@ -18,6 +18,7 @@ GRUBSELIMBOJ_PROXIMITY_ADJUST_Y = $20
 GRUBSELIMBOJ_INITSTATE = 0
 GRUBSELIMBOJ_FLYSTATE = 1
 GRUBSELIMBOJ_RETURNINGSTATE = 2
+GRUBSELIMBOJ_STATIONARYSTATE = 3
 
 GRUBSELIMBOJ_VERTSPEED = 10
 GRUBSELIMBOJ_MAXVERTSPEED = 2
@@ -38,6 +39,8 @@ GOAL_Y = 80
   beq grubselimboj_flyState
   cmp #GRUBSELIMBOJ_RETURNINGSTATE
   beq grubselimboj_returningState
+  cmp #GRUBSELIMBOJ_STATIONARYSTATE
+  beq grubselimboj_stationaryState
 
 grubselimboj_initState:
 
@@ -64,52 +67,34 @@ grubselimboj_initState:
   sta entity_instances+entity_instance::state,x
   rts
 
-;this state causes the Grubselim Boj face to return to its
-;"home position" on the volcano. He'll start out fast but
-;slow down as he reaches GOAL_X and GOAL_Y. This is
-;accomplished by calculating the distance on X and Y and
-;using this value as a velocity on the fractional part of
-;X and Y. To make it look reasonable we shift it left to
-;make this process a little faster.
-grubselimboj_returningState:
+grubselimboj_stationaryState:
 
-  ;calculate distance between "goal" and X coordinate
   sec
-  lda #<GOAL_X
-  sbc entity_instances+entity_instance::position_x,x
-  sta entity_locals+grubselimboj_locals::x_velocity,x
-  lda #>GOAL_X
-  sbc entity_instances+entity_instance::position_x+1,x
-  sta entity_locals+grubselimboj_locals::x_velocity+1,x
-  
-  ;do an 16 bit arithmetic left shift on this value
-  asl entity_locals+grubselimboj_locals::x_velocity,x
-  rol entity_locals+grubselimboj_locals::x_velocity+1,x
-  asl entity_locals+grubselimboj_locals::x_velocity,x
-  rol entity_locals+grubselimboj_locals::x_velocity+1,x
-  
-  ;calculate distance between "goal" and Y coordinate
-  sec
-  lda #<GOAL_Y
-  sbc entity_instances+entity_instance::position_y,x
-  sta entity_locals+grubselimboj_locals::y_velocity,x
-  lda #>GOAL_Y
-  sbc entity_instances+entity_instance::position_y+1,x
-  sta entity_locals+grubselimboj_locals::y_velocity+1,x
-  
-  ;do an 16 bit arithmetic left shift on this value
-  asl entity_locals+grubselimboj_locals::y_velocity,x
-  rol entity_locals+grubselimboj_locals::y_velocity+1,x
-  asl entity_locals+grubselimboj_locals::y_velocity,x
-  rol entity_locals+grubselimboj_locals::y_velocity+1,x
-  
-  jsr grubselimboj_addvelocity
-  
+  lda entity_locals+grubselimboj_locals::counter,x
+  sbc #1
+  sta entity_locals+grubselimboj_locals::counter,x
+  lda entity_locals+grubselimboj_locals::counter+1,x
+  sbc #0
+  sta entity_locals+grubselimboj_locals::counter+1,x
+  bne do_not_switch_to_fly_state
+  ;set counter to something
+  lda #$ff
+  sta entity_locals+grubselimboj_locals::counter,x
+  lda #$03
+  sta entity_locals+grubselimboj_locals::counter+1,x
+  lda #GRUBSELIMBOJ_FLYSTATE
+  sta entity_instances+entity_instance::state,x
+do_not_switch_to_fly_state:
+
   jsr entity_compute_screen_coordinates
 
   jsr grubselimboj_draw
 
   rts
+  
+grubselimboj_returningState:
+
+  jmp grubselimboj_returningState_handler
   
 grubselimboj_flyState:
 
@@ -252,6 +237,70 @@ yVelocityTestDone:
   sta entity_instances+entity_instance::state,x
 do_not_switch_to_returning_state:
   
+  rts
+
+;this state causes the Grubselim Boj face to return to its
+;"home position" on the volcano. He'll start out fast but
+;slow down as he reaches GOAL_X and GOAL_Y. This is
+;accomplished by calculating the distance on X and Y and
+;using this value as a velocity on the fractional part of
+;X and Y. To make it look reasonable we shift it left to
+;make this process a little faster.
+grubselimboj_returningState_handler:
+
+  ;calculate distance between "goal" and X coordinate
+  sec
+  lda #<GOAL_X
+  sbc entity_instances+entity_instance::position_x,x
+  sta entity_locals+grubselimboj_locals::x_velocity,x
+  lda #>GOAL_X
+  sbc entity_instances+entity_instance::position_x+1,x
+  sta entity_locals+grubselimboj_locals::x_velocity+1,x
+  
+  ;do an 16 bit arithmetic left shift on this value
+  asl entity_locals+grubselimboj_locals::x_velocity,x
+  rol entity_locals+grubselimboj_locals::x_velocity+1,x
+  asl entity_locals+grubselimboj_locals::x_velocity,x
+  rol entity_locals+grubselimboj_locals::x_velocity+1,x
+  
+  ;calculate distance between "goal" and Y coordinate
+  sec
+  lda #<GOAL_Y
+  sbc entity_instances+entity_instance::position_y,x
+  sta entity_locals+grubselimboj_locals::y_velocity,x
+  lda #>GOAL_Y
+  sbc entity_instances+entity_instance::position_y+1,x
+  sta entity_locals+grubselimboj_locals::y_velocity+1,x
+  
+  ;do an 16 bit arithmetic left shift on this value
+  asl entity_locals+grubselimboj_locals::y_velocity,x
+  rol entity_locals+grubselimboj_locals::y_velocity+1,x
+  asl entity_locals+grubselimboj_locals::y_velocity,x
+  rol entity_locals+grubselimboj_locals::y_velocity+1,x
+  
+  jsr grubselimboj_addvelocity
+  
+  jsr entity_compute_screen_coordinates
+
+  jsr grubselimboj_draw
+  
+  lda entity_locals+grubselimboj_locals::x_velocity,x
+  ora entity_locals+grubselimboj_locals::x_velocity+1,x
+  ora entity_locals+grubselimboj_locals::y_velocity,x
+  ora entity_locals+grubselimboj_locals::y_velocity+1,x
+  bne not_at_goal
+  
+  ;set counter to something
+  lda #$ff
+  sta entity_locals+grubselimboj_locals::counter,x
+  lda #$03
+  sta entity_locals+grubselimboj_locals::counter+1,x
+  
+  lda #GRUBSELIMBOJ_STATIONARYSTATE
+  sta entity_instances+entity_instance::state,x
+  
+not_at_goal:
+
   rts
 
 grubselimboj_addvelocity:
