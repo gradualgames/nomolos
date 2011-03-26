@@ -13,6 +13,8 @@ GRUBSELIMBOJ_PROXIMITY_ADJUST_Y = $20
   x_velocity .word
   y_velocity .word
   counter    .word
+  health .byte
+  damaged_counter .byte
 .endstruct
 
 GRUBSELIMBOJ_INITSTATE = 0
@@ -47,6 +49,24 @@ grubselimboj_initState:
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 
+  ;initial location overrides the spawn location
+  lda #<GOAL_X
+  sta entity_instances+entity_instance::position_x,x
+  lda #>GOAL_X
+  sta entity_instances+entity_instance::position_x+1,x
+  lda #<GOAL_Y
+  sta entity_instances+entity_instance::position_y,x
+  lda #>GOAL_Y
+  sta entity_instances+entity_instance::position_y+1,x
+  
+  ;initial health
+  lda #10
+  sta entity_locals+grubselimboj_locals::health,x
+  
+  ;initial damaged counter
+  lda #0
+  sta entity_locals+grubselimboj_locals::damaged_counter,x
+  
   ;set x velocity to 0
   lda #0
   sta entity_locals+grubselimboj_locals::x_velocity,x
@@ -62,8 +82,8 @@ grubselimboj_initState:
   lda #$03
   sta entity_locals+grubselimboj_locals::counter+1,x
   
-  ;switch state to "fly"
-  lda #GRUBSELIMBOJ_FLYSTATE
+  ;switch state to "stationary"
+  lda #GRUBSELIMBOJ_STATIONARYSTATE
   sta entity_instances+entity_instance::state,x
   rts
 
@@ -367,6 +387,11 @@ grubselimboj_draw:
   jsr nomolos_hurt
 
 :
+
+  ;only check for a hit if the damaged counter is all the way down
+  lda entity_locals+grubselimboj_locals::damaged_counter,x
+  bne damaged_counter_not_zero
+  
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -379,6 +404,10 @@ grubselimboj_draw:
 
   bne nomolosNotAttacking
 
+  ;set damaged counter
+  lda #20
+  sta entity_locals+grubselimboj_locals::damaged_counter,x
+  
   ;play a hit sound
   txa
   pha
@@ -397,9 +426,21 @@ grubselimboj_draw:
   pla
   tax
 
+  dec entity_locals+grubselimboj_locals::health,x
+  bne health_not_zero
+  
   jmp killGrubselimBoj
-
+  
+health_not_zero:
 nomolosNotAttacking:
+damaged_counter_not_zero:
+
+  lda entity_locals+grubselimboj_locals::damaged_counter,x
+  beq entity_not_flashing
+  
+  dec entity_locals+grubselimboj_locals::damaged_counter,x
+  
+entity_not_flashing:
 
   ldy #level_data_struct::grubselimboj_offset
   lda (base_address_rom_definition_table),y
@@ -426,6 +467,10 @@ entity_facing_left:
   lda #>spritesheet1_GrubselimBojEyes1
   sta w0+1
 
+  lda entity_locals+grubselimboj_locals::damaged_counter,x
+  and #%00000011
+  sta b2
+  
   jsr sprite_draw_metasprite_16bit
   
   jsr grubselimboj_draw_mouth
@@ -438,6 +483,10 @@ entity_facing_right:
   lda #>spritesheet1_GrubselimBojEyes0
   sta w0+1
 
+  lda entity_locals+grubselimboj_locals::damaged_counter,x
+  and #%00000011
+  sta b2
+  
   jsr sprite_draw_metasprite_16bit
 
   jsr grubselimboj_draw_mouth
@@ -517,7 +566,8 @@ draw_mouth_open:
   lda entity_screen_y+1
   sta w4+1
   
-  lda #0
+  lda entity_locals+grubselimboj_locals::damaged_counter,x
+  and #%00000011
   sta b2
   
   jsr sprite_draw_metasprite_16bit
@@ -541,7 +591,8 @@ draw_mouth_closed:
   lda entity_screen_y+1
   sta w4+1
   
-  lda #0
+  lda entity_locals+grubselimboj_locals::damaged_counter,x
+  and #%00000011
   sta b2
   
   jsr sprite_draw_metasprite_16bit
