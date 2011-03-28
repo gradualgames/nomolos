@@ -46,48 +46,34 @@ GOAL_Y = 80
 
 grubselimboj_initState:
 
-  ;init code for animation, etc. goes here
-  jsr entity_reset_anim
-
-  ;initial location overrides the spawn location
-  lda #<GOAL_X
-  sta entity_instances+entity_instance::position_x,x
-  lda #>GOAL_X
-  sta entity_instances+entity_instance::position_x+1,x
-  lda #<GOAL_Y
-  sta entity_instances+entity_instance::position_y,x
-  lda #>GOAL_Y
-  sta entity_instances+entity_instance::position_y+1,x
-  
-  ;initial health
-  lda #10
-  sta entity_locals+grubselimboj_locals::health,x
-  
-  ;initial damaged counter
-  lda #0
-  sta entity_locals+grubselimboj_locals::damaged_counter,x
-  
-  ;set x velocity to 0
-  lda #0
-  sta entity_locals+grubselimboj_locals::x_velocity,x
-  sta entity_locals+grubselimboj_locals::x_velocity+1,x
-
-  ;set y velocity to 0
-  sta entity_locals+grubselimboj_locals::y_velocity,x
-  sta entity_locals+grubselimboj_locals::y_velocity+1,x
-
-  ;set counter to something
-  lda #$ff
-  sta entity_locals+grubselimboj_locals::counter,x
-  lda #$03
-  sta entity_locals+grubselimboj_locals::counter+1,x
-  
-  ;switch state to "stationary"
-  lda #GRUBSELIMBOJ_STATIONARYSTATE
-  sta entity_instances+entity_instance::state,x
-  rts
+  jmp grubselimboj_initState_handler
 
 grubselimboj_stationaryState:
+
+  ;spawn a grank every once in a while
+  lda entity_locals+grubselimboj_locals::counter,x
+  and #%00111111
+  bne do_not_spawn_grank
+  
+  ;spawn an entity
+  lda #entity_index_grank
+  sta b0
+
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sta b1
+
+  jsr entity_spawn
+
+  
+do_not_spawn_grank:
 
   sec
   lda entity_locals+grubselimboj_locals::counter,x
@@ -96,6 +82,7 @@ grubselimboj_stationaryState:
   lda entity_locals+grubselimboj_locals::counter+1,x
   sbc #0
   sta entity_locals+grubselimboj_locals::counter+1,x
+
   bne do_not_switch_to_fly_state
   ;set counter to something
   lda #$ff
@@ -259,6 +246,48 @@ do_not_switch_to_returning_state:
   
   rts
 
+grubselimboj_initState_handler:
+  ;init code for animation, etc. goes here
+  jsr entity_reset_anim
+
+  ;initial location overrides the spawn location
+  lda #<GOAL_X
+  sta entity_instances+entity_instance::position_x,x
+  lda #>GOAL_X
+  sta entity_instances+entity_instance::position_x+1,x
+  lda #<GOAL_Y
+  sta entity_instances+entity_instance::position_y,x
+  lda #>GOAL_Y
+  sta entity_instances+entity_instance::position_y+1,x
+  
+  ;initial health
+  lda #10
+  sta entity_locals+grubselimboj_locals::health,x
+  
+  ;initial damaged counter
+  lda #0
+  sta entity_locals+grubselimboj_locals::damaged_counter,x
+  
+  ;set x velocity to 0
+  lda #0
+  sta entity_locals+grubselimboj_locals::x_velocity,x
+  sta entity_locals+grubselimboj_locals::x_velocity+1,x
+
+  ;set y velocity to 0
+  sta entity_locals+grubselimboj_locals::y_velocity,x
+  sta entity_locals+grubselimboj_locals::y_velocity+1,x
+
+  ;set counter to something
+  lda #$ff
+  sta entity_locals+grubselimboj_locals::counter,x
+  lda #$03
+  sta entity_locals+grubselimboj_locals::counter+1,x
+  
+  ;switch state to "stationary"
+  lda #GRUBSELIMBOJ_STATIONARYSTATE
+  sta entity_instances+entity_instance::state,x
+  rts
+  
 ;this state causes the Grubselim Boj face to return to its
 ;"home position" on the volcano. He'll start out fast but
 ;slow down as he reaches GOAL_X and GOAL_Y. This is
