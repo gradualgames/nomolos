@@ -7,9 +7,10 @@
 
 .export boss3_sprite_groups
 boss3_sprite_groups:
-  .byte $04
+  .byte $05
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_Explosion_chr
+  .word spritesheet1_bigfireball_chr
   .word spritesheet1_Grank_chr
   .word spritesheet1_GrubselimBoj_chr
 
@@ -19,7 +20,7 @@ boss3_sprite_groups:
 boss3_palette:
   .byte $0d,$07,$17,$27,$0d,$07,$05,$16,$0d,$08,$18,$28,$0d,$07,$15,$25
 ;spritesheet1_palette
-  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$07,$38,$0d,$00,$00,$00
+  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$07,$38,$0d,$05,$15,$27
   
 .export boss3_music
 boss3_music: 
@@ -444,3 +445,5 @@ MetaTile120:
   .byte $00,$00,$00,$21,$21,$21,$21,entity_index_exit
 MetaTile121:
   .byte $00,$00,$00,$21,$21,$21,$21,entity_index_grubselimboj
+MetaTile122:
+  .byte $00,$00,$00,$21,$21,$21,$21,entity_index_bigfireball

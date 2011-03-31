@@ -20,3 +20,4 @@
 .import spritesheet1_Snake_chr
 .import spritesheet1_Thoguth_chr
 .import spritesheet1_GrubselimBoj_chr
+.import spritesheet1_bigfireball_chr

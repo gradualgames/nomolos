@@ -956,3 +956,25 @@ spritesheet1_GrubselimBojMouth1:
   .byte $0c,$12,$02,$10,$08
   .byte $0c,$13,$02,$18,$00
 
+.export spritesheet1_bigfireball0
+spritesheet1_bigfireball0:
+  .byte $04
+  .byte $00,$00,$03,$00,$08
+  .byte $00,$01,$03,$08,$00
+  .byte $08,$02,$03,$00,$08
+  .byte $08,$03,$03,$08,$00
+.export spritesheet1_bigfireball1
+spritesheet1_bigfireball1:
+  .byte $04
+  .byte $00,$04,$03,$00,$08
+  .byte $00,$05,$03,$08,$00
+  .byte $08,$06,$03,$00,$08
+  .byte $08,$07,$03,$08,$00
+.export spritesheet1_bigfireball2
+spritesheet1_bigfireball2:
+  .byte $04
+  .byte $00,$08,$03,$00,$08
+  .byte $00,$09,$03,$08,$00
+  .byte $08,$0a,$03,$00,$08
+  .byte $08,$0b,$03,$08,$00
+

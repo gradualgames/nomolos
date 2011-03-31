@@ -124,6 +124,7 @@ level_1_1_data:
   .byte 0 ;level1_sprites_FireGuy_chr_index
   .byte 0 ;level1_sprites_Thoguth_chr_index
   .byte 0 ;level1_sprites_GrubselimBoj_chr_index
+  .byte 0 ;level1_sprites_bigfireball_chr_index
 
 ;ROM definition table
 level_1_2_data:
@@ -181,6 +182,7 @@ level_1_2_data:
   .byte 0 ;level1_sprites_FireGuy_chr_index
   .byte 0 ;level1_sprites_Thoguth_chr_index
   .byte 0 ;level1_sprites_GrubselimBoj_chr_index
+  .byte 0 ;level1_sprites_bigfireball_chr_index
   
 ;ROM definition table
 level_2_1_data:
@@ -236,6 +238,7 @@ level_2_1_data:
   .byte 0 ;level2_sprites_FireGuy_chr_index
   .byte 0 ;level2_sprites_Thoguth_chr_index
   .byte 0 ;level2_sprites_GrubselimBoj_chr_index
+  .byte 0 ;level2_sprites_bigfireball_chr_index
 
 ;ROM definition table
 level_2_2_data:
@@ -291,6 +294,7 @@ level_2_2_data:
   .byte 0 ;level2_sprites_FireGuy_chr_index
   .byte 0 ;level2_sprites_Thoguth_chr_index
   .byte 0 ;level2_sprites_GrubselimBoj_chr_index
+  .byte 0 ;level2_sprites_bigfireball_chr_index
 
 ;ROM definition table
 boss_2_data:
@@ -346,6 +350,7 @@ boss_2_data:
   .byte 0 ;boss2_sprites_FireGuy_chr_index
   .byte boss2_sprites_Thoguth_chr_index
   .byte 0 ;boss2_sprites_GrubselimBoj_chr_index
+  .byte 0 ;boss2_sprites_bigfireball_chr_index
   
 ;ROM definition table
 level_3_1_data:
@@ -401,6 +406,7 @@ level_3_1_data:
   .byte 0 ;level3_sprites_FireGuy_chr_index
   .byte 0 ;level3_sprites_Thoguth_chr_index
   .byte 0 ;level3_sprites_GrubselimBoj_chr_index
+  .byte 0 ;level3_sprites_bigfireball_chr_index
 
 ;ROM definition table
 level_3_2_data:
@@ -456,6 +462,7 @@ level_3_2_data:
   .byte 0 ;level3_sprites_FireGuy_chr_index
   .byte 0 ;level3_sprites_Thoguth_chr_index
   .byte 0 ;level3_sprites_GrubselimBoj_chr_index
+  .byte 0 ;level3_sprites_bigfireball_chr_index
 
 ;ROM definition table
 boss_1_data:
@@ -511,6 +518,7 @@ boss_1_data:
   .byte 0 ;boss1_sprites_FireGuy_chr_index
   .byte 0 ;boss1_sprites_Thoguth_chr_index
   .byte 0 ;boss1_sprites_GrubselimBoj_chr_index
+  .byte 0 ;boss1_sprites_bigfireball_chr_index
 
 ;ROM definition table
 level_4_1_data:
@@ -566,6 +574,7 @@ level_4_1_data:
   .byte level4_sprites_FireGuy_chr_index
   .byte 0 ;level4_sprites_Thoguth_chr_index
   .byte 0 ;level4_sprites_GrubselimBoj_chr_index
+  .byte 0 ;level4_sprites_bigfireball_chr_index
   
 ;ROM definition table
 level_4_2_data:
@@ -621,6 +630,7 @@ level_4_2_data:
   .byte level4_sprites_FireGuy_chr_index
   .byte 0 ;level4_sprites_Thoguth_chr_index
   .byte 0 ;level4_sprites_GrubselimBoj_chr_index
+  .byte 0 ;level4_sprites_bigfireball_chr_index
   
 ;ROM definition table
 boss_3_data:
@@ -676,6 +686,7 @@ boss_3_data:
   .byte 0 ;boss3_sprites_FireGuy_chr_index
   .byte 0 ;boss3_sprites_Thoguth_chr_index
   .byte boss3_sprites_GrubselimBoj_chr_index
+  .byte boss3_sprites_bigfireball_chr_index
 
 ;Entities
 entity_definition_table:
@@ -765,6 +776,9 @@ entity_definition_table:
   .byte $00
   .word grubselimboj_update
   .byte $01
+  .byte $00
+  .word bigfireball_update
+  .byte $0a
   .byte $00
   
 ;miscellaneous data

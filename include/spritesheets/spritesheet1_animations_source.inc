@@ -258,3 +258,12 @@ spritesheet1_ThoguthLightning:
   .word spritesheet1_ThoguthLightning0
   .word spritesheet1_ThoguthLightning1
   .word $0000
+
+.export spritesheet1_bigfireballfly
+spritesheet1_bigfireballfly:
+  .byte $02
+  .word spritesheet1_bigfireball2
+  .word spritesheet1_bigfireball1
+  .word spritesheet1_bigfireball0
+  .word spritesheet1_bigfireball1
+  .word $0000

@@ -113,6 +113,7 @@ index_continue_end_state   = 4 * 4
   fireguy_offset .byte
   thoguth_offset .byte
   grubselimboj_offset .byte
+  bigfireball_offset .byte
 
 .endstruct
 

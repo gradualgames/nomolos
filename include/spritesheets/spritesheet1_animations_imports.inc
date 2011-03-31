@@ -33,3 +33,4 @@
 .import spritesheet1_ThoguthMarch
 .import spritesheet1_ThoguthHammerfall
 .import spritesheet1_ThoguthLightning
+.import spritesheet1_bigfireballfly

@@ -86,3 +86,6 @@
 .import spritesheet1_GrubselimBojEyes1
 .import spritesheet1_GrubselimBojMouth0
 .import spritesheet1_GrubselimBojMouth1
+.import spritesheet1_bigfireball0
+.import spritesheet1_bigfireball1
+.import spritesheet1_bigfireball2

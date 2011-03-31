@@ -15,7 +15,8 @@ boss3_bank = 4
 
 boss3_sprites_Nomolos_chr_index = 0
 boss3_sprites_Explosion_chr_index = boss3_sprites_Nomolos_chr_index+Nomolos_chr_size
-boss3_sprites_Grank_chr_index = boss3_sprites_Explosion_chr_index+Explosion_chr_size
+boss3_sprites_bigfireball_chr_index = boss3_sprites_Explosion_chr_index+Explosion_chr_size
+boss3_sprites_Grank_chr_index = boss3_sprites_bigfireball_chr_index+bigfireball_chr_size
 boss3_sprites_GrubselimBoj_chr_index = boss3_sprites_Grank_chr_index+Grank_chr_size
 
 .endif

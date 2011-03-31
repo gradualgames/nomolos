@@ -47,3 +47,4 @@
 .include "fireballspawner.inc"
 .include "lightningbolt.inc"
 .include "grubselimboj.inc"
+.include "bigfireball.inc"

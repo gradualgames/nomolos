@@ -25,6 +25,7 @@ Phoenix_chr_size = 24
 Fireball_chr_size = 12
 Snake_chr_size = 12
 Thoguth_chr_size = 45
+bigfireball_chr_size = 12
 
 .include "spritesheet1_sprites_imports.inc"
 .include "spritesheet1_animations_imports.inc"

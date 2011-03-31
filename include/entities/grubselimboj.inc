@@ -72,8 +72,33 @@ grubselimboj_stationaryState:
 
   jsr entity_spawn
 
-  
 do_not_spawn_grank:
+
+  ;spawn a fireball every once in a while
+  .scope
+  lda entity_locals+grubselimboj_locals::counter,x
+  and #%01111111
+  bne do_not_spawn_fireball
+  
+  ;spawn an entity
+  lda #entity_index_bigfireball
+  sta b0
+
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sta b1
+
+  jsr entity_spawn
+
+do_not_spawn_fireball:
+  .endscope
 
   sec
   lda entity_locals+grubselimboj_locals::counter,x
@@ -243,6 +268,32 @@ yVelocityTestDone:
   lda #GRUBSELIMBOJ_RETURNINGSTATE
   sta entity_instances+entity_instance::state,x
 do_not_switch_to_returning_state:
+  
+  ;spawn a fireball every once in a while
+  .scope
+  lda entity_locals+grubselimboj_locals::counter,x
+  and #%01111111
+  bne do_not_spawn_fireball
+  
+  ;spawn an entity
+  lda #entity_index_bigfireball
+  sta b0
+
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sta b1
+
+  jsr entity_spawn
+
+do_not_spawn_fireball:
+  .endscope
   
   rts
 
