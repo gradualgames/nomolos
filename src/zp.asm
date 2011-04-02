@@ -56,6 +56,8 @@ entity_screen_x: .res 2
 
 entity_screen_y: .res 2
 
+entity_prng_seed: .res 1
+
 mapper_bank_current: .res 1
 
 mapper_bank_next: .res 1

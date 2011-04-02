@@ -28,6 +28,7 @@ ZP_INC = 1
 .globalzp sprite_group_offset
 .globalzp entity_screen_x
 .globalzp entity_screen_y
+.globalzp entity_prng_seed
 .globalzp mapper_bank_current
 .globalzp mapper_bank_next
 .globalzp ppu_string_buffer

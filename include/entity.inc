@@ -1,6 +1,7 @@
 .ifndef ENTITY_INC
 ENTITY_INC = 1
 
+.global entity_get_next_prn
 .global entity_kill_if_already_seen
 .global entity_draw_anim
 .global entity_reset_anim

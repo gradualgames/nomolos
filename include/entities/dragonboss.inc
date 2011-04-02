@@ -10,7 +10,6 @@ DRAGONBOSS_INC = 1
   health .byte
   substate .byte
   drawstate .byte
-  prng_seed .byte
   erase_row .byte
 .endstruct
 
@@ -176,7 +175,7 @@ dragonboss_erasestate:
   
   ;load a seed for the prng (for explosions when the Dragon dies)
   lda #10
-  sta entity_locals+dragonboss_locals::prng_seed,x
+  sta entity_prng_seed
   
   ;dragon boss's substate starts out as not attacked
   lda #DRAGONBOSS_SUBSTATE_NOT_ATTACKED
@@ -360,7 +359,8 @@ dragonboss_dyingstate_handler:
   ;beq do_not_spawn_explosion
 
   ;generate random coordinates for explosion entity
-  jsr dragonboss_get_next_prn
+  ldy #10
+  jsr entity_get_next_prn
   lsr
   clc
   adc #100
@@ -368,7 +368,8 @@ dragonboss_dyingstate_handler:
   lda #0
   sta w0+1
   
-  jsr dragonboss_get_next_prn
+  ldy #10
+  jsr entity_get_next_prn
   sta w1
   lda #0
   sta w1+1
@@ -457,31 +458,6 @@ do_not_increment_erase_row:
   
   rts
 
-.endproc
-  
-;****************************************************************
-;This is a simple pseudo random number generator borrowed from
-;the Commodore 64 codebase. It is used here to generate
-;explosions all over the Dragon's body when it enters the dying
-;state.
-;****************************************************************
-.proc dragonboss_get_next_prn
-
-  ldy #10
-  
-: lda entity_locals+dragonboss_locals::prng_seed,x
-  beq doEor
-  asl
-  beq noEor ;if the input was $80, skip the EOR
-  bcc noEor
-doEor:
-  eor #$1d
-noEor:
-  sta entity_locals+dragonboss_locals::prng_seed,x
-  dey
-  bne :-
-
-  rts
 .endproc
   
 ;****************************************************************

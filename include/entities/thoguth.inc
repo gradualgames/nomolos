@@ -13,7 +13,6 @@ THOGUTH_INC = 1
   distance  .byte
   health .byte
   damaged_counter .byte
-  prng_seed .byte
 .endstruct
 
 .struct thoguth_victorystate_locals
@@ -457,9 +456,9 @@ do_not_vibrate:
   lda #entity_index_explosion
   sta b0
 
-  jsr thoguth_get_next_prn
+  ldy #10
+  jsr entity_get_next_prn
   
-  lda entity_locals+thoguth_locals::prng_seed,x
   and #%00000111
   sta b3
   
@@ -472,9 +471,9 @@ do_not_vibrate:
   lda entity_instances+entity_instance::position_x+1,x
   sta w0+1
 
-  jsr thoguth_get_next_prn
+  ldy #10
+  jsr entity_get_next_prn
   
-  lda entity_locals+thoguth_locals::prng_seed,x
   and #%00011111
   sta b3
   
@@ -624,22 +623,6 @@ thoguth_killState_handler:
   
   rts
 
-thoguth_get_next_prn:
-  ldy #10
-  
-: lda entity_locals+thoguth_locals::prng_seed,x
-  beq doEor
-  asl
-  beq noEor ;if the input was $80, skip the EOR
-  bcc noEor
-doEor:
-  eor #$1d
-noEor:
-  sta entity_locals+thoguth_locals::prng_seed,x
-  dey
-  bne :-
-  rts
-  
 thoguth_hurt_nomolos:
 
   ;load thoguth width and height

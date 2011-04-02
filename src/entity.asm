@@ -12,6 +12,25 @@
 
 .segment "CODE"
 
+;expects y to say how many times to permute the random
+;number
+.proc entity_get_next_prn
+
+: lda entity_prng_seed
+  beq doEor
+  asl
+  beq noEor ;if the input was $80, skip the EOR
+  bcc noEor
+doEor:
+  eor #$1d
+noEor:
+  sta entity_prng_seed
+  dey
+  bne :-
+
+  rts
+.endproc
+
 ;compares entity's X coordinate to min and max explored camera x
 ;coordinates. Kills entity if it is within this range. This can
 ;be used for powerups that should only ever show up when first
