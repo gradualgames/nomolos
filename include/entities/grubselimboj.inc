@@ -21,6 +21,7 @@ GRUBSELIMBOJ_INITSTATE = 0
 GRUBSELIMBOJ_FLYSTATE = 1
 GRUBSELIMBOJ_RETURNINGSTATE = 2
 GRUBSELIMBOJ_STATIONARYSTATE = 3
+GRUBSELIMBOJ_DYINGSTATE = 4
 
 GRUBSELIMBOJ_VERTSPEED = 10
 GRUBSELIMBOJ_MAXVERTSPEED = 2
@@ -43,11 +44,17 @@ GOAL_Y = 80
   beq grubselimboj_returningState
   cmp #GRUBSELIMBOJ_STATIONARYSTATE
   beq grubselimboj_stationaryState
+  cmp #GRUBSELIMBOJ_DYINGSTATE
+  beq grubselimboj_dyingState
 
 grubselimboj_initState:
 
   jmp grubselimboj_initState_handler
 
+grubselimboj_dyingState:
+
+  jmp grubselimboj_dyingState_handler
+  
 grubselimboj_stationaryState:
 
   ;spawn a grank every once in a while
@@ -297,6 +304,89 @@ do_not_spawn_fireball:
   
   rts
 
+killGrubselimBoj:
+
+  jsr play_level_state_init_victory_mode
+
+  ;make it dead
+  jsr entity_kill
+
+  ;kill all other entities
+  jsr entity_init_all
+
+  rts
+  
+grubselimboj_dyingState_handler:
+
+  jsr entity_compute_screen_coordinates
+  
+  jsr grubselimboj_draw
+
+  dec entity_locals+grubselimboj_locals::counter,x
+  beq killGrubselimBoj
+  
+  lda entity_locals+grubselimboj_locals::counter,x
+  and #%00000010
+  sta camera_scroll_x
+  
+  lda entity_locals+grubselimboj_locals::counter,x
+  and #%00000011
+  bne skip_spawn_explosion
+  
+  ;spawn an explosion entity
+  lda #entity_index_explosion
+  sta b0
+
+  ldy #10
+  jsr entity_get_next_prn
+  
+  and #%00001111
+  sta b3
+  
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  clc
+  adc b3
+  sta w0
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+
+  ldy #10
+  jsr entity_get_next_prn
+  
+  and #%00001111
+  sta b3
+  
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  clc
+  adc b3
+  sta b1
+
+  jsr entity_spawn
+  
+  ;play a hit sound
+  txa
+  pha
+
+  lda #<hit_sound
+  sta sound_param_word_0
+  lda #>hit_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+skip_spawn_explosion:
+
+  rts
+  
 grubselimboj_initState_handler:
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
@@ -509,7 +599,16 @@ grubselimboj_draw:
   dec entity_locals+grubselimboj_locals::health,x
   bne health_not_zero
   
-  jmp killGrubselimBoj
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
+  
+  lda #$ff
+  sta entity_locals+grubselimboj_locals::counter,x
+  
+  lda #GRUBSELIMBOJ_DYINGSTATE
+  sta entity_instances+entity_instance::state,x
   
 health_not_zero:
 nomolosNotAttacking:
@@ -679,29 +778,6 @@ draw_mouth_closed:
 
   rts
   
-killGrubselimBoj:
-
-  ;make it dead
-  jsr entity_kill
-
-  ;spawn an explosion entity
-  lda #entity_index_explosion
-  sta b0
-
-  ;get out low byte of position_x
-  lda entity_instances+entity_instance::position_x,x
-  sta w0
-  ;get out high byte of position_x
-  lda entity_instances+entity_instance::position_x+1,x
-  sta w0+1
-
-  ;get out position_y
-  lda entity_instances+entity_instance::position_y,x
-  sta b1
-
-  jsr entity_spawn
-
-  rts
 .endproc
 
 .endif

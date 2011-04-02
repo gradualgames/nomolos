@@ -653,7 +653,7 @@ boss_3_data:
   
   .word boss3_intro_string
   .byte 32 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 0  ;camera_scroll_enabled  
   .word boss3_map
   .word boss3_map_column_table
   .word boss3_attribute_column_table
