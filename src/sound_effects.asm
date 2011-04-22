@@ -30,6 +30,9 @@ sf_volume_envelope_decay_slowly:
 sf_volume_envelope_owl:
   .byte 4,4,6,6,11,11,10,10,8,8,6,6,4,4,0,0,ENV_STOP
   
+sf_volume_envelope_foom:
+  .byte 2,3,5,7,10,13,14,13,9,6,5,3,2,1,ENV_STOP
+  
 sf_pitch_envelope_0:
   .byte 0, ENV_LOOP
 
@@ -49,6 +52,10 @@ sf_duty_envelope_1:
   
 owl_hoot_sound:
   .byte STV,SOUND_EFFECT_BASE+8,STP,SOUND_EFFECT_BASE+3,SDU,SOUND_EFFECT_BASE+1,STL,15,C4
+  .byte TRM
+  
+foom_sound:
+  .byte STV,SOUND_EFFECT_BASE+9,STP,SOUND_EFFECT_BASE+0,SDU,SOUND_EFFECT_BASE+0,STL,15,14
   .byte TRM
   
 boss_hurt_sound:

@@ -42,6 +42,18 @@ PHOENIX_MAXHORIZSPEED = 4
 
 phoenix_initState:
 
+  jmp phoenix_initState_handler
+  
+phoenix_flyState:
+
+  jmp phoenix_flyState_handler
+  
+phoenix_hoverState:
+
+  jmp phoenix_hoverState_handler
+  
+phoenix_initState_handler:
+
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 
@@ -75,12 +87,30 @@ phoenix_initState:
   
   rts
 
-phoenix_hoverState:
+phoenix_hoverState_handler:
 
  .scope
   dec entity_locals+phoenix_locals::shoot_fireball,x
   bne do_not_shoot_fireball
 
+  ;play a foom sound
+  txa
+  pha
+
+  lda #<foom_sound
+  sta sound_param_word_0
+  lda #>foom_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+  
   ;spawn an fireball entity
   lda #entity_index_fireball
   sta b0
@@ -132,7 +162,7 @@ do_not_switch_state:
 
   rts
 
-phoenix_flyState:
+phoenix_flyState_handler:
 
   .scope
   dec entity_locals+phoenix_locals::fly_hover,x

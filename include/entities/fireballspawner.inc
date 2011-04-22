@@ -75,6 +75,24 @@ fireballspawner_run:
   and #$1f
   bne do_not_spawn_fireball
 
+  ;play a foom sound
+  txa
+  pha
+
+  lda #<foom_sound
+  sta sound_param_word_0
+  lda #>foom_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+  
   ;spawn a fireball entity
   lda #entity_index_fireball
   sta b0
