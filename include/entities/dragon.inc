@@ -42,6 +42,18 @@ DRAGON_MAXHORIZSPEED = 4
 
 dragon_initState:
 
+  jmp dragon_initState_handler
+  
+dragon_flyState:
+
+  jmp dragon_flyState_handler
+  
+dragon_hoverState:
+
+  jmp dragon_hoverState_handler
+  
+dragon_initState_handler:
+
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 
@@ -75,12 +87,30 @@ dragon_initState:
   
   rts
 
-dragon_hoverState:
+dragon_hoverState_handler:
 
   .scope
   dec entity_locals+dragon_locals::shoot_iceball,x
   bne do_not_shoot_iceball
 
+  ;play a foom sound
+  txa
+  pha
+
+  lda #<foom_sound
+  sta sound_param_word_0
+  lda #>foom_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+  
   ;spawn an iceball entity
   lda #entity_index_iceball
   sta b0
@@ -132,7 +162,7 @@ do_not_switch_state:
 
   rts
 
-dragon_flyState:
+dragon_flyState_handler:
 
   .scope
   dec entity_locals+dragon_locals::fly_hover,x
