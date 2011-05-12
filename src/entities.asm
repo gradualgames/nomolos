@@ -48,3 +48,4 @@
 .include "lightningbolt.inc"
 .include "grubselimboj.inc"
 .include "bigfireball.inc"
+.include "statue.inc"
