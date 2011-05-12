@@ -11,7 +11,7 @@ LEVEL5_INC = 1
 .import level5_map
 .import level5_palette
 
-level_5_bank = 3
+level_5_bank = 4
 level_5_patterns_bank = 9
 
 level5_sprites_Nomolos_chr_index = 0

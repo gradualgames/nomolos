@@ -708,7 +708,7 @@ level_5_1_data:
   .word level5_palette
 
   .byte 30  ;nomolos_start_x
-  .byte 100 ;nomolos_start_y
+  .byte 50 ;nomolos_start_y
   .byte 0 ;starting_screen
   
   .word level5_intro_string
