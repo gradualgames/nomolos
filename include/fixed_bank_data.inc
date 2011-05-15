@@ -116,6 +116,7 @@ index_continue_end_state   = 4 * 4
   grubselimboj_offset .byte
   bigfireball_offset .byte
   statue_offset .byte
+  raven_offset .byte
 
 .endstruct
 

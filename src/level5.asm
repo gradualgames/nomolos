@@ -8,9 +8,11 @@
 
 .export level5_sprite_groups
 level5_sprite_groups:
-  .byte $02
+  .byte $04
   .word spritesheet1_Nomolos_chr
   .word spritesheet1_statue_chr
+  .word spritesheet1_raven_chr
+  .word spritesheet1_Explosion_chr
 
 .segment "ROM09"
 
@@ -21,7 +23,7 @@ level5_sprite_groups:
 .export level5_palette
 level5_palette:
   .byte $0d,$0b,$1b,$12,$0d,$0a,$00,$2c,$0d,$07,$16,$26,$0d,$1b,$00,$10
-  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$28,$20,$0d,$0d,$00,$29
+  .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$28,$20,$0d,$0d,$00,$29
 
 .export level5_music
 level5_music:
@@ -233,7 +235,7 @@ MetaTileColumnTable:
   .byte $00,$0a,$15,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$49,$00,$00
   .byte $03,$0b,$0d,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$49,$00,$00
   .byte $04,$0c,$0d,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$49,$00,$00
-  .byte $05,$0d,$0d,$00,$00,$00,$00,$00,$00,$00,$00,$00,$4b,$49,$00,$00
+  .byte $05,$0d,$0d,$00,$00,$4c,$00,$00,$00,$00,$00,$00,$4b,$49,$00,$00
   .byte $06,$0e,$0d,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$49,$00,$00
   .byte $01,$07,$16,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$49,$00,$00
   .byte $02,$08,$0f,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$49,$00,$00
@@ -404,3 +406,5 @@ MetaTile74:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_exit
 MetaTile75:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_statue
+MetaTile76:
+  .byte $00,$00,$00,$00,$00,$00,$00,entity_index_raven

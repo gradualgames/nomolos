@@ -16,5 +16,7 @@ level_5_patterns_bank = 9
 
 level5_sprites_Nomolos_chr_index = 0
 level5_sprites_statue_chr_index = level5_sprites_Nomolos_chr_index+Nomolos_chr_size
+level5_sprites_raven_chr_index = level5_sprites_statue_chr_index+statue_chr_size
+level5_sprites_Explosion_chr_index = level5_sprites_raven_chr_index+raven_chr_size
 
 .endif

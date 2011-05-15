@@ -27,6 +27,7 @@ Snake_chr_size = 12
 Thoguth_chr_size = 45
 bigfireball_chr_size = 12
 statue_chr_size = 13
+raven_chr_size = 43
 
 .include "spritesheet1_sprites_imports.inc"
 .include "spritesheet1_animations_imports.inc"

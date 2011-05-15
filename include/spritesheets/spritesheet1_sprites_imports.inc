@@ -91,3 +91,6 @@
 .import spritesheet1_bigfireball2
 .import spritesheet1_statue0
 .import spritesheet1_statue1
+.import spritesheet1_raven0
+.import spritesheet1_raven1
+.import spritesheet1_raven2

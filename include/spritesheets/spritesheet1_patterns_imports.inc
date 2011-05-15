@@ -22,3 +22,4 @@
 .import spritesheet1_GrubselimBoj_chr
 .import spritesheet1_bigfireball_chr
 .import spritesheet1_statue_chr
+.import spritesheet1_raven_chr

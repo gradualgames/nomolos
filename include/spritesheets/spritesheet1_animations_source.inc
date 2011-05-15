@@ -267,3 +267,10 @@ spritesheet1_bigfireballfly:
   .word spritesheet1_bigfireball0
   .word spritesheet1_bigfireball1
   .word $0000
+
+.export spritesheet1_raven_fly
+spritesheet1_raven_fly:
+  .byte $0a
+  .word spritesheet1_raven1
+  .word spritesheet1_raven2
+  .word $0000
