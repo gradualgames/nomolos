@@ -1,3 +1,4 @@
+.include "spritesheet_common.inc"
 .include "spritesheet1.inc"
 .include "soundengine.inc"
 .include "sound_effects.inc"

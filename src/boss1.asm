@@ -1,4 +1,5 @@
 .include "soundengine.inc"
+.include "spritesheet_common.inc"
 .include "spritesheet1.inc"
 .include "entities.inc"
 .include "fixed_bank_data.inc"

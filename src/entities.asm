@@ -14,6 +14,7 @@
 .include "entities.inc"
 .include "play_level_state.inc"
 .include "sound_effects.inc"
+.include "spritesheet_common.inc"
 .include "spritesheet1.inc"
 
 .segment "ROM13"
