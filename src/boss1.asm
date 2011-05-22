@@ -9,8 +9,8 @@
 .export boss1_sprite_groups
 boss1_sprite_groups:
   .byte $05
-  .word spritesheet1_Nomolos_chr
-  .word spritesheet1_Explosion_chr
+  .word spritesheet_common_Nomolos_chr
+  .word spritesheet_common_Explosion_chr
   .word spritesheet1_IceBall_chr
   .word spritesheet1_Stalactite_chr
   .word spritesheet1_DragonFace_chr

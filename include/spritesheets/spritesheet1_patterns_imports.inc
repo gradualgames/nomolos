@@ -1,9 +1,7 @@
 .ifndef SPRITESHEET1_PATTERNS_IMPORTS_INC
 SPRITESHEET1_PATTERNS_IMPORTS_INC = 1
 
-.global spritesheet1_Nomolos_chr
 .global spritesheet1_Deentle_chr
-.global spritesheet1_Explosion_chr
 .global spritesheet1_Beedie_chr
 .global spritesheet1_Grank_chr
 .global spritesheet1_Skelekin_chr

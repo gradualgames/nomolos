@@ -88,9 +88,9 @@ mouseSitThere:
 
   lda #0
   sta b2
-  lda #<spritesheet1_Mouse
+  lda #<spritesheet_common_Mouse
   sta w2
-  lda #>spritesheet1_Mouse
+  lda #>spritesheet_common_Mouse
   sta w2+1
   jsr entity_draw_anim
 

@@ -32,5 +32,8 @@ raven_chr_size = 43
 .include "spritesheet1_sprites_imports.inc"
 .include "spritesheet1_animations_imports.inc"
 .include "spritesheet1_patterns_imports.inc"
+.include "spritesheet_common_animations_imports.inc"
+.include "spritesheet_common_sprites_imports.inc"
+.include "spritesheet_common_patterns_imports.inc"
 
 .endif

@@ -37,9 +37,9 @@ explosionExplode:
   lda #0
   sta b2
   
-  lda #<spritesheet1_Explosion
+  lda #<spritesheet_common_Explosion
   sta w2
-  lda #>spritesheet1_Explosion
+  lda #>spritesheet_common_Explosion
   sta w2+1
   jsr entity_draw_anim
 

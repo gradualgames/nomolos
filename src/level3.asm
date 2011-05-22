@@ -9,9 +9,9 @@
 .export level3_sprite_groups
 level3_sprite_groups:
   .byte $08
-  .word spritesheet1_Nomolos_chr
+  .word spritesheet_common_Nomolos_chr
   .word spritesheet1_Snail_chr
-  .word spritesheet1_Explosion_chr
+  .word spritesheet_common_Explosion_chr
   .word spritesheet1_Dragon_chr
   .word spritesheet1_IceBall_chr
   .word spritesheet1_Shark_chr

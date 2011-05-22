@@ -32,6 +32,7 @@ FILES           = zp \
                   boss3 \
                   boss1 \
                   entities \
+                  spritesheet_common \
                   spritesheet1 \
                   load_level_state \
                   play_level_state \

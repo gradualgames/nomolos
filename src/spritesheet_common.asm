@@ -14,9 +14,8 @@
 
 .segment "ROM14"
 
-.include "spritesheet1_patterns_source.inc"
+.include "spritesheet_common_patterns_source.inc"
 
-.segment "ROM13"
-
-.include "spritesheet1_sprites_source.inc"
-.include "spritesheet1_animations_source.inc"
+.segment "CODE"
+.include "spritesheet_common_sprites_source.inc"
+.include "spritesheet_common_animations_source.inc"

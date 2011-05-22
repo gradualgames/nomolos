@@ -9,10 +9,10 @@
 .export level5_sprite_groups
 level5_sprite_groups:
   .byte $04
-  .word spritesheet1_Nomolos_chr
+  .word spritesheet_common_Nomolos_chr
   .word spritesheet1_statue_chr
   .word spritesheet1_raven_chr
-  .word spritesheet1_Explosion_chr
+  .word spritesheet_common_Explosion_chr
 
 .segment "ROM09"
 

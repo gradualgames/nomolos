@@ -9,8 +9,8 @@
 .export level4_sprite_groups
 level4_sprite_groups:
   .byte $06
-  .word spritesheet1_Nomolos_chr
-  .word spritesheet1_Explosion_chr
+  .word spritesheet_common_Nomolos_chr
+  .word spritesheet_common_Explosion_chr
   .word spritesheet1_Phoenix_chr
   .word spritesheet1_Fireball_chr
   .word spritesheet1_Snake_chr

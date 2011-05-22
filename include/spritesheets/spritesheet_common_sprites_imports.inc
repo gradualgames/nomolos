@@ -1,0 +1,42 @@
+.ifndef SPRITESHEET_COMMON_SPRITES_IMPORTS_INC
+SPRITESHEET_COMMON_SPRITES_IMPORTS_INC = 1
+
+.global spritesheet_common_NomolosWalk0
+.global spritesheet_common_NomolosWalk1
+.global spritesheet_common_NomolosWalk2
+.global spritesheet_common_nomolos_jump0
+.global spritesheet_common_nomolos_walk_overlay0
+.global spritesheet_common_nomolos_walk_overlay1
+.global spritesheet_common_nomolos_walk_overlay2
+.global spritesheet_common_nomolos_jump_overlay0
+.global spritesheet_common_Heart0
+.global spritesheet_common_Mouse0
+.global spritesheet_common_SlumpedArmor0
+.global spritesheet_common_SlumpedArmorOverlay0
+.global spritesheet_common_ScardyCat0
+.global spritesheet_common_ScardyCatOverlay0
+.global spritesheet_common_nomolos_fight0
+.global spritesheet_common_nomolos_fight1
+.global spritesheet_common_nomolos_fight_overlay0
+.global spritesheet_common_nomolos_fight_overlay1
+.global spritesheet_common_OneUp0
+.global spritesheet_common_NomolosUseFlail0
+.global spritesheet_common_NomolosUseFlail1
+.global spritesheet_common_FlailBall0
+.global spritesheet_common_FlailBall1
+.global spritesheet_common_FlailBall2
+.global spritesheet_common_FlailBall3
+.global spritesheet_common_FlailBall4
+.global spritesheet_common_FlailBall5
+.global spritesheet_common_FlailBall6
+.global spritesheet_common_FlailBall7
+.global spritesheet_common_nomolos_flail_overlay0
+.global spritesheet_common_FlailItem0
+.global spritesheet_common_NomolosUseSpear0
+.global spritesheet_common_NomolosUseSpear1
+.global spritesheet_common_Spear0
+.global spritesheet_common_Explosion0
+.global spritesheet_common_Explosion1
+.global spritesheet_common_Explosion2
+
+.endif

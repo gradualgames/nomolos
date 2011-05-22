@@ -1,94 +1,9 @@
 .include "spritesheet1_animations_imports.inc"
 
-;Animations
-spritesheet1_NomolosWalk:
-  .byte $06
-  .word spritesheet1_NomolosWalk0
-  .word spritesheet1_NomolosWalk1
-  .word spritesheet1_NomolosWalk0
-  .word spritesheet1_NomolosWalk2
-  .word $0000
-
-spritesheet1_nomolos_jump:
-  .byte $0a
-  .word spritesheet1_nomolos_jump0
-  .word $0000
-
-spritesheet1_nomolos_walk_overlay:
-  .byte $0a
-  .word spritesheet1_nomolos_walk_overlay0
-  .word spritesheet1_nomolos_walk_overlay1
-  .word spritesheet1_nomolos_walk_overlay0
-  .word spritesheet1_nomolos_walk_overlay2
-  .word $0000
-
-spritesheet1_nomolos_jump_overlay:
-  .byte $0a
-  .word spritesheet1_nomolos_jump_overlay0
-  .word $0000
-
-spritesheet1_Heart:
-  .byte $0a
-  .word spritesheet1_Heart0
-  .word $0000
-
 spritesheet1_DeentleWalk:
   .byte $0a
   .word spritesheet1_Deentle0
   .word spritesheet1_Deentle1
-  .word $0000
-
-spritesheet1_Explosion:
-  .byte 3
-  .word spritesheet1_Explosion2
-  .word spritesheet1_Explosion1
-  .word spritesheet1_Explosion0
-  .word $0000
-
-spritesheet1_Mouse:
-  .byte $0a
-  .word spritesheet1_Mouse0
-  .word $0000
-
-spritesheet1_nomolos_fight:
-  .byte $06
-  .word spritesheet1_nomolos_fight0
-  .word spritesheet1_nomolos_fight1
-  .word $0000
-
-spritesheet1_nomolos_fight_overlay:
-  .byte $06
-  .word spritesheet1_nomolos_fight_overlay0
-  .word spritesheet1_nomolos_fight_overlay1
-  .word $0000
-
-spritesheet1_NomolosUseFlail:
-  .byte $06
-  .word spritesheet1_NomolosUseFlail0
-  .word spritesheet1_NomolosUseFlail1
-  .word $0000
-
-spritesheet1_FlailBall:
-  .byte $01
-  .word spritesheet1_FlailBall0
-  .word spritesheet1_FlailBall1
-  .word spritesheet1_FlailBall2
-  .word spritesheet1_FlailBall3
-  .word spritesheet1_FlailBall4
-  .word spritesheet1_FlailBall5
-  .word spritesheet1_FlailBall6
-  .word spritesheet1_FlailBall7
-  .word $0000
-
-spritesheet1_nomolos_flail_overlay:
-  .byte $06
-  .word spritesheet1_nomolos_flail_overlay0
-  .word spritesheet1_nomolos_flail_overlay0
-  .word $0000
-
-spritesheet1_FlailItem:
-  .byte $0a
-  .word spritesheet1_FlailItem0
   .word $0000
 
 spritesheet1_BeedieBlob:
@@ -101,17 +16,6 @@ spritesheet1_GrankFly:
   .byte $0a
   .word spritesheet1_Grank0
   .word spritesheet1_Grank1
-  .word $0000
-
-spritesheet1_NomolosUseSpear:
-  .byte $06
-  .word spritesheet1_NomolosUseSpear0
-  .word spritesheet1_NomolosUseSpear1
-  .word $0000
-
-spritesheet1_SpearFly:
-  .byte $0a
-  .word spritesheet1_Spear0
   .word $0000
 
 spritesheet1_BatFly:

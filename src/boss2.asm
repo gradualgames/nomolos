@@ -9,8 +9,8 @@
 .export boss2_sprite_groups
 boss2_sprite_groups:
   .byte $03
-  .word spritesheet1_Nomolos_chr
-  .word spritesheet1_Explosion_chr
+  .word spritesheet_common_Nomolos_chr
+  .word spritesheet_common_Explosion_chr
   .word spritesheet1_Thoguth_chr
 
 .segment "ROM02"

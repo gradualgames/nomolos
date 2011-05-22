@@ -71,9 +71,9 @@ notTouching:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  lda #<spritesheet1_OneUp0
+  lda #<spritesheet_common_OneUp0
   sta w0
-  lda #>spritesheet1_OneUp0
+  lda #>spritesheet_common_OneUp0
   sta w0+1
 
   lda entity_screen_x
