@@ -1,5 +1,5 @@
+.include "spritesheet1_patterns_imports.inc"
 
-.export spritesheet1_Nomolos_chr
 spritesheet1_Nomolos_chr:
   .word $0830
   .byte $02,$0d,$14,$25,$27,$4f,$9f,$9e,$00,$02,$03,$02,$00,$00,$00,$01
@@ -133,7 +133,6 @@ spritesheet1_Nomolos_chr:
   .byte $00,$00,$00,$ff,$ff,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$03,$ff,$ff,$03,$00,$00,$00,$00,$00,$03,$03,$00,$00,$00
   .byte $00,$00,$ff,$fe,$fc,$f8,$00,$00,$00,$00,$00,$fc,$f8,$00,$00,$00
-.export spritesheet1_Deentle_chr
 spritesheet1_Deentle_chr:
   .word $0080
   .byte $00,$20,$40,$43,$25,$1b,$0d,$0e,$00,$00,$00,$00,$02,$05,$02,$05
@@ -144,7 +143,6 @@ spritesheet1_Deentle_chr:
   .byte $02,$02,$c2,$a4,$d8,$b0,$70,$f8,$00,$00,$00,$40,$a0,$40,$a0,$00
   .byte $49,$9c,$23,$4e,$97,$13,$00,$00,$06,$03,$00,$01,$02,$00,$00,$00
   .byte $24,$72,$88,$e4,$d2,$90,$00,$00,$c0,$80,$00,$00,$80,$00,$00,$00
-.export spritesheet1_Explosion_chr
 spritesheet1_Explosion_chr:
   .word $00C0
   .byte $00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$00,$00,$01,$03
@@ -159,7 +157,6 @@ spritesheet1_Explosion_chr:
   .byte $00,$00,$00,$c0,$f0,$f0,$f8,$f8,$00,$00,$c0,$f0,$f8,$f8,$fc,$fc
   .byte $1f,$1f,$0f,$0f,$03,$00,$00,$00,$3f,$3f,$1f,$1f,$0f,$03,$00,$00
   .byte $f8,$f8,$f0,$f0,$c0,$00,$00,$00,$fc,$fc,$f8,$f8,$f0,$c0,$00,$00
-.export spritesheet1_Beedie_chr
 spritesheet1_Beedie_chr:
   .word $0080
   .byte $00,$00,$00,$00,$01,$03,$07,$1f,$00,$00,$00,$00,$01,$02,$04,$18
@@ -170,7 +167,6 @@ spritesheet1_Beedie_chr:
   .byte $80,$c0,$e0,$e0,$e0,$f0,$30,$78,$80,$40,$20,$20,$20,$d0,$d0,$c8
   .byte $1f,$1f,$1f,$1f,$1f,$0f,$07,$03,$16,$10,$11,$12,$10,$08,$04,$03
   .byte $f8,$f8,$f8,$f8,$f8,$f0,$e0,$c0,$c8,$08,$88,$48,$08,$10,$20,$c0
-.export spritesheet1_Grank_chr
 spritesheet1_Grank_chr:
   .word $0080
   .byte $00,$30,$08,$06,$0f,$0f,$1f,$3f,$00,$00,$00,$00,$06,$06,$0a,$00
@@ -181,14 +177,12 @@ spritesheet1_Grank_chr:
   .byte $00,$00,$18,$66,$f0,$f0,$f8,$fc,$00,$00,$00,$00,$20,$60,$50,$00
   .byte $60,$c7,$ca,$90,$a4,$bf,$80,$7f,$1f,$38,$37,$6f,$5f,$40,$7f,$00
   .byte $06,$e3,$51,$09,$95,$fd,$01,$fe,$f8,$1c,$ee,$f6,$fa,$02,$fe,$00
-.export spritesheet1_Bat_chr
 spritesheet1_Bat_chr:
   .word $0040
   .byte $12,$33,$7d,$ff,$ff,$ff,$93,$04,$12,$33,$4f,$a3,$d7,$ff,$93,$04
   .byte $90,$98,$7c,$fe,$fe,$fe,$92,$40,$90,$98,$e4,$8a,$d6,$fe,$92,$40
   .byte $12,$3b,$3d,$3f,$3f,$1f,$1f,$0f,$12,$2b,$37,$2b,$37,$13,$19,$0f
   .byte $90,$b8,$78,$f8,$f8,$f0,$f0,$e0,$90,$a8,$d8,$a8,$d8,$90,$30,$e0
-.export spritesheet1_Batree_chr
 spritesheet1_Batree_chr:
   .word $0120
   .byte $61,$96,$88,$40,$78,$94,$d5,$4c,$00,$61,$77,$3f,$07,$63,$22,$33
@@ -209,7 +203,6 @@ spritesheet1_Batree_chr:
   .byte $4f,$0f,$8f,$8f,$8f,$70,$6f,$66,$b7,$f7,$77,$77,$70,$8f,$90,$99
   .byte $66,$00,$00,$7c,$7e,$7e,$3e,$3e,$99,$ff,$ff,$83,$81,$81,$c1,$c1
   .byte $1d,$03,$97,$9f,$8f,$8f,$0f,$bf,$e2,$fd,$6b,$62,$72,$76,$f6,$4c
-.export spritesheet1_Owl_chr
 spritesheet1_Owl_chr:
   .word $0220
   .byte $00,$01,$02,$04,$0b,$3f,$41,$ec,$00,$00,$01,$03,$04,$00,$3e,$13
@@ -246,7 +239,6 @@ spritesheet1_Owl_chr:
   .byte $00,$02,$fc,$3c,$77,$ee,$bc,$50,$ff,$fd,$03,$03,$00,$00,$00,$00
   .byte $04,$07,$2a,$75,$aa,$15,$13,$0c,$f8,$f8,$d5,$8a,$15,$0a,$0c,$00
   .byte $00,$00,$80,$40,$a0,$c0,$80,$00,$00,$00,$00,$80,$40,$00,$00,$00
-.export spritesheet1_Snuffer_chr
 spritesheet1_Snuffer_chr:
   .word $01E0
   .byte $00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$00,$00,$00,$00
@@ -279,8 +271,6 @@ spritesheet1_Snuffer_chr:
   .byte $ff,$ff,$ff,$ff,$ff,$7f,$1f,$07,$6f,$6f,$6e,$6e,$6c,$0f,$07,$00
   .byte $f7,$f7,$e7,$f7,$ff,$fb,$fb,$81,$a3,$63,$c3,$c3,$73,$b1,$81,$00
   .byte $fe,$fe,$fc,$fc,$fc,$fe,$ff,$ee,$dc,$dc,$98,$98,$98,$dc,$ee,$00
-
-.export spritesheet1_Skelekin_chr
 spritesheet1_Skelekin_chr:
   .word $00C0
   .byte $3c,$7e,$ff,$fb,$ff,$79,$3a,$3e,$00,$1c,$70,$36,$7e,$3e,$1c,$1c
@@ -295,8 +285,6 @@ spritesheet1_Skelekin_chr:
   .byte $3f,$7f,$ff,$ff,$ff,$ff,$ff,$7f,$18,$3c,$6a,$74,$58,$6f,$70,$38
   .byte $fe,$ff,$ff,$82,$f8,$fc,$fc,$08,$00,$fe,$02,$00,$00,$f8,$08,$00
   .byte $7f,$3e,$3e,$3e,$3f,$3f,$3b,$39,$36,$18,$1c,$0c,$06,$13,$11,$10
-
-.export spritesheet1_Snail_chr
 spritesheet1_Snail_chr:
   .word $00C0
   .byte $00,$00,$00,$00,$44,$22,$22,$3e,$00,$00,$00,$00,$00,$00,$00,$00
@@ -311,8 +299,6 @@ spritesheet1_Snail_chr:
   .byte $b0,$78,$67,$52,$40,$64,$38,$07,$b0,$78,$7f,$6f,$7f,$7f,$3f,$07
   .byte $1d,$1f,$fd,$3f,$0f,$00,$00,$ff,$13,$10,$fa,$ff,$ff,$ff,$ff,$ff
   .byte $ff,$f7,$fb,$fe,$ee,$fe,$01,$fe,$bd,$c9,$3d,$82,$f2,$fe,$ff,$fe
-
-.export spritesheet1_Dragon_chr
 spritesheet1_Dragon_chr:
   .word $0210
   .byte $00,$00,$00,$01,$02,$07,$1b,$34,$00,$00,$00,$00,$01,$00,$05,$0b
@@ -348,7 +334,6 @@ spritesheet1_Dragon_chr:
   .byte $fd,$fe,$ff,$ff,$7f,$ff,$0e,$78,$ff,$ff,$7f,$3f,$0f,$04,$f0,$80
   .byte $05,$26,$10,$fe,$c3,$00,$00,$00,$fe,$ff,$ef,$81,$00,$00,$00,$00
   .byte $00,$c0,$30,$48,$86,$7f,$0f,$07,$00,$00,$c0,$f0,$78,$0e,$06,$00
-.export spritesheet1_IceBall_chr
 spritesheet1_IceBall_chr:
   .word $00C0
   .byte $00,$20,$13,$0c,$11,$17,$26,$ec,$00,$20,$13,$0f,$1f,$1f,$3f,$ff
@@ -363,8 +348,6 @@ spritesheet1_IceBall_chr:
   .byte $00,$00,$00,$00,$00,$40,$80,$40,$00,$00,$00,$00,$00,$40,$80,$c0
   .byte $06,$01,$02,$00,$00,$00,$00,$00,$07,$01,$02,$00,$00,$00,$00,$00
   .byte $60,$80,$40,$00,$00,$00,$00,$00,$e0,$80,$40,$00,$00,$00,$00,$00
-
-.export spritesheet1_Shark_chr
 spritesheet1_Shark_chr:
   .word $0120
   .byte $00,$00,$07,$1b,$0c,$07,$13,$73,$00,$00,$00,$07,$03,$00,$10,$71
@@ -385,16 +368,12 @@ spritesheet1_Shark_chr:
   .byte $0c,$07,$47,$77,$03,$00,$00,$00,$03,$00,$40,$71,$00,$00,$00,$00
   .byte $07,$33,$e0,$c0,$f8,$7e,$0f,$01,$ff,$cf,$1f,$ff,$7f,$0f,$00,$00
   .byte $10,$18,$28,$04,$64,$fa,$7e,$fe,$e0,$e0,$d0,$f8,$98,$64,$a8,$00
-
-.export spritesheet1_Stalactite_chr
 spritesheet1_Stalactite_chr:
   .word $0040
   .byte $ff,$cf,$af,$2f,$1b,$0b,$06,$05,$00,$30,$70,$73,$77,$35,$39,$1f
   .byte $ff,$ff,$ff,$f6,$e6,$a4,$8c,$88,$00,$20,$30,$f8,$f8,$f8,$f0,$f0
   .byte $07,$01,$02,$03,$01,$00,$00,$00,$1d,$1f,$0d,$0f,$07,$07,$03,$01
   .byte $a8,$b0,$10,$d0,$e0,$a0,$40,$80,$f0,$e0,$e0,$60,$c0,$c0,$80,$00
-
-.export spritesheet1_DragonFace_chr
 spritesheet1_DragonFace_chr:
   .word $00C0
   .byte $00,$00,$04,$04,$04,$00,$00,$00,$00,$00,$14,$04,$04,$00,$00,$00
@@ -409,8 +388,6 @@ spritesheet1_DragonFace_chr:
   .byte $18,$38,$78,$f8,$70,$30,$20,$00,$9e,$38,$78,$f8,$f0,$f0,$e0,$c0
   .byte $04,$0c,$1c,$30,$20,$00,$00,$00,$04,$0c,$1c,$30,$20,$00,$00,$00
   .byte $c0,$20,$20,$60,$00,$00,$00,$00,$c0,$20,$20,$60,$00,$00,$00,$00
-
-.export spritesheet1_FireGuy_chr
 spritesheet1_FireGuy_chr:
   .word $00C0
   .byte $00,$01,$03,$07,$0e,$0d,$6c,$b8,$00,$00,$01,$03,$07,$07,$07,$67
@@ -425,7 +402,6 @@ spritesheet1_FireGuy_chr:
   .byte $f0,$b8,$38,$58,$9c,$ac,$8c,$ac,$c0,$f0,$f0,$f0,$f8,$f8,$f8,$f8
   .byte $32,$3a,$38,$1f,$7f,$fe,$fe,$7c,$1f,$1f,$1f,$0f,$00,$7c,$7c,$00
   .byte $cc,$0c,$3c,$f8,$fe,$7f,$7f,$3e,$f8,$f8,$f8,$f0,$00,$3e,$3e,$00
-.export spritesheet1_Phoenix_chr
 spritesheet1_Phoenix_chr:
   .word $0180
   .byte $fc,$ce,$e7,$e7,$b3,$fb,$59,$ef,$00,$3c,$1c,$5e,$4f,$2f,$3f,$1f
@@ -452,7 +428,6 @@ spritesheet1_Phoenix_chr:
   .byte $ce,$f9,$f6,$d8,$d8,$f0,$80,$0c,$78,$7e,$48,$60,$60,$80,$00,$00
   .byte $07,$0f,$fc,$5f,$67,$19,$8d,$f6,$f8,$f8,$00,$a0,$bc,$fe,$ff,$1b
   .byte $fe,$f8,$30,$10,$90,$c0,$e0,$e0,$00,$00,$00,$00,$00,$00,$80,$c0
-.export spritesheet1_Fireball_chr
 spritesheet1_Fireball_chr:
   .word $00C0
   .byte $00,$00,$03,$0c,$11,$17,$26,$2d,$00,$00,$03,$0f,$1f,$1f,$3f,$3f
@@ -467,7 +442,6 @@ spritesheet1_Fireball_chr:
   .byte $00,$00,$00,$00,$00,$00,$80,$40,$00,$00,$00,$00,$00,$00,$80,$c0
   .byte $02,$01,$00,$00,$00,$00,$00,$00,$03,$01,$00,$00,$00,$00,$00,$00
   .byte $40,$80,$00,$00,$00,$00,$00,$00,$c0,$80,$00,$00,$00,$00,$00,$00
-.export spritesheet1_Snake_chr
 spritesheet1_Snake_chr:
   .word $00C0
   .byte $00,$c0,$c0,$e0,$e0,$e0,$a0,$a0,$00,$00,$00,$00,$00,$00,$40,$40
@@ -482,8 +456,6 @@ spritesheet1_Snake_chr:
   .byte $bd,$98,$d8,$f0,$f0,$e0,$c0,$00,$40,$60,$20,$c0,$c0,$00,$00,$00
   .byte $bd,$bf,$ff,$7f,$39,$30,$19,$0f,$58,$58,$38,$38,$06,$0f,$06,$00
   .byte $3f,$e3,$d0,$d0,$d0,$e0,$80,$00,$c2,$00,$e0,$e0,$e0,$00,$00,$00
-
-.export spritesheet1_Thoguth_chr
 spritesheet1_Thoguth_chr:
   .word $0710
   .byte $00,$3f,$3f,$1b,$19,$3a,$3b,$7b,$00,$00,$1b,$04,$06,$15,$14,$34
@@ -599,8 +571,6 @@ spritesheet1_Thoguth_chr:
   .byte $00,$00,$00,$00,$80,$c0,$40,$80,$00,$00,$00,$00,$80,$c0,$c0,$80
   .byte $d1,$d9,$53,$52,$39,$08,$08,$08,$b1,$b9,$73,$73,$39,$08,$08,$08
   .byte $c0,$40,$c0,$80,$80,$c0,$e0,$20,$c0,$c0,$c0,$80,$80,$c0,$e0,$20
-
-.export spritesheet1_GrubselimBoj_chr
 spritesheet1_GrubselimBoj_chr:
   .word $0140
   .byte $3f,$3f,$fe,$f5,$ed,$f4,$7f,$3f,$00,$07,$3f,$7e,$7e,$3f,$1f,$00
@@ -623,8 +593,6 @@ spritesheet1_GrubselimBoj_chr:
   .byte $00,$07,$1f,$7c,$f0,$e0,$00,$ff,$ff,$f8,$e0,$83,$0f,$1f,$ff,$00
   .byte $00,$fe,$ff,$07,$70,$d8,$00,$ff,$ff,$01,$00,$f8,$8f,$27,$ff,$00
   .byte $20,$10,$8c,$e0,$fa,$38,$1d,$fe,$c0,$e0,$70,$1c,$04,$c6,$e2,$00
-
-.export spritesheet1_bigfireball_chr
 spritesheet1_bigfireball_chr:
   .word $00C0
   .byte $87,$df,$fb,$bb,$99,$44,$3b,$93,$84,$58,$25,$46,$67,$3f,$0e,$8c
@@ -639,8 +607,6 @@ spritesheet1_bigfireball_chr:
   .byte $00,$00,$10,$60,$c0,$d0,$70,$90,$00,$00,$10,$60,$88,$fc,$90,$e0
   .byte $4e,$1f,$1f,$07,$06,$04,$00,$00,$6d,$15,$1f,$0a,$06,$04,$00,$00
   .byte $f8,$bc,$e0,$f0,$10,$40,$00,$00,$28,$7c,$b0,$f0,$30,$40,$00,$00
-
-.export spritesheet1_statue_chr
 spritesheet1_statue_chr:
   .word $00D0
   .byte $00,$00,$60,$90,$a8,$a4,$b2,$bb,$00,$00,$00,$60,$50,$58,$4c,$44
@@ -656,8 +622,6 @@ spritesheet1_statue_chr:
   .byte $be,$90,$88,$bf,$9c,$9c,$c8,$a7,$41,$6f,$77,$40,$6b,$6b,$37,$58
   .byte $fa,$21,$43,$f3,$e1,$e1,$4f,$89,$04,$de,$bc,$0c,$5e,$5e,$b0,$76
   .byte $87,$43,$78,$95,$93,$d7,$be,$bd,$7b,$3c,$07,$7a,$7c,$69,$63,$63
-
-.export spritesheet1_raven_chr
 spritesheet1_raven_chr:
   .word $02B0
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00

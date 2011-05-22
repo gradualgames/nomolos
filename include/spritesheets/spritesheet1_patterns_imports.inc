@@ -1,25 +1,30 @@
-.import spritesheet1_Nomolos_chr
-.import spritesheet1_Deentle_chr
-.import spritesheet1_Explosion_chr
-.import spritesheet1_Beedie_chr
-.import spritesheet1_Grank_chr
-.import spritesheet1_Skelekin_chr
-.import spritesheet1_Bat_chr
-.import spritesheet1_Snuffer_chr
-.import spritesheet1_Owl_chr
-.import spritesheet1_Batree_chr
-.import spritesheet1_Snail_chr
-.import spritesheet1_Dragon_chr
-.import spritesheet1_IceBall_chr
-.import spritesheet1_Shark_chr
-.import spritesheet1_Stalactite_chr
-.import spritesheet1_DragonFace_chr
-.import spritesheet1_FireGuy_chr
-.import spritesheet1_Phoenix_chr
-.import spritesheet1_Fireball_chr
-.import spritesheet1_Snake_chr
-.import spritesheet1_Thoguth_chr
-.import spritesheet1_GrubselimBoj_chr
-.import spritesheet1_bigfireball_chr
-.import spritesheet1_statue_chr
-.import spritesheet1_raven_chr
+.ifndef SPRITESHEET1_PATTERNS_IMPORTS_INC
+SPRITESHEET1_PATTERNS_IMPORTS_INC = 1
+
+.global spritesheet1_Nomolos_chr
+.global spritesheet1_Deentle_chr
+.global spritesheet1_Explosion_chr
+.global spritesheet1_Beedie_chr
+.global spritesheet1_Grank_chr
+.global spritesheet1_Skelekin_chr
+.global spritesheet1_Bat_chr
+.global spritesheet1_Snuffer_chr
+.global spritesheet1_Owl_chr
+.global spritesheet1_Batree_chr
+.global spritesheet1_Snail_chr
+.global spritesheet1_Dragon_chr
+.global spritesheet1_IceBall_chr
+.global spritesheet1_Shark_chr
+.global spritesheet1_Stalactite_chr
+.global spritesheet1_DragonFace_chr
+.global spritesheet1_FireGuy_chr
+.global spritesheet1_Phoenix_chr
+.global spritesheet1_Fireball_chr
+.global spritesheet1_Snake_chr
+.global spritesheet1_Thoguth_chr
+.global spritesheet1_GrubselimBoj_chr
+.global spritesheet1_bigfireball_chr
+.global spritesheet1_statue_chr
+.global spritesheet1_raven_chr
+
+.endif
