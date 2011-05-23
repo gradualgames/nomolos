@@ -251,9 +251,9 @@ raven_draw:
   jsr entity_test_death_zone
   beq killRaven
 
-  lda #<spritesheet1_raven_fly
+  lda #<spritesheet2_raven_fly
   sta entity_locals+raven_locals::anim_address,x
-  lda #>spritesheet1_raven_fly
+  lda #>spritesheet2_raven_fly
   sta entity_locals+raven_locals::anim_address+1,x
   ;load raven width and height
   lda #RAVEN_WIDTH
@@ -265,9 +265,9 @@ raven_draw:
   bne :+
 
   jsr nomolos_hurt
-  lda #<spritesheet1_raven_fly
+  lda #<spritesheet2_raven_fly
   sta entity_locals+raven_locals::anim_address,x
-  lda #>spritesheet1_raven_fly
+  lda #>spritesheet2_raven_fly
   sta entity_locals+raven_locals::anim_address+1,x
 
   jsr entity_reset_anim

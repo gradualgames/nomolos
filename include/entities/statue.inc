@@ -42,9 +42,9 @@ statue_sit_there:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  lda #<spritesheet1_statue0
+  lda #<spritesheet2_statue0
   sta w0
-  lda #>spritesheet1_statue0
+  lda #>spritesheet2_statue0
   sta w0+1
 
   lda entity_screen_x

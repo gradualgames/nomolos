@@ -15,14 +15,7 @@ SPRITESHEET1_PATTERNS_IMPORTS_INC = 1
 .global spritesheet1_Shark_chr
 .global spritesheet1_Stalactite_chr
 .global spritesheet1_DragonFace_chr
-.global spritesheet1_FireGuy_chr
-.global spritesheet1_Phoenix_chr
-.global spritesheet1_Fireball_chr
-.global spritesheet1_Snake_chr
-.global spritesheet1_Thoguth_chr
 .global spritesheet1_GrubselimBoj_chr
 .global spritesheet1_bigfireball_chr
-.global spritesheet1_statue_chr
-.global spritesheet1_raven_chr
 
 .endif

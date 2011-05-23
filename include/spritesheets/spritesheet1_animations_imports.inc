@@ -15,13 +15,6 @@ SPRITESHEET1_ANIMATIONS_IMPORTS_INC = 1
 .global spritesheet1_DragonFly
 .global spritesheet1_IceBallFly
 .global spritesheet1_SharkLeap
-.global spritesheet1_PhoenixFly
-.global spritesheet1_FireballFly
-.global spritesheet1_SnakeSlither
-.global spritesheet1_ThoguthMarch
-.global spritesheet1_ThoguthHammerfall
-.global spritesheet1_ThoguthLightning
 .global spritesheet1_bigfireballfly
-.global spritesheet1_raven_fly
 
 .endif

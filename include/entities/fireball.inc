@@ -146,9 +146,9 @@ nomolosNotAttacking:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  lda #<spritesheet1_FireballFly
+  lda #<spritesheet2_FireballFly
   sta w2
-  lda #>spritesheet1_FireballFly
+  lda #>spritesheet2_FireballFly
   sta w2+1
   lda #0
   sta b2

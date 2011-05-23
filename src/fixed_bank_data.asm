@@ -1,3 +1,6 @@
+.include "spritesheet_common.inc"
+.include "spritesheet1.inc"
+.include "spritesheet2.inc"
 .include "level1.inc"
 .include "level1_2.inc"
 .include "level2.inc"
@@ -310,11 +313,11 @@ level_2_2_data:
 
 ;ROM definition table
 boss_2_data:
-  .byte spritesheet_1_bank
+  .byte spritesheet_2_bank
   .byte boss2_bank
   .byte level_2_patterns_bank
   .word level2_patterns
-  .byte spritesheet_1_patterns_bank
+  .byte spritesheet_2_patterns_bank
   .word boss2_sprite_groups
   .word 0 ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
@@ -542,11 +545,11 @@ boss_1_data:
 
 ;ROM definition table
 level_4_1_data:
-  .byte spritesheet_1_bank
+  .byte spritesheet_2_bank
   .byte level_4_bank
   .byte level_4_patterns_bank
   .word level4_patterns
-  .byte spritesheet_1_patterns_bank
+  .byte spritesheet_2_patterns_bank
   .word level4_sprite_groups
   .word 0  ;level4_cycling_palettes ;cycling_palette_address
   .byte 0  ;cycling_palette_speed
@@ -600,11 +603,11 @@ level_4_1_data:
   
 ;ROM definition table
 level_4_2_data:
-  .byte spritesheet_1_bank
+  .byte spritesheet_2_bank
   .byte level_4_bank
   .byte level_4_patterns_bank
   .word level4_patterns
-  .byte spritesheet_1_patterns_bank
+  .byte spritesheet_2_patterns_bank
   .word level4_sprite_groups
   .word 0  ;level4_cycling_palettes ;cycling_palette_address
   .byte 0  ;cycling_palette_speed
@@ -716,11 +719,11 @@ boss_3_data:
 
 ;ROM definition table
 level_5_1_data:
-  .byte spritesheet_1_bank
+  .byte spritesheet_2_bank
   .byte level_5_bank
   .byte level_5_patterns_bank
   .word level5_patterns
-  .byte spritesheet_1_patterns_bank
+  .byte spritesheet_2_patterns_bank
   .word level5_sprite_groups
   .word 0  ;level5_cycling_palettes ;cycling_palette_address
   .byte 0  ;cycling_palette_speed

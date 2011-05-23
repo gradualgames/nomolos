@@ -1,6 +1,6 @@
 .include "soundengine.inc"
 .include "spritesheet_common.inc"
-.include "spritesheet1.inc"
+.include "spritesheet2.inc"
 .include "entities.inc"
 .include "fixed_bank_data.inc"
 .include "sound_effects.inc"
@@ -11,8 +11,8 @@
 level5_sprite_groups:
   .byte $04
   .word spritesheet_common_Nomolos_chr
-  .word spritesheet1_statue_chr
-  .word spritesheet1_raven_chr
+  .word spritesheet2_statue_chr
+  .word spritesheet2_raven_chr
   .word spritesheet_common_Explosion_chr
 
 .segment "ROM09"

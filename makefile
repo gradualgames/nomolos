@@ -34,6 +34,7 @@ FILES           = zp \
                   entities \
                   spritesheet_common \
                   spritesheet1 \
+                  spritesheet2 \
                   load_level_state \
                   play_level_state \
                   level_in_state \

@@ -735,15 +735,15 @@ entity_not_flashing:
   cmp #THOGUTH_SLAMSTATE
   beq set_jump_animation
 set_march_animation:
-  lda #<spritesheet1_ThoguthMarch
+  lda #<spritesheet2_ThoguthMarch
   sta w2
-  lda #>spritesheet1_ThoguthMarch
+  lda #>spritesheet2_ThoguthMarch
   sta w2+1
   jmp state_test_done
 set_jump_animation:
-  lda #<spritesheet1_ThoguthHammerfall
+  lda #<spritesheet2_ThoguthHammerfall
   sta w2
-  lda #>spritesheet1_ThoguthHammerfall
+  lda #>spritesheet2_ThoguthHammerfall
   sta w2+1
 state_test_done:
   lda entity_locals+thoguth_locals::direction,x

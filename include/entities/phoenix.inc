@@ -379,9 +379,9 @@ phoenix_draw:
   jsr entity_test_death_zone
   beq kill_phoenix
 
-  lda #<spritesheet1_PhoenixFly
+  lda #<spritesheet2_PhoenixFly
   sta entity_locals+phoenix_locals::anim_index,x
-  lda #>spritesheet1_PhoenixFly
+  lda #>spritesheet2_PhoenixFly
   sta entity_locals+phoenix_locals::anim_index+1,x
   ;load phoenix width and height
   lda #PHOENIX_WIDTH
@@ -393,9 +393,9 @@ phoenix_draw:
   bne :+
 
   jsr nomolos_hurt
-  lda #<spritesheet1_PhoenixFly
+  lda #<spritesheet2_PhoenixFly
   sta entity_locals+phoenix_locals::anim_index,x
-  lda #>spritesheet1_PhoenixFly
+  lda #>spritesheet2_PhoenixFly
   sta entity_locals+phoenix_locals::anim_index+1,x
 
   jsr entity_reset_anim

@@ -89,57 +89,10 @@ spritesheet1_SharkLeap:
   .word spritesheet1_Shark2
   .word $0000
 
-spritesheet1_PhoenixFly:
-  .byte $0a
-  .word spritesheet1_Phoenix0
-  .word spritesheet1_Phoenix1
-  .word $0000
-
-spritesheet1_FireballFly:
-  .byte $02
-  .word spritesheet1_Fireball2
-  .word spritesheet1_Fireball1
-  .word spritesheet1_Fireball0
-  .word spritesheet1_Fireball1
-  .word $0000
-
-spritesheet1_SnakeSlither:
-  .byte $14
-  .word spritesheet1_Snake0
-  .word spritesheet1_Snake1
-  .word $0000
-
-spritesheet1_ThoguthMarch:
-  .byte $0a
-  .word spritesheet1_ThoguthMarch0
-  .word spritesheet1_ThoguthMarch1
-  .word spritesheet1_ThoguthMarch0
-  .word spritesheet1_ThoguthMarch2
-  .word $0000
-
-spritesheet1_ThoguthHammerfall:
-  .byte 20
-  .word spritesheet1_ThoguthHammerfall0
-  .word spritesheet1_ThoguthHammerfall1
-  .word spritesheet1_ThoguthHammerfall2
-  .word $0000
-
-spritesheet1_ThoguthLightning:
-  .byte $03
-  .word spritesheet1_ThoguthLightning0
-  .word spritesheet1_ThoguthLightning1
-  .word $0000
-
 spritesheet1_bigfireballfly:
   .byte $02
   .word spritesheet1_bigfireball2
   .word spritesheet1_bigfireball1
   .word spritesheet1_bigfireball0
   .word spritesheet1_bigfireball1
-  .word $0000
-
-spritesheet1_raven_fly:
-  .byte $0a
-  .word spritesheet1_raven1
-  .word spritesheet1_raven2
   .word $0000

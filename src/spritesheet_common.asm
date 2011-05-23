@@ -11,11 +11,18 @@
 .include "entity.inc"
 .include "camera.inc"
 .include "sprite.inc"
-
-.segment "ROM14"
-
-.include "spritesheet_common_patterns_source.inc"
+.include "play_level_state.inc"
+.include "sound_effects.inc"
+.include "entities.inc"
 
 .segment "CODE"
 .include "spritesheet_common_sprites_source.inc"
 .include "spritesheet_common_animations_source.inc"
+
+.include "oneup.inc"
+.include "exitentity.inc"
+.include "mouse.inc"
+.include "explosion.inc"
+.include "spearitem.inc"
+.include "flailitem.inc"
+.include "restart.inc"

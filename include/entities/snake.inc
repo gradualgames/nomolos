@@ -253,9 +253,9 @@ nomolosNotAttacking:
   lda (base_address_rom_definition_table),y
   sta sprite_group_offset
 
-  lda #<spritesheet1_SnakeSlither
+  lda #<spritesheet2_SnakeSlither
   sta w2
-  lda #>spritesheet1_SnakeSlither
+  lda #>spritesheet2_SnakeSlither
   sta w2+1
   lda entity_locals+snake_locals::direction,x
   cmp #0

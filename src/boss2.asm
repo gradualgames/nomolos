@@ -1,6 +1,6 @@
 .include "soundengine.inc"
 .include "spritesheet_common.inc"
-.include "spritesheet1.inc"
+.include "spritesheet2.inc"
 .include "entities.inc"
 .include "fixed_bank_data.inc"
 .include "sound_effects.inc"
@@ -12,7 +12,7 @@ boss2_sprite_groups:
   .byte $03
   .word spritesheet_common_Nomolos_chr
   .word spritesheet_common_Explosion_chr
-  .word spritesheet1_Thoguth_chr
+  .word spritesheet2_Thoguth_chr
 
 .segment "ROM02"
 

@@ -285,15 +285,15 @@ fireguy_direction_test_done:
   cmp #FIREGUY_STOPSTATE
   beq not_stop_state
 move_state:
-  lda #<spritesheet1_FireGuy0
+  lda #<spritesheet2_FireGuy0
   sta w0
-  lda #>spritesheet1_FireGuy0
+  lda #>spritesheet2_FireGuy0
   sta w0+1
   jmp fireguy_state_test_done
 not_stop_state:
-  lda #<spritesheet1_FireGuy1
+  lda #<spritesheet2_FireGuy1
   sta w0
-  lda #>spritesheet1_FireGuy1
+  lda #>spritesheet2_FireGuy1
   sta w0+1
 fireguy_state_test_done:
   

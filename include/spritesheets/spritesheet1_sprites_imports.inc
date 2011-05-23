@@ -31,23 +31,6 @@ SPRITESHEET1_SPRITES_IMPORTS_INC = 1
 .global spritesheet1_Stalactite0
 .global spritesheet1_DragonFace0
 .global spritesheet1_DragonFace1
-.global spritesheet1_FireGuy0
-.global spritesheet1_FireGuy1
-.global spritesheet1_Phoenix0
-.global spritesheet1_Phoenix1
-.global spritesheet1_Fireball0
-.global spritesheet1_Fireball1
-.global spritesheet1_Fireball2
-.global spritesheet1_Snake0
-.global spritesheet1_Snake1
-.global spritesheet1_ThoguthMarch0
-.global spritesheet1_ThoguthMarch1
-.global spritesheet1_ThoguthMarch2
-.global spritesheet1_ThoguthHammerfall0
-.global spritesheet1_ThoguthHammerfall1
-.global spritesheet1_ThoguthHammerfall2
-.global spritesheet1_ThoguthLightning0
-.global spritesheet1_ThoguthLightning1
 .global spritesheet1_GrubselimBojEyes0
 .global spritesheet1_GrubselimBojEyes1
 .global spritesheet1_GrubselimBojMouth0
@@ -55,10 +38,5 @@ SPRITESHEET1_SPRITES_IMPORTS_INC = 1
 .global spritesheet1_bigfireball0
 .global spritesheet1_bigfireball1
 .global spritesheet1_bigfireball2
-.global spritesheet1_statue0
-.global spritesheet1_statue1
-.global spritesheet1_raven0
-.global spritesheet1_raven1
-.global spritesheet1_raven2
 
 .endif
