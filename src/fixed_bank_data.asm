@@ -134,6 +134,8 @@ level_1_1_data:
   .byte 0 ;level1_sprites_bigfireball_chr_index
   .byte 0 ;level1_sprites_statue_chr_index
   .byte 0 ;level1_sprites_raven_chr_index
+  .byte 0 ;level1_sprites_sheep_chr_index
+  .byte 0 ;level1_sprites_bee_chr_index
 
 ;ROM definition table
 level_1_2_data:
@@ -194,7 +196,9 @@ level_1_2_data:
   .byte 0 ;level1_sprites_bigfireball_chr_index
   .byte 0 ;level1_sprites_statue_chr_index
   .byte 0 ;level1_sprites_raven_chr_index
-  
+  .byte 0 ;level1_sprites_sheep_chr_index
+  .byte 0 ;level1_sprites_bee_chr_index
+
 ;ROM definition table
 level_2_1_data:
   .byte spritesheet_1_bank
@@ -252,6 +256,8 @@ level_2_1_data:
   .byte 0 ;level2_sprites_bigfireball_chr_index
   .byte 0 ;level2_sprites_statue_chr_index
   .byte 0 ;level2_sprites_raven_chr_index
+  .byte 0 ;level2_sprites_sheep_chr_index
+  .byte 0 ;level2_sprites_bee_chr_index
 
 ;ROM definition table
 level_2_2_data:
@@ -310,6 +316,8 @@ level_2_2_data:
   .byte 0 ;level2_sprites_bigfireball_chr_index
   .byte 0 ;level2_sprites_statue_chr_index
   .byte 0 ;level2_sprites_raven_chr_index
+  .byte 0 ;level2_sprites_sheep_chr_index
+  .byte 0 ;level2_sprites_bee_chr_index
 
 ;ROM definition table
 boss_2_data:
@@ -368,7 +376,9 @@ boss_2_data:
   .byte 0 ;boss2_sprites_bigfireball_chr_index
   .byte 0 ;boss2_sprites_statue_chr_index
   .byte 0 ;boss2_sprites_raven_chr_index
-  
+  .byte 0 ;boss2_sprites_sheep_chr_index
+  .byte 0 ;boss2_sprites_bee_chr_index
+
 ;ROM definition table
 level_3_1_data:
   .byte spritesheet_1_bank
@@ -426,6 +436,8 @@ level_3_1_data:
   .byte 0 ;level3_sprites_bigfireball_chr_index
   .byte 0 ;level3_sprites_statue_chr_index
   .byte 0 ;level3_sprites_raven_chr_index
+  .byte 0 ;level3_sprites_sheep_chr_index
+  .byte 0 ;level3_sprites_bee_chr_index
 
 ;ROM definition table
 level_3_2_data:
@@ -484,6 +496,8 @@ level_3_2_data:
   .byte 0 ;level3_sprites_bigfireball_chr_index
   .byte 0 ;level3_sprites_statue_chr_index
   .byte 0 ;level3_sprites_raven_chr_index
+  .byte 0 ;level3_sprites_sheep_chr_index
+  .byte 0 ;level3_sprites_bee_chr_index
 
 ;ROM definition table
 boss_1_data:
@@ -542,6 +556,8 @@ boss_1_data:
   .byte 0 ;boss1_sprites_bigfireball_chr_index
   .byte 0 ;boss1_sprites_statue_chr_index
   .byte 0 ;boss1_sprites_raven_chr_index
+  .byte 0 ;boss1_sprites_sheep_chr_index
+  .byte 0 ;boss1_sprites_bee_chr_index
 
 ;ROM definition table
 level_4_1_data:
@@ -600,7 +616,9 @@ level_4_1_data:
   .byte 0 ;level4_sprites_bigfireball_chr_index
   .byte 0 ;level4_sprites_statue_chr_index
   .byte 0 ;level4_sprites_raven_chr_index
-  
+  .byte 0 ;level4_sprites_sheep_chr_index
+  .byte 0 ;level4_sprites_bee_chr_index
+
 ;ROM definition table
 level_4_2_data:
   .byte spritesheet_2_bank
@@ -658,7 +676,9 @@ level_4_2_data:
   .byte 0 ;level4_sprites_bigfireball_chr_index
   .byte 0 ;level4_sprites_statue_chr_index
   .byte 0 ;level4_sprites_raven_chr_index
-  
+  .byte 0 ;level4_sprites_sheep_chr_index
+  .byte 0 ;level4_sprites_bee_chr_index
+
 ;ROM definition table
 boss_3_data:
   .byte spritesheet_1_bank
@@ -716,6 +736,8 @@ boss_3_data:
   .byte boss3_sprites_bigfireball_chr_index
   .byte 0 ;boss3_sprites_statue_chr_index
   .byte 0 ;boss3_sprites_raven_chr_index
+  .byte 0 ;boss3_sprites_sheep_chr_index
+  .byte 0 ;boss3_sprites_bee_chr_index
 
 ;ROM definition table
 level_5_1_data:
@@ -774,7 +796,9 @@ level_5_1_data:
   .byte 0 ;level5_sprites_bigfireball_chr_index
   .byte level5_sprites_statue_chr_index
   .byte level5_sprites_raven_chr_index
-  
+  .byte level5_sprites_sheep_chr_index
+  .byte level5_sprites_bee_chr_index
+
 ;Entities
 entity_definition_table:
   .word deentle_update
@@ -872,6 +896,12 @@ entity_definition_table:
   .byte $00
   .word raven_update
   .byte $01
+  .byte $00
+  .word sheep_update
+  .byte $01
+  .byte $00
+  .word bee_update
+  .byte $05
   .byte $00
   
 ;miscellaneous data

@@ -18,5 +18,7 @@ level5_sprites_Nomolos_chr_index = 0
 level5_sprites_statue_chr_index = level5_sprites_Nomolos_chr_index+Nomolos_chr_size
 level5_sprites_raven_chr_index = level5_sprites_statue_chr_index+statue_chr_size
 level5_sprites_Explosion_chr_index = level5_sprites_raven_chr_index+raven_chr_size
+level5_sprites_sheep_chr_index = level5_sprites_Explosion_chr_index+Explosion_chr_size
+level5_sprites_bee_chr_index = level5_sprites_sheep_chr_index+sheep_chr_size
 
 .endif

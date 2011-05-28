@@ -25,5 +25,7 @@ Thoguth_chr_size = 45
 bigfireball_chr_size = 12
 statue_chr_size = 13
 raven_chr_size = 43
+sheep_chr_size = 35
+bee_chr_size = 21
 
 .endif

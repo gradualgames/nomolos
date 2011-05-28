@@ -46,3 +46,17 @@ spritesheet2_raven_fly:
   .word spritesheet2_raven1
   .word spritesheet2_raven2
   .word $0000
+
+spritesheet2_SheepButt:
+  .byte $0a
+  .word spritesheet2_sheep0
+  .word spritesheet2_sheep1
+  .word spritesheet2_sheep2
+  .word $0000
+
+spritesheet2_BeeFly:
+  .byte $0a
+  .word spritesheet2_bee1
+  .word spritesheet2_bee2
+  .word $0000
+

@@ -47,3 +47,5 @@
 .include "lightningbolt.inc"
 .include "statue.inc"
 .include "raven.inc"
+.include "sheep.inc"
+.include "bee.inc"

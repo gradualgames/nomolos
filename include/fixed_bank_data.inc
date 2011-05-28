@@ -117,6 +117,8 @@ index_continue_end_state   = 4 * 4
   bigfireball_offset .byte
   statue_offset .byte
   raven_offset .byte
+  sheep_offset .byte
+  bee_offset .byte
 
 .endstruct
 

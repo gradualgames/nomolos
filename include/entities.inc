@@ -33,6 +33,8 @@ ENTITIES_INC = 1
 .global bigfireball_update
 .global statue_update
 .global raven_update
+.global sheep_update
+.global bee_update
 
 ;entity indices
 entity_index_deentle = 1
@@ -67,6 +69,8 @@ entity_index_grubselimboj = 29
 entity_index_bigfireball = 30
 entity_index_statue = 31
 entity_index_raven = 32
+entity_index_sheep = 33
+entity_index_bee = 34
 
 ;entity structs. Only parameterizable entities have structs here.
 .struct iceball_locals

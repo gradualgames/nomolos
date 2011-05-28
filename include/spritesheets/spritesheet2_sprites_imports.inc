@@ -23,5 +23,11 @@ SPRITESHEET2_SPRITES_IMPORTS_INC = 1
 .global spritesheet2_raven0
 .global spritesheet2_raven1
 .global spritesheet2_raven2
+.global spritesheet2_sheep0
+.global spritesheet2_sheep1
+.global spritesheet2_sheep2
+.global spritesheet2_bee0
+.global spritesheet2_bee1
+.global spritesheet2_bee2
 
 .endif
