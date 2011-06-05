@@ -171,6 +171,45 @@
 
   rts
 .endproc
+
+;a 1 dimensional intersection comparison
+;line A:
+;b2 - left x
+;b3 - right x
+;line B:
+;b4 - left x
+;b5 - right x
+;Z - true = intersection, false = no intersection
+.export geotests_compare_range
+.proc geotests_compare_range
+
+  ;load right of rectA
+  lda b3
+  sec
+  ;subtract left of rectB
+  sbc b4
+  bpl :+
+  ;clear zero flag
+  lda #$ff
+  rts
+:
+  ;load left of rectA
+  lda b2
+  sec
+  ;subtract right of rectB
+  sbc b5
+  bmi :+
+  lda #$ff
+  rts
+:
+
+  ;set zero flag
+  lda #0
+
+  rts
+
+.endproc
+
 ;// check if 2 rectangles intersect
 ;inline bool RectRectIntersection(const fRECT& rect1, const fRECT& rect2)
 ;{

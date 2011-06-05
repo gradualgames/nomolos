@@ -3,5 +3,6 @@ GEOTESTS_INC = 1
 
 .import geotests_rect_in_rect
 .import geotests_rect_in_rect_16bit
+.import geotests_compare_range
 
 .endif
