@@ -66,7 +66,7 @@ statue_jump_handler:
   bpl stopAccelerating
   clc
   lda entity_locals+statue_locals::y_velocity,x
-  adc #$20
+  adc #$40
   sta entity_locals+statue_locals::y_velocity,x
   lda entity_locals+statue_locals::y_velocity+1,x
   adc #0
@@ -180,7 +180,7 @@ statue_sit_there_handler:
   ;initialize the jump state
   lda #$0a
   sta entity_locals+statue_locals::y_velocity,x
-  lda #$fc
+  lda #$fa
   sta entity_locals+statue_locals::y_velocity+1,x
 
   lda #STATUE_JUMPSTATE
@@ -195,6 +195,24 @@ do_not_switch_to_jump_state:
 statueDie:
 
   jsr entity_kill
+
+  ;spawn an explosion entity
+  lda #entity_index_explosion
+  sta b0
+
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sta b1
+
+  jsr entity_spawn
+
   rts
 
 statue_draw:
@@ -280,6 +298,53 @@ proximity_test_done:
   sta w4+1
 
   jsr sprite_draw_metasprite_16bit
+
+  ;load statue width and height
+  lda #STATUE_WIDTH
+  sta b2
+  lda #STATUE_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
+
+  jsr nomolos_is_deadly
+  beq nomolosNotAttacking
+
+  ;load statue width and height
+  lda #STATUE_WIDTH
+  sta b2
+  lda #STATUE_HEIGHT
+  sta b3
+  jsr entity_test_collision_hitbox
+
+  bne nomolosNotAttacking
+
+  ;play a hit sound
+  txa
+  pha
+
+  lda #<hit_sound
+  sta sound_param_word_0
+  lda #>hit_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+
+  jmp statueDie
+
+nomolosNotAttacking:
 
   rts
 

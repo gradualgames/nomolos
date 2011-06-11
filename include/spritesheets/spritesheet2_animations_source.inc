@@ -55,7 +55,7 @@ spritesheet2_SheepButt:
   .word $0000
 
 spritesheet2_BeeFly:
-  .byte $0a
+  .byte $02
   .word spritesheet2_bee1
   .word spritesheet2_bee2
   .word $0000
