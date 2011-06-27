@@ -42,6 +42,8 @@ index_continue_end_state   = 4 * 4
 .global title_definition
 .global title_palette
 .global title_name_table
+.global slide1
+.global slide2
 
 .struct title
   palette_address .word

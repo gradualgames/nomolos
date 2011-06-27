@@ -3,8 +3,141 @@
 .include "fixed_bank_data.inc"
 .include "mapper.inc"
 .include "ppu.inc"
+.include "statemanager.inc"
 
 .segment "CODE"
+
+; .struct ppu_slide
+   ; palette_address .word
+   ; nametable_address .word
+   ; chr_address .word
+   ; vsyncs .byte
+   ; bank .byte
+; .endstruct
+
+;fades out, loads a palette and nametable graphics, then fades in and
+;waits a specified number of vsync's
+;expects w2 to hold address of slide parameters
+.proc ppu_show_slide
+slide_address = w2
+
+  ;switch to bank that contains slide data
+  ldy #ppu_slide::bank
+  lda (w2),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
+  ;fade out
+  jsr fade_out_palette
+
+  ;this init state should be similar to the level in state, only we won't be
+  ;clearing the nametable, we'll be loading it from a particular location.
+  wait_vblank
+
+  ;turn off nmi
+  clear_ppu_2000_bit PPU0_EXECUTE_NMI
+  ;turn off inc32, we're just loading a nametable in this state
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  ;load sprite pattern table from $1000
+  set_ppu_2000_bit PPU0_SPRITE_PATTERN_TABLE_ADDRESS
+  upload_ppu_2000
+
+  ;turn off sprite visibility
+  clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY
+  ;turn off background visibility
+  clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
+  upload_ppu_2001
+
+  ;turn off inc32
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+
+  lda #0
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
+
+  lda #<dynamic_palette
+  sta w0
+  lda #>dynamic_palette
+  sta w0+1
+
+  wait_vblank
+  jsr ppu_load_palette
+
+  ;load chr data
+  ldy #ppu_slide::chr_address
+  lda (w2),y
+  sta w0
+  iny
+  lda (w2),y
+  sta w0+1
+
+  lda #$00
+  sta ppu_2006
+  sta ppu_2006+1
+  upload_ppu_2006
+
+  jsr ppu_load_chr_amount
+
+  ;load the nametable and attribute table.
+  lda #$20
+  sta ppu_2006
+  lda #$00
+  sta ppu_2006+1
+  upload_ppu_2006
+  ldy #ppu_slide::nametable_address
+  lda (w2),y
+  sta w0
+  iny
+  lda (w2),y
+  sta w0+1
+  jsr ppu_load_name_table
+
+  ;reset scroll
+  wait_vblank
+  lda #$20
+  sta ppu_2006
+  lda #$00
+  sta ppu_2006
+  upload_ppu_2006
+
+  lda #0
+  sta ppu_2005
+  sta ppu_2005+1
+  upload_ppu_2005
+
+  ;turn on nmi
+  set_ppu_2000_bit PPU0_EXECUTE_NMI
+  upload_ppu_2000
+
+  ;turn sprite and background visibility on
+  set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
+  set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
+  upload_ppu_2001
+
+  ;load palette
+  ldy #ppu_slide::palette_address
+  lda (w2),y
+  sta w0
+  iny
+  lda (w2),y
+  sta w0+1
+
+  ;fade in
+  jsr fade_in_palette
+
+  ;show the slide for vsyncs vsyncs
+  ldy #ppu_slide::vsyncs
+  lda (w2),y
+  tax
+
+: wait_vblank
+  dex
+  bne :-
+
+  rts
+
+.endproc
 
 ;Copies a rectangular region of tile numbers to buffer_rectangle in zp,
 ;and buffer_rectangle_x, buffer_rectangle_y, buffer_rectangle_width,

@@ -22,6 +22,7 @@
 .include "play_level_state.inc"
 .include "zp.inc"
 .include "sound_effects.inc"
+.include "slides.inc"
 
 ;output the size of the level data struct to the console
 .out .sprintf(".sizezof(level_data_struct) is %i", .sizeof(level_data_struct))
@@ -1133,5 +1134,19 @@ title_definition:
 title_palette:
   .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
   .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
+
+slide1:
+  .word slide1_palette
+  .word slide1_nametable
+  .word slide1_chr
+  .byte 255
+  .byte 12
+
+slide2:
+  .word slide2_palette
+  .word slide2_nametable
+  .word slide2_chr
+  .byte 255
+  .byte 12
 
 .include "title_nametable_source.inc"

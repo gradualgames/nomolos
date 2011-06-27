@@ -35,6 +35,7 @@ FILES           = zp \
                   spritesheet_common \
                   spritesheet1 \
                   spritesheet2 \
+                  slides \
                   load_level_state \
                   play_level_state \
                   level_in_state \

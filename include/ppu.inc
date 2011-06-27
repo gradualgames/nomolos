@@ -1,6 +1,7 @@
 .ifndef PPU_INC
 PPU_INC = 1
 
+.global ppu_show_slide
 .global ppu_draw_rectangular_region
 .global ppu_upload_rectangular_region
 .global ppu_create_decimal_string
@@ -16,6 +17,14 @@ PPU_INC = 1
 .global ppu_load_palette
 .global ppu_load_palette_bg
 .global ppu_load_palette_spr
+
+.struct ppu_slide
+   palette_address .word
+   nametable_address .word
+   chr_address .word
+   vsyncs .byte
+   bank .byte
+.endstruct
 
 ;bit positions for PPU control register $2000
 PPU0_EXECUTE_NMI = 7

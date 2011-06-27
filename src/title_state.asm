@@ -11,6 +11,7 @@
 .include "nomolos_logic.inc"
 .include "title_state.inc"
 .include "statemanager.inc"
+.include "slides.inc"
 
 .segment "CODE"
 
@@ -296,6 +297,20 @@ select_button_not_hit:
   sta w0
   lda title_definition+title::palette_address+1
   sta w0+1
+
+  lda #<slide1
+  sta w2
+  lda #>slide1
+  sta w2+1
+
+  jsr ppu_show_slide
+
+  lda #<slide2
+  sta w2
+  lda #>slide2
+  sta w2+1
+
+  jsr ppu_show_slide
 
   jsr fade_out_palette
 
