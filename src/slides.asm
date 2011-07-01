@@ -2,6 +2,8 @@
 
 .segment "ROM12"
 
+.include "title_nametable_source.inc"
+
 slide1_palette:
   .byte $0d,$0d,$0d,$20,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
   .byte $0d,$0d,$0d,$20,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00

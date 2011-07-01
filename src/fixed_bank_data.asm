@@ -833,7 +833,8 @@ title_definition:
   .word title_palette
   .word title_nametable
   .word title_patterns
-  .byte $0E
+  .byte 14
+  .byte 12
 
 title_palette:
   .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
@@ -852,5 +853,3 @@ slide2:
   .word slide2_chr
   .byte 255
   .byte 12
-
-.include "title_nametable_source.inc"

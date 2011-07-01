@@ -122,6 +122,11 @@ title_stateRun:
   ;update sprites
   jsr sprite_update_all
 
+  ;switch to the prg bank containing the title screen
+  lda title_definition+title::nametable_bank
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   ;load the title nametable and attribute table.
   lda #$20
   sta ppu_2006

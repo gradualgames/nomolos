@@ -52,6 +52,7 @@ index_continue_end_state   = 4 * 4
   name_table_address .word
   chr_address .word
   chr_prg_rom_bank .byte
+  nametable_bank .byte
 .endstruct
 
 .struct level
