@@ -131,9 +131,10 @@ slide_address = w2
   lda (w2),y
   tax
 
-: wait_vblank
+wait_vsyncs_vblanks:
+  wait_vblank
   dex
-  bne :-
+  bne wait_vsyncs_vblanks
 
   rts
 

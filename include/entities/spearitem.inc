@@ -1,13 +1,23 @@
-.ifndef SPEARITEM_INC
-SPEARITEM_INC = 1
-
+.ifndef SPEARITEM_WIDTH
 SPEARITEM_WIDTH = $18
+.endif
+
+.ifndef SPEARITEM_HEIGHT
 SPEARITEM_HEIGHT = $08
+.endif
 
+.ifndef SPEARITEM_INITSTATE
 SPEARITEM_INITSTATE = $00
-SPEARITEM_SITTHERESTATE = $01
+.endif
 
-.proc spear_item_update
+.ifndef SPEARITEM_SITTHERESTATE
+SPEARITEM_SITTHERESTATE = $01
+.endif
+
+.ifndef spear_item_update
+spear_item_update:
+.endif
+.scope
 
   lda entity_instances+entity_instance::state,x
   cmp #SPEARITEM_INITSTATE
@@ -104,6 +114,4 @@ spearItemDie:
   jsr entity_kill
   rts
 
-.endproc
-
-.endif
+.endscope

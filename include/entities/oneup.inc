@@ -1,13 +1,23 @@
-.ifndef ONEUP_INC
-ONEUP_INC = 1
-
+.ifndef ONEUP_WIDTH
 ONEUP_WIDTH = $10
+.endif
+.ifndef ONEUP_HEIGHT
 ONEUP_HEIGHT = $08
+.endif
 
+.ifndef ONEUP_INITSTATE
 ONEUP_INITSTATE = $00
-ONEUP_SITTHERESTATE = $01
+.endif
 
-.proc oneup_update
+.ifndef ONEUP_SITTHERESTATE
+ONEUP_SITTHERESTATE = $01
+.endif
+
+.ifndef oneup_update
+oneup_update:
+.endif
+
+.scope
 
   lda entity_instances+entity_instance::state,x
   cmp #ONEUP_INITSTATE
@@ -93,6 +103,4 @@ oneUpDie:
   jsr entity_kill
   rts
 
-.endproc
-
-.endif
+.endscope

@@ -1,13 +1,23 @@
-.ifndef FLAILITEM_INC
-FLAILITEM_INC = 1
-
+.ifndef FLAILITEM_WIDTH
 FLAILITEM_WIDTH = $10
+.endif
+
+.ifndef FLAILITEM_HEIGHT
 FLAILITEM_HEIGHT = $08
+.endif
 
+.ifndef FLAILITEM_INITSTATE
 FLAILITEM_INITSTATE = $00
-FLAILITEM_SITTHERESTATE = $01
+.endif
 
-.proc flail_item_update
+.ifndef FLAILITEM_SITTHERESTATE
+FLAILITEM_SITTHERESTATE = $01
+.endif
+
+.ifndef flail_item_update
+flail_item_update:
+.endif
+.scope
 
   lda entity_instances+entity_instance::state,x
   cmp #FLAILITEM_INITSTATE
@@ -104,6 +114,4 @@ flailItemDie:
   jsr entity_kill
   rts
 
-.endproc
-
-.endif
+.endscope

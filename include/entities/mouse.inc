@@ -1,13 +1,23 @@
-.ifndef MOUSE_INC
-MOUSE_INC = 1
-
+.ifndef MOUSE_WIDTH
 MOUSE_WIDTH = $10
+.endif
+
+.ifndef MOUSE_HEIGHT
 MOUSE_HEIGHT = $08
+.endif
 
+.ifndef MOUSE_INITSTATE
 MOUSE_INITSTATE = 0
-MOUSE_SITTHERESTATE = 1
+.endif 
 
+.ifndef MOUSE_SITTHERESTATE
+MOUSE_SITTHERESTATE = 1
+.endif
+
+.ifndef mouse_update
 mouse_update:
+.endif
+.scope
 
   lda entity_instances+entity_instance::state,x
   cmp #MOUSE_INITSTATE
@@ -104,4 +114,4 @@ mouseDie:
 
   rts
 
-.endif
+.endscope

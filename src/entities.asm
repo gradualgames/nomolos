@@ -19,7 +19,29 @@
 .include "spritesheet1.inc"
 .include "spritesheet2.inc"
 
+.segment "ROM14"
+.include "spritesheet_common_patterns_source.inc"
+.include "spritesheet1_patterns_source.inc"
+
+.segment "ROM12"
+.include "spritesheet_common_patterns_source.inc"
+.include "spritesheet2_patterns_source.inc"
+
 .segment "ROM13"
+.include "spritesheet_common_sprites_source.inc"
+.include "spritesheet_common_animations_source.inc"
+
+.include "oneup.inc"
+.include "exitentity.inc"
+.include "mouse.inc"
+.include "explosion.inc"
+.include "spearitem.inc"
+.include "flailitem.inc"
+.include "restart.inc"
+
+.include "spritesheet1_sprites_source.inc"
+.include "spritesheet1_animations_source.inc"
+
 .include "deentle.inc"
 .include "beedie.inc"
 .include "grank.inc"
@@ -38,6 +60,20 @@
 .include "bigfireball.inc"
 
 .segment "ROM11"
+
+.include "spritesheet_common_sprites_source.inc"
+.include "spritesheet_common_animations_source.inc"
+
+.include "oneup.inc"
+.include "exitentity.inc"
+.include "mouse.inc"
+.include "explosion.inc"
+.include "spearitem.inc"
+.include "flailitem.inc"
+.include "restart.inc"
+
+.include "spritesheet2_sprites_source.inc"
+.include "spritesheet2_animations_source.inc"
 .include "phoenix.inc"
 .include "fireball.inc"
 .include "snake.inc"

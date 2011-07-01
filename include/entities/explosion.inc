@@ -1,13 +1,23 @@
-.ifndef EXPLOSION_INC
-EXPLOSION_INC = 1
-
+.ifndef EXPLOSION_WIDTH
 EXPLOSION_WIDTH = $10
+.endif
+
+.ifndef EXPLOSION_HEIGHT
 EXPLOSION_HEIGHT = $10
+.endif
 
+.ifndef EXPLOSION_INITSTATE
 EXPLOSION_INITSTATE = 0
-EXPLOSION_EXPLODESTATE = 1
+.endif
 
+.ifndef EXPLOSION_EXPLODESTATE
+EXPLOSION_EXPLODESTATE = 1
+.endif
+
+.ifndef explosion_update
 explosion_update:
+.endif
+.scope
 
   lda entity_instances+entity_instance::state,x
   cmp #EXPLOSION_INITSTATE
@@ -58,4 +68,4 @@ explosionDie:
 
   rts
 
-.endif
+.endscope

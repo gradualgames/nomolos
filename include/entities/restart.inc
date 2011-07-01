@@ -1,13 +1,17 @@
 .include "soundengine.inc"
 
-.ifndef RESTARTENTITY_INC
-RESTARTENTITY_INC = 1
-
+.ifndef RESTARTENTITY_WIDTH
 RESTARTENTITY_WIDTH = $10
+.endif
+
+.ifndef RESTARTENTITY_HEIGHT
 RESTARTENTITY_HEIGHT = $ff
+.endif
 
+.ifndef restart_update
 restart_update:
-
+.endif
+.scope
   ;use the restart entity's location to fill the restart point variables
   lda entity_instances+entity_instance::position_x,x
   clc
@@ -24,4 +28,4 @@ restart_update:
 
   rts
 
-.endif
+.endscope

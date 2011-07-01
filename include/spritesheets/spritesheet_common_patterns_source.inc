@@ -1,9 +1,8 @@
-.ifndef SPRITESHEET_COMMON_PATTERNS_SOURCE_INC
-SPRITESHEET_COMMON_PATTERNS_SOURCE_INC = 1
-
 .include "spritesheet_common_patterns_imports.inc"
 
+.ifndef spritesheet_common_Nomolos_chr
 spritesheet_common_Nomolos_chr:
+.endif
   .word $0830
   .byte $02,$0d,$14,$25,$27,$4f,$9f,$9e,$00,$02,$03,$02,$00,$00,$00,$01
   .byte $00,$00,$f8,$fe,$fe,$ff,$08,$0b,$00,$00,$00,$00,$00,$00,$c6,$e4
@@ -136,7 +135,9 @@ spritesheet_common_Nomolos_chr:
   .byte $00,$00,$00,$ff,$ff,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$03,$ff,$ff,$03,$00,$00,$00,$00,$00,$03,$03,$00,$00,$00
   .byte $00,$00,$ff,$fe,$fc,$f8,$00,$00,$00,$00,$00,$fc,$f8,$00,$00,$00
+.ifndef spritesheet_common_Explosion_chr
 spritesheet_common_Explosion_chr:
+.endif
   .word $00C0
   .byte $00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$00,$00,$00,$01,$03
   .byte $00,$00,$00,$00,$00,$00,$00,$80,$00,$00,$00,$00,$00,$00,$80,$c0
@@ -150,5 +151,3 @@ spritesheet_common_Explosion_chr:
   .byte $00,$00,$00,$c0,$f0,$f0,$f8,$f8,$00,$00,$c0,$f0,$f8,$f8,$fc,$fc
   .byte $1f,$1f,$0f,$0f,$03,$00,$00,$00,$3f,$3f,$1f,$1f,$0f,$03,$00,$00
   .byte $f8,$f8,$f0,$f0,$c0,$00,$00,$00,$fc,$fc,$f8,$f8,$f0,$c0,$00,$00
-
-.endif

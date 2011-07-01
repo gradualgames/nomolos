@@ -1,12 +1,18 @@
 .include "soundengine.inc"
 
-.ifndef EXITENTITY_INC
-EXITENTITY_INC = 1
-
+.ifndef EXITENTITY_WIDTH
 EXITENTITY_WIDTH = $20
-EXITENTITY_HEIGHT = $ff
+.endif
 
+.ifndef EXITENTITY_HEIGHT
+EXITENTITY_HEIGHT = $ff
+.endif
+
+.ifndef exit_level_update
 exit_level_update:
+.endif
+
+.scope
 
   jsr entity_compute_screen_coordinates
 
@@ -38,4 +44,4 @@ is_touching_nomolos:
 
   rts
 
-.endif
+.endscope
