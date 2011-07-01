@@ -9,11 +9,11 @@
 .export boss3_sprite_groups
 boss3_sprite_groups:
   .byte $05
-  .word spritesheet_common_Nomolos_chr
-  .word spritesheet_common_Explosion_chr
-  .word spritesheet1_bigfireball_chr
-  .word spritesheet1_Grank_chr
-  .word spritesheet1_GrubselimBoj_chr
+  .byte entity_index_nomolos
+  .byte entity_index_explosion
+  .byte entity_index_bigfireball
+  .byte entity_index_grank
+  .byte entity_index_grubselimboj
 
 .segment "ROM04"
   

@@ -10,12 +10,12 @@
 .export level4_sprite_groups
 level4_sprite_groups:
   .byte $06
-  .word spritesheet_common_Nomolos_chr
-  .word spritesheet_common_Explosion_chr
-  .word spritesheet2_Phoenix_chr
-  .word spritesheet2_Fireball_chr
-  .word spritesheet2_Snake_chr
-  .word spritesheet2_FireGuy_chr
+  .byte entity_index_nomolos
+  .byte entity_index_explosion
+  .byte entity_index_phoenix
+  .byte entity_index_fireball
+  .byte entity_index_snake
+  .byte entity_index_fireguy
 
 .segment "ROM09"
 

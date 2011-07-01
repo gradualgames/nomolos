@@ -10,14 +10,14 @@
 .export level3_sprite_groups
 level3_sprite_groups:
   .byte $08
-  .word spritesheet_common_Nomolos_chr
-  .word spritesheet1_Snail_chr
-  .word spritesheet_common_Explosion_chr
-  .word spritesheet1_Dragon_chr
-  .word spritesheet1_IceBall_chr
-  .word spritesheet1_Shark_chr
-  .word spritesheet1_Bat_chr
-  .word spritesheet1_Beedie_chr
+  .byte entity_index_nomolos
+  .byte entity_index_snail
+  .byte entity_index_explosion
+  .byte entity_index_dragon
+  .byte entity_index_iceball
+  .byte entity_index_shark
+  .byte entity_index_bat
+  .byte entity_index_beedie
 
 .segment "ROM08"
 

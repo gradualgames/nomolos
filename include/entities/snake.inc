@@ -249,8 +249,7 @@ snake_draw:
 
 nomolosNotAttacking:
 
-  ldy #level_data_struct::snake_offset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_snake-1)
   sta sprite_group_offset
 
   lda #<spritesheet2_SnakeSlither

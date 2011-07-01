@@ -1001,8 +1001,7 @@ dragonboss_drawface:
   lda #0
   sta b2
   
-  ldy #level_data_struct::dragonboss_offset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_dragonboss-1)
   sta sprite_group_offset
 
   ;get drawing state

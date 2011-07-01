@@ -307,8 +307,7 @@ raven_draw:
 
 nomolosNotAttacking:
 
-  ldy #level_data_struct::raven_offset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_raven-1)
   sta sprite_group_offset
 
   lda entity_locals+raven_locals::anim_address,x

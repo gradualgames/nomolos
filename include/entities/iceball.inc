@@ -97,8 +97,7 @@ iceball_fly:
   adc entity_locals+iceball_locals::y_velocity+1,x
   sta entity_instances+entity_instance::position_y+1,x
 
-  ldy #level_data_struct::ice_ball_offset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_iceball-1)
   sta sprite_group_offset
 
   lda #<spritesheet1_IceBallFly

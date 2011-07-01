@@ -10,12 +10,12 @@
 .export level5_sprite_groups
 level5_sprite_groups:
   .byte $06
-  .word spritesheet_common_Nomolos_chr
-  .word spritesheet2_statue_chr
-  .word spritesheet2_raven_chr
-  .word spritesheet_common_Explosion_chr
-  .word spritesheet2_sheep_chr
-  .word spritesheet2_bee_chr
+  .byte entity_index_nomolos
+  .byte entity_index_statue
+  .byte entity_index_raven
+  .byte entity_index_explosion
+  .byte entity_index_sheep
+  .byte entity_index_bee
 
 .segment "ROM09"
 

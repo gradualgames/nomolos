@@ -325,8 +325,7 @@ owl_draw:
 
 nomolosNotAttacking:
 
-  ldy #level_data_struct::owl_offset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_owl-1)
   sta sprite_group_offset
 
   lda entity_locals+owl_locals::anim_address,x

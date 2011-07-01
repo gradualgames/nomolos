@@ -453,8 +453,7 @@ nomolosNotAttacking:
   
 entity_not_flashing:
 
-  ldy #level_data_struct::phoenix_offset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_phoenix-1)
   sta sprite_group_offset
 
   lda entity_locals+phoenix_locals::anim_index,x

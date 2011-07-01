@@ -723,8 +723,7 @@ nomolosNotAttacking:
   
 entity_not_flashing:
 
-  ldy #level_data_struct::thoguth_offset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_thoguth-1)
   sta sprite_group_offset
 
   lda entity_instances+entity_instance::state,x

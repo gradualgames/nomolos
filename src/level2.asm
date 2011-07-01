@@ -10,13 +10,13 @@
 .export level2_sprite_groups
 level2_sprite_groups:
   .byte $07
-  .word spritesheet_common_Nomolos_chr
-  .word spritesheet1_Deentle_chr
-  .word spritesheet_common_Explosion_chr
-  .word spritesheet1_Beedie_chr
-  .word spritesheet1_Grank_chr
-  .word spritesheet1_Skelekin_chr
-  .word spritesheet1_Bat_chr
+  .byte entity_index_nomolos
+  .byte entity_index_deentle
+  .byte entity_index_explosion
+  .byte entity_index_beedie
+  .byte entity_index_grank
+  .byte entity_index_skelekin
+  .byte entity_index_bat
 
 .segment "ROM08"
 

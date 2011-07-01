@@ -12,6 +12,126 @@
 
 .segment "CODE"
 
+;loads in a set of groups of chr data (usually used as a sprite sheet)
+;expects w2 to contain the address of the list of entity def indices.
+;the group set consists of a count for the number of groups (up to 255)
+;and then word addresses thereafter.
+.proc entity_load_chr_groups
+entity_set_address = w2
+group_address = w0
+group_chr_count = w3
+previous_entity_chr_offset_index = b3
+current_entity_chr_offset_index = b4
+counter = b0
+current_chr_offset = b1
+
+  ;clear the current chr offset
+  lda #0
+  sta current_chr_offset
+
+  ;load the count
+  ldy #0
+  lda (entity_set_address),y
+  sta counter
+  iny
+
+load_next_entity:
+  ;load the next entity index and save it in x for indexing soon
+  lda (entity_set_address),y
+  tax
+  dex ;entity indices count from 1, correct for this
+  stx current_entity_chr_offset_index
+
+  ;save y
+  tya
+  pha
+
+  ;store the current_chr_offset in the corresponding entity_chr_offsets
+  ;entry
+  lda current_chr_offset
+  sta entity_chr_offsets,x
+
+  ;multiply the entity index by 2 to get the correct offset
+  lda current_entity_chr_offset_index
+  asl
+  ;look up the address of the chr data in the entity_chr_definition_table
+  tax
+  ;transfer the address of the chr data so we can load the data
+  lda entity_chr_definition_table,x
+  sta group_address
+  sta previous_entity_chr_offset_index
+  lda entity_chr_definition_table+1,x
+  sta group_address+1
+
+  ;if high byte of group address is zero, we can assume that
+  ;we can interpret this information as "use the chr offset calculated
+  ;into entity_chr_offsets at this index". This is for entities that
+  ;share chr data chunks.
+  bne is_chr_address
+
+  ;high byte of group address was zero. use the low byte as an index
+  ;into entity_chr_offsets and then copy it to the current location
+
+  ldx previous_entity_chr_offset_index
+  dex ;entity indices count from 1, correct for this
+  lda entity_chr_offsets,x
+
+  ldx current_entity_chr_offset_index
+  sta entity_chr_offsets,x
+
+  jmp entity_opcode_test_done
+
+is_chr_address:
+  ;save off chr count to use later
+  ldy #0
+  lda (group_address),y
+  sta group_chr_count
+  iny
+  lda (group_address),y
+  sta group_chr_count+1
+
+  ;do a 16 bit right shift 4 times to divide by 16,
+  ;then low byte is true nametable count.
+
+  clc
+  lsr group_chr_count+1
+  ror group_chr_count
+  lsr group_chr_count+1
+  ror group_chr_count
+  lsr group_chr_count+1
+  ror group_chr_count
+  lsr group_chr_count+1
+  ror group_chr_count
+
+  ;load the chr data
+  jsr ppu_load_chr_amount
+
+  ;if the count was not destroyed (located at group_address)
+  ;use it to add to the current_chr_offset
+  clc
+  lda current_chr_offset
+  adc group_chr_count
+  sta current_chr_offset
+
+entity_opcode_test_done:
+
+  ;restore y and increment it
+  pla
+  tay
+  iny
+
+  dec counter
+  bne load_next_entity
+
+
+;loads a specified amount of chr data into VRAM starting at the current VRAM location.
+;expects w0 to contain the address of the chr data.
+;uses w1 to contain the number of bytes to copy from this location.
+;.proc ppu_load_chr_amount
+
+  rts
+.endproc
+
 ;expects y to say how many times to permute the random
 ;number
 .proc entity_get_next_prn

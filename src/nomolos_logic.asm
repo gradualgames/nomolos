@@ -6,12 +6,14 @@
 .include "camera.inc"
 .include "soundengine.inc"
 .include "zp.inc"
+.include "ram.inc"
 .include "fixed_bank_data.inc"
 .include "nomolos_logic.inc"
 .include "controller.inc"
 .include "play_level_state.inc"
 .include "sound_effects.inc"
 .include "spritesheet_common.inc"
+.include "entities.inc"
 
 .segment "CODE"
 
@@ -1733,8 +1735,7 @@ do_not_draw_flail:
 .proc nomolos_draw
 
   ;load Nomolos' sprite group offset.
-  ldy #level_data_struct::nomolos_offset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_nomolos-1)
   sta sprite_group_offset
 
   lda nomolos_state_primary

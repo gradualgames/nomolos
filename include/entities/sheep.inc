@@ -254,8 +254,7 @@ sheep_draw:
 
 nomolosNotAttacking:
 
-  ldy #level_data_struct::sheep_offset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_sheep-1)
   sta sprite_group_offset
 
   lda entity_locals+sheep_locals::anim_address,x

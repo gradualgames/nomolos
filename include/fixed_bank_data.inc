@@ -23,6 +23,8 @@ index_load_level_state     = 2 * 4
 index_play_level_state     = 3 * 4
 index_continue_end_state   = 4 * 4
 
+.global entity_definition_table
+.global entity_chr_definition_table
 .global level_definition_table
 .global banktable
 .global haltmusic
@@ -93,34 +95,6 @@ index_continue_end_state   = 4 * 4
   entity_definition_table .word
   music .word
   next_level .byte
-  
-  nomolos_offset .byte
-  deentle_offset .byte
-  explosion_offset .byte
-  beedie_offset .byte
-  grank_offset .byte
-  BatOffset .byte
-  skelekin_offset .byte
-  batree_offset .byte
-  owl_offset .byte
-  snuffer_offset .byte
-  snail_offset .byte
-  dragon_offset .byte
-  ice_ball_offset .byte
-  shark_offset .byte
-  stalactite_offset .byte
-  dragonboss_offset .byte
-  phoenix_offset .byte
-  fireball_offset .byte
-  snake_offset .byte
-  fireguy_offset .byte
-  thoguth_offset .byte
-  grubselimboj_offset .byte
-  bigfireball_offset .byte
-  statue_offset .byte
-  raven_offset .byte
-  sheep_offset .byte
-  bee_offset .byte
 
 .endstruct
 

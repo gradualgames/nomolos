@@ -262,8 +262,7 @@ bat_draw:
 
 nomolosNotAttacking:
 
-  ldy #level_data_struct::BatOffset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_bat-1)
   sta sprite_group_offset
 
   lda #<spritesheet1_BatFly

@@ -10,11 +10,11 @@
 .export boss1_sprite_groups
 boss1_sprite_groups:
   .byte $05
-  .word spritesheet_common_Nomolos_chr
-  .word spritesheet_common_Explosion_chr
-  .word spritesheet1_IceBall_chr
-  .word spritesheet1_Stalactite_chr
-  .word spritesheet1_DragonFace_chr
+  .byte entity_index_nomolos
+  .byte entity_index_explosion
+  .byte entity_index_iceball
+  .byte entity_index_stalactite
+  .byte entity_index_dragonboss
 
 .segment "ROM08"
 

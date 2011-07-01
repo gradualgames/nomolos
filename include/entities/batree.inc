@@ -248,8 +248,7 @@ nomolos_not_attacking:
   
 entity_not_flashing:
 
-  ldy #level_data_struct::batree_offset
-  lda (base_address_rom_definition_table),y
+  lda entity_chr_offsets+(entity_index_batree-1)
   sta sprite_group_offset
 
   lda #<spritesheet1_Batree

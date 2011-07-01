@@ -156,7 +156,7 @@ load_level_stateInit:
   lda #$00
   sta $2006
 
-  jsr ppu_load_chr_groups
+  jsr entity_load_chr_groups
 
   ;load PRG bank into $8000
   ldy #level_data_struct::level_music_bank

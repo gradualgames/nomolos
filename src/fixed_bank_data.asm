@@ -110,34 +110,6 @@ level_1_1_data:
 
   .byte level_1_2_index
 
-  .byte level1_sprites_Nomolos_chr_index
-  .byte level1_sprites_Deentle_chr_index
-  .byte level1_sprites_Explosion_chr_index
-  .byte level1_sprites_Beedie_chr_index
-  .byte level1_sprites_Grank_chr_index
-  .byte level1_sprites_Bat_chr_index
-  .byte 0 ;level1_sprites_Skelekin_chr_index
-  .byte level1_sprites_Batree_chr_index
-  .byte level1_sprites_Owl_chr_index
-  .byte level1_sprites_Snuffer_chr_index
-  .byte 0 ;level1_sprites_Snail_chr_index
-  .byte 0 ;level1_sprites_Dragon_chr_index
-  .byte 0 ;level1_sprites_IceBall_chr_index
-  .byte 0 ;level1_sprites_Shark_chr_index
-  .byte 0 ;level1_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte 0 ;level1_sprites_Phoenix_chr_index
-  .byte 0 ;level1_sprites_Fireball_chr_index
-  .byte 0 ;level1_sprites_Snake_chr_index
-  .byte 0 ;level1_sprites_FireGuy_chr_index
-  .byte 0 ;level1_sprites_Thoguth_chr_index
-  .byte 0 ;level1_sprites_GrubselimBoj_chr_index
-  .byte 0 ;level1_sprites_bigfireball_chr_index
-  .byte 0 ;level1_sprites_statue_chr_index
-  .byte 0 ;level1_sprites_raven_chr_index
-  .byte 0 ;level1_sprites_sheep_chr_index
-  .byte 0 ;level1_sprites_bee_chr_index
-
 ;ROM definition table
 level_1_2_data:
   .byte spritesheet_1_bank
@@ -172,34 +144,6 @@ level_1_2_data:
 
   .byte level_2_index
 
-  .byte level1_sprites_Nomolos_chr_index
-  .byte level1_sprites_Deentle_chr_index
-  .byte level1_sprites_Explosion_chr_index
-  .byte level1_sprites_Beedie_chr_index
-  .byte level1_sprites_Grank_chr_index
-  .byte level1_sprites_Bat_chr_index
-  .byte 0 ;level1_sprites_Skelekin_chr_index
-  .byte level1_sprites_Batree_chr_index
-  .byte level1_sprites_Owl_chr_index
-  .byte level1_sprites_Snuffer_chr_index
-  .byte 0 ;level1_sprites_Snail_chr_index
-  .byte 0 ;level1_sprites_Dragon_chr_index
-  .byte 0 ;level1_sprites_IceBall_chr_index
-  .byte 0 ;level1_sprites_Shark_chr_index
-  .byte 0 ;level1_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte 0 ;level1_sprites_Phoenix_chr_index
-  .byte 0 ;level1_sprites_Fireball_chr_index
-  .byte 0 ;level1_sprites_Snake_chr_index
-  .byte 0 ;level1_sprites_FireGuy_chr_index
-  .byte 0 ;level1_sprites_Thoguth_chr_index
-  .byte 0 ;level1_sprites_GrubselimBoj_chr_index
-  .byte 0 ;level1_sprites_bigfireball_chr_index
-  .byte 0 ;level1_sprites_statue_chr_index
-  .byte 0 ;level1_sprites_raven_chr_index
-  .byte 0 ;level1_sprites_sheep_chr_index
-  .byte 0 ;level1_sprites_bee_chr_index
-
 ;ROM definition table
 level_2_1_data:
   .byte spritesheet_1_bank
@@ -231,34 +175,6 @@ level_2_1_data:
   .word entity_definition_table
   .word level2_music
   .byte level_2_2_index
-
-  .byte level2_sprites_Nomolos_chr_index
-  .byte level2_sprites_Deentle_chr_index
-  .byte level2_sprites_Explosion_chr_index
-  .byte level2_sprites_Beedie_chr_index
-  .byte level2_sprites_Grank_chr_index
-  .byte level2_sprites_Bat_chr_index
-  .byte level2_sprites_Skelekin_chr_index
-  .byte 0 ;level2_sprites_Batree_chr_index
-  .byte 0 ;level2_sprites_Owl_chr_index
-  .byte 0 ;level2_sprites_Snuffer_chr_index
-  .byte 0 ;level2_sprites_Snail_chr_index
-  .byte 0 ;level2_sprites_Dragon_chr_index
-  .byte 0 ;level2_sprites_IceBall_chr_index
-  .byte 0 ;level2_sprites_Shark_chr_index
-  .byte 0 ;level2_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte 0 ;level2_sprites_Phoenix_chr_index
-  .byte 0 ;level2_sprites_Fireball_chr_index
-  .byte 0 ;level2_sprites_Snake_chr_index
-  .byte 0 ;level2_sprites_FireGuy_chr_index
-  .byte 0 ;level2_sprites_Thoguth_chr_index
-  .byte 0 ;level2_sprites_GrubselimBoj_chr_index
-  .byte 0 ;level2_sprites_bigfireball_chr_index
-  .byte 0 ;level2_sprites_statue_chr_index
-  .byte 0 ;level2_sprites_raven_chr_index
-  .byte 0 ;level2_sprites_sheep_chr_index
-  .byte 0 ;level2_sprites_bee_chr_index
 
 ;ROM definition table
 level_2_2_data:
@@ -292,34 +208,6 @@ level_2_2_data:
   .word level2_2music
   .byte boss_2_index
 
-  .byte level2_2sprites_Nomolos_chr_index
-  .byte level2_2sprites_Deentle_chr_index
-  .byte level2_2sprites_Explosion_chr_index
-  .byte level2_2sprites_Beedie_chr_index
-  .byte level2_2sprites_Grank_chr_index
-  .byte level2_2sprites_Bat_chr_index
-  .byte level2_2sprites_Skelekin_chr_index
-  .byte 0 ;level2_sprites_Batree_chr_index
-  .byte 0 ;level2_sprites_Owl_chr_index
-  .byte 0 ;level2_sprites_Snuffer_chr_index
-  .byte 0 ;level2_sprites_Snail_chr_index
-  .byte 0 ;level2_sprites_Dragon_chr_index
-  .byte 0 ;level2_sprites_IceBall_chr_index
-  .byte 0 ;level2_sprites_Shark_chr_index
-  .byte 0 ;level2_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte 0 ;level2_sprites_Phoenix_chr_index
-  .byte 0 ;level2_sprites_Fireball_chr_index
-  .byte 0 ;level2_sprites_Snake_chr_index
-  .byte 0 ;level2_sprites_FireGuy_chr_index
-  .byte 0 ;level2_sprites_Thoguth_chr_index
-  .byte 0 ;level2_sprites_GrubselimBoj_chr_index
-  .byte 0 ;level2_sprites_bigfireball_chr_index
-  .byte 0 ;level2_sprites_statue_chr_index
-  .byte 0 ;level2_sprites_raven_chr_index
-  .byte 0 ;level2_sprites_sheep_chr_index
-  .byte 0 ;level2_sprites_bee_chr_index
-
 ;ROM definition table
 boss_2_data:
   .byte spritesheet_2_bank
@@ -351,34 +239,6 @@ boss_2_data:
   .word entity_definition_table
   .word boss2_music
   .byte level_3_index
-
-  .byte boss2_sprites_Nomolos_chr_index
-  .byte 0 ;boss2_sprites_Deentle_chr_index
-  .byte boss2_sprites_Explosion_chr_index
-  .byte 0 ;boss2_sprites_Beedie_chr_index
-  .byte 0 ;boss2_sprites_Grank_chr_index
-  .byte 0 ;boss2_sprites_Bat_chr_index
-  .byte 0 ;boss2_sprites_Skelekin_chr_index
-  .byte 0 ;boss2_sprites_Batree_chr_index
-  .byte 0 ;boss2_sprites_Owl_chr_index
-  .byte 0 ;boss2_sprites_Snuffer_chr_index
-  .byte 0 ;boss2_sprites_Snail_chr_index
-  .byte 0 ;boss2_sprites_Dragon_chr_index
-  .byte 0 ;boss2_sprites_IceBall_chr_index
-  .byte 0 ;boss2_sprites_Shark_chr_index
-  .byte 0 ;boss2_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte 0 ;boss2_sprites_Phoenix_chr_index
-  .byte 0 ;boss2_sprites_Fireball_chr_index
-  .byte 0 ;boss2_sprites_Snake_chr_index
-  .byte 0 ;boss2_sprites_FireGuy_chr_index
-  .byte boss2_sprites_Thoguth_chr_index
-  .byte 0 ;boss2_sprites_GrubselimBoj_chr_index
-  .byte 0 ;boss2_sprites_bigfireball_chr_index
-  .byte 0 ;boss2_sprites_statue_chr_index
-  .byte 0 ;boss2_sprites_raven_chr_index
-  .byte 0 ;boss2_sprites_sheep_chr_index
-  .byte 0 ;boss2_sprites_bee_chr_index
 
 ;ROM definition table
 level_3_1_data:
@@ -412,34 +272,6 @@ level_3_1_data:
   .word level3_music
   .byte level_3_2_index
 
-  .byte level3_sprites_Nomolos_chr_index
-  .byte 0 ;level3_sprites_Deentle_chr_index
-  .byte level3_sprites_Explosion_chr_index
-  .byte level3_sprites_Beedie_chr_index
-  .byte 0 ;level3_sprites_Grank_chr_index
-  .byte level3_sprites_Bat_chr_index
-  .byte 0 ;level3_sprites_Skelekin_chr_index
-  .byte 0 ;level3_sprites_Batree_chr_index
-  .byte 0 ;level3_sprites_Owl_chr_index
-  .byte 0 ;level3_sprites_Snuffer_chr_index
-  .byte level3_sprites_Snail_chr_index
-  .byte level3_sprites_Dragon_chr_index
-  .byte level3_sprites_IceBall_chr_index
-  .byte level3_sprites_Shark_chr_index
-  .byte 0 ;level3_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte 0 ;level3_sprites_Phoenix_chr_index
-  .byte 0 ;level3_sprites_Fireball_chr_index
-  .byte 0 ;level3_sprites_Snake_chr_index
-  .byte 0 ;level3_sprites_FireGuy_chr_index
-  .byte 0 ;level3_sprites_Thoguth_chr_index
-  .byte 0 ;level3_sprites_GrubselimBoj_chr_index
-  .byte 0 ;level3_sprites_bigfireball_chr_index
-  .byte 0 ;level3_sprites_statue_chr_index
-  .byte 0 ;level3_sprites_raven_chr_index
-  .byte 0 ;level3_sprites_sheep_chr_index
-  .byte 0 ;level3_sprites_bee_chr_index
-
 ;ROM definition table
 level_3_2_data:
   .byte spritesheet_1_bank
@@ -471,34 +303,6 @@ level_3_2_data:
   .word entity_definition_table
   .word level3_music
   .byte boss_1_index
-
-  .byte level3_sprites_Nomolos_chr_index
-  .byte 0 ;level3_sprites_Deentle_chr_index
-  .byte level3_sprites_Explosion_chr_index
-  .byte level3_sprites_Beedie_chr_index
-  .byte 0 ;level3_sprites_Grank_chr_index
-  .byte level3_sprites_Bat_chr_index
-  .byte 0 ;level3_sprites_Skelekin_chr_index
-  .byte 0 ;level3_sprites_Batree_chr_index
-  .byte 0 ;level3_sprites_Owl_chr_index
-  .byte 0 ;level3_sprites_Snuffer_chr_index
-  .byte level3_sprites_Snail_chr_index
-  .byte level3_sprites_Dragon_chr_index
-  .byte level3_sprites_IceBall_chr_index
-  .byte level3_sprites_Shark_chr_index
-  .byte 0 ;level3_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte 0 ;level3_sprites_Phoenix_chr_index
-  .byte 0 ;level3_sprites_Fireball_chr_index
-  .byte 0 ;level3_sprites_Snake_chr_index
-  .byte 0 ;level3_sprites_FireGuy_chr_index
-  .byte 0 ;level3_sprites_Thoguth_chr_index
-  .byte 0 ;level3_sprites_GrubselimBoj_chr_index
-  .byte 0 ;level3_sprites_bigfireball_chr_index
-  .byte 0 ;level3_sprites_statue_chr_index
-  .byte 0 ;level3_sprites_raven_chr_index
-  .byte 0 ;level3_sprites_sheep_chr_index
-  .byte 0 ;level3_sprites_bee_chr_index
 
 ;ROM definition table
 boss_1_data:
@@ -532,34 +336,6 @@ boss_1_data:
   .word boss1_music
   .byte level_4_index
 
-  .byte boss1_sprites_Nomolos_chr_index
-  .byte 0 ;boss1_sprites_Deentle_chr_index
-  .byte boss1_sprites_Explosion_chr_index
-  .byte 0 ;boss1_sprites_Beedie_chr_index
-  .byte 0 ;boss1_sprites_Grank_chr_index
-  .byte 0 ;boss1_sprites_Bat_chr_index
-  .byte 0 ;boss1_sprites_Skelekin_chr_index
-  .byte 0 ;boss1_sprites_Batree_chr_index
-  .byte 0 ;boss1_sprites_Owl_chr_index
-  .byte 0 ;boss1_sprites_Snuffer_chr_index
-  .byte 0 ;boss1_sprites_Snail_chr_index
-  .byte 0 ;boss1_sprites_Dragon_chr_index
-  .byte boss1_sprites_IceBall_chr_index
-  .byte 0 ;boss1_sprites_Shark_chr_index
-  .byte boss1_sprites_Stalactite_chr_index
-  .byte boss1_sprites_DragonFace_chr_index
-  .byte 0 ;boss1_sprites_Phoenix_chr_index
-  .byte 0 ;boss1_sprites_Fireball_chr_index
-  .byte 0 ;boss1_sprites_Snake_chr_index
-  .byte 0 ;boss1_sprites_FireGuy_chr_index
-  .byte 0 ;boss1_sprites_Thoguth_chr_index
-  .byte 0 ;boss1_sprites_GrubselimBoj_chr_index
-  .byte 0 ;boss1_sprites_bigfireball_chr_index
-  .byte 0 ;boss1_sprites_statue_chr_index
-  .byte 0 ;boss1_sprites_raven_chr_index
-  .byte 0 ;boss1_sprites_sheep_chr_index
-  .byte 0 ;boss1_sprites_bee_chr_index
-
 ;ROM definition table
 level_4_1_data:
   .byte spritesheet_2_bank
@@ -591,34 +367,6 @@ level_4_1_data:
   .word entity_definition_table
   .word level4_music
   .byte level_4_2_index
-
-  .byte level4_sprites_Nomolos_chr_index
-  .byte 0 ;level4_sprites_Deentle_chr_index
-  .byte level4_sprites_Explosion_chr_index
-  .byte 0 ;level4_sprites_Beedie_chr_index
-  .byte 0 ;level4_sprites_Grank_chr_index
-  .byte 0 ;level4_sprites_Bat_chr_index
-  .byte 0 ;level4_sprites_Skelekin_chr_index
-  .byte 0 ;level4_sprites_Batree_chr_index
-  .byte 0 ;level4_sprites_Owl_chr_index
-  .byte 0 ;level4_sprites_Snuffer_chr_index
-  .byte 0 ;level4_sprites_Snail_chr_index
-  .byte 0 ;level4_sprites_Dragon_chr_index
-  .byte 0 ;level4_sprites_IceBall_chr_index
-  .byte 0 ;level4_sprites_Shark_chr_index
-  .byte 0 ;level4_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte level4_sprites_Phoenix_chr_index
-  .byte level4_sprites_Fireball_chr_index
-  .byte level4_sprites_Snake_chr_index
-  .byte level4_sprites_FireGuy_chr_index
-  .byte 0 ;level4_sprites_Thoguth_chr_index
-  .byte 0 ;level4_sprites_GrubselimBoj_chr_index
-  .byte 0 ;level4_sprites_bigfireball_chr_index
-  .byte 0 ;level4_sprites_statue_chr_index
-  .byte 0 ;level4_sprites_raven_chr_index
-  .byte 0 ;level4_sprites_sheep_chr_index
-  .byte 0 ;level4_sprites_bee_chr_index
 
 ;ROM definition table
 level_4_2_data:
@@ -652,34 +400,6 @@ level_4_2_data:
   .word level4_music
   .byte boss_3_index
 
-  .byte level4_sprites_Nomolos_chr_index
-  .byte 0 ;level4_sprites_Deentle_chr_index
-  .byte level4_sprites_Explosion_chr_index
-  .byte 0 ;level4_sprites_Beedie_chr_index
-  .byte 0 ;level4_sprites_Grank_chr_index
-  .byte 0 ;level4_sprites_Bat_chr_index
-  .byte 0 ;level4_sprites_Skelekin_chr_index
-  .byte 0 ;level4_sprites_Batree_chr_index
-  .byte 0 ;level4_sprites_Owl_chr_index
-  .byte 0 ;level4_sprites_Snuffer_chr_index
-  .byte 0 ;level4_sprites_Snail_chr_index
-  .byte 0 ;level4_sprites_Dragon_chr_index
-  .byte 0 ;level4_sprites_IceBall_chr_index
-  .byte 0 ;level4_sprites_Shark_chr_index
-  .byte 0 ;level4_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte level4_sprites_Phoenix_chr_index
-  .byte level4_sprites_Fireball_chr_index
-  .byte level4_sprites_Snake_chr_index
-  .byte level4_sprites_FireGuy_chr_index
-  .byte 0 ;level4_sprites_Thoguth_chr_index
-  .byte 0 ;level4_sprites_GrubselimBoj_chr_index
-  .byte 0 ;level4_sprites_bigfireball_chr_index
-  .byte 0 ;level4_sprites_statue_chr_index
-  .byte 0 ;level4_sprites_raven_chr_index
-  .byte 0 ;level4_sprites_sheep_chr_index
-  .byte 0 ;level4_sprites_bee_chr_index
-
 ;ROM definition table
 boss_3_data:
   .byte spritesheet_1_bank
@@ -711,34 +431,6 @@ boss_3_data:
   .word entity_definition_table
   .word boss3_music
   .byte level_5_1_index
-
-  .byte boss3_sprites_Nomolos_chr_index
-  .byte 0 ;boss3_sprites_Deentle_chr_index
-  .byte boss3_sprites_Explosion_chr_index
-  .byte 0 ;boss3_sprites_Beedie_chr_index
-  .byte boss3_sprites_Grank_chr_index
-  .byte 0 ;boss3_sprites_Bat_chr_index
-  .byte 0 ;boss3_sprites_Skelekin_chr_index
-  .byte 0 ;boss3_sprites_Batree_chr_index
-  .byte 0 ;boss3_sprites_Owl_chr_index
-  .byte 0 ;boss3_sprites_Snuffer_chr_index
-  .byte 0 ;boss3_sprites_Snail_chr_index
-  .byte 0 ;boss3_sprites_Dragon_chr_index
-  .byte 0 ;boss3_sprites_IceBall_chr_index
-  .byte 0 ;boss3_sprites_Shark_chr_index
-  .byte 0 ;boss3_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte 0 ;boss3_sprites_Phoenix_chr_index
-  .byte 0 ;boss3_sprites_Fireball_chr_index
-  .byte 0 ;boss3_sprites_Snake_chr_index
-  .byte 0 ;boss3_sprites_FireGuy_chr_index
-  .byte 0 ;boss3_sprites_Thoguth_chr_index
-  .byte boss3_sprites_GrubselimBoj_chr_index
-  .byte boss3_sprites_bigfireball_chr_index
-  .byte 0 ;boss3_sprites_statue_chr_index
-  .byte 0 ;boss3_sprites_raven_chr_index
-  .byte 0 ;boss3_sprites_sheep_chr_index
-  .byte 0 ;boss3_sprites_bee_chr_index
 
 ;ROM definition table
 level_5_1_data:
@@ -772,36 +464,11 @@ level_5_1_data:
   .word level5_music
   .byte level_1_index
 
-  .byte level5_sprites_Nomolos_chr_index
-  .byte 0 ;level5_sprites_Deentle_chr_index
-  .byte level5_sprites_Explosion_chr_index
-  .byte 0 ;level5_sprites_Beedie_chr_index
-  .byte 0 ;level5_sprites_Grank_chr_index
-  .byte 0 ;level5_sprites_Bat_chr_index
-  .byte 0 ;level5_sprites_Skelekin_chr_index
-  .byte 0 ;level5_sprites_Batree_chr_index
-  .byte 0 ;level5_sprites_Owl_chr_index
-  .byte 0 ;level5_sprites_Snuffer_chr_index
-  .byte 0 ;level5_sprites_Snail_chr_index
-  .byte 0 ;level5_sprites_Dragon_chr_index
-  .byte 0 ;level5_sprites_IceBall_chr_index
-  .byte 0 ;level5_sprites_Shark_chr_index
-  .byte 0 ;level5_sprites_Stalactite_chr_index
-  .byte 0 ;dragonboss_offset
-  .byte 0 ;level5_sprites_Phoenix_chr_index
-  .byte 0 ;level5_sprites_Fireball_chr_index
-  .byte 0 ;level5_sprites_Snake_chr_index
-  .byte 0 ;level5_sprites_FireGuy_chr_index
-  .byte 0 ;level5_sprites_Thoguth_chr_index
-  .byte 0 ;level5_sprites_GrubselimBoj_chr_index
-  .byte 0 ;level5_sprites_bigfireball_chr_index
-  .byte level5_sprites_statue_chr_index
-  .byte level5_sprites_raven_chr_index
-  .byte level5_sprites_sheep_chr_index
-  .byte level5_sprites_bee_chr_index
-
 ;Entities
 entity_definition_table:
+  .word $00  ;blank entry for Nomolos, the only hard coded entity
+  .byte $00
+  .byte $00
   .word deentle_update
   .byte $05
   .byte $00
@@ -905,6 +572,43 @@ entity_definition_table:
   .byte $05
   .byte $00
   
+entity_chr_definition_table:
+  .word spritesheet_common_Nomolos_chr
+  .word spritesheet1_Deentle_chr
+  .word spritesheet_common_Explosion_chr
+  .word entity_index_nomolos ;mouse uses Nomolos chr data
+  .word 0                      ;exit entity has no chr data
+  .word entity_index_nomolos ;oneup uses Nomolos chr data
+  .word entity_index_nomolos ;flail uses Nomolos chr data
+  .word spritesheet1_Beedie_chr
+  .word spritesheet1_Grank_chr
+  .word entity_index_nomolos ;spear uses Nomolos chr data
+  .word spritesheet1_Skelekin_chr
+  .word spritesheet1_Bat_chr
+  .word spritesheet1_Batree_chr
+  .word spritesheet1_Owl_chr
+  .word spritesheet1_Snuffer_chr
+  .word spritesheet1_Snail_chr
+  .word spritesheet1_Dragon_chr
+  .word spritesheet1_IceBall_chr
+  .word spritesheet1_Shark_chr
+  .word spritesheet1_Stalactite_chr
+  .word spritesheet1_DragonFace_chr
+  .word 0 ;restart entity has no chr data
+  .word spritesheet2_Phoenix_chr
+  .word spritesheet2_Fireball_chr
+  .word spritesheet2_Snake_chr
+  .word spritesheet2_FireGuy_chr
+  .word spritesheet2_Thoguth_chr
+  .word 0 ;fireball spawner has no chr data
+  .word entity_index_thoguth ;lightning bolt shares Thoguth's chr data
+  .word spritesheet1_GrubselimBoj_chr
+  .word spritesheet1_bigfireball_chr
+  .word spritesheet2_statue_chr
+  .word spritesheet2_raven_chr
+  .word spritesheet2_sheep_chr
+  .word spritesheet2_bee_chr
+
 ;miscellaneous data
 banktable:
   .byte $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $0f
