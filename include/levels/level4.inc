@@ -4,13 +4,6 @@ LEVEL4_INC = 1
 level_4_bank = 3
 level_4_patterns_bank = 9
 
-level4_sprites_Nomolos_chr_index = 0
-level4_sprites_Explosion_chr_index = level4_sprites_Nomolos_chr_index+Nomolos_chr_size
-level4_sprites_Phoenix_chr_index = level4_sprites_Explosion_chr_index+Explosion_chr_size
-level4_sprites_Fireball_chr_index = level4_sprites_Phoenix_chr_index+Phoenix_chr_size
-level4_sprites_Snake_chr_index = level4_sprites_Fireball_chr_index+Fireball_chr_size
-level4_sprites_FireGuy_chr_index = level4_sprites_Snake_chr_index+Snake_chr_size
-
 .include "spritesheet1.inc"
 .import level4_sprite_groups
 .import level4_patterns
