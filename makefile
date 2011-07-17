@@ -29,6 +29,7 @@ FILES           = zp \
                   level4 \
                   level4_2 \
                   level5 \
+                  level5_2 \
                   boss3 \
                   boss1 \
                   entities \

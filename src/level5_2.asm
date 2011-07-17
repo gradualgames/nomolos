@@ -1,0 +1,288 @@
+.include "soundengine.inc"
+.include "spritesheet1.inc"
+.include "entities.inc"
+.include "fixed_bank_data.inc"
+.include "sound_effects.inc"
+
+.segment "ROM04"
+
+.export level_5_2_palette
+level_5_2_palette:
+  .byte $0d,$0b,$1b,$12,$0d,$0a,$00,$2c,$0d,$07,$16,$26,$0d,$1b,$00,$10
+  .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$28,$20,$0d,$0d,$00,$29
+
+.export level_5_2_map
+level_5_2_map = Map
+
+.export level_5_2_map_column_table
+level_5_2_map_column_table = MapColumnTable
+
+.export level_5_2_attribute_column_table
+level_5_2_attribute_column_table = AttributeColumnTable
+
+.export level_5_2_meta_tile_column_table
+level_5_2_meta_tile_column_table = MetaTileColumnTable
+
+.export level_5_2_meta_tile_table
+level_5_2_meta_tile_table = MetaTileTable
+
+Map:
+  .byte $00,$01,$01,$01,$01,$01,$01,$02,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03
+  .byte $03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03,$03
+
+MapColumnTable:
+  .byte $00,$00,$01,$00
+  .byte $00,$01,$01,$00
+  .byte $01,$02,$03,$00
+  .byte $02,$04,$04,$00
+AttributeColumnTable:
+  .byte $00,$00,$00,$00,$f0,$ff,$00,$00
+  .byte $00,$00,$00,$00,$30,$33,$00,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00
+MetaTileColumnTable:
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$3c,$49,$57,$00,$00,$00,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$3d,$4a,$58,$00,$00,$00,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$3e,$4b,$59,$00,$00,$00,$00
+  .byte $77,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+MetaTileTable:
+MetaTile0:
+  .byte $00,$00,$00,$00,$00,$00,$00,$00
+MetaTile1:
+  .byte $00,$00,$00,$00,$01,$00,$04,$00
+MetaTile2:
+  .byte $00,$00,$00,$00,$00,$05,$06,$00
+MetaTile3:
+  .byte $00,$00,$00,$00,$00,$00,$07,$00
+MetaTile4:
+  .byte $00,$00,$00,$00,$02,$08,$09,$00
+MetaTile5:
+  .byte $00,$00,$00,$03,$00,$0a,$0b,$00
+MetaTile6:
+  .byte $00,$00,$00,$00,$00,$0c,$00,$00
+MetaTile7:
+  .byte $00,$00,$00,$0d,$0e,$1a,$00,$00
+MetaTile8:
+  .byte $00,$00,$00,$0f,$10,$00,$00,$00
+MetaTile9:
+  .byte $00,$00,$00,$11,$0e,$00,$00,$00
+MetaTile10:
+  .byte $00,$00,$00,$12,$13,$00,$1b,$00
+MetaTile11:
+  .byte $00,$00,$00,$14,$15,$1c,$1d,$00
+MetaTile12:
+  .byte $00,$00,$00,$16,$17,$1e,$1f,$00
+MetaTile13:
+  .byte $00,$00,$00,$16,$17,$20,$1f,$00
+MetaTile14:
+  .byte $00,$00,$00,$18,$19,$21,$22,$00
+MetaTile15:
+  .byte $00,$00,$00,$23,$24,$30,$31,$00
+MetaTile16:
+  .byte $00,$00,$00,$25,$26,$32,$33,$00
+MetaTile17:
+  .byte $01,$00,$00,$27,$28,$34,$35,$00
+MetaTile18:
+  .byte $01,$00,$00,$29,$2a,$36,$37,$00
+MetaTile19:
+  .byte $00,$00,$00,$2b,$24,$38,$31,$00
+MetaTile20:
+  .byte $00,$00,$00,$25,$26,$32,$39,$00
+MetaTile21:
+  .byte $00,$00,$00,$2c,$2d,$3a,$3b,$00
+MetaTile22:
+  .byte $00,$00,$00,$2e,$2f,$3c,$3d,$00
+MetaTile23:
+  .byte $01,$00,$00,$3e,$3f,$44,$45,$00
+MetaTile24:
+  .byte $03,$00,$00,$40,$41,$46,$47,$00
+MetaTile25:
+  .byte $01,$00,$00,$42,$43,$48,$49,$00
+MetaTile26:
+  .byte $02,$00,$00,$27,$28,$34,$35,$00
+MetaTile27:
+  .byte $02,$00,$00,$00,$00,$00,$00,$00
+MetaTile28:
+  .byte $02,$00,$00,$29,$2a,$36,$37,$00
+MetaTile29:
+  .byte $03,$00,$00,$4a,$4b,$4e,$4f,$00
+MetaTile30:
+  .byte $02,$00,$00,$3e,$3f,$44,$45,$00
+MetaTile31:
+  .byte $02,$00,$00,$40,$41,$46,$47,$00
+MetaTile32:
+  .byte $02,$00,$00,$42,$43,$48,$49,$00
+MetaTile33:
+  .byte $01,$00,$00,$52,$53,$59,$5a,$00
+MetaTile34:
+  .byte $03,$00,$00,$54,$55,$5b,$5c,$00
+MetaTile35:
+  .byte $01,$00,$00,$56,$57,$5d,$5e,$00
+MetaTile36:
+  .byte $03,$00,$00,$00,$00,$61,$62,$00
+MetaTile37:
+  .byte $02,$00,$00,$4a,$4b,$4e,$4f,$00
+MetaTile38:
+  .byte $03,$00,$01,$78,$79,$85,$86,$00
+MetaTile39:
+  .byte $03,$00,$01,$7a,$7b,$87,$88,$00
+MetaTile40:
+  .byte $03,$00,$01,$7c,$7d,$89,$8a,$00
+MetaTile41:
+  .byte $03,$00,$00,$63,$64,$6a,$6b,$00
+MetaTile42:
+  .byte $03,$00,$00,$00,$00,$00,$00,$00
+MetaTile43:
+  .byte $03,$00,$00,$68,$69,$6c,$6d,$00
+MetaTile44:
+  .byte $02,$00,$00,$52,$53,$59,$5a,$00
+MetaTile45:
+  .byte $02,$00,$00,$54,$55,$5b,$5c,$00
+MetaTile46:
+  .byte $02,$00,$00,$56,$57,$5d,$5e,$00
+MetaTile47:
+  .byte $03,$00,$00,$92,$93,$a3,$a4,$00
+MetaTile48:
+  .byte $03,$00,$00,$94,$93,$a5,$a4,$00
+MetaTile49:
+  .byte $03,$00,$00,$94,$95,$a5,$a6,$00
+MetaTile50:
+  .byte $03,$00,$00,$6e,$6f,$70,$71,$00
+MetaTile51:
+  .byte $02,$00,$00,$63,$64,$6a,$6b,$00
+MetaTile52:
+  .byte $02,$00,$00,$cc,$cd,$d1,$d2,$00
+MetaTile53:
+  .byte $03,$00,$00,$b4,$b5,$c2,$c3,$00
+MetaTile54:
+  .byte $03,$00,$00,$94,$93,$c4,$c5,$00
+MetaTile55:
+  .byte $03,$00,$00,$b6,$b7,$c6,$c7,$00
+MetaTile56:
+  .byte $02,$00,$00,$00,$00,$61,$62,$00
+MetaTile57:
+  .byte $02,$00,$00,$da,$db,$e8,$e9,$00
+MetaTile58:
+  .byte $02,$00,$00,$dc,$dd,$ea,$eb,$00
+MetaTile59:
+  .byte $03,$00,$00,$cc,$cd,$d1,$d2,$00
+MetaTile60:
+  .byte $03,$00,$01,$72,$73,$80,$81,$00
+MetaTile61:
+  .byte $03,$00,$01,$74,$75,$82,$81,$00
+MetaTile62:
+  .byte $03,$00,$01,$76,$77,$83,$84,$00
+MetaTile63:
+  .byte $01,$00,$00,$72,$73,$80,$81,$00
+MetaTile64:
+  .byte $01,$00,$00,$74,$75,$82,$81,$00
+MetaTile65:
+  .byte $01,$00,$00,$76,$77,$83,$84,$00
+MetaTile66:
+  .byte $02,$00,$00,$78,$79,$85,$86,$00
+MetaTile67:
+  .byte $02,$00,$00,$7a,$7b,$87,$88,$00
+MetaTile68:
+  .byte $02,$00,$00,$7c,$7d,$89,$8a,$00
+MetaTile69:
+  .byte $02,$00,$00,$68,$69,$6c,$6d,$00
+MetaTile70:
+  .byte $03,$00,$00,$7e,$7f,$8b,$8c,$00
+MetaTile71:
+  .byte $03,$00,$00,$da,$db,$e8,$e9,$00
+MetaTile72:
+  .byte $03,$00,$00,$dc,$dd,$ea,$eb,$00
+MetaTile73:
+  .byte $03,$00,$00,$8d,$8e,$9e,$9f,$00
+MetaTile74:
+  .byte $03,$00,$00,$8f,$90,$a0,$a1,$00
+MetaTile75:
+  .byte $03,$00,$00,$8f,$91,$a0,$a2,$00
+MetaTile76:
+  .byte $01,$00,$00,$8d,$8e,$9e,$9f,$00
+MetaTile77:
+  .byte $01,$00,$00,$8f,$90,$a0,$a1,$00
+MetaTile78:
+  .byte $01,$00,$00,$8f,$91,$a0,$a2,$00
+MetaTile79:
+  .byte $02,$00,$00,$92,$93,$a3,$a4,$00
+MetaTile80:
+  .byte $02,$00,$00,$94,$93,$a5,$a4,$00
+MetaTile81:
+  .byte $02,$00,$00,$94,$95,$a5,$a6,$00
+MetaTile82:
+  .byte $02,$00,$00,$6e,$6f,$70,$71,$00
+MetaTile83:
+  .byte $03,$00,$00,$96,$97,$a7,$a8,$00
+MetaTile84:
+  .byte $03,$00,$00,$98,$99,$a9,$aa,$00
+MetaTile85:
+  .byte $03,$00,$00,$9a,$9b,$00,$ab,$00
+MetaTile86:
+  .byte $03,$00,$00,$9c,$9d,$ac,$ad,$00
+MetaTile87:
+  .byte $03,$00,$00,$ae,$af,$bc,$bd,$00
+MetaTile88:
+  .byte $03,$00,$00,$b0,$b1,$be,$bf,$00
+MetaTile89:
+  .byte $03,$00,$00,$b2,$b3,$c0,$c1,$00
+MetaTile90:
+  .byte $01,$00,$00,$ae,$af,$bc,$bd,$00
+MetaTile91:
+  .byte $01,$00,$00,$b0,$b1,$be,$bf,$00
+MetaTile92:
+  .byte $01,$00,$00,$b2,$b3,$c0,$c1,$00
+MetaTile93:
+  .byte $02,$00,$00,$b4,$b5,$c2,$c3,$00
+MetaTile94:
+  .byte $02,$00,$00,$94,$93,$c4,$c5,$00
+MetaTile95:
+  .byte $02,$00,$00,$b6,$b7,$c6,$c7,$00
+MetaTile96:
+  .byte $03,$00,$00,$b8,$b9,$c8,$c9,$00
+MetaTile97:
+  .byte $02,$00,$00,$ba,$bb,$ca,$cb,$00
+MetaTile98:
+  .byte $00,$00,$00,$4c,$4d,$50,$51,$00
+MetaTile99:
+  .byte $01,$00,$00,$d4,$d5,$e2,$e3,$00
+MetaTile100:
+  .byte $01,$00,$00,$d6,$d7,$e4,$e5,$00
+MetaTile101:
+  .byte $01,$00,$00,$d8,$d9,$e6,$e7,$00
+MetaTile102:
+  .byte $01,$00,$00,$cc,$cd,$d1,$d2,$00
+MetaTile103:
+  .byte $03,$00,$00,$ce,$cf,$ce,$cf,$00
+MetaTile104:
+  .byte $02,$00,$00,$d0,$cf,$d3,$cf,$00
+MetaTile105:
+  .byte $00,$00,$00,$00,$58,$5f,$60,$00
+MetaTile106:
+  .byte $02,$00,$00,$d4,$d5,$e2,$e3,$00
+MetaTile107:
+  .byte $02,$00,$00,$d6,$d7,$e4,$e5,$00
+MetaTile108:
+  .byte $02,$00,$00,$d8,$d9,$e6,$e7,$00
+MetaTile109:
+  .byte $01,$00,$00,$da,$db,$e8,$e9,$00
+MetaTile110:
+  .byte $01,$00,$00,$dc,$dd,$ea,$eb,$00
+MetaTile111:
+  .byte $03,$00,$00,$de,$df,$ec,$ed,$00
+MetaTile112:
+  .byte $02,$00,$00,$e0,$e1,$ee,$ef,$00
+MetaTile113:
+  .byte $00,$00,$00,$00,$65,$00,$00,$00
+MetaTile114:
+  .byte $00,$00,$00,$66,$67,$00,$00,$00
+MetaTile115:
+  .byte $03,$00,$00,$d4,$d5,$e2,$e3,$00
+MetaTile116:
+  .byte $03,$00,$00,$d6,$d7,$e4,$e5,$00
+MetaTile117:
+  .byte $03,$00,$00,$d8,$d9,$e6,$e7,$00
+MetaTile118:
+  .byte $02,$00,$00,$f0,$f1,$f2,$f3,$00
+MetaTile119:
+  .byte $00,$00,$00,$00,$00,$00,$00,entity_index_exit
