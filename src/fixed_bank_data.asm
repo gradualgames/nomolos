@@ -497,7 +497,7 @@ level_5_2_data:
 
   .word entity_definition_table
   .word level5_music
-  .byte level_5_1_index
+  .byte level_1_index
 
 ;Entities
 entity_definition_table:
