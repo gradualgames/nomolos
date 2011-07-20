@@ -33,7 +33,7 @@ mouseInit:
   lda #MOUSE_SITTHERESTATE
   sta entity_instances+entity_instance::state,x
 
-  jsr entity_kill_if_already_seen
+  jsr entity_test_picked_up_state
 
   ;reposition the entity so it sits at the bottom of the tile where it was spawned
   clc
@@ -82,6 +82,8 @@ mouseSitThere:
 
   pla
   tax
+
+  jsr entity_set_picked_up
 
   jmp mouseDie
 

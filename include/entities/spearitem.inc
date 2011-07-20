@@ -27,7 +27,7 @@ spear_item_update:
 
 spearitem_init:
 
-  jsr entity_kill_if_already_seen
+  jsr entity_test_picked_up_state
 
   ;reposition the entity so it sits at the bottom of the tile where it was spawned
   clc
@@ -83,6 +83,8 @@ skipJmpNotTouching:
 
   pla
   tax
+
+  jsr entity_set_picked_up
 
   jmp spearItemDie
 

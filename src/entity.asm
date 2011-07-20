@@ -12,6 +12,97 @@
 
 .segment "CODE"
 
+;sets the picked up state for the current entity
+.proc entity_set_picked_up
+
+  ;load the 16 bit map X coordinate for the entity
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1 
+
+  ;to get an index out of 64, we want to divide by 2^7
+  ;for a level that is (512 * 16) / 64 =
+  ;                    (2^9 * 2^4) / 2^6 =
+  ;                    (2^7) so we divide by 2^7
+  ;but in a 16 bit number our value would be at:
+  ; 0xxxxxxx x0000000
+  ;we want the bits in the x's. Thus we can shift this
+  ;number left and use the high byte for the index.
+  clc
+  asl w0
+  rol w0+1
+
+  ;high byte of value ought to have an index out of 64
+  ;save x
+  txa
+  pha
+
+  ;replace x with the value we calculated, this is the slot
+  ;in entity_picked_up we want
+  ldx w0+1
+
+  lda #1
+  sta entity_picked_up,x
+
+  ;restore x
+  pla
+  tax
+
+  rts
+.endproc
+
+;tests the picked up state for the current entity
+;uses w0
+.proc entity_test_picked_up_state
+
+  ;load the 16 bit map X coordinate for the entity
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1 
+
+  ;to get an index out of 64, we want to divide by 2^7
+  ;for a level that is (512 * 16) / 64 =
+  ;                    (2^9 * 2^4) / 2^6 =
+  ;                    (2^7) so we divide by 2^7
+  ;but in a 16 bit number our value would be at:
+  ; 0xxxxxxx x0000000
+  ;we want the bits in the x's. Thus we can shift this
+  ;number left and use the high byte for the index.
+  clc
+  asl w0
+  rol w0+1
+
+  ;high byte of value ought to have an index out of 64
+  ;save x
+  txa
+  pha
+
+  ;replace x with the value we calculated, this is the slot
+  ;in entity_picked_up we want
+  ldx w0+1
+
+  ;kill entity if already picked up
+  lda entity_picked_up,x
+  beq do_not_kill_entity
+
+  ;restore x for entity_kill
+  pla
+  tax
+
+  jsr entity_kill
+
+  rts
+do_not_kill_entity:
+
+  ;restore x
+  pla
+  tax
+
+  rts
+.endproc
+
 ;loads in a set of groups of chr data (usually used as a sprite sheet)
 ;expects w2 to contain the address of the list of entity def indices.
 ;the group set consists of a count for the number of groups (up to 255)
@@ -615,6 +706,15 @@ skipUpdate:
   sta entity_instances+entity_instance::alive, y
   dex
   bpl :-
+
+  ;clear entity_picked_up
+  lda #0
+  ldx #$3F
+:
+  sta entity_picked_up,x
+  dex
+  bne :-
+
   rts
 .endproc
 

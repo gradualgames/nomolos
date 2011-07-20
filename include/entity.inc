@@ -1,6 +1,8 @@
 .ifndef ENTITY_INC
 ENTITY_INC = 1
 
+.global entity_set_picked_up
+.global entity_test_picked_up_state
 .global entity_load_chr_groups
 .global entity_get_next_prn
 .global entity_kill_if_already_seen

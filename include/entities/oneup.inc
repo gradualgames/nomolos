@@ -27,7 +27,7 @@ oneup_update:
 
 oneup_init:
 
-  jsr entity_kill_if_already_seen
+  jsr entity_test_picked_up_state
 
   lda #ONEUP_SITTHERESTATE
   sta entity_instances+entity_instance::state,x
@@ -72,6 +72,8 @@ skipJmpNotTouching:
 
   pla
   tax
+
+  jsr entity_set_picked_up
 
   jmp oneUpDie
 
