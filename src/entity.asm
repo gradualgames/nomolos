@@ -686,7 +686,7 @@ skipUpdate:
 ;entails is filling the first byte of every 16 byte chunk with zero.
 .proc entity_init_all
 
-  ldx #$1F
+  ldx #$3F
   lda #$00
 :
   sta entity_counters,x
