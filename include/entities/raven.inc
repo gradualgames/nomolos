@@ -251,28 +251,6 @@ raven_draw:
   jsr entity_test_death_zone
   beq killRaven
 
-  lda #<spritesheet2_raven_fly
-  sta entity_locals+raven_locals::anim_address,x
-  lda #>spritesheet2_raven_fly
-  sta entity_locals+raven_locals::anim_address+1,x
-  ;load raven width and height
-  lda #RAVEN_WIDTH
-  sta b2
-  lda #RAVEN_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-  lda #<spritesheet2_raven_fly
-  sta entity_locals+raven_locals::anim_address,x
-  lda #>spritesheet2_raven_fly
-  sta entity_locals+raven_locals::anim_address+1,x
-
-  jsr entity_reset_anim
-
-:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -306,6 +284,29 @@ raven_draw:
   jmp killRaven
 
 nomolosNotAttacking:
+
+  lda #<spritesheet2_raven_fly
+  sta entity_locals+raven_locals::anim_address,x
+  lda #>spritesheet2_raven_fly
+  sta entity_locals+raven_locals::anim_address+1,x
+  ;load raven width and height
+  lda #RAVEN_WIDTH
+  sta b2
+  lda #RAVEN_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+  lda #<spritesheet2_raven_fly
+  sta entity_locals+raven_locals::anim_address,x
+  lda #>spritesheet2_raven_fly
+  sta entity_locals+raven_locals::anim_address+1,x
+
+  jsr entity_reset_anim
+
+:
 
   lda entity_chr_offsets+(entity_index_raven-1)
   sta sprite_group_offset

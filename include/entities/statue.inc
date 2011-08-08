@@ -287,6 +287,8 @@ proximity_test_done:
   lda entity_chr_offsets+(entity_index_statue-1)
   sta sprite_group_offset
 
+  lda #0
+  sta b2
   lda entity_screen_x
   sta w3
   lda entity_screen_x+1

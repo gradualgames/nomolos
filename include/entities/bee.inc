@@ -226,18 +226,6 @@ bee_draw:
   jsr entity_test_death_zone
   beq killBee
 
-  ;load bee width and height
-  lda #BEE_WIDTH
-  sta b2
-  lda #BEE_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -271,6 +259,19 @@ bee_draw:
   jmp killBee
 
 nomolosNotAttacking:
+
+  ;load bee width and height
+  lda #BEE_WIDTH
+  sta b2
+  lda #BEE_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
 
   lda entity_chr_offsets+(entity_index_bee-1)
   sta sprite_group_offset
