@@ -61,6 +61,7 @@ ZP_INC = 1
 .globalzp camera_scroll_x
 .globalzp camera_max_scroll_x
 .globalzp camera_min_scroll_x
+.globalzp camera_rightmost_x
 .globalzp camera_scroll_direction
 .globalzp camera_scroll_enabled
 .globalzp base_address_map

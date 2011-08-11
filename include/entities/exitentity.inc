@@ -16,6 +16,15 @@ exit_level_update:
 
   jsr entity_compute_screen_coordinates
 
+  ;set rightmost x
+  sec
+  lda entity_instances+entity_instance::position_x,x
+  sbc #$f0
+  sta camera_rightmost_x
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc #$00
+  sta camera_rightmost_x+1
+
   ;load entity width and height
   lda #EXITENTITY_WIDTH
   sta b2

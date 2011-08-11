@@ -55,6 +55,12 @@
   adc #1
   sta camera_max_scroll_x+1
 
+  ;rightmost x starts at $7fff
+  lda #$ff
+  sta camera_rightmost_x
+  lda #$7f
+  sta camera_rightmost_x+1
+
   ;camera enabled by default
   lda #1
   sta camera_scroll_enabled
@@ -94,6 +100,23 @@
   lda camera_scroll_x+1
   adc w1+1
   sta camera_scroll_x+1
+
+  ;compare current scroll x to rightmost x. say rightmost x was 10 and current
+  ;scroll was 9. 10 - 9 is 1, so we're not past it. but if its negative, we're
+  ;past it.
+  sec
+  lda camera_rightmost_x
+  sbc camera_scroll_x
+  lda camera_rightmost_x+1
+  sbc camera_scroll_x+1
+
+  ;if negative flag is set, we've gone past the rightmost scroll
+  bpl not_scrolled_past_rightmost
+  lda camera_rightmost_x
+  sta camera_scroll_x
+  lda camera_rightmost_x+1
+  sta camera_scroll_x+1
+not_scrolled_past_rightmost:
 
   ;compare max scroll x to current scroll x
 

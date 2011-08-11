@@ -122,6 +122,8 @@ camera_max_scroll_x: .res 2
 
 camera_min_scroll_x: .res 2
 
+camera_rightmost_x: .res 2
+
 camera_scroll_direction: .res 1
 
 camera_scroll_enabled: .res 1
