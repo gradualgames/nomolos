@@ -246,7 +246,7 @@ killOwl:
   jsr entity_kill
 
   ;spawn an explosion entity
-  lda #entity_index_explosion
+  lda #entity_index_explosionspawner
   sta b0
 
   ;get out low byte of position_x

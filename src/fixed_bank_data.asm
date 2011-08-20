@@ -642,6 +642,9 @@ entity_definition_table:
   .word bee_update
   .byte $05
   .byte $00
+  .word explosionspawner_update
+  .byte $0a
+  .byte $00
   
 entity_chr_definition_table:
   .word spritesheet_common_Nomolos_chr

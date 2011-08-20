@@ -5,6 +5,7 @@ ENTITIES_INC = 1
 .global oneup_update
 .global mouse_update
 .global explosion_update
+.global explosionspawner_update
 .global deentle_update
 .global exit_level_update
 .global beedie_update
@@ -72,6 +73,7 @@ entity_index_statue = 32
 entity_index_raven = 33
 entity_index_sheep = 34
 entity_index_bee = 35
+entity_index_explosionspawner = 36
 
 ;entity structs. Only parameterizable entities have structs here.
 .struct iceball_locals

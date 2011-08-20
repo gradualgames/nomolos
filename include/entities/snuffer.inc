@@ -134,7 +134,7 @@ killSnuffer:
   jsr entity_kill
 
   ;spawn an explosion entity
-  lda #entity_index_explosion
+  lda #entity_index_explosionspawner
   sta b0
 
   ;get out low byte of position_x
@@ -231,24 +231,6 @@ snuffer_draw:
   jsr entity_test_collision_hitbox
 
   bne nomolosNotAttacking
-
-  ;play a hit sound
-  txa
-  pha
-
-  lda #<hit_sound
-  sta sound_param_word_0
-  lda #>hit_sound
-  sta sound_param_word_0+1
-
-  lda #3
-  sta sound_param_byte_0
-
-  ldx #soundeffect_two
-  jsr stream_initialize
-
-  pla
-  tax
 
   jmp killSnuffer
 

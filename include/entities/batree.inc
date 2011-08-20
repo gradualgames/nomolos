@@ -210,24 +210,6 @@ batree_draw:
 
   bne nomolos_not_attacking
 
-  ;play a hit sound
-  txa
-  pha
-
-  lda #<hit_sound
-  sta sound_param_word_0
-  lda #>hit_sound
-  sta sound_param_word_0+1
-
-  lda #3
-  sta sound_param_byte_0
-
-  ldx #soundeffect_two
-  jsr stream_initialize
-
-  pla
-  tax
-
   ;set the damaged counter, this will make the entity flash
   lda #10
   sta entity_locals+batree_locals::damaged_counter,x
@@ -283,7 +265,7 @@ kill_batree:
   jsr entity_kill
 
   ;spawn an explosion entity
-  lda #entity_index_explosion
+  lda #entity_index_explosionspawner
   sta b0
 
   ;get out low byte of position_x
