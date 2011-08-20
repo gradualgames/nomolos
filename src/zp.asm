@@ -116,7 +116,9 @@ nomolos_status_health: .res 1
 
 nomolos_status_lives: .res 1
 
-camera_scroll_x:                           .res 2
+camera_scroll_x: .res 2
+
+camera_scroll_y: .res 1
 
 camera_max_scroll_x: .res 2
 

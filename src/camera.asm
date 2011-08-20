@@ -24,7 +24,16 @@
   lda w0+1 ;load high byte of 16 bit x coord
   sbc camera_scroll_x+1
   sta w0+1
-  ;do nothing to y coordinate since camera never moves from 0 vertically
+  
+  ;subtract camera_scroll_y from the input Y coordinate
+  sec
+  lda w1 ;load low byte of 16 bit Y coord
+  sbc camera_scroll_y
+  sta w1
+  lda w1+1 ;load high byte of 16 bit Y coord
+  sbc #$00 ;our camera scroll Y is assumed unsigned and 8 bit, it is only
+            ;used for shaking.
+  sta w1+1
 
   rts
 
@@ -35,6 +44,7 @@
 
   lda #$00
   sta camera_scroll_x
+  sta camera_scroll_y
 
   ldy #level_data_struct::starting_screen
   lda (base_address_rom_definition_table),y

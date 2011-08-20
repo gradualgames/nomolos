@@ -56,6 +56,10 @@ explosionspawnerSpawnState:
   beq kill_explosionspawner
 
   lda entity_locals+explosionspawner_locals::counter,x
+  and #$02
+  sta camera_scroll_y
+
+  lda entity_locals+explosionspawner_locals::counter,x
   and #$03
   bne do_not_spawn_explosion
 

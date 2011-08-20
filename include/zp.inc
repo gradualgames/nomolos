@@ -59,6 +59,7 @@ ZP_INC = 1
 .globalzp nomolos_status_health
 .globalzp nomolos_status_lives
 .globalzp camera_scroll_x
+.globalzp camera_scroll_y
 .globalzp camera_max_scroll_x
 .globalzp camera_min_scroll_x
 .globalzp camera_rightmost_x

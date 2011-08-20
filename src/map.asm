@@ -751,7 +751,7 @@ do_not_spawn_entity:
 
   lda camera_scroll_x
   sta ppu_2005
-  lda #0
+  lda camera_scroll_y
   sta ppu_2005+1
   upload_ppu_2005
 
