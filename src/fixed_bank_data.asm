@@ -352,8 +352,8 @@ level_4_1_data:
   .word level4_patterns
   .byte spritesheet_2_patterns_bank
   .word level4_sprite_groups
-  .word 0  ;level4_cycling_palettes ;cycling_palette_address
-  .byte 0  ;cycling_palette_speed
+  .word level4_cycling_palettes ;cycling_palette_address
+  .byte 5  ;cycling_palette_speed
 
   .word attack_sound
   .word hit_sound
@@ -384,12 +384,12 @@ level_4_2_data:
   .word level4_patterns
   .byte spritesheet_2_patterns_bank
   .word level4_sprite_groups
-  .word 0  ;level4_cycling_palettes ;cycling_palette_address
-  .byte 0  ;cycling_palette_speed
+  .word level4_cycling_palettes ;cycling_palette_address
+  .byte 5  ;cycling_palette_speed
 
   .word attack_sound
   .word hit_sound
-  .word level_4_2_palette
+  .word level4_palette
 
   .byte 30  ;nomolos_start_x
   .byte 100 ;nomolos_start_y
