@@ -214,6 +214,24 @@ batree_draw:
   lda #10
   sta entity_locals+batree_locals::damaged_counter,x
   
+  ;play a hit sound
+  txa
+  pha
+
+  lda #<hit_sound
+  sta sound_param_word_0
+  lda #>hit_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+
   ;decrement the entity's health
   dec entity_locals+batree_locals::health,x
   
