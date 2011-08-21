@@ -29,7 +29,7 @@ GRUBSELIMBOJ_HORIZSPEED = 10
 GRUBSELIMBOJ_MAXHORIZSPEED = 3
 
 GOAL_X = 160
-GOAL_Y = 80
+GOAL_Y = 70
 
 .proc grubselimboj_update
 
@@ -51,10 +51,18 @@ grubselimboj_initState:
 
   jmp grubselimboj_initState_handler
 
+grubselimboj_flyState:
+
+  jmp grubselimboj_flyState_handler
+
+grubselimboj_returningState:
+
+  jmp grubselimboj_returningState_handler
+
 grubselimboj_dyingState:
 
   jmp grubselimboj_dyingState_handler
-  
+
 grubselimboj_stationaryState:
 
   ;spawn a grank every once in a while
@@ -104,6 +112,24 @@ do_not_spawn_grank:
 
   jsr entity_spawn
 
+  ;play a foom sound
+  txa
+  pha
+
+  lda #<foom_sound
+  sta sound_param_word_0
+  lda #>foom_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+
 do_not_spawn_fireball:
   .endscope
 
@@ -131,11 +157,7 @@ do_not_switch_to_fly_state:
 
   rts
   
-grubselimboj_returningState:
-
-  jmp grubselimboj_returningState_handler
-  
-grubselimboj_flyState:
+grubselimboj_flyState_handler:
 
   jsr entity_compute_screen_coordinates
 
@@ -298,6 +320,24 @@ do_not_switch_to_returning_state:
   sta b1
 
   jsr entity_spawn
+
+  ;play a foom sound
+  txa
+  pha
+
+  lda #<foom_sound
+  sta sound_param_word_0
+  lda #>foom_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
 
 do_not_spawn_fireball:
   .endscope
