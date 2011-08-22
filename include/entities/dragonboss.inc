@@ -170,7 +170,7 @@ dragonboss_erasestate:
   sta entity_locals+dragonboss_locals::state_switch_counter,x
   
   ;start dragon out with a certain amount of health
-  lda #10
+  lda #15
   sta entity_locals+dragonboss_locals::health,x
   
   ;load a seed for the prng (for explosions when the Dragon dies)
@@ -533,7 +533,46 @@ dragonboss_spiticeballsstate_handler:
   tay
   
   ;parameterize/fully initialize the iceball we just spawned
-  lda #$fd
+  lda #$fa
+  sta entity_locals+iceball_locals::x_velocity,y
+  lda #$ff
+  sta entity_locals+iceball_locals::x_velocity+1,y
+  lda #2
+  sta entity_locals+iceball_locals::y_velocity,y
+  lda #0
+  sta entity_locals+iceball_locals::y_velocity+1,y
+  
+  ;reset the iceball's animation
+  lda #1
+  sta entity_instances+entity_instance::animation_object,y
+  lda #$ff
+  sta entity_instances+entity_instance::animation_object+1,y
+  
+  lda #ICEBALL_FLYSTATE
+  sta entity_instances+entity_instance::state,y
+  
+  ;****************************************************************
+  ;Spawn and parameterize an iceball
+  ;****************************************************************
+  lda #entity_index_iceball
+  sta b0
+
+  lda #110
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #110
+  sta b1
+
+  jsr entity_spawn
+  
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the iceball we just spawned
+  lda #$fc
   sta entity_locals+iceball_locals::x_velocity,y
   lda #$ff
   sta entity_locals+iceball_locals::x_velocity+1,y
@@ -628,7 +667,7 @@ dragonboss_spiticeballsstate_handler:
   
   lda #ICEBALL_FLYSTATE
   sta entity_instances+entity_instance::state,y
-  
+
   lda #DRAGONBOSS_CLOSEMOUTHSTATE
   sta entity_instances+entity_instance::state,x
   
