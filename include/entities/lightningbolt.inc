@@ -29,7 +29,7 @@ lightningbolt_init:
   sta entity_locals+lightningbolt_locals::x_velocity+1,x
   lda #0
   sta entity_locals+lightningbolt_locals::y_velocity,x
-  lda #4
+  lda #6
   sta entity_locals+lightningbolt_locals::y_velocity+1,x
   
   ;store a counter for the fall state

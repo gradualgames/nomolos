@@ -26,6 +26,9 @@ THOGUTH_HALFWIDTH = $0C
 THOGUTH_HEIGHT = $30
 THOGUTH_HALFHEIGHT = $10
 
+LIGHTNINGBOLT_HORIZ_SPACING = 45
+LIGHTNINGBOLT_VERT_SPACING  = 32
+
 JUMP_SLAM_INTERVAL = 50
 
 THOGUTH_DISTANCE_TIL_ABOUT_FACE = 120
@@ -122,7 +125,7 @@ thoguth_initState_handler:
   sta camera_scroll_enabled
   
   ;initial health
-  lda #10
+  lda #20
   sta entity_locals+thoguth_locals::health,x
   
   ;initial damaged counter
@@ -778,12 +781,32 @@ spawn_lightningbolts:
 
   lda entity_instances+entity_instance::position_x,x
   sec
-  sbc #50
+  sbc #(LIGHTNINGBOLT_HORIZ_SPACING*2)
   sta w0
-  lda #0
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc #0
   sta w0+1
   
   lda #0
+  sta b1
+
+  jsr entity_spawn
+
+  ;****************************************************************
+  ;Spawn and parameterize a lightning bolt
+  ;****************************************************************
+  lda #entity_index_lightningbolt
+  sta b0
+
+  lda entity_instances+entity_instance::position_x,x
+  sec
+  sbc #(LIGHTNINGBOLT_HORIZ_SPACING)
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc #0
+  sta w0+1
+  
+  lda #(LIGHTNINGBOLT_VERT_SPACING)
   sta b1
 
   jsr entity_spawn
@@ -799,7 +822,7 @@ spawn_lightningbolts:
   lda #0
   sta w0+1
   
-  lda #0
+  lda #(LIGHTNINGBOLT_VERT_SPACING*2)
   sta b1
 
   jsr entity_spawn
@@ -812,16 +835,36 @@ spawn_lightningbolts:
 
   lda entity_instances+entity_instance::position_x,x
   clc
-  adc #50
+  adc #(LIGHTNINGBOLT_HORIZ_SPACING)
   sta w0
-  lda #0
+  lda entity_instances+entity_instance::position_x+1,x
+  adc #00
+  sta w0+1
+  
+  lda #(LIGHTNINGBOLT_VERT_SPACING)
+  sta b1
+  
+  jsr entity_spawn
+  
+  ;****************************************************************
+  ;Spawn and parameterize a lightning bolt
+  ;****************************************************************
+  lda #entity_index_lightningbolt
+  sta b0
+
+  lda entity_instances+entity_instance::position_x,x
+  clc
+  adc #(LIGHTNINGBOLT_HORIZ_SPACING*2)
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  adc #00
   sta w0+1
   
   lda #0
   sta b1
   
   jsr entity_spawn
-  
+
   rts
   
 .endproc
