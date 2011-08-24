@@ -645,6 +645,9 @@ entity_definition_table:
   .word explosionspawner_update
   .byte $0a
   .byte $00
+  .word setrightmostx_update
+  .byte $01
+  .byte $00
   
 entity_chr_definition_table:
   .word spritesheet_common_Nomolos_chr

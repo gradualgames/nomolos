@@ -33,6 +33,7 @@
 
 .include "oneup.inc"
 .include "exitentity.inc"
+.include "setrightmostx.inc"
 .include "mouse.inc"
 .include "explosion.inc"
 .include "explosionspawner.inc"
@@ -67,6 +68,7 @@
 
 .include "oneup.inc"
 .include "exitentity.inc"
+.include "setrightmostx.inc"
 .include "mouse.inc"
 .include "explosion.inc"
 .include "explosionspawner.inc"

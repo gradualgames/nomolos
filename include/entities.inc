@@ -36,6 +36,7 @@ ENTITIES_INC = 1
 .global raven_update
 .global sheep_update
 .global bee_update
+.global setrightmostx_update
 
 ;entity indices
 entity_index_nomolos = 1
@@ -74,6 +75,7 @@ entity_index_raven = 33
 entity_index_sheep = 34
 entity_index_bee = 35
 entity_index_explosionspawner = 36
+entity_index_setrightmostx = 37
 
 ;entity structs. Only parameterizable entities have structs here.
 .struct iceball_locals
