@@ -388,6 +388,9 @@ dragonboss_dyingstate_handler:
    
   sta b1
 
+  lda #0
+  sta b2
+
   jsr entity_spawn
   
   txa
@@ -525,6 +528,8 @@ dragonboss_spiticeballsstate_handler:
   
   lda #110
   sta b1
+  lda #0
+  sta b2
 
   jsr entity_spawn
   
@@ -564,6 +569,8 @@ dragonboss_spiticeballsstate_handler:
   
   lda #110
   sta b1
+  lda #0
+  sta b2
 
   jsr entity_spawn
   
@@ -603,6 +610,8 @@ dragonboss_spiticeballsstate_handler:
   
   lda #110
   sta b1
+  lda #0
+  sta b2
 
   jsr entity_spawn
   
@@ -642,6 +651,8 @@ dragonboss_spiticeballsstate_handler:
   
   lda #110
   sta b1
+  lda #0
+  sta b2
 
   jsr entity_spawn
   
@@ -722,6 +733,7 @@ dragonboss_tailupstate_handler:
   
   lda #0
   sta b1
+  sta b2
 
   jsr entity_spawn
 
@@ -737,6 +749,7 @@ dragonboss_tailupstate_handler:
   
   lda #0
   sta b1
+  sta b2
 
   jsr entity_spawn
   
@@ -752,6 +765,7 @@ dragonboss_tailupstate_handler:
   
   lda #0
   sta b1
+  sta b2
 
   jsr entity_spawn
   

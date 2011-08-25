@@ -620,6 +620,8 @@ camera_scroll_test_done:
   asl
   asl
   sta b1
+  lda #0
+  sta b2
 
   jsr entity_spawn
 do_not_spawn_entity:

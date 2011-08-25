@@ -164,6 +164,8 @@ batree_update_batspawn_counter:
   clc
   adc #16
   sta b1
+  lda entity_instances+entity_instance::position_y+1,x
+  sta b2
   lda #entity_index_bat
   sta b0
   jsr entity_spawn
@@ -296,6 +298,8 @@ kill_batree:
   ;get out position_y
   lda entity_instances+entity_instance::position_y,x
   sta b1
+  lda entity_instances+entity_instance::position_y+1,x
+  sta b2
 
   jsr entity_spawn
 

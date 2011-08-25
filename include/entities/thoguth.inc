@@ -485,6 +485,8 @@ do_not_vibrate:
   clc
   adc b3
   sta b1
+  lda entity_instances+entity_instance::position_y+1,x
+  sta b2
 
   jsr entity_spawn
   
@@ -789,6 +791,7 @@ spawn_lightningbolts:
   
   lda #0
   sta b1
+  sta b2
 
   jsr entity_spawn
 
@@ -808,6 +811,8 @@ spawn_lightningbolts:
   
   lda #(LIGHTNINGBOLT_VERT_SPACING)
   sta b1
+  lda #0
+  sta b2
 
   jsr entity_spawn
 
@@ -824,6 +829,8 @@ spawn_lightningbolts:
   
   lda #(LIGHTNINGBOLT_VERT_SPACING*2)
   sta b1
+  lda #0
+  sta b2
 
   jsr entity_spawn
   
@@ -843,6 +850,8 @@ spawn_lightningbolts:
   
   lda #(LIGHTNINGBOLT_VERT_SPACING)
   sta b1
+  lda #0
+  sta b2
   
   jsr entity_spawn
   
@@ -862,6 +871,7 @@ spawn_lightningbolts:
   
   lda #0
   sta b1
+  sta b2
   
   jsr entity_spawn
 

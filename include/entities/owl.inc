@@ -259,6 +259,8 @@ killOwl:
   ;get out position_y
   lda entity_instances+entity_instance::position_y,x
   sta b1
+  lda entity_instances+entity_instance::position_y+1,x
+  sta b2
 
   jsr entity_spawn
 

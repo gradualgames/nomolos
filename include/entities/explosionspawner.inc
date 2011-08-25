@@ -50,6 +50,12 @@ explosionspawnerInit:
 
   rts
 
+kill_explosionspawner:
+
+  jsr entity_kill
+
+  rts
+
 explosionspawnerSpawnState:
 
   dec entity_locals+explosionspawner_locals::counter,x
@@ -96,6 +102,8 @@ do_not_increment_y_offset:
   clc
   adc entity_locals+explosionspawner_locals::y_offset,x
   sta b1
+  lda entity_instances+entity_instance::position_y+1,x
+  sta b2
 
   jsr entity_spawn
 
@@ -118,12 +126,6 @@ do_not_increment_y_offset:
   tax
 
 do_not_spawn_explosion:
-
-  rts
-
-kill_explosionspawner:
-
-  jsr entity_kill
 
   rts
 

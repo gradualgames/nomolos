@@ -725,7 +725,8 @@ skipUpdate:
 ;the following parameters are expected:
 ;b0 = index of entity definition to spawn
 ;w0 = position_x
-;b1 = position_y
+;b1 = <position_y
+;b2 = >position_y
 
 ;the following outputs can be retrieved after calling this function:
 ;b3 - index of entity instance just spawned
@@ -815,50 +816,11 @@ do_not_spawn:
   lda b0
   sta entity_instances+entity_instance::index,x
 
-  ;now that we know the kind of entity this is, we must look up
-  ;the entity and pull out its initialXOffset and initialYOffset,
-  ;add these to the input parameters, and store them in position_x and position_y.
-
-  ;;a holds the entity index, so multiply it by 4 to get an entity offset
-  ;asl
-  ;asl
-  ;put the entity offset into y
-  ;tay
-
-  ;;skip the UpdateRoutine, we're not interested in it here
-  ;iny
-  ;iny
-
-  ; ;store the initial X offset in b2 for now
-  ; lda (base_address_entity_definition_table),y
-  ; sta b2
-
-  ; ;load the low byte of the x parameter, and do a 16 bit subtract from this
-  ; sec
-  ; lda w0
-  ; sbc b2
-  ; sta w0
-  ; lda w0+1
-  ; sbc #0
-  ; sta w0+1
-
   ;now w0 should have the spawn_position_x value
   lda w0
   sta entity_instances+entity_instance::spawn_position_x,x
   lda w0+1
   sta entity_instances+entity_instance::spawn_position_x+1,x
-
-  ; ;load initial y offset
-  ; iny
-  ; ;load the initial y offset and store it in b2 for now
-  ; lda (base_address_entity_definition_table),y
-  ; sta b2
-
-  ; ;subtract this from the y parameter
-  ; sec
-  ; lda b1
-  ; sbc b2
-  ; sta b1  ;store result in y parameter
 
   ;now b1 should have the spawn_position_y value
   lda b1
@@ -876,10 +838,11 @@ do_not_spawn:
   ;load position_y_fine
   lda #$00
   sta entity_instances+entity_instance::position_y_fine,x
-  ;load position_y
+  ;load <position_y
   lda b1
   sta entity_instances+entity_instance::position_y,x
-  lda #0
+  ;load >position_y
+  lda b2
   sta entity_instances+entity_instance::position_y+1,x
 
   ;load initial state (always zero)
