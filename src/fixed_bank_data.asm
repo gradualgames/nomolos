@@ -648,6 +648,9 @@ entity_definition_table:
   .word setrightmostx_update
   .byte $01
   .byte $00
+  .word gort_update
+  .byte $02
+  .byte $00
   
 entity_chr_definition_table:
   .word spritesheet_common_Nomolos_chr
@@ -685,6 +688,9 @@ entity_chr_definition_table:
   .word spritesheet2_raven_chr
   .word spritesheet2_sheep_chr
   .word spritesheet2_bee_chr
+  .word 0 ;explosion spawner has no chr data
+  .word 0 ;setrightmostx has no chr data
+  .word spritesheet2_Gort_chr
 
 ;miscellaneous data
 banktable:

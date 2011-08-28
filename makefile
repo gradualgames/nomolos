@@ -71,6 +71,7 @@ NAMELIST_GENERATOR_FLAGS = -rom $(NES_FILE) \
                            -nl ram STACK    0100 \
                            -nl ram BSS      0200 \
                            -nl 0   ROM0     8000 \
+                           -nl 11  ROM11    8000 \
                            -nl 13  ROM13    8000 \
                            -nl 15  CODE     C000 \
                            -map $(MAP_FILE) \

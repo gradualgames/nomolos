@@ -9,8 +9,10 @@
 
 .export level6_sprite_groups
 level6_sprite_groups:
-  .byte $01
+  .byte $03
   .byte entity_index_nomolos
+  .byte entity_index_explosion
+  .byte entity_index_gort
 
 .segment "ROM09"
 
@@ -21,7 +23,7 @@ level6_sprite_groups:
 .export level6_palette
 level6_palette:
   .byte $0d,$0d,$00,$10,$0d,$03,$04,$23,$0d,$01,$11,$2c,$0d,$07,$05,$10
-  .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$28,$20,$0d,$0d,$00,$29
+  .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$01,$00,$0d,$0d,$03,$13
 
 .export level6_cycling_palettes
 level6_cycling_palettes:
@@ -235,11 +237,11 @@ MapColumnTable:
   .byte $02,$04,$05,$00
   .byte $03,$06,$07,$00
   .byte $04,$08,$09,$00
-  .byte $05,$0a,$03,$00
-  .byte $06,$04,$0b,$00
-  .byte $07,$01,$0c,$00
-  .byte $08,$0d,$0e,$00
-  .byte $08,$0e,$0e,$00
+  .byte $05,$0a,$0b,$00
+  .byte $06,$04,$0c,$00
+  .byte $07,$01,$0d,$00
+  .byte $08,$0e,$0f,$00
+  .byte $08,$0f,$0f,$00
 AttributeColumnTable:
   .byte $44,$05,$00,$00,$00,$00,$00,$0f
   .byte $00,$81,$6a,$66,$66,$00,$00,$0f
@@ -262,6 +264,7 @@ MetaTileColumnTable:
   .byte $3a,$3a,$3a,$3a,$3a,$3a,$3a,$3a,$3a,$3a,$3a,$3a,$3a,$40,$45,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$2b,$34,$2c,$45,$00
   .byte $00,$00,$00,$00,$07,$10,$10,$1e,$10,$2f,$00,$00,$00,$00,$45,$00
+  .byte $00,$00,$00,$04,$08,$0e,$16,$1c,$24,$2d,$00,$00,$00,$4a,$45,$00
   .byte $00,$00,$0b,$00,$0a,$11,$11,$1f,$11,$30,$00,$00,$00,$00,$45,$00
   .byte $00,$00,$0d,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$45,$00
   .byte $49,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
@@ -415,3 +418,5 @@ MetaTile72:
   .byte $02,$00,$00,$f4,$f5,$fc,$fd,$00
 MetaTile73:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_exit
+MetaTile74:
+  .byte $00,$00,$00,$00,$00,$00,$00,entity_index_gort

@@ -10,5 +10,7 @@ SPRITESHEET2_PATTERNS_IMPORTS_INC = 1
 .global spritesheet2_raven_chr
 .global spritesheet2_sheep_chr
 .global spritesheet2_bee_chr
+.global spritesheet2_Gort_chr
+.global spritesheet2_Hippocritter_chr
 
 .endif

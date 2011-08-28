@@ -29,5 +29,9 @@ SPRITESHEET2_SPRITES_IMPORTS_INC = 1
 .global spritesheet2_bee0
 .global spritesheet2_bee1
 .global spritesheet2_bee2
+.global spritesheet2_Gort0
+.global spritesheet2_Gort1
+.global spritesheet2_Hippocritter0
+.global spritesheet2_Hippocritter1
 
 .endif
