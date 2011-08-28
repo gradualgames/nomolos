@@ -31,6 +31,7 @@
 .include "spritesheet_common_sprites_source.inc"
 .include "spritesheet_common_animations_source.inc"
 
+.include "bat.inc"
 .include "oneup.inc"
 .include "exitentity.inc"
 .include "setrightmostx.inc"
@@ -48,7 +49,6 @@
 .include "beedie.inc"
 .include "grank.inc"
 .include "skelekin.inc"
-.include "bat.inc"
 .include "batree.inc"
 .include "owl.inc"
 .include "snuffer.inc"
@@ -66,6 +66,7 @@
 .include "spritesheet_common_sprites_source.inc"
 .include "spritesheet_common_animations_source.inc"
 
+.include "bat.inc"
 .include "oneup.inc"
 .include "exitentity.inc"
 .include "setrightmostx.inc"

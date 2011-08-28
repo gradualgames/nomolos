@@ -38,5 +38,7 @@ SPRITESHEET_COMMON_SPRITES_IMPORTS_INC = 1
 .global spritesheet_common_Explosion0
 .global spritesheet_common_Explosion1
 .global spritesheet_common_Explosion2
+.global spritesheet_common_Bat0
+.global spritesheet_common_Bat1
 
 .endif

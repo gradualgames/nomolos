@@ -18,12 +18,6 @@ spritesheet1_GrankFly:
   .word spritesheet1_Grank1
   .word $0000
 
-spritesheet1_BatFly:
-  .byte $0a
-  .word spritesheet1_Bat0
-  .word spritesheet1_Bat1
-  .word $0000
-
 spritesheet1_Batree:
   .byte $0a
   .word spritesheet1_Batree0

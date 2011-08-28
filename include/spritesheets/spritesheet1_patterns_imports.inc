@@ -5,7 +5,6 @@ SPRITESHEET1_PATTERNS_IMPORTS_INC = 1
 .global spritesheet1_Beedie_chr
 .global spritesheet1_Grank_chr
 .global spritesheet1_Skelekin_chr
-.global spritesheet1_Bat_chr
 .global spritesheet1_Snuffer_chr
 .global spritesheet1_Owl_chr
 .global spritesheet1_Batree_chr

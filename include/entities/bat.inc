@@ -1,6 +1,5 @@
-.ifndef BAT_INC
-BAT_INC = 1
-
+.ifndef BAT_SYMBOLS
+BAT_SYMBOLS = 1
 BAT_WIDTH = $10
 BAT_HEIGHT = $08
 
@@ -18,8 +17,12 @@ BAT_CREST_STATE = 4
 BAT_VERTICAL_ACCELERATION = 20
 BAT_MAX_ASCENT_VELOCITY = $fe
 BAT_MAX_DESCENT_VELOCITY = $02
+.endif
 
-.proc bat_update
+.ifndef bat_update
+bat_update:
+.endif
+.scope
 
   ;load current state
   lda entity_instances+entity_instance::state,x
@@ -265,9 +268,9 @@ nomolosNotAttacking:
   lda entity_chr_offsets+(entity_index_bat-1)
   sta sprite_group_offset
 
-  lda #<spritesheet1_BatFly
+  lda #<spritesheet_common_BatFly
   sta w2
-  lda #>spritesheet1_BatFly
+  lda #>spritesheet_common_BatFly
   sta w2+1
   jsr entity_draw_anim
 
@@ -300,6 +303,4 @@ killBat:
 
   rts
 
-.endproc
-
-.endif
+.endscope

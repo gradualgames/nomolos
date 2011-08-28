@@ -7,8 +7,6 @@ SPRITESHEET1_SPRITES_IMPORTS_INC = 1
 .global spritesheet1_Beedie1
 .global spritesheet1_Grank0
 .global spritesheet1_Grank1
-.global spritesheet1_Bat0
-.global spritesheet1_Bat1
 .global spritesheet1_Batree0
 .global spritesheet1_Batree1
 .global spritesheet1_Owl0

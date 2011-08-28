@@ -667,7 +667,7 @@ entity_chr_definition_table:
   .word spritesheet1_Grank_chr
   .word entity_index_nomolos ;spear uses Nomolos chr data
   .word spritesheet1_Skelekin_chr
-  .word spritesheet1_Bat_chr
+  .word spritesheet_common_Bat_chr
   .word spritesheet1_Batree_chr
   .word spritesheet1_Owl_chr
   .word spritesheet1_Snuffer_chr

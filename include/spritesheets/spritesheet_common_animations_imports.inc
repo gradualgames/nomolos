@@ -16,5 +16,6 @@ SPRITESHEET_COMMON_ANIMATIONS_IMPORTS_INC = 1
 .global spritesheet_common_NomolosUseSpear
 .global spritesheet_common_SpearFly
 .global spritesheet_common_Explosion
+.global spritesheet_common_BatFly
 
 .endif

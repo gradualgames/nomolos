@@ -36,14 +36,6 @@ spritesheet1_Grank1:
   .byte $00,$05,$02,$08,$00
   .byte $08,$06,$02,$00,$08
   .byte $08,$07,$02,$08,$00
-spritesheet1_Bat0:
-  .byte $02
-  .byte $00,$00,$01,$00,$08
-  .byte $00,$01,$01,$08,$00
-spritesheet1_Bat1:
-  .byte $02
-  .byte $00,$02,$01,$00,$08
-  .byte $00,$03,$01,$08,$00
 spritesheet1_Batree0:
   .byte $0f
   .byte $00,$00,$03,$00,$10

@@ -125,3 +125,11 @@ spritesheet_common_Explosion:
   .word spritesheet_common_Explosion1
   .word spritesheet_common_Explosion0
   .word $0000
+
+.ifndef spritesheet_common_BatFly
+spritesheet_common_BatFly:
+.endif
+  .byte $0a
+  .word spritesheet_common_Bat0
+  .word spritesheet_common_Bat1
+  .word $0000

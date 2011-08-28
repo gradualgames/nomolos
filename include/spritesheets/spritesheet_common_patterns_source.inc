@@ -151,3 +151,11 @@ spritesheet_common_Explosion_chr:
   .byte $00,$00,$00,$c0,$f0,$f0,$f8,$f8,$00,$00,$c0,$f0,$f8,$f8,$fc,$fc
   .byte $1f,$1f,$0f,$0f,$03,$00,$00,$00,$3f,$3f,$1f,$1f,$0f,$03,$00,$00
   .byte $f8,$f8,$f0,$f0,$c0,$00,$00,$00,$fc,$fc,$f8,$f8,$f0,$c0,$00,$00
+.ifndef spritesheet_common_Bat_chr
+spritesheet_common_Bat_chr:
+.endif
+  .word $0040
+  .byte $12,$33,$7d,$ff,$ff,$ff,$93,$04,$12,$33,$4f,$a3,$d7,$ff,$93,$04
+  .byte $90,$98,$7c,$fe,$fe,$fe,$92,$40,$90,$98,$e4,$8a,$d6,$fe,$92,$40
+  .byte $12,$3b,$3d,$3f,$3f,$1f,$1f,$0f,$12,$2b,$37,$2b,$37,$13,$19,$0f
+  .byte $90,$b8,$78,$f8,$f8,$f0,$f0,$e0,$90,$a8,$d8,$a8,$d8,$90,$30,$e0

@@ -9,9 +9,10 @@
 
 .export level6_sprite_groups
 level6_sprite_groups:
-  .byte $04
+  .byte $05
   .byte entity_index_nomolos
   .byte entity_index_explosion
+  .byte entity_index_bat
   .byte entity_index_gort
   .byte entity_index_hippocritter
 
@@ -267,7 +268,7 @@ MetaTileColumnTable:
   .byte $00,$00,$00,$00,$07,$10,$10,$1e,$10,$2f,$00,$00,$00,$00,$45,$00
   .byte $00,$00,$00,$05,$09,$0f,$17,$1d,$25,$2e,$00,$00,$00,$4b,$45,$00
   .byte $00,$00,$0b,$00,$0a,$11,$11,$1f,$11,$30,$00,$00,$00,$00,$45,$00
-  .byte $03,$06,$0c,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$45,$00
+  .byte $03,$06,$0c,$00,$00,$00,$4c,$00,$00,$00,$00,$00,$00,$00,$45,$00
   .byte $00,$00,$0d,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$45,$00
   .byte $49,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
@@ -424,3 +425,5 @@ MetaTile74:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_gort
 MetaTile75:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_hippocritter
+MetaTile76:
+  .byte $00,$00,$00,$00,$00,$00,$00,entity_index_bat

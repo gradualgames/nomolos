@@ -4,7 +4,6 @@ SPRITESHEET1_ANIMATIONS_IMPORTS_INC = 1
 .global spritesheet1_DeentleWalk
 .global spritesheet1_BeedieBlob
 .global spritesheet1_GrankFly
-.global spritesheet1_BatFly
 .global spritesheet1_Batree
 .global spritesheet1_OwlFly
 .global spritesheet1_OwlAttack

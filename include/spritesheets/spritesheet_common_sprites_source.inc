@@ -333,4 +333,15 @@ spritesheet_common_Explosion2:
   .byte $00,$09,$00,$08,$00
   .byte $08,$0a,$00,$00,$08
   .byte $08,$0b,$00,$08,$00
-
+.ifndef spritesheet_common_Bat0
+spritesheet_common_Bat0:
+.endif
+  .byte $02
+  .byte $00,$00,$01,$00,$08
+  .byte $00,$01,$01,$08,$00
+.ifndef spritesheet_common_Bat1
+spritesheet_common_Bat1:
+.endif
+  .byte $02
+  .byte $00,$02,$01,$00,$08
+  .byte $00,$03,$01,$08,$00
