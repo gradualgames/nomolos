@@ -49,9 +49,9 @@ spritesheet1_SnufferBite:
 spritesheet1_SkelekinWalk:
   .byte $0a
   .word spritesheet1_Skelekin1
-  .word spritesheet1_Skelekin0
-  .word spritesheet1_Skelekin1
   .word spritesheet1_Skelekin2
+  .word spritesheet1_Skelekin1
+  .word spritesheet1_Skelekin0
   .word $0000
 
 spritesheet1_SnailCrawl:

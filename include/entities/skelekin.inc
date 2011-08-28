@@ -2,8 +2,8 @@
 SKELEKIN_INC = 1
 
 SKELEKIN_WIDTH = $10
-SKELEKIN_HEIGHT = $20
-SKELEKIN_HALFHEIGHT = $10
+SKELEKIN_HEIGHT = $30
+SKELEKIN_HALFHEIGHT = $14
 
 SKELEKIN_INITSTATE = 0
 SKELEKIN_MOVERIGHTSTATE = 1
@@ -44,7 +44,7 @@ entity_facing_test_done:
   ;reposition the entity
   sec
   lda entity_instances+entity_instance::position_y,x
-  sbc #16
+  sbc #$18
   sta entity_instances+entity_instance::position_y,x
   lda entity_instances+entity_instance::position_y+1,x
   sbc #0
