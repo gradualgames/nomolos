@@ -10,5 +10,7 @@ SPRITESHEET2_ANIMATIONS_IMPORTS_INC = 1
 .global spritesheet2_raven_fly
 .global spritesheet2_SheepButt
 .global spritesheet2_BeeFly
+.global spritesheet2_ArmoredSkelekinWalk
+.global spritesheet2_AttacknidClimb
 
 .endif

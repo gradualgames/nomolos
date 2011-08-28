@@ -654,6 +654,15 @@ entity_definition_table:
   .word hippocritter_update
   .byte $02
   .byte $00
+  .word armoredskelekin_update
+  .byte $02
+  .byte $00
+  .word attacknid_update
+  .byte $0a
+  .byte $00
+  .word laser_update
+  .byte $05
+  .byte $00
   
 entity_chr_definition_table:
   .word spritesheet_common_Nomolos_chr
@@ -695,6 +704,9 @@ entity_chr_definition_table:
   .word 0 ;setrightmostx has no chr data
   .word spritesheet2_Gort_chr
   .word spritesheet2_Hippocritter_chr
+  .word spritesheet2_ArmoredSkelekin_chr
+  .word spritesheet2_Attacknid_chr
+  .word spritesheet2_Laser_chr
 
 ;miscellaneous data
 banktable:

@@ -92,3 +92,6 @@
 .include "bee.inc"
 .include "gort.inc"
 .include "hippocritter.inc"
+.include "armoredskelekin.inc"
+.include "attacknid.inc"
+.include "laser.inc"

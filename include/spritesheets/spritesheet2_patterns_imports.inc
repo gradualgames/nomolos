@@ -12,5 +12,8 @@ SPRITESHEET2_PATTERNS_IMPORTS_INC = 1
 .global spritesheet2_bee_chr
 .global spritesheet2_Gort_chr
 .global spritesheet2_Hippocritter_chr
+.global spritesheet2_ArmoredSkelekin_chr
+.global spritesheet2_Attacknid_chr
+.global spritesheet2_Laser_chr
 
 .endif

@@ -39,6 +39,9 @@ ENTITIES_INC = 1
 .global setrightmostx_update
 .global gort_update
 .global hippocritter_update
+.global armoredskelekin_update
+.global attacknid_update
+.global laser_update
 
 ;entity indices
 entity_index_nomolos = 1
@@ -80,6 +83,9 @@ entity_index_explosionspawner = 36
 entity_index_setrightmostx = 37
 entity_index_gort = 38
 entity_index_hippocritter = 39
+entity_index_armoredskelekin = 40
+entity_index_attacknid = 41
+entity_index_laser = 42
 
 ;entity structs. Only parameterizable entities have structs here.
 .struct iceball_locals

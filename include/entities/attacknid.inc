@@ -1,0 +1,204 @@
+.ifndef ATTACKNID_INC
+ATTACKNID_INC = 1
+
+ATTACKNID_WIDTH = $10
+ATTACKNID_HEIGHT = $10
+
+ATTACKNID_INITSTATE = 0
+ATTACKNID_MOVERIGHTSTATE = 1
+ATTACKNID_MOVELEFTSTATE = 2
+
+.proc attacknid_update
+
+  ;load current state
+  lda entity_instances+entity_instance::state,x
+  ;figure out what state to jump to
+  cmp #ATTACKNID_INITSTATE
+  beq attacknid_initState
+  cmp #ATTACKNID_MOVERIGHTSTATE
+  beq attacknid_moveRightState
+  cmp #ATTACKNID_MOVELEFTSTATE
+  beq attacknid_moveLeftState
+
+attacknid_initState:
+
+  ;init code for animation, etc. goes here
+  jsr entity_reset_anim
+
+  ;switch state to "run"
+  lda #ATTACKNID_MOVELEFTSTATE
+  sta entity_instances+entity_instance::state,x
+  rts
+
+attacknid_moveRightState:
+
+  ;add 1 to position_x
+  clc
+  lda entity_instances+entity_instance::position_x,x
+  adc #1
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
+  adc #0
+  sta entity_instances+entity_instance::position_x+1,x
+
+  ;do position_x - spawn_position_x
+  sec
+  lda entity_instances+entity_instance::position_x,x
+  sbc entity_instances+entity_instance::spawn_position_x,x
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc entity_instances+entity_instance::spawn_position_x+1,x
+  sta w0+1
+
+  ;difference is in w0, subtract our desired delta distance from it
+  sec
+  lda w0
+  sbc #30
+  sta w0
+  lda w0+1
+  sbc #0
+  sta w0+1
+  bne dontSwitchToLeftState
+
+  lda #ATTACKNID_MOVELEFTSTATE
+  sta entity_instances+entity_instance::state,x
+
+dontSwitchToLeftState:
+
+  jsr attacknid_draw
+
+  rts
+
+attacknid_moveLeftState:
+
+  ;sub 1 from position_x
+  sec
+  lda entity_instances+entity_instance::position_x,x
+  sbc #1
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc #0
+  sta entity_instances+entity_instance::position_x+1,x
+
+  ;do spawn_position_x - position_x
+  sec
+  lda entity_instances+entity_instance::spawn_position_x,x
+  sbc entity_instances+entity_instance::position_x,x
+  sta w0
+  lda entity_instances+entity_instance::spawn_position_x+1,x
+  sbc entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+
+  ;difference is in w0, subtract our desired delta distance from it
+  sec
+  lda w0
+  sbc #30
+  sta w0
+  lda w0+1
+  sbc #0
+  sta w0+1
+
+  bne dontSwitchToRightState
+
+  lda #ATTACKNID_MOVERIGHTSTATE
+  sta entity_instances+entity_instance::state,x
+
+dontSwitchToRightState:
+
+  jsr attacknid_draw
+
+  rts
+
+attacknid_draw:
+
+  jsr entity_compute_screen_coordinates
+
+  jsr entity_test_death_zone
+  beq killAttacknid
+
+  ;load attacknid width and height
+  lda #ATTACKNID_WIDTH
+  sta b2
+  lda #ATTACKNID_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
+  jsr nomolos_is_deadly
+  beq nomolosNotAttacking
+
+  ;load attacknid width and height
+  lda #ATTACKNID_WIDTH
+  sta b2
+  lda #ATTACKNID_HEIGHT
+  sta b3
+  jsr entity_test_collision_hitbox
+
+  bne nomolosNotAttacking
+
+  ;play a hit sound
+  txa
+  pha
+
+  lda #<hit_sound
+  sta sound_param_word_0
+  lda #>hit_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+
+  jmp killAttacknid
+
+nomolosNotAttacking:
+
+  lda entity_chr_offsets+(entity_index_attacknid-1)
+  sta sprite_group_offset
+
+  lda #<spritesheet2_AttacknidClimb
+  sta w2
+  lda #>spritesheet2_AttacknidClimb
+  sta w2+1
+  jsr entity_draw_anim
+
+attacknidOffscreen:
+  rts
+
+killAttacknid:
+
+  ;make it dead
+  jsr entity_kill
+
+  ;spawn an explosion entity
+  lda #entity_index_explosion
+  sta b0
+
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sta b1
+  lda entity_instances+entity_instance::position_y+1,x
+  sta b2
+
+  jsr entity_spawn
+
+  rts
+.endproc
+
+.endif

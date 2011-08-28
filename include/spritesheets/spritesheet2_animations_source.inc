@@ -60,3 +60,16 @@ spritesheet2_BeeFly:
   .word spritesheet2_bee2
   .word $0000
 
+spritesheet2_ArmoredSkelekinWalk:
+  .byte $0a
+  .word spritesheet2_ArmoredSkelekin1
+  .word spritesheet2_ArmoredSkelekin0
+  .word spritesheet2_ArmoredSkelekin1
+  .word spritesheet2_ArmoredSkelekin2
+  .word $0000
+
+spritesheet2_AttacknidClimb:
+  .byte $0a
+  .word spritesheet2_Attacknid1
+  .word spritesheet2_Attacknid0
+  .word $0000

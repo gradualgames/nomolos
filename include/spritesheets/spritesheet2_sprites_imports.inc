@@ -33,5 +33,12 @@ SPRITESHEET2_SPRITES_IMPORTS_INC = 1
 .global spritesheet2_Gort1
 .global spritesheet2_Hippocritter0
 .global spritesheet2_Hippocritter1
+.global spritesheet2_ArmoredSkelekin0
+.global spritesheet2_ArmoredSkelekin1
+.global spritesheet2_ArmoredSkelekin2
+.global spritesheet2_Attacknid0
+.global spritesheet2_Attacknid1
+.global spritesheet2_Attacknid2
+.global spritesheet2_Laser0
 
 .endif
