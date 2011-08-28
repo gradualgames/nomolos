@@ -90,3 +90,4 @@
 .include "sheep.inc"
 .include "bee.inc"
 .include "gort.inc"
+.include "hippocritter.inc"
