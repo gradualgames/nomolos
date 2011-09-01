@@ -27,6 +27,7 @@
 .global get_item_sound
 .global get_hurt_sound
 .global die_sound
+.global laser_sound
 
 SOUND_EFFECT_BASE = 10
 

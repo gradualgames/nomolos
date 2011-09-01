@@ -29,6 +29,23 @@ laser_init:
   lda #LASER_FLYSTATE
   sta entity_instances+entity_instance::state,x
 
+  txa
+  pha
+
+  lda #<laser_sound
+  sta sound_param_word_0
+  lda #>laser_sound
+  sta sound_param_word_0+1
+
+  lda #0
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+
   ;compare entity x position to nomolos x position to decide direction
   .scope
   sec

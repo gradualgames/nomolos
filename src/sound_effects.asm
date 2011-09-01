@@ -122,6 +122,15 @@ get_hurt_sound:
   .byte A0
   .byte TRM
 
+laser_sound:
+  .byte STL, 1
+  .byte STV, SOUND_EFFECT_BASE+1
+  .byte STP, SOUND_EFFECT_BASE+1
+  .byte B5, C4, G4, A4, E4, F4, C4, D4
+  .byte STV, SOUND_EFFECT_BASE+0
+  .byte A0
+  .byte TRM
+
 die_sound:
   .byte STL, 1
   .byte STV, SOUND_EFFECT_BASE+1
