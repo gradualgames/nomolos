@@ -22,6 +22,14 @@ laser_update:
 
 laser_init:
 
+  jmp laser_init_handler
+
+laser_fly:
+
+  jmp laser_fly_handler
+
+laser_init_handler:
+
   ;reset the laser animation object
   jsr entity_reset_anim
 
@@ -59,6 +67,16 @@ will_go_left:
   sta entity_locals+laser_locals::x_velocity,x
   lda #$ff
   sta entity_locals+laser_locals::x_velocity+1,x
+
+  ;adjust starting point so laser can be fired from the point it was spawned at
+  sec
+  lda entity_instances+entity_instance::position_x,x
+  sbc #LASER_WIDTH
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc #0
+  sta entity_instances+entity_instance::position_x+1,x
+
   jmp direction_test_done
 will_go_right:
   lda #$04
@@ -74,24 +92,35 @@ direction_test_done:
   sbc entity_instances+entity_instance::position_y,x
   lda nomolos_map_y+2
   sbc entity_instances+entity_instance::position_y+1,x
-  bpl will_go_up
-will_go_down:
+  bpl will_go_down
+will_go_up:
   lda #$fc
   sta entity_locals+laser_locals::y_velocity,x
   lda #$ff
   sta entity_locals+laser_locals::y_velocity+1,x
+
+  ;adjust starting point so laser can be fired from the point it was spawned at
+  sec
+  lda entity_instances+entity_instance::position_y,x
+  sbc #LASER_HEIGHT
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  sbc #0
+  sta entity_instances+entity_instance::position_y+1,x
+
   jmp direction_test_done
-will_go_up:
+will_go_down:
   lda #$04
   sta entity_locals+laser_locals::y_velocity,x
   lda #$00
   sta entity_locals+laser_locals::y_velocity+1,x
+
 direction_test_done:
   .endscope
 
   rts
 
-laser_fly:
+laser_fly_handler:
 
   jsr entity_compute_screen_coordinates
 
@@ -135,16 +164,31 @@ laser_fly:
   lda #>spritesheet2_Laser0
   sta w0+1
 
+  ;exclusive or the signs of the velocities together. If we get nonzero,
+  ;we want the laser to be oriented as /. If we get zero, we want the
+  ;laser to be oriented as \.
   lda entity_locals+laser_locals::x_velocity+1,x
-  bpl entity_facing_right
-entity_facing_left:
+  and #$80 
+  sta b0
+  lda entity_locals+laser_locals::y_velocity+1,x
+  and #$80
+  sta b1
+  
+  lda b0
+  eor b1
+  bne forwardslash_oriented
+backwardslash_oriented:
+
+  lda #%00000000
+  sta b2
+
+  jmp orientation_test_done
+forwardslash_oriented:
+
   lda #%01000000
   sta b2
-  jmp entity_facing_test_done
-entity_facing_right:
-  lda #$00
-  sta b2
-entity_facing_test_done:
+
+orientation_test_done:
 
   lda entity_screen_x
   sta w3
