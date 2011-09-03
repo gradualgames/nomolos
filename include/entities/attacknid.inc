@@ -1,12 +1,18 @@
 .ifndef ATTACKNID_INC
 ATTACKNID_INC = 1
 
+.struct attacknid_locals
+  original_y .word
+  goal_y .word
+.endstruct
+
 ATTACKNID_WIDTH = $10
 ATTACKNID_HEIGHT = $10
 
 ATTACKNID_INITSTATE = 0
-ATTACKNID_MOVERIGHTSTATE = 1
-ATTACKNID_MOVELEFTSTATE = 2
+ATTACKNID_WAITSTATE = 1
+ATTACKNID_CLIMBDOWNSTATE = 2
+ATTACKNID_CLIMBUPSTATE = 3
 
 .proc attacknid_update
 
@@ -15,97 +21,155 @@ ATTACKNID_MOVELEFTSTATE = 2
   ;figure out what state to jump to
   cmp #ATTACKNID_INITSTATE
   beq attacknid_initState
-  cmp #ATTACKNID_MOVERIGHTSTATE
-  beq attacknid_moveRightState
-  cmp #ATTACKNID_MOVELEFTSTATE
-  beq attacknid_moveLeftState
+  cmp #ATTACKNID_WAITSTATE
+  beq attacknid_wait_state
+  cmp #ATTACKNID_CLIMBDOWNSTATE
+  beq attacknid_climb_down_state
+  cmp #ATTACKNID_CLIMBUPSTATE
+  beq attacknid_climb_up_state
 
 attacknid_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 
-  ;switch state to "run"
-  lda #ATTACKNID_MOVELEFTSTATE
+  ;remember original Y coordinate
+  lda entity_instances+entity_instance::position_y,x
+  sta entity_locals+attacknid_locals::original_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  sta entity_locals+attacknid_locals::original_y+1,x
+
+  ;switch state to "wait"
+  lda #ATTACKNID_WAITSTATE
   sta entity_instances+entity_instance::state,x
   rts
 
-attacknid_moveRightState:
+attacknid_wait_state:
 
-  ;add 1 to position_x
+  jsr entity_compute_screen_coordinates
+
+  ;compare Nomolos's X coordinate to the entity's X coordinate
+
+  ;load left side of line A
+  lda nomolos_screen_x
+  sta b2
+  ;load right side of line A
   clc
-  lda entity_instances+entity_instance::position_x,x
-  adc #1
-  sta entity_instances+entity_instance::position_x,x
-  lda entity_instances+entity_instance::position_x+1,x
-  adc #0
-  sta entity_instances+entity_instance::position_x+1,x
+  adc #nomolos_width
+  sta b3
 
-  ;do position_x - spawn_position_x
-  sec
-  lda entity_instances+entity_instance::position_x,x
-  sbc entity_instances+entity_instance::spawn_position_x,x
-  sta w0
-  lda entity_instances+entity_instance::position_x+1,x
-  sbc entity_instances+entity_instance::spawn_position_x+1,x
-  sta w0+1
+  ;load left side of line B
+  lda entity_screen_x
+  sec 
+  sbc #32
+  sta b4
+  ;load right side of line B
+  clc
+  adc #ATTACKNID_WIDTH
+  adc #64
+  sta b5
 
-  ;difference is in w0, subtract our desired delta distance from it
-  sec
-  lda w0
-  sbc #30
-  sta w0
-  lda w0+1
-  sbc #0
-  sta w0+1
-  bne dontSwitchToLeftState
+  jsr geotests_compare_range
+  bne do_not_switch_to_climb_down_state
 
-  lda #ATTACKNID_MOVELEFTSTATE
+  ;store goal Y
+  lda nomolos_map_y+1
+  sta entity_locals+attacknid_locals::goal_y,x
+  lda nomolos_map_y+2
+  sta entity_locals+attacknid_locals::goal_y+1,x
+
+  lda #ATTACKNID_CLIMBDOWNSTATE
   sta entity_instances+entity_instance::state,x
 
-dontSwitchToLeftState:
+do_not_switch_to_climb_down_state:
 
   jsr attacknid_draw
 
   rts
 
-attacknid_moveLeftState:
+attacknid_climb_down_state:
 
-  ;sub 1 from position_x
+  jsr entity_compute_screen_coordinates
+
+  clc
+  lda entity_instances+entity_instance::position_y,x
+  adc #$04
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #$00
+  sta entity_instances+entity_instance::position_y+1,x
+
+  ;compare y coordinate to goal y.
   sec
-  lda entity_instances+entity_instance::position_x,x
-  sbc #1
-  sta entity_instances+entity_instance::position_x,x
-  lda entity_instances+entity_instance::position_x+1,x
-  sbc #0
-  sta entity_instances+entity_instance::position_x+1,x
+  lda entity_instances+entity_instance::position_y,x
+  sbc entity_locals+attacknid_locals::goal_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  sbc entity_locals+attacknid_locals::goal_y+1,x
 
-  ;do spawn_position_x - position_x
-  sec
-  lda entity_instances+entity_instance::spawn_position_x,x
-  sbc entity_instances+entity_instance::position_x,x
-  sta w0
-  lda entity_instances+entity_instance::spawn_position_x+1,x
-  sbc entity_instances+entity_instance::position_x+1,x
-  sta w0+1
+  bmi do_not_switch_to_climb_up_state
 
-  ;difference is in w0, subtract our desired delta distance from it
-  sec
-  lda w0
-  sbc #30
-  sta w0
-  lda w0+1
-  sbc #0
-  sta w0+1
-
-  bne dontSwitchToRightState
-
-  lda #ATTACKNID_MOVERIGHTSTATE
+  lda #ATTACKNID_CLIMBUPSTATE
   sta entity_instances+entity_instance::state,x
 
-dontSwitchToRightState:
+do_not_switch_to_climb_up_state:
 
   jsr attacknid_draw
+
+  rts
+
+attacknid_climb_up_state:
+
+  jsr entity_compute_screen_coordinates
+
+  sec
+  lda entity_instances+entity_instance::position_y,x
+  sbc #$01
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  sbc #$00
+  sta entity_instances+entity_instance::position_y+1,x
+
+  ;compare y coordinate to original y
+
+  sec
+  lda entity_instances+entity_instance::position_y,x
+  sbc entity_locals+attacknid_locals::original_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  sbc entity_locals+attacknid_locals::original_y+1,x
+  bpl do_not_switch_to_wait_state
+
+  lda #ATTACKNID_WAITSTATE
+  sta entity_instances+entity_instance::state,x
+
+do_not_switch_to_wait_state:
+
+  jsr attacknid_draw
+
+  rts
+
+killAttacknid:
+
+  ;make it dead
+  jsr entity_kill
+
+  ;spawn an explosion entity
+  lda #entity_index_explosion
+  sta b0
+
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  ;get out high byte of position_x
+  lda entity_instances+entity_instance::position_x+1,x
+  sta w0+1
+
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sta b1
+  lda entity_instances+entity_instance::position_y+1,x
+  sta b2
+
+  jsr entity_spawn
 
   rts
 
@@ -174,31 +238,6 @@ nomolosNotAttacking:
 attacknidOffscreen:
   rts
 
-killAttacknid:
-
-  ;make it dead
-  jsr entity_kill
-
-  ;spawn an explosion entity
-  lda #entity_index_explosion
-  sta b0
-
-  ;get out low byte of position_x
-  lda entity_instances+entity_instance::position_x,x
-  sta w0
-  ;get out high byte of position_x
-  lda entity_instances+entity_instance::position_x+1,x
-  sta w0+1
-
-  ;get out position_y
-  lda entity_instances+entity_instance::position_y,x
-  sta b1
-  lda entity_instances+entity_instance::position_y+1,x
-  sta b2
-
-  jsr entity_spawn
-
-  rts
 .endproc
 
 .endif
