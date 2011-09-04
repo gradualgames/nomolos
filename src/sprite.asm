@@ -536,6 +536,8 @@ nextSpriteEntry:
   inx
   ;copy it over
   lda (w0),y
+  clc
+  adc sprite_group_offset
   sta sprite, x
 
   ;point to the sprite attribute

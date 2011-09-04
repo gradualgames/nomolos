@@ -4,6 +4,7 @@ ATTACKNID_INC = 1
 .struct attacknid_locals
   original_y .word
   goal_y .word
+  counter .byte
 .endstruct
 
 ATTACKNID_WIDTH = $10
@@ -32,6 +33,10 @@ attacknid_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
+
+  ;reset counter (used for thread drawing)
+  lda #$00
+  sta entity_locals+attacknid_locals::counter,x
 
   ;remember original Y coordinate
   lda entity_instances+entity_instance::position_y,x
@@ -234,6 +239,42 @@ nomolosNotAttacking:
   lda #>spritesheet2_AttacknidClimb
   sta w2+1
   jsr entity_draw_anim
+
+  ;draw thread
+  lda entity_locals+attacknid_locals::counter,x
+  clc
+  adc #$40
+  sta entity_locals+attacknid_locals::counter,x
+
+  lda #<spritesheet2_Attacknid2
+  sta w0
+  lda #>spritesheet2_Attacknid2
+  sta w0+1
+
+  lda #0
+  sta b2
+  lda entity_screen_x
+  sta w3
+  lda entity_screen_x+1
+  sta w3+1
+
+  sec
+  lda entity_screen_y
+  sbc #$40
+  sta w4
+  lda entity_screen_y+1
+  sbc #$00
+  sta w4+1
+
+  sec
+  lda w4
+  sbc entity_locals+attacknid_locals::counter,x
+  sta w4
+  lda w4+1
+  sbc #$00
+  sta w4+1
+
+  jsr sprite_draw_metasprite_16bit
 
 attacknidOffscreen:
   rts
