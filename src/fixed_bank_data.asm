@@ -658,7 +658,7 @@ entity_definition_table:
   .byte $02
   .byte $00
   .word attacknid_update
-  .byte $0a
+  .byte $03
   .byte $00
   .word laser_update
   .byte $05
