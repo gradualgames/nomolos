@@ -1,17 +1,6 @@
 .ifndef LASER_INC
 LASER_INC = 1
 
-LASER_WIDTH = $10
-LASER_HEIGHT = $10
-
-LASER_INITSTATE = 0
-LASER_FLYSTATE = 1
-
-.struct laser_locals
-  x_velocity .word
-  y_velocity .word
-.endstruct
-
 laser_update:
 
   lda entity_instances+entity_instance::state,x
@@ -54,20 +43,8 @@ laser_init_handler:
   pla
   tax
 
-  ;compare entity x position to nomolos x position to decide direction
-  .scope
-  sec
-  lda nomolos_map_x+1
-  sbc entity_instances+entity_instance::position_x,x
-  lda nomolos_map_x+2
-  sbc entity_instances+entity_instance::position_x+1,x
-  bpl will_go_right
-will_go_left:
-  lda #$fc
-  sta entity_locals+laser_locals::x_velocity,x
-  lda #$ff
-  sta entity_locals+laser_locals::x_velocity+1,x
-
+  lda entity_locals+laser_locals::x_velocity+1,x
+  bpl do_not_adjust_starting_x
   ;adjust starting point so laser can be fired from the point it was spawned at
   sec
   lda entity_instances+entity_instance::position_x,x
@@ -76,29 +53,10 @@ will_go_left:
   lda entity_instances+entity_instance::position_x+1,x
   sbc #0
   sta entity_instances+entity_instance::position_x+1,x
+do_not_adjust_starting_x:
 
-  jmp direction_test_done
-will_go_right:
-  lda #$04
-  sta entity_locals+laser_locals::x_velocity,x
-  lda #$00
-  sta entity_locals+laser_locals::x_velocity+1,x
-direction_test_done:
-  .endscope
-
-  .scope
-  sec
-  lda nomolos_map_y+1
-  sbc entity_instances+entity_instance::position_y,x
-  lda nomolos_map_y+2
-  sbc entity_instances+entity_instance::position_y+1,x
-  bpl will_go_down
-will_go_up:
-  lda #$fc
-  sta entity_locals+laser_locals::y_velocity,x
-  lda #$ff
-  sta entity_locals+laser_locals::y_velocity+1,x
-
+  lda entity_locals+laser_locals::y_velocity+1,x
+  bpl do_not_adjust_starting_y
   ;adjust starting point so laser can be fired from the point it was spawned at
   sec
   lda entity_instances+entity_instance::position_y,x
@@ -107,16 +65,7 @@ will_go_up:
   lda entity_instances+entity_instance::position_y+1,x
   sbc #0
   sta entity_instances+entity_instance::position_y+1,x
-
-  jmp direction_test_done
-will_go_down:
-  lda #$04
-  sta entity_locals+laser_locals::y_velocity,x
-  lda #$00
-  sta entity_locals+laser_locals::y_velocity+1,x
-
-direction_test_done:
-  .endscope
+do_not_adjust_starting_y:
 
   rts
 

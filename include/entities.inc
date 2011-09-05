@@ -145,4 +145,15 @@ LIGHTNINGBOLT_HEIGHT = $28
 LIGHTNINGBOLT_INITSTATE = 0
 LIGHTNINGBOLT_FALLSTATE = 1
 
+.struct laser_locals
+  x_velocity .word
+  y_velocity .word
+.endstruct
+
+LASER_WIDTH = $10
+LASER_HEIGHT = $10
+
+LASER_INITSTATE = 0
+LASER_FLYSTATE = 1
+
 .endif

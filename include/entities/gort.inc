@@ -80,7 +80,9 @@ gort_waitState:
   lda entity_locals+gort_locals::counter,x
   beq do_not_decrement_counter
   dec entity_locals+gort_locals::counter,x
-  bne do_not_switch_to_fire_state
+  beq :+
+  jmp do_not_switch_to_fire_state
+:
 do_not_decrement_counter:
 
   ;compare Nomolos's X coordinate to the entity's X coordinate
@@ -106,7 +108,9 @@ do_not_decrement_counter:
 
   jsr geotests_compare_range
 
-  bne do_not_switch_to_fire_state
+  beq :+
+  jmp do_not_switch_to_fire_state
+:
 
   ;spawn a laser entity
   lda #entity_index_laser
@@ -127,6 +131,32 @@ entity_facing_left:
   adc #0
   sta w0+1
 
+  ;get out position_y
+  clc
+  lda entity_instances+entity_instance::position_y,x
+  adc #$08
+  sta b1
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #$00
+  sta b2
+
+  jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize the laser to go left
+  lda #$fc
+  sta entity_locals+laser_locals::x_velocity,y
+  lda #$ff
+  sta entity_locals+laser_locals::x_velocity+1,y
+
+  lda #$04
+  sta entity_locals+laser_locals::y_velocity,y
+  lda #$00
+  sta entity_locals+laser_locals::y_velocity+1,y
+
   jmp entity_facing_test_done
 entity_facing_right:
 
@@ -140,9 +170,6 @@ entity_facing_right:
   adc #$00
   sta w0+1
 
-entity_facing_test_done:
-.endscope
-
   ;get out position_y
   clc
   lda entity_instances+entity_instance::position_y,x
@@ -153,6 +180,24 @@ entity_facing_test_done:
   sta b2
 
   jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
+
+  ;parameterize the laser to go right
+  lda #$04
+  sta entity_locals+laser_locals::x_velocity,y
+  lda #$00
+  sta entity_locals+laser_locals::x_velocity+1,y
+
+  lda #$04
+  sta entity_locals+laser_locals::y_velocity,y
+  lda #$00
+  sta entity_locals+laser_locals::y_velocity+1,y
+
+entity_facing_test_done:
+.endscope
 
   ;set how long the Gort will be in the fire state
   lda #30
