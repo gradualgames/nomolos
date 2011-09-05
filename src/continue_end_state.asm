@@ -12,6 +12,7 @@
 .include "soundengine.inc"
 .include "controller.inc"
 .include "nomolos_logic.inc"
+.include "entities.inc"
 
 .segment "CODE"
 
@@ -271,6 +272,8 @@ display_end_cursor:
   
 selected_cursor_test_done:
   
+  lda entity_chr_offsets+(entity_index_nomolos-1)
+  sta sprite_group_offset
   lda #0
   sta b2
   lda #<heart
