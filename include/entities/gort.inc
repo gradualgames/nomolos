@@ -76,7 +76,7 @@ gort_waitState:
 
   jsr entity_compute_screen_coordinates
 
-  ;only test after a certain number of rames
+  ;only test after a certain number of frames
   lda entity_locals+gort_locals::counter,x
   beq do_not_decrement_counter
   dec entity_locals+gort_locals::counter,x
