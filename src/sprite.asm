@@ -169,7 +169,7 @@ y_offset_positive:
   sta sprite_y
   lda top_left_y+1
   adc #$00
-  bne clip_sprite
+  bne clip_sprite_y
   jmp y_offset_sign_test_done
 y_offset_negative:
   clc
@@ -177,7 +177,7 @@ y_offset_negative:
   sta sprite_y
   lda top_left_y+1
   adc #$ff
-  bne clip_sprite
+  bne clip_sprite_y
 y_offset_sign_test_done:
 
   ;store calculated y coordinate
@@ -219,7 +219,40 @@ return_from_load_x_coordinate:
 
   rts
 
-clip_sprite:
+clip_sprite_y:
+
+  ;skip sprite attributes
+  iny
+  ;skip tile number
+  iny
+  ;skip x coordinate
+  iny
+  ;skip flipped x coordinate
+  iny
+
+  lda #$ff
+  sta sprite+spriteStruct::ycoord,x
+  sta sprite+spriteStruct::xcoord,x
+
+  ;move to next sprite
+  inx
+  inx
+  inx
+  inx
+
+  dec b5
+  bne next_metasprite_entry
+
+  txa
+  sta next_sprite_address
+
+  ;restore regs
+  pla
+  tax
+
+  rts
+
+clip_sprite_x:
 
   lda #$ff
   sta sprite+spriteStruct::ycoord,x
@@ -262,7 +295,7 @@ x_offset_positive:
   sta sprite_x
   lda top_left_x+1
   adc #$00
-  bne clip_sprite
+  bne clip_sprite_x
   jmp x_offset_sign_test_done
 x_offset_negative:
   iny ;skip flipped x coordinate
@@ -271,7 +304,7 @@ x_offset_negative:
   sta sprite_x
   lda top_left_x+1
   adc #$ff
-  bne clip_sprite
+  bne clip_sprite_x
 x_offset_sign_test_done:
   .endscope
   jmp sprite_flipped_test_done
@@ -290,7 +323,7 @@ x_offset_positive:
   sta sprite_x
   lda top_left_x+1
   adc #$00
-  bne clip_sprite
+  bne clip_sprite_x
   jmp x_offset_sign_test_done
 x_offset_negative:
   clc
@@ -298,7 +331,7 @@ x_offset_negative:
   sta sprite_x
   lda top_left_x+1
   adc #$ff
-  bne clip_sprite
+  bne clip_sprite_x
 x_offset_sign_test_done:
   .endscope
 sprite_flipped_test_done:
