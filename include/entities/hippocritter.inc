@@ -7,6 +7,7 @@ HIPPOCRITTER_HEIGHT = $28
 HIPPOCRITTER_HALFHEIGHT = $14
 
 HIPPOCRITTER_JUMPING_WIDTH = $18
+HIPPOCRITTER_HALF_JUMPING_WIDTH = $0C
 HIPPOCRITTER_JUMPING_HEIGHT = $20
 
 .struct hippocritter_locals
@@ -149,7 +150,7 @@ hippocritterGoingRight:
   ;test for collision on right side of hippocritter. reverse direction if true
   lda entity_instances+entity_instance::position_x,x
   clc
-  adc #HIPPOCRITTER_WIDTH
+  adc #HIPPOCRITTER_JUMPING_WIDTH
   sta w0
   lda entity_instances+entity_instance::position_x+1,x
   adc #0
@@ -215,7 +216,7 @@ signExtendAddDone:
   ;load the entity's X coordinate + 8
   clc
   lda entity_instances+entity_instance::position_x,x
-  adc #HIPPOCRITTER_HALFWIDTH
+  adc #HIPPOCRITTER_HALF_JUMPING_WIDTH
   sta entity_locals+hippocritter_locals::x_collisionPointBottom,x
   sta w0
   lda entity_instances+entity_instance::position_x+1,x
