@@ -61,6 +61,14 @@ flail_item_sit_there:
   jmp notTouching
 skipJmpNotTouching:
 
+  ;Nomolos must not be attacking anymore when this is picked up
+  lda nomolos_state_primary
+  and #nomolos_attack_off_clear
+  sta nomolos_state_primary
+  lda #0
+  sta nomolos_counter_attack_rect
+
+  ;Nomolos has the flail
   lda nomolos_state_secondary
   and #nomolos_attack_set_mask
   ora #nomolos_attack_state_flail
