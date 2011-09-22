@@ -1,6 +1,7 @@
 .ifndef ENTITY_INC
 ENTITY_INC = 1
 
+.global entity_kill_if_redundant_entity
 .global entity_set_picked_up
 .global entity_test_picked_up_state
 .global entity_load_chr_groups

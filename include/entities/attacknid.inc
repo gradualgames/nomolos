@@ -31,23 +31,7 @@ ATTACKNID_CLIMBUPSTATE = 3
 
 attacknid_initState:
 
-  ;init code for animation, etc. goes here
-  jsr entity_reset_anim
-
-  ;reset counter (used for thread drawing)
-  lda #$00
-  sta entity_locals+attacknid_locals::counter,x
-
-  ;remember original Y coordinate
-  lda entity_instances+entity_instance::position_y,x
-  sta entity_locals+attacknid_locals::original_y,x
-  lda entity_instances+entity_instance::position_y+1,x
-  sta entity_locals+attacknid_locals::original_y+1,x
-
-  ;switch state to "wait"
-  lda #ATTACKNID_WAITSTATE
-  sta entity_instances+entity_instance::state,x
-  rts
+  jmp attacknid_initState_handler
 
 attacknid_wait_state:
 
@@ -150,6 +134,36 @@ do_not_switch_to_wait_state:
 
   jsr attacknid_draw
 
+  rts
+
+attacknid_initState_handler:
+
+  lda entity_instances+entity_instance::index,x
+  sta b0
+  lda entity_instances+entity_instance::spawn_position_x,x
+  sta w0
+  lda entity_instances+entity_instance::spawn_position_x+1,x
+  sta w0+1
+  lda entity_instances+entity_instance::spawn_position_y,x
+  sta b1
+  jsr entity_kill_if_redundant_entity
+
+  ;init code for animation, etc. goes here
+  jsr entity_reset_anim
+
+  ;reset counter (used for thread drawing)
+  lda #$00
+  sta entity_locals+attacknid_locals::counter,x
+
+  ;remember original Y coordinate
+  lda entity_instances+entity_instance::position_y,x
+  sta entity_locals+attacknid_locals::original_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  sta entity_locals+attacknid_locals::original_y+1,x
+
+  ;switch state to "wait"
+  lda #ATTACKNID_WAITSTATE
+  sta entity_instances+entity_instance::state,x
   rts
 
 killAttacknid:

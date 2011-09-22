@@ -12,6 +12,80 @@
 
 .segment "CODE"
 
+;this routine searches the entity pool for alive entities that
+;match the entity type (index) and spawn position of the current
+;one. It kills the current entity if redundant.
+;b0: expected to be index of current entity
+;w0: expected to be spawn x position of current entity
+;b1: expected to be spawn y position of current entity
+.proc entity_kill_if_redundant_entity
+
+  ;save x
+  txa
+  pha
+
+  ;check all other 15 entities
+  ldy #15
+
+  ;skip entity at current x---if we test this, then this routine
+  ;will determine that the current entity is redundant!
+  clc
+  adc #16
+  tax
+
+entity_loop:
+
+  ;only consider living entities
+  lda entity_instances+entity_instance::alive,x
+  beq next_entity
+
+  ;entity is alive, test if redundant
+  lda entity_instances+entity_instance::index,x
+  cmp b0
+  bne next_entity
+
+  lda entity_instances+entity_instance::spawn_position_x,x
+  cmp w0
+  bne next_entity
+  lda entity_instances+entity_instance::spawn_position_x+1,x
+  cmp w0+1
+  bne next_entity
+
+  lda entity_instances+entity_instance::spawn_position_y,x
+  cmp b1
+  bne next_entity
+
+  ;if we reach here, the index, spawn position x and y all match.
+  ;we have found a redundant entity. kill the current entity.
+  jmp kill_redundant_entity
+
+next_entity:
+  txa
+  clc
+  adc #16
+  tax
+
+  dey
+  bne entity_loop
+
+  ;restore x
+  pla
+  tax
+
+  rts
+
+kill_redundant_entity:
+
+  ;restore x
+  pla
+  tax
+
+  jsr entity_kill
+
+  rts
+
+.endproc
+
 ;sets the picked up state for the current entity
 .proc entity_set_picked_up
 
