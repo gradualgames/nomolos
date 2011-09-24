@@ -654,15 +654,15 @@ MetaTile119:
 MetaTile120:
   .byte $01,$00,$01,$ba,$bb,$ca,$cb,$00
 MetaTile121:
-  .byte $03,$00,$00,$ba,$bb,$ca,$cb,$00
+  .byte $03,$00,$01,$ba,$bb,$ca,$cb,$00
 MetaTile122:
   .byte $01,$00,$01,$d0,$cf,$d3,$cf,$00
 MetaTile123:
-  .byte $03,$00,$00,$d0,$cf,$d3,$cf,$00
+  .byte $03,$00,$01,$d0,$cf,$d3,$cf,$00
 MetaTile124:
   .byte $01,$00,$00,$e0,$e1,$ee,$ef,$00
 MetaTile125:
-  .byte $03,$00,$00,$e0,$e1,$ee,$ef,$00
+  .byte $03,$00,$01,$e0,$e1,$ee,$ef,$00
 MetaTile126:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_bee
 MetaTile127:
