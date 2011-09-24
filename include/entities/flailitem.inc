@@ -57,6 +57,11 @@ flail_item_sit_there:
 
   jsr entity_compute_screen_coordinates
 
+  ;if Nomolos' state is dying, exit
+  lda nomolos_state_primary
+  and #nomolos_dying_test
+  bne notTouching
+
   jsr entity_item_test_death_zone
   beq flailItemDie
 

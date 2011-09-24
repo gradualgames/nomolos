@@ -60,6 +60,11 @@ mouseSitThere:
 
   jsr entity_compute_screen_coordinates
 
+  ;if Nomolos' state is dying, exit
+  lda nomolos_state_primary
+  and #nomolos_dying_test
+  bne notTouching
+
   jsr entity_item_test_death_zone
   beq mouseDie
 
@@ -70,7 +75,7 @@ mouseSitThere:
   sta b3
   jsr entity_test_collision_nomolos
 
-  bne @notTouching
+  bne notTouching
 
   lda #1
   jsr nomolos_add_health
@@ -97,7 +102,7 @@ mouseSitThere:
 
   jmp mouseDie
 
-@notTouching:
+notTouching:
 
   lda w0
   sta b0
