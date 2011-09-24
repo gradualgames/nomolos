@@ -73,3 +73,31 @@ spritesheet2_AttacknidClimb:
   .word spritesheet2_Attacknid1
   .word spritesheet2_Attacknid0
   .word $0000
+
+spritesheet2_SneepRun:
+  .byte $0a
+  .word spritesheet2_SneepRun1
+  .word spritesheet2_SneepRun0
+  .word spritesheet2_SneepRun1
+  .word spritesheet2_SneepRun2
+  .word $0000
+
+spritesheet2_SneepEyeRun:
+  .byte $0a
+  .word spritesheet2_SneepEyeRun1
+  .word spritesheet2_SneepEyeRun0
+  .word spritesheet2_SneepEyeRun1
+  .word spritesheet2_SneepEyeRun2
+  .word $0000
+
+spritesheet2_SneepFlap:
+  .byte $0a
+  .word spritesheet2_SneepFlap0
+  .word spritesheet2_SneepFlap1
+  .word $0000
+
+spritesheet2_SneepEyeFlap:
+  .byte $0a
+  .word spritesheet2_SneepEyeFlap0
+  .word spritesheet2_SneepEyeFlap1
+  .word $0000

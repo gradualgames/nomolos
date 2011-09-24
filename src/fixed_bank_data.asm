@@ -732,6 +732,9 @@ entity_definition_table:
   .word laser_update
   .byte $05
   .byte $00
+  .word sneep_update
+  .byte $01
+  .byte $00
   
 entity_chr_definition_table:
   .word spritesheet_common_Nomolos_chr
@@ -776,6 +779,7 @@ entity_chr_definition_table:
   .word spritesheet2_ArmoredSkelekin_chr
   .word spritesheet2_Attacknid_chr
   .word spritesheet2_Laser_chr
+  .word spritesheet2_Sneep_chr
 
 ;miscellaneous data
 banktable:
@@ -1002,7 +1006,7 @@ title_definition:
   .word title_nametable
   .word title_patterns
   .byte 14
-  .byte 12
+  .byte 10
 
 title_palette:
   .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
@@ -1013,11 +1017,11 @@ slide1:
   .word slide1_nametable
   .word slide1_chr
   .byte 255
-  .byte 12
+  .byte 10
 
 slide2:
   .word slide2_palette
   .word slide2_nametable
   .word slide2_chr
   .byte 255
-  .byte 12
+  .byte 10

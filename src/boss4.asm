@@ -8,17 +8,18 @@
 
 .export boss4_sprite_groups
 boss4_sprite_groups:
-  .byte $02
+  .byte $03
   .byte entity_index_nomolos
   .byte entity_index_explosion
+  .byte entity_index_sneep
 
 .segment "ROM04"
   
 .export boss4_palette
 boss4_palette:
   .byte $0d,$0b,$1b,$12,$0d,$0a,$00,$2c,$0d,$07,$16,$26,$0d,$1b,$00,$10
-  .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$28,$20,$0d,$0d,$00,$29
-  
+  .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$26,$25,$0d,$0d,$15,$25
+
 .export boss4_music
 boss4_music: 
   .word Square1
@@ -153,15 +154,15 @@ MapColumnTable:
   .byte $03,$06,$07,$00
   .byte $04,$07,$08,$00
   .byte $05,$01,$02,$00
-  .byte $06,$03,$04,$00
-  .byte $07,$09,$0a,$00
-  .byte $08,$0b,$0c,$00
-  .byte $09,$0d,$0e,$00
-  .byte $0a,$0f,$10,$00
-  .byte $0b,$11,$12,$00
-  .byte $0c,$13,$14,$00
-  .byte $0d,$15,$16,$00
-  .byte $0e,$16,$16,$00
+  .byte $06,$09,$04,$00
+  .byte $07,$0a,$0b,$00
+  .byte $08,$0c,$0d,$00
+  .byte $09,$0e,$0f,$00
+  .byte $0a,$10,$11,$00
+  .byte $0b,$12,$13,$00
+  .byte $0c,$14,$15,$00
+  .byte $0d,$16,$17,$00
+  .byte $0e,$17,$17,$00
 AttributeColumnTable:
   .byte $40,$fd,$ff,$ff,$ff,$ff,$ff,$05
   .byte $fd,$bb,$fb,$ff,$ff,$ff,$ff,$05
@@ -188,6 +189,7 @@ MetaTileColumnTable:
   .byte $14,$00,$19,$18,$18,$18,$25,$2d,$33,$18,$18,$18,$18,$18,$40,$00
   .byte $14,$00,$00,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$40,$00
   .byte $0f,$00,$17,$18,$18,$18,$25,$2d,$33,$18,$18,$18,$18,$18,$40,$00
+  .byte $18,$18,$25,$2d,$33,$18,$18,$18,$18,$18,$18,$18,$18,$7f,$40,$00
   .byte $00,$19,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$40,$00
   .byte $00,$00,$19,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$40,$00
   .byte $7d,$7e,$00,$19,$18,$18,$18,$18,$18,$18,$18,$18,$18,$18,$40,$00
@@ -457,3 +459,5 @@ MetaTile125:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_exit
 MetaTile126:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_setrightmostx
+MetaTile127:
+  .byte $03,$00,$00,$40,$41,$46,$47,entity_index_sneep

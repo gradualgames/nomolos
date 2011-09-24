@@ -95,3 +95,4 @@
 .include "armoredskelekin.inc"
 .include "attacknid.inc"
 .include "laser.inc"
+.include "sneep.inc"

@@ -40,5 +40,17 @@ SPRITESHEET2_SPRITES_IMPORTS_INC = 1
 .global spritesheet2_Attacknid1
 .global spritesheet2_Attacknid2
 .global spritesheet2_Laser0
+.global spritesheet2_SneepRun0
+.global spritesheet2_SneepRun1
+.global spritesheet2_SneepRun2
+.global spritesheet2_SneepEyeRun0
+.global spritesheet2_SneepEyeRun1
+.global spritesheet2_SneepEyeRun2
+.global spritesheet2_SneepHide0
+.global spritesheet2_SneepFlap0
+.global spritesheet2_SneepFlap1
+.global spritesheet2_SneepEyeFlap0
+.global spritesheet2_SneepEyeFlap1
+.global spritesheet2_SneepFeather0
 
 .endif

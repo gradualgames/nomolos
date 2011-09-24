@@ -15,5 +15,6 @@ SPRITESHEET2_PATTERNS_IMPORTS_INC = 1
 .global spritesheet2_ArmoredSkelekin_chr
 .global spritesheet2_Attacknid_chr
 .global spritesheet2_Laser_chr
+.global spritesheet2_Sneep_chr
 
 .endif

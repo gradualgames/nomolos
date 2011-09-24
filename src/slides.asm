@@ -1,6 +1,6 @@
 .include "slides.inc"
 
-.segment "ROM12"
+.segment "ROM10"
 
 .include "title_nametable_source.inc"
 
