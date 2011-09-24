@@ -12,7 +12,7 @@ LEVEL6_INC = 1
 .import level6_palette
 .import level6_cycling_palettes
 
-level_6_bank = 5
+level_6_bank = 6
 level_6_patterns_bank = 9
 
 .endif

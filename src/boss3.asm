@@ -15,7 +15,7 @@ boss3_sprite_groups:
   .byte entity_index_grank
   .byte entity_index_grubselimboj
 
-.segment "ROM04"
+.segment "ROM03"
   
 .export boss3_palette
 boss3_palette:

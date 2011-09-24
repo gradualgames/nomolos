@@ -1,7 +1,7 @@
 .ifndef LEVEL_6_2_INC
 LEVEL_6_2_INC = 1
 
-level_6_2_bank = 5
+level_6_2_bank = 6
 level_6_2_patterns_bank = 9
 
 .include "spritesheet1.inc"

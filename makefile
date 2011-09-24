@@ -34,6 +34,7 @@ FILES           = zp \
                   level6_2 \
                   boss3 \
                   boss1 \
+                  boss4 \
                   entities \
                   slides \
                   load_level_state \

@@ -4,7 +4,7 @@
 .include "fixed_bank_data.inc"
 .include "sound_effects.inc"
 
-.segment "ROM05"
+.segment "ROM06"
 
 .export level_6_2_map
 level_6_2_map = Map

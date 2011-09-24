@@ -23,7 +23,7 @@ level6_sprite_groups:
 
 .include "level6_patterns_source.inc"
 
-.segment "ROM05"
+.segment "ROM06"
 
 .export level6_palette
 level6_palette:
