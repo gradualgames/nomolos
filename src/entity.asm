@@ -365,7 +365,7 @@ do_not_kill_entity:
   clc
   adc #<(entity_instances+entity_instance::animation_object)
   sta w1
-  lda w1+1
+  lda #0
   adc #>(entity_instances+entity_instance::animation_object)
   sta w1+1
 
