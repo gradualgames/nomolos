@@ -525,7 +525,6 @@ spritesheet2_SneepRun0:
   .byte $20,$0b,$02,$08,$10
   .byte $20,$0c,$02,$10,$08
   .byte $20,$0d,$02,$18,$00
-
 spritesheet2_SneepRun1:
   .byte $14
   .byte $00,$0e,$02,$00,$18
@@ -548,7 +547,6 @@ spritesheet2_SneepRun1:
   .byte $20,$17,$02,$08,$10
   .byte $20,$18,$02,$10,$08
   .byte $20,$02,$00,$18,$00
-
 spritesheet2_SneepRun2:
   .byte $14
   .byte $00,$19,$02,$00,$18
@@ -571,19 +569,15 @@ spritesheet2_SneepRun2:
   .byte $20,$23,$02,$08,$10
   .byte $20,$24,$02,$10,$08
   .byte $20,$25,$02,$18,$00
-
 spritesheet2_SneepEyeRun0:
   .byte $01
-  .byte $00,$26,$00,$08,$00
-
+  .byte $00,$26,$00,$08,$10
 spritesheet2_SneepEyeRun1:
   .byte $01
-  .byte $00,$26,$00,$07,$00
-
+  .byte $00,$26,$00,$07,$11
 spritesheet2_SneepEyeRun2:
   .byte $01
-  .byte $00,$26,$00,$06,$00
-
+  .byte $00,$26,$00,$06,$12
 spritesheet2_SneepHide0:
   .byte $0c
   .byte $00,$02,$00,$00,$18
@@ -598,7 +592,6 @@ spritesheet2_SneepHide0:
   .byte $10,$2f,$02,$08,$10
   .byte $10,$30,$02,$10,$08
   .byte $10,$31,$00,$18,$00
-
 spritesheet2_SneepFlap0:
   .byte $14
   .byte $00,$32,$02,$00,$18
@@ -621,7 +614,6 @@ spritesheet2_SneepFlap0:
   .byte $20,$3d,$02,$08,$10
   .byte $20,$3e,$02,$10,$08
   .byte $20,$31,$00,$18,$00
-
 spritesheet2_SneepFlap1:
   .byte $14
   .byte $00,$3f,$02,$00,$18
@@ -644,15 +636,13 @@ spritesheet2_SneepFlap1:
   .byte $20,$4a,$02,$08,$10
   .byte $20,$30,$02,$10,$08
   .byte $20,$31,$00,$18,$00
-
 spritesheet2_SneepEyeFlap0:
   .byte $01
   .byte $00,$4b,$00,$00,$00
-
 spritesheet2_SneepEyeFlap1:
   .byte $01
   .byte $00,$4c,$00,$00,$00
-
 spritesheet2_SneepFeather0:
   .byte $01
   .byte $00,$4d,$03,$00,$00
+

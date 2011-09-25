@@ -89,6 +89,8 @@ level6_intro_string:
   .byte $07,$0b,$04,$15,$04,$0b,$1a,$21
 level_6_2_intro_string:
   .byte $09,$0b,$04,$15,$04,$0b,$1a,$21,$2b,$1d
+boss4_intro_string:
+  .byte $05,$12,$0d,$04,$04,$0f
 
 ;ROM definition table
 level_1_1_data:
@@ -527,7 +529,7 @@ boss_4_data:
   .byte 100 ;nomolos_start_y
   .byte 0 ;starting_screen
   
-  .word level_5_2_intro_string
+  .word boss4_intro_string
   .byte 16 ;columns_to_load
   .byte 1  ;camera_scroll_enabled  
   .word boss4_map
