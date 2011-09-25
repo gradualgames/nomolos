@@ -80,8 +80,6 @@ index_continue_end_state   = 4 * 4
   cycling_palette_address .word
   cycling_palette_speed .byte
   
-  attack_sound .word
-  hit_sound .word
   palette .word
 
   nomolos_start_x .byte

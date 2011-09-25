@@ -387,11 +387,9 @@ skipNomolosFacingRight:
 .proc nomolos_attack_sword
 
   ;play an attack sound
-  ldy #level_data_struct::attack_sound
-  lda (base_address_rom_definition_table),y
+  lda #<attack_sound
   sta sound_param_word_0
-  iny
-  lda (base_address_rom_definition_table),y
+  lda #>attack_sound
   sta sound_param_word_0+1
 
   lda #3

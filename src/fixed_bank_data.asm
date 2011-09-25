@@ -103,8 +103,6 @@ level_1_1_data:
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level1_palette
 
   .byte 120 ;nomolos_start_x
@@ -137,8 +135,6 @@ level_1_2_data:
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level1_2palette
 
   .byte 120 ;nomolos_start_x
@@ -171,8 +167,6 @@ level_2_1_data:
   .word level2_cycling_palettes ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level2_palette
 
   .byte 120 ;nomolos_start_x
@@ -203,8 +197,6 @@ level_2_2_data:
   .word level2_2cycling_palettes ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level2_2palette
 
   .byte 104 ;nomolos_start_x
@@ -235,8 +227,6 @@ boss_2_data:
   .word 0 ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word boss2_palette
 
   .byte 0   ;nomolos_start_x
@@ -267,8 +257,6 @@ level_3_1_data:
   .word level3_cycling_palettes ;cycling_palette_address
   .byte 10 ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level3_palette
 
   .byte 104 ;nomolos_start_x
@@ -299,8 +287,6 @@ level_3_2_data:
   .word level3_cycling_palettes ;cycling_palette_address
   .byte 10 ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level3_palette
 
   .byte 0   ;nomolos_start_x
@@ -331,8 +317,6 @@ boss_1_data:
   .word 0 ;cycling_palette_address
   .byte 0 ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word boss1_palette
 
   .byte 40  ;nomolos_start_x
@@ -363,8 +347,6 @@ level_4_1_data:
   .word level4_cycling_palettes ;cycling_palette_address
   .byte 5  ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level4_palette
 
   .byte 30  ;nomolos_start_x
@@ -395,8 +377,6 @@ level_4_2_data:
   .word level4_cycling_palettes ;cycling_palette_address
   .byte 5  ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level4_palette
 
   .byte 30  ;nomolos_start_x
@@ -427,8 +407,6 @@ boss_3_data:
   .word 0 ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word boss3_palette
 
   .byte 20 ;nomolos_start_x
@@ -459,8 +437,6 @@ level_5_1_data:
   .word 0  ;level5_cycling_palettes ;cycling_palette_address
   .byte 0  ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level5_palette
 
   .byte 30  ;nomolos_start_x
@@ -490,8 +466,6 @@ level_5_2_data:
   .word 0  ;level4_cycling_palettes ;cycling_palette_address
   .byte 0  ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level_5_2_palette
 
   .byte 30  ;nomolos_start_x
@@ -521,8 +495,6 @@ boss_4_data:
   .word 0  ;level4_cycling_palettes ;cycling_palette_address
   .byte 0  ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word boss4_palette
 
   .byte 30  ;nomolos_start_x
@@ -553,8 +525,6 @@ level_6_1_data:
   .word level6_cycling_palettes ;cycling_palette_address
   .byte 6 ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level6_palette
 
   .byte 30  ;nomolos_start_x
@@ -585,8 +555,6 @@ level_6_2_data:
   .word 0  ;level4_cycling_palettes ;cycling_palette_address
   .byte 0  ;cycling_palette_speed
 
-  .word attack_sound
-  .word hit_sound
   .word level6_palette
 
   .byte 30  ;nomolos_start_x
