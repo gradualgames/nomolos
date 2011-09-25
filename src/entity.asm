@@ -357,20 +357,16 @@ do_not_kill_entity:
 ;expects w2 to contain address of animation to draw
 ;expects b2 to contain flags for whether to flip the sprite. e.g. #%01000000 to flip
 .proc entity_draw_anim
-  ;load address of animation object into w1
-  lda #<(entity_instances+entity_instance::animation_object)
-  sta w1
-  lda #>(entity_instances+entity_instance::animation_object)
-  sta w1+1
 
-  ;get the index into a
+  ;compute address of animation object based on current entity index and animation_object
+  ;offset
   txa
+  sta w1
   clc
-  ;do a 16 bit add onto the address with this index
-  adc w1
+  adc #<(entity_instances+entity_instance::animation_object)
   sta w1
   lda w1+1
-  adc #0
+  adc #>(entity_instances+entity_instance::animation_object)
   sta w1+1
 
   jsr sprite_update_animation
