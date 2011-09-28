@@ -3,8 +3,12 @@ SNEEP_INC = 1
 
 .struct sneep_locals
   counter .byte
+  time_til_jump_counter .byte
   velocity_x .word
   velocity_y .word
+  y_belowPenetration .byte
+  x_collisionPointBottom .word
+  y_collisionPointBottom .word
   health .byte
   damaged_counter .byte
 .endstruct
@@ -13,12 +17,15 @@ SNEEP_GOINGRIGHT = $0100
 SNEEP_GOINGLEFT  = $FE00
 
 SNEEP_TIMETILABOUTFACE = 80
+SNEEP_TIMETILJUMP = 10
 
 SNEEP_WIDTH = $20
+SNEEP_HALFWIDTH = $10
 SNEEP_HEIGHT = $28
 
 SNEEP_INITSTATE = 0
 SNEEP_RUNSTATE = 1
+SNEEP_JUMPSTATE = 2
 
 .proc sneep_update
 
@@ -29,6 +36,12 @@ SNEEP_RUNSTATE = 1
   beq sneep_init_state
   cmp #SNEEP_RUNSTATE
   beq sneep_run_state
+  cmp #SNEEP_JUMPSTATE
+  beq sneep_jump_state
+
+sneep_jump_state:
+
+  jmp sneep_jump_state_handler
 
 sneep_init_state:
 
@@ -47,13 +60,17 @@ sneep_init_state:
   lda #0
   sta entity_locals+sneep_locals::counter,x
 
+  ;set jump counter
+  lda #SNEEP_TIMETILJUMP
+  sta entity_locals+sneep_locals::time_til_jump_counter,x
+
   ;initial health
   lda #20
-  sta entity_locals+thoguth_locals::health,x
+  sta entity_locals+sneep_locals::health,x
   
   ;initial damaged counter
   lda #0
-  sta entity_locals+thoguth_locals::damaged_counter,x
+  sta entity_locals+sneep_locals::damaged_counter,x
 
   ;set direction
   lda #<SNEEP_GOINGLEFT
@@ -68,39 +85,24 @@ sneep_init_state:
 
 sneep_run_state:
 
-  inc entity_locals+sneep_locals::counter,x
-  lda entity_locals+sneep_locals::counter,x
-  cmp #SNEEP_TIMETILABOUTFACE
-  bne do_not_switch_direction
-  
-  ;negate direction
-  clc
-  lda entity_locals+sneep_locals::velocity_x,x
-  eor #$ff
-  adc #1
-  sta entity_locals+sneep_locals::velocity_x,x
-  lda entity_locals+sneep_locals::velocity_x+1,x
-  eor #$ff
-  adc #0
-  sta entity_locals+sneep_locals::velocity_x+1,x
-
-  ;reset counter
-  lda #0
-  sta entity_locals+sneep_locals::counter,x
-
-do_not_switch_direction:
-
-  clc
-  lda entity_instances+entity_instance::position_x_fine,x
-  adc entity_locals+sneep_locals::velocity_x,x
-  sta entity_instances+entity_instance::position_x_fine,x
-  lda entity_instances+entity_instance::position_x,x
-  adc entity_locals+sneep_locals::velocity_x+1,x
-  sta entity_instances+entity_instance::position_x,x
+  jsr sneep_move_horizontally
 
   jsr entity_compute_screen_coordinates
 
   jsr sneep_draw
+
+  dec entity_locals+sneep_locals::time_til_jump_counter,x
+  bne do_not_switch_to_jump_state
+  
+  lda #$0a
+  sta entity_locals+sneep_locals::velocity_y,x
+  lda #$fd
+  sta entity_locals+sneep_locals::velocity_y+1,x
+
+  lda #SNEEP_JUMPSTATE
+  sta entity_instances+entity_instance::state,x
+
+do_not_switch_to_jump_state:
 
   rts
 
@@ -149,7 +151,7 @@ sneep_draw:
 :
 
   ;only check for a hit if the damaged counter is all the way down
-  lda entity_locals+thoguth_locals::damaged_counter,x
+  lda entity_locals+sneep_locals::damaged_counter,x
   bne damaged_counter_not_zero
 
   jsr nomolos_is_deadly
@@ -166,7 +168,7 @@ sneep_draw:
 
   ;set damaged counter
   lda #20
-  sta entity_locals+thoguth_locals::damaged_counter,x
+  sta entity_locals+sneep_locals::damaged_counter,x
 
   ;play a hit sound
   txa
@@ -186,7 +188,7 @@ sneep_draw:
   pla
   tax
 
-  dec entity_locals+thoguth_locals::health,x
+  dec entity_locals+sneep_locals::health,x
   bne health_not_zero
 
   jmp killSneep
@@ -195,10 +197,10 @@ damaged_counter_not_zero:
 health_not_zero:
 nomolosNotAttacking:
 
-  lda entity_locals+thoguth_locals::damaged_counter,x
+  lda entity_locals+sneep_locals::damaged_counter,x
   beq entity_not_flashing
   
-  dec entity_locals+thoguth_locals::damaged_counter,x
+  dec entity_locals+sneep_locals::damaged_counter,x
   
 entity_not_flashing:
 
@@ -209,7 +211,7 @@ entity_not_flashing:
   bmi sneep_going_left
 sneep_going_right:
 
-  lda entity_locals+thoguth_locals::damaged_counter,x
+  lda entity_locals+sneep_locals::damaged_counter,x
   and #%00000011
   ora #%01000000
   sta b2
@@ -217,7 +219,7 @@ sneep_going_right:
   jmp sneep_direction_test_done
 sneep_going_left:
 
-  lda entity_locals+thoguth_locals::damaged_counter,x
+  lda entity_locals+sneep_locals::damaged_counter,x
   and #%00000011
   ora #%00000000
   sta b2
@@ -260,6 +262,137 @@ sneep_direction_test_done:
   jsr sprite_update_animation
 
 sneepOffscreen:
+  rts
+
+sneep_jump_state_handler:
+
+  ;increment the vertical velocity
+  lda entity_locals+sneep_locals::velocity_y+1,x
+  cmp #10
+  bpl stopAccelerating
+  clc
+  lda entity_locals+sneep_locals::velocity_y,x
+  adc #$20
+  sta entity_locals+sneep_locals::velocity_y,x
+  lda entity_locals+sneep_locals::velocity_y+1,x
+  adc #0
+  sta entity_locals+sneep_locals::velocity_y+1,x
+stopAccelerating:
+
+  ;add vertical velocity to 24 bit Y coordinate with sign extension
+  clc
+  lda entity_locals+sneep_locals::velocity_y,x
+  adc entity_instances+entity_instance::position_y_fine,x
+  sta entity_instances+entity_instance::position_y_fine,x
+  lda entity_locals+sneep_locals::velocity_y+1,x
+  bmi signExtend
+  adc entity_instances+entity_instance::position_y,x
+  sta entity_instances+entity_instance::position_y,x
+  lda #0
+  adc entity_instances+entity_instance::position_y+1,x
+  sta entity_instances+entity_instance::position_y+1,x
+  jmp signExtendAddDone
+signExtend:
+  adc entity_instances+entity_instance::position_y,x
+  sta entity_instances+entity_instance::position_y,x
+  lda #$ff
+  adc entity_instances+entity_instance::position_y+1,x
+  sta entity_instances+entity_instance::position_y+1,x
+signExtendAddDone:
+
+  ;perform collision detection and eject if necessary
+  ;load the entity's X coordinate + 8
+  clc
+  lda entity_instances+entity_instance::position_x,x
+  adc #SNEEP_HALFWIDTH
+  sta entity_locals+sneep_locals::x_collisionPointBottom,x
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  adc #0
+  sta entity_locals+sneep_locals::x_collisionPointBottom+1,x
+  sta w0+1
+  ;load the entity's Y coordinate + height
+  clc
+  lda entity_instances+entity_instance::position_y,x
+  adc #SNEEP_HEIGHT
+  sta entity_locals+sneep_locals::y_collisionPointBottom,x
+  sta w1
+  lda entity_instances+entity_instance::position_y+1,x
+  adc #0
+  sta entity_locals+sneep_locals::y_collisionPointBottom+1,x
+  sta w1+1
+
+  jsr map_test_collision
+  lda b1
+  beq noBottomCollision
+
+  lda #0
+  sta entity_locals+sneep_locals::velocity_y,x
+  sta entity_locals+sneep_locals::velocity_y+1,x
+
+  ;there was a collision beneath the entity. calculate penetration distance and eject.
+  lda entity_locals+sneep_locals::y_collisionPointBottom,x
+  and #penetration_calculation_mask
+  sta entity_locals+sneep_locals::y_belowPenetration,x
+  sec
+  lda entity_instances+entity_instance::position_y,x
+  sbc entity_locals+sneep_locals::y_belowPenetration,x
+  sta entity_instances+entity_instance::position_y,x
+  lda entity_instances+entity_instance::position_y+1,x
+  sbc #0
+  sta entity_instances+entity_instance::position_y+1,x
+
+  ;switch back to run state and reset time til jump counter
+  lda #SNEEP_TIMETILJUMP
+  sta entity_locals+sneep_locals::time_til_jump_counter,x
+
+  lda #SNEEP_RUNSTATE
+  sta entity_instances+entity_instance::state,x
+
+noBottomCollision:
+
+  jsr sneep_move_horizontally
+
+  jsr entity_compute_screen_coordinates
+
+  jsr sneep_draw
+
+  rts
+
+sneep_move_horizontally:
+
+  inc entity_locals+sneep_locals::counter,x
+  lda entity_locals+sneep_locals::counter,x
+  .scope
+  cmp #SNEEP_TIMETILABOUTFACE
+  bne do_not_switch_direction
+  
+  ;negate direction
+  clc
+  lda entity_locals+sneep_locals::velocity_x,x
+  eor #$ff
+  adc #1
+  sta entity_locals+sneep_locals::velocity_x,x
+  lda entity_locals+sneep_locals::velocity_x+1,x
+  eor #$ff
+  adc #0
+  sta entity_locals+sneep_locals::velocity_x+1,x
+
+  ;reset counter
+  lda #0
+  sta entity_locals+sneep_locals::counter,x
+
+do_not_switch_direction:
+  .endscope
+
+  clc
+  lda entity_instances+entity_instance::position_x_fine,x
+  adc entity_locals+sneep_locals::velocity_x,x
+  sta entity_instances+entity_instance::position_x_fine,x
+  lda entity_instances+entity_instance::position_x,x
+  adc entity_locals+sneep_locals::velocity_x+1,x
+  sta entity_instances+entity_instance::position_x,x
+
   rts
 
 .endproc
