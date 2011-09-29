@@ -96,3 +96,4 @@
 .include "attacknid.inc"
 .include "laser.inc"
 .include "sneep.inc"
+.include "feather.inc"

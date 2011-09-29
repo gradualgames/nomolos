@@ -43,6 +43,7 @@ ENTITIES_INC = 1
 .global attacknid_update
 .global laser_update
 .global sneep_update
+.global feather_update
 
 ;entity indices
 entity_index_nomolos = 1
@@ -88,6 +89,7 @@ entity_index_armoredskelekin = 40
 entity_index_attacknid = 41
 entity_index_laser = 42
 entity_index_sneep = 43
+entity_index_feather = 44
 
 ;entity structs. Only parameterizable entities have structs here.
 .struct iceball_locals
@@ -157,5 +159,16 @@ LASER_HEIGHT = $10
 
 LASER_INITSTATE = 0
 LASER_FLYSTATE = 1
+
+.struct feather_locals
+  x_velocity .word
+  y_velocity .word
+.endstruct
+
+FEATHER_WIDTH = $08
+FEATHER_HEIGHT = $08
+
+FEATHER_INITSTATE = 0
+FEATHER_FLYSTATE = 1
 
 .endif

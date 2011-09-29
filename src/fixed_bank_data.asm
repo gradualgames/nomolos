@@ -705,6 +705,9 @@ entity_definition_table:
   .word sneep_update
   .byte $01
   .byte $00
+  .word feather_update
+  .byte $05
+  .byte $00
   
 entity_chr_definition_table:
   .word spritesheet_common_Nomolos_chr
@@ -750,6 +753,7 @@ entity_chr_definition_table:
   .word spritesheet2_Attacknid_chr
   .word spritesheet2_Laser_chr
   .word spritesheet2_Sneep_chr
+  .word entity_index_sneep  ;feather uses sneep chr data
 
 ;miscellaneous data
 banktable:

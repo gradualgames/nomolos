@@ -452,6 +452,41 @@ switch_to_other_state:
 
   jsr entity_reset_anim
 
+  ;spawn a feather
+  lda #entity_index_feather
+  sta b0
+
+  ;get out low byte of position_x
+  lda #128
+  sta w0
+  ;get out high byte of position_x
+  lda #0
+  sta w0+1
+
+  ;get out position_y
+  lda $20
+  sta b1
+  lda #0
+  sta b2
+
+  jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize the laser to go left
+  lda #$fc
+  sta entity_locals+feather_locals::x_velocity,y
+  lda #$ff
+  sta entity_locals+feather_locals::x_velocity+1,y
+
+  lda #$04
+  sta entity_locals+feather_locals::y_velocity,y
+  lda #$00
+  sta entity_locals+feather_locals::y_velocity+1,y
+
+
   lda #SNEEP_FLAPSTATE
   sta entity_instances+entity_instance::state,x
 
