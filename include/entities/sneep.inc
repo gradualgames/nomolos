@@ -4,6 +4,7 @@ SNEEP_INC = 1
 .struct sneep_locals
   counter .byte
   time_til_jump_counter .byte
+  jump_counter .byte
   velocity_x .word
   velocity_y .word
   y_belowPenetration .byte
@@ -11,12 +12,12 @@ SNEEP_INC = 1
   y_collisionPointBottom .word
   health .byte
   damaged_counter .byte
+  animation .word
 .endstruct
 
 SNEEP_GOINGRIGHT = $0100
 SNEEP_GOINGLEFT  = $FE00
 
-SNEEP_TIMETILABOUTFACE = 80
 SNEEP_TIMETILJUMP = 10
 
 SNEEP_WIDTH = $20
@@ -26,6 +27,7 @@ SNEEP_HEIGHT = $28
 SNEEP_INITSTATE = 0
 SNEEP_RUNSTATE = 1
 SNEEP_JUMPSTATE = 2
+SNEEP_FLAPSTATE = 3
 
 .proc sneep_update
 
@@ -38,10 +40,16 @@ SNEEP_JUMPSTATE = 2
   beq sneep_run_state
   cmp #SNEEP_JUMPSTATE
   beq sneep_jump_state
+  cmp #SNEEP_FLAPSTATE
+  beq sneep_flap_state
 
 sneep_jump_state:
 
   jmp sneep_jump_state_handler
+
+sneep_flap_state:
+
+  jmp sneep_flap_state_handler
 
 sneep_init_state:
 
@@ -60,7 +68,11 @@ sneep_init_state:
   lda #0
   sta entity_locals+sneep_locals::counter,x
 
-  ;set jump counter
+  ;reset jump counter
+  lda #5
+  sta entity_locals+sneep_locals::jump_counter,x
+
+  ;set jump interval counter
   lda #SNEEP_TIMETILJUMP
   sta entity_locals+sneep_locals::time_til_jump_counter,x
 
@@ -236,6 +248,26 @@ sneep_direction_test_done:
   lda w1+1
   adc #>(entity_instances+entity_instance::animation_object)
   sta w1+1
+
+  lda entity_instances+entity_instance::state,x
+  cmp #SNEEP_RUNSTATE
+  beq draw_runstate
+  cmp #SNEEP_JUMPSTATE
+  beq draw_runstate
+  cmp #SNEEP_FLAPSTATE
+  beq draw_flapstate
+draw_runstate:
+  jsr sneep_draw_running
+  jmp state_test_done
+draw_flapstate:
+  jsr sneep_draw_flapping
+state_test_done:
+
+sneepOffscreen:
+  rts
+
+sneep_draw_running:
+
   lda #<spritesheet2_SneepRun
   sta w2
   lda #>spritesheet2_SneepRun
@@ -261,7 +293,59 @@ sneep_direction_test_done:
 
   jsr sprite_update_animation
 
-sneepOffscreen:
+  rts
+
+sneep_draw_flapping:
+
+  lda #<spritesheet2_SneepFlap
+  sta w2
+  lda #>spritesheet2_SneepFlap
+  sta w2+1
+
+  lda entity_screen_x
+  sta w3
+  lda entity_screen_x+1
+  sta w3+1
+  lda entity_screen_y
+  sta w4
+  lda entity_screen_y+1
+  sta w4+1
+
+  jsr sprite_draw_animation_16bit
+
+  lda #<spritesheet2_SneepEyeFlap
+  sta w2
+  lda #>spritesheet2_SneepEyeFlap
+  sta w2+1
+
+  jsr sprite_draw_animation_16bit
+
+  jsr sprite_update_animation
+
+  rts
+
+sneep_flap_state_handler:
+
+  jsr entity_compute_screen_coordinates
+
+  jsr sneep_draw
+
+  dec entity_locals+sneep_locals::counter,x
+  bne do_not_switch_to_run_state
+
+  lda #20
+  sta entity_locals+sneep_locals::time_til_jump_counter,x
+
+  lda #5
+  sta entity_locals+sneep_locals::jump_counter,x
+
+  jsr entity_reset_anim
+
+  lda #SNEEP_RUNSTATE
+  sta entity_instances+entity_instance::state,x
+
+do_not_switch_to_run_state:
+
   rts
 
 sneep_jump_state_handler:
@@ -342,9 +426,14 @@ signExtendAddDone:
   sbc #0
   sta entity_instances+entity_instance::position_y+1,x
 
-  ;switch back to run state and reset time til jump counter
+  ;switch back to run state and reset time til jump counter and count the jump
+  dec entity_locals+sneep_locals::jump_counter,x
+  beq switch_to_other_state
+
   lda #SNEEP_TIMETILJUMP
   sta entity_locals+sneep_locals::time_til_jump_counter,x
+
+  jsr entity_reset_anim
 
   lda #SNEEP_RUNSTATE
   sta entity_instances+entity_instance::state,x
@@ -359,14 +448,30 @@ noBottomCollision:
 
   rts
 
+switch_to_other_state:
+
+  jsr entity_reset_anim
+
+  lda #SNEEP_FLAPSTATE
+  sta entity_instances+entity_instance::state,x
+
+  lda #100
+  sta entity_locals+sneep_locals::counter,x
+
+  jsr entity_compute_screen_coordinates
+
+  jsr sneep_draw
+
+  rts
+
 sneep_move_horizontally:
 
-  inc entity_locals+sneep_locals::counter,x
-  lda entity_locals+sneep_locals::counter,x
+  lda entity_instances+entity_instance::position_x,x
+  cmp #20
   .scope
-  cmp #SNEEP_TIMETILABOUTFACE
-  bne do_not_switch_direction
-  
+  bpl do_not_switch_direction
+  cmp #220
+  bmi do_not_switch_direction
   ;negate direction
   clc
   lda entity_locals+sneep_locals::velocity_x,x

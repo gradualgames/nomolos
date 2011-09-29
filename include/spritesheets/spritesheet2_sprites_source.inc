@@ -638,10 +638,10 @@ spritesheet2_SneepFlap1:
   .byte $20,$31,$00,$18,$00
 spritesheet2_SneepEyeFlap0:
   .byte $01
-  .byte $00,$4b,$00,$00,$00
+  .byte $00,$4b,$00,$02,$16
 spritesheet2_SneepEyeFlap1:
   .byte $01
-  .byte $00,$4c,$00,$00,$00
+  .byte $00,$4c,$00,$05,$13
 spritesheet2_SneepFeather0:
   .byte $01
   .byte $00,$4d,$03,$00,$00
