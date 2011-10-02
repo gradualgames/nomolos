@@ -503,7 +503,7 @@ boss_4_data:
   
   .word boss4_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 0  ;camera_scroll_enabled  
   .word boss4_map
   .word boss4_map_column_table
   .word boss4_attribute_column_table

@@ -15,8 +15,8 @@ SNEEP_INC = 1
   animation .word
 .endstruct
 
-SNEEP_GOINGRIGHT = $0100
-SNEEP_GOINGLEFT  = $FE00
+SNEEP_GOINGRIGHT = $0002
+SNEEP_GOINGLEFT  = $FFFE
 
 SNEEP_TIMETILJUMP = 10
 
@@ -145,9 +145,6 @@ killSneep:
   rts
 
 sneep_draw:
-
-  jsr entity_test_death_zone
-  beq killSneep
 
   ;load sneep width and height
   lda #SNEEP_WIDTH
@@ -452,19 +449,40 @@ switch_to_other_state:
 
   jsr entity_reset_anim
 
-  ;spawn a feather
+  ;change velocity to face Nomolos
+  jsr entity_test_face_nomolos
+  bpl entity_facing_right
+entity_facing_left:
+  lda #<SNEEP_GOINGLEFT
+  sta entity_locals+sneep_locals::velocity_x,x
+  lda #>SNEEP_GOINGLEFT
+  sta entity_locals+sneep_locals::velocity_x+1,x
+  jmp entity_facing_test_done
+entity_facing_right:
+  lda #<SNEEP_GOINGRIGHT
+  sta entity_locals+sneep_locals::velocity_x,x
+  lda #>SNEEP_GOINGRIGHT
+  sta entity_locals+sneep_locals::velocity_x+1,x
+entity_facing_test_done:
+
+  ;****SPAWN AND PARAMETERIZE A FEATHER****
   lda #entity_index_feather
   sta b0
 
   ;get out low byte of position_x
-  lda #128
+  lda entity_instances+entity_instance::position_x,x
+  sec
+  sbc #50
   sta w0
   ;get out high byte of position_x
   lda #0
+  sbc #0
   sta w0+1
 
   ;get out position_y
-  lda $20
+  lda entity_instances+entity_instance::position_y,x
+  sec
+  sbc #50
   sta b1
   lda #0
   sta b2
@@ -475,17 +493,102 @@ switch_to_other_state:
   lda b3
   tay
   
-  ;parameterize the laser to go left
-  lda #$fc
+  ;parameterize the feather to go direction of sneep
+  lda entity_locals+sneep_locals::velocity_x,x
+  clc
+  adc entity_locals+sneep_locals::velocity_x,x
   sta entity_locals+feather_locals::x_velocity,y
-  lda #$ff
+  lda entity_locals+sneep_locals::velocity_x+1,x
+  adc entity_locals+sneep_locals::velocity_x+1,x
   sta entity_locals+feather_locals::x_velocity+1,y
 
-  lda #$04
+  lda #$02
   sta entity_locals+feather_locals::y_velocity,y
   lda #$00
   sta entity_locals+feather_locals::y_velocity+1,y
 
+  ;****SPAWN AND PARAMETERIZE A FEATHER****
+  lda #entity_index_feather
+  sta b0
+
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  sta w0
+  ;get out high byte of position_x
+  lda #0
+  sta w0+1
+
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sec
+  sbc #50
+  sta b1
+  lda #0
+  sta b2
+
+  jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize the feather to go direction of sneep
+  lda entity_locals+sneep_locals::velocity_x,x
+  clc
+  adc entity_locals+sneep_locals::velocity_x,x
+  sta entity_locals+feather_locals::x_velocity,y
+  lda entity_locals+sneep_locals::velocity_x+1,x
+  adc entity_locals+sneep_locals::velocity_x+1,x
+  sta entity_locals+feather_locals::x_velocity+1,y
+
+  lda #$02
+  sta entity_locals+feather_locals::y_velocity,y
+  lda #$00
+  sta entity_locals+feather_locals::y_velocity+1,y
+
+  ;****SPAWN AND PARAMETERIZE A FEATHER****
+  lda #entity_index_feather
+  sta b0
+
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  clc
+  adc #50
+  sta w0
+  ;get out high byte of position_x
+  lda #0
+  adc #0
+  sta w0+1
+
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sec
+  sbc #50
+  sta b1
+  lda #0
+  sta b2
+
+  jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize the feather to go direction of sneep
+  lda entity_locals+sneep_locals::velocity_x,x
+  clc
+  adc entity_locals+sneep_locals::velocity_x,x
+  sta entity_locals+feather_locals::x_velocity,y
+  lda entity_locals+sneep_locals::velocity_x+1,x
+  adc entity_locals+sneep_locals::velocity_x+1,x
+  sta entity_locals+feather_locals::x_velocity+1,y
+
+  lda #$02
+  sta entity_locals+feather_locals::y_velocity,y
+  lda #$00
+  sta entity_locals+feather_locals::y_velocity+1,y
+
+  ; ;****END OF FEATHER SPAWNING****
 
   lda #SNEEP_FLAPSTATE
   sta entity_instances+entity_instance::state,x
@@ -502,20 +605,20 @@ switch_to_other_state:
 sneep_move_horizontally:
 
   lda entity_instances+entity_instance::position_x,x
-  cmp #20
+  cmp #16
   .scope
   bpl do_not_switch_direction
-  cmp #220
+  cmp #(256 - SNEEP_WIDTH - 16)
   bmi do_not_switch_direction
   ;negate direction
-  clc
   lda entity_locals+sneep_locals::velocity_x,x
   eor #$ff
-  adc #1
+  clc
+  adc #$01
   sta entity_locals+sneep_locals::velocity_x,x
   lda entity_locals+sneep_locals::velocity_x+1,x
   eor #$ff
-  adc #0
+  adc #$00
   sta entity_locals+sneep_locals::velocity_x+1,x
 
   ;reset counter
@@ -526,12 +629,12 @@ do_not_switch_direction:
   .endscope
 
   clc
-  lda entity_instances+entity_instance::position_x_fine,x
-  adc entity_locals+sneep_locals::velocity_x,x
-  sta entity_instances+entity_instance::position_x_fine,x
   lda entity_instances+entity_instance::position_x,x
-  adc entity_locals+sneep_locals::velocity_x+1,x
+  adc entity_locals+sneep_locals::velocity_x,x
   sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
+  adc entity_locals+sneep_locals::velocity_x+1,x
+  sta entity_instances+entity_instance::position_x+1,x
 
   rts
 
