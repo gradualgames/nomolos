@@ -52,5 +52,7 @@ SPRITESHEET2_SPRITES_IMPORTS_INC = 1
 .global spritesheet2_SneepEyeFlap0
 .global spritesheet2_SneepEyeFlap1
 .global spritesheet2_SneepFeather0
+.global spritesheet2_SneepHead0
+.global spritesheet2_SneepEyeHead0
 
 .endif

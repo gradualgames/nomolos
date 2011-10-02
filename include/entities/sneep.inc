@@ -7,12 +7,10 @@ SNEEP_INC = 1
   jump_counter .byte
   velocity_x .word
   velocity_y .word
-  y_belowPenetration .byte
-  x_collisionPointBottom .word
-  y_collisionPointBottom .word
   health .byte
   damaged_counter .byte
   animation .word
+  last_nomolos_x .word
 .endstruct
 
 SNEEP_GOINGRIGHT = $0002
@@ -28,8 +26,14 @@ SNEEP_INITSTATE = 0
 SNEEP_RUNSTATE = 1
 SNEEP_JUMPSTATE = 2
 SNEEP_FLAPSTATE = 3
+SNEEP_HIDESTATE = 4
 
 .proc sneep_update
+x_collisionPointBottom = b3 ;and b4, this is a .word
+y_collisionPointBottom = b5 ;and b6, this is a .word
+y_belowPenetration = b7     ;these were used because map collision used up all
+                            ;of the word locals. also, we needed more space in
+                            ;the sneep's locals. Kinda ugly, but oh well.
 
   ;load current state
   lda entity_instances+entity_instance::state,x
@@ -42,6 +46,8 @@ SNEEP_FLAPSTATE = 3
   beq sneep_jump_state
   cmp #SNEEP_FLAPSTATE
   beq sneep_flap_state
+  cmp #SNEEP_HIDESTATE
+  beq sneep_hide_state
 
 sneep_jump_state:
 
@@ -50,6 +56,10 @@ sneep_jump_state:
 sneep_flap_state:
 
   jmp sneep_flap_state_handler
+
+sneep_hide_state:
+
+  jmp sneep_hide_state_handler
 
 sneep_init_state:
 
@@ -253,11 +263,16 @@ sneep_direction_test_done:
   beq draw_runstate
   cmp #SNEEP_FLAPSTATE
   beq draw_flapstate
+  cmp #SNEEP_HIDESTATE
+  beq draw_hidestate
 draw_runstate:
   jsr sneep_draw_running
   jmp state_test_done
 draw_flapstate:
   jsr sneep_draw_flapping
+  jmp state_test_done
+draw_hidestate:
+  jsr sneep_draw_hiding
 state_test_done:
 
 sneepOffscreen:
@@ -321,6 +336,109 @@ sneep_draw_flapping:
 
   rts
 
+sneep_draw_hiding:
+
+  lda entity_chr_offsets+(entity_index_sneep-1)
+  sta sprite_group_offset
+
+  lda #<spritesheet2_SneepHide0
+  sta w0
+  lda #>spritesheet2_SneepHide0
+  sta w0+1
+
+  lda entity_screen_x
+  sta w3
+  lda entity_screen_x+1
+  sta w3+1
+  lda entity_screen_y
+  clc
+  adc #$0f
+  sta w4
+  lda entity_screen_y+1
+  adc #$00
+  sta w4+1
+
+  jsr sprite_draw_metasprite_16bit
+
+  lda #<spritesheet2_SneepHead0
+  sta w0
+  lda #>spritesheet2_SneepHead0
+  sta w0+1
+
+  lda entity_locals+sneep_locals::last_nomolos_x,x
+  sta w3
+  lda entity_locals+sneep_locals::last_nomolos_x+1,x
+  sta w3+1
+  lda entity_screen_y
+  clc
+  adc #$17
+  sta w4
+  lda entity_screen_y+1
+  adc #$00
+  sta w4+1
+
+  jsr sprite_draw_metasprite_16bit
+
+  lda #<spritesheet2_SneepEyeHead0
+  sta w0
+  lda #>spritesheet2_SneepEyeHead0
+  sta w0+1
+
+  lda entity_locals+sneep_locals::last_nomolos_x,x
+  sta w3
+  lda entity_locals+sneep_locals::last_nomolos_x+1,x
+  sta w3+1
+  lda entity_screen_y
+  clc
+  adc #$17
+  sta w4
+  lda entity_screen_y+1
+  adc #$00
+  sta w4+1
+
+  jsr sprite_draw_metasprite_16bit
+
+  ;transfer head rectangle to w2 = left and w3 = top and b2 = width and b3 = height
+  lda #$10
+  sta b2
+  sta b3
+
+  lda entity_locals+sneep_locals::last_nomolos_x,x
+  sta w2
+  lda entity_locals+sneep_locals::last_nomolos_x+1,x
+  sta w2+1
+  lda entity_screen_y
+  clc
+  adc #$17
+  sta w3
+  lda entity_screen_y+1
+  adc #$00
+  sta w3+1
+
+  ;transfer Nomolos rectangle to w4 = left and w5 = top and b4 = width and b5 = height
+  lda nomolos_screen_x
+  sta w4
+  lda nomolos_screen_x+1
+  sta w4+1
+  lda nomolos_screen_y
+  sta w5
+  lda nomolos_screen_y+1
+  sta w5+1
+  lda #nomolos_width
+  sta b4
+  lda #nomolos_height
+  sta b5
+
+  jsr geotests_rect_in_rect_16bit
+
+  bne do_not_hurt_nomolos
+
+  jsr nomolos_hurt
+
+do_not_hurt_nomolos:
+
+  rts
+
 sneep_flap_state_handler:
 
   jsr entity_compute_screen_coordinates
@@ -342,6 +460,32 @@ sneep_flap_state_handler:
   sta entity_instances+entity_instance::state,x
 
 do_not_switch_to_run_state:
+
+  rts
+
+sneep_hide_state_handler:
+
+  .scope
+  dec entity_locals+sneep_locals::counter,x
+  bne do_not_switch_to_run_state
+
+  lda #20
+  sta entity_locals+sneep_locals::time_til_jump_counter,x
+
+  lda #5
+  sta entity_locals+sneep_locals::jump_counter,x
+
+  jsr entity_reset_anim
+
+  lda #SNEEP_RUNSTATE
+  sta entity_instances+entity_instance::state,x
+
+do_not_switch_to_run_state:
+  .endscope
+
+  jsr entity_compute_screen_coordinates
+
+  jsr sneep_draw
 
   rts
 
@@ -386,21 +530,21 @@ signExtendAddDone:
   clc
   lda entity_instances+entity_instance::position_x,x
   adc #SNEEP_HALFWIDTH
-  sta entity_locals+sneep_locals::x_collisionPointBottom,x
+  sta x_collisionPointBottom
   sta w0
   lda entity_instances+entity_instance::position_x+1,x
   adc #0
-  sta entity_locals+sneep_locals::x_collisionPointBottom+1,x
+  sta x_collisionPointBottom+1
   sta w0+1
   ;load the entity's Y coordinate + height
   clc
   lda entity_instances+entity_instance::position_y,x
   adc #SNEEP_HEIGHT
-  sta entity_locals+sneep_locals::y_collisionPointBottom,x
+  sta y_collisionPointBottom
   sta w1
   lda entity_instances+entity_instance::position_y+1,x
   adc #0
-  sta entity_locals+sneep_locals::y_collisionPointBottom+1,x
+  sta y_collisionPointBottom+1
   sta w1+1
 
   jsr map_test_collision
@@ -412,12 +556,12 @@ signExtendAddDone:
   sta entity_locals+sneep_locals::velocity_y+1,x
 
   ;there was a collision beneath the entity. calculate penetration distance and eject.
-  lda entity_locals+sneep_locals::y_collisionPointBottom,x
+  lda y_collisionPointBottom
   and #penetration_calculation_mask
-  sta entity_locals+sneep_locals::y_belowPenetration,x
+  sta y_belowPenetration
   sec
   lda entity_instances+entity_instance::position_y,x
-  sbc entity_locals+sneep_locals::y_belowPenetration,x
+  sbc y_belowPenetration
   sta entity_instances+entity_instance::position_y,x
   lda entity_instances+entity_instance::position_y+1,x
   sbc #0
@@ -450,6 +594,7 @@ switch_to_other_state:
   jsr entity_reset_anim
 
   ;change velocity to face Nomolos
+  .scope
   jsr entity_test_face_nomolos
   bpl entity_facing_right
 entity_facing_left:
@@ -464,6 +609,64 @@ entity_facing_right:
   lda #>SNEEP_GOINGRIGHT
   sta entity_locals+sneep_locals::velocity_x+1,x
 entity_facing_test_done:
+  .endscope
+
+  ;jsr sneep_spawn_feathers
+
+  lda nomolos_screen_x
+  sta entity_locals+sneep_locals::last_nomolos_x,x
+  lda nomolos_screen_x+1
+  sta entity_locals+sneep_locals::last_nomolos_x+1,x
+
+  lda #SNEEP_HIDESTATE
+  sta entity_instances+entity_instance::state,x
+
+  lda #100
+  sta entity_locals+sneep_locals::counter,x
+
+  jsr entity_compute_screen_coordinates
+
+  jsr sneep_draw
+
+  rts
+
+sneep_move_horizontally:
+
+  lda entity_instances+entity_instance::position_x,x
+  cmp #16
+  .scope
+  bpl do_not_switch_direction
+  cmp #(256 - SNEEP_WIDTH - 16)
+  bmi do_not_switch_direction
+  ;negate direction
+  lda entity_locals+sneep_locals::velocity_x,x
+  eor #$ff
+  clc
+  adc #$01
+  sta entity_locals+sneep_locals::velocity_x,x
+  lda entity_locals+sneep_locals::velocity_x+1,x
+  eor #$ff
+  adc #$00
+  sta entity_locals+sneep_locals::velocity_x+1,x
+
+  ;reset counter
+  lda #0
+  sta entity_locals+sneep_locals::counter,x
+
+do_not_switch_direction:
+  .endscope
+
+  clc
+  lda entity_instances+entity_instance::position_x,x
+  adc entity_locals+sneep_locals::velocity_x,x
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
+  adc entity_locals+sneep_locals::velocity_x+1,x
+  sta entity_instances+entity_instance::position_x+1,x
+
+  rts
+
+sneep_spawn_feathers:
 
   ;****SPAWN AND PARAMETERIZE A FEATHER****
   lda #entity_index_feather
@@ -589,52 +792,6 @@ entity_facing_test_done:
   sta entity_locals+feather_locals::y_velocity+1,y
 
   ; ;****END OF FEATHER SPAWNING****
-
-  lda #SNEEP_FLAPSTATE
-  sta entity_instances+entity_instance::state,x
-
-  lda #100
-  sta entity_locals+sneep_locals::counter,x
-
-  jsr entity_compute_screen_coordinates
-
-  jsr sneep_draw
-
-  rts
-
-sneep_move_horizontally:
-
-  lda entity_instances+entity_instance::position_x,x
-  cmp #16
-  .scope
-  bpl do_not_switch_direction
-  cmp #(256 - SNEEP_WIDTH - 16)
-  bmi do_not_switch_direction
-  ;negate direction
-  lda entity_locals+sneep_locals::velocity_x,x
-  eor #$ff
-  clc
-  adc #$01
-  sta entity_locals+sneep_locals::velocity_x,x
-  lda entity_locals+sneep_locals::velocity_x+1,x
-  eor #$ff
-  adc #$00
-  sta entity_locals+sneep_locals::velocity_x+1,x
-
-  ;reset counter
-  lda #0
-  sta entity_locals+sneep_locals::counter,x
-
-do_not_switch_direction:
-  .endscope
-
-  clc
-  lda entity_instances+entity_instance::position_x,x
-  adc entity_locals+sneep_locals::velocity_x,x
-  sta entity_instances+entity_instance::position_x,x
-  lda entity_instances+entity_instance::position_x+1,x
-  adc entity_locals+sneep_locals::velocity_x+1,x
-  sta entity_instances+entity_instance::position_x+1,x
 
   rts
 
