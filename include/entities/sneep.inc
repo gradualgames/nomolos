@@ -27,6 +27,7 @@ SNEEP_RUNSTATE = 1
 SNEEP_JUMPSTATE = 2
 SNEEP_FLAPSTATE = 3
 SNEEP_HIDESTATE = 4
+SNEEP_DYINGSTATE = 5
 
 .proc sneep_update
 x_collisionPointBottom = b3 ;and b4, this is a .word
@@ -48,6 +49,8 @@ y_belowPenetration = b7     ;these were used because map collision used up all
   beq sneep_flap_state
   cmp #SNEEP_HIDESTATE
   beq sneep_hide_state
+  cmp #SNEEP_DYINGSTATE
+  beq sneep_dying_state
 
 sneep_jump_state:
 
@@ -60,6 +63,10 @@ sneep_flap_state:
 sneep_hide_state:
 
   jmp sneep_hide_state_handler
+
+sneep_dying_state:
+
+  jmp sneep_dying_state_handler
 
 sneep_init_state:
 
@@ -133,24 +140,86 @@ killSneep:
   ;make it dead
   jsr entity_kill
 
+  jsr play_level_state_init_victory_mode
+
+  rts
+
+sneep_dying_state_handler:
+
+  dec entity_locals+sneep_locals::counter,x
+  bne counter_not_zero
+  
+  beq killSneep
+
+counter_not_zero:
+
+  lda entity_locals+sneep_locals::counter,x
+  and #%00000010
+  ;asl
+  sta camera_scroll_x
+do_not_vibrate:
+
+  lda entity_locals+sneep_locals::counter,x
+  and #%00000011
+  bne skip_spawn_explosion
+  
   ;spawn an explosion entity
   lda #entity_index_explosion
   sta b0
 
+  ldy #10
+  jsr entity_get_next_prn
+  
+  and #%00001111
+  sta b3
+  
   ;get out low byte of position_x
   lda entity_instances+entity_instance::position_x,x
+  clc
+  adc b3
   sta w0
   ;get out high byte of position_x
   lda entity_instances+entity_instance::position_x+1,x
   sta w0+1
 
+  ldy #10
+  jsr entity_get_next_prn
+  
+  and #%00011111
+  sta b3
+  
   ;get out position_y
   lda entity_instances+entity_instance::position_y,x
+  clc
+  adc b3
   sta b1
   lda entity_instances+entity_instance::position_y+1,x
   sta b2
 
   jsr entity_spawn
+  
+  ;play a hit sound
+  txa
+  pha
+
+  lda #<hit_sound
+  sta sound_param_word_0
+  lda #>hit_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+skip_spawn_explosion:
+
+  jsr entity_compute_screen_coordinates
+
+  jsr sneep_draw
 
   rts
 
@@ -210,7 +279,14 @@ sneep_draw:
   dec entity_locals+sneep_locals::health,x
   bne health_not_zero
 
-  jmp killSneep
+  ;stop all sound
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
+
+  lda #SNEEP_DYINGSTATE
+  sta entity_instances+entity_instance::state,x
 
 damaged_counter_not_zero:
 health_not_zero:
@@ -258,6 +334,8 @@ sneep_direction_test_done:
 
   lda entity_instances+entity_instance::state,x
   cmp #SNEEP_RUNSTATE
+  beq draw_runstate
+  cmp #SNEEP_DYINGSTATE
   beq draw_runstate
   cmp #SNEEP_JUMPSTATE
   beq draw_runstate
