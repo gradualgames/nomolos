@@ -611,7 +611,10 @@ entity_facing_right:
 entity_facing_test_done:
   .endscope
 
-  ;jsr sneep_spawn_feathers
+  lda entity_instances+entity_instance::position_x,x
+  and #%00000101
+  beq switch_to_flap_state
+switch_to_hide_state:
 
   lda nomolos_screen_x
   sta entity_locals+sneep_locals::last_nomolos_x,x
@@ -623,6 +626,19 @@ entity_facing_test_done:
 
   lda #100
   sta entity_locals+sneep_locals::counter,x
+
+  jmp done
+switch_to_flap_state:
+
+  jsr sneep_spawn_feathers
+
+  lda #SNEEP_FLAPSTATE
+  sta entity_instances+entity_instance::state,x
+
+  lda #100
+  sta entity_locals+sneep_locals::counter,x
+
+done:
 
   jsr entity_compute_screen_coordinates
 
