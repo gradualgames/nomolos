@@ -752,7 +752,7 @@ hurt_test_counter = b3
   .scope
   lda nomolos_map_x+1
   clc
-  adc #$0f
+  adc #(nomolos_width-1)
   sta w0
   lda nomolos_map_x+2
   adc #$00
@@ -904,7 +904,7 @@ skipButtonATest:
   ;Is there a collision at top right of Nomolos?
   lda nomolos_map_x+1
   clc
-  adc #$0f
+  adc #(nomolos_width-1)
   sta w0
   lda nomolos_map_x+2
   adc #$00
@@ -1262,7 +1262,7 @@ skipJmpNotLeft:
   sta w0+1
   lda nomolos_map_y+1
   clc
-  adc #$0f
+  adc #((nomolos_height/2)-1)
   sta w1
   lda nomolos_map_y+2
   adc #0
@@ -1281,7 +1281,7 @@ skipJmpNotLeft:
   sta w0+1
   lda nomolos_map_y+1
   clc
-  adc #$1e
+  adc #(nomolos_height-2)
   sta w1
   lda nomolos_map_y+2
   adc #0
@@ -1357,7 +1357,7 @@ skipJmpNotRight:
   ;test collision with map
   lda nomolos_map_x+1
   clc
-  adc #$10
+  adc #(nomolos_width)
   sta w0
   lda nomolos_map_x+2
   adc #$00
@@ -1377,14 +1377,14 @@ skipJmpNotRight:
   ;lda nomolos_map_x+1
   lda nomolos_map_x+1
   clc
-  adc #$10
+  adc #(nomolos_width)
   sta w0
   lda nomolos_map_x+2
   adc #$00
   sta w0+1
   lda nomolos_map_y+1
   clc
-  adc #$0f
+  adc #(nomolos_width-1)
   sta w1
   lda nomolos_map_y+2
   adc #0
@@ -1396,14 +1396,14 @@ skipJmpNotRight:
 
   lda nomolos_map_x+1
   clc
-  adc #$10
+  adc #(nomolos_width)
   sta w0
   lda nomolos_map_x+2
   adc #$00
   sta w0+1
   lda nomolos_map_y+1
   clc
-  adc #$1e
+  adc #(nomolos_height-2)
   sta w1
   lda nomolos_map_y+2
   adc #0
