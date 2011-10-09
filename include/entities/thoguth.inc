@@ -324,7 +324,7 @@ do_not_switch_state:
   ;shake the screen during slam state
   lda entity_locals+thoguth_locals::jump_slam,x
   and #%00000010
-  sta camera_scroll_x
+  sta camera_scroll_y
   
   rts
   
