@@ -333,17 +333,17 @@ alreadyDying:
   and #1
   beq skipNomolosFacingLeft
 
-  clc
+  sec
   lda nomolos_screen_x
-  adc #$f0
+  sbc #$18
   sta nomolos_attack_rect_x
   lda nomolos_screen_x+1
-  adc #$ff
+  sbc #$00
   sta nomolos_attack_rect_x+1
 
   clc
   lda nomolos_screen_y
-  adc #$0C
+  adc #((nomolos_height/2)-8)
   sta nomolos_attack_rect_y
   lda nomolos_screen_y+1
   adc #$00
@@ -359,7 +359,7 @@ skipNomolosFacingLeft:
 
   clc
   lda nomolos_screen_x
-  adc #$10
+  adc #(nomolos_width)
   sta nomolos_attack_rect_x
   lda nomolos_screen_x+1
   adc #$00
@@ -367,7 +367,7 @@ skipNomolosFacingLeft:
 
   clc
   lda nomolos_screen_y
-  adc #$0C
+  adc #((nomolos_height/2)-8)
   sta nomolos_attack_rect_y
   lda nomolos_screen_y+1
   adc #$00

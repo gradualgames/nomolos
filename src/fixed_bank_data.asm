@@ -990,12 +990,12 @@ slide1:
   .word slide1_palette
   .word slide1_nametable
   .word slide1_chr
-  .byte 255
+  .byte 30
   .byte 10
 
 slide2:
   .word slide2_palette
   .word slide2_nametable
   .word slide2_chr
-  .byte 255
+  .byte 30
   .byte 10

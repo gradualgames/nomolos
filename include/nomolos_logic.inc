@@ -73,8 +73,8 @@ nomolos_start_jump_hi_pos             = $07
 nomolos_vertical_acceleration_lo      = $5a
 nomolos_vertical_acceleration_hi      = $00
 nomolos_vertical_speed_max            = $0a
-nomolos_width                         = $10
-nomolos_height                        = $20
+nomolos_width                         = 12
+nomolos_height                        = 28
 
 starting_level                        = $00
 max_health                            = 3
