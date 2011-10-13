@@ -2,6 +2,71 @@
 
 .segment "CODE"
 
+;tests whether a point is inside a rectangle using 8 bit coordinates.
+;b1 - x coordinate of point to test
+;b2 - y coordinate of point to test
+;b3 - top left x of rectangle
+;b4 - top left y of rectangle
+;b5 - width
+;b6 - height
+;global variables:
+;b7 - bottom right x of rectangle
+;b8 - bottom right x of rectangle
+.export geotests_point_in_rect_8bit
+.proc geotests_point_in_rect_8bit
+
+  ;calculate bottom right x (b3 + b5)
+  lda b3
+  clc
+  adc b5
+  sta b7
+
+  ;calculate bottom right y (b4 + b6)
+  lda b4
+  clc
+  adc b6
+  sta b8
+
+  ;if x < top left x (b3 - b1 is positive), test fails
+  lda b3
+  sec
+  sbc b1
+  bpl point_not_in_rect
+
+  ;if y < top left y (b4 - b2 is positive), test fails
+  lda b4
+  sec
+  sbc b2
+  bpl point_not_in_rect
+
+  ;if x > bottom right x (b1 - b7 is positive), test fails
+  lda b1
+  sec
+  sbc b7
+  bpl point_not_in_rect
+
+  ;if y > bottom right y (b2 - b8 is positive), test fails
+  lda b2
+  sec
+  sbc b8
+  bpl point_not_in_rect
+
+point_is_in_rect:
+
+  ;set zero flag (point IS inside rectangle)
+  lda #$00
+
+  rts
+
+point_not_in_rect:
+
+  ;clear zero flag (point is NOT inside rectangle)
+  lda #$ff
+
+  rts
+
+.endproc
+
 ;tests one rectangle for whether it intersects another.
 ;rectangle A:
 ;w2 - left x
@@ -183,28 +248,27 @@
 .export geotests_compare_range
 .proc geotests_compare_range
 
-  ;load right of rectA
-  lda b3
+  ;if line A right x < line B left x (b4 - b3), test fails
+  lda b4
   sec
-  ;subtract left of rectB
-  sbc b4
-  bpl :+
-  ;clear zero flag
-  lda #$ff
-  rts
-:
-  ;load left of rectA
+  sbc b3
+  bpl fail
+
+  ;if line A left x > line B right X (b2 - b5), test fails
   lda b2
   sec
-  ;subtract right of rectB
   sbc b5
-  bmi :+
-  lda #$ff
-  rts
-:
+  bpl fail
 
-  ;set zero flag
-  lda #0
+  ;set zero flag (success)
+  lda #$00
+
+  rts
+
+fail:
+
+  ;clear zero flag (failure)
+  lda #$ff
 
   rts
 

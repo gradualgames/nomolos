@@ -154,6 +154,8 @@ LIGHTNINGBOLT_FALLSTATE = 1
   y_velocity .word
 .endstruct
 
+LASER_SPEED = 4
+
 LASER_WIDTH = $10
 LASER_HEIGHT = $10
 

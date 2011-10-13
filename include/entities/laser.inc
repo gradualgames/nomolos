@@ -69,6 +69,12 @@ do_not_adjust_starting_y:
 
   rts
 
+laserDie:
+
+  jsr entity_kill
+
+  rts
+
 laser_fly_handler:
 
   jsr entity_compute_screen_coordinates
@@ -76,18 +82,92 @@ laser_fly_handler:
   jsr entity_test_death_zone
   beq laserDie
 
-  ;load width and height
-  lda #LASER_WIDTH
-  sta b2
-  lda #LASER_HEIGHT
+  lda nomolos_screen_x
   sta b3
-  jsr entity_test_collision_nomolos
+  lda nomolos_screen_y
+  sta b4
 
-  bne :+
+  lda #nomolos_width
+  sta b5
+  lda #nomolos_height
+  sta b6
+
+  lda entity_locals+laser_locals::x_velocity+1,x
+  bpl laser_going_right
+laser_going_left:
+  ;if laser is oriented as / (going left),
+  ;calculate bottom left point and top right for collision with nomolos
+
+  lda entity_screen_x
+  sta b1
+  lda entity_screen_y
+  clc
+  adc #LASER_HEIGHT
+  sta b2
+
+  .scope
+  jsr geotests_point_in_rect_8bit
+  bne do_not_hurt_nomolos
 
   jsr nomolos_hurt
 
-:
+do_not_hurt_nomolos:
+  .endscope
+
+  lda entity_screen_x
+  clc
+  adc #LASER_WIDTH
+  sta b1
+  lda entity_screen_y
+  sta b2
+
+  .scope
+  jsr geotests_point_in_rect_8bit
+  bne do_not_hurt_nomolos
+
+  jsr nomolos_hurt
+
+do_not_hurt_nomolos:
+  .endscope
+
+  jmp laser_direction_test_done
+  ;if laser is oriented as \ (going right),
+  ;calculate bottom right and top left for collision with nomolos
+laser_going_right:
+
+  lda entity_screen_x
+  clc
+  adc #LASER_WIDTH
+  sta b1
+  lda entity_screen_y
+  clc
+  adc #LASER_HEIGHT
+  sta b2
+
+  .scope
+  jsr geotests_point_in_rect_8bit
+  bne do_not_hurt_nomolos
+
+  jsr nomolos_hurt
+
+do_not_hurt_nomolos:
+  .endscope
+
+  lda entity_screen_x
+  sta b1
+  lda entity_screen_y
+  sta b2
+
+  .scope
+  jsr geotests_point_in_rect_8bit
+  bne do_not_hurt_nomolos
+
+  jsr nomolos_hurt
+
+do_not_hurt_nomolos:
+  .endscope
+
+laser_direction_test_done:
 
   clc
   lda entity_instances+entity_instance::position_x,x
@@ -151,12 +231,6 @@ orientation_test_done:
   jsr sprite_draw_metasprite_16bit
 
   lda entity_instances+entity_instance::animation_object+1,x
-
-  rts
-
-laserDie:
-
-  jsr entity_kill
 
   rts
 

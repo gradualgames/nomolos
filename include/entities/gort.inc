@@ -111,8 +111,8 @@ do_not_decrement_counter:
   sbc #32
   sta b4
   ;load right side of line B
+  lda entity_screen_x
   clc
-  adc #GORT_WIDTH
   adc #64
   sta b5
 
@@ -157,12 +157,12 @@ entity_facing_left:
   tay
   
   ;parameterize the laser to go left
-  lda #$fc
+  lda #(-LASER_SPEED)
   sta entity_locals+laser_locals::x_velocity,y
   lda #$ff
   sta entity_locals+laser_locals::x_velocity+1,y
 
-  lda #$04
+  lda #(LASER_SPEED)
   sta entity_locals+laser_locals::y_velocity,y
   lda #$00
   sta entity_locals+laser_locals::y_velocity+1,y
@@ -196,12 +196,12 @@ entity_facing_right:
   tay
 
   ;parameterize the laser to go right
-  lda #$04
+  lda #LASER_SPEED
   sta entity_locals+laser_locals::x_velocity,y
   lda #$00
   sta entity_locals+laser_locals::x_velocity+1,y
 
-  lda #$04
+  lda #LASER_SPEED
   sta entity_locals+laser_locals::y_velocity,y
   lda #$00
   sta entity_locals+laser_locals::y_velocity+1,y
