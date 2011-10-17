@@ -17,6 +17,7 @@
 .include "boss3.inc"
 .include "boss1.inc"
 .include "boss4.inc"
+.include "boss5.inc"
 .include "entities.inc"
 .include "soundengine.inc"
 .include "fixed_bank_data.inc"
@@ -57,6 +58,7 @@ level_definition_table:
   .word boss_4_data
   .word level_6_1_data
   .word level_6_2_data
+  .word boss_5_data
 
 ;level intro strings
 level1_intro_string:
@@ -91,6 +93,8 @@ level_6_2_intro_string:
   .byte $09,$0b,$04,$15,$04,$0b,$1a,$21,$2b,$1d
 boss4_intro_string:
   .byte $05,$12,$0d,$04,$04,$0f
+boss5_intro_string:
+  .byte $07,$01,$0e,$14,$0b,$03,$04,$11
 
 ;ROM definition table
 level_1_1_data:
@@ -572,6 +576,36 @@ level_6_2_data:
 
   .word entity_definition_table
   .word level6_music
+  .byte boss_5_index
+
+;ROM definition table
+boss_5_data:
+  .byte spritesheet_1_bank
+  .byte boss_5_bank
+  .byte boss_5_patterns_bank
+  .word boss5_patterns
+  .byte spritesheet_1_patterns_bank
+  .word boss5_sprite_groups
+  .word 0 ;cycling_palette_address
+  .byte 0 ;cycling_palette_speed
+
+  .word boss5_palette
+
+  .byte 40  ;nomolos_start_x
+  .byte 159 ;nomolos_start_y
+  .byte 0   ;starting_screen
+  
+  .word boss5_intro_string
+  .byte 32 ;columns_to_load
+  .byte 0  ;camera_scroll_enabled  
+  .word boss5_map
+  .word boss5_map_column_table
+  .word boss5_attribute_column_table
+  .word boss5_meta_tile_column_table
+  .word boss5_meta_tile_table
+
+  .word entity_definition_table
+  .word boss5_music
   .byte level_1_index
 
 ;Entities
