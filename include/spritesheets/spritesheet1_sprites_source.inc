@@ -378,3 +378,32 @@ spritesheet1_bigfireball2:
   .byte $00,$09,$03,$08,$00
   .byte $08,$0a,$03,$00,$08
   .byte $08,$0b,$03,$08,$00
+spritesheet1_BoulderCrown0:
+  .byte $04
+  .byte $00,$00,$02,$00,$08
+  .byte $00,$01,$02,$08,$00
+  .byte $08,$02,$02,$00,$08
+  .byte $08,$03,$02,$08,$00
+spritesheet1_BoulderEye0:
+  .byte $01
+  .byte $00,$04,$02,$00,$00
+spritesheet1_BoulderEye1:
+  .byte $01
+  .byte $00,$05,$02,$00,$00
+spritesheet1_BoulderScepter0:
+  .byte $04
+  .byte $00,$06,$02,$00,$08
+  .byte $00,$07,$02,$08,$00
+  .byte $08,$08,$02,$00,$08
+  .byte $08,$09,$02,$08,$00
+spritesheet1_BoulderScepter1:
+  .byte $09
+  .byte $00,$0a,$02,$00,$10
+  .byte $00,$0b,$02,$08,$08
+  .byte $00,$0c,$02,$10,$00
+  .byte $08,$0c,$02,$00,$10
+  .byte $08,$0d,$02,$08,$08
+  .byte $08,$0e,$02,$10,$00
+  .byte $10,$0c,$02,$00,$10
+  .byte $10,$0f,$02,$08,$08
+  .byte $10,$10,$02,$10,$00

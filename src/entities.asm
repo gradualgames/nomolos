@@ -60,6 +60,7 @@
 .include "dragonboss.inc"
 .include "grubselimboj.inc"
 .include "bigfireball.inc"
+.include "boulder.inc"
 
 .segment "ROM11"
 

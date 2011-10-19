@@ -16,5 +16,6 @@ SPRITESHEET1_PATTERNS_IMPORTS_INC = 1
 .global spritesheet1_DragonFace_chr
 .global spritesheet1_GrubselimBoj_chr
 .global spritesheet1_bigfireball_chr
+.global spritesheet1_Boulder_chr
 
 .endif
