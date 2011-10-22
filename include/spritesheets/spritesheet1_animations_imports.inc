@@ -15,5 +15,8 @@ SPRITESHEET1_ANIMATIONS_IMPORTS_INC = 1
 .global spritesheet1_IceBallFly
 .global spritesheet1_SharkLeap
 .global spritesheet1_bigfireballfly
+.global spritesheet1_ThoguthMarch
+.global spritesheet1_ThoguthHammerfall
+.global spritesheet1_ThoguthLightning
 
 .endif

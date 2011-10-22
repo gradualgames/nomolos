@@ -20,27 +20,6 @@ spritesheet2_SnakeSlither:
   .word spritesheet2_Snake1
   .word $0000
 
-spritesheet2_ThoguthMarch:
-  .byte $0a
-  .word spritesheet2_ThoguthMarch0
-  .word spritesheet2_ThoguthMarch1
-  .word spritesheet2_ThoguthMarch0
-  .word spritesheet2_ThoguthMarch2
-  .word $0000
-
-spritesheet2_ThoguthHammerfall:
-  .byte 20
-  .word spritesheet2_ThoguthHammerfall0
-  .word spritesheet2_ThoguthHammerfall1
-  .word spritesheet2_ThoguthHammerfall2
-  .word $0000
-
-spritesheet2_ThoguthLightning:
-  .byte $03
-  .word spritesheet2_ThoguthLightning0
-  .word spritesheet2_ThoguthLightning1
-  .word $0000
-
 spritesheet2_raven_fly:
   .byte $0a
   .word spritesheet2_raven1

@@ -1,7 +1,6 @@
 .ifndef BOSS2_INC
 BOSS2_INC = 1
 
-.include "spritesheet1.inc"
 .import boss2_sprite_groups
 .import boss2_palette
 .import boss2_cycling_palettes

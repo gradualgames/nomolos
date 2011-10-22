@@ -41,5 +41,13 @@ SPRITESHEET1_SPRITES_IMPORTS_INC = 1
 .global spritesheet1_BoulderEye1
 .global spritesheet1_BoulderScepter0
 .global spritesheet1_BoulderScepter1
+.global spritesheet1_ThoguthMarch0
+.global spritesheet1_ThoguthMarch1
+.global spritesheet1_ThoguthMarch2
+.global spritesheet1_ThoguthHammerfall0
+.global spritesheet1_ThoguthHammerfall1
+.global spritesheet1_ThoguthHammerfall2
+.global spritesheet1_ThoguthLightning0
+.global spritesheet1_ThoguthLightning1
 
 .endif

@@ -222,11 +222,11 @@ level_2_2_data:
 
 ;ROM definition table
 boss_2_data:
-  .byte spritesheet_2_bank
+  .byte spritesheet_1_bank
   .byte boss2_bank
   .byte level_2_patterns_bank
   .word level2_patterns
-  .byte spritesheet_2_patterns_bank
+  .byte spritesheet_1_patterns_bank
   .word boss2_sprite_groups
   .word 0 ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
@@ -773,7 +773,7 @@ entity_chr_definition_table:
   .word spritesheet2_Fireball_chr
   .word spritesheet2_Snake_chr
   .word spritesheet2_FireGuy_chr
-  .word spritesheet2_Thoguth_chr
+  .word spritesheet1_Thoguth_chr
   .word 0 ;fireball spawner has no chr data
   .word entity_index_thoguth ;lightning bolt shares Thoguth's chr data
   .word spritesheet1_GrubselimBoj_chr

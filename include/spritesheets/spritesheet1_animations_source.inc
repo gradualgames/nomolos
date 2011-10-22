@@ -90,3 +90,24 @@ spritesheet1_bigfireballfly:
   .word spritesheet1_bigfireball0
   .word spritesheet1_bigfireball1
   .word $0000
+
+spritesheet1_ThoguthMarch:
+  .byte $0a
+  .word spritesheet1_ThoguthMarch0
+  .word spritesheet1_ThoguthMarch1
+  .word spritesheet1_ThoguthMarch0
+  .word spritesheet1_ThoguthMarch2
+  .word $0000
+
+spritesheet1_ThoguthHammerfall:
+  .byte 20
+  .word spritesheet1_ThoguthHammerfall0
+  .word spritesheet1_ThoguthHammerfall1
+  .word spritesheet1_ThoguthHammerfall2
+  .word $0000
+
+spritesheet1_ThoguthLightning:
+  .byte $03
+  .word spritesheet1_ThoguthLightning0
+  .word spritesheet1_ThoguthLightning1
+  .word $0000

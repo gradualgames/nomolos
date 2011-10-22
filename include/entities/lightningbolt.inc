@@ -82,9 +82,9 @@ lightningbolt_draw:
   lda entity_chr_offsets+(entity_index_thoguth-1)
   sta sprite_group_offset
 
-  lda #<spritesheet2_ThoguthLightning
+  lda #<spritesheet1_ThoguthLightning
   sta w2
-  lda #>spritesheet2_ThoguthLightning
+  lda #>spritesheet1_ThoguthLightning
   sta w2+1
   lda #0
   sta b2

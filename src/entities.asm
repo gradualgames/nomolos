@@ -61,6 +61,8 @@
 .include "grubselimboj.inc"
 .include "bigfireball.inc"
 .include "boulder.inc"
+.include "thoguth.inc"
+.include "lightningbolt.inc"
 
 .segment "ROM11"
 
@@ -84,9 +86,7 @@
 .include "fireball.inc"
 .include "snake.inc"
 .include "fireguy.inc"
-.include "thoguth.inc"
 .include "fireballspawner.inc"
-.include "lightningbolt.inc"
 .include "statue.inc"
 .include "raven.inc"
 .include "sheep.inc"
