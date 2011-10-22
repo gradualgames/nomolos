@@ -9,9 +9,11 @@
 
 .export boss5_sprite_groups
 boss5_sprite_groups:
-  .byte $03
+  .byte $05
   .byte entity_index_nomolos
   .byte entity_index_explosion
+  .byte entity_index_iceball
+  .byte entity_index_lightningbolt
   .byte entity_index_boulder
 
 .segment "ROM09"
@@ -428,3 +430,7 @@ MetaTile82:
   .byte $00,$00,$01,$00,$00,$00,$00,$00
 MetaTile83:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_boulder
+MetaTile84:
+  .byte $00,$00,$00,$00,$00,$00,$00,entity_index_lightningbolt
+MetaTile85:
+  .byte $00,$00,$00,$00,$00,$00,$00,entity_index_iceball

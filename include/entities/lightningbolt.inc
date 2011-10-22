@@ -79,7 +79,7 @@ lightningbolt_draw:
   and #$01
   beq do_not_draw
 
-  lda entity_chr_offsets+(entity_index_thoguth-1)
+  lda entity_chr_offsets+(entity_index_lightningbolt-1)
   sta sprite_group_offset
 
   lda #<spritesheet1_ThoguthLightning

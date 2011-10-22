@@ -9,10 +9,11 @@
 
 .export boss2_sprite_groups
 boss2_sprite_groups:
-  .byte $03
+  .byte $04
   .byte entity_index_nomolos
   .byte entity_index_explosion
   .byte entity_index_thoguth
+  .byte entity_index_lightningbolt
 
 .segment "ROM02"
 

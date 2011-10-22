@@ -775,7 +775,7 @@ entity_chr_definition_table:
   .word spritesheet2_FireGuy_chr
   .word spritesheet1_Thoguth_chr
   .word 0 ;fireball spawner has no chr data
-  .word entity_index_thoguth ;lightning bolt shares Thoguth's chr data
+  .word spritesheet1_LightningBolt_chr
   .word spritesheet1_GrubselimBoj_chr
   .word spritesheet1_bigfireball_chr
   .word spritesheet2_statue_chr
