@@ -5,19 +5,22 @@ BOULDER_INC = 1
   state_switch_counter .byte
 .endstruct
 
-BOULDER_WIDTH = $10
-BOULDER_HEIGHT = $08
-BOULDER_INITSTATE = $00
-BOULDER_INITBOSSMODESTATE  = $01
-BOULDER_LIFTLEFTFOOTSTATE  = $02
-BOULDER_SLAMLEFTFOOTSTATE  = $03
-BOULDER_LIFTRIGHTFOOTSTATE = $04
-BOULDER_SLAMRIGHTFOOTSTATE = $05
+BOULDER_WIDTH =               $10
+BOULDER_HEIGHT =              $08
+
+BOULDER_INITSTATE =           $00
+BOULDER_INITBOSSMODESTATE  =  $01
+BOULDER_LIFTLEFTFOOTSTATE  =  $02
+BOULDER_SLAMLEFTFOOTSTATE  =  $03
+BOULDER_LIFTRIGHTFOOTSTATE =  $04
+BOULDER_SLAMRIGHTFOOTSTATE =  $05
+BOULDER_GLOWINGSCEPTERSTATE = $06
 
 LIFT_LEFT_FOOT_STATE_DURATION = 20
 SLAM_LEFT_FOOT_STATE_DURATION = 35
 LIFT_RIGHT_FOOT_STATE_DURATION = 20
 SLAM_RIGHT_FOOT_STATE_DURATION = 35
+GLOWING_SCEPTER_STATE_DURATION = 110
 DRAW_LEFT_FOOT_DOWN_TIME = 20
 DRAW_RIGHT_FOOT_DOWN_TIME = 20
 LIGHTNINGBOLT_FLASHMASK = 2
@@ -34,6 +37,9 @@ boulder_right_foot_up_tiles:
 boulder_right_foot_down_tiles:
   .byte $04,$06,$9f,$a0,$a1,$52,$aa,$ab,$ac,$ad,$4d,$4d,$b8,$b9,$c3,$4d,$4d,$c4,$cc,$4d,$4d,$cd,$d0,$d1,$d2,$d3
 
+boulder_glowing_scepter_color_sequence:
+  .byte $06, $16, $26, $36, $26, $16, $06, $06
+
 .proc boulder_update
 
   lda entity_instances+entity_instance::state,x
@@ -49,6 +55,8 @@ boulder_right_foot_down_tiles:
   beq boulder_lift_right_foot
   cmp #BOULDER_SLAMRIGHTFOOTSTATE
   beq boulder_slam_right_foot
+  cmp #BOULDER_GLOWINGSCEPTERSTATE
+  beq boulder_glowing_scepter
 
 boulder_lift_left_foot:
 
@@ -65,6 +73,10 @@ boulder_lift_right_foot:
 boulder_slam_right_foot:
 
   jmp boulder_slam_right_foot_handler
+
+boulder_glowing_scepter:
+
+  jmp boulder_glowing_scepter_handler
 
 boulder_init:
 
@@ -301,11 +313,65 @@ exit_slam_right_foot_state:
 
   jsr boulder_draw
 
+  lda #GLOWING_SCEPTER_STATE_DURATION
+  sta entity_locals+boulder_locals::state_switch_counter,x
+
+  lda #BOULDER_GLOWINGSCEPTERSTATE
+  sta entity_instances+entity_instance::state,x
+
+  rts
+
+boulder_glowing_scepter_handler:
+
+  ;since we upload a nametable region right before transitioning to
+  ;this state, there is a possibility that the palette was not uploaded
+  ;during palette cycling from being attacked. So, we ensure that we
+  ;upload the current dynamic palette here.
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+
+  .scope
+  
+  dec entity_locals+boulder_locals::state_switch_counter,x
+
+  lda entity_locals+boulder_locals::state_switch_counter,x
+  cmp #64
+  bpl pause_before_glow
+  cmp #32
+  beq switch_state
+  and #%00011100
+  lsr
+  lsr
+
+  ;get the current color the scepter should be
+  tay
+  lda boulder_glowing_scepter_color_sequence,y
+  
+  sta dynamic_palette + $19
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
+pause_before_glow:
+  .endscope
+  
+  jsr entity_compute_screen_coordinates
+
+  jsr boulder_draw
+
+  rts
+
+switch_state:
+  
   lda #LIFT_LEFT_FOOT_STATE_DURATION
   sta entity_locals+boulder_locals::state_switch_counter,x
 
   lda #BOULDER_LIFTLEFTFOOTSTATE
   sta entity_instances+entity_instance::state,x
+
+  jsr entity_compute_screen_coordinates
+
+  jsr boulder_draw
 
   rts
 
