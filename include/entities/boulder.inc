@@ -55,6 +55,9 @@ boulder_glowing_scepter_color_sequence:
 boulder_attacked_color_sequence:
   .byte $24, $24, $34, $24, $24, $14, $14, $24
 
+boulder_erase_row_tiles:
+  .byte $12,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+
 .proc boulder_update
 
   jsr boulder_substate_handler
@@ -535,9 +538,9 @@ do_not_kill_boulder:
   sta b0
   lda entity_locals+boulder_locals::erase_row,x
   sta b1
-  lda #<boss1_erase_row_tiles
+  lda #<boulder_erase_row_tiles
   sta w0
-  lda #>boss1_erase_row_tiles
+  lda #>boulder_erase_row_tiles
   sta w0+1
   jsr ppu_draw_rectangular_region
   
