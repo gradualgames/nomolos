@@ -2,19 +2,31 @@
 BOULDER_INC = 1
 
 .struct boulder_locals
+  brightness_counter .byte
   state_switch_counter .byte
+  substate_switch_counter .byte
+  health .byte
+  substate .byte
+  erase_row .byte
 .endstruct
 
 BOULDER_WIDTH =               $10
 BOULDER_HEIGHT =              $08
 
-BOULDER_INITSTATE =           $00
-BOULDER_INITBOSSMODESTATE  =  $01
-BOULDER_LIFTLEFTFOOTSTATE  =  $02
-BOULDER_SLAMLEFTFOOTSTATE  =  $03
-BOULDER_LIFTRIGHTFOOTSTATE =  $04
-BOULDER_SLAMRIGHTFOOTSTATE =  $05
+BOULDER_INITSTATE           = $00
+BOULDER_INITBOSSMODESTATE   = $01
+BOULDER_LIFTLEFTFOOTSTATE   = $02
+BOULDER_SLAMLEFTFOOTSTATE   = $03
+BOULDER_LIFTRIGHTFOOTSTATE  = $04
+BOULDER_SLAMRIGHTFOOTSTATE  = $05
 BOULDER_GLOWINGSCEPTERSTATE = $06
+BOULDER_DYINGSTATE          = $07
+BOULDER_ERASESTATE          = $08
+
+BOULDER_SUBSTATE_NOT_ATTACKED = 0
+BOULDER_SUBSTATE_ATTACKED = 1
+BOULDER_SUBSTATE_DYING = 2
+BOULDER_SUBSTATE_ERASE = 3
 
 LIFT_LEFT_FOOT_STATE_DURATION = 20
 SLAM_LEFT_FOOT_STATE_DURATION = 35
@@ -40,7 +52,12 @@ boulder_right_foot_down_tiles:
 boulder_glowing_scepter_color_sequence:
   .byte $06, $16, $26, $36, $26, $16, $06, $06
 
+boulder_attacked_color_sequence:
+  .byte $24, $24, $34, $24, $24, $14, $14, $24
+
 .proc boulder_update
+
+  jsr boulder_substate_handler
 
   lda entity_instances+entity_instance::state,x
   cmp #BOULDER_INITSTATE
@@ -57,6 +74,12 @@ boulder_glowing_scepter_color_sequence:
   beq boulder_slam_right_foot
   cmp #BOULDER_GLOWINGSCEPTERSTATE
   beq boulder_glowing_scepter
+  cmp #BOULDER_DYINGSTATE
+  beq boulder_dying
+  cmp #BOULDER_ERASESTATE
+  beq boulder_erase
+
+  rts
 
 boulder_lift_left_foot:
 
@@ -78,10 +101,22 @@ boulder_glowing_scepter:
 
   jmp boulder_glowing_scepter_handler
 
+boulder_dying:
+
+  jmp boulder_dying_handler
+
+boulder_erase:
+
+  jmp boulder_erase_handler
+
 boulder_init:
 
   lda #1
   sta entity_locals+boulder_locals::state_switch_counter,x
+
+  ;start Boulder out with a certain amount of health
+  lda #15
+  sta entity_locals+boulder_locals::health,x
 
   lda #BOULDER_INITBOSSMODESTATE
   sta entity_instances+entity_instance::state,x
@@ -110,6 +145,13 @@ do_not_switch_states:
   rts
 
 boulder_lift_left_foot_handler:
+
+  ;since we upload a nametable region right before transitioning to
+  ;this state, there is a possibility that the palette was not uploaded
+  ;during palette cycling from being attacked. So, we ensure that we
+  ;upload the current dynamic palette here.
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
 
   dec entity_locals+boulder_locals::state_switch_counter,x
   .scope
@@ -158,6 +200,13 @@ exit_slam_left_foot_state:
   rts
 
 boulder_slam_left_foot_handler:
+
+  ;since we upload a nametable region right before transitioning to
+  ;this state, there is a possibility that the palette was not uploaded
+  ;during palette cycling from being attacked. So, we ensure that we
+  ;upload the current dynamic palette here.
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
 
   dec entity_locals+boulder_locals::state_switch_counter,x
   beq exit_slam_left_foot_state
@@ -216,6 +265,13 @@ do_not_shake_screen_yet:
 
 boulder_lift_right_foot_handler:
 
+  ;since we upload a nametable region right before transitioning to
+  ;this state, there is a possibility that the palette was not uploaded
+  ;during palette cycling from being attacked. So, we ensure that we
+  ;upload the current dynamic palette here.
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+
   dec entity_locals+boulder_locals::state_switch_counter,x
   .scope
   bne do_not_switch_states
@@ -249,6 +305,13 @@ do_not_switch_states:
   rts
 
 boulder_slam_right_foot_handler:
+
+  ;since we upload a nametable region right before transitioning to
+  ;this state, there is a possibility that the palette was not uploaded
+  ;during palette cycling from being attacked. So, we ensure that we
+  ;upload the current dynamic palette here.
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
 
   dec entity_locals+boulder_locals::state_switch_counter,x
   beq exit_slam_right_foot_state
@@ -374,6 +437,358 @@ switch_state:
   jsr boulder_draw
 
   rts
+
+boulder_dying_handler:
+
+  dec entity_locals+boulder_locals::state_switch_counter,x
+  
+  ;the following code can modify how frequently explosions appear
+  ;lda entity_locals+boulder_locals::state_switch_counter,x
+  ;and #%00000100
+  ;beq do_not_spawn_explosion
+
+  ;generate random coordinates for explosion entity
+  ldy #10
+  jsr entity_get_next_prn
+  lsr
+  clc
+  adc #100
+  sta w0
+  lda #0
+  sta w0+1
+  
+  ldy #10
+  jsr entity_get_next_prn
+  sta w1
+  lda #0
+  sta w1+1
+  
+  ;only spawn explosion if these coordinates are on the dragon (hurt tile)
+  jsr map_test_collision
+  
+  lda b0
+  
+  beq do_not_spawn_explosion
+  
+  lda #entity_index_explosion
+  sta b0
+
+  lda w1
+   
+  sta b1
+
+  lda #0
+  sta b2
+
+  jsr entity_spawn
+  
+  txa
+  pha
+
+  lda #<hit_sound
+  sta sound_param_word_0
+  lda #>hit_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+  
+do_not_spawn_explosion:
+
+  ;make the screen shake
+  lda entity_locals+boulder_locals::state_switch_counter,x
+  and #%00000010
+  asl
+  sta camera_scroll_y
+
+  jsr entity_compute_screen_coordinates
+
+  jsr boulder_draw
+
+  rts
+
+boulder_erase_handler:
+
+  ;make sure to clean up mess from vibrating the screen
+  lda #0
+  sta camera_scroll_x
+
+  dec entity_locals+boulder_locals::state_switch_counter,x
+  bne do_not_kill_boulder
+  
+  jsr entity_kill
+  
+do_not_kill_boulder:
+
+  lda entity_locals+boulder_locals::state_switch_counter,x
+  and #%00000111
+  bne do_not_increment_erase_row
+  
+  ;draw an erase row
+  lda #13
+  sta b0
+  lda entity_locals+boulder_locals::erase_row,x
+  sta b1
+  lda #<boss1_erase_row_tiles
+  sta w0
+  lda #>boss1_erase_row_tiles
+  sta w0+1
+  jsr ppu_draw_rectangular_region
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
+  inc entity_locals+boulder_locals::erase_row,x
+  
+do_not_increment_erase_row:
+
+  rts
+
+boulder_substate_handler:
+ 
+  lda entity_locals+boulder_locals::substate,x
+  cmp #BOULDER_SUBSTATE_NOT_ATTACKED
+  beq boulder_substate_not_attacked
+  cmp #BOULDER_SUBSTATE_ATTACKED
+  beq boulder_substate_attacked
+  cmp #BOULDER_SUBSTATE_DYING
+  beq boulder_substate_dying
+  cmp #BOULDER_SUBSTATE_ERASE
+  beq boulder_substate_erase
+
+boulder_substate_not_attacked:
+
+  jsr boulder_substate_not_attacked_handler
+
+  jmp boulder_substate_switch_complete
+  
+boulder_substate_attacked:
+  
+  jsr boulder_substate_attacked_handler
+ 
+  jmp boulder_substate_switch_complete
+  
+boulder_substate_dying:
+
+  jsr boulder_substate_dying_handler
+
+  jmp boulder_substate_switch_complete
+
+boulder_substate_erase:
+
+  jsr boulder_substate_erase_handler
+
+boulder_substate_switch_complete:
+  
+  rts
+
+.proc boulder_substate_dying_handler
+
+  dec entity_locals+boulder_locals::substate_switch_counter,x
+  dec entity_locals+boulder_locals::substate_switch_counter,x
+  bne do_not_decrement_brightness_counter
+  
+  dec entity_locals+boulder_locals::brightness_counter,x
+  
+do_not_decrement_brightness_counter:
+  
+  ldy #15
+darken_boulder_palette_loop:
+  lda dynamic_palette,y
+  sta b0
+  
+  lda entity_locals+boulder_locals::brightness_counter,x
+  sta b3
+  
+  jsr ppu_adjust_color_brightness
+  
+  lda b0
+  sta dynamic_palette,y
+  
+  lda dynamic_palette+28,y
+  sta b0
+  
+  lda entity_locals+boulder_locals::brightness_counter,x
+  sta b3
+  
+  jsr ppu_adjust_color_brightness
+  
+  lda b0
+  sta dynamic_palette+28,y
+  
+  dey
+  bpl darken_boulder_palette_loop
+
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
+  ;if the dragon has faded all the way out, switch to "erase" state
+  lda entity_locals+boulder_locals::brightness_counter,x
+  beq boulder_erase
+  
+  rts
+  
+boulder_erase:
+
+  jsr play_level_state_init_victory_mode
+
+  lda #160
+  sta entity_locals+boulder_locals::state_switch_counter,x
+
+  lda #6
+  sta entity_locals+boulder_locals::erase_row,x
+  
+  lda #BOULDER_ERASESTATE
+  sta entity_instances+entity_instance::state,x
+  
+  lda #BOULDER_SUBSTATE_ERASE
+  sta entity_locals+boulder_locals::substate,x
+  
+  rts
+
+.endproc
+
+;****************************************************************
+;Boulder's substate not attacked handler
+;****************************************************************
+.proc boulder_substate_not_attacked_handler
+
+  jsr nomolos_is_deadly
+  beq nomolos_not_attacking
+
+  lda #112
+  sta entity_screen_x
+  lda #96
+  sta entity_screen_y
+  lda #0
+  sta entity_screen_x+1
+  sta entity_screen_y+1
+  
+  lda #BOULDER_WIDTH
+  sta b2
+  lda #BOULDER_HEIGHT
+  sta b3
+
+  jsr entity_test_collision_hitbox
+
+  bne boulder_not_hit
+boulder_hit:
+  
+  txa
+  pha
+
+  lda #<boss_hurt_sound
+  sta sound_param_word_0
+  lda #>boss_hurt_sound
+  sta sound_param_word_0+1
+
+  lda #0
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+  
+  ;decrease health
+  dec entity_locals+boulder_locals::health,x
+  
+  ;the attacked state should live for a few frames while palette flickers
+  lda #24
+  sta entity_locals+boulder_locals::substate_switch_counter,x
+  
+  ;set substate to attacked
+  lda #BOULDER_SUBSTATE_ATTACKED
+  sta entity_locals+boulder_locals::substate,x
+  
+boulder_not_hit:
+  
+nomolos_not_attacking:
+
+  rts
+.endproc
+  
+;****************************************************************
+;Boulder's substate attacked handler
+;****************************************************************
+.proc boulder_substate_attacked_handler
+
+  ;while we are in the attacked state, we want to be flickering
+  ;the Dragon's palette somehow
+  
+  .scope
+  
+  lda entity_locals+boulder_locals::substate_switch_counter,x
+  and #%00000111
+
+  ;get the current color the eyes should be
+  tay
+  lda boulder_attacked_color_sequence,y
+  
+  sta dynamic_palette + $06
+
+  sta dynamic_palette + $0b
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+  
+  .endscope
+  
+  dec entity_locals+boulder_locals::substate_switch_counter,x
+  bne do_not_switch_to_not_attacked_state
+  
+  lda #BOULDER_SUBSTATE_NOT_ATTACKED
+  sta entity_locals+boulder_locals::substate,x
+  
+do_not_switch_to_not_attacked_state:
+  
+  ;find out if boulder should die now
+  lda entity_locals+boulder_locals::health,x
+  bne do_not_switch_to_dying_state
+  
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  jsr sound_upload
+  .endif
+  
+  ;make Nomolos invincible the instant we transition Boulder into dying state
+  lda nomolos_state_primary
+  ora #nomolos_invincibility_on_set
+  sta nomolos_state_primary
+  lda #0
+  ;ensure that the invincibility blinking counter is already zero so it does not
+  ;reset invincibility to "off" after the Boulder has already started dying
+  sta nomolos_counter_temp_invincibility_blink
+  
+  lda #BOULDER_DYINGSTATE
+  sta entity_instances+entity_instance::state,x
+  
+  lda #$fe
+  sta entity_locals+boulder_locals::substate_switch_counter,x
+  
+  lda #4
+  sta entity_locals+boulder_locals::brightness_counter,x
+  
+  lda #BOULDER_SUBSTATE_DYING
+  sta entity_locals+boulder_locals::substate,x
+do_not_switch_to_dying_state:
+  
+  rts
+
+.endproc
+
+.proc boulder_substate_erase_handler
+
+  rts
+
+.endproc
 
 boulder_draw:
 
