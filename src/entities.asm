@@ -63,6 +63,7 @@
 .include "boulder.inc"
 .include "thoguth.inc"
 .include "lightningbolt.inc"
+.include "spiraliceball.inc"
 
 .segment "ROM11"
 

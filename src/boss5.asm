@@ -12,7 +12,7 @@ boss5_sprite_groups:
   .byte $05
   .byte entity_index_nomolos
   .byte entity_index_explosion
-  .byte entity_index_iceball
+  .byte entity_index_spiraliceball
   .byte entity_index_lightningbolt
   .byte entity_index_boulder
 
@@ -216,7 +216,7 @@ Noise:
 .export boss5_palette
 boss5_palette:
   .byte $0d,$07,$06,$20,$0d,$04,$24,$20,$0d,$04,$14,$24,$0d,$07,$06,$04
-  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$06,$2a,$18,$0d,$32,$20,$05
+  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$06,$2a,$18,$0d,$32,$22,$12
   
 .export boss5_map
 boss5_map = Map

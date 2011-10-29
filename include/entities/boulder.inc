@@ -13,15 +13,16 @@ BOULDER_INC = 1
 BOULDER_WIDTH =               $10
 BOULDER_HEIGHT =              $08
 
-BOULDER_INITSTATE           = $00
-BOULDER_INITBOSSMODESTATE   = $01
-BOULDER_LIFTLEFTFOOTSTATE   = $02
-BOULDER_SLAMLEFTFOOTSTATE   = $03
-BOULDER_LIFTRIGHTFOOTSTATE  = $04
-BOULDER_SLAMRIGHTFOOTSTATE  = $05
-BOULDER_GLOWINGSCEPTERSTATE = $06
-BOULDER_DYINGSTATE          = $07
-BOULDER_ERASESTATE          = $08
+BOULDER_INITSTATE                = $00
+BOULDER_INITBOSSMODESTATE        = $01
+BOULDER_LIFTLEFTFOOTSTATE        = $02
+BOULDER_SLAMLEFTFOOTSTATE        = $03
+BOULDER_LIFTRIGHTFOOTSTATE       = $04
+BOULDER_SLAMRIGHTFOOTSTATE       = $05
+BOULDER_GLOWINGSCEPTERSTATE      = $06
+BOULDER_SPAWNSPIRALICEBALLSSTATE = $07
+BOULDER_DYINGSTATE               = $08
+BOULDER_ERASESTATE               = $09
 
 BOULDER_SUBSTATE_NOT_ATTACKED = 0
 BOULDER_SUBSTATE_ATTACKED = 1
@@ -33,6 +34,7 @@ SLAM_LEFT_FOOT_STATE_DURATION = 35
 LIFT_RIGHT_FOOT_STATE_DURATION = 20
 SLAM_RIGHT_FOOT_STATE_DURATION = 35
 GLOWING_SCEPTER_STATE_DURATION = 110
+SPAWN_SPIRALICEBALLS_STATE_DURATION = 150
 DRAW_LEFT_FOOT_DOWN_TIME = 20
 DRAW_RIGHT_FOOT_DOWN_TIME = 20
 LIGHTNINGBOLT_FLASHMASK = 2
@@ -77,6 +79,8 @@ boulder_erase_row_tiles:
   beq boulder_slam_right_foot
   cmp #BOULDER_GLOWINGSCEPTERSTATE
   beq boulder_glowing_scepter
+  cmp #BOULDER_SPAWNSPIRALICEBALLSSTATE
+  beq boulder_spawn_spiraliceballs
   cmp #BOULDER_DYINGSTATE
   beq boulder_dying
   cmp #BOULDER_ERASESTATE
@@ -103,6 +107,10 @@ boulder_slam_right_foot:
 boulder_glowing_scepter:
 
   jmp boulder_glowing_scepter_handler
+
+boulder_spawn_spiraliceballs:
+
+  jmp boulder_spawn_spiraliceballs_handler
 
 boulder_dying:
 
@@ -429,15 +437,58 @@ pause_before_glow:
 
 switch_state:
   
-  lda #LIFT_LEFT_FOOT_STATE_DURATION
+  lda #SPAWN_SPIRALICEBALLS_STATE_DURATION
   sta entity_locals+boulder_locals::state_switch_counter,x
 
-  lda #BOULDER_LIFTLEFTFOOTSTATE
+  lda #BOULDER_SPAWNSPIRALICEBALLSSTATE
   sta entity_instances+entity_instance::state,x
 
   jsr entity_compute_screen_coordinates
 
   jsr boulder_draw
+
+  rts
+
+boulder_spawn_spiraliceballs_handler:
+
+  dec entity_locals+boulder_locals::state_switch_counter,x
+
+  lda entity_locals+boulder_locals::state_switch_counter,x
+  beq exit_spawn_spiraliceballs_handler
+  and #%00001111
+  cmp #$0f
+  bne do_not_spawn_spiral_iceball
+
+  lda #entity_index_spiraliceball
+  sta b0
+
+  lda #150
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #120
+  sta b1
+  lda #0
+  sta b2
+
+  jsr entity_spawn
+
+do_not_spawn_spiral_iceball:
+
+  jsr entity_compute_screen_coordinates
+
+  jsr boulder_draw
+
+  rts
+
+exit_spawn_spiraliceballs_handler:
+
+  lda #LIFT_LEFT_FOOT_STATE_DURATION
+  sta entity_locals+boulder_locals::state_switch_counter,x
+  
+  lda #BOULDER_LIFTLEFTFOOTSTATE
+  sta entity_instances+entity_instance::state,x
 
   rts
 
