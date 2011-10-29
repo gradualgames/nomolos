@@ -795,6 +795,14 @@ spawn_lightningbolts:
 
   jsr entity_spawn
 
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the lightningbolt we just spawned
+  lda #$01
+  sta entity_locals+lightningbolt_locals::flash_mask,y
+
   ;****************************************************************
   ;Spawn and parameterize a lightning bolt
   ;****************************************************************
@@ -816,6 +824,14 @@ spawn_lightningbolts:
 
   jsr entity_spawn
 
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the lightningbolt we just spawned
+  lda #$01
+  sta entity_locals+lightningbolt_locals::flash_mask,y
+
   ;****************************************************************
   ;Spawn and parameterize a lightning bolt
   ;****************************************************************
@@ -834,6 +850,14 @@ spawn_lightningbolts:
 
   jsr entity_spawn
   
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the lightningbolt we just spawned
+  lda #$01
+  sta entity_locals+lightningbolt_locals::flash_mask,y
+
   ;****************************************************************
   ;Spawn and parameterize a lightning bolt
   ;****************************************************************
@@ -854,7 +878,15 @@ spawn_lightningbolts:
   sta b2
   
   jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
   
+  ;parameterize/fully initialize the lightningbolt we just spawned
+  lda #$01
+  sta entity_locals+lightningbolt_locals::flash_mask,y
+
   ;****************************************************************
   ;Spawn and parameterize a lightning bolt
   ;****************************************************************
@@ -874,6 +906,14 @@ spawn_lightningbolts:
   sta b2
   
   jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the lightningbolt we just spawned
+  lda #$01
+  sta entity_locals+lightningbolt_locals::flash_mask,y
 
   rts
   

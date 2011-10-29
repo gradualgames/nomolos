@@ -143,6 +143,7 @@ FIREBALL_JUMPSTATE = 1
   x_velocity .word
   y_velocity .word
   counter .byte
+  flash_mask .byte
 .endstruct
 
 LIGHTNINGBOLT_WIDTH = $10

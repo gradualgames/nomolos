@@ -76,7 +76,7 @@ lightningbolt_draw:
 
   dec entity_locals+lightningbolt_locals::counter,x
   lda entity_locals+lightningbolt_locals::counter,x
-  and #$01
+  and entity_locals+lightningbolt_locals::flash_mask,x
   beq do_not_draw
 
   lda entity_chr_offsets+(entity_index_lightningbolt-1)

@@ -20,6 +20,7 @@ LIFT_RIGHT_FOOT_STATE_DURATION = 20
 SLAM_RIGHT_FOOT_STATE_DURATION = 35
 DRAW_LEFT_FOOT_DOWN_TIME = 20
 DRAW_RIGHT_FOOT_DOWN_TIME = 20
+LIGHTNINGBOLT_FLASHMASK = 2
 
 boulder_left_foot_up_tiles:
   .byte $04,$02,$da,$db,$dc,$dd,$e2,$e3,$e4,$e5
@@ -130,6 +131,20 @@ do_not_switch_states:
 
   rts
 
+exit_slam_left_foot_state:
+
+  jsr entity_compute_screen_coordinates
+
+  jsr boulder_draw
+
+  lda #LIFT_RIGHT_FOOT_STATE_DURATION
+  sta entity_locals+boulder_locals::state_switch_counter,x
+
+  lda #BOULDER_LIFTRIGHTFOOTSTATE
+  sta entity_instances+entity_instance::state,x
+
+  rts
+
 boulder_slam_left_foot_handler:
 
   dec entity_locals+boulder_locals::state_switch_counter,x
@@ -138,6 +153,8 @@ boulder_slam_left_foot_handler:
   lda entity_locals+boulder_locals::state_switch_counter,x
   cmp #DRAW_LEFT_FOOT_DOWN_TIME
   bne only_draw_left_foot_down_once
+
+  jsr boulder_spawn_lightningbolts
 
   ;play a boom sound
   txa
@@ -185,20 +202,6 @@ do_not_shake_screen_yet:
 
   rts
 
-exit_slam_left_foot_state:
-
-  jsr entity_compute_screen_coordinates
-
-  jsr boulder_draw
-
-  lda #LIFT_RIGHT_FOOT_STATE_DURATION
-  sta entity_locals+boulder_locals::state_switch_counter,x
-
-  lda #BOULDER_LIFTRIGHTFOOTSTATE
-  sta entity_instances+entity_instance::state,x
-
-  rts
-
 boulder_lift_right_foot_handler:
 
   dec entity_locals+boulder_locals::state_switch_counter,x
@@ -241,6 +244,8 @@ boulder_slam_right_foot_handler:
   lda entity_locals+boulder_locals::state_switch_counter,x
   cmp #DRAW_RIGHT_FOOT_DOWN_TIME
   bne only_draw_right_foot_down_once
+
+  jsr boulder_spawn_lightningbolts
 
   ;play a boom sound
   txa
@@ -413,6 +418,90 @@ boulder_draw:
   sta w4+1
 
   jsr sprite_draw_metasprite_16bit
+
+  rts
+
+boulder_spawn_lightningbolts:
+
+  ;spawn some lightning entities
+
+  ;****************************************************************
+  ;Spawn and parameterize a lightning bolt
+  ;****************************************************************
+  lda #entity_index_lightningbolt
+  sta b0
+
+  lda nomolos_screen_x
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #0
+  sta b1
+  lda #0
+  sta b2
+
+  jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the lightningbolt we just spawned
+  lda #LIGHTNINGBOLT_FLASHMASK
+  sta entity_locals+lightningbolt_locals::flash_mask,y
+
+  ;****************************************************************
+  ;Spawn and parameterize a lightning bolt
+  ;****************************************************************
+  lda #entity_index_lightningbolt
+  sta b0
+
+  lda nomolos_screen_x
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #24
+  sta b1
+  lda #0
+  sta b2
+
+  jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the lightningbolt we just spawned
+  lda #LIGHTNINGBOLT_FLASHMASK
+  sta entity_locals+lightningbolt_locals::flash_mask,y
+
+  ;****************************************************************
+  ;Spawn and parameterize a lightning bolt
+  ;****************************************************************
+  lda #entity_index_lightningbolt
+  sta b0
+
+  lda nomolos_screen_x
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #48
+  sta b1
+  lda #0
+  sta b2
+
+  jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize/fully initialize the lightningbolt we just spawned
+  lda #LIGHTNINGBOLT_FLASHMASK
+  sta entity_locals+lightningbolt_locals::flash_mask,y
 
   rts
 
