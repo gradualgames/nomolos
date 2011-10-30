@@ -163,13 +163,13 @@ spiraliceball_init:
   ;set initial vertical velocity
   lda #0
   sta entity_locals+spiraliceball_locals::y_velocity,x
-  lda #SPIRALICEBALL_MAX_DESCENT_VELOCITY
+  lda #0
   sta entity_locals+spiraliceball_locals::y_velocity+1,x
 
   ;set initial horizontal velocity
   lda #0
   sta entity_locals+spiraliceball_locals::x_velocity,x
-  lda #SPIRALICEBALL_MAX_DESCENT_VELOCITY
+  lda #0
   sta entity_locals+spiraliceball_locals::x_velocity+1,x
 
   ;set counter (delays when sub state handler begins executing)
@@ -181,13 +181,22 @@ spiraliceball_init:
   sta entity_locals+spiraliceball_locals::acceleration,x
 
   ;switch state to "trough"
-  lda #SPIRALICEBALL_TROUGH_STATE
+  lda #SPIRALICEBALL_ASCENT_STATE
   sta entity_instances+entity_instance::state,x
   sta entity_locals+spiraliceball_locals::sub_state,x
 
   rts
 
 spiraliceball_move:
+
+  jsr spiraliceball_move_x
+  jsr spiraliceball_move_x
+  jsr spiraliceball_move_y
+  jsr spiraliceball_move_y
+
+  rts
+
+spiraliceball_move_y:
 
   ;add y velocity to 24 bit Y coordinate with sign extension
 .scope addYVelocity
@@ -211,6 +220,10 @@ signExtend:
   sta entity_instances+entity_instance::position_y+1,x
 signExtendAddDone:
 .endscope
+
+  rts
+
+spiraliceball_move_x:
 
   ;add x velocity to 24 bit X coordinate with sign extension
 .scope addXVelocity

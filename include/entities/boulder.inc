@@ -10,8 +10,8 @@ BOULDER_INC = 1
   erase_row .byte
 .endstruct
 
-BOULDER_WIDTH =               $10
-BOULDER_HEIGHT =              $08
+BOULDER_WIDTH =               $30
+BOULDER_HEIGHT =              $30
 
 BOULDER_INITSTATE                = $00
 BOULDER_INITBOSSMODESTATE        = $01
@@ -718,7 +718,7 @@ boulder_erase:
 
   lda #112
   sta entity_screen_x
-  lda #96
+  lda #48
   sta entity_screen_y
   lda #0
   sta entity_screen_x+1
