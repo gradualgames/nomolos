@@ -285,6 +285,15 @@ sneep_draw:
   jsr sound_upload
   .endif
 
+  ;make Nomolos invincible the instant we transition Sneep into dying state
+  lda nomolos_state_primary
+  ora #nomolos_invincibility_on_set
+  sta nomolos_state_primary
+  lda #0
+  ;ensure that the invincibility blinking counter is already zero so it does not
+  ;reset invincibility to "off" after Sneep has already started dying
+  sta nomolos_counter_temp_invincibility_blink
+
   lda #SNEEP_DYINGSTATE
   sta entity_instances+entity_instance::state,x
 
