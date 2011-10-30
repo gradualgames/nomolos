@@ -62,8 +62,6 @@ boulder_erase_row_tiles:
 
 .proc boulder_update
 
-  jsr boulder_substate_handler
-
   lda entity_instances+entity_instance::state,x
   cmp #BOULDER_INITSTATE
   beq boulder_init
@@ -90,33 +88,49 @@ boulder_erase_row_tiles:
 
 boulder_lift_left_foot:
 
+  jsr boulder_substate_handler
+
   jmp boulder_lift_left_foot_handler
 
 boulder_slam_left_foot:
+
+  jsr boulder_substate_handler
 
   jmp boulder_slam_left_foot_handler
 
 boulder_lift_right_foot:
 
+  jsr boulder_substate_handler
+
   jmp boulder_lift_right_foot_handler
 
 boulder_slam_right_foot:
+
+  jsr boulder_substate_handler
 
   jmp boulder_slam_right_foot_handler
 
 boulder_glowing_scepter:
 
+  jsr boulder_substate_handler
+
   jmp boulder_glowing_scepter_handler
 
 boulder_spawn_spiraliceballs:
+
+  jsr boulder_substate_handler
 
   jmp boulder_spawn_spiraliceballs_handler
 
 boulder_dying:
 
+  jsr boulder_substate_handler
+
   jmp boulder_dying_handler
 
 boulder_erase:
+
+  jsr boulder_substate_handler
 
   jmp boulder_erase_handler
 

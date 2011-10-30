@@ -62,8 +62,6 @@ boss1_attacked_color_sequence:
 
 dragonboss_update:
 
-  jsr dragonboss_substate_handler
-
   lda entity_instances+entity_instance::state,x
   cmp #DRAGONBOSS_INITSTATE
   beq dragonboss_init
@@ -102,6 +100,8 @@ dragonboss_initbossmodestate:
   
 dragonboss_tailupstate:
 
+  jsr dragonboss_substate_handler
+
   jsr dragonboss_tailupstate_handler
 
   jsr dragonboss_drawface
@@ -109,6 +109,8 @@ dragonboss_tailupstate:
   rts
   
 dragonboss_taildownstate:
+
+  jsr dragonboss_substate_handler
 
   jsr dragonboss_taildownstate_handler
 
@@ -118,6 +120,8 @@ dragonboss_taildownstate:
 
 dragonboss_glowingeyesstate:
 
+  jsr dragonboss_substate_handler
+
   jsr dragonboss_glowingeyesstate_handler
   
   jsr dragonboss_drawface
@@ -125,6 +129,8 @@ dragonboss_glowingeyesstate:
   rts
   
 dragonboss_spiticeballsstate:
+
+  jsr dragonboss_substate_handler
 
   jsr dragonboss_spiticeballsstate_handler
 
@@ -134,6 +140,8 @@ dragonboss_spiticeballsstate:
   
 dragonboss_closemouthstate:
 
+  jsr dragonboss_substate_handler
+
   jsr dragonboss_closemouthstate_handler
   
   jsr dragonboss_drawface
@@ -142,6 +150,8 @@ dragonboss_closemouthstate:
   
 dragonboss_dyingstate:
 
+  jsr dragonboss_substate_handler
+
   jsr dragonboss_dyingstate_handler
 
   jsr dragonboss_drawface
@@ -149,6 +159,8 @@ dragonboss_dyingstate:
   rts
   
 dragonboss_erasestate:
+
+  jsr dragonboss_substate_handler
 
   jsr dragonboss_erasestate_handler
   
