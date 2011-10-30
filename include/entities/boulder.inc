@@ -132,6 +132,9 @@ boulder_init:
   lda #BOULDER_INITBOSSMODESTATE
   sta entity_instances+entity_instance::state,x
 
+  lda #BOULDER_SUBSTATE_NOT_ATTACKED
+  sta entity_locals+boulder_locals::substate,x
+
   rts
 
 boulder_init_boss_mode:
