@@ -217,7 +217,7 @@ level_2_2_data:
   .word level2_2meta_tile_table
 
   .word entity_definition_table
-  .word level2_2music
+  .word level2_music
   .byte boss_2_index
 
 ;ROM definition table
@@ -641,7 +641,7 @@ entity_definition_table:
   .byte $0A
   .byte $00
   .word skelekin_update
-  .byte $05
+  .byte $02
   .byte $00
   .word bat_update
   .byte $0A

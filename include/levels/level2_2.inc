@@ -13,6 +13,5 @@ level2_2patterns_bank = 8
 .import level2_2attribute_column_table
 .import level2_2meta_tile_column_table
 .import level2_2meta_tile_table
-.import level2_2music
 
 .endif
