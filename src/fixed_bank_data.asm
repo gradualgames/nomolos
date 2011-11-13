@@ -156,7 +156,7 @@ level_1_2_data:
 
   .word entity_definition_table
 
-  .word level1_music
+  .word level1_2music
 
   .byte level_2_index
 
