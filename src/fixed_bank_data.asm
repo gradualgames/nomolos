@@ -217,7 +217,7 @@ level_2_2_data:
   .word level2_2meta_tile_table
 
   .word entity_definition_table
-  .word level2_music
+  .word level2_2music
   .byte boss_2_index
 
 ;ROM definition table

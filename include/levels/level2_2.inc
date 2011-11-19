@@ -5,6 +5,7 @@ level2_2bank = 1
 level2_2patterns_bank = 8
 
 .include "spritesheet1.inc"
+.import level2_2music
 .import level2_2patterns
 .import level2_2palette
 .import level2_2cycling_palettes
