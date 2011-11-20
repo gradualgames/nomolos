@@ -307,7 +307,7 @@ level_3_2_data:
   .word level3_2_meta_tile_table
 
   .word entity_definition_table
-  .word level3_music
+  .word level3_2_music
   .byte boss_1_index
 
 ;ROM definition table
