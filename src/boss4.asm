@@ -13,7 +13,7 @@ boss4_sprite_groups:
   .byte entity_index_explosion
   .byte entity_index_sneep
 
-.segment "ROM04"
+.segment "ROM05"
   
 .export boss4_palette
 boss4_palette:

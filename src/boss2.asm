@@ -15,7 +15,7 @@ boss2_sprite_groups:
   .byte entity_index_thoguth
   .byte entity_index_lightningbolt
 
-.segment "ROM02"
+.segment "ROM05"
 
 .export boss2_music
 boss2_music: 

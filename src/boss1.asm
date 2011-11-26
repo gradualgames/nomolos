@@ -20,7 +20,7 @@ boss1_sprite_groups:
 
 .include "boss1_patterns_source.inc"
 
-.segment "ROM03"
+.segment "ROM05"
 
 .export boss1_music
 boss1_music: 

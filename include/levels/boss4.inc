@@ -11,6 +11,6 @@ BOSS4_INC = 1
 .import boss4_meta_tile_column_table
 .import boss4_meta_tile_table
 
-boss4_bank = 4
+boss4_bank = 5
 
 .endif

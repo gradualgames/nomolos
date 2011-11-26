@@ -6,6 +6,132 @@
 
 .segment "ROM03"
 
+.export level_4_2_music
+level_4_2_music:
+  .word Square1
+  .word Square2
+  .word Triangle
+  .word Noise
+  .word volume_envelopes
+  .word pitch_envelopes
+  .word duty_envelopes
+
+volume_envelopes:
+  .word volume_envelope_0
+  .word volume_envelope_1
+  .word volume_envelope_2
+  .word volume_envelope_3
+  .word volume_envelope_4
+
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+  sound_effect_volume_addresses
+
+pitch_envelopes:
+  .word pitch_envelope_0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+  sound_effect_pitch_addresses
+
+duty_envelopes:
+  .word duty_envelope_0
+  .word duty_envelope_1
+  .word 0
+  .word 0
+  .word 0
+
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+  .word 0
+
+  sound_effect_duty_addresses
+
+volume_envelope_0:
+  .byte 0, ENV_STOP
+
+volume_envelope_1:
+  .byte 15, ENV_LOOP
+volume_envelope_2:
+  .byte 13,11,10,8,6,4,0,0,ENV_STOP
+volume_envelope_3:
+  .byte 8,8,7,5,3,0,0,ENV_STOP
+volume_envelope_4:
+  .byte 12,7,3,0,ENV_STOP
+
+pitch_envelope_0:
+  .byte 0, ENV_LOOP
+
+duty_envelope_0:
+  .byte 0, ENV_LOOP
+duty_envelope_1:
+  .byte 64,ENV_LOOP
+
+Square1:
+  .byte STV,2,STP,0,SDU,1,STL,40,D2,STL,20,E2,F2,G2,A2,STL,40,D2,STL,20,E2,F2,G2,A2
+  .byte STL,10,D2,F2,A2,D3,C2,A2,AS1,D2,G2,AS2,A1,F2,G1,G2,F2,D3,E2,CS3,D2,A2,C2,A2
+  .byte AS1,G2,STL,20,A1,A1,A2,AS2,G2,A2,D2,D2,D2,D1,D1,D1,STL,10,G1,AS1,D2,G2,AS2,D3
+  .byte C1,E1,G1,C2,E2,G2,F1,A1,C2,F2,A2,C3,AS1,D2,F2,AS2,D3,AS2,G1,AS1,D2,G2,AS2,D3
+  .byte STL,20,A1,A1,A1,A1,A1,A1,STL,60,D1,STL,10,D4,D3,A3,A2,D3,D2,STL,60,A1,STL,10
+  .byte D4,D3,A3,A2,D3,D2,STL,60,A1,STL,10,D3,D2,A2,A1,D2,D1,STL,20,A1,A1,A2,AS2,G2
+  .byte A2,D2,E2,F2,G2,A2,AS2,STL,60,A1,STL,10,D3,D2,A2,A1,D2,D1,STL,20,A1,A1,A2,AS2
+  .byte G2,A2,STL,60,D2
+  .byte GOT
+  .word Square1
+
+Square2:
+  .byte STV,2,STP,0,SDU,1,STL,10,A3,D4,F4,A3,G3,E4,F3,A3,D4,F3,E3,CS4,A3,F4,A4,F4
+  .byte AS3,G4,A3,D4,F4,A3,G3,E4,STL,20,F4,A3,E4,D4,D3,C4,AS3,A3,G3,F3,E3,D3,STL,10
+  .byte A3,CS4,E4,A3,G3,E4,F3,A3,D4,F3,E3,CS4,D4,A3,FS3,D3,DS3,C4,D3,FS3,A3,D3,C3,A3
+  .byte STL,20,AS2,D3,G3,E3,C3,AS3,A3,F3,DS4,D4,F3,F4,AS3,G3,G4,STL,10,CS4,A3,CS4,E4,A4
+  .byte A3,AS3,G4,A3,F4,G3,E4,STL,20,E4,STL,40,F4,STL,20,F4,E4,D4,STL,5,E4,A4,G4,F4
+  .byte E4,D4,CS4,B3,A3,G4,F4,E4,STL,20,F4,E4,D4,STL,5,E4,A4,G4,F4,E4,D4,CS4,B3,A3
+  .byte G4,F4,E4,STL,20,D4,CS4,D4,STL,5,E4,D4,CS4,B3,A3,G3,F3,E3,STL,10,D3,CS3,F3,A3
+  .byte D4,F3,E3,CS4,F3,D4,G3,E4,A3,F4,AS3,G4,A3,A4,G3,G4,STL,5,A3,A4,G4,F4,E4,D4
+  .byte CS4,B3,A3,G3,F3,E3,STL,20,D4,CS4,D4,STL,5,E4,D4,CS4,B3,A3,G3,F3,E3,STL,10,D3
+  .byte CS3,F3,A3,D4,F3,E3,CS4,STL,20,CS4,STL,40,D4
+  .byte GOT
+  .word Square2
+
+Triangle:
+  .byte STV,3,STP,0,SDU,0,STL,40,D2,STL,20,E2,F2,G2,A2,STL,40,D2,STL,20,E2,F2,G2,A2
+  .byte STL,10,D2,F2,A2,D3,C2,A2,AS1,D2,G2,AS2,A1,F2,G1,G2,F2,D3,E2,CS3,D2,A2,C2,A2
+  .byte AS1,G2,STL,20,A1,A1,A2,AS2,G2,A2,D2,D2,D2,D1,D1,D1,STL,10,G1,AS1,D2,G2,AS2,D3
+  .byte C1,E1,G1,C2,E2,G2,F1,A1,C2,F2,A2,C3,AS1,D2,F2,AS2,D3,AS2,G1,AS1,D2,G2,AS2,D3
+  .byte STL,20,A1,A1,A1,A1,A1,A1,STL,60,D1,STL,10,D4,D3,A3,A2,D3,D2,STL,60,A1,STL,10
+  .byte D4,D3,A3,A2,D3,D2,STL,60,A1,STL,10,D3,D2,A2,A1,D2,D1,STL,20,A1,A1,A2,AS2,G2
+  .byte A2,D2,E2,F2,G2,A2,AS2,STL,60,A1,STL,10,D3,D2,A2,A1,D2,D1,STL,20,A1,A1,A2,AS2
+  .byte G2,A2,STL,60,D2
+  .byte GOT
+  .word Triangle
+
+Noise:
+  .byte STV,4,STP,0,SDU,0,STL,10,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7
+  .byte 6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7
+  .byte 6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7
+  .byte 6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7
+  .byte 6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7
+  .byte 6,7,9,7,6,7,6,7,9,7,6,7,6,7,STL,20,9,9,9,STL,10,9,7,6
+  .byte 7,6,7,STL,20,9,9,9,STL,10,9,7,6,7,6,7,9,7,6,7,6,7,9,7
+  .byte 6,7,6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7
+  .byte 6,7,6,7,9,7,6,7,6,7,9,7,6,7,6,7,9,7,6,7,6,7
+  .byte GOT
+  .word Noise
+
 .export level_4_2_palette
 level_4_2_palette:
   .byte $0d,$07,$17,$27,$0d,$07,$05,$16,$0d,$08,$18,$28,$0d,$07,$15,$25

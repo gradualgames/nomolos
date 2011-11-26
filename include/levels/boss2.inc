@@ -11,6 +11,6 @@ BOSS2_INC = 1
 .import boss2_meta_tile_table
 .import boss2_music
 
-boss2_bank = 2
+boss2_bank = 5
 
 .endif

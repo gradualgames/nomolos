@@ -11,6 +11,6 @@ BOSS3_INC = 1
 .import boss3_meta_tile_column_table
 .import boss3_meta_tile_table
 
-boss3_bank = 3
+boss3_bank = 5
 
 .endif

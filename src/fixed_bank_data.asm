@@ -397,7 +397,7 @@ level_4_2_data:
   .word level_4_2_meta_tile_table
 
   .word entity_definition_table
-  .word level4_music
+  .word level_4_2_music
   .byte boss_3_index
 
 ;ROM definition table
@@ -491,7 +491,7 @@ level_5_2_data:
 
 boss_4_data:
   .byte spritesheet_2_bank
-  .byte level_5_2_bank
+  .byte boss4_bank
   .byte level_5_patterns_bank
   .word level5_patterns
   .byte spritesheet_2_patterns_bank
