@@ -713,7 +713,7 @@ entity_definition_table:
   .byte $01
   .byte $00
   .word bee_update
-  .byte $05
+  .byte $03
   .byte $00
   .word explosionspawner_update
   .byte $0a
