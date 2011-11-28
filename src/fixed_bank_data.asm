@@ -632,7 +632,7 @@ entity_definition_table:
   .byte $0A
   .byte $00
   .word beedie_update
-  .byte $05
+  .byte $03
   .byte $00
   .word grank_update
   .byte $05
@@ -665,7 +665,7 @@ entity_definition_table:
   .byte $0a
   .byte $00
   .word shark_update
-  .byte $05
+  .byte $02
   .byte $00
   .word stalactite_update
   .byte $05
