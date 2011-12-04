@@ -486,7 +486,7 @@ level_5_2_data:
   .word level_5_2_meta_tile_table
 
   .word entity_definition_table
-  .word level5_music
+  .word level_5_2_music
   .byte boss_4_index
 
 boss_4_data:
