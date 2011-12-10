@@ -71,7 +71,7 @@ skelekin_moveRightState_handler:
   sta w0+1
   lda entity_instances+entity_instance::position_y,x
   clc
-  adc #SKELEKIN_HALFHEIGHT
+  adc #(SKELEKIN_HALFHEIGHT+8)  ;make sure to test blocks on ground
   sta w1
   lda entity_instances+entity_instance::position_y+1,x
   adc #0
@@ -124,7 +124,7 @@ skelekin_moveLeftState_handler:
   sta w0+1
   lda entity_instances+entity_instance::position_y,x
   clc
-  adc #SKELEKIN_HALFHEIGHT
+  adc #(SKELEKIN_HALFHEIGHT+8)  ;make sure to test blocks on ground
   sta w1
   lda entity_instances+entity_instance::position_y+1,x
   adc #0
