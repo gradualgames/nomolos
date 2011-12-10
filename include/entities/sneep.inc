@@ -294,6 +294,10 @@ sneep_draw:
   ;reset invincibility to "off" after Sneep has already started dying
   sta nomolos_counter_temp_invincibility_blink
 
+  ;have the Sneep be in the dying state for 255 frames
+  lda #255
+  sta entity_locals+sneep_locals::counter,x
+
   lda #SNEEP_DYINGSTATE
   sta entity_instances+entity_instance::state,x
 
