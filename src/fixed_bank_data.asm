@@ -575,7 +575,7 @@ level_6_2_data:
   .word level_6_2_meta_tile_table
 
   .word entity_definition_table
-  .word level6_music
+  .word level_6_2_music
   .byte boss_5_index
 
 ;ROM definition table
