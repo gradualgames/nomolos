@@ -96,9 +96,9 @@
   sta buffer_controller+buttons::_right
 
   ;load a frame count
-  lda #90
+  lda #$af
   sta state_control_params+play_level_state_control::frame_counter
-  lda #4
+  lda #$02
   sta state_control_params+play_level_state_control::frame_counter+1
   
   rts

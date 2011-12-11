@@ -449,9 +449,9 @@ thoguth_dyingState_handler:
 .endif
   
   ;load up victory state counter
-  lda #90
+  lda #$af
   sta entity_locals+thoguth_victorystate_locals::victory_counter,x
-  lda #4
+  lda #$02
   sta entity_locals+thoguth_victorystate_locals::victory_counter+1,x
   
   lda #THOGUTH_VICTORYSTATE
