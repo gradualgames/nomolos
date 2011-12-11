@@ -10,7 +10,6 @@ THOGUTH_INC = 1
   move_stop .byte
   jump_slam .byte
   dying_counter .byte
-  distance  .byte
   health .byte
   damaged_counter .byte
 .endstruct
@@ -31,9 +30,11 @@ LIGHTNINGBOLT_VERT_SPACING  = 32
 
 JUMP_SLAM_INTERVAL = 50
 
-THOGUTH_DISTANCE_TIL_ABOUT_FACE = 120
-MOVE_STOP_INTERVAL = 100
-THOGUTH_SPEED = 255
+THOGUTH_LEFT_BOUNDARY = 32
+THOGUTH_RIGHT_BOUNDARY = (256 - (16 * 3) - THOGUTH_WIDTH)
+MOVE_STOP_INTERVAL = 80
+THOGUTH_SPEED_LO = 128
+THOGUTH_SPEED_HI = 1
 
 THOGUTH_INITSTATE  = 0
 THOGUTH_MOVESTATE  = 1
@@ -145,8 +146,6 @@ thoguth_initState_handler:
   sta entity_locals+thoguth_locals::jump_slam,x
   lda #MOVE_STOP_INTERVAL
   sta entity_locals+thoguth_locals::move_stop,x
-  lda #THOGUTH_DISTANCE_TIL_ABOUT_FACE
-  sta entity_locals+thoguth_locals::distance,x
 
   lda #THOGUTH_MOVESTATE
   sta entity_instances+entity_instance::state,x
@@ -371,29 +370,25 @@ do_not_switch_state:
 do_not_switch_state:
   .endscope
 
-  dec entity_locals+thoguth_locals::distance,x
-  bne do_not_flip_direction
-
-  lda entity_locals+thoguth_locals::direction,x
-  eor #$ff
-  sta entity_locals+thoguth_locals::direction,x
-
-  lda #THOGUTH_DISTANCE_TIL_ABOUT_FACE
-  sta entity_locals+thoguth_locals::distance,x
-
-do_not_flip_direction:
-
   lda entity_locals+thoguth_locals::direction,x
   bne move_right
 
 move_left:
 
+  ;test left boundary and flip direction if past it
+  lda entity_instances+entity_instance::position_x,x
+  sec
+  sbc #THOGUTH_LEFT_BOUNDARY
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc #0
+  bmi flip_direction
+
   sec
   lda entity_instances+entity_instance::position_x_fine,x
-  sbc #THOGUTH_SPEED
+  sbc #THOGUTH_SPEED_LO
   sta entity_instances+entity_instance::position_x_fine,x
   lda entity_instances+entity_instance::position_x,x
-  sbc #0
+  sbc #THOGUTH_SPEED_HI
   sta entity_instances+entity_instance::position_x,x
   lda entity_instances+entity_instance::position_x+1,x
   sbc #0
@@ -402,12 +397,20 @@ move_left:
   jmp direction_test_done
 move_right:
 
+  ;test right boundary and flip direction if past it
+  lda entity_instances+entity_instance::position_x,x
+  sec
+  sbc #THOGUTH_RIGHT_BOUNDARY
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc #0
+  bpl flip_direction
+
   clc
   lda entity_instances+entity_instance::position_x_fine,x
-  adc #THOGUTH_SPEED
+  adc #THOGUTH_SPEED_LO
   sta entity_instances+entity_instance::position_x_fine,x
   lda entity_instances+entity_instance::position_x,x
-  adc #0
+  adc #THOGUTH_SPEED_HI
   sta entity_instances+entity_instance::position_x,x
   lda entity_instances+entity_instance::position_x+1,x
   adc #0
@@ -418,6 +421,17 @@ direction_test_done:
   jsr thoguth_draw
   jsr thoguth_hurt_nomolos
   
+  rts
+
+flip_direction:
+
+  lda entity_locals+thoguth_locals::direction,x
+  eor #$ff
+  sta entity_locals+thoguth_locals::direction,x
+
+  jsr thoguth_draw
+  jsr thoguth_hurt_nomolos
+
   rts
 
 thoguth_dyingState_handler:
