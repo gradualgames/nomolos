@@ -97,6 +97,9 @@ notTouching:
   lda entity_chr_offsets+(entity_index_nomolos-1)
   sta sprite_group_offset
 
+  lda #0
+  sta b2
+
   lda #<spritesheet_common_OneUp0
   sta w0
   lda #>spritesheet_common_OneUp0
