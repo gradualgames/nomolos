@@ -166,10 +166,10 @@ spritesheet_common_nomolos_fight1:
 spritesheet_common_nomolos_fight_overlay0:
 .endif
   .byte $04
-  .byte $fd,$59,$01,$fe,$06
-  .byte $fd,$5a,$01,$06,$fe
-  .byte $05,$42,$00,$fe,$06
-  .byte $05,$5b,$01,$06,$fe
+  .byte $fd,$59,$01,$fd,$07
+  .byte $fd,$5a,$01,$05,$ff
+  .byte $05,$42,$00,$fd,$07
+  .byte $05,$5b,$01,$05,$ff
 .ifndef spritesheet_common_nomolos_fight_overlay1
 spritesheet_common_nomolos_fight_overlay1:
 .endif
