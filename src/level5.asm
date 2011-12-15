@@ -26,7 +26,7 @@ level5_sprite_groups:
 .export level5_palette
 level5_palette:
   .byte $0d,$0b,$1b,$12,$0d,$0a,$00,$2c,$0d,$07,$16,$26,$0d,$1b,$00,$10
-  .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$28,$20,$0d,$0d,$00,$29
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$29,$0d,$0d,$28,$20,$0d,$0d,$00,$29
 
 .export level5_music
 level5_music:

@@ -133,7 +133,7 @@ Noise:
 .export boss1_palette
 boss1_palette:
   .byte $0d,$12,$32,$22,$0d,$33,$23,$13,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
-  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$12,$21,$20,$0d,$32,$20,$05
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$29,$0d,$12,$21,$20,$0d,$32,$20,$05
   
 .export boss1_cycling_palettes
 boss1_cycling_palettes:

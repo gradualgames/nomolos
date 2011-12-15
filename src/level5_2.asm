@@ -149,7 +149,7 @@ Noise:
 .export level_5_2_palette
 level_5_2_palette:
   .byte $0d,$0b,$1b,$12,$0d,$0a,$00,$2c,$0d,$07,$16,$26,$0d,$1b,$00,$10
-  .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$28,$20,$0d,$0d,$00,$29
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$29,$0d,$0d,$28,$20,$0d,$0d,$00,$29
 
 .export level_5_2_map
 level_5_2_map = Map

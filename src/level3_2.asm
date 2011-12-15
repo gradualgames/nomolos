@@ -129,7 +129,7 @@ Noise:
 .export level3_2_palette
 level3_2_palette:
   .byte $0d,$03,$12,$21,$0d,$12,$21,$20,$0d,$04,$14,$24,$0d,$13,$23,$33
-  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$20,$06,$0d,$0d,$20,$32
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$29,$0d,$0d,$20,$06,$0d,$0d,$20,$32
 
 .export level3_2_cycling_palettes
 level3_2_cycling_palettes:

@@ -178,7 +178,7 @@ Noise:
 .export level4_palette
 level4_palette:
   .byte $0d,$07,$17,$27,$0d,$07,$05,$16,$0d,$08,$18,$28,$0d,$07,$15,$25
-  .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$27,$16,$0d,$0d,$06,$18
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$29,$0d,$0d,$27,$16,$0d,$0d,$06,$18
 
 .export level4_cycling_palettes
 level4_cycling_palettes:

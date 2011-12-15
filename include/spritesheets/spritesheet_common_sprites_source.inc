@@ -91,7 +91,7 @@ spritesheet_common_Mouse0:
 .endif
   .byte $02
   .byte $00,$2b,$01,$00,$08
-  .byte $00,$2c,$00,$08,$00
+  .byte $00,$2c,$01,$08,$00
 .ifndef spritesheet_common_SlumpedArmor0
 spritesheet_common_SlumpedArmor0:
 .endif

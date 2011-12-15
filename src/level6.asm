@@ -28,7 +28,7 @@ level6_sprite_groups:
 .export level6_palette
 level6_palette:
   .byte $0d,$0d,$00,$10,$0d,$03,$04,$23,$0d,$01,$11,$2c,$0d,$07,$05,$10
-  .byte $0d,$0d,$27,$20,$0d,$04,$29,$0d,$0d,$0d,$01,$00,$0d,$0d,$03,$13
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$29,$0d,$0d,$01,$00,$0d,$0d,$03,$13
 
 .export level6_cycling_palettes
 level6_cycling_palettes:

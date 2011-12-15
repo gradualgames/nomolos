@@ -21,7 +21,7 @@ boss3_sprite_groups:
 boss3_palette:
   .byte $0d,$07,$17,$27,$0d,$07,$05,$16,$0d,$08,$18,$28,$0d,$07,$15,$25
 ;spritesheet1_palette
-  .byte $0d,$0d,$27,$20,$0d,$04,$2a,$0d,$0d,$0d,$07,$38,$0d,$05,$15,$27
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$29,$0d,$0d,$07,$38,$0d,$05,$15,$27
   
 .export boss3_music
 boss3_music: 
