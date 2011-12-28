@@ -1281,7 +1281,7 @@ skipJmpNotLeft:
   sta w0+1
   lda nomolos_map_y+1
   clc
-  adc #(nomolos_height-2)
+  adc #(nomolos_height-5)
   sta w1
   lda nomolos_map_y+2
   adc #0
@@ -1403,7 +1403,7 @@ skipJmpNotRight:
   sta w0+1
   lda nomolos_map_y+1
   clc
-  adc #(nomolos_height-2)
+  adc #(nomolos_height-5)
   sta w1
   lda nomolos_map_y+2
   adc #0
