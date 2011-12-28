@@ -1384,7 +1384,7 @@ skipJmpNotRight:
   sta w0+1
   lda nomolos_map_y+1
   clc
-  adc #(nomolos_width-1)
+  adc #((nomolos_height/2)-1)
   sta w1
   lda nomolos_map_y+2
   adc #0
