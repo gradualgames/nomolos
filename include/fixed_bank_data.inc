@@ -39,7 +39,7 @@ index_continue_end_state   = 4 * 4
 .global power_table
 .global press_start_string
 .global gradual_games_string
-.global copyright_c_2010_string
+.global copyright_c_2012_string
 .global level_string
 .global lives_string
 .global game_over_string

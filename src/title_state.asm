@@ -176,9 +176,9 @@ title_stateRun:
 
   set_ppu_2006 $20, 23, 10
 
-  lda #<copyright_c_2010_string
+  lda #<copyright_c_2012_string
   sta w0
-  lda #>copyright_c_2010_string
+  lda #>copyright_c_2012_string
   sta w0+1
 
   jsr ppu_display_string
@@ -303,19 +303,19 @@ select_button_not_hit:
   lda title_definition+title::palette_address+1
   sta w0+1
 
-  lda #<slide1
-  sta w2
-  lda #>slide1
-  sta w2+1
+  ; lda #<slide1
+  ; sta w2
+  ; lda #>slide1
+  ; sta w2+1
 
-  jsr ppu_show_slide
+  ; jsr ppu_show_slide
 
-  lda #<slide2
-  sta w2
-  lda #>slide2
-  sta w2+1
+  ; lda #<slide2
+  ; sta w2
+  ; lda #>slide2
+  ; sta w2+1
 
-  jsr ppu_show_slide
+  ; jsr ppu_show_slide
 
   jsr fade_out_palette
 
