@@ -1,7 +1,11 @@
 .ifndef FIXEDBANKDATA_INC
 FIXEDBANKDATA_INC = 1
 
+.ifndef DEMO_BUILD
 num_levels                 = 17
+.else
+num_levels = 8
+.endif
 
 level_1_index   = 0
 level_1_2_index = 1

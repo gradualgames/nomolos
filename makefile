@@ -15,46 +15,52 @@ BIN_DIR     = bin
 #Files
 OUTPUT_NAME     = nomolos
 NES_FILE        = $(OUTPUT_NAME).nes
-FILES           = zp \
-                  ram \
-                  nomolos \
-                  nomolos_logic \
-                  level1 \
-                  level1_2 \
-                  level2 \
-                  level2_2 \
-                  boss2 \
-                  level3 \
-                  level3_2 \
-                  level4 \
-                  level4_2 \
-                  level5 \
-                  level5_2 \
-                  level6 \
-                  level6_2 \
-                  boss3 \
-                  boss1 \
-                  boss4 \
-                  boss5 \
-                  entities \
-                  slides \
-                  load_level_state \
-                  play_level_state \
-                  level_in_state \
-                  title_state \
-                  continue_end_state \
-                  map \
-                  camera \
-                  sprite \
-                  entity \
-                  controller \
-                  soundengine \
-                  sound_effects \
-                  geotests \
-                  mapper \
-                  ppu \
-                  statemanager \
-                  fixed_bank_data
+
+#Core source files
+FILES           += zp \
+                   ram \
+                   nomolos \
+                   nomolos_logic \
+                   entities \
+                   slides \
+                   load_level_state \
+                   play_level_state \
+                   level_in_state \
+                   title_state \
+                   continue_end_state \
+                   map \
+                   camera \
+                   sprite \
+                   entity \
+                   controller \
+                   soundengine \
+                   sound_effects \
+                   geotests \
+                   mapper \
+                   ppu \
+                   statemanager \
+                   fixed_bank_data
+
+#level and boss data (conditionally compiles based on DEMO flag)
+FILES +=           level1 \
+                   level1_2 \
+                   level2 \
+                   level2_2 \
+                   boss2 \
+                   level3 \
+                   level3_2 \
+                   boss1
+ifndef DEMO
+FILES +=           level4 \
+                   level4_2 \
+                   boss3 \
+                   level5 \
+                   level5_2 \
+                   boss4 \
+                   level6 \
+                   level6_2 \
+                   boss5
+endif
 OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))
 LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
 CONFIG_FILE     = $(OUTPUT_NAME).cfg
@@ -68,6 +74,15 @@ INCLUDE_FLAGS = -I include \
                 -I include/levels \
                 -I include/fixed_bank_data
 ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
+ifdef DEMO
+ADDITIONAL_ASSEMBLER_FLAGS += -DDEMO_BUILD
+endif
+ifdef INVINCIBLE
+ADDITIONAL_ASSEMBLER_FLAGS += -DINVINCIBLE
+endif
+ifdef LEVEL_SELECTOR
+ADDITIONAL_ASSEMBLER_FLAGS += -DLEVEL_SELECTOR_ENABLED
+endif
 LINKER_FLAGS    = -C $(CONFIG_FILE) -m $(MAP_FILE) --dbgfile $(DEBUG_FILE) -o
 NAMELIST_GENERATOR_FLAGS = -rom $(NES_FILE) \
                            -nl ram ZEROPAGE 0000 \
@@ -99,7 +114,7 @@ $(NES_FILE): $(OBJECT_FILES) $(CONFIG_FILE)
 
 #Rule for assembling all the object files from source files
 $(OBJECT_FILES): $(BIN_DIR)/%.o : $(SRC_DIR)/%.asm $(BIN_DIR)
-	$(ASSEMBLER) $< $(ASSEMBLER_FLAGS) $@
+	$(ASSEMBLER) $< $(ASSEMBLER_FLAGS) $@ $(ADDITIONAL_ASSEMBLER_FLAGS)
 
 #Rule for cleaning the build
 clean:
