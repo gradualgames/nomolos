@@ -544,21 +544,17 @@ spritesheet1_ThoguthHammerfall2:
   .byte $28,$63,$02,$18,$f8
   .byte $28,$64,$02,$20,$f0
 spritesheet1_ThoguthLightning0:
-  .byte $0a
+  .byte $07
   .byte $00,$00,$03,$00,$08
-  .byte $00,$c0,$00,$08,$00
   .byte $08,$01,$03,$00,$08
-  .byte $08,$c0,$00,$08,$00
   .byte $10,$02,$03,$00,$08
   .byte $10,$03,$03,$08,$00
   .byte $18,$04,$03,$00,$08
   .byte $18,$05,$03,$08,$00
-  .byte $20,$c0,$00,$00,$08
   .byte $20,$06,$03,$08,$00
 spritesheet1_ThoguthLightning1:
-  .byte $06
+  .byte $05
   .byte $00,$07,$03,$00,$08
-  .byte $00,$c0,$00,$08,$00
   .byte $08,$08,$03,$00,$08
   .byte $08,$09,$03,$08,$00
   .byte $10,$0a,$03,$00,$08
