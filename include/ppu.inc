@@ -1,6 +1,7 @@
 .ifndef PPU_INC
 PPU_INC = 1
 
+.global ppu_show_text_slide
 .global ppu_show_slide
 .global ppu_draw_rectangular_region
 .global ppu_upload_rectangular_region

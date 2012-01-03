@@ -1295,7 +1295,19 @@ continue_string:
 
 end_string:
   .byte $03,$04,$0d,$03
-  
+
+;ONE FINE DAY, SOLOMON           AND SNOW WERE ENJOYING          WATCHING THE BIRDS
+solomon_snow_watching_birds_caption:
+  .byte $52,$0e,$0d,$04,$1a,$05,$08,$0d,$04,$1a,$03,$00,$18,$25,$1a,$12,$0e,$0b,$0e,$0c,$0e,$0d,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$00,$0d,$03,$1a,$12,$0d,$0e,$16,$1a,$16,$04,$11,$04,$1a,$04,$0d,$09,$0e,$18,$08,$0d,$06,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$16,$00,$13,$02,$07,$08,$0d,$06,$1a,$13,$07,$04,$1a,$01,$08,$11,$03,$12
+
+;WHEN SUDDENLY,                  A MYSTERIOUS PORTAL             APPEARED BEFORE THEM!
+portal_appears_caption:
+  .byte $55,$16,$07,$04,$0d,$1a,$12,$14,$03,$03,$04,$0d,$0b,$18,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$00,$1a,$0c,$18,$12,$13,$04,$11,$08,$0e,$14,$12,$1a,$0f,$0e,$11,$13,$00,$0b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$00,$0f,$0f,$04,$00,$11,$04,$03,$1a,$01,$04,$05,$0e,$11,$04,$1a,$13,$07,$04,$0c,$28
+
 title_definition:
   .word title_palette
   .word title_nametable
@@ -1311,12 +1323,12 @@ slide1:
   .word slide1_palette
   .word slide1_nametable
   .word slide1_chr
-  .byte 30
+  .byte 150
   .byte 10
 
 slide2:
   .word slide2_palette
   .word slide2_nametable
   .word slide2_chr
-  .byte 30
+  .byte 150
   .byte 10

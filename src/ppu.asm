@@ -7,6 +7,134 @@
 
 .segment "CODE"
 
+;fades out, loads the font sheet palette, draws a string
+;to the nametable, then fades in and waits a specified
+;number of vsyncs
+;expects w2 to hold address of string to print. String
+;is expected to hold enough spaces to carry to next line
+;if required.
+;expects b5 to hold the number of vsyncs to count down
+;while displaying the text slide.
+.proc ppu_show_text_slide
+text_address1 = w2
+
+  ;fade out
+  jsr fade_out_palette
+
+  ;this init state should be similar to the level in state, only we won't be
+  ;clearing the nametable, we'll be loading it from a particular location.
+  wait_vblank
+
+  ;turn off nmi
+  clear_ppu_2000_bit PPU0_EXECUTE_NMI
+  ;turn off inc32, we're just loading a nametable in this state
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  ;load sprite pattern table from $1000
+  set_ppu_2000_bit PPU0_SPRITE_PATTERN_TABLE_ADDRESS
+  upload_ppu_2000
+
+  ;turn off sprite visibility
+  clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY
+  ;turn off background visibility
+  clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
+  upload_ppu_2001
+
+  ;turn off inc32
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+
+  lda #0
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
+
+  lda #<dynamic_palette
+  sta w0
+  lda #>dynamic_palette
+  sta w0+1
+
+  wait_vblank
+  jsr ppu_load_palette
+
+  ;switch to PRG block containing font1
+  lda font1+font::chr_prg_rom_bank
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
+  ;load chr data
+  lda font1+font::chr_address
+  sta w0
+  lda font1+font::chr_address+1
+  sta w0+1
+
+  lda #$00
+  sta ppu_2006
+  sta ppu_2006+1
+  upload_ppu_2006
+
+  jsr ppu_load_chr_amount
+
+  ;clear the nametable
+  lda #$20
+  sta $2006
+  lda #$00
+  sta $2006
+
+  lda #26
+  sta b0
+  lda #0
+  sta b1
+  jsr ppu_clear_name_table
+
+  ;display string
+  set_ppu_2006 $20, 14, 5
+  lda w2
+  sta w0
+  lda w2+1
+  sta w0+1
+  jsr ppu_display_string
+  
+  ;reset scroll
+  wait_vblank
+  lda #$20
+  sta ppu_2006
+  lda #$00
+  sta ppu_2006
+  upload_ppu_2006
+
+  lda #0
+  sta ppu_2005
+  sta ppu_2005+1
+  upload_ppu_2005
+
+  ;turn on nmi
+  set_ppu_2000_bit PPU0_EXECUTE_NMI
+  upload_ppu_2000
+
+  ;turn sprite and background visibility on
+  set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
+  set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
+  upload_ppu_2001
+
+  ;fade in the palette
+  lda #<(font1+font::palette)
+  sta w0
+  lda #>(font1+font::palette)
+  sta w0+1
+  jsr fade_in_palette
+
+  ;show the slide for vsyncs vsyncs
+  lda b5
+  tax
+
+wait_vsyncs_vblanks:
+  wait_vblank
+  dex
+  bne wait_vsyncs_vblanks
+
+  rts
+
+.endproc
+
 ; .struct ppu_slide
    ; palette_address .word
    ; nametable_address .word

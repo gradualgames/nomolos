@@ -55,6 +55,8 @@ index_continue_end_state   = 4 * 4
 .global title_name_table
 .global slide1
 .global slide2
+.global solomon_snow_watching_birds_caption
+.global portal_appears_caption
 
 .struct title
   palette_address .word

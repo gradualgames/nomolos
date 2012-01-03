@@ -303,19 +303,36 @@ select_button_not_hit:
   lda title_definition+title::palette_address+1
   sta w0+1
 
-  ; lda #<slide1
-  ; sta w2
-  ; lda #>slide1
-  ; sta w2+1
+  ;show some intro cut-scene slides
+  lda #150
+  sta b5
+  lda #<solomon_snow_watching_birds_caption
+  sta w2
+  lda #>solomon_snow_watching_birds_caption
+  sta w2+1
+  jsr ppu_show_text_slide
 
-  ; jsr ppu_show_slide
+  lda #<slide1
+  sta w2
+  lda #>slide1
+  sta w2+1
 
-  ; lda #<slide2
-  ; sta w2
-  ; lda #>slide2
-  ; sta w2+1
+  jsr ppu_show_slide
 
-  ; jsr ppu_show_slide
+  lda #150
+  sta b5
+  lda #<portal_appears_caption
+  sta w2
+  lda #>portal_appears_caption
+  sta w2+1
+  jsr ppu_show_text_slide
+
+  lda #<slide2
+  sta w2
+  lda #>slide2
+  sta w2+1
+
+  jsr ppu_show_slide
 
   jsr fade_out_palette
 
