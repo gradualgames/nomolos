@@ -149,14 +149,14 @@ wait_vsyncs_vblanks:
 .proc ppu_show_slide
 slide_address = w2
 
+  ;fade out
+  jsr fade_out_palette
+
   ;switch to bank that contains slide data
   ldy #ppu_slide::bank
   lda (w2),y
   sta mapper_bank_next
   jsr mapper_switch_bank
-
-  ;fade out
-  jsr fade_out_palette
 
   ;this init state should be similar to the level in state, only we won't be
   ;clearing the nametable, we'll be loading it from a particular location.

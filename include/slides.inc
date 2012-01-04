@@ -5,3 +5,12 @@
 .global slide2_chr
 .global slide2_nametable
 .global slide2_palette
+.global slide3_chr
+.global slide3_nametable
+.global slide3_palette
+.global slide4_chr
+.global slide4_nametable
+.global slide4_palette
+.global slide5_chr
+.global slide5_nametable
+.global slide5_palette
