@@ -7,6 +7,8 @@ num_levels                 = 17
 num_levels = 8
 .endif
 
+length_of_slides = 150
+
 level_1_index   = 0
 level_1_2_index = 1
 level_2_index   = 2

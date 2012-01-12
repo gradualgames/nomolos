@@ -4,8 +4,71 @@
 .include "mapper.inc"
 .include "ppu.inc"
 .include "statemanager.inc"
+.include "flags.inc"
+.include "soundengine.inc"
 
 .segment "CODE"
+
+;saves the current nmi routine and installs the
+;sound updating nmi routine. This must
+;be accompanied with an uninstall as well to restore
+;the stack
+.macro install_ppu_upload_sound_regs_nmi
+
+  ;save current nmi routine
+  lda update_ppu
+  pha
+  lda update_ppu+1
+  pha
+
+  ;switch to nmi routine for uploading the dynamic palette
+  lda #<ppu_upload_sound_regs_nmi
+  sta update_ppu
+  lda #>ppu_upload_sound_regs_nmi
+  sta update_ppu+1
+
+.endmacro
+
+;restores previous nmi routine
+.macro uninstall_ppu_upload_sound_regs_nmi
+
+  ;restore previous nmi routine
+  pla
+  sta update_ppu+1
+  pla
+  sta update_ppu
+
+.endmacro
+
+;this nmi routine uploadsa the sound registers and then updates
+;the sound engine. This is allowed to bleed outside of vblank since
+;we're doing nothing to the PPU. We're using this only in situations
+;where we want the sound to continue advancing with precise timing
+;while we complete some menial task (like uploading data to the PPU)
+.proc ppu_upload_sound_regs_nmi
+
+  ;save regs
+  pha
+  tya
+  pha
+  txa
+  pha
+  
+  .ifdef MUSIC_ENABLE
+  jsr sound_upload
+  jsr sound_update
+  .endif
+
+  ;restore regs
+  pla
+  tax
+  pla
+  tay
+  pla
+
+  rts
+
+.endproc
 
 ;fades out, loads the font sheet palette, draws a string
 ;to the nametable, then fades in and waits a specified
@@ -21,12 +84,12 @@ text_address1 = w2
   ;fade out
   jsr fade_out_palette
 
+  install_ppu_upload_sound_regs_nmi
+
   ;this init state should be similar to the level in state, only we won't be
   ;clearing the nametable, we'll be loading it from a particular location.
   wait_vblank
 
-  ;turn off nmi
-  clear_ppu_2000_bit PPU0_EXECUTE_NMI
   ;turn off inc32, we're just loading a nametable in this state
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   ;load sprite pattern table from $1000
@@ -106,9 +169,7 @@ text_address1 = w2
   sta ppu_2005+1
   upload_ppu_2005
 
-  ;turn on nmi
-  set_ppu_2000_bit PPU0_EXECUTE_NMI
-  upload_ppu_2000
+  uninstall_ppu_upload_sound_regs_nmi
 
   ;turn sprite and background visibility on
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
@@ -127,7 +188,15 @@ text_address1 = w2
   tax
 
 wait_vsyncs_vblanks:
-  wait_vblank
+: lda nmi_counter
+  bne :-
+
+  .ifdef MUSIC_ENABLE
+  jsr sound_update
+  .endif
+
+  inc nmi_counter
+
   dex
   bne wait_vsyncs_vblanks
 
@@ -158,12 +227,10 @@ slide_address = w2
   sta mapper_bank_next
   jsr mapper_switch_bank
 
-  ;this init state should be similar to the level in state, only we won't be
-  ;clearing the nametable, we'll be loading it from a particular location.
+  install_ppu_upload_sound_regs_nmi
+
   wait_vblank
 
-  ;turn off nmi
-  clear_ppu_2000_bit PPU0_EXECUTE_NMI
   ;turn off inc32, we're just loading a nametable in this state
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   ;load sprite pattern table from $1000
@@ -234,9 +301,7 @@ slide_address = w2
   sta ppu_2005+1
   upload_ppu_2005
 
-  ;turn on nmi
-  set_ppu_2000_bit PPU0_EXECUTE_NMI
-  upload_ppu_2000
+  uninstall_ppu_upload_sound_regs_nmi
 
   ;turn sprite and background visibility on
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
@@ -260,7 +325,15 @@ slide_address = w2
   tax
 
 wait_vsyncs_vblanks:
-  wait_vblank
+: lda nmi_counter
+  bne :-
+
+  .ifdef MUSIC_ENABLE
+  jsr sound_update
+  .endif
+
+  inc nmi_counter
+
   dex
   bne wait_vsyncs_vblanks
 

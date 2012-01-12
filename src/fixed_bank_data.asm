@@ -1350,33 +1350,33 @@ slide1:
   .word slide1_palette
   .word slide1_nametable
   .word slide1_chr
-  .byte 150
+  .byte length_of_slides
   .byte 10
 
 slide2:
   .word slide2_palette
   .word slide2_nametable
   .word slide2_chr
-  .byte 150
+  .byte length_of_slides
   .byte 10
 
 slide3:
   .word slide3_palette
   .word slide3_nametable
   .word slide3_chr
-  .byte 150
+  .byte length_of_slides
   .byte 10
 
 slide4:
   .word slide4_palette
   .word slide4_nametable
   .word slide4_chr
-  .byte 150
+  .byte length_of_slides
   .byte 7
 
 slide5:
   .word slide5_palette
   .word slide5_nametable
   .word slide5_chr
-  .byte 150
+  .byte length_of_slides
   .byte 7

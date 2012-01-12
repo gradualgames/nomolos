@@ -46,6 +46,10 @@ reset:
   wait_vblank
   wait_vblank
 
+  ;initialize nmi counter
+  lda #0
+  sta nmi_counter
+
   ;initialize ppu registers with settings we're never going to change
   set_ppu_2001_bit PPU1_SPRITE_CLIPPING
   set_ppu_2001_bit PPU1_BACKGROUND_CLIPPING

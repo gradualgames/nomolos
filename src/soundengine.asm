@@ -86,6 +86,10 @@ loop:
 
 .proc sound_update
 
+  ;save regs
+  txa
+  pha
+
   ;apu data not ready
   lda #0
   sta apu_data_ready
@@ -128,6 +132,10 @@ stream_not_active:
   ;apu data ready
   lda #1
   sta apu_data_ready
+
+  ;restore regs
+  pla
+  tax
 
   rts
 .endproc

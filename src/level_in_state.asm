@@ -8,6 +8,7 @@
 .include "ram.inc"
 .include "level_in_state.inc"
 .include "statemanager.inc"
+.include "soundengine.inc"
 
 .segment "CODE"
 
@@ -29,9 +30,14 @@
 levelInStateInit:
 
   ;****************************************************************
-  ;Wait for vblank, then turn off nmi and all graphics.
+  ;Wait for vblank, then turn off nmi and all graphics and sound
   ;****************************************************************
   wait_vblank
+
+  ;stop all sound
+  .ifdef MUSIC_ENABLE
+  jsr sound_stop
+  .endif
 
   ;turn sprite and background visibility off
   clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY

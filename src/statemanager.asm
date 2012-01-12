@@ -11,6 +11,7 @@
 .include "ram.inc"
 .include "sprite.inc"
 .include "flags.inc"
+.include "soundengine.inc"
 
 .segment "CODE"
 
@@ -85,8 +86,14 @@ fading_loop:
 
   ;wait for vblank
   ldx #FADING_SPEED
-: inc nmi_counter
-  jsr wait_vblank_flag
+: jsr wait_vblank_flag
+
+  .ifdef MUSIC_ENABLE
+  jsr sound_update
+  .endif
+
+  inc nmi_counter
+
   dex
   bne :-
 
@@ -131,8 +138,13 @@ fading_loop:
 
   ;wait for vblank
   ldx #FADING_SPEED
-: inc nmi_counter
-  jsr wait_vblank_flag
+: jsr wait_vblank_flag
+
+  .ifdef MUSIC_ENABLE
+  jsr sound_update
+  .endif
+
+  inc nmi_counter
   dex
   bne :-
 
@@ -159,6 +171,10 @@ fading_loop:
   lda nmi_counter
   beq nmi_counter_zero
   
+  .ifdef MUSIC_ENABLE
+  jsr sound_upload
+  .endif
+
   jsr sprite_update_all
 
   ;save current palette address
