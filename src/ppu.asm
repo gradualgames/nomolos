@@ -88,7 +88,6 @@ text_address1 = w2
 
   ;this init state should be similar to the level in state, only we won't be
   ;clearing the nametable, we'll be loading it from a particular location.
-  wait_vblank
 
   ;turn off inc32, we're just loading a nametable in this state
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
@@ -115,7 +114,6 @@ text_address1 = w2
   lda #>dynamic_palette
   sta w0+1
 
-  wait_vblank
   jsr ppu_load_palette
 
   ;switch to PRG block containing font1
@@ -157,7 +155,6 @@ text_address1 = w2
   jsr ppu_display_string
   
   ;reset scroll
-  wait_vblank
   lda #$20
   sta ppu_2006
   lda #$00
@@ -229,8 +226,6 @@ slide_address = w2
 
   install_ppu_upload_sound_regs_nmi
 
-  wait_vblank
-
   ;turn off inc32, we're just loading a nametable in this state
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   ;load sprite pattern table from $1000
@@ -256,7 +251,6 @@ slide_address = w2
   lda #>dynamic_palette
   sta w0+1
 
-  wait_vblank
   jsr ppu_load_palette
 
   ;load chr data
@@ -289,7 +283,6 @@ slide_address = w2
   jsr ppu_load_name_table
 
   ;reset scroll
-  wait_vblank
   lda #$20
   sta ppu_2006
   lda #$00
