@@ -410,6 +410,21 @@ do_not_kill_entity:
   tax
   dec entity_counters,x
 
+  ;compute index of entity in entity definition table (multiply by 4)
+  asl
+  asl
+  tay
+  ;now skip update routine address and max allowed instances
+  iny
+  iny
+  iny
+  ;we are now pointing at the weight value of this entity type
+  ;now subtract the weight of this entity from the running weight sum
+  lda entity_weight_sum
+  sec
+  sbc (base_address_entity_definition_table),y
+  sta entity_weight_sum
+
   ;restore x
   pla
   tax
@@ -690,6 +705,20 @@ entity_not_in_death_zone:
 ;are finished.
 .proc entity_update_all
 
+  ;increment the entity cycling counter until it is at a living entity
+  ldy #$10
+
+: lda entity_cycling_counter
+  clc
+  adc #$10
+  sta entity_cycling_counter
+  tax
+  lda entity_instances+entity_instance::alive,x
+  bne at_living_entity
+  dey
+  bne :-
+at_living_entity:
+
   ;switch to the actor and entity bank
   ldy #level_data_struct::nomolos_entity_bank
   lda (base_address_rom_definition_table),y
@@ -732,6 +761,18 @@ nextEntity:
   ;put the high byte into w0
   sta w0+1
 
+  ;skip updating this entity if the weight sum is above a certain
+  ;value and the current entity index (x) matches the entity_cycling_counter
+  lda entity_weight_sum
+  cmp #52
+  bmi skip_cycling_counter_test
+
+  txa
+  cmp entity_cycling_counter
+  beq skipUpdate
+
+skip_cycling_counter_test:
+
   ;jump to the entity update routine indirectly
   jsr indirectJsrW0
 
@@ -755,6 +796,11 @@ skipUpdate:
 ;This routine initializes the entity pool. All this
 ;entails is filling the first byte of every 16 byte chunk with zero.
 .proc entity_init_all
+
+  ;initialize entity weight sum and cycling counter
+  lda #0
+  sta entity_weight_sum
+  sta entity_cycling_counter
 
   ldx #$3F
   lda #$00
@@ -841,6 +887,12 @@ do_not_spawn:
   lda (base_address_entity_definition_table),y
   cmp entity_counters,x
   beq do_not_spawn
+  ;point y at the entity weight value
+  iny
+  lda entity_weight_sum
+  clc
+  adc (base_address_entity_definition_table),y
+  sta entity_weight_sum
 
   ;start at the last entity
   ldy #last_entity

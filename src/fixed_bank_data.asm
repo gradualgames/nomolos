@@ -894,61 +894,61 @@ entity_definition_table:
   .byte $00
   .word deentle_update
   .byte $05
-  .byte $00
+  .byte 4
   .word explosion_update
   .byte $0A
-  .byte $00
+  .byte 4
   .word mouse_update
   .byte $0A
-  .byte $00
+  .byte 2
   .word exit_level_update
   .byte $02
   .byte $00
   .word oneup_update
   .byte $0A
-  .byte $00
+  .byte 2
   .word flail_item_update
   .byte $0A
-  .byte $00
+  .byte 2
   .word beedie_update
   .byte $03
-  .byte $00
+  .byte 4
   .word grank_update
   .byte $05
-  .byte $00
+  .byte 4
   .word spear_item_update
   .byte $0A
-  .byte $00
+  .byte 2
   .word skelekin_update
   .byte $02
-  .byte $00
+  .byte 10
   .word bat_update
   .byte $0A
-  .byte $00
+  .byte 2
   .word batree_update
   .byte $01
-  .byte $00
+  .byte 15
   .word owl_update
   .byte $01
-  .byte $00
+  .byte 12
   .word snuffer_update
   .byte $01
-  .byte $00
+  .byte 12
   .word snail_update
   .byte $01
-  .byte $00
+  .byte 6
   .word dragon_update
   .byte $01
-  .byte $00
+  .byte 12
   .word iceball_update
   .byte $0a
-  .byte $00
+  .byte 4
   .word shark_update
   .byte $02
-  .byte $00
+  .byte 6
   .word stalactite_update
   .byte $05
-  .byte $00
+  .byte 4
   .word dragonboss_update
   .byte $05
   .byte $00
@@ -957,16 +957,16 @@ entity_definition_table:
   .byte $00
   .word phoenix_update
   .byte $01
-  .byte $00
+  .byte 15
   .word fireball_update
   .byte $0a
-  .byte $00
+  .byte 4
   .word snake_update
   .byte $02
-  .byte $00
+  .byte 6
   .word fireguy_update
   .byte $02
-  .byte $00
+  .byte 6
   .word thoguth_update
   .byte $01
   .byte $00
@@ -975,10 +975,10 @@ entity_definition_table:
   .byte $00
   .word lightningbolt_update
   .byte $0a
-  .byte $00
+  .byte 10
   .word grubselimboj_update
   .byte $01
-  .byte $00
+  .byte 12
   .word bigfireball_update
   .byte $0a
   .byte $00
@@ -1002,19 +1002,19 @@ entity_definition_table:
   .byte $00
   .word gort_update
   .byte $02
-  .byte $00
+  .byte 12
   .word hippocritter_update
   .byte $02
-  .byte $00
+  .byte 12
   .word armoredskelekin_update
   .byte $02
-  .byte $00
+  .byte 10
   .word attacknid_update
   .byte $03
-  .byte $00
+  .byte 16
   .word laser_update
   .byte $05
-  .byte $00
+  .byte 4
   .word sneep_update
   .byte $01
   .byte $00
