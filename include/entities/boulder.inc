@@ -40,16 +40,16 @@ DRAW_RIGHT_FOOT_DOWN_TIME = 20
 LIGHTNINGBOLT_FLASHMASK = 2
 
 boulder_left_foot_up_tiles:
-  .byte $04,$02,$da,$db,$dc,$dd,$e2,$e3,$e4,$e5
+  .byte $04,$02,$e2,$e3,$e4,$e5,$ea,$eb,$ec,$ed
 
 boulder_left_foot_down_tiles:
-  .byte $04,$02,$ce,$4d,$4d,$cf,$d4,$d5,$d6,$d7
+  .byte $04,$02,$d6,$4d,$4d,$d7,$dc,$dd,$de,$df
 
 boulder_right_foot_up_tiles:
-  .byte $04,$06,$00,$d8,$d9,$52,$de,$df,$e0,$e1,$e6,$4d,$e7,$e8,$e9,$4d,$4d,$ea,$eb,$ec,$ed,$ee,$00,$00,$00,$00
+  .byte $04,$06,$00,$e0,$e1,$52,$e6,$e7,$e8,$e9,$ee,$4d,$ef,$f0,$f1,$4d,$4d,$f2,$f3,$f4,$f5,$f6,$00,$00,$00,$00
 
 boulder_right_foot_down_tiles:
-  .byte $04,$06,$9f,$a0,$a1,$52,$aa,$ab,$ac,$ad,$4d,$4d,$b8,$b9,$c3,$4d,$4d,$c4,$cc,$4d,$4d,$cd,$d0,$d1,$d2,$d3
+  .byte $04,$06,$a1,$a2,$a3,$52,$ad,$ae,$af,$b0,$4d,$4d,$bb,$bc,$c8,$4d,$4d,$c9,$d4,$4d,$4d,$d5,$d8,$d9,$da,$db
 
 boulder_glowing_scepter_color_sequence:
   .byte $06, $16, $26, $36, $26, $16, $06, $06
@@ -58,7 +58,7 @@ boulder_attacked_color_sequence:
   .byte $24, $24, $34, $24, $24, $14, $14, $24
 
 boulder_erase_row_tiles:
-  .byte $12,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+  .byte $13,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 
 .proc boulder_update
 
