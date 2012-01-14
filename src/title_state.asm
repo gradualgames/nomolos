@@ -339,6 +339,16 @@ stateCommandComplete:
   rts
 .endproc
 
+.macro show_slide slide_routine, escape_address
+
+  jsr slide_routine
+  lda b6
+  beq :+
+  jmp escape_address
+:
+
+.endmacro
+
 .proc show_intro_cut_scene
 
   ;switch to nmi routine for uploading the dynamic palette
@@ -362,14 +372,13 @@ stateCommandComplete:
   sta w2
   lda #>solomon_snow_watching_birds_caption
   sta w2+1
-  jsr ppu_show_text_slide
+  show_slide ppu_show_text_slide, skip_intro_cut_scene
 
   lda #<slide1
   sta w2
   lda #>slide1
   sta w2+1
-
-  jsr ppu_show_slide
+  show_slide ppu_show_slide, skip_intro_cut_scene
 
   lda #150
   sta b5
@@ -377,14 +386,13 @@ stateCommandComplete:
   sta w2
   lda #>portal_appears_caption
   sta w2+1
-  jsr ppu_show_text_slide
+  show_slide ppu_show_text_slide, skip_intro_cut_scene
 
   lda #<slide2
   sta w2
   lda #>slide2
   sta w2+1
-
-  jsr ppu_show_slide
+  show_slide ppu_show_slide, skip_intro_cut_scene
 
   lda #150
   sta b5
@@ -392,14 +400,13 @@ stateCommandComplete:
   sta w2
   lda #>arm_snatches_snow_caption
   sta w2+1
-  jsr ppu_show_text_slide
+  show_slide ppu_show_text_slide, skip_intro_cut_scene
 
   lda #<slide3
   sta w2
   lda #>slide3
   sta w2+1
-
-  jsr ppu_show_slide
+  show_slide ppu_show_slide, skip_intro_cut_scene
 
   lda #150
   sta b5
@@ -407,14 +414,13 @@ stateCommandComplete:
   sta w2
   lda #>leapt_through_portal_caption
   sta w2+1
-  jsr ppu_show_text_slide
+  show_slide ppu_show_text_slide, skip_intro_cut_scene
 
   lda #<slide4
   sta w2
   lda #>slide4
   sta w2+1
-
-  jsr ppu_show_slide
+  show_slide ppu_show_slide, skip_intro_cut_scene
 
   lda #150
   sta b5
@@ -422,14 +428,13 @@ stateCommandComplete:
   sta w2
   lda #>became_nomolos_caption
   sta w2+1
-  jsr ppu_show_text_slide
+  show_slide ppu_show_text_slide, skip_intro_cut_scene
 
   lda #<slide5
   sta w2
   lda #>slide5
   sta w2+1
-
-  jsr ppu_show_slide
+  show_slide ppu_show_slide, skip_intro_cut_scene
 
   lda #250
   sta b5
@@ -437,7 +442,9 @@ stateCommandComplete:
   sta w2
   lda #>nomolos_sets_out_caption
   sta w2+1
-  jsr ppu_show_text_slide
+  show_slide ppu_show_text_slide, skip_intro_cut_scene
+
+skip_intro_cut_scene:
 
   jsr fade_out_palette
 

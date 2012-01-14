@@ -6,6 +6,7 @@
 .include "statemanager.inc"
 .include "flags.inc"
 .include "soundengine.inc"
+.include "controller.inc"
 
 .segment "CODE"
 
@@ -78,8 +79,16 @@
 ;if required.
 ;expects b5 to hold the number of vsyncs to count down
 ;while displaying the text slide.
+;uses b6 as a return value for whether or not start was pressed while
+;showing the slide (can be optionally used by caller to allow skipping
+;of a cut scene sequence)
 .proc ppu_show_text_slide
 text_address1 = w2
+start_was_pressed = b6
+
+  ;make sure start_was_pressed begins as false
+  lda #0
+  sta start_was_pressed
 
   ;fade out
   jsr fade_out_palette
@@ -194,8 +203,22 @@ wait_vsyncs_vblanks:
 
   inc nmi_counter
 
+  jsr controller_read
+
+  lda buffer_controller+buttons::_start
+  and #1
+  bne start_button_hit
+
   dex
   bne wait_vsyncs_vblanks
+
+  rts
+
+start_button_hit:
+
+  ;set return flag that start button was pressed
+  lda #1
+  sta start_was_pressed
 
   rts
 
@@ -213,7 +236,12 @@ wait_vsyncs_vblanks:
 ;waits a specified number of vsync's
 ;expects w2 to hold address of slide parameters
 .proc ppu_show_slide
+start_was_pressed = b6
 slide_address = w2
+
+  ;make sure start_was_pressed begins as false
+  lda #0
+  sta start_was_pressed
 
   ;fade out
   jsr fade_out_palette
@@ -327,8 +355,22 @@ wait_vsyncs_vblanks:
 
   inc nmi_counter
 
+  jsr controller_read
+
+  lda buffer_controller+buttons::_start
+  and #1
+  bne start_button_hit
+
   dex
   bne wait_vsyncs_vblanks
+
+  rts
+
+start_button_hit:
+
+  ;set return flag that start button was pressed
+  lda #1
+  sta start_was_pressed
 
   rts
 
