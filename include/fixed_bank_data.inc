@@ -7,8 +7,6 @@ num_levels                 = 17
 num_levels = 8
 .endif
 
-length_of_slides = 150
-
 level_1_index   = 0
 level_1_2_index = 1
 level_2_index   = 2
@@ -41,6 +39,7 @@ index_continue_end_state   = 4 * 4
 .global haltmusic
 .global victory_music
 .global title_music
+.global intro_cut_scene_music
 .global font1
 .global power_table
 .global press_start_string

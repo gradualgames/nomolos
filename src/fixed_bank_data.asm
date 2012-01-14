@@ -1080,6 +1080,89 @@ entity_chr_definition_table:
 banktable:
   .byte $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $0f
 
+.export intro_cut_scene_music
+intro_cut_scene_music:
+.scope
+
+Song1: 
+  .word Square1
+  .word Square2
+  .word Triangle
+  .word Noise
+  .word volume_envelopes
+  .word pitch_envelopes
+  .word duty_envelopes
+
+volume_envelopes:
+  .word volume_envelope_0
+  .word volume_envelope_1
+  .word volume_envelope_2
+  .word volume_envelope_3
+
+pitch_envelopes:
+  .word pitch_envelope_0
+
+duty_envelopes:
+  .word duty_envelope_0
+  .word duty_envelope_1
+
+volume_envelope_0:
+  .byte 0, ENV_STOP
+
+volume_envelope_1:
+  .byte 15, ENV_LOOP
+volume_envelope_2:
+  .byte 12,10,9,7,5,3,2,ENV_STOP
+volume_envelope_3:
+  .byte 10,8,6,4,0,ENV_STOP
+
+pitch_envelope_0:
+  .byte 0, ENV_LOOP
+
+duty_envelope_0:
+  .byte 0, ENV_LOOP
+duty_envelope_1:
+  .byte 64,ENV_LOOP
+
+Square1:
+  .byte STV,2,STP,0,SDU,1,STL,48,E1,STL,8,A3,E3,CS3,A2,E2,A1,STL,48,B0,STL,32,E1,STL
+  .byte 8,B2,GS2,STL,48,E2,STL,8,A3,E3,CS3,A2,E2,A1,STL,48,B0,STL,96,E1,STL,8,E3,B2
+  .byte FS3,GS3,B2,A3,STL,48,B3,STL,8,B3,FS3,CS4,DS4,FS3,E4,STL,48,FS4,STL,8,FS4,A3,GS3,A3
+  .byte GS3,A3,FS4,A3,GS3,A3,GS3,A3,FS4,A3,GS3,A3,GS3,A3,FS4,C5,B4,A4,G4,FS4,E4,G3,FS3,G3
+  .byte FS3,G3,E4,G3,FS3,G3,FS3,G3,E4,G3,FS3,G3,FS3,G3,E4,G4,FS4,E4,D4,CS4,B3,D3,CS3,D3
+  .byte CS3,D3,B3,D3,CS3,D3,CS3,D3,B3,D3,CS3,D3,CS3,D3,B3,D4,CS4,B3,AS3,B3,FS4,CS4,AS3,FS3
+  .byte CS3,AS2,FS2,CS2,AS1,FS1,AS1,CS2,STL,48,FS2,STL,24,E2,CS2,D2,B1,E2,G2,STL,96,FS1,STL,8
+  .byte FS4,CS4,AS3,FS3,AS3,FS4,G4,G3,AS3,AS4,AS3,CS4,B4,B3,D4,FS4,E4,D4,CS4,D4,E4,D4,E4,CS4
+  .byte STL,24,CS4,STL,72,B3,STL,8,D4,B3,E4,D4,B3,E4,D4,B3,E4,D4,B3,E4,D4,B3,E4,D4
+  .byte B3,E4,D4,B3,FS4,D4,B3,D4,CS4,D4,E4,B3,CS4,AS3,B3,B4,FS4,GS4,E4,CS4,DS4,E4,FS4,B3
+  .byte CS4,AS3,B3,B3,FS3,GS3,E3,CS3,DS3,E3,FS3,B2,CS3,AS2,STL,24,AS2,STL,72,B2
+  .byte TRM
+
+Square2:
+  .byte STV,2,STP,0,SDU,1,STL,8,B4,GS4,E4,B3,GS3,B3,STL,24,CS4,STL,32,A4,STL,8,A4,STL
+  .byte 4,FS4,GS4,STL,8,FS4,E4,DS4,E4,B3,GS3,STL,24,E3,STL,8,B4,GS4,E4,B3,GS3,B3,STL,24
+  .byte CS4,STL,32,A4,STL,8,A4,STL,4,FS4,GS4,STL,8,FS4,E4,DS4,E4,B3,GS3,E3,B2,GS2,E2,B1
+  .byte GS1,E1,GS1,B1,STL,48,E2,STL,8,E2,B1,FS2,GS2,B1,A2,STL,48,B2,STL,8,B2,FS2,CS3,DS3
+  .byte FS2,E3,STL,24,FS3,E3,DS3,CS3,STL,48,B2,STL,24,B2,B1,STL,8,C3,C2,C1,C2,C3,C2,B2
+  .byte B1,B0,B1,B2,B1,AS2,AS1,AS0,AS1,AS2,AS1,FS2,FS1,FS2,FS1,FS2,FS1,G2,G1,G2,G3,G2,G1,FS2
+  .byte FS1,FS2,FS3,FS2,FS1,F2,F1,F2,F3,F2,F1,CS2,CS1,CS2,CS1,CS2,CS1,STL,96,FS1,STL,8,FS4,CS4
+  .byte AS3,FS3,AS3,FS4,G4,G3,AS3,AS4,AS3,CS4,B4,B3,D4,FS4,E4,D4,CS4,D4,E4,D4,CS4,B3,FS4,CS4
+  .byte AS3,FS3,CS3,AS2,FS2,CS2,AS1,FS1,AS1,CS2,STL,48,FS2,STL,24,E2,CS2,D2,B1,E2,FS2,STL,96,G1
+  .byte STL,48,G2,G2,STL,24,G2,G2,STL,48,FS2,FS1,STL,24,B1,E2,FS2,FS1,B1,E2,FS2,FS1,STL,96
+  .byte B0
+  .byte TRM
+
+Triangle:
+  .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL
+  .byte 255,A0,STL,255,A0,STL,105,A0
+  .byte TRM
+
+Noise:
+  .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL
+  .byte 255,A0,STL,255,A0,STL,105,A0
+  .byte TRM
+.endscope
+
 .export victory_music
 victory_music: 
 .scope
@@ -1350,33 +1433,33 @@ slide1:
   .word slide1_palette
   .word slide1_nametable
   .word slide1_chr
-  .byte length_of_slides
+  .byte 150
   .byte 10
 
 slide2:
   .word slide2_palette
   .word slide2_nametable
   .word slide2_chr
-  .byte length_of_slides
+  .byte 150
   .byte 10
 
 slide3:
   .word slide3_palette
   .word slide3_nametable
   .word slide3_chr
-  .byte length_of_slides
+  .byte 150
   .byte 10
 
 slide4:
   .word slide4_palette
   .word slide4_nametable
   .word slide4_chr
-  .byte length_of_slides
+  .byte 150
   .byte 7
 
 slide5:
   .word slide5_palette
   .word slide5_nametable
   .word slide5_chr
-  .byte length_of_slides
+  .byte 250
   .byte 7

@@ -347,17 +347,16 @@ stateCommandComplete:
   lda #>ppu_upload_dynamic_palette_ppu
   sta update_ppu+1
 
-  ;load victory music
 .ifdef MUSIC_ENABLE
-  lda #<victory_music
+  lda #<intro_cut_scene_music
   sta sound_param_word_1
-  lda #>victory_music
+  lda #>intro_cut_scene_music
   sta sound_param_word_1+1
   jsr song_initialize
 .endif
 
   ;show some intro cut-scene slides
-  lda #length_of_slides
+  lda #150
   sta b5
   lda #<solomon_snow_watching_birds_caption
   sta w2
@@ -372,7 +371,7 @@ stateCommandComplete:
 
   jsr ppu_show_slide
 
-  lda #length_of_slides
+  lda #150
   sta b5
   lda #<portal_appears_caption
   sta w2
@@ -387,7 +386,7 @@ stateCommandComplete:
 
   jsr ppu_show_slide
 
-  lda #length_of_slides
+  lda #150
   sta b5
   lda #<arm_snatches_snow_caption
   sta w2
@@ -402,7 +401,7 @@ stateCommandComplete:
 
   jsr ppu_show_slide
 
-  lda #length_of_slides
+  lda #150
   sta b5
   lda #<leapt_through_portal_caption
   sta w2
@@ -417,7 +416,7 @@ stateCommandComplete:
 
   jsr ppu_show_slide
 
-  lda #length_of_slides
+  lda #150
   sta b5
   lda #<became_nomolos_caption
   sta w2
@@ -432,7 +431,7 @@ stateCommandComplete:
 
   jsr ppu_show_slide
 
-  lda #length_of_slides
+  lda #250
   sta b5
   lda #<nomolos_sets_out_caption
   sta w2
