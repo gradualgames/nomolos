@@ -23,6 +23,7 @@ BOULDER_GLOWINGSCEPTERSTATE      = $06
 BOULDER_SPAWNSPIRALICEBALLSSTATE = $07
 BOULDER_DYINGSTATE               = $08
 BOULDER_ERASESTATE               = $09
+BOULDER_SNOWAPPEARSSTATE         = $0a
 
 BOULDER_SUBSTATE_NOT_ATTACKED = 0
 BOULDER_SUBSTATE_ATTACKED = 1
@@ -62,6 +63,7 @@ boulder_erase_row_tiles:
 
 ;this palette gets uploaded in the background before we show Princess Snow
 boss5_sprite_palette_after_boulder_dies:
+  .byte $0d,$07,$06,$20,$0d,$04,$24,$20,$0d,$04,$14,$24,$0d,$07,$06,$04
   .byte $0d,$0d,$27,$20,$0d,$0d,$04,$2a,$0d,$06,$28,$21,$0d,$0d,$15,$20
 
 .proc boulder_update
@@ -87,6 +89,8 @@ boss5_sprite_palette_after_boulder_dies:
   beq boulder_dying
   cmp #BOULDER_ERASESTATE
   beq boulder_erase
+  cmp #BOULDER_SNOWAPPEARSSTATE
+  beq boulder_snow_appears
 
   rts
 
@@ -138,13 +142,19 @@ boulder_erase:
 
   jmp boulder_erase_handler
 
+boulder_snow_appears:
+
+  ;no substate, boulder herself is erased and the battle is over
+
+  jmp boulder_snow_appears_handler
+
 boulder_init:
 
   lda #1
   sta entity_locals+boulder_locals::state_switch_counter,x
 
   ;start Boulder out with a certain amount of health
-  lda #15
+  lda #1
   sta entity_locals+boulder_locals::health,x
 
   lda #BOULDER_INITBOSSMODESTATE
@@ -595,11 +605,6 @@ boulder_erase_handler:
   sta camera_scroll_x
 
   dec entity_locals+boulder_locals::state_switch_counter,x
-  bne do_not_kill_boulder
-  
-  jsr entity_kill
-  
-do_not_kill_boulder:
 
   lda entity_locals+boulder_locals::state_switch_counter,x
   and #%00000111
@@ -622,6 +627,142 @@ do_not_kill_boulder:
   inc entity_locals+boulder_locals::erase_row,x
   
 do_not_increment_erase_row:
+
+  lda entity_locals+boulder_locals::state_switch_counter,x
+  bne do_not_switch_to_snow_appears_state
+  
+  ;set coordinates of this entity to be off screen to the right but at
+  ;the same level as Nomolos.
+  lda #176
+  sta entity_instances+entity_instance::position_y,x
+  lda #0
+  sta entity_instances+entity_instance::position_y+1,x
+  lda #0
+  sta entity_instances+entity_instance::position_x,x
+  lda #1
+  sta entity_instances+entity_instance::position_x+1,x
+
+  ;snow appears state uses state switch counter for very simple sub state switching
+  ;1 = load snow's palette and other init code, 0 = main walking state
+  lda #1
+  sta entity_locals+boulder_locals::state_switch_counter,x
+
+  ;transition to pre-ending scene (Snow walks up to Nomolos)
+  lda #BOULDER_SNOWAPPEARSSTATE
+  sta entity_instances+entity_instance::state,x
+  
+do_not_switch_to_snow_appears_state:
+
+  rts
+
+boulder_snow_appears_handler:
+
+  lda entity_locals+boulder_locals::state_switch_counter,x
+  cmp #1
+  beq upload_snow_palette
+  cmp #0
+  beq draw_snow
+
+upload_snow_palette:
+
+  jsr entity_reset_anim
+
+  lda #<boss5_sprite_palette_after_boulder_dies
+  sta w0
+  lda #>boss5_sprite_palette_after_boulder_dies
+  sta w0+1
+  lda #3
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
+
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
+  sta state_control_params+play_level_state_control::upload_ppu_data
+
+  dec entity_locals+boulder_locals::state_switch_counter,x
+
+  rts
+
+draw_snow:
+
+  jsr entity_compute_screen_coordinates
+
+  ;compute address of animation object based on current entity index and animation_object
+  ;offset
+  txa
+  sta w1
+  clc
+  adc #<(entity_instances+entity_instance::animation_object)
+  sta w1
+  lda #0
+  adc #>(entity_instances+entity_instance::animation_object)
+  sta w1+1
+
+  lda #<spritesheet1_SnowWalk
+  sta w2
+  lda #>spritesheet1_SnowWalk
+  sta w2+1
+
+  jsr sprite_update_animation
+
+  lda entity_chr_offsets+(entity_index_boulder-1)
+  sta sprite_group_offset
+
+  txa
+  sta w1
+  clc
+  adc #<(entity_instances+entity_instance::animation_object)
+  sta w1
+  lda #0
+  adc #>(entity_instances+entity_instance::animation_object)
+  sta w1+1
+
+  lda #<spritesheet1_SnowWalk
+  sta w2
+  lda #>spritesheet1_SnowWalk
+  sta w2+1
+  lda entity_screen_x
+  sta w3
+  lda entity_screen_x+1
+  sta w3+1
+  lda entity_screen_y
+  sta w4
+  lda entity_screen_y+1
+  sta w4+1
+
+  jsr sprite_draw_animation_16bit
+
+  txa
+  sta w1
+  clc
+  adc #<(entity_instances+entity_instance::animation_object)
+  sta w1
+  lda #0
+  adc #>(entity_instances+entity_instance::animation_object)
+  sta w1+1
+
+  lda #<spritesheet1_SnowWalkOverlay
+  sta w2
+  lda #>spritesheet1_SnowWalkOverlay
+  sta w2+1
+  lda entity_screen_x
+  sta w3
+  lda entity_screen_x+1
+  sta w3+1
+  lda entity_screen_y
+  sta w4
+  lda entity_screen_y+1
+  sta w4+1
+
+  jsr sprite_draw_animation_16bit
+
+  ;now move snow left
+  sec
+  lda entity_instances+entity_instance::position_x,x
+  sbc #1
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc #0
+  sta entity_instances+entity_instance::position_x+1,x
 
   rts
 
@@ -710,8 +851,6 @@ darken_boulder_palette_loop:
   rts
   
 boulder_erase:
-
-  jsr play_level_state_init_victory_mode
 
   lda #160
   sta entity_locals+boulder_locals::state_switch_counter,x
