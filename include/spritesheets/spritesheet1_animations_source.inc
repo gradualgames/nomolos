@@ -111,3 +111,19 @@ spritesheet1_ThoguthLightning:
   .word spritesheet1_ThoguthLightning0
   .word spritesheet1_ThoguthLightning1
   .word $0000
+
+spritesheet1_SnowWalk:
+  .byte $0a
+  .word spritesheet1_SnowWalk0
+  .word spritesheet1_SnowWalk1
+  .word spritesheet1_SnowWalk0
+  .word spritesheet1_SnowWalk2
+  .word $0000
+
+spritesheet1_SnowWalkOverlay:
+  .byte $0a
+  .word spritesheet1_SnowWalkOverlay0
+  .word spritesheet1_SnowWalkOverlay1
+  .word spritesheet1_SnowWalkOverlay0
+  .word spritesheet1_SnowWalkOverlay2
+  .word $0000

@@ -60,6 +60,10 @@ boulder_attacked_color_sequence:
 boulder_erase_row_tiles:
   .byte $13,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 
+;this palette gets uploaded in the background before we show Princess Snow
+boss5_sprite_palette_after_boulder_dies:
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$2a,$0d,$06,$28,$21,$0d,$0d,$15,$20
+
 .proc boulder_update
 
   lda entity_instances+entity_instance::state,x
