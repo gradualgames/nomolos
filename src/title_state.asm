@@ -446,11 +446,11 @@ stateCommandComplete:
 
 skip_intro_cut_scene:
 
-  jsr fade_out_palette
-
 .ifdef MUSIC_ENABLE
   jsr sound_stop
 .endif
+
+  jsr fade_out_palette
 
   rts
 
