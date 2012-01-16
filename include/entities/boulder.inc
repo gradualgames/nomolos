@@ -682,6 +682,8 @@ snow_init:
   lda #0
   sta nomolos_state_primary
 
+  reset_anim nomolos_animation
+
   jsr entity_reset_anim
 
   lda #<boss5_sprite_palette_after_boulder_dies
@@ -756,24 +758,6 @@ walk_test_done:
 
   rts
 
-nomolos_and_snow_aligned:
-
-  lda #SNOW_ALIGNED_WITH_NOMOLOS
-  sta entity_locals+boulder_locals::snow_state,x
-
-  lda #$00
-  sta buffer_controller+buttons::_right
-  sta buffer_controller+buttons::_left
-
-  lda #0
-  sta nomolos_state_primary
-
-  reset_anim nomolos_animation
-
-  jsr draw_snow
-
-  rts
-
 snow_walk_onto_screen:
 
   ;compute address of animation object based on current entity index and animation_object
@@ -820,6 +804,24 @@ snow_walk_onto_screen:
   sta entity_locals+boulder_locals::snow_state,x
 
 do_not_switch_to_align_state:
+
+  rts
+
+nomolos_and_snow_aligned:
+
+  lda #SNOW_ALIGNED_WITH_NOMOLOS
+  sta entity_locals+boulder_locals::snow_state,x
+
+  lda #$00
+  sta buffer_controller+buttons::_right
+  sta buffer_controller+buttons::_left
+
+  lda #0
+  sta nomolos_state_primary
+
+  reset_anim nomolos_animation
+
+  jsr draw_snow
 
   rts
 
