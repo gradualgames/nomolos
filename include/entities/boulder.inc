@@ -162,7 +162,7 @@ boulder_init:
   sta entity_locals+boulder_locals::state_switch_counter,x
 
   ;start Boulder out with a certain amount of health
-  lda #1
+  lda #15
   sta entity_locals+boulder_locals::health,x
 
   lda #BOULDER_INITBOSSMODESTATE
@@ -641,7 +641,7 @@ do_not_increment_erase_row:
   
   ;set coordinates of this entity to be off screen to the right but at
   ;the same level as Nomolos.
-  lda #176
+  lda #175
   sta entity_instances+entity_instance::position_y,x
   lda #0
   sta entity_instances+entity_instance::position_y+1,x
@@ -677,6 +677,10 @@ boulder_snow_appears_handler:
 snow_init:
 
   jsr play_level_state_init_hands_off_victory_mode
+
+  ;make certain Nomolos isn't moving until we tell him to
+  lda #0
+  sta nomolos_state_primary
 
   jsr entity_reset_anim
 
