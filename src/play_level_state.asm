@@ -71,6 +71,32 @@
   rts
 .endproc
 
+;initializes a mode similar to the victory mode, only it does not
+;predictably count down and transition to the next level. Instead it
+;is "hands off" and used by the Boulder entity when it is bringing
+;Nomolos and Snow face to face. Its purpose is to switch off normal
+;controller reading but allow the Boulder entity to decide when the
+;"final" state has been reached. It felt more natural to do it this
+;way than to put code specific to certain sets of entities/sprites 
+;into the play level state.
+.proc play_level_state_init_hands_off_victory_mode
+
+  lda #PLAYLEVELSTATE_HANDSOFFVICTORYMODE
+  sta state_control_params+play_level_state_control::state
+
+  ;clear buttons we don't want to respond to during victory mode.
+  lda #%00000000
+  sta buffer_controller+buttons::_a
+  sta buffer_controller+buttons::_b
+  sta buffer_controller+buttons::_left
+  sta buffer_controller+buttons::_right
+  sta buffer_controller+buttons::_select
+  sta buffer_controller+buttons::_start
+
+  rts
+
+.endproc
+
 ;initializes victory mode by changing the state param of
 ;the play level state and starts playing victory music located
 ;in the fixed bank
@@ -119,6 +145,8 @@
   beq switch_to_level_in_state
   cmp #PLAYLEVELSTATE_VICTORYMODE
   beq victory_mode
+  cmp #PLAYLEVELSTATE_HANDSOFFVICTORYMODE
+  beq hands_off_victory_mode
 
 play_level_state_init:
 
@@ -178,7 +206,17 @@ victory_mode:
   jsr victory_state
   
   jmp state_switch_complete
+
+hands_off_victory_mode:
+
+  ;****************************************************************
+  ;Call the hands off victory mode state handler
+  ;****************************************************************
+
+  jsr hands_off_victory_state
   
+  jmp state_switch_complete
+
 pause:
 
 : lda nmi_counter
@@ -366,18 +404,6 @@ do_not_switch_to_level_in_state:
   jsr sound_update
   .endif
 
-  .scope
-  lda buffer_controller+buttons::_start
-  and #%00000011
-  cmp #1
-  bne skip_start_button_test
-
-  lda #PLAYLEVELSTATE_PAUSE
-  sta state_control_params+play_level_state_control::state
-
-skip_start_button_test:
-  .endscope
-
   ;indicate to nmi that data has been prepared
   inc nmi_counter
   
@@ -387,6 +413,54 @@ skip_start_button_test:
   upload_ppu_2001
   .endif
   
+  rts
+
+.endproc
+
+;****************************************************************
+;The hands off victory mode state handler
+;****************************************************************
+.proc hands_off_victory_state
+
+  ;wait for nmi to reset counter
+: lda nmi_counter
+  bne :-
+
+  ;turn monochrome bit on
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  set_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
+  .endif
+  
+  ;camera has not scrolled yet
+  lda #0
+  sta camera_scroll_direction
+
+  jsr sprite_clear_all
+
+  jsr nomolos_update
+  jsr nomolos_draw
+  jsr nomolos_draw_hearts
+  jsr entity_update_all
+
+  .ifdef MUSIC_ENABLE
+  ;switch to the level and music bank
+  ldy #level_data_struct::level_music_bank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+  jsr sound_update
+  .endif
+
+  ;indicate to nmi that data has been prepared
+  inc nmi_counter
+  
+  ;turn monochrome bit off
+  .ifdef DISPLAY_FRAME_CPU_USAGE
+  clear_ppu_2001_bit PPU1_DISPLAY_TYPE
+  upload_ppu_2001
+  .endif
+
   rts
 
 .endproc

@@ -1,12 +1,15 @@
 .ifndef BOULDER_INC
 BOULDER_INC = 1
 
+.include "controller.inc"
+
 .struct boulder_locals
   brightness_counter .byte
   state_switch_counter .byte
   substate_switch_counter .byte
   health .byte
   substate .byte
+  snow_state .byte
   erase_row .byte
 .endstruct
 
@@ -29,6 +32,11 @@ BOULDER_SUBSTATE_NOT_ATTACKED = 0
 BOULDER_SUBSTATE_ATTACKED = 1
 BOULDER_SUBSTATE_DYING = 2
 BOULDER_SUBSTATE_ERASE = 3
+
+SNOW_INIT                    = 0
+SNOW_WALK_ONTO_SCREEN        = 1
+SNOW_ALIGN_NOMOLOS_WITH_SNOW = 2
+SNOW_ALIGNED_WITH_NOMOLOS    = 3
 
 LIFT_LEFT_FOOT_STATE_DURATION = 20
 SLAM_LEFT_FOOT_STATE_DURATION = 35
@@ -642,10 +650,9 @@ do_not_increment_erase_row:
   lda #1
   sta entity_instances+entity_instance::position_x+1,x
 
-  ;snow appears state uses state switch counter for very simple sub state switching
-  ;1 = load snow's palette and other init code, 0 = main walking state
-  lda #1
-  sta entity_locals+boulder_locals::state_switch_counter,x
+  ;set initial state for the mini Snow state machine
+  lda #SNOW_INIT
+  sta entity_locals+boulder_locals::snow_state,x
 
   ;transition to pre-ending scene (Snow walks up to Nomolos)
   lda #BOULDER_SNOWAPPEARSSTATE
@@ -657,13 +664,19 @@ do_not_switch_to_snow_appears_state:
 
 boulder_snow_appears_handler:
 
-  lda entity_locals+boulder_locals::state_switch_counter,x
-  cmp #1
-  beq upload_snow_palette
-  cmp #0
-  beq draw_snow
+  lda entity_locals+boulder_locals::snow_state,x
+  cmp #SNOW_INIT
+  beq snow_init
+  cmp #SNOW_WALK_ONTO_SCREEN
+  beq snow_walk_onto_screen
+  cmp #SNOW_ALIGN_NOMOLOS_WITH_SNOW
+  beq align_nomolos_with_snow
+  cmp #SNOW_ALIGNED_WITH_NOMOLOS
+  beq snow_aligned_with_nomolos
 
-upload_snow_palette:
+snow_init:
+
+  jsr play_level_state_init_hands_off_victory_mode
 
   jsr entity_reset_anim
 
@@ -678,13 +691,86 @@ upload_snow_palette:
   lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
   sta state_control_params+play_level_state_control::upload_ppu_data
 
-  dec entity_locals+boulder_locals::state_switch_counter,x
+  lda #SNOW_WALK_ONTO_SCREEN
+  sta entity_locals+boulder_locals::snow_state,x
 
   rts
 
-draw_snow:
+snow_aligned_with_nomolos:
 
-  jsr entity_compute_screen_coordinates
+  jsr draw_snow
+
+  rts
+
+align_nomolos_with_snow:
+
+  ;compare Nomolos' coordinate with Snow's coordinate. If greater than 16 less
+  ;than Snow's X coordinate, walk left.
+  ;If less than 16 less than Snow's X coordinate, walk right.
+  ;If equal to 16 less than Snow's X coordinate, ensure facing right.
+
+  ;calculate 16 less than Snow's coordinates
+  sec
+  lda entity_instances+entity_instance::position_x,x
+  sbc #$10
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc #$00
+  sta w0+1
+
+  ;compare this value to Nomolos's map coordinate
+  sec
+  lda w0
+  sbc nomolos_map_x+1
+  beq nomolos_and_snow_aligned
+  lda w0+1
+  sbc nomolos_map_x+2
+
+  ;if this is positive, we're to the left of Snow
+  bpl walk_right
+
+  ;if this is negative, we're to the right of Snow
+  bmi walk_left
+
+  jmp walk_test_done
+
+walk_right:
+
+  lda #%11111111
+  sta buffer_controller+buttons::_right
+
+  jmp walk_test_done
+
+walk_left:
+
+  lda #%11111111
+  sta buffer_controller+buttons::_left
+
+walk_test_done:
+
+  jsr draw_snow
+
+  rts
+
+nomolos_and_snow_aligned:
+
+  lda #SNOW_ALIGNED_WITH_NOMOLOS
+  sta entity_locals+boulder_locals::snow_state,x
+
+  lda #$00
+  sta buffer_controller+buttons::_right
+  sta buffer_controller+buttons::_left
+
+  lda #0
+  sta nomolos_state_primary
+
+  reset_anim nomolos_animation
+
+  jsr draw_snow
+
+  rts
+
+snow_walk_onto_screen:
 
   ;compute address of animation object based on current entity index and animation_object
   ;offset
@@ -704,8 +790,44 @@ draw_snow:
 
   jsr sprite_update_animation
 
+  jsr draw_snow
+
+  ;now move snow left
+  sec
+  lda entity_instances+entity_instance::position_x,x
+  sbc #1
+  sta entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x+1,x
+  sbc #0
+  sta entity_instances+entity_instance::position_x+1,x
+
+  ;compare coordinates to a certain value. Once we're there,
+  ;transition to the align nomolos with snow state.
+
+  lda entity_instances+entity_instance::position_x,x
+  cmp #150
+  bne do_not_switch_to_align_state
+
+  ;lda #nomolos_moving_on_set
+  ;sta nomolos_state_primary
+  ;sta nomolos_counter_temp_invincibility_blink
+
+  lda #SNOW_ALIGN_NOMOLOS_WITH_SNOW
+  sta entity_locals+boulder_locals::snow_state,x
+
+do_not_switch_to_align_state:
+
+  rts
+
+draw_snow:
+
+  jsr entity_compute_screen_coordinates
+
   lda entity_chr_offsets+(entity_index_boulder-1)
   sta sprite_group_offset
+
+  lda #0
+  sta b2
 
   txa
   sta w1
@@ -754,15 +876,6 @@ draw_snow:
   sta w4+1
 
   jsr sprite_draw_animation_16bit
-
-  ;now move snow left
-  sec
-  lda entity_instances+entity_instance::position_x,x
-  sbc #1
-  sta entity_instances+entity_instance::position_x,x
-  lda entity_instances+entity_instance::position_x+1,x
-  sbc #0
-  sta entity_instances+entity_instance::position_x+1,x
 
   rts
 
