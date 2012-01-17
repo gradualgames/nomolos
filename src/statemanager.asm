@@ -88,10 +88,6 @@ fading_loop:
   ldx #FADING_SPEED
 : jsr wait_vblank_flag
 
-  .ifdef MUSIC_ENABLE
-  jsr sound_update
-  .endif
-
   inc nmi_counter
 
   dex
@@ -140,10 +136,6 @@ fading_loop:
   ldx #FADING_SPEED
 : jsr wait_vblank_flag
 
-  .ifdef MUSIC_ENABLE
-  jsr sound_update
-  .endif
-
   inc nmi_counter
   dex
   bne :-
@@ -168,12 +160,12 @@ fading_loop:
   txa
   pha
 
-  lda nmi_counter
-  beq nmi_counter_zero
-  
   .ifdef MUSIC_ENABLE
   jsr sound_upload
   .endif
+
+  lda nmi_counter
+  beq nmi_counter_zero
 
   jsr sprite_update_all
 
@@ -209,6 +201,10 @@ fading_loop:
   dec nmi_counter
 nmi_counter_zero:
   
+  .ifdef MUSIC_ENABLE
+  jsr sound_update
+  .endif
+
   pla
   tax
   pla

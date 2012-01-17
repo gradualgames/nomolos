@@ -55,8 +55,25 @@
   txa
   pha
   
+  ;always upload sound regs at beginning of vblank for precise music playback
   .ifdef MUSIC_ENABLE
   jsr sound_upload
+  .endif
+
+  ;do all ppu related stuff here. In this case, we just upload the main PPU
+  ;control registers, to allow graphics to be turned on and off safely while
+  ;we are displaying cut scene slides.
+  lda nmi_counter
+  beq :+
+  upload_ppu_2000
+  upload_ppu_2001
+  dec nmi_counter
+:
+
+  ;always update music engine at end of vblank because it never touches the
+  ;PPU so we can safely cross outside of vblank here before returning to
+  ;main engine code
+  .ifdef MUSIC_ENABLE
   jsr sound_update
   .endif
 
@@ -102,11 +119,10 @@ start_was_pressed = b6
   ;turn off background visibility
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
 
-  ;the palette is all black, so it is safe to switch the PPU on and
-  ;off outside of vblank, we just need to make sure if we start writing
-  ;to it after this that it is off.
-  upload_ppu_2000
-  upload_ppu_2001
+  ;wait for ppu registers to be uploaded safely
+  inc nmi_counter
+: lda nmi_counter
+  bne :-
 
   lda #0
   sta b3
@@ -171,12 +187,16 @@ start_was_pressed = b6
   sta ppu_2005+1
   upload_ppu_2005
 
-  uninstall_ppu_upload_sound_regs_nmi
-
   ;turn sprite and background visibility on
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
-  upload_ppu_2001
+  
+  ;wait for ppu registers to be uploaded safely
+  inc nmi_counter
+: lda nmi_counter
+  bne :-
+
+  uninstall_ppu_upload_sound_regs_nmi
 
   ;fade in the palette
   lda #<(font1+font::palette)
@@ -192,10 +212,6 @@ start_was_pressed = b6
 wait_vsyncs_vblanks:
 : lda nmi_counter
   bne :-
-
-  .ifdef MUSIC_ENABLE
-  jsr sound_update
-  .endif
 
   inc nmi_counter
 
@@ -257,11 +273,11 @@ slide_address = w2
   ;turn off background visibility
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
 
-  ;the palette is all black, so it is safe to switch the PPU on and
-  ;off outside of vblank, we just need to make sure if we start writing
-  ;to it after this that it is off.
-  upload_ppu_2000
-  upload_ppu_2001
+  ;wait for ppu registers to be uploaded safely
+  inc nmi_counter
+
+: lda nmi_counter
+  bne :-
 
   lda #0
   sta b3
@@ -315,12 +331,16 @@ slide_address = w2
   sta ppu_2005+1
   upload_ppu_2005
 
-  uninstall_ppu_upload_sound_regs_nmi
-
   ;turn sprite and background visibility on
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
-  upload_ppu_2001
+  
+  ;wait for ppu registers to be uploaded safely
+  inc nmi_counter
+: lda nmi_counter
+  bne :-
+
+  uninstall_ppu_upload_sound_regs_nmi
 
   ;load palette
   ldy #ppu_slide::palette_address
@@ -341,10 +361,6 @@ slide_address = w2
 wait_vsyncs_vblanks:
 : lda nmi_counter
   bne :-
-
-  .ifdef MUSIC_ENABLE
-  jsr sound_update
-  .endif
 
   inc nmi_counter
 
