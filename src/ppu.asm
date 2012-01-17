@@ -95,24 +95,18 @@ start_was_pressed = b6
 
   install_ppu_upload_sound_regs_nmi
 
-  ;this init state should be similar to the level in state, only we won't be
-  ;clearing the nametable, we'll be loading it from a particular location.
-
   ;turn off inc32, we're just loading a nametable in this state
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
-  ;load sprite pattern table from $1000
-  set_ppu_2000_bit PPU0_SPRITE_PATTERN_TABLE_ADDRESS
-  upload_ppu_2000
-
   ;turn off sprite visibility
   clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   ;turn off background visibility
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
-  upload_ppu_2001
 
-  ;turn off inc32
-  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  ;the palette is all black, so it is safe to switch the PPU on and
+  ;off outside of vblank, we just need to make sure if we start writing
+  ;to it after this that it is off.
   upload_ppu_2000
+  upload_ppu_2001
 
   lda #0
   sta b3
@@ -136,6 +130,7 @@ start_was_pressed = b6
   lda font1+font::chr_address+1
   sta w0+1
 
+  ;set vram address to where we want to load the background chr data
   lda #$00
   sta ppu_2006
   sta ppu_2006+1
@@ -145,9 +140,10 @@ start_was_pressed = b6
 
   ;clear the nametable
   lda #$20
-  sta $2006
+  sta ppu_2006
   lda #$00
-  sta $2006
+  sta ppu_2006
+  upload_ppu_2006
 
   lda #26
   sta b0
@@ -256,19 +252,16 @@ slide_address = w2
 
   ;turn off inc32, we're just loading a nametable in this state
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
-  ;load sprite pattern table from $1000
-  set_ppu_2000_bit PPU0_SPRITE_PATTERN_TABLE_ADDRESS
-  upload_ppu_2000
-
   ;turn off sprite visibility
   clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   ;turn off background visibility
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
-  upload_ppu_2001
 
-  ;turn off inc32
-  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  ;the palette is all black, so it is safe to switch the PPU on and
+  ;off outside of vblank, we just need to make sure if we start writing
+  ;to it after this that it is off.
   upload_ppu_2000
+  upload_ppu_2001
 
   lda #0
   sta b3
