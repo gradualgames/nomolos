@@ -7,6 +7,7 @@
 .include "flags.inc"
 .include "soundengine.inc"
 .include "controller.inc"
+.include "sprite.inc"
 
 .segment "CODE"
 
@@ -86,6 +87,161 @@
 
   rts
 
+.endproc
+
+;expects w0 to point to palette to fade in to
+.proc fade_in_palette
+
+  ;save current nmi routine
+  lda update_ppu
+  pha
+  lda update_ppu+1
+  pha
+
+  ;switch to nmi routine for uploading the dynamic palette
+  lda #<ppu_upload_dynamic_palette_ppu
+  sta update_ppu
+  lda #>ppu_upload_dynamic_palette_ppu
+  sta update_ppu+1
+
+  lda #1
+  sta palette_step
+
+fading_loop:
+
+  ;load up the dynamic palette with brightness in b3
+  lda palette_step
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
+
+  ;wait for vblank
+  ldx #FADING_SPEED
+: jsr wait_vblank_flag
+
+  inc nmi_counter
+
+  dex
+  bne :-
+
+  inc palette_step
+  lda palette_step
+  cmp #5
+  bmi fading_loop
+
+  ;restore previous nmi routine
+  pla
+  sta update_ppu+1
+  pla
+  sta update_ppu
+
+  rts
+.endproc
+
+;expects w0 to point to the palette to fade out from
+.proc fade_out_palette
+
+  ;save current nmi routine
+  lda update_ppu
+  pha
+  lda update_ppu+1
+  pha
+
+  ;switch to nmi routine for uploading the dynamic palette
+  lda #<ppu_upload_dynamic_palette_ppu
+  sta update_ppu
+  lda #>ppu_upload_dynamic_palette_ppu
+  sta update_ppu+1
+
+  lda #4
+  sta palette_step
+
+fading_loop:
+
+  ;load up the dynamic palette with brightness in b3
+  lda palette_step
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
+
+  ;wait for vblank
+  ldx #FADING_SPEED
+: jsr wait_vblank_flag
+
+  inc nmi_counter
+  dex
+  bne :-
+
+  dec palette_step
+  bpl fading_loop
+
+  ;restore previous nmi routine
+  pla
+  sta update_ppu+1
+  pla
+  sta update_ppu
+
+  rts
+.endproc
+
+;nmi routine for uploading the dynamic palette
+.proc ppu_upload_dynamic_palette_ppu
+  pha
+  tya
+  pha
+  txa
+  pha
+
+  .ifdef MUSIC_ENABLE
+  jsr sound_upload
+  .endif
+
+  lda nmi_counter
+  beq nmi_counter_zero
+
+  jsr sprite_update_all
+
+  ;save current palette address
+  lda w0
+  pha
+  lda w0+1
+  pha
+
+  lda #<dynamic_palette
+  sta w0
+  lda #>dynamic_palette
+  sta w0+1
+
+  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+
+  jsr ppu_load_palette
+
+  ;restore previous palette address
+  pla
+  sta w0+1
+  pla
+  sta w0
+
+  set_ppu_2000_bit PPU0_ADDRESS_INCREMENT
+  upload_ppu_2000
+
+  ;restore 2006 and 2005 to what we had written them to previously
+  upload_ppu_2006
+  upload_ppu_2005
+  
+  dec nmi_counter
+nmi_counter_zero:
+  
+  .ifdef MUSIC_ENABLE
+  jsr sound_update
+  .endif
+
+  pla
+  tax
+  pla
+  tay
+  pla
+
+  rts
 .endproc
 
 ;fades out, loads the font sheet palette, draws a string
