@@ -28,6 +28,7 @@ FILES           += zp \
                    level_in_state \
                    title_state \
                    continue_end_state \
+                   ending_state \
                    map \
                    camera \
                    sprite \

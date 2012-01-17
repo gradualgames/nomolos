@@ -143,6 +143,8 @@
   beq pause
   cmp #PLAYLEVELSTATE_SWITCHTOLEVELINSTATE
   beq switch_to_level_in_state
+  cmp #PLAYLEVELSTATE_SWITCHTOENDINGSTATE
+  beq switch_to_ending_state
   cmp #PLAYLEVELSTATE_VICTORYMODE
   beq victory_mode
   cmp #PLAYLEVELSTATE_HANDSOFFVICTORYMODE
@@ -175,7 +177,7 @@ play_level_state_init:
   lda #PLAYLEVELSTATE_KEEPPLAYING
   sta state_control_params+play_level_state_control::state
 
-  jmp state_switch_complete
+  rts
 
 keep_playing:
 
@@ -185,7 +187,7 @@ keep_playing:
 
   jsr keep_playing_state
 
-  jmp state_switch_complete
+  rts
 
 playBoss:
 
@@ -195,7 +197,7 @@ playBoss:
 
   jsr boss_state
   
-  jmp state_switch_complete
+  rts
   
 victory_mode:
 
@@ -205,7 +207,7 @@ victory_mode:
 
   jsr victory_state
   
-  jmp state_switch_complete
+  rts
 
 hands_off_victory_mode:
 
@@ -215,7 +217,7 @@ hands_off_victory_mode:
 
   jsr hands_off_victory_state
   
-  jmp state_switch_complete
+  rts
 
 pause:
 
@@ -238,7 +240,7 @@ skip_start_button_test:
 
   inc nmi_counter
   
-  jmp state_switch_complete
+  rts
 
 switch_to_level_in_state:
 
@@ -271,7 +273,7 @@ switch_to_level_in_state:
   sta state_control_params+level_in_state_control::state
   ldx #index_level_in_state
   jsr switch_state
-  jmp state_switch_complete
+  rts
 
 lives_negative_means_game_over:
 
@@ -280,7 +282,12 @@ lives_negative_means_game_over:
   ldx #index_continue_end_state
   jsr switch_state
 
-state_switch_complete:
+  rts
+
+switch_to_ending_state:
+
+  ldx #index_ending_state
+  jsr switch_state
 
   rts
 

@@ -14,3 +14,6 @@
 .global slide5_chr
 .global slide5_nametable
 .global slide5_palette
+.global ending_slide1_chr
+.global ending_slide1_nametable
+.global ending_slide1_palette

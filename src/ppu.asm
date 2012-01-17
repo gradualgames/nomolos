@@ -266,6 +266,9 @@ start_was_pressed = b6
   ;fade out
   jsr fade_out_palette
 
+  ;clear sprites
+  jsr sprite_clear_all
+
   install_ppu_upload_sound_regs_nmi
 
   ;turn off inc32, we're just loading a nametable in this state
@@ -413,6 +416,9 @@ slide_address = w2
 
   ;fade out
   jsr fade_out_palette
+
+  ;clear sprites
+  jsr sprite_clear_all
 
   ;switch to bank that contains slide data
   ldy #ppu_slide::bank

@@ -704,6 +704,14 @@ snow_init:
 
 snow_aligned_with_nomolos:
 
+  dec entity_locals+boulder_locals::state_switch_counter,x
+  bne skip_switch_to_ending_state
+
+  lda #PLAYLEVELSTATE_SWITCHTOENDINGSTATE
+  sta state_control_params+play_level_state_control::state
+
+skip_switch_to_ending_state:
+
   jsr draw_snow
 
   rts
@@ -811,6 +819,9 @@ nomolos_and_snow_aligned:
 
   lda #SNOW_ALIGNED_WITH_NOMOLOS
   sta entity_locals+boulder_locals::snow_state,x
+
+  lda #10
+  sta entity_locals+boulder_locals::state_switch_counter,x
 
   lda #$00
   sta buffer_controller+buttons::_right

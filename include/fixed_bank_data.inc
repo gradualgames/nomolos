@@ -25,13 +25,6 @@ level_6_1_index = 14
 level_6_2_index = 15
 boss_5_index    = 16
 
-;state table
-index_title_state          = 0 * 4
-index_level_in_state       = 1 * 4
-index_load_level_state     = 2 * 4
-index_play_level_state     = 3 * 4
-index_continue_end_state   = 4 * 4
-
 .global entity_definition_table
 .global entity_chr_definition_table
 .global level_definition_table
@@ -59,6 +52,7 @@ index_continue_end_state   = 4 * 4
 .global slide3
 .global slide4
 .global slide5
+.global ending_slide1
 .global solomon_snow_watching_birds_caption
 .global portal_appears_caption
 .global arm_snatches_snow_caption

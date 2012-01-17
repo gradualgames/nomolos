@@ -3,6 +3,7 @@
 .include "load_level_state.inc"
 .include "continue_end_state.inc"
 .include "play_level_state.inc"
+.include "ending_state.inc"
 .include "statemanager.inc"
 .include "zp.inc"
 .include "fixed_bank_data.inc"
@@ -58,3 +59,5 @@ state_table:
   .word play_level_state_update_ppu
   .word continue_end_state_update
   .word continue_end_state_update_ppu
+  .word ending_state_update
+  .word ending_state_update_ppu

@@ -1460,3 +1460,10 @@ slide5:
   .word slide5_chr
   .byte 250
   .byte 7
+
+ending_slide1:
+  .word ending_slide1_palette
+  .word ending_slide1_nametable
+  .word ending_slide1_chr
+  .byte 250
+  .byte 7
