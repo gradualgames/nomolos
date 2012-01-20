@@ -421,7 +421,7 @@ slide_address = w2
   jsr sprite_clear_all
 
   ;switch to bank that contains slide data
-  ldy #ppu_slide::bank
+  ldy #ppu_slide::chr_bank
   lda (w2),y
   sta mapper_bank_next
   jsr mapper_switch_bank
@@ -466,6 +466,12 @@ slide_address = w2
   upload_ppu_2006
 
   jsr ppu_load_chr_amount
+
+  ;switch to bank that contains nametable and palette data
+  ldy #ppu_slide::palette_nametable_bank
+  lda (w2),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
 
   ;load the nametable and attribute table.
   lda #$20

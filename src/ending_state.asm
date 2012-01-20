@@ -42,6 +42,18 @@
   sta w2+1
   jsr ppu_show_slide
 
+  lda #<ending_slide3
+  sta w2
+  lda #>ending_slide3
+  sta w2+1
+  jsr ppu_show_slide
+
+  lda #<slide1
+  sta w2
+  lda #>slide1
+  sta w2+1
+  jsr ppu_show_slide
+
   rts
 .endproc
 

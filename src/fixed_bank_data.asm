@@ -1432,12 +1432,14 @@ slide1:
   .word slide1_chr
   .byte 150
   .byte 10
+  .byte 10
 
 slide2:
   .word slide2_palette
   .word slide2_nametable
   .word slide2_chr
   .byte 150
+  .byte 10
   .byte 10
 
 slide3:
@@ -1446,12 +1448,14 @@ slide3:
   .word slide3_chr
   .byte 150
   .byte 10
+  .byte 10
 
 slide4:
   .word slide4_palette
   .word slide4_nametable
   .word slide4_chr
   .byte 150
+  .byte 7
   .byte 7
 
 slide5:
@@ -1460,12 +1464,14 @@ slide5:
   .word slide5_chr
   .byte 250
   .byte 7
+  .byte 7
 
 ending_slide1:
   .word ending_slide1_palette
   .word ending_slide1_nametable
   .word ending_slide1_chr
   .byte 250
+  .byte 7
   .byte 7
 
 ending_slide2:
@@ -1474,3 +1480,12 @@ ending_slide2:
   .word ending_slide2_chr
   .byte 250
   .byte 12
+  .byte 12
+
+ending_slide3:
+  .word ending_slide3_palette
+  .word ending_slide3_nametable
+  .word ending_slide3_chr
+  .byte 250
+  .byte 12
+  .byte 6

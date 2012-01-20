@@ -20,3 +20,6 @@
 .global ending_slide2_chr
 .global ending_slide2_nametable
 .global ending_slide2_palette
+.global ending_slide3_chr
+.global ending_slide3_nametable
+.global ending_slide3_palette

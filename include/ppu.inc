@@ -27,7 +27,8 @@ PPU_INC = 1
    nametable_address .word
    chr_address .word
    vsyncs .byte
-   bank .byte
+   chr_bank .byte
+   palette_nametable_bank .byte
 .endstruct
 
 ;bit positions for PPU control register $2000

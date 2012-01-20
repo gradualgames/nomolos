@@ -54,6 +54,7 @@ boss_5_index    = 16
 .global slide5
 .global ending_slide1
 .global ending_slide2
+.global ending_slide3
 .global solomon_snow_watching_birds_caption
 .global portal_appears_caption
 .global arm_snatches_snow_caption
