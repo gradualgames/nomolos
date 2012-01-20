@@ -33,6 +33,7 @@ boss_5_index    = 16
 .global victory_music
 .global title_music
 .global intro_cut_scene_music
+.global mysterious_barricades
 .global font1
 .global power_table
 .global press_start_string

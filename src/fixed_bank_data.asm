@@ -1338,6 +1338,68 @@ Noise:
   .word Noise
 .endscope
   
+mysterious_barricades:
+.scope
+  .word Square1
+  .word Square2
+  .word Triangle
+  .word Noise
+  .word volume_envelopes
+  .word pitch_envelopes
+  .word duty_envelopes
+
+volume_envelopes:
+  .word volume_envelope_0
+  .word volume_envelope_1
+  .word volume_envelope_2
+
+pitch_envelopes:
+  .word pitch_envelope_0
+
+duty_envelopes:
+  .word duty_envelope_0
+  .word duty_envelope_1
+
+volume_envelope_0:
+  .byte 0, ENV_STOP
+
+volume_envelope_1:
+  .byte 15, ENV_LOOP
+volume_envelope_2:
+  .byte 2,3,3,5,6,8,11,12,12,11,11,10,9,7,6,5,4,3,1,1,1,ENV_STOP
+
+pitch_envelope_0:
+  .byte 0, ENV_LOOP
+
+duty_envelope_0:
+  .byte 0, ENV_LOOP
+duty_envelope_1:
+  .byte 64,ENV_LOOP
+
+Square1:
+  .byte STV,0,STL,20,A0,STV,2,STP,0,SDU,1,AS2,D3,STL,120,AS2,STL,20,AS2,D3,STL,120,AS2,STL
+  .byte 20,A2,AS2,STL,40,G2,STL,20,F2,AS2,A2,STL,60,G2,STL,20,G2,STL,180,A2,STL,20,C3,F3
+  .byte STL,120,A2,STL,20,C3,F3,STL,40,A2,STL,20,A2,AS2,STL,40,G2,STL,80,F2,STL,20,A2,STL
+  .byte 60,AS2,STL,140,F2
+  .byte TRM
+
+Square2:
+  .byte STV,0,STL,100,A0,STV,2,STP,0,SDU,1,STL,20,C3,F3,STL,120,A2,STL,20,C3,F3,STL,200
+  .byte A2,STL,20,AS2,STL,60,DS3,STL,20,DS3,STL,5,DS3,D3,DS3,D3,STL,20,C3,D3,AS2,D3,STL,120
+  .byte AS2,STL,20,AS2,D3,STL,220,AS2,STL,20,AS2,A2,STL,60,G2,F2,STL,20,AS2,A2,STL,10,AS2,A2
+  .byte STL,60,AS2
+  .byte TRM
+
+Triangle:
+  .byte STV,0,STL,40,A0,STV,2,STP,0,SDU,1,AS2,F3,F2,AS2,F3,F2,DS3,G2,D3,D2,D3,DS2,C3
+  .byte F2,F3,AS2,F3,F2,F3,AS2,F3,F2,DS3,G2,D3,D2,D3,DS2,C3,F2,C3,STL,80,AS2
+  .byte TRM
+
+Noise:
+  .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,85,A0
+  .byte TRM
+.endscope
+
 font1:
   .word font0_patterns
   .byte $0E

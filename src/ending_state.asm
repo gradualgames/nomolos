@@ -18,7 +18,11 @@
 .proc ending_state_update
 
 .ifdef MUSIC_ENABLE
-  jsr sound_stop
+  lda #<mysterious_barricades
+  sta sound_param_word_1
+  lda #>mysterious_barricades
+  sta sound_param_word_1+1
+  jsr song_initialize
 .endif
 
   ;use whatever was last loaded as the palette for the palette
