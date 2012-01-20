@@ -31,6 +31,12 @@ PPU_INC = 1
    palette_nametable_bank .byte
 .endstruct
 
+.struct text_slide
+   string_address .word
+   vsyncs .byte
+   bank .byte
+.endstruct
+
 ;bit positions for PPU control register $2000
 PPU0_EXECUTE_NMI = 7
 PPU0_MASTER_SLAVE = 6

@@ -23,3 +23,13 @@
 .global ending_slide3_chr
 .global ending_slide3_nametable
 .global ending_slide3_palette
+.global solomon_snow_watching_birds_caption
+.global portal_appears_caption
+.global arm_snatches_snow_caption
+.global leapt_through_portal_caption
+.global became_nomolos_caption
+.global nomolos_sets_out_caption
+.global nomolos_and_snow_reunited_caption
+.global portal_appears_above_scepter_caption
+.global leapt_through_ending_portal_caption
+.global arriving_at_other_side_caption

@@ -247,10 +247,7 @@ nmi_counter_zero:
 ;fades out, loads the font sheet palette, draws a string
 ;to the nametable, then fades in and waits a specified
 ;number of vsyncs
-;expects w2 to hold address of string to print. String
-;is expected to hold enough spaces to carry to next line
-;if required.
-;expects b5 to hold the number of vsyncs to count down
+;expects w2 to hold address of slide.
 ;expects b7 to hold the start button mask (can be used to optionally test
 ;while displaying the text slide.
 ;uses b6 as a return value for whether or not start was pressed while
@@ -328,11 +325,19 @@ start_was_pressed = b6
   sta b1
   jsr ppu_clear_name_table
 
+  ;switch to bank that contains text slide
+  ldy #text_slide::bank
+  lda (w2),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   ;display string
   set_ppu_2006 $20, 14, 5
-  lda w2
+  ldy #text_slide::string_address
+  lda (w2),y
   sta w0
-  lda w2+1
+  iny
+  lda (w2),y
   sta w0+1
   jsr ppu_display_string
   

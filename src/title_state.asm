@@ -370,11 +370,9 @@ stateCommandComplete:
   sta b7
 
   ;show some intro cut-scene slides
-  lda #150
-  sta b5
-  lda #<solomon_snow_watching_birds_caption
+  lda #<solomon_snow_watching_birds_slide
   sta w2
-  lda #>solomon_snow_watching_birds_caption
+  lda #>solomon_snow_watching_birds_slide
   sta w2+1
   show_slide ppu_show_text_slide, skip_intro_cut_scene
 
@@ -384,11 +382,9 @@ stateCommandComplete:
   sta w2+1
   show_slide ppu_show_slide, skip_intro_cut_scene
 
-  lda #150
-  sta b5
-  lda #<portal_appears_caption
+  lda #<portal_appears_slide
   sta w2
-  lda #>portal_appears_caption
+  lda #>portal_appears_slide
   sta w2+1
   show_slide ppu_show_text_slide, skip_intro_cut_scene
 
@@ -398,11 +394,9 @@ stateCommandComplete:
   sta w2+1
   show_slide ppu_show_slide, skip_intro_cut_scene
 
-  lda #150
-  sta b5
-  lda #<arm_snatches_snow_caption
+  lda #<arm_snatches_snow_slide
   sta w2
-  lda #>arm_snatches_snow_caption
+  lda #>arm_snatches_snow_slide
   sta w2+1
   show_slide ppu_show_text_slide, skip_intro_cut_scene
 
@@ -412,11 +406,9 @@ stateCommandComplete:
   sta w2+1
   show_slide ppu_show_slide, skip_intro_cut_scene
 
-  lda #150
-  sta b5
-  lda #<leapt_through_portal_caption
+  lda #<leapt_through_portal_slide
   sta w2
-  lda #>leapt_through_portal_caption
+  lda #>leapt_through_portal_slide
   sta w2+1
   show_slide ppu_show_text_slide, skip_intro_cut_scene
 
@@ -426,11 +418,9 @@ stateCommandComplete:
   sta w2+1
   show_slide ppu_show_slide, skip_intro_cut_scene
 
-  lda #150
-  sta b5
-  lda #<became_nomolos_caption
+  lda #<became_nomolos_slide
   sta w2
-  lda #>became_nomolos_caption
+  lda #>became_nomolos_slide
   sta w2+1
   show_slide ppu_show_text_slide, skip_intro_cut_scene
 
@@ -440,11 +430,9 @@ stateCommandComplete:
   sta w2+1
   show_slide ppu_show_slide, skip_intro_cut_scene
 
-  lda #250
-  sta b5
-  lda #<nomolos_sets_out_caption
+  lda #<nomolos_sets_out_slide
   sta w2
-  lda #>nomolos_sets_out_caption
+  lda #>nomolos_sets_out_slide
   sta w2+1
   show_slide ppu_show_text_slide, skip_intro_cut_scene
 

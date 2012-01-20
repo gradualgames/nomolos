@@ -42,11 +42,9 @@
   lda #>ppu_upload_dynamic_palette_ppu
   sta update_ppu+1
 
-  lda #150
-  sta b5
-  lda #<nomolos_and_snow_reunited_caption
+  lda #<nomolos_and_snow_reunited_slide
   sta w2
-  lda #>nomolos_and_snow_reunited_caption
+  lda #>nomolos_and_snow_reunited_slide
   sta w2+1
   jsr ppu_show_text_slide
 
@@ -56,11 +54,9 @@
   sta w2+1
   jsr ppu_show_slide
 
-  lda #150
-  sta b5
-  lda #<portal_appears_above_scepter_caption
+  lda #<portal_appears_above_scepter_slide
   sta w2
-  lda #>portal_appears_above_scepter_caption
+  lda #>portal_appears_above_scepter_slide
   sta w2+1
   jsr ppu_show_text_slide
 
@@ -70,11 +66,9 @@
   sta w2+1
   jsr ppu_show_slide
 
-  lda #150
-  sta b5
-  lda #<leapt_through_ending_portal_caption
+  lda #<leapt_through_ending_portal_slide
   sta w2
-  lda #>leapt_through_ending_portal_caption
+  lda #>leapt_through_ending_portal_slide
   sta w2+1
   jsr ppu_show_text_slide
 
@@ -84,11 +78,9 @@
   sta w2+1
   jsr ppu_show_slide
 
-  lda #150
-  sta b5
-  lda #<arriving_at_other_side_caption
+  lda #<arriving_at_other_side_slide
   sta w2
-  lda #>arriving_at_other_side_caption
+  lda #>arriving_at_other_side_slide
   sta w2+1
   jsr ppu_show_text_slide
 

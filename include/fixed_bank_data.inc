@@ -57,16 +57,16 @@ boss_5_index    = 16
 .global ending_slide1
 .global ending_slide2
 .global ending_slide3
-.global solomon_snow_watching_birds_caption
-.global portal_appears_caption
-.global arm_snatches_snow_caption
-.global leapt_through_portal_caption
-.global became_nomolos_caption
-.global nomolos_sets_out_caption
-.global nomolos_and_snow_reunited_caption
-.global portal_appears_above_scepter_caption
-.global leapt_through_ending_portal_caption
-.global arriving_at_other_side_caption
+.global solomon_snow_watching_birds_slide
+.global portal_appears_slide
+.global arm_snatches_snow_slide
+.global leapt_through_portal_slide
+.global became_nomolos_slide
+.global nomolos_sets_out_slide
+.global nomolos_and_snow_reunited_slide
+.global portal_appears_above_scepter_slide
+.global leapt_through_ending_portal_slide
+.global arriving_at_other_side_slide
 
 .struct title
   palette_address .word
