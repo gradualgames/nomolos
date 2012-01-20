@@ -66,6 +66,12 @@ arriving_at_other_side_caption:
   .byte $1a,$13,$07,$04,$18,$1a,$11,$04,$13,$14,$11,$0d,$04,$03,$1a,$13,$0e,$1a,$13,$07,$04,$08,$11,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$0e,$11,$08,$06,$08,$0d,$00,$0b,$1a,$05,$0e,$11,$0c,$28
 
+;THANK YOU FOR PLAYING           NOMOLOS:                        STORMING THE CATSLE
+thanks_for_playing_caption:
+  .byte $53,$13,$07,$00,$0d,$0a,$1a,$18,$0e,$14,$1a,$05,$0e,$11,$1a,$0f,$0b,$00,$18,$08,$0d,$06,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$12,$13,$0e,$11,$0c,$08,$0d,$06,$1a,$13,$07,$04,$1a,$02,$00,$13,$12,$0b,$04
+
 .segment "ROM10"
 
 .include "title_nametable_source.inc"

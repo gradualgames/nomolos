@@ -67,6 +67,7 @@ boss_5_index    = 16
 .global portal_appears_above_scepter_slide
 .global leapt_through_ending_portal_slide
 .global arriving_at_other_side_slide
+.global thanks_for_playing_slide
 
 .struct title
   palette_address .word

@@ -84,12 +84,6 @@
   sta w2+1
   jsr ppu_show_text_slide
 
-  lda #<slide1
-  sta w2
-  lda #>slide1
-  sta w2+1
-  jsr ppu_show_slide
-
 .ifdef MUSIC_ENABLE
   lda #<soler_presto
   sta sound_param_word_1
@@ -97,6 +91,18 @@
   sta sound_param_word_1+1
   jsr song_initialize
 .endif
+
+  lda #<slide1
+  sta w2
+  lda #>slide1
+  sta w2+1
+  jsr ppu_show_slide
+
+  lda #<thanks_for_playing_slide
+  sta w2
+  lda #>thanks_for_playing_slide
+  sta w2+1
+  jsr ppu_show_text_slide
 
 : jmp :-
 

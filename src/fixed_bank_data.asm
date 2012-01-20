@@ -1572,6 +1572,11 @@ arriving_at_other_side_slide:
   .byte 150
   .byte 5
 
+thanks_for_playing_slide:
+  .word thanks_for_playing_caption
+  .byte 150
+  .byte 5
+
 title_definition:
   .word title_palette
   .word title_nametable

@@ -33,3 +33,4 @@
 .global portal_appears_above_scepter_caption
 .global leapt_through_ending_portal_caption
 .global arriving_at_other_side_caption
+.global thanks_for_playing_caption
