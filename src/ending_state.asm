@@ -17,6 +17,10 @@
 
 .proc ending_state_update
 
+.ifdef MUSIC_ENABLE
+  jsr sound_stop
+.endif
+
   ;use whatever was last loaded as the palette for the palette
   ;fade routines (they use w0)
   lda #<dynamic_palette
@@ -34,11 +38,27 @@
   lda #>ppu_upload_dynamic_palette_ppu
   sta update_ppu+1
 
+  lda #150
+  sta b5
+  lda #<nomolos_and_snow_reunited_caption
+  sta w2
+  lda #>nomolos_and_snow_reunited_caption
+  sta w2+1
+  jsr ppu_show_text_slide
+
   lda #<ending_slide1
   sta w2
   lda #>ending_slide1
   sta w2+1
   jsr ppu_show_slide
+
+  lda #150
+  sta b5
+  lda #<portal_appears_above_scepter_caption
+  sta w2
+  lda #>portal_appears_above_scepter_caption
+  sta w2+1
+  jsr ppu_show_text_slide
 
   lda #<ending_slide2
   sta w2
@@ -46,11 +66,27 @@
   sta w2+1
   jsr ppu_show_slide
 
+  lda #150
+  sta b5
+  lda #<leapt_through_ending_portal_caption
+  sta w2
+  lda #>leapt_through_ending_portal_caption
+  sta w2+1
+  jsr ppu_show_text_slide
+
   lda #<ending_slide3
   sta w2
   lda #>ending_slide3
   sta w2+1
   jsr ppu_show_slide
+
+  lda #150
+  sta b5
+  lda #<arriving_at_other_side_caption
+  sta w2
+  lda #>arriving_at_other_side_caption
+  sta w2+1
+  jsr ppu_show_text_slide
 
   lda #<slide1
   sta w2

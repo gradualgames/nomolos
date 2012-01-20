@@ -1415,6 +1415,31 @@ nomolos_sets_out_caption:
   .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$1a,$12,$04,$13,$12,$1a,$0e,$14,$13,$1a,$13,$0e,$1a,$12,$00,$15,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$12,$0d,$0e,$16,$28,$28,$28
 
+;SNOW: "SOLOMON! I KNEW          YOU WOULD COME TO               RESCUE ME!"
+nomolos_and_snow_reunited_caption:
+  .byte $4b,$12,$0d,$0e,$16,$2b,$1a,$26,$12,$0e,$0b,$0e,$0c,$0e,$0d,$28,$1a,$08,$1a,$0a,$0d,$04,$16,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$18,$0e,$14,$1a,$16,$0e,$14,$0b,$03,$1a,$02,$0e,$0c,$04,$1a,$13,$0e,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$11,$04,$12,$02,$14,$04,$1a,$0c,$04,$28,$26
+
+;SNOW: "LOOK! A PORTAL           IS APPEARING ABOVE THE          SCEPTER!"
+portal_appears_above_scepter_caption:
+  .byte $49,$12,$0d,$0e,$16,$2b,$1a,$26,$0b,$0e,$0e,$0a,$28,$1a,$00,$1a,$0f,$0e,$11,$13,$00,$0b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$08,$12,$1a,$00,$0f,$0f,$04,$00,$11,$08,$0d,$06,$1a,$00,$01,$0e,$15,$04,$1a,$13,$07,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$12,$02,$04,$0f,$13,$04,$11,$28,$26
+
+;NOMOLOS AND SNOW LEAPT          THROUGH  THE PORTAL             TOGETHER.
+leapt_through_ending_portal_caption:
+  .byte $49,$0d,$0e,$0c,$0e,$0b,$0e,$12,$1a,$00,$0d,$03,$1a,$12,$0d,$0e,$16,$1a,$0b,$04,$00,$0f,$13,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$13,$07,$11,$0e,$14,$06,$07,$1a,$1a,$13,$07,$04,$1a,$0f,$0e,$11,$13,$00,$0b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$13,$0e,$06,$04,$13,$07,$04,$11,$27
+
+;UPON ARRIVING                   AT THE OTHER SIDE,              THEY RETURNED TO THEIR          ORIGINAL FORM!
+arriving_at_other_side_caption:
+  .byte $6e,$14,$0f,$0e,$0d,$1a,$00,$11,$11,$08,$15,$08,$0d,$06,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$00,$13,$1a,$13,$07,$04,$1a,$0e,$13,$07,$04,$11,$1a,$12,$08,$03,$04,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$13,$07,$04,$18,$1a,$11,$04,$13,$14,$11,$0d,$04,$03,$1a,$13,$0e,$1a,$13,$07,$04,$08,$11,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$0e,$11,$08,$06,$08,$0d,$00,$0b,$1a,$05,$0e,$11,$0c,$28
+
 title_definition:
   .word title_palette
   .word title_nametable

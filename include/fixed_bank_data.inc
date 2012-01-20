@@ -61,6 +61,10 @@ boss_5_index    = 16
 .global leapt_through_portal_caption
 .global became_nomolos_caption
 .global nomolos_sets_out_caption
+.global nomolos_and_snow_reunited_caption
+.global portal_appears_above_scepter_caption
+.global leapt_through_ending_portal_caption
+.global arriving_at_other_side_caption
 
 .struct title
   palette_address .word
