@@ -1400,6 +1400,90 @@ Noise:
   .byte TRM
 .endscope
 
+soler_presto:
+.scope 
+  .word Square1
+  .word Square2
+  .word Triangle
+  .word Noise
+  .word volume_envelopes
+  .word pitch_envelopes
+  .word duty_envelopes
+
+volume_envelopes:
+  .word volume_envelope_0
+  .word volume_envelope_1
+  .word volume_envelope_2
+  .word volume_envelope_3
+
+pitch_envelopes:
+  .word pitch_envelope_0
+
+duty_envelopes:
+  .word duty_envelope_0
+  .word duty_envelope_1
+
+volume_envelope_0:
+  .byte 0, ENV_STOP
+
+volume_envelope_1:
+  .byte 15, ENV_LOOP
+volume_envelope_2:
+  .byte 13,12,10,9,7,6,4,3,2,0,ENV_STOP
+volume_envelope_3:
+  .byte 14,13,13,12,12,11,11,11,11,10,10,10,9,9,9,8,8,8,7,7,7,6,6,5,5,4,4,3,3,3,3,2,2,2,2,2,1,0,0,ENV_STOP
+
+pitch_envelope_0:
+  .byte 0, ENV_LOOP
+
+duty_envelope_0:
+  .byte 0, ENV_LOOP
+duty_envelope_1:
+  .byte 64,ENV_LOOP
+
+Square1:
+  .byte STV,2,STP,0,SDU,0,STL,4,E3,D3,E3,D3,E3,D3,E3,D3,E3,D3,E3,D3,STL,48,CS3,STL
+  .byte 4,G3,FS3,G3,FS3,G3,FS3,G3,FS3,G3,FS3,G3,FS3,STL,32,E3,STL,16,A3,G3,E3,CS3,D3,A2
+  .byte FS2,G2,GS2,GS2,STL,32,A2,STL,16,A3,G3,E3,CS3,D3,A2,FS2,G2,A2,A2
+Square1_loop:
+  .byte STV,3,SDU,1,STL
+  .byte 48,D1,C4,B3,CS4,D4,STL,16,CS4,D4,E4,D4,E4,FS4,FS4,E4,D4,STL,48,A3,C4,B3,CS4,D4
+  .byte STL,16,CS4,D4,E4,D4,E4,FS4,FS4,E4,D4,STL,48,A3,STL,16,D3,E3,FS3,STL,32,G3,STL,16
+  .byte E3,D2,E2,D2,STL,32,CS2,STL,16,D2,D4,E4,FS4,STL,32,G4,STL,16,E4,FS4,G4,A4,STL,48
+  .byte GS4,A4
+  .byte GOT
+  .word Square1_loop
+
+Square2:
+  .byte STV,2,STP,0,SDU,0,STL,4,E2,D2,E2,D2,E2,D2,E2,D2,E2,D2,E2,D2,STL,48,CS2,STL
+  .byte 4,G2,FS2,G2,FS2,G2,FS2,G2,FS2,G2,FS2,G2,FS2,STL,32,E2,STL,16,A2,G2,E2,CS2,D2,A1
+  .byte FS1,G1,GS1,GS1,STL,32,A1,STL,16,A2,G2,E2,CS2,D2,A1,FS1,G1,A1,A1
+Square2_loop:
+  .byte STV,3,SDU,1,STL
+  .byte 48,D2,A3,G3,G3,FS3,STL,16,E4,FS4,G4,FS4,G4,A4,A4,G4,FS4,STL,48,E4,A3,G3,G3,FS3
+  .byte STL,16,E4,FS4,G4,FS4,G4,A4,A4,G4,FS4,STL,48,E4,STL,16,FS3,G3,A3,A3,B3,CS4,D4,E4
+  .byte FS4,A4,G4,FS4,FS3,G3,A3,A3,B3,CS4,D4,E4,FS4,FS4,E4,D4,STL,32,D4,STL,16,CS4
+  .byte GOT
+  .word Square2_loop
+
+Triangle:
+  .byte STV,0,STL,255,A0,STL,255,A0,STL,18,A0
+Triangle_loop:
+  .byte STV,2,STP,0,SDU,0,STL,8,D2,D3,D2,D3,D2
+  .byte D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2
+  .byte D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,STV,3,SDU,1,G2,G3,G2,G3,G2,G3,A2
+  .byte A3,A2,A3,A2,A3,STV,2,SDU,0,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2
+  .byte D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,D2,D3,STV,3,SDU
+  .byte 1,G2,G3,G2,G3,G2,G3,A2,A3,A2,A3,A2,A3,STL,255,D2,STL,81,D2,STL,48,E3,A2
+  .byte GOT
+  .word Triangle_loop
+
+Noise:
+  .byte STV,0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,255,A0,STL,246,A0
+  .byte GOT
+  .word Noise
+.endscope
+
 font1:
   .word font0_patterns
   .byte $0E

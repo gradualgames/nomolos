@@ -98,6 +98,16 @@
   sta w2+1
   jsr ppu_show_slide
 
+.ifdef MUSIC_ENABLE
+  lda #<soler_presto
+  sta sound_param_word_1
+  lda #>soler_presto
+  sta sound_param_word_1+1
+  jsr song_initialize
+.endif
+
+: jmp :-
+
   rts
 .endproc
 
