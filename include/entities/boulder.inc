@@ -162,7 +162,7 @@ boulder_init:
   sta entity_locals+boulder_locals::state_switch_counter,x
 
   ;start Boulder out with a certain amount of health
-  lda #1
+  lda #15
   sta entity_locals+boulder_locals::health,x
 
   lda #BOULDER_INITBOSSMODESTATE
