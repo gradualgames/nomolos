@@ -1549,7 +1549,7 @@ became_nomolos_slide:
 
 nomolos_sets_out_slide:
   .word nomolos_sets_out_caption
-  .byte 150
+  .byte 250
   .byte 5
 
 nomolos_and_snow_reunited_slide:

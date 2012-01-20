@@ -372,7 +372,8 @@ start_was_pressed = b6
   jsr fade_in_palette
 
   ;show the slide for vsyncs vsyncs
-  lda b5
+  ldy #text_slide::vsyncs
+  lda (w2),y
   tax
 
 wait_vsyncs_vblanks:
