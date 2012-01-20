@@ -17,3 +17,6 @@
 .global ending_slide1_chr
 .global ending_slide1_nametable
 .global ending_slide1_palette
+.global ending_slide2_chr
+.global ending_slide2_nametable
+.global ending_slide2_palette

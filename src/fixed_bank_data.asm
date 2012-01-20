@@ -1467,3 +1467,10 @@ ending_slide1:
   .word ending_slide1_chr
   .byte 250
   .byte 7
+
+ending_slide2:
+  .word ending_slide2_palette
+  .word ending_slide2_nametable
+  .word ending_slide2_chr
+  .byte 250
+  .byte 12
