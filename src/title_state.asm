@@ -365,6 +365,10 @@ stateCommandComplete:
   jsr song_initialize
 .endif
 
+  ;load start button mask (we want to be able to escape from these)
+  lda #1
+  sta b7
+
   ;show some intro cut-scene slides
   lda #150
   sta b5

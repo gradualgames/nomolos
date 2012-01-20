@@ -251,12 +251,14 @@ nmi_counter_zero:
 ;is expected to hold enough spaces to carry to next line
 ;if required.
 ;expects b5 to hold the number of vsyncs to count down
+;expects b7 to hold the start button mask (can be used to optionally test
 ;while displaying the text slide.
 ;uses b6 as a return value for whether or not start was pressed while
 ;showing the slide (can be optionally used by caller to allow skipping
 ;of a cut scene sequence)
 .proc ppu_show_text_slide
 text_address1 = w2
+start_button_mask = b7
 start_was_pressed = b6
 
   ;make sure start_was_pressed begins as false
@@ -377,7 +379,7 @@ wait_vsyncs_vblanks:
   jsr controller_read
 
   lda buffer_controller+buttons::_start
-  and #1
+  and start_button_mask
   bne start_button_hit
 
   dex
@@ -395,18 +397,13 @@ start_button_hit:
 
 .endproc
 
-; .struct ppu_slide
-   ; palette_address .word
-   ; nametable_address .word
-   ; chr_address .word
-   ; vsyncs .byte
-   ; bank .byte
-; .endstruct
-
 ;fades out, loads a palette and nametable graphics, then fades in and
 ;waits a specified number of vsync's
 ;expects w2 to hold address of slide parameters
+;expects b7 to hold the start button mask (can be used to optionally test
+;or not test the start button for escapes)
 .proc ppu_show_slide
+start_button_mask = b7
 start_was_pressed = b6
 slide_address = w2
 
@@ -535,7 +532,7 @@ wait_vsyncs_vblanks:
   jsr controller_read
 
   lda buffer_controller+buttons::_start
-  and #1
+  and start_button_mask
   bne start_button_hit
 
   dex

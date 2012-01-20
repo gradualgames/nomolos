@@ -24,6 +24,10 @@
   lda #>dynamic_palette
   sta w0+1
 
+  ;load blank start button mask (we do not want to escape from these)
+  lda #0
+  sta b7
+
   ;switch to nmi routine for uploading the dynamic palette
   lda #<ppu_upload_dynamic_palette_ppu
   sta update_ppu
