@@ -95,33 +95,6 @@ gort_waitState:
 :
 do_not_decrement_counter:
 
-  ;compare Nomolos's X coordinate to the entity's X coordinate
-
-  ;load left side of line A
-  lda nomolos_screen_x
-  sta b2
-  ;load right side of line A
-  clc
-  adc #nomolos_width
-  sta b3
-
-  ;load left side of line B
-  lda entity_screen_x
-  sec 
-  sbc #32
-  sta b4
-  ;load right side of line B
-  lda entity_screen_x
-  clc
-  adc #64
-  sta b5
-
-  jsr geotests_compare_range
-
-  beq :+
-  jmp do_not_switch_to_fire_state
-:
-
   ;spawn a laser entity
   lda #entity_index_laser
   sta b0
