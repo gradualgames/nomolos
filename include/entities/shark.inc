@@ -246,18 +246,6 @@ noBottomCollision:
   
 shark_draw:
 
-  ;load shark width and height
-  lda #SHARK_WIDTH
-  sta b2
-  lda #SHARK_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-  
-  bne :+
-  
-  jsr nomolos_hurt
-  
-:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
   
@@ -291,6 +279,19 @@ shark_draw:
   jmp killShark
   
 nomolosNotAttacking:
+
+  ;load shark width and height
+  lda #SHARK_WIDTH
+  sta b2
+  lda #SHARK_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+  
+  bne :+
+  
+  jsr nomolos_hurt
+  
+:
 
   lda entity_chr_offsets+(entity_index_shark-1)
   sta sprite_group_offset

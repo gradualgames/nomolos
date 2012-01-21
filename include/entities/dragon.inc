@@ -383,27 +383,6 @@ dragon_draw:
   jsr entity_test_death_zone
   beq kill_dragon
 
-  lda #<spritesheet1_DragonFly
-  sta entity_locals+dragon_locals::anim_address,x
-  lda #>spritesheet1_DragonFly
-  sta entity_locals+dragon_locals::anim_address+1,x
-  ;load dragon width and height
-  lda #DRAGON_WIDTH
-  sta b2
-  lda #DRAGON_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-  lda #<spritesheet1_DragonFly
-  sta entity_locals+dragon_locals::anim_address,x
-  lda #>spritesheet1_DragonFly
-  sta entity_locals+dragon_locals::anim_address+1,x
-  jsr entity_reset_anim
-
-:
   lda entity_locals+dragon_locals::damaged_counter,x
   bne nomolosNotAttacking
   jsr nomolos_is_deadly
@@ -448,6 +427,28 @@ dragon_draw:
   jmp kill_dragon
 
 nomolosNotAttacking:
+
+  lda #<spritesheet1_DragonFly
+  sta entity_locals+dragon_locals::anim_address,x
+  lda #>spritesheet1_DragonFly
+  sta entity_locals+dragon_locals::anim_address+1,x
+  ;load dragon width and height
+  lda #DRAGON_WIDTH
+  sta b2
+  lda #DRAGON_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+  lda #<spritesheet1_DragonFly
+  sta entity_locals+dragon_locals::anim_address,x
+  lda #>spritesheet1_DragonFly
+  sta entity_locals+dragon_locals::anim_address+1,x
+  jsr entity_reset_anim
+
+:
 
   lda entity_locals+dragon_locals::damaged_counter,x
   beq entity_not_flashing
