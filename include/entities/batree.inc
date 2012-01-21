@@ -185,19 +185,6 @@ batree_draw:
   jsr entity_test_death_zone
   beq kill_batree
 
-  ;load batree width and height
-  lda #BATREE_WIDTH
-  sta b2
-  lda #BATREE_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-:
-
   lda entity_locals+batree_locals::damaged_counter,x
   bne nomolos_not_attacking
   jsr nomolos_is_deadly
@@ -242,6 +229,19 @@ batree_draw:
   jmp kill_batree
   
 nomolos_not_attacking:
+
+  ;load batree width and height
+  lda #BATREE_WIDTH
+  sta b2
+  lda #BATREE_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
 
   lda entity_locals+batree_locals::damaged_counter,x
   beq entity_not_flashing

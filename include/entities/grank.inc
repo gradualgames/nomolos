@@ -236,18 +236,6 @@ grank_draw:
   jsr entity_test_death_zone
   beq killGrank
 
-  ;load grank width and height
-  lda #GRANK_WIDTH
-  sta b2
-  lda #GRANK_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -281,6 +269,19 @@ grank_draw:
   jmp killGrank
 
 nomolosNotAttacking:
+
+  ;load grank width and height
+  lda #GRANK_WIDTH
+  sta b2
+  lda #GRANK_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
 
   lda entity_chr_offsets+(entity_index_grank-1)
   sta sprite_group_offset

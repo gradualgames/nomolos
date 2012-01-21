@@ -271,28 +271,6 @@ owl_draw:
   jsr entity_test_death_zone
   beq killOwl
 
-  lda #<spritesheet1_OwlFly
-  sta entity_locals+owl_locals::anim_address,x
-  lda #>spritesheet1_OwlFly
-  sta entity_locals+owl_locals::anim_address+1,x
-  ;load owl width and height
-  lda #OWL_WIDTH
-  sta b2
-  lda #OWL_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-  lda #<spritesheet1_OwlAttack
-  sta entity_locals+owl_locals::anim_address,x
-  lda #>spritesheet1_OwlAttack
-  sta entity_locals+owl_locals::anim_address+1,x
-
-  jsr entity_reset_anim
-
-:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -326,6 +304,29 @@ owl_draw:
   jmp killOwl
 
 nomolosNotAttacking:
+
+  lda #<spritesheet1_OwlFly
+  sta entity_locals+owl_locals::anim_address,x
+  lda #>spritesheet1_OwlFly
+  sta entity_locals+owl_locals::anim_address+1,x
+  ;load owl width and height
+  lda #OWL_WIDTH
+  sta b2
+  lda #OWL_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+  lda #<spritesheet1_OwlAttack
+  sta entity_locals+owl_locals::anim_address,x
+  lda #>spritesheet1_OwlAttack
+  sta entity_locals+owl_locals::anim_address+1,x
+
+  jsr entity_reset_anim
+
+:
 
   lda entity_chr_offsets+(entity_index_owl-1)
   sta sprite_group_offset

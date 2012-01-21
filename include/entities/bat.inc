@@ -219,18 +219,6 @@ bat_draw:
   jsr entity_test_death_zone
   beq killBat
 
-  ;load bat width and height
-  lda #BAT_WIDTH
-  sta b2
-  lda #BAT_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -264,6 +252,19 @@ bat_draw:
   jmp killBat
 
 nomolosNotAttacking:
+
+  ;load bat width and height
+  lda #BAT_WIDTH
+  sta b2
+  lda #BAT_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
 
   lda entity_chr_offsets+(entity_index_bat-1)
   sta sprite_group_offset

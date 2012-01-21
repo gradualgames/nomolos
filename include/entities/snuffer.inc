@@ -203,6 +203,22 @@ snuffer_draw:
   jsr entity_test_death_zone
   beq killSnuffer
 
+  jsr nomolos_is_deadly
+  beq nomolosNotAttacking
+
+  ;load snuffer width and height
+  lda #SNUFFER_WIDTH
+  sta b2
+  lda #SNUFFER_HEIGHT
+  sta b3
+  jsr entity_test_collision_hitbox
+
+  bne nomolosNotAttacking
+
+  jmp killSnuffer
+
+nomolosNotAttacking:
+
   ;load snuffer width and height
   lda #SNUFFER_WIDTH
   sta b2
@@ -222,21 +238,6 @@ snuffer_draw:
   jsr entity_reset_anim
 
 :
-  jsr nomolos_is_deadly
-  beq nomolosNotAttacking
-
-  ;load snuffer width and height
-  lda #SNUFFER_WIDTH
-  sta b2
-  lda #SNUFFER_HEIGHT
-  sta b3
-  jsr entity_test_collision_hitbox
-
-  bne nomolosNotAttacking
-
-  jmp killSnuffer
-
-nomolosNotAttacking:
 
   lda entity_chr_offsets+(entity_index_snuffer-1)
   sta sprite_group_offset

@@ -116,18 +116,6 @@ deentle_draw:
   jsr entity_test_death_zone
   beq killDeentle
 
-  ;load deentle width and height
-  lda #DEENTLE_WIDTH
-  sta b2
-  lda #DEENTLE_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -161,6 +149,19 @@ deentle_draw:
   jmp killDeentle
 
 nomolosNotAttacking:
+
+  ;load deentle width and height
+  lda #DEENTLE_WIDTH
+  sta b2
+  lda #DEENTLE_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
 
   lda entity_chr_offsets+(entity_index_deentle-1)
   sta sprite_group_offset
