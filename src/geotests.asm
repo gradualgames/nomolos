@@ -2,6 +2,93 @@
 
 .segment "CODE"
 
+;tests whether a point is inside a rectangle using 16 bit coordinates.
+;w1 - x coordinate of point to test
+;w2 - y coordinate of point to test
+;w3 - top left x of rectangle
+;w4 - top left y of rectangle
+;b5 - width
+;b6 - height
+;global variables:
+;w7 - bottom right x of rectangle
+;w8 - bottom right y of rectangle
+.export geotests_point_in_rect_16bit
+.proc geotests_point_in_rect_16bit
+x_coord = w1
+y_coord = w2
+top_left_x = w3
+top_left_y = w4
+bot_right_x = w7
+bot_right_y = w8
+width = b5
+height = b6
+
+  ;calculate bot_right_x (top_left_x + width)
+  lda top_left_x
+  clc
+  adc width
+  sta bot_right_x
+  lda top_left_x+1
+  adc #0
+  sta bot_right_x+1
+
+  ;calculate bot_right_y (top_left_y + height)
+  lda top_left_y
+  clc
+  adc height
+  sta bot_right_y
+  lda top_left_y+1
+  adc #0
+  sta bot_right_y+1
+
+  ;if x < top left x (top_left_x - x_coord is positive), test fails
+  lda top_left_x
+  sec
+  sbc x_coord
+  lda top_left_x+1
+  sbc x_coord+1
+  bpl point_not_in_rect
+
+  ;if y < top left y (top_left_y - y_coord is positive), test fails
+  lda top_left_y
+  sec
+  sbc y_coord
+  lda top_left_y+1
+  sbc y_coord+1
+  bpl point_not_in_rect
+
+  ;if x > bottom right x (x_coord - bot_right_x is positive), test fails
+  lda x_coord
+  sec
+  sbc bot_right_x
+  lda x_coord+1
+  sbc bot_right_x+1
+  bpl point_not_in_rect
+
+  ;if y > bottom right y (y_coord - bot_right_y is positive), test fails
+  lda y_coord
+  sec
+  sbc bot_right_y
+  lda y_coord+1
+  sbc bot_right_y+1
+  bpl point_not_in_rect
+
+point_is_in_rect:
+
+  ;set zero flag (point IS inside rectangle)
+  lda #$00
+
+  rts
+
+point_not_in_rect:
+
+  ;clear zero flag (point is NOT inside rectangle)
+  lda #$ff
+
+  rts
+
+.endproc
+
 ;tests whether a point is inside a rectangle using 8 bit coordinates.
 ;b1 - x coordinate of point to test
 ;b2 - y coordinate of point to test

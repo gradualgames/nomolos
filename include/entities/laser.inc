@@ -83,9 +83,14 @@ laser_fly_handler:
   beq laserDie
 
   lda nomolos_screen_x
-  sta b3
+  sta w3
+  lda nomolos_screen_x+1
+  sta w3+1
+
   lda nomolos_screen_y
-  sta b4
+  sta w4
+  lda nomolos_screen_y+1
+  sta w4+1
 
   lda #nomolos_width
   sta b5
@@ -99,14 +104,19 @@ laser_going_left:
   ;calculate bottom left point and top right for collision with nomolos
 
   lda entity_screen_x
-  sta b1
+  sta w1
+  lda entity_screen_x+1
+  sta w1+1
   lda entity_screen_y
   clc
   adc #LASER_HEIGHT
-  sta b2
+  sta w2
+  lda entity_screen_y
+  adc #0
+  sta w2+1
 
   .scope
-  jsr geotests_point_in_rect_8bit
+  jsr geotests_point_in_rect_16bit
   bne do_not_hurt_nomolos
 
   jsr nomolos_hurt
@@ -117,12 +127,18 @@ do_not_hurt_nomolos:
   lda entity_screen_x
   clc
   adc #LASER_WIDTH
-  sta b1
+  sta w1
+  lda entity_screen_x+1
+  adc #0
+  sta w1+1
+
   lda entity_screen_y
-  sta b2
+  sta w2
+  lda entity_screen_y+1
+  sta w2+1
 
   .scope
-  jsr geotests_point_in_rect_8bit
+  jsr geotests_point_in_rect_16bit
   bne do_not_hurt_nomolos
 
   jsr nomolos_hurt
@@ -138,14 +154,21 @@ laser_going_right:
   lda entity_screen_x
   clc
   adc #LASER_WIDTH
-  sta b1
+  sta w1
+  lda entity_screen_x+1
+  adc #0
+  sta w1+1
+
   lda entity_screen_y
   clc
   adc #LASER_HEIGHT
-  sta b2
+  sta w2
+  lda entity_screen_y+1
+  adc #0
+  sta w2+1
 
   .scope
-  jsr geotests_point_in_rect_8bit
+  jsr geotests_point_in_rect_16bit
   bne do_not_hurt_nomolos
 
   jsr nomolos_hurt
@@ -154,12 +177,17 @@ do_not_hurt_nomolos:
   .endscope
 
   lda entity_screen_x
-  sta b1
+  sta w1
+  lda entity_screen_x+1
+  sta w1+1
+
   lda entity_screen_y
-  sta b2
+  sta w2
+  lda entity_screen_y+1
+  sta w2+1
 
   .scope
-  jsr geotests_point_in_rect_8bit
+  jsr geotests_point_in_rect_16bit
   bne do_not_hurt_nomolos
 
   jsr nomolos_hurt
