@@ -34,3 +34,14 @@
 .global leapt_through_ending_portal_caption
 .global arriving_at_other_side_caption
 .global thanks_for_playing_caption
+.global by_gradual_games_caption
+.global derek_andrews_caption
+.global laurie_andrews_caption
+.global daniel_hwozdek_caption
+.global music_by_caption
+.global beta_testers_caption
+.global joseph_morgan_caption
+.global special_thanks_caption
+.global nesdev_caption
+.global nintendoage_caption
+.global producers_caption

@@ -1592,6 +1592,61 @@ thanks_for_playing_slide:
   .byte 150
   .byte 5
 
+by_gradual_games_slide:
+  .word by_gradual_games_caption
+  .byte 150
+  .byte 5
+
+derek_andrews_slide:
+  .word derek_andrews_caption
+  .byte 150
+  .byte 5
+
+laurie_andrews_slide:
+  .word laurie_andrews_caption
+  .byte 150
+  .byte 5
+
+daniel_hwozdek_slide:
+  .word daniel_hwozdek_caption
+  .byte 150
+  .byte 5
+
+music_by_slide:
+  .word music_by_caption
+  .byte 150
+  .byte 5
+
+beta_testers_slide:
+  .word beta_testers_caption
+  .byte 150
+  .byte 5
+
+joseph_morgan_slide:
+  .word joseph_morgan_caption
+  .byte 150
+  .byte 5
+
+special_thanks_slide:
+  .word special_thanks_caption
+  .byte 150
+  .byte 5
+
+nesdev_slide:
+  .word nesdev_caption
+  .byte 150
+  .byte 5
+
+nintendoage_slide:
+  .word nintendoage_caption
+  .byte 150
+  .byte 5
+
+producers_slide:
+  .word producers_caption
+  .byte 150
+  .byte 5
+
 title_definition:
   .word title_palette
   .word title_nametable

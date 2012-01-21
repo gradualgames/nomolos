@@ -60,6 +60,74 @@ PPU1_SPRITE_CLIPPING = 2
 PPU1_BACKGROUND_CLIPPING = 1
 PPU1_DISPLAY_TYPE = 0
 
+.macro show_graphics_slide_with_escape slide_address, escape_address
+
+  lda #<slide_address
+  sta w2
+  lda #>slide_address
+  sta w2+1
+
+  ;start button mask
+  lda #1
+  sta b7
+
+  jsr ppu_show_slide
+  lda b6
+  beq :+
+  jmp escape_address
+:
+
+.endmacro
+
+.macro show_graphics_slide slide_address
+
+  lda #<slide_address
+  sta w2
+  lda #>slide_address
+  sta w2+1
+
+  ;start button mask (disable escapes)
+  lda #0
+  sta b7
+
+  jsr ppu_show_slide
+
+.endmacro
+
+.macro show_text_slide_with_escape slide_address, escape_address
+
+  lda #<slide_address
+  sta w2
+  lda #>slide_address
+  sta w2+1
+
+  ;start button mask
+  lda #1
+  sta b7
+
+  jsr ppu_show_text_slide
+  lda b6
+  beq :+
+  jmp escape_address
+:
+
+.endmacro
+
+.macro show_text_slide slide_address
+
+  lda #<slide_address
+  sta w2
+  lda #>slide_address
+  sta w2+1
+
+  ;start button mask (disable escapes)
+  lda #0
+  sta b7
+
+  jsr ppu_show_text_slide
+
+.endmacro
+
 .macro set_ppu_2006 nametable, row, column
 
   lda #nametable

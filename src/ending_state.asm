@@ -42,47 +42,12 @@
   lda #>ppu_upload_dynamic_palette_ppu
   sta update_ppu+1
 
-  lda #<nomolos_and_snow_reunited_slide
-  sta w2
-  lda #>nomolos_and_snow_reunited_slide
-  sta w2+1
-  jsr ppu_show_text_slide
-
-  lda #<ending_slide1
-  sta w2
-  lda #>ending_slide1
-  sta w2+1
-  jsr ppu_show_slide
-
-  lda #<portal_appears_above_scepter_slide
-  sta w2
-  lda #>portal_appears_above_scepter_slide
-  sta w2+1
-  jsr ppu_show_text_slide
-
-  lda #<ending_slide2
-  sta w2
-  lda #>ending_slide2
-  sta w2+1
-  jsr ppu_show_slide
-
-  lda #<leapt_through_ending_portal_slide
-  sta w2
-  lda #>leapt_through_ending_portal_slide
-  sta w2+1
-  jsr ppu_show_text_slide
-
-  lda #<ending_slide3
-  sta w2
-  lda #>ending_slide3
-  sta w2+1
-  jsr ppu_show_slide
-
-  lda #<arriving_at_other_side_slide
-  sta w2
-  lda #>arriving_at_other_side_slide
-  sta w2+1
-  jsr ppu_show_text_slide
+  show_text_slide nomolos_and_snow_reunited_slide
+  show_graphics_slide ending_slide1
+  show_text_slide portal_appears_above_scepter_slide
+  show_graphics_slide ending_slide2
+  show_text_slide leapt_through_ending_portal_slide
+  show_graphics_slide ending_slide3
 
 .ifdef MUSIC_ENABLE
   lda #<soler_presto
@@ -92,17 +57,19 @@
   jsr song_initialize
 .endif
 
-  lda #<slide1
-  sta w2
-  lda #>slide1
-  sta w2+1
-  jsr ppu_show_slide
-
-  lda #<thanks_for_playing_slide
-  sta w2
-  lda #>thanks_for_playing_slide
-  sta w2+1
-  jsr ppu_show_text_slide
+  show_text_slide thanks_for_playing_slide
+  show_text_slide by_gradual_games_slide
+  show_text_slide derek_andrews_slide
+  show_text_slide laurie_andrews_slide
+  show_text_slide daniel_hwozdek_slide
+  show_text_slide music_by_slide
+  show_text_slide beta_testers_slide
+  show_text_slide joseph_morgan_slide
+  show_text_slide special_thanks_slide
+  show_text_slide nesdev_slide
+  show_text_slide nintendoage_slide
+  show_text_slide producers_slide
+  show_graphics_slide slide1
 
 : jmp :-
 

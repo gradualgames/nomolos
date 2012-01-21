@@ -68,6 +68,17 @@ boss_5_index    = 16
 .global leapt_through_ending_portal_slide
 .global arriving_at_other_side_slide
 .global thanks_for_playing_slide
+.global by_gradual_games_slide
+.global derek_andrews_slide
+.global laurie_andrews_slide
+.global daniel_hwozdek_slide
+.global music_by_slide
+.global beta_testers_slide
+.global joseph_morgan_slide
+.global special_thanks_slide
+.global nesdev_slide
+.global nintendoage_slide
+.global producers_slide
 
 .struct title
   palette_address .word
