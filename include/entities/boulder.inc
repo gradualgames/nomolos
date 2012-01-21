@@ -679,7 +679,7 @@ snow_init:
   jsr play_level_state_init_hands_off_victory_mode
 
   ;make certain Nomolos isn't moving until we tell him to
-  lda #0
+  lda #nomolos_invincibility_on_set
   sta nomolos_state_primary
 
   reset_anim nomolos_animation
