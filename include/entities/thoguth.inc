@@ -118,6 +118,12 @@ thoguth_killState:
   
 thoguth_initState_handler:
 
+  ;clear out special weapon bit (this is done for balance, some bosses are
+  ;rendered too easy with the spear or flail)
+  lda nomolos_state_secondary
+  and #nomolos_attack_set_mask
+  sta nomolos_state_secondary
+
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 

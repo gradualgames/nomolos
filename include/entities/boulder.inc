@@ -158,6 +158,12 @@ boulder_snow_appears:
 
 boulder_init:
 
+  ;clear out special weapon bit (this is done for balance, some bosses are
+  ;rendered too easy with the spear or flail)
+  lda nomolos_state_secondary
+  and #nomolos_attack_set_mask
+  sta nomolos_state_secondary
+
   lda #1
   sta entity_locals+boulder_locals::state_switch_counter,x
 

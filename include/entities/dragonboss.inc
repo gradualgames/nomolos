@@ -173,6 +173,12 @@ dragonboss_erasestate:
 ;****************************************************************
 .proc dragonboss_initstate_handler
 
+  ;clear out special weapon bit (this is done for balance, some bosses are
+  ;rendered too easy with the spear or flail)
+  lda nomolos_state_secondary
+  and #nomolos_attack_set_mask
+  sta nomolos_state_secondary
+
   ;reset the dragonboss animation object
   jsr entity_reset_anim
   
