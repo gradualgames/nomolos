@@ -236,19 +236,6 @@ gort_draw:
   lda entity_instances+entity_instance::position_y+1,x
   bne kill_gort
 
-  ;load gort width and height
-  lda #GORT_WIDTH
-  sta b2
-  lda #GORT_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-:
-
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -282,6 +269,19 @@ gort_draw:
   jmp kill_gort
 
 nomolosNotAttacking:
+
+  ;load gort width and height
+  lda #GORT_WIDTH
+  sta b2
+  lda #GORT_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
 
   lda entity_chr_offsets+(entity_index_gort-1)
   sta sprite_group_offset

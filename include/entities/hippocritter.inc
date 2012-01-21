@@ -362,16 +362,6 @@ hippocritter_draw:
   jsr entity_test_death_zone
   beq killHippocritter
 
-  ;load hippocritter width and height
-  jsr hippocritter_load_width_height
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-:
-
   lda entity_locals+batree_locals::damaged_counter,x
   bne nomolos_not_attacking
   jsr nomolos_is_deadly
@@ -413,6 +403,16 @@ hippocritter_draw:
   jmp killHippocritter
 
 nomolos_not_attacking:
+
+  ;load hippocritter width and height
+  jsr hippocritter_load_width_height
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
 
   lda entity_locals+hippocritter_locals::damaged_counter,x
   beq entity_not_flashing
