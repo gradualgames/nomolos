@@ -44,6 +44,16 @@ statue_jump:
   jmp statue_jump_handler
 
 statue_init_handler:
+  lda entity_instances+entity_instance::index,x
+  sta b0
+  lda entity_instances+entity_instance::spawn_position_x,x
+  sta w0
+  lda entity_instances+entity_instance::spawn_position_x+1,x
+  sta w0+1
+  lda entity_instances+entity_instance::spawn_position_y,x
+  sta b1
+  jsr entity_kill_if_redundant_entity
+
   ;reposition the entity so it sits at the bottom of the tile where it was spawned
   sec
   lda entity_instances+entity_instance::position_y,x

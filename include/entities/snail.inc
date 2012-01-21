@@ -33,6 +33,16 @@ SNAIL_STOPSTATE = 2
 
 snail_initState:
 
+  lda entity_instances+entity_instance::index,x
+  sta b0
+  lda entity_instances+entity_instance::spawn_position_x,x
+  sta w0
+  lda entity_instances+entity_instance::spawn_position_x+1,x
+  sta w0+1
+  lda entity_instances+entity_instance::spawn_position_y,x
+  sta b1
+  jsr entity_kill_if_redundant_entity
+
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 
@@ -45,6 +55,25 @@ snail_initState:
 
   lda #SNAIL_MOVESTATE
   sta entity_instances+entity_instance::state,x
+
+  rts
+
+snail_stopState:
+
+  .scope
+  dec entity_locals+snail_locals::move_stop,x
+  bne do_not_switch_state
+
+  lda #SNAIL_DISTANCE_TIL_SWITCH_STATE
+  sta entity_locals+snail_locals::move_stop,x
+
+  lda #SNAIL_MOVESTATE
+  sta entity_instances+entity_instance::state,x
+
+do_not_switch_state:
+  .endscope
+
+  jsr snail_draw
 
   rts
 
@@ -106,25 +135,6 @@ move_right:
   sta entity_instances+entity_instance::position_x+1,x
 
 direction_test_done:
-
-  jsr snail_draw
-
-  rts
-
-snail_stopState:
-
-  .scope
-  dec entity_locals+snail_locals::move_stop,x
-  bne do_not_switch_state
-
-  lda #SNAIL_DISTANCE_TIL_SWITCH_STATE
-  sta entity_locals+snail_locals::move_stop,x
-
-  lda #SNAIL_MOVESTATE
-  sta entity_instances+entity_instance::state,x
-
-do_not_switch_state:
-  .endscope
 
   jsr snail_draw
 
