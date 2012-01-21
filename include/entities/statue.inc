@@ -302,19 +302,6 @@ proximity_test_done:
 
   jsr sprite_draw_metasprite_16bit
 
-  ;load statue width and height
-  lda #STATUE_WIDTH
-  sta b2
-  lda #STATUE_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-:
-
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -348,6 +335,19 @@ proximity_test_done:
   jmp statueDie
 
 nomolosNotAttacking:
+
+  ;load statue width and height
+  lda #STATUE_WIDTH
+  sta b2
+  lda #STATUE_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
 
   rts
 

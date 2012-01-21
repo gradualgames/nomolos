@@ -203,25 +203,6 @@ sheep_draw:
   jsr entity_test_death_zone
   beq killSheep
 
-  ;load sheep width and height
-  lda #SHEEP_WIDTH
-  sta b2
-  lda #SHEEP_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-  lda #<spritesheet2_SheepButt
-  sta entity_locals+sheep_locals::anim_address,x
-  lda #>spritesheet2_SheepButt
-  sta entity_locals+sheep_locals::anim_address+1,x
-
-  jsr entity_reset_anim
-
-:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -255,6 +236,26 @@ sheep_draw:
   jmp killSheep
 
 nomolosNotAttacking:
+
+  ;load sheep width and height
+  lda #SHEEP_WIDTH
+  sta b2
+  lda #SHEEP_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+  lda #<spritesheet2_SheepButt
+  sta entity_locals+sheep_locals::anim_address,x
+  lda #>spritesheet2_SheepButt
+  sta entity_locals+sheep_locals::anim_address+1,x
+
+  jsr entity_reset_anim
+
+:
 
   lda entity_chr_offsets+(entity_index_sheep-1)
   sta sprite_group_offset
