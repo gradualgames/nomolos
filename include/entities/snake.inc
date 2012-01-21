@@ -203,20 +203,6 @@ snake_draw:
   jsr entity_test_death_zone
   beq killSnake
 
-  ;load snake width and height
-  lda #SNAKE_WIDTH
-  sta b2
-  lda #SNAKE_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-  jsr entity_reset_anim
-
-:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -250,6 +236,21 @@ snake_draw:
   jmp killSnake
 
 nomolosNotAttacking:
+
+  ;load snake width and height
+  lda #SNAKE_WIDTH
+  sta b2
+  lda #SNAKE_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+  jsr entity_reset_anim
+
+:
 
   lda entity_chr_offsets+(entity_index_snake-1)
   sta sprite_group_offset

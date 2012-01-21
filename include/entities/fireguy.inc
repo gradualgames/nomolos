@@ -220,20 +220,6 @@ fireguy_draw:
   jsr entity_test_death_zone
   beq killFireGuy
 
-  ;load fireguy width and height
-  lda #FIREGUY_WIDTH
-  sta b2
-  lda #FIREGUY_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-  jsr entity_reset_anim
-
-:
   jsr nomolos_is_deadly
   beq nomolosNotAttacking
 
@@ -267,6 +253,21 @@ fireguy_draw:
   jmp killFireGuy
 
 nomolosNotAttacking:
+
+  ;load fireguy width and height
+  lda #FIREGUY_WIDTH
+  sta b2
+  lda #FIREGUY_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+  jsr entity_reset_anim
+
+:
 
   lda entity_chr_offsets+(entity_index_fireguy-1)
   sta sprite_group_offset

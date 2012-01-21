@@ -383,28 +383,6 @@ phoenix_draw:
   jsr entity_test_death_zone
   beq kill_phoenix
 
-  lda #<spritesheet2_PhoenixFly
-  sta entity_locals+phoenix_locals::anim_index,x
-  lda #>spritesheet2_PhoenixFly
-  sta entity_locals+phoenix_locals::anim_index+1,x
-  ;load phoenix width and height
-  lda #PHOENIX_WIDTH
-  sta b2
-  lda #PHOENIX_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-  lda #<spritesheet2_PhoenixFly
-  sta entity_locals+phoenix_locals::anim_index,x
-  lda #>spritesheet2_PhoenixFly
-  sta entity_locals+phoenix_locals::anim_index+1,x
-
-  jsr entity_reset_anim
-
-:
   lda entity_locals+phoenix_locals::damaged_counter,x
   bne nomolosNotAttacking
   jsr nomolos_is_deadly
@@ -449,6 +427,29 @@ phoenix_draw:
   jmp kill_phoenix
 
 nomolosNotAttacking:
+
+  lda #<spritesheet2_PhoenixFly
+  sta entity_locals+phoenix_locals::anim_index,x
+  lda #>spritesheet2_PhoenixFly
+  sta entity_locals+phoenix_locals::anim_index+1,x
+  ;load phoenix width and height
+  lda #PHOENIX_WIDTH
+  sta b2
+  lda #PHOENIX_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+  lda #<spritesheet2_PhoenixFly
+  sta entity_locals+phoenix_locals::anim_index,x
+  lda #>spritesheet2_PhoenixFly
+  sta entity_locals+phoenix_locals::anim_index+1,x
+
+  jsr entity_reset_anim
+
+:
 
   lda entity_locals+phoenix_locals::damaged_counter,x
   beq entity_not_flashing
