@@ -63,10 +63,6 @@
   ;make sure the boss ppu routine doesn't upload dynamic palette right away
   lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
   sta state_control_params+play_level_state_control::upload_ppu_data
-  
-  ;switch to boss mode
-  lda #PLAYLEVELSTATE_BOSSMODE
-  sta state_control_params+play_level_state_control::state
 
   rts
 .endproc
@@ -137,8 +133,6 @@
   beq play_level_state_init
   cmp #PLAYLEVELSTATE_KEEPPLAYING
   beq keep_playing
-  cmp #PLAYLEVELSTATE_BOSSMODE
-  beq playBoss
   cmp #PLAYLEVELSTATE_PAUSE
   beq pause
   cmp #PLAYLEVELSTATE_SWITCHTOLEVELINSTATE
@@ -189,16 +183,6 @@ keep_playing:
 
   rts
 
-playBoss:
-
-  ;****************************************************************
-  ;Call the play boss state handler
-  ;****************************************************************
-
-  jsr boss_state
-  
-  rts
-  
 victory_mode:
 
   ;****************************************************************
@@ -473,67 +457,6 @@ do_not_switch_to_level_in_state:
 
   rts
 
-.endproc
-
-;****************************************************************
-;The play boss state handler
-;****************************************************************
-.proc boss_state
-
-  ;wait for nmi to reset counter
-: lda nmi_counter
-  bne :-
-
-  ;turn monochrome bit on
-  .ifdef DISPLAY_FRAME_CPU_USAGE
-  set_ppu_2001_bit PPU1_DISPLAY_TYPE
-  upload_ppu_2001
-  .endif
-
-  ;camera has not scrolled yet
-  lda #0
-  sta camera_scroll_direction
-
-  jsr controller_read
-
-  jsr sprite_clear_all
-
-  jsr nomolos_update
-  jsr nomolos_draw
-  jsr nomolos_draw_hearts
-  jsr entity_update_all
-
-  .ifdef MUSIC_ENABLE
-  ;switch to the level and music bank
-  ldy #level_data_struct::level_music_bank
-  lda (base_address_rom_definition_table),y
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-  jsr sound_update
-  .endif
-
-  .scope
-  lda buffer_controller+buttons::_start
-  and #%00000011
-  cmp #1
-  bne skip_start_button_test
-
-  lda #PLAYLEVELSTATE_PAUSE
-  sta state_control_params+play_level_state_control::state
-
-skip_start_button_test:
-  .endscope
-
-  inc nmi_counter
-  
-  ;turn monochrome bit off
-  .ifdef DISPLAY_FRAME_CPU_USAGE
-  clear_ppu_2001_bit PPU1_DISPLAY_TYPE
-  upload_ppu_2001
-  .endif
-  
-  rts
- 
 .endproc
 
 ;****************************************************************
