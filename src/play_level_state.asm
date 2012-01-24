@@ -337,6 +337,9 @@ switch_to_ending_state:
   and #%00000011
   cmp #1
   bne skip_start_button_test
+  lda nomolos_state_primary
+  and #nomolos_dying_test
+  bne skip_start_button_test
 
   lda #PLAYLEVELSTATE_PAUSE
   sta state_control_params+play_level_state_control::state
