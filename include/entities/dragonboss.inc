@@ -225,10 +225,10 @@ dragonboss_erasestate:
   
   jsr play_level_state_init_boss_mode
 
-  lda #100
+  lda #1
   sta entity_locals+dragonboss_locals::state_switch_counter,x
   
-  lda #DRAGONBOSS_TAILDOWNSTATE
+  lda #DRAGONBOSS_TAILUPSTATE
   sta entity_instances+entity_instance::state,x
 
 do_not_switch_to_init_boss_mode_state:
@@ -287,7 +287,7 @@ pause_before_glow:
   bmi do_not_vibrate
   and #%00000001
   asl
-  sta camera_scroll_x
+  sta camera_scroll_y
 do_not_vibrate:
   
   rts
