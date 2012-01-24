@@ -1117,6 +1117,21 @@ do_not_switch_to_not_attacked_state:
   ;reset invincibility to "off" after the Boulder has already started dying
   sta nomolos_counter_temp_invincibility_blink
   
+  ;kill all entities (Boulder usually has too much going on screen that will
+  ;still be alive after she is defeated, so we just kill it all off now)
+  txa
+  pha
+
+  jsr entity_init_all
+
+  pla
+  tax
+
+  ;except the current one, which needs to live a little longer to perform the
+  ;death animation and switch to the ending scene.
+  lda #1
+  sta entity_instances+entity_instance::alive,x
+
   lda #BOULDER_DYINGSTATE
   sta entity_instances+entity_instance::state,x
   
