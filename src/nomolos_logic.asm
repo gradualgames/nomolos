@@ -742,11 +742,11 @@ skipAttackUpdate:
 .endproc
 
 .proc nomolos_test_collision_below
-hurt_test_counter = b3
+collision_hurt_flags = b3
 
   ;count the number of hurt tests that succeed.
   lda #0
-  sta hurt_test_counter 
+  sta collision_hurt_flags
 
   ;Is there a collision at bottom right of Nomolos?
   .scope
@@ -769,8 +769,13 @@ hurt_test_counter = b3
   lda b0
   beq not_hurt
   
-  inc hurt_test_counter
-  
+  lda collision_hurt_flags
+
+           ;llrr
+           ;chch
+  ora #%00000001
+  sta collision_hurt_flags
+
 not_hurt:
   ;load solid result
   lda b1
@@ -780,6 +785,13 @@ not_hurt:
   ora #nomolos_below_collision_on_set
   sta nomolos_state_primary
   
+  lda collision_hurt_flags
+
+           ;llrr
+           ;chch
+  ora #%00000010
+  sta collision_hurt_flags
+
 not_solid:
   .endscope
   
@@ -801,8 +813,12 @@ not_solid:
   lda b0
   beq not_hurt
   
-  inc hurt_test_counter
-  
+  lda collision_hurt_flags
+           ;llrr
+           ;chch
+  ora #%00000100
+  sta collision_hurt_flags
+
 not_hurt:
   ;load solid result
   lda b1
@@ -812,14 +828,47 @@ not_hurt:
   ora #nomolos_below_collision_on_set
   sta nomolos_state_primary
   
+  lda collision_hurt_flags
+           ;llrr
+           ;chch
+  ora #%00001000
+  sta collision_hurt_flags
+
 not_solid:
   .endscope
  
-  ;load results of hurt counter
-  lda hurt_test_counter
-  cmp #2
-  bne not_hurt
+  ;first test if there were any hurt flags set at all
+  lda collision_hurt_flags
+  and #%00000101
+  beq not_hurt
   
+  ;now test special cases which ensure that Nomolos
+  ;will get hit landing on the edge of a hurt tile but will
+  ;not get hurt approaching a hurt tile from a solid tile.
+
+; 0001 - hurt     (passing through a hurt tile on the right)
+; 0011 - hurt     (landing on a hurt tile on the right side)
+; 0100 - hurt     (passing through a hurt tile on the left)
+; 0101 - hurt     (passing through two hurt tiles)
+; 0110 - not hurt (landing on a solid tile on right but hurt tile on left)
+; 0111 - hurt     (landing on a hurt solid tile on right and hurt tile on left)
+; 1001 - not hurt (landing on a solid tile on left and hurt tile on right)
+; 1011 - not hurt (landing on a solid tile on left and a solid/hurt tile on right)
+; 1100 - hurt     (landing on a solid, hurt tile on left and nothing on right)
+; 1101 - hurt     (landing on a solid, hurt tile on left and hurt tile on right)
+; 1110 - not hurt (landing on a solid, hurt tile on left and solid tile on right)
+; 1111 - hurt  
+
+  lda collision_hurt_flags
+  cmp #%00001001
+  beq not_hurt
+  cmp #%00000110
+  beq not_hurt
+  cmp #%00001011
+  beq not_hurt
+  cmp #%00001110
+  beq not_hurt
+
   lda nomolos_state_primary
   ora #nomolos_hurt_by_map_on_set
   sta nomolos_state_primary
