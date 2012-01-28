@@ -67,7 +67,7 @@ grubselimboj_stationaryState:
 
   ;spawn a grank every once in a while
   lda entity_locals+grubselimboj_locals::counter,x
-  and #%00111111
+  and #%00011111
   bne do_not_spawn_grank
   
   ;spawn an entity
@@ -86,7 +86,7 @@ grubselimboj_stationaryState:
   sta b1
   lda entity_instances+entity_instance::position_y+1,x
   sta b2
-
+dbg1:
   jsr entity_spawn
 
 do_not_spawn_grank:
