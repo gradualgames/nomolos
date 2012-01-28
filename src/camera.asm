@@ -8,37 +8,6 @@
 
 .segment "CODE"
 
-;computes screen coordinates based on a 16 bit X coordinate
-;and an 8 bit Y coordinate.
-;expects: w0 is the x coordinate.
-;         w1 is the y coordinate.
-;outputs: <w0 is the screen x coordinate.
-;         <w1 is the screen y coordinate.
-.proc camera_to_screen_coords
-
-  ;subtract camera_scroll_x from the input X coordinate
-  sec
-  lda w0 ;load low byte of 16 bit X coord
-  sbc camera_scroll_x
-  sta w0
-  lda w0+1 ;load high byte of 16 bit x coord
-  sbc camera_scroll_x+1
-  sta w0+1
-  
-  ;subtract camera_scroll_y from the input Y coordinate
-  sec
-  lda w1 ;load low byte of 16 bit Y coord
-  sbc camera_scroll_y
-  sta w1
-  lda w1+1 ;load high byte of 16 bit Y coord
-  sbc #$00 ;our camera scroll Y is assumed unsigned and 8 bit, it is only
-            ;used for shaking.
-  sta w1+1
-
-  rts
-
-.endproc
-
 ;resets camera to the beginning of a level (camera_scroll_x = 0)
 .proc camera_reset
 
@@ -74,6 +43,37 @@
   ;camera enabled by default
   lda #1
   sta camera_scroll_enabled
+
+  rts
+
+.endproc
+
+;computes screen coordinates based on a 16 bit X coordinate
+;and an 8 bit Y coordinate.
+;expects: w0 is the x coordinate.
+;         w1 is the y coordinate.
+;outputs: <w0 is the screen x coordinate.
+;         <w1 is the screen y coordinate.
+.proc camera_to_screen_coords
+
+  ;subtract camera_scroll_x from the input X coordinate
+  sec
+  lda w0 ;load low byte of 16 bit X coord
+  sbc camera_scroll_x
+  sta w0
+  lda w0+1 ;load high byte of 16 bit x coord
+  sbc camera_scroll_x+1
+  sta w0+1
+  
+  ;subtract camera_scroll_y from the input Y coordinate
+  sec
+  lda w1 ;load low byte of 16 bit Y coord
+  sbc camera_scroll_y
+  sta w1
+  lda w1+1 ;load high byte of 16 bit Y coord
+  sbc #$00 ;our camera scroll Y is assumed unsigned and 8 bit, it is only
+            ;used for shaking.
+  sta w1+1
 
   rts
 

@@ -757,4 +757,5 @@ do_not_spawn_entity:
   sta ppu_2005+1
   upload_ppu_2005
 
+  rts
 .endproc
