@@ -1622,6 +1622,11 @@ beta_testers_slide:
   .byte 150
   .byte 5
 
+production_slide:
+  .word production_caption
+  .byte 150
+  .byte 5
+
 joseph_morgan_slide:
   .word joseph_morgan_caption
   .byte 150
@@ -1639,11 +1644,6 @@ nesdev_slide:
 
 nintendoage_slide:
   .word nintendoage_caption
-  .byte 150
-  .byte 5
-
-producers_slide:
-  .word producers_caption
   .byte 150
   .byte 5
 

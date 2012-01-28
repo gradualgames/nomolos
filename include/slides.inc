@@ -40,8 +40,8 @@
 .global daniel_hwozdek_caption
 .global music_by_caption
 .global beta_testers_caption
+.global production_caption
 .global joseph_morgan_caption
 .global special_thanks_caption
 .global nesdev_caption
 .global nintendoage_caption
-.global producers_caption

@@ -64,11 +64,11 @@
   show_text_slide daniel_hwozdek_slide
   show_text_slide music_by_slide
   show_text_slide beta_testers_slide
+  show_text_slide production_slide
   show_text_slide joseph_morgan_slide
   show_text_slide special_thanks_slide
   show_text_slide nesdev_slide
   show_text_slide nintendoage_slide
-  show_text_slide producers_slide
   show_graphics_slide slide1
 
 : jmp :-

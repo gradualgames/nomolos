@@ -108,6 +108,12 @@ beta_testers_caption:
   .byte $1a,$02,$07,$11,$08,$12,$1a,$07,$16,$0e,$19,$03,$04,$0a,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$09,$0e,$07,$0d,$1a,$16,$07,$08,$13,$04
 
+production_caption:
+;PRODUCTION:                     RETROZONE                       UNCLE TUSK
+  .byte $4a,$0f,$11,$0e,$03,$14,$02,$13,$08,$0e,$0d,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$11,$04,$13,$11,$0e,$19,$0e,$0d,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$14,$0d,$02,$0b,$04,$1a,$13,$14,$12,$0a
+
 ;PROMOTION AND SOCIAL MEDIA      JOSEPH MORGAN
 joseph_morgan_caption:
   .byte $2d,$0f,$11,$0e,$0c,$0e,$13,$08,$0e,$0d,$1a,$00,$0d,$03,$1a,$12,$0e,$02,$08,$00,$0b,$1a,$0c,$04,$03,$08,$00,$1a,$1a,$1a,$1a,$1a
@@ -126,11 +132,6 @@ nesdev_caption:
 ;EVERYONE AT NINTENDOAGE
 nintendoage_caption:
   .byte $17,$04,$15,$04,$11,$18,$0e,$0d,$04,$1a,$00,$13,$1a,$0d,$08,$0d,$13,$04,$0d,$03,$0e,$00,$06,$04
-
-;RETROZONE, BUNNYBOY,            UNCLE TUSK
-producers_caption:
-  .byte $2a,$11,$04,$13,$11,$0e,$19,$0e,$0d,$04,$25,$1a,$01,$14,$0d,$0d,$18,$01,$0e,$18,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$14,$0d,$02,$0b,$04,$1a,$13,$14,$12,$0a
 
 .segment "ROM10"
 
