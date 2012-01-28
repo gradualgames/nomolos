@@ -26,6 +26,11 @@ HIPPOCRITTER_RESTCOUNTER_RESTLENGTH = 25
 HIPPOCRITTER_DIRECTIONFLAG_LEFT =  %00000000
 HIPPOCRITTER_DIRECTIONFLAG_RIGHT = %00000001
 
+HIPPOCRITTER_HORIZONTALSPEED_LO = 180
+HIPPOCRITTER_HORIZONTALSPEED_HI = 2
+HIPPOCRITTER_STARTJUMP_LO       = $0a
+HIPPOCRITTER_STARTJUMP_HI       = $fd
+
 HIPPOCRITTER_INITSTATE = 0
 HIPPOCRITTER_RESTSTATE = 1
 HIPPOCRITTER_JUMPSTATE = 2
@@ -99,9 +104,9 @@ hippocritter_restState:
   bne stillResting
 
   ;on rest counter = 0, jump to jump state init and set vertical velocity
-  lda #$0a
+  lda #HIPPOCRITTER_STARTJUMP_LO
   sta entity_locals+hippocritter_locals::y_velocity,x
-  lda #$fd
+  lda #HIPPOCRITTER_STARTJUMP_HI
   sta entity_locals+hippocritter_locals::y_velocity+1,x
   lda #HIPPOCRITTER_JUMPSTATE
   sta entity_instances+entity_instance::state,x
@@ -146,9 +151,12 @@ hippocritterGoingLeft:
   sta entity_locals+hippocritter_locals::directionFlag,x
 noLeftCollision:
 
-  lda entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x_fine,x
   sec
-  sbc #1
+  sbc #HIPPOCRITTER_HORIZONTALSPEED_LO
+  sta entity_instances+entity_instance::position_x_fine,x
+  lda entity_instances+entity_instance::position_x,x
+  sbc #HIPPOCRITTER_HORIZONTALSPEED_HI
   sta entity_instances+entity_instance::position_x,x
   lda entity_instances+entity_instance::position_x+1,x
   sbc #0
@@ -179,9 +187,12 @@ hippocritterGoingRight:
   sta entity_locals+hippocritter_locals::directionFlag,x
 noRightCollision:
 
-  lda entity_instances+entity_instance::position_x,x
+  lda entity_instances+entity_instance::position_x_fine,x
   clc
-  adc #1
+  adc #HIPPOCRITTER_HORIZONTALSPEED_LO
+  sta entity_instances+entity_instance::position_x_fine,x
+  lda entity_instances+entity_instance::position_x,x
+  adc #HIPPOCRITTER_HORIZONTALSPEED_HI
   sta entity_instances+entity_instance::position_x,x
   lda entity_instances+entity_instance::position_x+1,x
   adc #0
