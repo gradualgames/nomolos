@@ -204,7 +204,7 @@ decode_left_column:
 .endproc
 
 ;decodes the map left or right depending on the camera_will_scroll_right variable.
-;if the variable is 1, it scrolls right, zero, it scrolls left.
+;if the variable is positive, it scrolls right, negative, it scrolls left.
 .export map_decode
 .proc map_decode
   ;do not decode map if direction is 0
