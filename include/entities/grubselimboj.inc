@@ -86,7 +86,7 @@ grubselimboj_stationaryState:
   sta b1
   lda entity_instances+entity_instance::position_y+1,x
   sta b2
-dbg1:
+
   jsr entity_spawn
 
 do_not_spawn_grank:
