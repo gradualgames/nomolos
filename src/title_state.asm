@@ -319,10 +319,12 @@ title_stateDone:
   .endif
   
   .ifdef LEVEL_SELECTOR_ENABLED
-  lda buffer_controller+buttons::_select
+
+  .scope
+  lda buffer_controller+buttons::_up
   and #%00000011
   cmp #%00000001
-  bne select_button_not_hit
+  bne up_button_not_hit
   
   ;increment the starting level counter
   inc state_control_params+title_stateControl::starting_level
@@ -337,7 +339,31 @@ do_not_reset_starting_level:
   
   jsr create_selected_level_string
   
-select_button_not_hit:
+up_button_not_hit:
+  .endscope
+
+  .scope
+  lda buffer_controller+buttons::_down
+  and #%00000011
+  cmp #%00000001
+  bne down_button_not_hit
+  
+  ;increment the starting level counter
+  dec state_control_params+title_stateControl::starting_level
+  
+  ;make sure the level number is always valid
+  lda state_control_params+title_stateControl::starting_level
+  cmp #$ff
+  bne do_not_reset_starting_level
+  lda #(num_levels-1)
+  sta state_control_params+title_stateControl::starting_level
+do_not_reset_starting_level:
+  
+  jsr create_selected_level_string
+  
+down_button_not_hit:
+  .endscope
+
   .endif
   
   ;test left and right buttons if menu selection is "difficulty"

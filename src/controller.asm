@@ -51,9 +51,11 @@
   rol buffer_controller+3
 
   lda $4016          ; Up
-  sta buffer_controller+4
+  ror
+  rol buffer_controller+4
   lda $4016          ; Down
-  sta buffer_controller+5
+  ror
+  rol buffer_controller+5
   lda $4016          ; Left
   ror
   rol buffer_controller+6
