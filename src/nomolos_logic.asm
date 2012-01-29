@@ -26,6 +26,9 @@
   lda #0
   sta nomolos_status_lives
 
+  lda #DEFAULT_DIFFICULTY
+  sta difficulty
+
   rts
 
 .endproc
@@ -68,7 +71,7 @@
 
   jsr nomolos_compute_screen_coordinates
 
-  lda #3
+  lda difficulty
   sta nomolos_status_health
 
   lda #0
@@ -110,10 +113,10 @@
   adc nomolos_status_health
   sta nomolos_status_health
 
-  cmp #max_health  ;if result is negative, that means nomolos_status_health - max_health was negative, which means we're less than max_health
+  cmp difficulty  ;if result is negative, that means nomolos_status_health - difficulty was negative, which means we're less than difficulty
                   ;negative is less, positive is more
   bmi :+
-  lda #max_health
+  lda difficulty
   sta nomolos_status_health
 :
 

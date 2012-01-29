@@ -1516,6 +1516,21 @@ spaces_string:
 press_start_string:
   .byte $0b,$0f,$11,$04,$12,$12,$1a,$12,$13,$00,$11,$13
 
+difficulty_string:
+  .byte $0c,$03,$08,$05,$05,$08,$02,$14,$0b,$13,$18,$2b,$1a
+
+easy_string:
+  .byte $06,$04,$00,$12,$18,$1a,$1a
+
+normal_string:
+  .byte $06,$0d,$0e,$11,$0c,$00,$0b
+
+hard_string:
+  .byte $06,$07,$00,$11,$03,$1a,$1a
+
+unfair_string:
+  .byte $06,$14,$0d,$05,$00,$08,$11
+
 gradual_games_string:
   .byte $0d,$06,$11,$00,$03,$14,$00,$0b,$1a,$06,$00,$0c,$04,$12
 
@@ -1536,6 +1551,11 @@ continue_string:
 
 end_string:
   .byte $03,$04,$0d,$03
+
+;heart sprite for menu selections
+heart:
+  .byte $01
+  .byte $00,$2a,$01,$00,$00
 
 solomon_snow_watching_birds_slide:
   .word solomon_snow_watching_birds_caption

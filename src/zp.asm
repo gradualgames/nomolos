@@ -196,3 +196,5 @@ restart_x: .res 1
 restart_y: .res 1
 
 restart_screen: .res 1
+
+difficulty: .res 1

@@ -16,10 +16,6 @@
 
 .segment "CODE"
 
-heart:
-  .byte $01
-  .byte $00,$2a,$01,$00,$00
-
 .proc continue_end_state_update
 
   lda state_control_params+continue_end_state_control::state

@@ -93,5 +93,6 @@ ZP_INC = 1
 .globalzp restart_x
 .globalzp restart_y
 .globalzp restart_screen
+.globalzp difficulty
 
 .endif

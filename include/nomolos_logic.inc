@@ -77,9 +77,19 @@ nomolos_width                         = 12
 nomolos_height                        = 28
 
 starting_level                        = $00
-max_health                            = 3
 max_lives                             = 20
 last_entity                           = 15
+
+;difficulty really refers to max # of hearts. So maximum
+;is really smaller than the minimum, numerically.
+EASY_DIFFICULTY   = 4
+NORMAL_DIFFICULTY = 3
+HARD_DIFFICULTY   = 2
+UNFAIR_DIFFICULTY = 1
+
+MINIMUM_DIFFICULTY = 4
+MAXIMUM_DIFFICULTY = 1
+DEFAULT_DIFFICULTY = NORMAL_DIFFICULTY
 
 ;keeps the lowest 4 bits to get penetration distance from a y coordinate
 penetration_calculation_mask          = %00001111

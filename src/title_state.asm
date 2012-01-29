@@ -59,6 +59,56 @@
 .endproc
 .endif
 
+.proc display_difficulty_string
+  set_ppu_2006 $20, 20, 10
+  lda #<difficulty_string
+  sta w0
+  lda #>difficulty_string
+  sta w0+1
+  
+  jsr ppu_display_string
+
+  lda difficulty
+  cmp #EASY_DIFFICULTY
+  bne :+
+  lda #<easy_string
+  sta w0
+  lda #>easy_string
+  sta w0+1
+
+  jsr ppu_display_string
+:
+  cmp #NORMAL_DIFFICULTY
+  bne :+
+  lda #<normal_string
+  sta w0
+  lda #>normal_string
+  sta w0+1
+
+  jsr ppu_display_string
+:
+  cmp #HARD_DIFFICULTY
+  bne :+
+  lda #<hard_string
+  sta w0
+  lda #>hard_string
+  sta w0+1
+
+  jsr ppu_display_string
+:
+  cmp #UNFAIR_DIFFICULTY
+  bne :+
+  lda #<unfair_string
+  sta w0
+  lda #>unfair_string
+  sta w0+1
+
+  jsr ppu_display_string
+:
+
+  rts
+.endproc
+
 .proc title_state_update
 
   lda state_control_params+title_stateControl::state
@@ -183,6 +233,8 @@ title_stateRun:
 
   jsr ppu_display_string
 
+  jsr display_difficulty_string
+
   ;now that nametable loaded, load the new palette faded out
   lda title_definition+title::palette_address
   sta w0
@@ -288,6 +340,43 @@ do_not_reset_starting_level:
 select_button_not_hit:
   .endif
   
+  ;test left and right buttons if menu selection is "difficulty"
+  ;and then increment or decrement the global difficulty value.
+
+  .scope
+  lda buffer_controller+buttons::_left
+  and #%00000011
+  cmp #%00000001
+  bne left_button_not_hit
+
+  ;increment the difficulty level but cap at 4
+  lda difficulty
+  cmp #MINIMUM_DIFFICULTY
+  beq skip_increment_difficulty
+  inc difficulty
+
+skip_increment_difficulty:
+
+left_button_not_hit:
+  .endscope
+
+  .scope
+  lda buffer_controller+buttons::_right
+  and #%00000011
+  cmp #%00000001
+  bne right_button_not_hit
+
+  ;decrement the difficulty level but cap at 1
+  lda difficulty
+  cmp #MAXIMUM_DIFFICULTY
+  beq skip_decrement_difficulty
+  dec difficulty
+
+skip_decrement_difficulty:
+
+right_button_not_hit:
+  .endscope
+
   lda buffer_controller+buttons::_start
   and #1
   beq start_button_not_hit
@@ -395,12 +484,14 @@ skip_intro_cut_scene:
   
   .ifdef LEVEL_SELECTOR_ENABLED
   jsr display_selected_level_string
+  .endif
   
+  jsr display_difficulty_string
+
   lda #0
   sta $2005
   sta $2005
-  .endif
-  
+
   dec nmi_counter
   
 nmi_counter_zero:
