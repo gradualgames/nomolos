@@ -12,9 +12,7 @@ TITLESTATE_DONE = %00000010
 
 .struct title_stateControl
   state .byte
-  .ifdef LEVEL_SELECTOR_ENABLED
   starting_level .byte
-  .endif
 .endstruct
 
 .endif

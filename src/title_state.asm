@@ -15,7 +15,6 @@
 
 .segment "CODE"
 
-.ifdef LEVEL_SELECTOR_ENABLED
 .proc create_selected_level_string
   ;add one to level so level 0 is displayed as level 1, etc.
   lda state_control_params+title_stateControl::starting_level
@@ -57,7 +56,6 @@
   jsr ppu_display_string
   rts
 .endproc
-.endif
 
 .proc display_difficulty_string
   set_ppu_2006 $20, 20, 10
@@ -150,11 +148,9 @@ title_stateInit:
   upload_ppu_2001
 
   ;reset the level selector counter
-  .ifdef LEVEL_SELECTOR_ENABLED
   lda #0
   sta state_control_params+title_stateControl::starting_level
   jsr create_selected_level_string
-  .endif
   
   lda #TITLESTATE_RUN
   sta state_control_params+title_stateControl::state
@@ -318,13 +314,17 @@ title_stateDone:
   jsr sound_update
   .endif
   
-  .ifdef LEVEL_SELECTOR_ENABLED
-
   .scope
   lda buffer_controller+buttons::_up
   and #%00000011
   cmp #%00000001
-  bne up_button_not_hit
+  bne button_combo_incorrect
+  lda buffer_controller+buttons::_a
+  beq button_combo_incorrect
+  lda buffer_controller+buttons::_b
+  beq button_combo_incorrect
+  lda buffer_controller+buttons::_select
+  beq button_combo_incorrect
   
   ;increment the starting level counter
   inc state_control_params+title_stateControl::starting_level
@@ -337,16 +337,20 @@ title_stateDone:
   sta state_control_params+title_stateControl::starting_level
 do_not_reset_starting_level:
   
-  jsr create_selected_level_string
-  
-up_button_not_hit:
+button_combo_incorrect:
   .endscope
 
   .scope
   lda buffer_controller+buttons::_down
   and #%00000011
   cmp #%00000001
-  bne down_button_not_hit
+  bne button_combo_incorrect
+  lda buffer_controller+buttons::_a
+  beq button_combo_incorrect
+  lda buffer_controller+buttons::_b
+  beq button_combo_incorrect
+  lda buffer_controller+buttons::_select
+  beq button_combo_incorrect
   
   ;increment the starting level counter
   dec state_control_params+title_stateControl::starting_level
@@ -359,13 +363,11 @@ up_button_not_hit:
   sta state_control_params+title_stateControl::starting_level
 do_not_reset_starting_level:
   
-  jsr create_selected_level_string
-  
-down_button_not_hit:
+button_combo_incorrect:
   .endscope
-
-  .endif
   
+  jsr create_selected_level_string
+
   ;test left and right buttons if menu selection is "difficulty"
   ;and then increment or decrement the global difficulty value.
 
@@ -430,11 +432,7 @@ right_button_not_hit:
   ;start out Nomolos with 3 lives.
   lda #nomolos_starting_lives
   sta nomolos_status_lives
-  .ifdef LEVEL_SELECTOR_ENABLED
   lda state_control_params+title_stateControl::starting_level
-  .else
-  lda #starting_level
-  .endif
   sta level_current
   lda #0
   sta state_control_params+level_in_state_control::use_restart_point
