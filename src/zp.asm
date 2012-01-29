@@ -187,8 +187,6 @@ buffer_controller: .res 8
 ;variables specific to level out state
 ;TODO: these should be moved to the state control params perhaps
 
-palette_step: .res 1
-
 frame_counter: .res 1
 
 ;variables to store where to restart upon losing a life

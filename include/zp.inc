@@ -89,7 +89,6 @@ ZP_INC = 1
 .globalzp name_table_to_view
 .globalzp next_sprite_address
 .globalzp buffer_controller
-.globalzp palette_step
 .globalzp frame_counter
 .globalzp restart_x
 .globalzp restart_y

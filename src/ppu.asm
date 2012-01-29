@@ -90,7 +90,9 @@
 .endproc
 
 ;expects w0 to point to palette to fade in to
+;uses b0 to store palette step
 .proc fade_in_palette
+palette_step = b4
 
   ;save current nmi routine
   lda update_ppu
@@ -138,7 +140,9 @@ fading_loop:
 .endproc
 
 ;expects w0 to point to the palette to fade out from
+;uses b0 to store palette step
 .proc fade_out_palette
+palette_step = b4
 
   ;save current nmi routine
   lda update_ppu
