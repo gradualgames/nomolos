@@ -14,7 +14,7 @@ BOULDER_INC = 1
 .endstruct
 
 BOULDER_WIDTH =               $30
-BOULDER_HEIGHT =              $30
+BOULDER_HEIGHT =              $10
 
 BOULDER_INITSTATE                = $00
 BOULDER_INITBOSSMODESTATE        = $01
@@ -1012,9 +1012,9 @@ boulder_erase:
   jsr nomolos_is_deadly
   beq nomolos_not_attacking
 
-  lda #120
+  lda #136
   sta entity_screen_x
-  lda #48
+  lda #88
   sta entity_screen_y
   lda #0
   sta entity_screen_x+1
