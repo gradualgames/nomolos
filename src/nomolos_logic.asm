@@ -576,9 +576,9 @@ nomolosNotAttacking:
 
 .proc nomolos_update_attack_sword
 
-  lda #$10
+  lda #$0C
   sta nomolos_attack_rect_width
-  lda #$20
+  lda #$10
   sta nomolos_attack_rect_height
 
   lda nomolos_state_primary
@@ -593,9 +593,12 @@ nomolosNotAttacking:
   adc #$ff
   sta nomolos_attack_rect_x+1
 
+  clc
   lda nomolos_screen_y
+  adc #$05
   sta nomolos_attack_rect_y
   lda nomolos_screen_y+1
+  adc #$00
   sta nomolos_attack_rect_y+1
 
   jmp skipNomolosFacingRight
@@ -609,9 +612,12 @@ skipNomolosFacingLeft:
   adc #$00
   sta nomolos_attack_rect_x+1
 
+  clc
   lda nomolos_screen_y
+  adc #$05
   sta nomolos_attack_rect_y
   lda nomolos_screen_y+1
+  adc #$00
   sta nomolos_attack_rect_y+1
 
 skipNomolosFacingRight:
