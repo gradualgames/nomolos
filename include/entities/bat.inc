@@ -223,9 +223,9 @@ bat_draw:
   beq nomolosNotAttacking
 
   ;load bat width and height
-  lda #$10
+  lda #BAT_WIDTH
   sta b2
-  lda #$10
+  lda #BAT_HEIGHT
   sta b3
   jsr entity_test_collision_hitbox
 
