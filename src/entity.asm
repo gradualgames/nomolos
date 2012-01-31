@@ -599,7 +599,7 @@ entity_not_in_death_zone:
 .proc entity_test_collision_nomolos
 
   .ifdef _16BIT_COLLISIONS
-  ;transfer Deentle rectangle to w2 = left and w3 = top and b2 = width and b3 = height
+  ;transfer entity rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda entity_screen_x
   sta w2
   lda entity_screen_x+1

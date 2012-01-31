@@ -2,7 +2,7 @@
 RAVEN_INC = 1
 
 RAVEN_WIDTH = $20
-RAVEN_HEIGHT = $18
+RAVEN_HEIGHT = $20
 
 .struct raven_locals
   x_velocity .word

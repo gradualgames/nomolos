@@ -1,7 +1,7 @@
 .ifndef OWL_INC
 OWL_INC = 1
 
-OWL_WIDTH = $18
+OWL_WIDTH = $20
 OWL_HEIGHT = $18
 
 .struct owl_locals

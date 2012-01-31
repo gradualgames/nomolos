@@ -44,6 +44,11 @@ oneup_init:
 
   rts
 
+oneUpDie:
+
+  jsr entity_kill
+  rts
+
 oneup_sit_there:
 
   jsr entity_compute_screen_coordinates
@@ -61,7 +66,35 @@ oneup_sit_there:
   sta b2
   lda #ONEUP_HEIGHT
   sta b3
-  jsr entity_test_collision_nomolos
+
+  ;transfer entity rectangle to w2 = left and w3 = top and b2 = width and b3 = height
+  lda entity_screen_x
+  sta w2
+  lda entity_screen_x+1
+  sta w2+1
+  clc
+  lda entity_screen_y
+  adc #$08
+  sta w3
+  lda entity_screen_y+1
+  adc #$00
+  sta w3+1
+
+  ;transfer Nomolos rectangle to w4 = left and w5 = top and b4 = width and b5 = height
+  lda nomolos_screen_x
+  sta w4
+  lda nomolos_screen_x+1
+  sta w4+1
+  lda nomolos_screen_y
+  sta w5
+  lda nomolos_screen_y+1
+  sta w5+1
+  lda #nomolos_width
+  sta b4
+  lda #nomolos_height
+  sta b5
+
+  jsr geotests_rect_in_rect_16bit
 
   beq skipJmpNotTouching
   jmp notTouching
@@ -116,11 +149,6 @@ notTouching:
 
   jsr sprite_draw_metasprite_16bit
 
-  rts
-
-oneUpDie:
-
-  jsr entity_kill
   rts
 
 .endscope
