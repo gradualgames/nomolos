@@ -54,9 +54,12 @@ end;
 
 local function draw_attack_rect()
 
-    a,b = memory.readbyte(nomolos_attack_rect_x),memory.readbyte(nomolos_attack_rect_y);
-    c,d = a+memory.readbyte(nomolos_attack_rect_width),b+memory.readbyte(nomolos_attack_rect_height);
-    box(a,b,c,d, "green");
+    ah,bh = memory.readbyte(nomolos_attack_rect_x+1),memory.readbyte(nomolos_attack_rect_y+1);
+    if (ah == 0 and bh == 0) then
+        a,b = memory.readbyte(nomolos_attack_rect_x),memory.readbyte(nomolos_attack_rect_y);
+        c,d = a+memory.readbyte(nomolos_attack_rect_width),b+memory.readbyte(nomolos_attack_rect_height);
+        box(a,b,c,d, "green");
+    end;
 
 end;
 
@@ -90,9 +93,12 @@ memory.registerexecute(nomolos_is_deadly_rts_3, 1, draw_attack_rect)
 local a,b,c,d;
 while (running) do
 
-		a,b = memory.readbyte(nomolos_screen_x),memory.readbyte(nomolos_screen_y);
-		c,d = a+nomolos_width,b+nomolos_height;
-		box(a,b,c,d,"green");
+        ah,bh = memory.readbyte(nomolos_screen_x+1),memory.readbyte(nomolos_screen_y+1);
+        if (ah == 0 and bh == 0) then
+            a,b = memory.readbyte(nomolos_screen_x),memory.readbyte(nomolos_screen_y);
+            c,d = a+nomolos_width,b+nomolos_height;
+            box(a,b,c,d,"green");
+        end;
 
     FCEU.frameadvance()
 end
