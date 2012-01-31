@@ -43,9 +43,20 @@ local function rect_in_rect_executed()
 --w8 - right x
 --w9 - bottom y
 
-    a,b = memory.readbyte(w2),memory.readbyte(w3)
-    c,d = memory.readbyte(b2),memory.readbyte(b3)
-    box(a,b,a+c,b+d,"red");
+    ah,bh = memory.readbyte(w2+1), memory.readbyte(w3+1)
+    if (ah == 0 and bh == 0) then
+        a,b = memory.readbyte(w2),memory.readbyte(w3)
+        c,d = memory.readbyte(b2),memory.readbyte(b3)
+        box(a,b,a+c,b+d,"red");
+    end;
+
+end;
+
+local function draw_attack_rect()
+
+    a,b = memory.readbyte(nomolos_attack_rect_x),memory.readbyte(nomolos_attack_rect_y);
+    c,d = a+memory.readbyte(nomolos_attack_rect_width),b+memory.readbyte(nomolos_attack_rect_height);
+    box(a,b,c,d, "green");
 
 end;
 
@@ -67,15 +78,17 @@ w2 = 0x000E
 w3 = 0x0010
 
 geotests_rect_in_rect_16bit = 0xE988
+nomolos_is_deadly_rts_1 = 0xC2AA
+nomolos_is_deadly_rts_2 = 0xC2B6
+nomolos_is_deadly_rts_3 = 0xC2C2
 
 memory.registerexecute(geotests_rect_in_rect_16bit, 110, rect_in_rect_executed)
+memory.registerexecute(nomolos_is_deadly_rts_1, 1, draw_attack_rect)
+memory.registerexecute(nomolos_is_deadly_rts_2, 1, draw_attack_rect)
+memory.registerexecute(nomolos_is_deadly_rts_3, 1, draw_attack_rect)
 
 local a,b,c,d;
 while (running) do
-
-		a,b = memory.readbyte(nomolos_attack_rect_x),memory.readbyte(nomolos_attack_rect_y);
-		c,d = a+memory.readbyte(nomolos_attack_rect_width),b+memory.readbyte(nomolos_attack_rect_height);
-		box(a,b,c,d, "green");
 
 		a,b = memory.readbyte(nomolos_screen_x),memory.readbyte(nomolos_screen_y);
 		c,d = a+nomolos_width,b+nomolos_height;
