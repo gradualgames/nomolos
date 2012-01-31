@@ -11,16 +11,16 @@ local myoutput;
 
 -- draw a box and take care of coordinate checking
 local function box(x1,y1,x2,y2,color)
-	y1 = y1 - 8;
-	y2 = y2 - 8;
-	-- gui.text(50,50,x1..","..y1.." "..x2..","..y2);
-	if (x1 > 0 and x1 < 255 and x2 > 0 and x2 < 255 and y1 > 0 and y1 < 224 and y2 > 0 and y2 < 224) then
-		--gui.drawbox(x1,y1,x2,y2,color);
-		gui.drawline(x1,y1,x2,y1,color);
-		gui.drawline(x2,y1,x2,y2,color);
-		gui.drawline(x1,y2,x2,y2,color);
-		gui.drawline(x1,y1,x1,y2,color);
-	end;
+    y1 = y1 - 8;
+    y2 = y2 - 8;
+    -- gui.text(50,50,x1..","..y1.." "..x2..","..y2);
+    if (x1 > 0 and x1 < 255 and x2 > 0 and x2 < 255 and y1 > 0 and y1 < 224 and y2 > 0 and y2 < 224) then
+        --gui.drawbox(x1,y1,x2,y2,color);
+        gui.drawline(x1,y1,x2,y1,color);
+        gui.drawline(x2,y1,x2,y2,color);
+        gui.drawline(x1,y2,x2,y2,color);
+        gui.drawline(x1,y1,x1,y2,color);
+    end;
 end;
 
 local function rect_in_rect_executed()
