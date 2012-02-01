@@ -58,12 +58,15 @@
 .include "shark.inc"
 .include "stalactite.inc"
 .include "dragonboss.inc"
+.include "thoguth.inc"
+.include "lightningbolt.inc"
+
+.ifndef DEMO_BUILD
 .include "grubselimboj.inc"
 .include "bigfireball.inc"
 .include "boulder.inc"
-.include "thoguth.inc"
-.include "lightningbolt.inc"
 .include "spiraliceball.inc"
+.endif
 
 .segment "ROM11"
 
@@ -81,8 +84,10 @@
 .include "flailitem.inc"
 .include "restart.inc"
 
+.ifndef DEMO_BUILD
 .include "spritesheet2_sprites_source.inc"
 .include "spritesheet2_animations_source.inc"
+
 .include "phoenix.inc"
 .include "fireball.inc"
 .include "snake.inc"
@@ -99,3 +104,4 @@
 .include "laser.inc"
 .include "sneep.inc"
 .include "feather.inc"
+.endif

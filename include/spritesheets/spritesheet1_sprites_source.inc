@@ -332,6 +332,7 @@ spritesheet1_DragonFace1:
   .byte $20,$0a,$03,$08,$10
   .byte $20,$01,$00,$10,$08
   .byte $20,$01,$00,$18,$00
+.ifndef DEMO_BUILD
 spritesheet1_GrubselimBojEyes0:
   .byte $04
   .byte $00,$00,$02,$00,$18
@@ -467,6 +468,7 @@ spritesheet1_SnowWalkOverlay2:
   .byte $10,$36,$01,$08,$00
   .byte $18,$37,$01,$00,$08
   .byte $18,$38,$01,$08,$00
+.endif
 spritesheet1_ThoguthMarch0:
   .byte $12
   .byte $00,$00,$02,$00,$10

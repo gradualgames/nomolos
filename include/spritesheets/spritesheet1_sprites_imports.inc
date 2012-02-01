@@ -29,6 +29,7 @@ SPRITESHEET1_SPRITES_IMPORTS_INC = 1
 .global spritesheet1_Stalactite0
 .global spritesheet1_DragonFace0
 .global spritesheet1_DragonFace1
+.ifndef DEMO_BUILD
 .global spritesheet1_GrubselimBojEyes0
 .global spritesheet1_GrubselimBojEyes1
 .global spritesheet1_GrubselimBojMouth0
@@ -47,6 +48,7 @@ SPRITESHEET1_SPRITES_IMPORTS_INC = 1
 .global spritesheet1_SnowWalkOverlay0
 .global spritesheet1_SnowWalkOverlay1
 .global spritesheet1_SnowWalkOverlay2
+.endif
 .global spritesheet1_ThoguthMarch0
 .global spritesheet1_ThoguthMarch1
 .global spritesheet1_ThoguthMarch2

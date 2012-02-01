@@ -60,9 +60,11 @@ boss_5_index    = 16
 .global slide3
 .global slide4
 .global slide5
+.ifndef DEMO_BUILD
 .global ending_slide1
 .global ending_slide2
 .global ending_slide3
+.endif
 .global solomon_snow_watching_birds_slide
 .global portal_appears_slide
 .global arm_snatches_snow_slide
@@ -73,6 +75,7 @@ boss_5_index    = 16
 .global portal_appears_above_scepter_slide
 .global leapt_through_ending_portal_slide
 .global arriving_at_other_side_slide
+.ifndef DEMO_BUILD
 .global thanks_for_playing_slide
 .global by_gradual_games_slide
 .global derek_andrews_slide
@@ -85,6 +88,7 @@ boss_5_index    = 16
 .global special_thanks_slide
 .global nesdev_slide
 .global nintendoage_slide
+.endif
 
 .struct title
   palette_address .word

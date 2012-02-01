@@ -14,9 +14,15 @@ SPRITESHEET1_PATTERNS_IMPORTS_INC = 1
 .global spritesheet1_Shark_chr
 .global spritesheet1_Stalactite_chr
 .global spritesheet1_DragonFace_chr
+.ifndef DEMO_BUILD
 .global spritesheet1_GrubselimBoj_chr
 .global spritesheet1_bigfireball_chr
 .global spritesheet1_Boulder_chr
+.else
+spritesheet1_GrubselimBoj_chr = 0
+spritesheet1_bigfireball_chr = 0
+spritesheet1_Boulder_chr = 0
+.endif
 .global spritesheet1_Thoguth_chr
 .global spritesheet1_LightningBolt_chr
 

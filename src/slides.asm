@@ -41,6 +41,7 @@ nomolos_sets_out_caption:
   .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$1a,$12,$04,$13,$12,$1a,$0e,$14,$13,$1a,$13,$0e,$1a,$12,$00,$15,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$12,$0d,$0e,$16,$28,$28,$28
 
+.ifndef DEMO_BUILD
 ;SNOW: "SOLOMON! I KNEW          YOU WOULD COME TO               RESCUE ME!"
 nomolos_and_snow_reunited_caption:
   .byte $4b,$12,$0d,$0e,$16,$2b,$1a,$26,$12,$0e,$0b,$0e,$0c,$0e,$0d,$28,$1a,$08,$1a,$0a,$0d,$04,$16,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
@@ -132,6 +133,7 @@ nesdev_caption:
 ;EVERYONE AT NINTENDOAGE
 nintendoage_caption:
   .byte $17,$04,$15,$04,$11,$18,$0e,$0d,$04,$1a,$00,$13,$1a,$0d,$08,$0d,$13,$04,$0d,$03,$0e,$00,$06,$04
+.endif
 
 .segment "ROM10"
 
@@ -1456,6 +1458,7 @@ slide5_nametable:
   .byte $00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00
 
+.ifndef DEMO_BUILD
 ending_slide1_palette:
   .byte $0d,$04,$17,$20,$0d,$17,$24,$20,$0d,$17,$29,$20,$0d,$29,$24,$20
   .byte $0d,$04,$17,$20,$0d,$17,$24,$20,$0d,$17,$29,$20,$0d,$29,$24,$20
@@ -2316,3 +2319,4 @@ ending_slide3_nametable:
   .byte $00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00
+.endif

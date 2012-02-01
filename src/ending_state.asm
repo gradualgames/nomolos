@@ -17,6 +17,7 @@
 
 .proc ending_state_update
 
+.ifndef DEMO_BUILD
 .ifdef MUSIC_ENABLE
   lda #<mysterious_barricades
   sta sound_param_word_1
@@ -72,6 +73,7 @@
   show_graphics_slide slide1
 
 : jmp :-
+.endif
 
   rts
 .endproc

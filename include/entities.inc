@@ -21,15 +21,17 @@ ENTITIES_INC = 1
 .global iceball_update
 .global shark_update
 .global stalactite_update
+.global thoguth_update
 .global dragonboss_update
 .global restart_update
+.global lightningbolt_update
+
+.ifndef DEMO_BUILD
+.global fireguy_update
+.global fireballspawner_update
 .global phoenix_update
 .global fireball_update
 .global snake_update
-.global fireguy_update
-.global thoguth_update
-.global fireballspawner_update
-.global lightningbolt_update
 .global grubselimboj_update
 .global bigfireball_update
 .global statue_update
@@ -46,6 +48,29 @@ ENTITIES_INC = 1
 .global feather_update
 .global boulder_update
 .global spiraliceball_update
+.else
+fireguy_update = 0
+fireballspawner_update = 0
+phoenix_update = 0
+fireball_update = 0
+snake_update = 0
+grubselimboj_update = 0
+bigfireball_update = 0
+statue_update = 0
+raven_update = 0
+sheep_update = 0
+bee_update = 0
+setrightmostx_update = 0
+gort_update = 0
+hippocritter_update = 0
+armoredskelekin_update = 0
+attacknid_update = 0
+laser_update = 0
+sneep_update = 0
+feather_update = 0
+boulder_update = 0
+spiraliceball_update = 0
+.endif
 
 ;entity indices
 entity_index_nomolos = 1

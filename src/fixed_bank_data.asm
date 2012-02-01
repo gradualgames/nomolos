@@ -1587,6 +1587,7 @@ nomolos_sets_out_slide:
   .byte 250
   .byte 5
 
+.ifndef DEMO_BUILD
 nomolos_and_snow_reunited_slide:
   .word nomolos_and_snow_reunited_caption
   .byte 150
@@ -1666,6 +1667,7 @@ nintendoage_slide:
   .word nintendoage_caption
   .byte 150
   .byte 5
+.endif
 
 title_definition:
   .word title_palette
@@ -1718,6 +1720,7 @@ slide5:
   .byte 7
   .byte 7
 
+.ifndef DEMO_BUILD
 ending_slide1:
   .word ending_slide1_palette
   .word ending_slide1_nametable
@@ -1741,3 +1744,4 @@ ending_slide3:
   .byte 250
   .byte 12
   .byte 6
+.endif
