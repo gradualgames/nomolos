@@ -578,7 +578,7 @@ nomolosNotAttacking:
 
   lda #$0C
   sta nomolos_attack_rect_width
-  lda #$10
+  lda #$1c
   sta nomolos_attack_rect_height
 
   lda nomolos_state_primary
@@ -595,7 +595,7 @@ nomolosNotAttacking:
 
   clc
   lda nomolos_screen_y
-  adc #$05
+  adc #$00
   sta nomolos_attack_rect_y
   lda nomolos_screen_y+1
   adc #$00
@@ -614,7 +614,7 @@ skipNomolosFacingLeft:
 
   clc
   lda nomolos_screen_y
-  adc #$05
+  adc #$00
   sta nomolos_attack_rect_y
   lda nomolos_screen_y+1
   adc #$00
