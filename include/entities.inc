@@ -8,6 +8,7 @@ ENTITIES_INC = 1
 .global explosionspawner_update
 .global deentle_update
 .global exit_level_update
+.global setrightmostx_update
 .global beedie_update
 .global grank_update
 .global spear_item_update
@@ -38,7 +39,6 @@ ENTITIES_INC = 1
 .global raven_update
 .global sheep_update
 .global bee_update
-.global setrightmostx_update
 .global gort_update
 .global hippocritter_update
 .global armoredskelekin_update
@@ -60,7 +60,6 @@ statue_update = 0
 raven_update = 0
 sheep_update = 0
 bee_update = 0
-setrightmostx_update = 0
 gort_update = 0
 hippocritter_update = 0
 armoredskelekin_update = 0
