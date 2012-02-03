@@ -2,11 +2,11 @@
 
 .segment "ROM05"
 
-;ONE FINE DAY, SOLOMON           AND SNOW WERE ENJOYING          WATCHING THE BIRDS
+;ONCE UPON A TIME, SOLOMON       AND SNOW WERE ENJOYING          A BEAUTIFUL DAY TOGETHER.
 solomon_snow_watching_birds_caption:
-  .byte $52,$0e,$0d,$04,$1a,$05,$08,$0d,$04,$1a,$03,$00,$18,$25,$1a,$12,$0e,$0b,$0e,$0c,$0e,$0d,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $59,$0e,$0d,$02,$04,$1a,$14,$0f,$0e,$0d,$1a,$00,$1a,$13,$08,$0c,$04,$25,$1a,$12,$0e,$0b,$0e,$0c,$0e,$0d,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$00,$0d,$03,$1a,$12,$0d,$0e,$16,$1a,$16,$04,$11,$04,$1a,$04,$0d,$09,$0e,$18,$08,$0d,$06,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$16,$00,$13,$02,$07,$08,$0d,$06,$1a,$13,$07,$04,$1a,$01,$08,$11,$03,$12
+  .byte $1a,$00,$1a,$01,$04,$00,$14,$13,$08,$05,$14,$0b,$1a,$03,$00,$18,$1a,$13,$0e,$06,$04,$13,$07,$04,$11,$27
 
 ;WHEN SUDDENLY,                  A MYSTERIOUS PORTAL             APPEARED BEFORE THEM!
 portal_appears_caption:
@@ -27,18 +27,18 @@ leapt_through_portal_caption:
   .byte $1a,$13,$07,$04,$1a,$0f,$0e,$11,$13,$00,$0b,$1a,$00,$12,$1a,$08,$13,$1a,$01,$04,$06,$00,$0d,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$13,$0e,$1a,$02,$0b,$0e,$12,$04,$28
 
-;UPON REACHING THE OTHER         SIDE, HE TRANSFORMED            INTO A FIERCE WARRIOR:          NOMOLOS!
+;UPON REACHING THE OTHER         SIDE, HE TRANSFORMED            INTO NOMOLOS,                   THE FIERCE FELINE WARRIOR!
 became_nomolos_caption:
-  .byte $68,$14,$0f,$0e,$0d,$1a,$11,$04,$00,$02,$07,$08,$0d,$06,$1a,$13,$07,$04,$1a,$0e,$13,$07,$04,$11,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $7a,$14,$0f,$0e,$0d,$1a,$11,$04,$00,$02,$07,$08,$0d,$06,$1a,$13,$07,$04,$1a,$0e,$13,$07,$04,$11,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$12,$08,$03,$04,$25,$1a,$07,$04,$1a,$13,$11,$00,$0d,$12,$05,$0e,$11,$0c,$04,$03,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$08,$0d,$13,$0e,$1a,$00,$1a,$05,$08,$04,$11,$02,$04,$1a,$16,$00,$11,$11,$08,$0e,$11,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$28
+  .byte $1a,$08,$0d,$13,$0e,$1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$13,$07,$04,$1a,$05,$08,$04,$11,$02,$04,$1a,$05,$04,$0b,$08,$0d,$04,$1a,$16,$00,$11,$11,$08,$0e,$11,$28
 
-;FINDING HIMSELF EQUIPPED        WITH ARMOR AND A SWORD,         NOMOLOS SETS OUT TO SAVE        SNOW!!!
+;FINDING HIMSELF EQUIPPED        WITH ARMOR AND A SWORD,         NOMOLOS SET OUT TO SAVE         SNOW!!!
 nomolos_sets_out_caption:
   .byte $67,$05,$08,$0d,$03,$08,$0d,$06,$1a,$07,$08,$0c,$12,$04,$0b,$05,$1a,$04,$10,$14,$08,$0f,$0f,$04,$03,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$16,$08,$13,$07,$1a,$00,$11,$0c,$0e,$11,$1a,$00,$0d,$03,$1a,$00,$1a,$12,$16,$0e,$11,$03,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$1a,$12,$04,$13,$12,$1a,$0e,$14,$13,$1a,$13,$0e,$1a,$12,$00,$15,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$1a,$12,$04,$13,$1a,$0e,$14,$13,$1a,$13,$0e,$1a,$12,$00,$15,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$12,$0d,$0e,$16,$28,$28,$28
 
 .ifndef DEMO_BUILD
