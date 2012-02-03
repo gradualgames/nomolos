@@ -146,6 +146,7 @@ spritesheet1_Skelekin_chr:
   .byte $f0,$f0,$f0,$f0,$f0,$f0,$f0,$f0,$60,$80,$c0,$60,$a0,$e0,$40,$00
   .byte $1f,$1f,$ff,$ff,$7f,$0f,$1f,$3f,$0d,$04,$0e,$3d,$09,$06,$0e,$1c
   .byte $f0,$e0,$c0,$e0,$e0,$e0,$f0,$f0,$c0,$c0,$80,$c0,$c0,$c0,$e0,$60
+.ifndef DEMO_BUILD
 spritesheet1_Snail_chr:
   .word $00C0
   .byte $00,$00,$00,$00,$44,$22,$22,$3e,$00,$00,$00,$00,$00,$00,$00,$00
@@ -249,7 +250,6 @@ spritesheet1_DragonFace_chr:
   .byte $18,$38,$78,$f8,$70,$30,$20,$00,$9e,$38,$78,$f8,$f0,$f0,$e0,$c0
   .byte $04,$0c,$1c,$30,$20,$00,$00,$00,$04,$0c,$1c,$30,$20,$00,$00,$00
   .byte $c0,$20,$20,$60,$00,$00,$00,$00,$c0,$20,$20,$60,$00,$00,$00,$00
-.ifndef DEMO_BUILD
 spritesheet1_GrubselimBoj_chr:
   .word $0140
   .byte $3f,$3f,$fe,$f5,$ed,$f4,$7f,$3f,$00,$07,$3f,$7e,$7e,$3f,$1f,$00

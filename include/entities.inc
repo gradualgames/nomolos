@@ -17,17 +17,17 @@ ENTITIES_INC = 1
 .global skelekin_update
 .global owl_update
 .global snuffer_update
+.global thoguth_update
+.global restart_update
+.global lightningbolt_update
+
+.ifndef DEMO_BUILD
 .global snail_update
 .global dragon_update
 .global iceball_update
 .global shark_update
 .global stalactite_update
-.global thoguth_update
 .global dragonboss_update
-.global restart_update
-.global lightningbolt_update
-
-.ifndef DEMO_BUILD
 .global fireguy_update
 .global fireballspawner_update
 .global phoenix_update
@@ -49,6 +49,12 @@ ENTITIES_INC = 1
 .global boulder_update
 .global spiraliceball_update
 .else
+snail_update = 0
+dragon_update = 0
+iceball_update = 0
+shark_update = 0
+stalactite_update = 0
+dragonboss_update = 0
 fireguy_update = 0
 fireballspawner_update = 0
 phoenix_update = 0

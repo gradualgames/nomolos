@@ -15,6 +15,7 @@ SPRITESHEET1_SPRITES_IMPORTS_INC = 1
 .global spritesheet1_Snuffer0
 .global spritesheet1_Snuffer1
 .global spritesheet1_Snuffer2
+.ifndef DEMO_BUILD
 .global spritesheet1_Snail0
 .global spritesheet1_Snail1
 .global spritesheet1_Dragon0
@@ -29,7 +30,6 @@ SPRITESHEET1_SPRITES_IMPORTS_INC = 1
 .global spritesheet1_Stalactite0
 .global spritesheet1_DragonFace0
 .global spritesheet1_DragonFace1
-.ifndef DEMO_BUILD
 .global spritesheet1_GrubselimBojEyes0
 .global spritesheet1_GrubselimBojEyes1
 .global spritesheet1_GrubselimBojMouth0

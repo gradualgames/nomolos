@@ -54,6 +54,28 @@ spritesheet1_SkelekinWalk:
   .word spritesheet1_Skelekin0
   .word $0000
 
+spritesheet1_ThoguthMarch:
+  .byte $0a
+  .word spritesheet1_ThoguthMarch0
+  .word spritesheet1_ThoguthMarch1
+  .word spritesheet1_ThoguthMarch0
+  .word spritesheet1_ThoguthMarch2
+  .word $0000
+
+spritesheet1_ThoguthHammerfall:
+  .byte 20
+  .word spritesheet1_ThoguthHammerfall0
+  .word spritesheet1_ThoguthHammerfall1
+  .word spritesheet1_ThoguthHammerfall2
+  .word $0000
+
+spritesheet1_ThoguthLightning:
+  .byte $03
+  .word spritesheet1_ThoguthLightning0
+  .word spritesheet1_ThoguthLightning1
+  .word $0000
+
+.ifndef DEMO_BUILD
 spritesheet1_SnailCrawl:
   .byte $28
   .word spritesheet1_Snail0
@@ -83,28 +105,6 @@ spritesheet1_SharkLeap:
   .word spritesheet1_Shark2
   .word $0000
 
-spritesheet1_ThoguthMarch:
-  .byte $0a
-  .word spritesheet1_ThoguthMarch0
-  .word spritesheet1_ThoguthMarch1
-  .word spritesheet1_ThoguthMarch0
-  .word spritesheet1_ThoguthMarch2
-  .word $0000
-
-spritesheet1_ThoguthHammerfall:
-  .byte 20
-  .word spritesheet1_ThoguthHammerfall0
-  .word spritesheet1_ThoguthHammerfall1
-  .word spritesheet1_ThoguthHammerfall2
-  .word $0000
-
-spritesheet1_ThoguthLightning:
-  .byte $03
-  .word spritesheet1_ThoguthLightning0
-  .word spritesheet1_ThoguthLightning1
-  .word $0000
-
-.ifndef DEMO_BUILD
 spritesheet1_bigfireballfly:
   .byte $02
   .word spritesheet1_bigfireball2

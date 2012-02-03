@@ -64,9 +64,6 @@ level_definition_table:
   .word level_2_1_data
   .word level_2_2_data
   .word boss_2_data
-  .word level_3_1_data
-  .word level_3_2_data
-  .word boss_1_data
 .endif
 
 ;level intro strings
@@ -790,96 +787,6 @@ boss_2_data:
 
   .word entity_definition_table
   .word boss2_music
-  .byte level_3_index
-
-;ROM definition table
-level_3_1_data:
-  .byte spritesheet_1_bank
-  .byte level_3_bank
-  .byte level_3_patterns_bank
-  .word level3_patterns
-  .byte spritesheet_1_patterns_bank
-  .word level3_sprite_groups
-  .word level3_cycling_palettes ;cycling_palette_address
-  .byte 10 ;cycling_palette_speed
-
-  .word level3_palette
-
-  .byte 104 ;nomolos_start_x
-  .byte 0   ;nomolos_start_y
-  .byte 0   ;starting_screen
-  
-  .word level3_intro_string
-  .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
-  .word level3_map
-  .word level3_map_column_table
-  .word level3_attribute_column_table
-  .word level3_meta_tile_column_table
-  .word level3_meta_tile_table
-
-  .word entity_definition_table
-  .word level3_music
-  .byte level_3_2_index
-
-;ROM definition table
-level_3_2_data:
-  .byte spritesheet_1_bank
-  .byte level_3_bank
-  .byte level_3_patterns_bank
-  .word level3_patterns
-  .byte spritesheet_1_patterns_bank
-  .word level3_sprite_groups
-  .word level3_cycling_palettes ;cycling_palette_address
-  .byte 10 ;cycling_palette_speed
-
-  .word level3_palette
-
-  .byte 0   ;nomolos_start_x
-  .byte 191 ;nomolos_start_y
-  .byte 0   ;starting_screen
-  
-  .word level3_2_intro_string
-  .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
-  .word level3_2_map
-  .word level3_2_map_column_table
-  .word level3_2_attribute_column_table
-  .word level3_2_meta_tile_column_table
-  .word level3_2_meta_tile_table
-
-  .word entity_definition_table
-  .word level3_2_music
-  .byte boss_1_index
-
-;ROM definition table
-boss_1_data:
-  .byte spritesheet_1_bank
-  .byte boss_1_bank
-  .byte boss_1_patterns_bank
-  .word boss1_patterns
-  .byte spritesheet_1_patterns_bank
-  .word boss1_sprite_groups
-  .word 0 ;cycling_palette_address
-  .byte 0 ;cycling_palette_speed
-
-  .word boss1_palette
-
-  .byte 40  ;nomolos_start_x
-  .byte 159 ;nomolos_start_y
-  .byte 0   ;starting_screen
-  
-  .word boss1_intro_string
-  .byte 32 ;columns_to_load
-  .byte 0  ;camera_scroll_enabled  
-  .word boss1_map
-  .word boss1_map_column_table
-  .word boss1_attribute_column_table
-  .word boss1_meta_tile_column_table
-  .word boss1_meta_tile_table
-
-  .word entity_definition_table
-  .word boss1_music
   .byte level_1_index
 
 .endif

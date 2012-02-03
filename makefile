@@ -47,12 +47,12 @@ FILES +=           level1 \
                    level1_2 \
                    level2 \
                    level2_2 \
-                   boss2 \
-                   level3 \
-                   level3_2 \
-                   boss1
+                   boss2
 ifndef DEMO
-FILES +=           level4 \
+FILES +=           level3 \
+                   level3_2 \
+                   boss1 \
+                   level4 \
                    level4_2 \
                    boss3 \
                    level5 \

@@ -190,6 +190,7 @@ spritesheet1_Skelekin2:
   .byte $18,$19,$00,$08,$00
   .byte $20,$08,$00,$00,$08
   .byte $20,$09,$00,$08,$00
+.ifndef DEMO_BUILD
 spritesheet1_Snail0:
   .byte $06
   .byte $00,$00,$00,$00,$10
@@ -332,7 +333,6 @@ spritesheet1_DragonFace1:
   .byte $20,$0a,$03,$08,$10
   .byte $20,$01,$00,$10,$08
   .byte $20,$01,$00,$18,$00
-.ifndef DEMO_BUILD
 spritesheet1_GrubselimBojEyes0:
   .byte $04
   .byte $00,$00,$02,$00,$18

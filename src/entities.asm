@@ -52,16 +52,16 @@
 .include "batree.inc"
 .include "owl.inc"
 .include "snuffer.inc"
+.include "thoguth.inc"
+.include "lightningbolt.inc"
+
+.ifndef DEMO_BUILD
 .include "snail.inc"
 .include "dragon.inc"
 .include "iceball.inc"
 .include "shark.inc"
 .include "stalactite.inc"
 .include "dragonboss.inc"
-.include "thoguth.inc"
-.include "lightningbolt.inc"
-
-.ifndef DEMO_BUILD
 .include "grubselimboj.inc"
 .include "bigfireball.inc"
 .include "boulder.inc"
