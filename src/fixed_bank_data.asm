@@ -622,7 +622,7 @@ boss_5_data:
   .byte 0   ;starting_screen
   
   .word boss5_intro_string
-  .byte 32 ;columns_to_load
+  .byte 16 ;columns_to_load
   .byte 0  ;camera_scroll_enabled  
   .word boss5_map
   .word boss5_map_column_table
