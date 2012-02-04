@@ -29,7 +29,7 @@ GRUBSELIMBOJ_HORIZSPEED = 10
 GRUBSELIMBOJ_MAXHORIZSPEED = 3
 
 GOAL_X = 160
-GOAL_Y = 70
+GOAL_Y = 50
 
 .proc grubselimboj_update
 
@@ -67,7 +67,7 @@ grubselimboj_stationaryState:
 
   ;spawn a grank every once in a while
   lda entity_locals+grubselimboj_locals::counter,x
-  and #%00011111
+  and #%00111111
   bne do_not_spawn_grank
   
   ;spawn an entity
