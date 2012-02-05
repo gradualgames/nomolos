@@ -254,17 +254,25 @@ select_not_pressed:
   bne display_end_cursor
   
   lda #CONTINUE_CURSOR_X
-  sta b0
+  sta w3
+  lda #0
+  sta w3+1
   lda #CONTINUE_CURSOR_Y
-  sta b1
+  sta w4
+  lda #0
+  sta w4+1
   
   jmp selected_cursor_test_done
   
 display_end_cursor:
   lda #END_CURSOR_X
-  sta b0
+  sta w3
+  lda #0
+  sta w3+1
   lda #END_CURSOR_Y
-  sta b1
+  sta w4
+  lda #0
+  sta w4+1
   
 selected_cursor_test_done:
   
@@ -277,7 +285,7 @@ selected_cursor_test_done:
   iny
   lda #>heart
   sta w0+1
-  jsr sprite_draw_metasprite_8bit
+  jsr sprite_draw_metasprite_16bit
 
   ;check for off to on transition on the start button
   lda buffer_controller+buttons::_start

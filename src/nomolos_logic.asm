@@ -2078,23 +2078,72 @@ skipnomolos_walkingLeft:
   ldx nomolos_status_health
   beq skipDrawHearts
 
-  lda #$10
-  sta b0
-  sta b1
-  lda #0
-  sta b2
+  lda entity_chr_offsets+(entity_index_nomolos-1)
+  sta sprite_group_offset
+
+  ; lda #0
+  ; sta b2
+
+  ; lda #<spritesheet_common_FlailItem0
+  ; sta w0
+  ; lda #>spritesheet_common_FlailItem0
+  ; sta w0+1
+
+  ; lda entity_screen_x
+  ; sta w3
+  ; lda entity_screen_x+1
+  ; sta w3+1
+  ; lda entity_screen_y
+  ; sta w4
+  ; lda entity_screen_y+1
+  ; sta w4+1
+
+  ; jsr sprite_draw_metasprite_16bit
+
   lda #<spritesheet_common_Heart0
   sta w0
   lda #>spritesheet_common_Heart0
   sta w0+1
-drawNextHeart:
-  jsr sprite_draw_metasprite_8bit
-  lda b0
+
+  lda #$10
+  sta w3
+  sta w4
+  lda #$00
+  sta w3+1
+  sta w4+1
+
+  lda #0
+  sta b2
+
+: jsr sprite_draw_metasprite_16bit
+
+  lda w3
   clc
   adc #$08
-  sta b0
+  sta w3
+  lda w3+1
+  adc #$00
+  sta w3+1
   dex
-  bne drawNextHeart
+  bne :-
+
+  ; lda #$10
+  ; sta b0
+  ; sta b1
+  ; lda #0
+  ; sta b2
+  ; lda #<spritesheet_common_Heart0
+  ; sta w0
+  ; lda #>spritesheet_common_Heart0
+  ; sta w0+1
+; drawNextHeart:
+  ; jsr sprite_draw_metasprite_16bit
+  ; lda b0
+  ; clc
+  ; adc #$08
+  ; sta b0
+  ; dex
+  ; bne drawNextHeart
 skipDrawHearts:
 
   rts
