@@ -298,6 +298,9 @@ sneep_draw:
   jsr sound_upload
   .endif
 
+  ;workaround to ensure Nomolos cannot be dying when he has delivered the final blow
+  jsr nomolos_ensure_not_dying
+
   ;make Nomolos invincible the instant we transition Sneep into dying state
   lda nomolos_state_primary
   ora #nomolos_invincibility_on_set

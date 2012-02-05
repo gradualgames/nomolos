@@ -648,6 +648,9 @@ grubselimboj_draw:
   dec entity_locals+grubselimboj_locals::health,x
   bne health_not_zero
   
+  ;workaround to ensure Nomolos cannot be dying when he has delivered the final blow
+  jsr nomolos_ensure_not_dying
+
   ;make Nomolos invincible the instant we transition into dying state
   lda nomolos_state_primary
   ora #nomolos_invincibility_on_set

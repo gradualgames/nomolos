@@ -7,6 +7,7 @@ NOMOLOSLOGIC_INC = 1
 .global nomolos_draw
 .global nomolos_draw_hearts
 .global nomolos_hurt
+.global nomolos_ensure_not_dying
 .global nomolos_is_deadly
 .global nomolos_add_health
 .global nomolos_add_life

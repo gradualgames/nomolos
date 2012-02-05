@@ -124,6 +124,22 @@
 
 .endproc
 
+;used by bosses to ensure that nomolos cannot be dying the moment he has delivered the final blow.
+;This is sort of a workaround due to not considering attack priorities early in the development of
+;the game engine.
+.proc nomolos_ensure_not_dying
+  lda nomolos_state_primary
+  and #nomolos_dying_off_clear
+  sta nomolos_state_primary
+
+  lda nomolos_status_health
+  bne :+
+  lda #1
+  sta nomolos_status_health
+:
+  rts
+.endproc
+
 ;hurts Nomolos. It makes him bounce in the air a little bit, lose a heart,
 ;and become invincible temporarily.
 .proc nomolos_hurt
