@@ -888,16 +888,16 @@ entity_definition_table:
   .byte $00
   .word statue_update
   .byte $03
-  .byte $00
+  .byte $0a
   .word raven_update
   .byte $01
-  .byte $00
+  .byte $10
   .word sheep_update
   .byte $01
-  .byte $00
+  .byte $0c
   .word bee_update
   .byte $03
-  .byte $00
+  .byte $04
   .word explosionspawner_update
   .byte $0a
   .byte $00
