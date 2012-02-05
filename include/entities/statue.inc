@@ -6,6 +6,7 @@ STATUE_INC = 1
   y_belowPenetration .byte
   x_collisionPointBottom .word
   y_collisionPointBottom .word
+  proximity .byte
 .endstruct
 
 STATUE_WIDTH = $10
@@ -16,10 +17,13 @@ STATUE_INITSTATE = $00
 STATUE_SITTHERESTATE = $01
 STATUE_JUMPSTATE = $02
 
-STATUE_PROXIMITY_WIDTH = $30
-STATUE_PROXIMITY_HEIGHT = $30
-STATUE_PROXIMITY_ADJUST_X = $10
-STATUE_PROXIMITY_ADJUST_Y = $10
+STATUE_STARTJUMP_LO = $0a
+STATUE_STARTJUMP_HI = $f5
+
+STATUE_PROXIMITY_WIDTH = $80
+STATUE_PROXIMITY_HEIGHT = $a0
+STATUE_PROXIMITY_ADJUST_X = $38
+STATUE_PROXIMITY_ADJUST_Y = $90
 
 .proc statue_update
 
@@ -68,7 +72,7 @@ statue_jump_handler:
   bpl stopAccelerating
   clc
   lda entity_locals+statue_locals::y_velocity,x
-  adc #$40
+  adc #$80
   sta entity_locals+statue_locals::y_velocity,x
   lda entity_locals+statue_locals::y_velocity+1,x
   adc #0
@@ -157,32 +161,16 @@ statue_sit_there_handler:
   jsr entity_item_test_death_zone
   beq statueDie
 
-  ;compare Nomolos's X coordinate to the entity's X coordinate
+  jsr statue_proximity_test
 
-  ;load left side of line A
-  lda nomolos_screen_x
-  sta b2
-  ;load right side of line A
-  clc
-  adc #nomolos_width
-  sta b3
-
-  ;load left side of line B
-  lda entity_screen_x
-  sta b4
-  ;load right side of line B
-  clc
-  adc #STATUE_WIDTH
-  sta b5
-
-  jsr geotests_compare_range
+  lda entity_locals+statue_locals::proximity,x
 
   bne do_not_switch_to_jump_state
 
   ;initialize the jump state
-  lda #$0a
+  lda #STATUE_STARTJUMP_LO
   sta entity_locals+statue_locals::y_velocity,x
-  lda #$fa
+  lda #STATUE_STARTJUMP_HI
   sta entity_locals+statue_locals::y_velocity+1,x
 
   lda #STATUE_JUMPSTATE
@@ -219,7 +207,7 @@ statueDie:
 
   rts
 
-statue_draw:
+statue_proximity_test:
 
   ;transfer rectangle to w2 = left and w3 = top and b2 = width and b3 = height
   lda entity_screen_x
@@ -267,11 +255,32 @@ statue_draw:
   sta b5
 
   jsr geotests_rect_in_rect_16bit
-  
-  beq draw_eyes_shut
-  bne draw_eyes_open
 
-draw_eyes_open:
+  beq proximity_test_succeeded
+  bne proximity_test_failed
+
+proximity_test_failed:
+
+  lda #1
+  sta entity_locals+statue_locals::proximity,x
+
+  rts
+
+proximity_test_succeeded:
+
+  lda #0
+  sta entity_locals+statue_locals::proximity,x
+
+  rts
+
+statue_draw:
+  
+  lda entity_locals+statue_locals::proximity,x
+
+  beq draw_eyes_open
+  bne draw_eyes_shut
+
+draw_eyes_shut:
 
   lda #<spritesheet2_statue0
   sta w0
@@ -279,7 +288,7 @@ draw_eyes_open:
   sta w0+1
   jmp proximity_test_done
 
-draw_eyes_shut:
+draw_eyes_open:
 
   lda #<spritesheet2_statue1
   sta w0
