@@ -28,14 +28,6 @@ SHEEP_MOVELEFTSTATE = 2
 
 sheep_initState:
 
-  lda entity_instances+entity_instance::index,x
-  sta b0
-  lda entity_instances+entity_instance::spawn_position_x,x
-  sta w0
-  lda entity_instances+entity_instance::spawn_position_x+1,x
-  sta w0+1
-  lda entity_instances+entity_instance::spawn_position_y,x
-  sta b1
   jsr entity_kill_if_redundant_entity
 
   ;init code for animation, etc. goes here
