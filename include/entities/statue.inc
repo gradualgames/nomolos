@@ -7,6 +7,7 @@ STATUE_INC = 1
   x_collisionPointBottom .word
   y_collisionPointBottom .word
   proximity .byte
+  state_switch_counter .byte
 .endstruct
 
 STATUE_WIDTH = $10
@@ -65,6 +66,15 @@ statue_init_handler:
   rts
 
 statue_jump_handler:
+
+  ;shake the screen
+  lda entity_locals+statue_locals::state_switch_counter,x
+  beq :+
+  and #$02
+  sta camera_scroll_y
+  dec entity_locals+statue_locals::state_switch_counter,x
+
+:
 
   ;increment the vertical velocity
   lda entity_locals+statue_locals::y_velocity+1,x
@@ -166,6 +176,27 @@ statue_sit_there_handler:
   lda entity_locals+statue_locals::proximity,x
 
   bne do_not_switch_to_jump_state
+
+  ;play a boom sound
+  txa
+  pha
+
+  lda #<boss_boom_sound
+  sta sound_param_word_0
+  lda #>boss_boom_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+
+  lda #20
+  sta entity_locals+statue_locals::state_switch_counter,x
 
   ;initialize the jump state
   lda #STATUE_STARTJUMP_LO
