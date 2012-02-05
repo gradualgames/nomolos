@@ -34,6 +34,24 @@ bee_initState:
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 
+  ;play a buzz sound
+  txa
+  pha
+
+  lda #<buzz_sound
+  sta sound_param_word_0
+  lda #>buzz_sound
+  sta sound_param_word_0+1
+
+  lda #0
+  sta sound_param_byte_0
+
+  ldx #soundeffect_one
+  jsr stream_initialize
+
+  pla
+  tax
+
   ;set x velocity to 0
   lda #0
   sta entity_locals+beeLocals::x_velocity,x

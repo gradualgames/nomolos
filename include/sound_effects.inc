@@ -8,13 +8,16 @@
 .global sf_volume_envelope_decay_slowly
 .global sf_volume_envelope_owl
 .global sf_volume_envelope_foom
+.global sf_volume_envelope_buzz
 .global sf_pitch_envelope_0
 .global sf_pitch_envelope_1
 .global sf_pitch_envelope_2
 .global sf_pitch_envelope_3_owl
+.global sf_pitch_envelope_buzz
 .global sf_duty_envelope_0
 .global sf_duty_envelope_1
 
+.global buzz_sound
 .global foom_sound
 .global owl_hoot_sound
 .global boss_hurt_sound
@@ -44,6 +47,7 @@ SOUND_EFFECT_BASE = 10
   .word sf_volume_envelope_decay_slowly
   .word sf_volume_envelope_owl
   .word sf_volume_envelope_foom
+  .word sf_volume_envelope_buzz
 
 .endmacro
 
@@ -53,7 +57,7 @@ SOUND_EFFECT_BASE = 10
   .word sf_pitch_envelope_1
   .word sf_pitch_envelope_2
   .word sf_pitch_envelope_3_owl
-  .word 0
+  .word sf_pitch_envelope_buzz
 
   .word 0
   .word 0

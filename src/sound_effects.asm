@@ -33,6 +33,9 @@ sf_volume_envelope_owl:
 sf_volume_envelope_foom:
   .byte 2,3,5,7,10,13,14,13,9,6,5,3,2,1,ENV_STOP
   
+sf_volume_envelope_buzz:
+  .byte 12,12,12,11,10,9,9,8,8,7,7,6,6,5,4,4,3,0,ENV_STOP
+
 sf_pitch_envelope_0:
   .byte 0, ENV_LOOP
 
@@ -45,11 +48,18 @@ sf_pitch_envelope_2:
 sf_pitch_envelope_3_owl:
   .byte 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,ENV_STOP
   
+sf_pitch_envelope_buzz:
+  .byte 6,16,26,32,38,41,42,43,48,53,61,69,80,91,102,117,120,120,ENV_STOP
+
 sf_duty_envelope_0:
-  .byte 0
+  .byte 0, ENV_LOOP
 sf_duty_envelope_1:
   .byte -128,ENV_LOOP
   
+buzz_sound:
+  .byte STV,SOUND_EFFECT_BASE+10,STP,SOUND_EFFECT_BASE+4,SDU,SOUND_EFFECT_BASE+0,STL,20,F2
+  .byte TRM
+
 owl_hoot_sound:
   .byte STV,SOUND_EFFECT_BASE+8,STP,SOUND_EFFECT_BASE+3,SDU,SOUND_EFFECT_BASE+1,STL,15,C4
   .byte TRM
