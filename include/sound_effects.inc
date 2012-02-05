@@ -9,6 +9,7 @@
 .global sf_volume_envelope_owl
 .global sf_volume_envelope_foom
 .global sf_volume_envelope_buzz
+.global sf_volume_envelope_flap
 .global sf_pitch_envelope_0
 .global sf_pitch_envelope_1
 .global sf_pitch_envelope_2
@@ -17,6 +18,7 @@
 .global sf_duty_envelope_0
 .global sf_duty_envelope_1
 
+.global flap_sound
 .global buzz_sound
 .global foom_sound
 .global owl_hoot_sound
@@ -48,6 +50,7 @@ SOUND_EFFECT_BASE = 10
   .word sf_volume_envelope_owl
   .word sf_volume_envelope_foom
   .word sf_volume_envelope_buzz
+  .word sf_volume_envelope_flap
 
 .endmacro
 

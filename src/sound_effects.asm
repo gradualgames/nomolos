@@ -36,6 +36,9 @@ sf_volume_envelope_foom:
 sf_volume_envelope_buzz:
   .byte 12,12,12,11,10,9,9,8,8,7,7,6,6,5,4,4,3,0,ENV_STOP
 
+sf_volume_envelope_flap:
+  .byte 3,5,9,12,13,10,6,3,5,7,8,9,8,6,0,ENV_STOP
+
 sf_pitch_envelope_0:
   .byte 0, ENV_LOOP
 
@@ -56,6 +59,10 @@ sf_duty_envelope_0:
 sf_duty_envelope_1:
   .byte -128,ENV_LOOP
   
+flap_sound:
+  .byte STV,SOUND_EFFECT_BASE+11,STP,SOUND_EFFECT_BASE+0,SDU,SOUND_EFFECT_BASE+0,STL,15,9
+  .byte TRM
+
 buzz_sound:
   .byte STV,SOUND_EFFECT_BASE+10,STP,SOUND_EFFECT_BASE+4,SDU,SOUND_EFFECT_BASE+0,STL,20,F2
   .byte TRM
