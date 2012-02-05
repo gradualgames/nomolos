@@ -607,19 +607,6 @@ signExtendAddDone:
   
 grubselimboj_draw:
 
-  ;load grubselimboj width and height
-  lda #GRUBSELIMBOJ_WIDTH
-  sta b2
-  lda #GRUBSELIMBOJ_HEIGHT
-  sta b3
-  jsr entity_test_collision_nomolos
-
-  bne :+
-
-  jsr nomolos_hurt
-
-:
-
   ;only check for a hit if the damaged counter is all the way down
   lda entity_locals+grubselimboj_locals::damaged_counter,x
   bne damaged_counter_not_zero
@@ -684,6 +671,19 @@ grubselimboj_draw:
 health_not_zero:
 nomolosNotAttacking:
 damaged_counter_not_zero:
+
+  ;load grubselimboj width and height
+  lda #GRUBSELIMBOJ_WIDTH
+  sta b2
+  lda #GRUBSELIMBOJ_HEIGHT
+  sta b3
+  jsr entity_test_collision_nomolos
+
+  bne :+
+
+  jsr nomolos_hurt
+
+:
 
   lda entity_locals+grubselimboj_locals::damaged_counter,x
   beq entity_not_flashing
