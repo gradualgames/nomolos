@@ -147,6 +147,11 @@
   lda nomolos_status_health
   beq skipDecreaseHealth
 
+  ;turn off attacking state
+  lda nomolos_state_primary
+  and #nomolos_attack_off_clear
+  sta nomolos_state_primary
+
   ;reset weapon to sword
   lda nomolos_state_secondary
   and #nomolos_attack_set_mask
