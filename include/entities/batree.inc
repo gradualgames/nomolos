@@ -42,8 +42,15 @@ batree_initState:
   lda #0
   sta entity_locals+batree_locals::damaged_counter,x
 
-  ;set health to 3
+  ;set health based on difficulty
+  lda difficulty
+  cmp #EASY_DIFFICULTY
+  bne :+
+  lda #1
+  jmp :++
+:
   lda #3
+:
   sta entity_locals+batree_locals::health,x
   
   ;reposition the entity so it sits at the bottom of the tile where it was spawned

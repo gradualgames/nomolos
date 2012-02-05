@@ -456,8 +456,15 @@ grubselimboj_initState_handler:
   lda #>GOAL_Y
   sta entity_instances+entity_instance::position_y+1,x
   
-  ;initial health
+  ;set health based on difficulty
+  lda difficulty
+  cmp #EASY_DIFFICULTY
+  bne :+
   lda #10
+  jmp :++
+:
+  lda #15
+:
   sta entity_locals+grubselimboj_locals::health,x
   
   ;initial damaged counter

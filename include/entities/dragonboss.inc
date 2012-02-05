@@ -187,8 +187,15 @@ dragonboss_erasestate:
   lda #1
   sta entity_locals+dragonboss_locals::state_switch_counter,x
   
-  ;start dragon out with a certain amount of health
+  ;set health based on difficulty
+  lda difficulty
+  cmp #EASY_DIFFICULTY
+  bne :+
+  lda #10
+  jmp :++
+:
   lda #15
+:
   sta entity_locals+dragonboss_locals::health,x
   
   ;load a seed for the prng (for explosions when the Dragon dies)

@@ -99,8 +99,15 @@ sneep_init_state:
   lda #SNEEP_TIMETILJUMP
   sta entity_locals+sneep_locals::time_til_jump_counter,x
 
-  ;initial health
-  lda #20
+  ;set health based on difficulty
+  lda difficulty
+  cmp #EASY_DIFFICULTY
+  bne :+
+  lda #10
+  jmp :++
+:
+  lda #15
+:
   sta entity_locals+sneep_locals::health,x
   
   ;initial damaged counter

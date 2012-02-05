@@ -54,8 +54,15 @@ hippocritter_initState:
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
 
-  ;set initial health
-  lda #$04
+  ;set health based on difficulty
+  lda difficulty
+  cmp #EASY_DIFFICULTY
+  bne :+
+  lda #2
+  jmp :++
+:
+  lda #4
+:
   sta entity_locals+hippocritter_locals::health,x
 
   ;reset damaged counter

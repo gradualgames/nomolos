@@ -83,8 +83,15 @@ dragon_initState_handler:
   lda #0
   sta entity_locals+dragon_locals::damaged_counter,x
 
-  ;set health to 3
+  ;set health based on difficulty
+  lda difficulty
+  cmp #EASY_DIFFICULTY
+  bne :+
+  lda #1
+  jmp :++
+:
   lda #3
+:
   sta entity_locals+dragon_locals::health,x
   
   rts

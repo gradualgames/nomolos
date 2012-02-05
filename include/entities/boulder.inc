@@ -167,8 +167,15 @@ boulder_init:
   lda #1
   sta entity_locals+boulder_locals::state_switch_counter,x
 
-  ;start Boulder out with a certain amount of health
-  lda #15
+  ;set health based on difficulty
+  lda difficulty
+  cmp #EASY_DIFFICULTY
+  bne :+
+  lda #20
+  jmp :++
+:
+  lda #30
+:
   sta entity_locals+boulder_locals::health,x
 
   lda #BOULDER_INITBOSSMODESTATE

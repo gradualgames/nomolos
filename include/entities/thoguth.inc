@@ -131,8 +131,15 @@ thoguth_initState_handler:
   lda #0
   sta camera_scroll_enabled
   
-  ;initial health
+  ;set health based on difficulty
+  lda difficulty
+  cmp #EASY_DIFFICULTY
+  bne :+
+  lda #15
+  jmp :++
+:
   lda #20
+:
   sta entity_locals+thoguth_locals::health,x
   
   ;initial damaged counter
