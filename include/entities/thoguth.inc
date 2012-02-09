@@ -565,7 +565,7 @@ thoguth_victoryState_handler:
   .endif
   
   ;set the current row for opening the exit
-  lda #19
+  lda #17
   sta entity_locals+thoguth_victorystate_locals::open_exit_row,x
   
   lda #0
@@ -609,7 +609,7 @@ thoguth_openExitState_handler:
   dec entity_locals+thoguth_victorystate_locals::open_exit_row,x
   
   lda entity_locals+thoguth_victorystate_locals::open_exit_row,x
-  cmp #11
+  cmp #9
   bne do_not_kill_thoguth
   lda #THOGUTH_KILLSTATE
   sta entity_instances+entity_instance::state,x
