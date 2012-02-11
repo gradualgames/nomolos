@@ -69,56 +69,66 @@ level_definition_table:
 ;level intro strings
 .ifndef DEMO_BUILD
 level1_intro_string:
-  .byte $07,$0b,$04,$15,$04,$0b,$1a,$1c
+;GRAVEYARD:1
+  .byte $0b,$06,$11,$00,$15,$04,$18,$00,$11,$03,$2b,$1c
 level1_2_intro_string:
-  .byte $09,$0b,$04,$15,$04,$0b,$1a,$1c,$2b,$1d
+;GRAVEYARD:2
+  .byte $0b,$06,$11,$00,$15,$04,$18,$00,$11,$03,$2b,$1d
 level2_intro_string:
-  .byte $07,$0b,$04,$15,$04,$0b,$1a,$1d
+;STRONGHOLD:1
+  .byte $0c,$12,$13,$11,$0e,$0d,$06,$07,$0e,$0b,$03,$2b,$1c
 level2_2intro_string:
-  .byte $09,$0b,$04,$15,$04,$0b,$1a,$1d,$2b,$1d
+;STRONGHOLD:2
+  .byte $0c,$12,$13,$11,$0e,$0d,$06,$07,$0e,$0b,$03,$2b,$1d
 boss2_intro_string:
   .byte $07,$13,$07,$0e,$06,$14,$13,$07
 boss3_intro_string:
   .byte $0d,$06,$11,$14,$01,$12,$04,$0b,$08,$0c,$1a,$01,$0e,$09
 level3_intro_string:
-  .byte $07,$0b,$04,$15,$04,$0b,$1a,$1e
+;CAVE:1
+  .byte $06,$02,$00,$15,$04,$2b,$1c
 level3_2_intro_string:
-  .byte $09,$0b,$04,$15,$04,$0b,$1a,$1e,$2b,$1d
+;CAVE:2
+  .byte $06,$02,$00,$15,$04,$2b,$1d
 level4_intro_string:
-  .byte $07,$0b,$04,$15,$04,$0b,$1a,$1f
+;VOLCANO:1
+  .byte $09,$15,$0e,$0b,$02,$00,$0d,$0e,$2b,$1c
 level_4_2_intro_string:
-  .byte $09,$0b,$04,$15,$04,$0b,$1a,$1f,$2b,$1d
+;VOLCANO:2
+  .byte $09,$15,$0e,$0b,$02,$00,$0d,$0e,$2b,$1d
 boss1_intro_string:
   .byte $06,$0d,$0e,$06,$00,$11,$03
 level5_intro_string:
-  .byte $07,$0b,$04,$15,$04,$0b,$1a,$20
+;RUINS:1
+  .byte $07,$11,$14,$08,$0d,$12,$2b,$1c
 level_5_2_intro_string:
-  .byte $09,$0b,$04,$15,$04,$0b,$1a,$20,$2b,$1d
+;RUINS:2
+  .byte $07,$11,$14,$08,$0d,$12,$2b,$1d
 level6_intro_string:
-  .byte $07,$0b,$04,$15,$04,$0b,$1a,$21
+;CATSLE:1
+  .byte $08,$02,$00,$13,$12,$0b,$04,$2b,$1c
 level_6_2_intro_string:
-  .byte $09,$0b,$04,$15,$04,$0b,$1a,$21,$2b,$1d
+;CATSLE:2
+  .byte $08,$02,$00,$13,$12,$0b,$04,$2b,$1d
 boss4_intro_string:
   .byte $05,$12,$0d,$04,$04,$0f
 boss5_intro_string:
   .byte $07,$01,$0e,$14,$0b,$03,$04,$11
 .else
 level1_intro_string:
-  .byte $07,$0b,$04,$15,$04,$0b,$1a,$1c
+;GRAVEYARD:1
+  .byte $0b,$06,$11,$00,$15,$04,$18,$00,$11,$03,$2b,$1c
 level1_2_intro_string:
-  .byte $09,$0b,$04,$15,$04,$0b,$1a,$1c,$2b,$1d
+;GRAVEYARD:2
+  .byte $0b,$06,$11,$00,$15,$04,$18,$00,$11,$03,$2b,$1d
 level2_intro_string:
-  .byte $07,$0b,$04,$15,$04,$0b,$1a,$1d
+;STRONGHOLD:1
+  .byte $0c,$12,$13,$11,$0e,$0d,$06,$07,$0e,$0b,$03,$2b,$1c
 level2_2intro_string:
-  .byte $09,$0b,$04,$15,$04,$0b,$1a,$1d,$2b,$1d
-boss1_intro_string:
-  .byte $06,$0d,$0e,$06,$00,$11,$03
+;STRONGHOLD:2
+  .byte $0c,$12,$13,$11,$0e,$0d,$06,$07,$0e,$0b,$03,$2b,$1d
 boss2_intro_string:
   .byte $07,$13,$07,$0e,$06,$14,$13,$07
-level3_intro_string:
-  .byte $07,$0b,$04,$15,$04,$0b,$1a,$1e
-level3_2_intro_string:
-  .byte $09,$0b,$04,$15,$04,$0b,$1a,$1e,$2b,$1d
 .endif
 
 ;ROM definition table
