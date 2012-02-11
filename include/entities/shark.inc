@@ -70,7 +70,7 @@ shark_restState:
   ;on rest counter = 0, jump to jump state init and set vertical velocity
   lda #$0a
   sta entity_locals+shark_locals::y_velocity,x
-  lda #$fc
+  lda #$fb
   sta entity_locals+shark_locals::y_velocity+1,x
   lda #SHARK_JUMPSTATE
   sta entity_instances+entity_instance::state,x
@@ -125,7 +125,7 @@ sharkGoingLeft:
 
   lda entity_instances+entity_instance::position_x,x
   sec
-  sbc #2
+  sbc #3
   sta entity_instances+entity_instance::position_x,x
   lda entity_instances+entity_instance::position_x+1,x
   sbc #0
@@ -136,7 +136,7 @@ sharkGoingRight:
 
   lda entity_instances+entity_instance::position_x,x
   clc
-  adc #2
+  adc #3
   sta entity_instances+entity_instance::position_x,x
   lda entity_instances+entity_instance::position_x+1,x
   adc #0
