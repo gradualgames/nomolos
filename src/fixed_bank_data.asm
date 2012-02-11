@@ -254,7 +254,7 @@ boss_2_data:
   .word level2_patterns
   .byte spritesheet_1_patterns_bank
   .word boss2_sprite_groups
-  .word 0 ;cycling_palette_address
+  .word boss2_cycling_palettes ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
   .word boss2_palette
