@@ -135,8 +135,8 @@ level_1_1_data:
 
   .word level1_palette
 
-  .byte 120 ;nomolos_start_x
-  .byte 191 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word level1_intro_string
@@ -167,8 +167,8 @@ level_1_2_data:
 
   .word level1_2palette
 
-  .byte 120 ;nomolos_start_x
-  .byte 159 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((9*16)+3)  ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word level1_2_intro_string
@@ -199,8 +199,8 @@ level_2_1_data:
 
   .word level2_palette
 
-  .byte 120 ;nomolos_start_x
-  .byte 90  ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word level2_intro_string
@@ -259,8 +259,8 @@ boss_2_data:
 
   .word boss2_palette
 
-  .byte 0   ;nomolos_start_x
-  .byte 191 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word boss2_intro_string
@@ -319,8 +319,8 @@ level_3_2_data:
 
   .word level3_palette
 
-  .byte 0   ;nomolos_start_x
-  .byte 191 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word level3_2_intro_string
@@ -349,8 +349,8 @@ boss_1_data:
 
   .word boss1_palette
 
-  .byte 40  ;nomolos_start_x
-  .byte 159 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word boss1_intro_string
@@ -379,8 +379,8 @@ level_4_1_data:
 
   .word level4_palette
 
-  .byte 30  ;nomolos_start_x
-  .byte 100 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((7*16)+3)  ;nomolos_start_y
   .byte 0 ;starting_screen
   
   .word level4_intro_string
@@ -409,8 +409,8 @@ level_4_2_data:
 
   .word level4_palette
 
-  .byte 30  ;nomolos_start_x
-  .byte 100 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((8*16)+3)  ;nomolos_start_y
   .byte 0 ;starting_screen
   
   .word level_4_2_intro_string
@@ -439,8 +439,8 @@ boss_3_data:
 
   .word boss3_palette
 
-  .byte 20 ;nomolos_start_x
-  .byte 50 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((6*16)+3)  ;nomolos_start_y
   .byte 0  ;starting_screen
   
   .word boss3_intro_string
@@ -469,8 +469,8 @@ level_5_1_data:
 
   .word level5_palette
 
-  .byte 30  ;nomolos_start_x
-  .byte 50 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((4*16)+3)  ;nomolos_start_y
   .byte 0 ;starting_screen
   
   .word level5_intro_string
@@ -498,8 +498,8 @@ level_5_2_data:
 
   .word level_5_2_palette
 
-  .byte 30  ;nomolos_start_x
-  .byte 100 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((7*16)+3)  ;nomolos_start_y
   .byte 0 ;starting_screen
   
   .word level_5_2_intro_string
@@ -527,8 +527,8 @@ boss_4_data:
 
   .word boss4_palette
 
-  .byte 30  ;nomolos_start_x
-  .byte 100 ;nomolos_start_y
+  .byte (16+2)      ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0 ;starting_screen
   
   .word boss4_intro_string
@@ -557,8 +557,8 @@ level_6_1_data:
 
   .word level6_palette
 
-  .byte 30  ;nomolos_start_x
-  .byte 50 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0 ;starting_screen
   
   .word level6_intro_string
@@ -587,8 +587,8 @@ level_6_2_data:
 
   .word level6_palette
 
-  .byte 30  ;nomolos_start_x
-  .byte 100 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0 ;starting_screen
   
   .word level_6_2_intro_string
@@ -617,8 +617,8 @@ boss_5_data:
 
   .word boss5_palette
 
-  .byte 40  ;nomolos_start_x
-  .byte 159 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word boss5_intro_string
@@ -648,8 +648,8 @@ level_1_1_data:
 
   .word level1_palette
 
-  .byte 120 ;nomolos_start_x
-  .byte 191 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word level1_intro_string
@@ -680,8 +680,8 @@ level_1_2_data:
 
   .word level1_2palette
 
-  .byte 120 ;nomolos_start_x
-  .byte 159 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((9*16)+3)  ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word level1_2_intro_string
@@ -712,8 +712,8 @@ level_2_1_data:
 
   .word level2_palette
 
-  .byte 120 ;nomolos_start_x
-  .byte 90  ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word level2_intro_string
@@ -767,13 +767,13 @@ boss_2_data:
   .word level2_patterns
   .byte spritesheet_1_patterns_bank
   .word boss2_sprite_groups
-  .word 0 ;cycling_palette_address
+  .word boss2_cycling_palettes ;cycling_palette_address
   .byte 5 ;cycling_palette_speed
 
   .word boss2_palette
 
-  .byte 0   ;nomolos_start_x
-  .byte 191 ;nomolos_start_y
+  .byte 16          ;nomolos_start_x
+  .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
   
   .word boss2_intro_string
