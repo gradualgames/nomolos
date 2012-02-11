@@ -43,9 +43,10 @@ shark_initState:
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
   
-  ;set vertical velocity to zero
-  lda #0
+  ;set vertical velocity for first jump
+  lda #$0a
   sta entity_locals+shark_locals::y_velocity,x
+  lda #$fb
   sta entity_locals+shark_locals::y_velocity+1,x
   
   ;set rest counter
