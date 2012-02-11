@@ -903,7 +903,7 @@ entity_definition_table:
   .byte $01
   .byte $10
   .word sheep_update
-  .byte $01
+  .byte $02
   .byte $0c
   .word bee_update
   .byte $03
