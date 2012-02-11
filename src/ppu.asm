@@ -42,6 +42,26 @@
 
 .endmacro
 
+.proc ppu_dim_screen
+
+  set_ppu_2001_bit PPU1_COLOR_INTENSITY_0
+  set_ppu_2001_bit PPU1_COLOR_INTENSITY_1
+  set_ppu_2001_bit PPU1_COLOR_INTENSITY_2
+
+  rts
+
+.endproc
+
+.proc ppu_undim_screen
+
+  clear_ppu_2001_bit PPU1_COLOR_INTENSITY_0
+  clear_ppu_2001_bit PPU1_COLOR_INTENSITY_1
+  clear_ppu_2001_bit PPU1_COLOR_INTENSITY_2
+
+  rts
+
+.endproc
+
 ;this nmi routine uploadsa the sound registers and then updates
 ;the sound engine. This is allowed to bleed outside of vblank since
 ;we're doing nothing to the PPU. We're using this only in situations

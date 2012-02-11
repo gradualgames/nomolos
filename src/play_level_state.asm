@@ -216,6 +216,8 @@ pause:
   cmp #1
   bne skip_start_button_test
 
+  jsr ppu_undim_screen
+
   lda #PLAYLEVELSTATE_KEEPPLAYING
   sta state_control_params+play_level_state_control::state
 
@@ -324,6 +326,8 @@ switch_to_ending_state:
   lda nomolos_state_primary
   and #nomolos_dying_test
   bne skip_start_button_test
+
+  jsr ppu_dim_screen
 
   lda #PLAYLEVELSTATE_PAUSE
   sta state_control_params+play_level_state_control::state
@@ -473,6 +477,9 @@ do_not_switch_to_level_in_state:
   lda nmi_counter
   beq nmi_counter_zero
   
+  upload_ppu_2000
+  upload_ppu_2001
+
   jsr palette_handler
   jsr sprite_update_all
   jsr map_update_column_ppu
@@ -599,6 +606,7 @@ palette_cycling_off:
   ;turn off inc32
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
+  upload_ppu_2001
   
   lda state_control_params+play_level_state_control::upload_ppu_data
   cmp #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
