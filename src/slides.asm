@@ -41,6 +41,18 @@ nomolos_sets_out_caption:
   .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$1a,$12,$04,$13,$1a,$0e,$14,$13,$1a,$13,$0e,$1a,$12,$00,$15,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$12,$0d,$0e,$16,$28,$28,$28
 
+;ONLY include this message in demo
+.ifdef DEMO_BUILD
+thanks_for_playing_demo_caption:
+;THANK YOU FOR PLAYING           NOMOLOS:                        STORMING THE CATSLE             WE HOPE YOU ENJOYED             THIS DEMO
+  .byte $89,$13,$07,$00,$0d,$0a,$1a,$18,$0e,$14,$1a,$05,$0e,$11,$1a,$0f,$0b,$00,$18,$08,$0d,$06,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$12,$13,$0e,$11,$0c,$08,$0d,$06,$1a,$13,$07,$04,$1a,$02,$00,$13,$12,$0b,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$16,$04,$1a,$07,$0e,$0f,$04,$1a,$18,$0e,$14,$1a,$04,$0d,$09,$0e,$18,$04,$03,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$13,$07,$08,$12,$1a,$03,$04,$0c,$0e
+
+.endif
+
 .ifndef DEMO_BUILD
 ;SNOW: "SOLOMON! I KNEW          YOU WOULD COME TO               RESCUE ME!"
 nomolos_and_snow_reunited_caption:

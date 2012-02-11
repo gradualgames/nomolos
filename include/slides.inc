@@ -31,6 +31,9 @@
 .global leapt_through_portal_caption
 .global became_nomolos_caption
 .global nomolos_sets_out_caption
+.ifdef DEMO_BUILD
+.global thanks_for_playing_demo_caption
+.endif
 .ifndef DEMO_BUILD
 .global nomolos_and_snow_reunited_caption
 .global portal_appears_above_scepter_caption

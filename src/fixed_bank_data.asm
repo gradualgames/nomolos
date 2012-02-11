@@ -1494,6 +1494,13 @@ nomolos_sets_out_slide:
   .byte 250
   .byte 5
 
+.ifdef DEMO_BUILD
+thanks_for_playing_demo_slide:
+  .word thanks_for_playing_demo_caption
+  .byte 250
+  .byte 5
+.endif
+
 .ifndef DEMO_BUILD
 nomolos_and_snow_reunited_slide:
   .word nomolos_and_snow_reunited_caption

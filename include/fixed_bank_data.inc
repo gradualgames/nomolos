@@ -71,6 +71,9 @@ boss_5_index    = 16
 .global leapt_through_portal_slide
 .global became_nomolos_slide
 .global nomolos_sets_out_slide
+.ifdef DEMO_BUILD
+.global thanks_for_playing_demo_slide
+.endif
 .global nomolos_and_snow_reunited_slide
 .global portal_appears_above_scepter_slide
 .global leapt_through_ending_portal_slide
