@@ -34,6 +34,9 @@ DRAGONBOSS_SUBSTATE_ERASE = 3
 DRAGONBOSS_DRAWSTATE_MOUTH_SHUT = 0
 DRAGONBOSS_DRAWSTATE_MOUTH_OPEN = 1
 
+DRAGONBOSS_ICEBALL_START_X = 110
+DRAGONBOSS_ICEBALL_START_Y = 100
+
 ;these should be drawn at location 14, 12 in the nametable
 boss1_mouth_shut_tiles:
   .byte $05,$06,$1f,$20,$21,$22,$23,$2c,$2d,$2e,$32,$30,$3a,$3b,$3f,$40,$00,$47,$48,$4d,$4e,$4f,$56,$5c,$5d,$5e,$5f,$66,$6c,$6d,$6e,$6f
@@ -546,12 +549,12 @@ dragonboss_spiticeballsstate_handler:
   lda #entity_index_iceball
   sta b0
 
-  lda #110
+  lda #DRAGONBOSS_ICEBALL_START_X
   sta w0
   lda #0
   sta w0+1
   
-  lda #110
+  lda #DRAGONBOSS_ICEBALL_START_Y
   sta b1
   lda #0
   sta b2
@@ -587,12 +590,12 @@ dragonboss_spiticeballsstate_handler:
   lda #entity_index_iceball
   sta b0
 
-  lda #110
+  lda #DRAGONBOSS_ICEBALL_START_X
   sta w0
   lda #0
   sta w0+1
   
-  lda #110
+  lda #DRAGONBOSS_ICEBALL_START_Y
   sta b1
   lda #0
   sta b2
@@ -628,12 +631,12 @@ dragonboss_spiticeballsstate_handler:
   lda #entity_index_iceball
   sta b0
 
-  lda #110
+  lda #DRAGONBOSS_ICEBALL_START_X
   sta w0
   lda #0
   sta w0+1
   
-  lda #110
+  lda #DRAGONBOSS_ICEBALL_START_Y
   sta b1
   lda #0
   sta b2
@@ -669,12 +672,12 @@ dragonboss_spiticeballsstate_handler:
   lda #entity_index_iceball
   sta b0
 
-  lda #110
+  lda #DRAGONBOSS_ICEBALL_START_X
   sta w0
   lda #0
   sta w0+1
   
-  lda #110
+  lda #DRAGONBOSS_ICEBALL_START_Y
   sta b1
   lda #0
   sta b2
