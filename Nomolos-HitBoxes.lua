@@ -63,6 +63,21 @@ local function draw_attack_rect()
 
 end;
 
+local function draw_map_collision_test_dot()
+
+    param_x = memory.readbyte(w0+1)*256+memory.readbyte(w0)
+    param_y = memory.readbyte(w1+1)*256+memory.readbyte(w1)
+    camera_x = memory.readbyte(camera_scroll_x+1)*256+memory.readbyte(camera_scroll_x)
+
+    box_x = param_x - camera_x - 1
+    box_y = param_y - 1
+    box_x2 = box_x + 3
+    box_y2 = box_y + 3
+
+    box(box_x,box_y,box_x2,box_y2,"magenta");
+
+end;
+
 nomolos_screen_x = 0x0055
 nomolos_screen_y = 0x0057
 nomolos_width = 12
@@ -77,18 +92,24 @@ entity_instances = 0x0300
 
 b2 = 0x0002
 b3 = 0x0003
+w0 = 0x000A
+w1 = 0x000C
 w2 = 0x000E
 w3 = 0x0010
+camera_scroll_x = 0x006F
 
 geotests_rect_in_rect_16bit = 0xE988
-nomolos_is_deadly_rts_1 = 0xC2AA
-nomolos_is_deadly_rts_2 = 0xC2B6
-nomolos_is_deadly_rts_3 = 0xC2C2
+nomolos_is_deadly_rts_1 = 0xC2C0
+nomolos_is_deadly_rts_2 = 0xC2CC
+nomolos_is_deadly_rts_3 = 0xC2D8
+
+map_test_collision = 0XD80B
 
 memory.registerexecute(geotests_rect_in_rect_16bit, 110, rect_in_rect_executed)
 memory.registerexecute(nomolos_is_deadly_rts_1, 1, draw_attack_rect)
 memory.registerexecute(nomolos_is_deadly_rts_2, 1, draw_attack_rect)
 memory.registerexecute(nomolos_is_deadly_rts_3, 1, draw_attack_rect)
+memory.registerexecute(map_test_collision, 1, draw_map_collision_test_dot)
 
 local a,b,c,d;
 while (running) do
