@@ -783,7 +783,7 @@ MetaTile84:
 MetaTile85:
   .byte $03,$00,$00,$37,$38,$47,$48,entity_index_gort
 MetaTile86:
-  .byte $03,$00,$00,$37,$38,$47,$48,entity_index_spear
+  .byte $03,$00,$00,$37,$38,$47,$48,entity_index_mouse
 MetaTile87:
   .byte $00,$00,$00,$00,$00,$00,$00,entity_index_one_up
 MetaTile88:
