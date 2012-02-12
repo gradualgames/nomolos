@@ -1,8 +1,6 @@
 .ifndef PPU_INC
 PPU_INC = 1
 
-.global ppu_dim_screen
-.global ppu_undim_screen
 .global fade_in_palette
 .global fade_out_palette
 .global ppu_upload_dynamic_palette_ppu
