@@ -113,7 +113,7 @@
   adc nomolos_status_health
   sta nomolos_status_health
 
-  lda difficulty
+  lda nomolos_status_health
   cmp difficulty  ;if result is negative, that means nomolos_status_health - difficulty was negative, which means we're less than difficulty
                   ;negative is less, positive is more
   bmi :+
