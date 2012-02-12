@@ -91,6 +91,7 @@ boss_5_index    = 16
 .global special_thanks_slide
 .global nesdev_slide
 .global nintendoage_slide
+.global secret_message_slide
 .endif
 .global difficulty_table
 

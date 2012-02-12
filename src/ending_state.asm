@@ -71,6 +71,13 @@
   show_text_slide special_thanks_slide
   show_text_slide nesdev_slide
   show_text_slide nintendoage_slide
+
+  lda difficulty
+  cmp #UNFAIR_DIFFICULTY
+  bne :+
+  show_text_slide secret_message_slide
+:
+
   show_graphics_slide slide1
 
 : jmp :-

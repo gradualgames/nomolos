@@ -41,6 +41,13 @@ nomolos_sets_out_caption:
   .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$1a,$12,$04,$13,$1a,$0e,$14,$13,$1a,$13,$0e,$1a,$12,$00,$15,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$12,$0d,$0e,$16,$28,$28,$28
 
+secret_message_caption:
+;YOU ARE VERY TALENTED.          AT TITLE HOLD SELECT,           A, B, THEN HIT UP OR DOWN       TO SELECT START LEVEL
+  .byte $75,$18,$0e,$14,$1a,$00,$11,$04,$1a,$15,$04,$11,$18,$1a,$13,$00,$0b,$04,$0d,$13,$04,$03,$27,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$00,$13,$1a,$13,$08,$13,$0b,$04,$1a,$07,$0e,$0b,$03,$1a,$12,$04,$0b,$04,$02,$13,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$00,$25,$1a,$01,$25,$1a,$13,$07,$04,$0d,$1a,$07,$08,$13,$1a,$14,$0f,$1a,$0e,$11,$1a,$03,$0e,$16,$0d,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$13,$0e,$1a,$12,$04,$0b,$04,$02,$13,$1a,$12,$13,$00,$11,$13,$1a,$0b,$04,$15,$04,$0b
+
 ;ONLY include this message in demo
 .ifdef DEMO_BUILD
 thanks_for_playing_demo_caption:

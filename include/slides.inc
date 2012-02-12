@@ -51,4 +51,5 @@
 .global special_thanks_caption
 .global nesdev_caption
 .global nintendoage_caption
+.global secret_message_caption
 .endif

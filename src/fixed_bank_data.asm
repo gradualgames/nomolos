@@ -34,6 +34,10 @@
 .include "font0_patterns_source.inc"
 .include "title_patterns_source.inc"
 
+title_palette:
+  .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
+  .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
+
 .segment "CODE"
 
 ;level definitions
@@ -1591,6 +1595,11 @@ nintendoage_slide:
   .word nintendoage_caption
   .byte 150
   .byte 5
+
+secret_message_slide:
+  .word secret_message_caption
+  .byte 250
+  .byte 5
 .endif
 
 title_definition:
@@ -1599,10 +1608,6 @@ title_definition:
   .word title_patterns
   .byte 14
   .byte 10
-
-title_palette:
-  .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
-  .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
 
 slide1:
   .word slide1_palette
