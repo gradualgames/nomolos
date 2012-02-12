@@ -895,7 +895,7 @@ MetaTile85:
 MetaTile86:
   .byte $01,$00,$00,$40,$41,$4c,$4d,entity_index_sheep
 MetaTile87:
-  .byte $01,$00,$00,$00,$00,$6b,$6c,entity_index_one_up
+  .byte $01,$00,$00,$00,$00,$6b,$6c,entity_index_mouse
 MetaTile88:
   .byte $01,$00,$00,$00,$00,$6b,$6c,entity_index_spear
 MetaTile89:
