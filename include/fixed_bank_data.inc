@@ -92,6 +92,7 @@ boss_5_index    = 16
 .global nesdev_slide
 .global nintendoage_slide
 .endif
+.global difficulty_table
 
 .struct title
   palette_address .word

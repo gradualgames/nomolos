@@ -83,14 +83,15 @@ last_entity                           = 15
 
 ;difficulty really refers to max # of hearts. So maximum
 ;is really smaller than the minimum, numerically.
-EASY_DIFFICULTY   = 4
+EASY_DIFFICULTY   = 5
 NORMAL_DIFFICULTY = 3
-HARD_DIFFICULTY   = 2
 UNFAIR_DIFFICULTY = 1
 
-MINIMUM_DIFFICULTY = 4
-MAXIMUM_DIFFICULTY = 1
-DEFAULT_DIFFICULTY = NORMAL_DIFFICULTY
+DIFFICULTY_TABLE_INDEX_MIN = 0
+DIFFICULTY_TABLE_INDEX_MAX = 2
+EASY_DIFFICULTY_INDEX = 0
+NORMAL_DIFFICULTY_INDEX = 1
+UNFAIR_DIFFICULTY_INDEX = 2
 
 ;keeps the lowest 4 bits to get penetration distance from a y coordinate
 penetration_calculation_mask          = %00001111

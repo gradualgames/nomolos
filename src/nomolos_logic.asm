@@ -26,7 +26,7 @@
   lda #0
   sta nomolos_status_lives
 
-  lda #DEFAULT_DIFFICULTY
+  lda #NORMAL_DIFFICULTY
   sta difficulty
 
   rts
@@ -113,6 +113,7 @@
   adc nomolos_status_health
   sta nomolos_status_health
 
+  lda difficulty
   cmp difficulty  ;if result is negative, that means nomolos_status_health - difficulty was negative, which means we're less than difficulty
                   ;negative is less, positive is more
   bmi :+

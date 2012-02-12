@@ -1669,3 +1669,8 @@ ending_slide3:
   .byte 12
   .byte 6
 .endif
+
+difficulty_table:
+  .byte 1  ;unfair
+  .byte 3  ;normal
+  .byte 5  ;easy

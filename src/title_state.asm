@@ -66,7 +66,8 @@
   
   jsr ppu_display_string
 
-  lda difficulty
+  ldx state_control_params+title_stateControl::difficulty_index
+  lda difficulty_table,x
   cmp #EASY_DIFFICULTY
   bne :+
   lda #<easy_string
@@ -81,15 +82,6 @@
   lda #<normal_string
   sta w0
   lda #>normal_string
-  sta w0+1
-
-  jsr ppu_display_string
-:
-  cmp #HARD_DIFFICULTY
-  bne :+
-  lda #<hard_string
-  sta w0
-  lda #>hard_string
   sta w0+1
 
   jsr ppu_display_string
@@ -152,6 +144,10 @@ title_stateInit:
   sta state_control_params+title_stateControl::starting_level
   jsr create_selected_level_string
   
+  ;reset the difficulty index selector to normal
+  lda #NORMAL_DIFFICULTY_INDEX
+  sta state_control_params+title_stateControl::difficulty_index
+
   lda #TITLESTATE_RUN
   sta state_control_params+title_stateControl::state
 
@@ -377,11 +373,11 @@ button_combo_incorrect:
   cmp #%00000001
   bne left_button_not_hit
 
-  ;increment the difficulty level but cap at 4
-  lda difficulty
-  cmp #MINIMUM_DIFFICULTY
+  ;increment the difficulty level but cap at 2
+  lda state_control_params+title_stateControl::difficulty_index
+  cmp #DIFFICULTY_TABLE_INDEX_MAX
   beq skip_increment_difficulty
-  inc difficulty
+  inc state_control_params+title_stateControl::difficulty_index
 
 skip_increment_difficulty:
 
@@ -394,11 +390,11 @@ left_button_not_hit:
   cmp #%00000001
   bne right_button_not_hit
 
-  ;decrement the difficulty level but cap at 1
-  lda difficulty
-  cmp #MAXIMUM_DIFFICULTY
+  ;decrement the difficulty level but cap at 0
+  lda state_control_params+title_stateControl::difficulty_index
+  cmp #DIFFICULTY_TABLE_INDEX_MIN
   beq skip_decrement_difficulty
-  dec difficulty
+  dec state_control_params+title_stateControl::difficulty_index
 
 skip_decrement_difficulty:
 
@@ -429,6 +425,12 @@ right_button_not_hit:
 
   ;start was pressed, now we want to switch to level in state
   ;set current level and switch to "level in" state
+
+  ;initialize difficulty based on difficulty table
+  ldx state_control_params+title_stateControl::difficulty_index
+  lda difficulty_table,x
+  sta difficulty
+
   ;start out Nomolos with 3 lives.
   lda #nomolos_starting_lives
   sta nomolos_status_lives

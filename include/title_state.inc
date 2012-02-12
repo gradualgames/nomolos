@@ -13,6 +13,7 @@ TITLESTATE_DONE = %00000010
 .struct title_stateControl
   state .byte
   starting_level .byte
+  difficulty_index .byte
 .endstruct
 
 .endif
