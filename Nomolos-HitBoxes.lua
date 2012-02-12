@@ -99,11 +99,11 @@ w3 = 0x0010
 camera_scroll_x = 0x006F
 
 geotests_rect_in_rect_16bit = 0xE988
-nomolos_is_deadly_rts_1 = 0xC2C0
-nomolos_is_deadly_rts_2 = 0xC2CC
-nomolos_is_deadly_rts_3 = 0xC2D8
+nomolos_is_deadly_rts_1 = 0xC2C1
+nomolos_is_deadly_rts_2 = 0xC2CD
+nomolos_is_deadly_rts_3 = 0xC2D9
 
-map_test_collision = 0XD80B
+map_test_collision = 0XD821
 
 memory.registerexecute(geotests_rect_in_rect_16bit, 110, rect_in_rect_executed)
 memory.registerexecute(nomolos_is_deadly_rts_1, 1, draw_attack_rect)
