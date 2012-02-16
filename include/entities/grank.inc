@@ -7,6 +7,12 @@ GRANK_HEIGHT = $10
 .struct grankLocals
   x_velocity .word
   y_velocity .word
+  vert_speed .byte
+  horiz_speed .byte
+  max_vert_speed .byte
+  max_horiz_speed .byte
+  neg_max_vert_speed .byte
+  neg_max_horiz_speed .byte
 .endstruct
 
 GRANK_INITSTATE = 0
@@ -31,6 +37,39 @@ grank_initState:
 
   ;init code for animation, etc. goes here
   jsr entity_reset_anim
+
+  lda difficulty
+  cmp #EASY_DIFFICULTY
+  bne :+
+
+  lda #6
+  sta entity_locals+grankLocals::vert_speed,x
+  lda #2
+  sta entity_locals+grankLocals::max_vert_speed,x
+  lda #(-2)
+  sta entity_locals+grankLocals::neg_max_vert_speed,x
+  lda #6
+  sta entity_locals+grankLocals::horiz_speed,x
+  lda #3
+  sta entity_locals+grankLocals::max_horiz_speed,x
+  lda #(-3)
+  sta entity_locals+grankLocals::neg_max_horiz_speed,x
+
+  jmp :++
+:
+  lda #GRANK_VERTSPEED
+  sta entity_locals+grankLocals::vert_speed,x
+  lda #GRANK_MAXVERTSPEED
+  sta entity_locals+grankLocals::max_vert_speed,x
+  lda #(-GRANK_MAXVERTSPEED)
+  sta entity_locals+grankLocals::neg_max_vert_speed,x
+  lda #GRANK_HORIZSPEED
+  sta entity_locals+grankLocals::horiz_speed,x
+  lda #GRANK_MAXHORIZSPEED
+  sta entity_locals+grankLocals::max_horiz_speed,x
+  lda #(-GRANK_MAXHORIZSPEED)
+  sta entity_locals+grankLocals::neg_max_horiz_speed,x
+:
 
   ;set x velocity to 0
   lda #0
@@ -108,7 +147,7 @@ followUp:
   ;subtract from y velocity
   lda entity_locals+grankLocals::y_velocity,x
   sec
-  sbc #GRANK_VERTSPEED
+  sbc entity_locals+grankLocals::vert_speed,x
   sta entity_locals+grankLocals::y_velocity,x
   lda entity_locals+grankLocals::y_velocity+1,x
   sbc #0
@@ -120,7 +159,7 @@ followDown:
   ;add to y velocity
   lda entity_locals+grankLocals::y_velocity,x
   clc
-  adc #GRANK_VERTSPEED
+  adc entity_locals+grankLocals::vert_speed,x
   sta entity_locals+grankLocals::y_velocity,x
   lda entity_locals+grankLocals::y_velocity+1,x
   adc #0
@@ -139,7 +178,7 @@ followToLeft:
   ;subtract from x velocity
   lda entity_locals+grankLocals::x_velocity,x
   sec
-  sbc #GRANK_HORIZSPEED
+  sbc entity_locals+grankLocals::horiz_speed,x
   sta entity_locals+grankLocals::x_velocity,x
   lda entity_locals+grankLocals::x_velocity+1,x
   sbc #0
@@ -151,7 +190,7 @@ followToRight:
   ;add to x velocity
   lda entity_locals+grankLocals::x_velocity,x
   clc
-  adc #GRANK_HORIZSPEED
+  adc entity_locals+grankLocals::horiz_speed,x
   sta entity_locals+grankLocals::x_velocity,x
   lda entity_locals+grankLocals::x_velocity+1,x
   adc #0
@@ -165,10 +204,10 @@ followTestDone:
 xVelocityNegative:
 .scope
 
-  cmp #(-GRANK_MAXHORIZSPEED)
+  cmp entity_locals+grankLocals::neg_max_horiz_speed,x
   bpl notMaxHoriz
 
-  lda #(-GRANK_MAXHORIZSPEED)
+  lda entity_locals+grankLocals::neg_max_horiz_speed,x
   sta entity_locals+grankLocals::x_velocity+1,x
 
 notMaxHoriz:
@@ -177,10 +216,10 @@ notMaxHoriz:
   jmp xVelocityTestDone
 xVelocityPositive:
 .scope
-  cmp #(GRANK_MAXHORIZSPEED)
+  cmp entity_locals+grankLocals::max_horiz_speed,x
   bmi notMaxHoriz
 
-  lda #(GRANK_MAXHORIZSPEED)
+  lda entity_locals+grankLocals::max_horiz_speed,x
   sta entity_locals+grankLocals::x_velocity+1,x
 
 notMaxHoriz:
@@ -194,10 +233,10 @@ xVelocityTestDone:
 yVelocityNegative:
 .scope
 
-  cmp #(-GRANK_MAXVERTSPEED)
+  cmp entity_locals+grankLocals::neg_max_vert_speed,x
   bpl notMaxVert
 
-  lda #(-GRANK_MAXVERTSPEED)
+  lda entity_locals+grankLocals::neg_max_vert_speed,x
   sta entity_locals+grankLocals::y_velocity+1,x
 
 notMaxVert:
@@ -206,10 +245,10 @@ notMaxVert:
   jmp yVelocityTestDone
 yVelocityPositive:
 .scope
-  cmp #(GRANK_MAXVERTSPEED)
+  cmp entity_locals+grankLocals::max_vert_speed,x
   bmi notMaxVert
 
-  lda #(GRANK_MAXVERTSPEED)
+  lda entity_locals+grankLocals::max_vert_speed,x
   sta entity_locals+grankLocals::y_velocity+1,x
 
 notMaxVert:
