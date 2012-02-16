@@ -65,9 +65,6 @@ level_definition_table:
 level_definition_table:
   .word level_1_1_data
   .word level_1_2_data
-  .word level_2_1_data
-  .word level_2_2_data
-  .word boss_2_data
 .endif
 
 ;level intro strings
@@ -125,14 +122,6 @@ level1_intro_string:
 level1_2_intro_string:
 ;GRAVEYARD:2
   .byte $0b,$06,$11,$00,$15,$04,$18,$00,$11,$03,$2b,$1d
-level2_intro_string:
-;STRONGHOLD:1
-  .byte $0c,$12,$13,$11,$0e,$0d,$06,$07,$0e,$0b,$03,$2b,$1c
-level2_2intro_string:
-;STRONGHOLD:2
-  .byte $0c,$12,$13,$11,$0e,$0d,$06,$07,$0e,$0b,$03,$2b,$1d
-boss2_intro_string:
-  .byte $07,$13,$07,$0e,$06,$14,$13,$07
 .endif
 
 ;ROM definition table
@@ -711,98 +700,7 @@ level_1_2_data:
 
   .word level1_2music
 
-  .byte level_2_index
-
-;ROM definition table
-level_2_1_data:
-  .byte spritesheet_1_bank
-  .byte level_2_bank
-  .byte level_2_patterns_bank
-  .word level2_patterns
-  .byte spritesheet_1_patterns_bank
-  .word level2_sprite_groups
-  .word level2_cycling_palettes ;cycling_palette_address
-  .byte 5 ;cycling_palette_speed
-
-  .word level2_palette
-
-  .byte 16          ;nomolos_start_x
-  .byte ((11*16)+3) ;nomolos_start_y
-  .byte 0   ;starting_screen
-  
-  .word level2_intro_string
-  .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
-  .word level2_map
-  .word level2_map_column_table
-  .word level2_attribute_column_table
-  .word level2_meta_tile_column_table
-  .word level2_meta_tile_table
-
-  .word entity_definition_table
-  .word level2_music
-  .byte level_2_2_index
-
-;ROM definition table
-level_2_2_data:
-  .byte spritesheet_1_bank
-  .byte level2_2bank
-  .byte level_2_patterns_bank
-  .word level2_patterns
-  .byte spritesheet_1_patterns_bank
-  .word level2_sprite_groups
-  .word level2_2cycling_palettes ;cycling_palette_address
-  .byte 5 ;cycling_palette_speed
-
-  .word level2_2palette
-
-  .byte 104 ;nomolos_start_x
-  .byte 0   ;nomolos_start_y
-  .byte 0   ;starting_screen
-  
-  .word level2_2intro_string
-  .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
-  .word level2_2map
-  .word level2_2map_column_table
-  .word level2_2attribute_column_table
-  .word level2_2meta_tile_column_table
-  .word level2_2meta_tile_table
-
-  .word entity_definition_table
-  .word level2_2music
-  .byte boss_2_index
-
-;ROM definition table
-boss_2_data:
-  .byte spritesheet_1_bank
-  .byte boss2_bank
-  .byte level_2_patterns_bank
-  .word level2_patterns
-  .byte spritesheet_1_patterns_bank
-  .word boss2_sprite_groups
-  .word boss2_cycling_palettes ;cycling_palette_address
-  .byte 5 ;cycling_palette_speed
-
-  .word boss2_palette
-
-  .byte 16          ;nomolos_start_x
-  .byte ((11*16)+3) ;nomolos_start_y
-  .byte 0   ;starting_screen
-  
-  .word boss2_intro_string
-  .byte 32 ;columns_to_load
-  .byte 0  ;camera_scroll_enabled  
-  .word boss2_map
-  .word boss2_map_column_table
-  .word boss2_attribute_column_table
-  .word boss2_meta_tile_column_table
-  .word boss2_meta_tile_table
-
-  .word entity_definition_table
-  .word boss2_music
   .byte level_1_index
-
 .endif
 
 ;Entities

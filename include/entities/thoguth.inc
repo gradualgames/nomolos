@@ -652,11 +652,6 @@ thoguth_killState_handler:
 
   ;make it dead
   jsr entity_kill
-
-  .ifdef DEMO_BUILD
-  lda #PLAYLEVELSTATE_SWITCHTOENDINGSTATE
-  sta state_control_params+play_level_state_control::state
-  .endif
   
   rts
 

@@ -44,12 +44,12 @@ FILES           += zp \
 
 #level and boss data (conditionally compiles based on DEMO flag)
 FILES +=           level1 \
-                   level1_2 \
-                   level2 \
-                   level2_2 \
-                   boss2
+                   level1_2
 ifndef DEMO
-FILES +=           level3 \
+FILES +=           level2 \
+                   level2_2 \
+                   boss2 \
+                   level3 \
                    level3_2 \
                    boss1 \
                    level4 \
