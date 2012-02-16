@@ -46,6 +46,7 @@ spritesheet1_SnufferBite:
   .word spritesheet1_Snuffer2
   .word $0000
 
+.ifndef DEMO_BUILD
 spritesheet1_SkelekinWalk:
   .byte $0a
   .word spritesheet1_Skelekin1
@@ -75,7 +76,6 @@ spritesheet1_ThoguthLightning:
   .word spritesheet1_ThoguthLightning1
   .word $0000
 
-.ifndef DEMO_BUILD
 spritesheet1_SnailCrawl:
   .byte $28
   .word spritesheet1_Snail0

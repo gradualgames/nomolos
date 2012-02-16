@@ -48,14 +48,14 @@
 .include "deentle.inc"
 .include "beedie.inc"
 .include "grank.inc"
-.include "skelekin.inc"
 .include "batree.inc"
 .include "owl.inc"
 .include "snuffer.inc"
-.include "thoguth.inc"
-.include "lightningbolt.inc"
 
 .ifndef DEMO_BUILD
+.include "skelekin.inc"
+.include "thoguth.inc"
+.include "lightningbolt.inc"
 .include "snail.inc"
 .include "dragon.inc"
 .include "iceball.inc"

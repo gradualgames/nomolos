@@ -9,11 +9,11 @@ SPRITESHEET1_ANIMATIONS_IMPORTS_INC = 1
 .global spritesheet1_OwlAttack
 .global spritesheet1_SnufferRun
 .global spritesheet1_SnufferBite
+.ifndef DEMO_BUILD
 .global spritesheet1_SkelekinWalk
 .global spritesheet1_ThoguthMarch
 .global spritesheet1_ThoguthHammerfall
 .global spritesheet1_ThoguthLightning
-.ifndef DEMO_BUILD
 .global spritesheet1_SnailCrawl
 .global spritesheet1_DragonFly
 .global spritesheet1_IceBallFly
