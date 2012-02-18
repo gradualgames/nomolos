@@ -1307,6 +1307,23 @@ ySpeedTestDone:
   bne skipJmpNotLeft
   jmp notLeft
 skipJmpNotLeft:
+
+  lda buffer_controller+buttons::_left
+  and #%00000011
+  cmp #%00000001
+  bne :+
+  lda nomolos_state_primary
+  ora #nomolos_walking_left_set
+  ora #nomolos_moving_on_set
+  sta nomolos_state_primary
+
+  lda #1
+  sta nomolos_animation
+  lda #0
+  sta nomolos_animation+1
+
+:
+
   lda nomolos_state_primary
   ora #nomolos_walking_left_set
   ora #nomolos_moving_on_set
@@ -1429,10 +1446,21 @@ notLeft:
   jmp notRight
 skipJmpNotRight:
 
+  lda buffer_controller+buttons::_right
+  and #%00000011
+  cmp #%00000001
+  bne :+
   lda nomolos_state_primary
   and #nomolos_walking_right_clear ;state is walking right
   ora #nomolos_moving_on_set       ;state is moving
   sta nomolos_state_primary
+
+  lda #1
+  sta nomolos_animation
+  lda #0
+  sta nomolos_animation+1
+
+:
 
   ;test collision with map
   lda nomolos_map_x+1
