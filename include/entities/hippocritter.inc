@@ -232,6 +232,60 @@ signExtend:
   sta entity_instances+entity_instance::position_y+1,x
 signExtendAddDone:
 
+  .scope
+  lda entity_locals+hippocritter_locals::y_velocity+1,x
+  bpl do_below_collision
+do_above_collision:
+
+  jsr hippocritter_above_collision_handler
+
+  jmp velocity_test_done
+do_below_collision:
+
+  jsr hippocritter_below_collision_handler
+
+velocity_test_done:
+  .endscope
+
+  jsr hippocritter_draw
+
+  rts
+
+hippocritter_above_collision_handler:
+
+  ;perform collision detection and eject if necessary
+  ;load the entity's X coordinate + 8
+  clc
+  lda entity_instances+entity_instance::position_x,x
+  adc #HIPPOCRITTER_HALF_JUMPING_WIDTH
+  sta entity_locals+hippocritter_locals::x_collisionPointBottom,x
+  sta w0
+  lda entity_instances+entity_instance::position_x+1,x
+  adc #0
+  sta entity_locals+hippocritter_locals::x_collisionPointBottom+1,x
+  sta w0+1
+  ;load the entity's Y coordinate
+  lda entity_instances+entity_instance::position_y,x
+  sta entity_locals+hippocritter_locals::y_collisionPointBottom,x
+  sta w1
+  lda entity_instances+entity_instance::position_y+1,x
+  sta entity_locals+hippocritter_locals::y_collisionPointBottom+1,x
+  sta w1+1
+
+  jsr map_test_collision
+  lda b1
+  beq noAboveCollision
+
+  lda #0
+  sta entity_locals+hippocritter_locals::y_velocity,x
+  sta entity_locals+hippocritter_locals::y_velocity+1,x
+
+noAboveCollision:
+
+  rts
+
+hippocritter_below_collision_handler:
+
   ;perform collision detection and eject if necessary
   ;load the entity's X coordinate + 8
   clc
@@ -314,8 +368,6 @@ followToRight:
 followTestDone:
 
 noBottomCollision:
-
-  jsr hippocritter_draw
 
   rts
 
