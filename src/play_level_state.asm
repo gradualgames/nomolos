@@ -144,35 +144,6 @@
   cmp #PLAYLEVELSTATE_HANDSOFFVICTORYMODE
   beq hands_off_victory_mode
 
-play_level_state_init:
-
-  ;****************************************************************
-  ;Fade in the palette, then switch to the play level state.
-  ;****************************************************************
-
-  lda #0
-  sta nmi_counter
-  
-  ;perform one iteration of the gameplay loop to get sprites onto the screen
-  ;before fade-in
-  jsr keep_playing_state
-
-  ;fade in the palette
-  ldy #level_data_struct::palette
-  lda (base_address_rom_definition_table),y
-  sta w0
-  iny
-  lda (base_address_rom_definition_table),y
-  sta w0+1
-
-  jsr fade_in_palette
-
-  ;switch to the play state
-  lda #PLAYLEVELSTATE_KEEPPLAYING
-  sta state_control_params+play_level_state_control::state
-
-  rts
-
 keep_playing:
 
   ;****************************************************************
@@ -274,6 +245,41 @@ switch_to_ending_state:
 
   ldx #index_ending_state
   jsr switch_state
+
+  rts
+
+play_level_state_init:
+
+  ;****************************************************************
+  ;Fade in the palette, then switch to the play level state.
+  ;****************************************************************
+
+  lda #0
+  sta nmi_counter
+  
+  ;perform one iteration of the gameplay loop to get sprites onto the screen
+  ;before fade-in
+  jsr keep_playing_state
+
+  ;it is possible the keep playing state above set the monochrome bit due
+  ;to detecting the start button being pressed. In this case, it will be
+  ;on until the next pause/unpause because we immediately switch to the
+  ;keep playing state below. So we make sure that it is off, here.
+  clear_ppu_2001_bit PPU1_DISPLAY_TYPE
+
+  ;fade in the palette
+  ldy #level_data_struct::palette
+  lda (base_address_rom_definition_table),y
+  sta w0
+  iny
+  lda (base_address_rom_definition_table),y
+  sta w0+1
+
+  jsr fade_in_palette
+
+  ;switch to the play state
+  lda #PLAYLEVELSTATE_KEEPPLAYING
+  sta state_control_params+play_level_state_control::state
 
   rts
 
