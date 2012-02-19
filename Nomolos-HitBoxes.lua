@@ -99,9 +99,10 @@ w3 = 0x0010
 camera_scroll_x = 0x006F
 
 geotests_rect_in_rect_16bit = 0xE988
-nomolos_is_deadly_rts_1 = 0xC2C1
-nomolos_is_deadly_rts_2 = 0xC2CD
-nomolos_is_deadly_rts_3 = 0xC2D9
+nomolos_is_deadly       = 0xC2A9
+nomolos_is_deadly_rts_1 = (nomolos_is_deadly + 0x001B)
+nomolos_is_deadly_rts_2 = (nomolos_is_deadly + 0x0027)
+nomolos_is_deadly_rts_3 = (nomolos_is_deadly + 0x0033)
 
 map_test_collision = 0XD821
 

@@ -1019,7 +1019,7 @@ boulder_erase:
   jsr nomolos_is_deadly
   beq nomolos_not_attacking
 
-  lda #136
+  lda #128
   sta entity_screen_x
   lda #88
   sta entity_screen_y
