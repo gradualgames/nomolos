@@ -1371,6 +1371,7 @@ skipJmpNotLeft:
   lda b1
   bne notLeft
 
+
   ;24 bit Sub
   sec
   lda nomolos_map_x
@@ -1383,15 +1384,14 @@ skipJmpNotLeft:
   sbc #0
   sta nomolos_map_x+2
 
-  ;prevent nomolos from going past the leftmost side of the screen
-  lda nomolos_map_x+2
-  bne :+
-  lda nomolos_map_x+1
-  cmp #0
-  bne :+
-  lda #2
+  bpl skip_nomolos_do_not_go_past_zero
+
+  lda #0
+  sta nomolos_map_x
   sta nomolos_map_x+1
-:
+  sta nomolos_map_x+2
+
+skip_nomolos_do_not_go_past_zero:
 
   lda nomolos_screen_x
   sta w0
