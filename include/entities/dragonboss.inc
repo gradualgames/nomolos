@@ -34,17 +34,17 @@ DRAGONBOSS_SUBSTATE_ERASE = 3
 DRAGONBOSS_DRAWSTATE_MOUTH_SHUT = 0
 DRAGONBOSS_DRAWSTATE_MOUTH_OPEN = 1
 
-DRAGONBOSS_ICEBALL_START_X = 110
-DRAGONBOSS_ICEBALL_START_Y = 100
+DRAGONBOSS_ICEBALL_START_X = 104
+DRAGONBOSS_ICEBALL_START_Y = 110
 
-;these should be drawn at location 14, 12 in the nametable
+;these should be drawn at location 12, 12 in the nametable
 boss1_mouth_shut_tiles:
   .byte $05,$06,$1f,$20,$21,$22,$23,$2c,$2d,$2e,$32,$30,$3a,$3b,$3f,$40,$00,$47,$48,$4d,$4e,$4f,$56,$5c,$5d,$5e,$5f,$66,$6c,$6d,$6e,$6f
 
 boss1_mouth_open_tiles:
   .byte $05,$06,$1f,$20,$21,$22,$23,$2c,$2d,$2e,$2f,$30,$3a,$3b,$3c,$3d,$00,$47,$48,$49,$4a,$4b,$56,$57,$58,$59,$5a,$66,$67,$68,$69,$6a
 
-;these should be drawn at location 22, 22 in the nametable
+;these should be drawn at location 20, 22 in the nametable
 boss1_tail_up_tiles:
   .byte $06,$06,$99,$33,$9a,$9b,$33,$25,$a2,$33,$a3,$a4,$33,$33,$a9,$33,$aa,$ab,$ac,$33,$b2,$b2,$b3,$b4,$b5,$b6,$c6,$c7,$c8,$c9,$ca,$cb
   .byte $dc,$dd,$de,$df,$d0,$d1
@@ -53,7 +53,7 @@ boss1_tail_down_tiles:
   .byte $06,$06,$99,$33,$91,$92,$33,$25,$a2,$33,$9c,$9d,$33,$33,$a9,$33,$9c,$9c,$a5,$33,$b2,$b2,$9c,$9c,$9c,$ad,$b7,$b8,$b9,$ba,$bb,$bc
   .byte $cc,$cd,$ce,$cf,$d0,$d1
 
-;this should start at 14,8
+;this should start at 12,8
 boss1_erase_row_tiles:
   .byte $12,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
   
@@ -346,7 +346,7 @@ dragonboss_taildownstate_handler:
   pla
   tax
   
-  lda #22
+  lda #20
   sta b0
   lda #20
   sta b1
@@ -470,7 +470,7 @@ do_not_kill_dragon:
   bne do_not_increment_erase_row
   
   ;draw an erase row
-  lda #14
+  lda #12
   sta b0
   lda entity_locals+dragonboss_locals::erase_row,x
   sta b1
@@ -509,7 +509,7 @@ dragonboss_closemouthstate_handler:
   bne do_not_switch_to_tail_up_state
   
   ;draw dragon's mouth closed
-  lda #14
+  lda #12
   sta b0
   lda #10
   sta b1
@@ -542,6 +542,47 @@ do_not_switch_to_tail_up_state:
 ;down and to the left.
 ;****************************************************************
 dragonboss_spiticeballsstate_handler:
+
+  ;****************************************************************
+  ;Spawn and parameterize an iceball
+  ;****************************************************************
+  lda #entity_index_iceball
+  sta b0
+
+  lda #(DRAGONBOSS_ICEBALL_START_X-5)
+  sta w0
+  lda #0
+  sta w0+1
+  
+  lda #DRAGONBOSS_ICEBALL_START_Y
+  sta b1
+  lda #0
+  sta b2
+
+  jsr entity_spawn
+  
+  ;get index of entity just spawned
+  lda b3
+  tay
+
+  ;parameterize/fully initialize the iceball we just spawned
+  lda #$00
+  sta entity_locals+iceball_locals::x_velocity,y
+  lda #$00
+  sta entity_locals+iceball_locals::x_velocity+1,y
+  lda #2
+  sta entity_locals+iceball_locals::y_velocity,y
+  lda #0
+  sta entity_locals+iceball_locals::y_velocity+1,y
+  
+  ;reset the iceball's animation
+  lda #1
+  sta entity_instances+entity_instance::animation_object,y
+  lda #$ff
+  sta entity_instances+entity_instance::animation_object+1,y
+  
+  lda #ICEBALL_FLYSTATE
+  sta entity_instances+entity_instance::state,y
 
   ;****************************************************************
   ;Spawn and parameterize an iceball
@@ -711,7 +752,7 @@ dragonboss_spiticeballsstate_handler:
   sta entity_instances+entity_instance::state,x
   
   ;draw dragon's mouth open
-  lda #14
+  lda #12
   sta b0
   lda #10
   sta b1
@@ -800,7 +841,7 @@ dragonboss_tailupstate_handler:
   lda #100
   sta entity_locals+dragonboss_locals::state_switch_counter,x
   
-  lda #22
+  lda #20
   sta b0
   lda #20
   sta b1
@@ -873,7 +914,7 @@ dragonboss_substate_switch_complete:
   jsr nomolos_is_deadly
   beq nomolos_not_attacking
 
-  lda #112
+  lda #96
   sta entity_screen_x
   lda #96
   sta entity_screen_y
@@ -1109,7 +1150,7 @@ draw_mouth_open:
 drawstate_switch_done:
   
   sec
-  lda #112
+  lda #96
   sbc camera_scroll_x
   sta w3
   lda #0

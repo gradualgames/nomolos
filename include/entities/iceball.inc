@@ -68,6 +68,10 @@ iceball_fly:
   jsr entity_test_death_zone
   beq iceballDie
 
+  lda entity_screen_y+1
+  cmp #2
+  beq iceballDie
+
   ;load width and height
   lda #ICEBALL_WIDTH
   sta b2

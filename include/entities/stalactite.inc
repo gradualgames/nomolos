@@ -71,7 +71,7 @@ stalactite_startfall:
   sta entity_locals+stalactite_locals::x_velocity+1,x
   lda #0
   sta entity_locals+stalactite_locals::y_velocity,x
-  lda #3
+  lda #4
   sta entity_locals+stalactite_locals::y_velocity+1,x
   
   ;set state to fall
