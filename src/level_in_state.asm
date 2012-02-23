@@ -30,6 +30,14 @@
 levelInStateInit:
 
   ;****************************************************************
+  ;Install nmi routine for this state
+  ;****************************************************************
+  lda #<ppu_blank_nmi
+  sta update_ppu
+  lda #>ppu_blank_nmi
+  sta update_ppu+1
+
+  ;****************************************************************
   ;Wait for vblank, then turn off nmi and all graphics and sound
   ;****************************************************************
   wait_vblank
@@ -215,12 +223,6 @@ levelInStateRun:
   sta ppu_2005+1
   upload_ppu_2005
 
-  ;load nmi routine for this state
-  lda #<level_in_state_update_ppu
-  sta update_ppu
-  lda #>level_in_state_update_ppu
-  sta update_ppu+1
-
   ;turn on sprite and background visibility
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
@@ -266,10 +268,4 @@ levelInStateDone:
 stateCommandComplete:
 
   rts
-.endproc
-
-.proc level_in_state_update_ppu
-
-  rts
-
 .endproc

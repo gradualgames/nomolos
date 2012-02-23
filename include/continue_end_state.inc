@@ -2,7 +2,6 @@
 CONTINUEENDSTATE_INC = 1
 
 .global continue_end_state_update
-.global continue_end_state_update_ppu
 
 CONTINUEENDSTATE_INIT =   %00000000
 CONTINUEENDSTATE_RUN  =   %00000001

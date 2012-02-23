@@ -4,7 +4,6 @@ TITLESTATE_INC = 1
 .include "flags.inc"
 
 .global title_state_update
-.global title_state_update_ppu
 
 TITLESTATE_LOGO  = %00000000
 TITLESTATE_TITLE =  %00000001

@@ -81,6 +81,14 @@ use_restart_point:
 load_level_stateInit:
 
   ;****************************************************************
+  ;Install nmi routine for this state
+  ;****************************************************************
+  lda #<ppu_blank_nmi
+  sta update_ppu
+  lda #>ppu_blank_nmi
+  sta update_ppu+1
+
+  ;****************************************************************
   ;Wait for vblank, then turn off all graphics.
   ;****************************************************************
 
@@ -378,10 +386,4 @@ load_level_stateDone:
 stateSwitchComplete:
 
   rts
-.endproc
-
-.proc load_level_state_update_ppu
-
-  rts
-
 .endproc

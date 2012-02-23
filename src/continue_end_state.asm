@@ -32,6 +32,14 @@
 
 continue_end_state_init:
 
+  ;****************************************************************
+  ;Install nmi routine for this state
+  ;****************************************************************
+  lda #<continue_end_state_update_ppu
+  sta update_ppu
+  lda #>continue_end_state_update_ppu
+  sta update_ppu+1
+
   ;continue is selected
   lda #CONTINUE_SELECTED
   sta state_control_params+continue_end_state_control::selected_cursor

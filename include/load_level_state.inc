@@ -2,7 +2,6 @@
 LOADLEVELSTATE_INC = 1
 
 .global load_level_state_update
-.global load_level_state_update_ppu
 
 LOADLEVELSTATE_INIT = %00000000
 LOADLEVELSTATE_LOAD = %00000001

@@ -6,7 +6,6 @@ PLAYLEVELSTATE_INC = 1
 .global play_level_state_init_victory_mode
 .global play_level_state_init_hands_off_victory_mode
 .global play_level_state_update
-.global play_level_state_update_ppu
 
 PLAYLEVELSTATE_INIT        =           0
 PLAYLEVELSTATE_KEEPPLAYING =           1

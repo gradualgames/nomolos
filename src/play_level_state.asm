@@ -251,6 +251,14 @@ switch_to_ending_state:
 play_level_state_init:
 
   ;****************************************************************
+  ;Install nmi routine for this state
+  ;****************************************************************
+  lda #<play_level_state_update_ppu
+  sta update_ppu
+  lda #>play_level_state_update_ppu
+  sta update_ppu+1
+
+  ;****************************************************************
   ;Fade in the palette, then switch to the play level state.
   ;****************************************************************
 

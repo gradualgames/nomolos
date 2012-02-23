@@ -38,26 +38,14 @@
   lda state_table+1,x
   sta update+1
 
-  ;load address of ppu update routine
-  lda state_table+2,x
-  sta update_ppu
-  lda state_table+3,x
-  sta update_ppu+1
-
   rts
 .endproc
 
 ;state table
 state_table:
   .word title_state_update
-  .word title_state_update_ppu
   .word level_in_state_update
-  .word level_in_state_update_ppu
   .word load_level_state_update
-  .word load_level_state_update_ppu
   .word play_level_state_update
-  .word play_level_state_update_ppu
   .word continue_end_state_update
-  .word continue_end_state_update_ppu
   .word ending_state_update
-  .word ending_state_update_ppu
