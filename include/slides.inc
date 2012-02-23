@@ -1,4 +1,5 @@
 .global title_nametable
+.global title_palette
 .global slide1_chr
 .global slide1_nametable
 .global slide1_palette

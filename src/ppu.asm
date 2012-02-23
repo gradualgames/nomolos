@@ -140,7 +140,7 @@ fading_loop:
 .endproc
 
 ;expects w0 to point to the palette to fade out from
-;uses b0 to store palette step
+;uses b4 to store palette step
 .proc fade_out_palette
 palette_step = b4
 
@@ -184,6 +184,13 @@ fading_loop:
   sta update_ppu
 
   rts
+.endproc
+
+;nmi routine which does nothing.
+.proc ppu_blank_nmi
+
+  rts
+
 .endproc
 
 ;nmi routine for uploading the dynamic palette
@@ -407,22 +414,7 @@ start_button_hit:
 
 .endproc
 
-;fades out, loads a palette and nametable graphics, then fades in and
-;waits a specified number of vsync's
-;expects w2 to hold address of slide parameters
-;expects b7 to hold the start button mask (can be used to optionally test
-;or not test the start button for escapes)
-.proc ppu_show_slide
-start_button_mask = b7
-start_was_pressed = b6
-slide_address = w2
-
-  ;make sure start_was_pressed begins as false
-  lda #0
-  sta start_was_pressed
-
-  ;fade out
-  jsr fade_out_palette
+.proc ppu_load_slide
 
   ;clear sprites
   jsr sprite_clear_all
@@ -524,6 +516,30 @@ slide_address = w2
   iny
   lda (w2),y
   sta w0+1
+
+  rts
+
+.endproc
+
+;fades out, loads a palette and nametable graphics, then fades in and
+;waits a specified number of vsync's
+;expects w2 to hold address of slide parameters
+;expects b7 to hold the start button mask (can be used to optionally test
+;or not test the start button for escapes)
+.proc ppu_show_slide
+start_button_mask = b7
+start_was_pressed = b6
+slide_address = w2
+
+  ;make sure start_was_pressed begins as false
+  lda #0
+  sta start_was_pressed
+
+  ;fade out
+  jsr fade_out_palette
+
+  ;load the slide
+  jsr ppu_load_slide
 
   ;fade in
   jsr fade_in_palette

@@ -117,28 +117,6 @@
 
 title_stateInit:
 
-  ;****************************************************************
-  ;Wait for vblank, then turn off nmi and all graphics.
-  ;****************************************************************
-
-  ;this init state should be similar to the level in state, only we won't be
-  ;clearing the nametable, we'll be loading it from a particular location.
-  wait_vblank
-
-  ;turn off nmi
-  clear_ppu_2000_bit PPU0_EXECUTE_NMI
-  ;turn off inc32, we're just loading a nametable in this state
-  clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
-  ;load sprite pattern table from $1000
-  set_ppu_2000_bit PPU0_SPRITE_PATTERN_TABLE_ADDRESS
-  upload_ppu_2000
-
-  ;turn off sprite visibility
-  clear_ppu_2001_bit PPU1_SPRITE_VISIBILITY
-  ;turn off background visibility
-  clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
-  upload_ppu_2001
-
   ;reset the level selector counter
   lda #0
   sta state_control_params+title_stateControl::starting_level
@@ -151,54 +129,45 @@ title_stateInit:
   lda #TITLESTATE_RUN
   sta state_control_params+title_stateControl::state
 
-  jmp stateCommandComplete
+  rts
 
 title_stateRun:
 
   ;****************************************************************
-  ;Clear sprite memory, load title graphics, load faded out palette
+  ;Load the title screen slide, draw strings, then fade in.
   ;****************************************************************
 
-  ;clear the sprites
-  jsr sprite_clear_all
-  ;update sprites
-  jsr sprite_update_all
+  ;load dynamic palette faded out so that fade in doesn't cause funkiness
+  lda #0
+  sta b3
+  jsr ppu_load_dynamic_palette_brightness
 
-  ;switch to the prg bank containing the title screen
-  lda title_definition+title::nametable_bank
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-
-  ;load the title nametable and attribute table.
-  lda #$20
-  sta ppu_2006
-  lda #$00
-  sta ppu_2006+1
-  upload_ppu_2006
-  lda title_definition+title::name_table_address
+  lda #<dynamic_palette
   sta w0
-  lda title_definition+title::name_table_address+1
-  sta w0+1
-  jsr ppu_load_name_table
-
-  ;now switch to the prg bank containing the chr data of the title screen.
-  lda title_definition+title::chr_prg_rom_bank
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-
-  ;now load the chr data
-  lda title_definition+title::chr_address
-  sta w0
-  lda title_definition+title::chr_address+1
+  lda #>dynamic_palette
   sta w0+1
 
-  lda #$00
-  sta ppu_2006
-  sta ppu_2006+1
-  upload_ppu_2006
+  jsr ppu_load_palette
 
-  jsr ppu_load_chr_amount
+  ;switch to nmi routine for uploading the dynamic palette
+  lda #<ppu_upload_dynamic_palette_ppu
+  sta update_ppu
+  lda #>ppu_upload_dynamic_palette_ppu
+  sta update_ppu+1
 
+  lda #<title_slide
+  sta w2
+  lda #>title_slide
+  sta w2+1
+
+  jsr ppu_load_slide
+
+  lda #<ppu_blank_nmi
+  sta update_ppu
+  lda #>ppu_blank_nmi
+  sta update_ppu+1
+
+  wait_vblank
   ;write some important strings onto the title screen!
   set_ppu_2006 $20, 19, 10
   lda #<press_start_string
@@ -227,32 +196,6 @@ title_stateRun:
 
   jsr display_difficulty_string
 
-  ;now that nametable loaded, load the new palette faded out
-  lda title_definition+title::palette_address
-  sta w0
-  lda title_definition+title::palette_address+1
-  sta w0+1
-
-  lda #0
-  sta b3
-  jsr ppu_load_dynamic_palette_brightness
-
-  lda #<dynamic_palette
-  sta w0
-  lda #>dynamic_palette
-  sta w0+1
-
-  wait_vblank
-  jsr ppu_load_palette
-
-  ;****************************************************************
-  ;Set VRAM and scroll registers to point to first nametable and
-  ;scroll to 0, 0. Then switch on nmi and all graphics and fade in
-  ;the palette using the dynamic palette upload nmi routine in
-  ;the state manager module.
-  ;Start title music playing.
-  ;****************************************************************
-
   ;reset scroll
   lda #$20
   sta ppu_2006
@@ -265,21 +208,23 @@ title_stateRun:
   sta ppu_2005+1
   upload_ppu_2005
 
-  ;turn on nmi
-  set_ppu_2000_bit PPU0_EXECUTE_NMI
-  upload_ppu_2000
-
-  ;turn sprite and background visibility on
-  set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
-  set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
-  upload_ppu_2001
-
-  lda title_definition+title::palette_address
+  lda #<title_slide
+  sta w2
+  lda #>title_slide
+  sta w2+1
+  ldy #ppu_slide::palette_address
+  lda (w2),y
   sta w0
-  lda title_definition+title::palette_address+1
+  iny
+  lda (w2),y
   sta w0+1
 
   jsr fade_in_palette
+
+  lda #<title_state_update_ppu
+  sta update_ppu
+  lda #>title_state_update_ppu
+  sta update_ppu+1
 
   ;load title screen music
 .ifdef MUSIC_ENABLE
@@ -297,7 +242,7 @@ title_stateRun:
   lda #TITLESTATE_DONE
   sta state_control_params+title_stateControl::state
 
-  jmp stateCommandComplete
+  rts
 
 title_stateDone:
   
@@ -410,12 +355,6 @@ right_button_not_hit:
   jsr sound_upload
   .endif
 
-  ;create dynamic palette from rom palette
-  lda title_definition+title::palette_address
-  sta w0
-  lda title_definition+title::palette_address+1
-  sta w0+1
-
   jsr show_intro_cut_scene
 
   ;****************************************************************
@@ -447,14 +386,21 @@ start_button_not_hit:
 
   inc nmi_counter
 
-  jmp stateCommandComplete
-
-stateCommandComplete:
-
   rts
 .endproc
 
 .proc show_intro_cut_scene
+
+  lda #<title_slide
+  sta w2
+  lda #>title_slide
+  sta w2+1
+  ldy #ppu_slide::palette_address
+  lda (w2),y
+  sta w0
+  iny
+  lda (w2),y
+  sta w0+1
 
   ;switch to nmi routine for uploading the dynamic palette
   lda #<ppu_upload_dynamic_palette_ppu

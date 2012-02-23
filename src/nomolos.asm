@@ -51,8 +51,11 @@ reset:
   sta nmi_counter
 
   ;initialize ppu registers with settings we're never going to change
+  set_ppu_2000_bit PPU0_EXECUTE_NMI
   set_ppu_2001_bit PPU1_SPRITE_CLIPPING
   set_ppu_2001_bit PPU1_BACKGROUND_CLIPPING
+  upload_ppu_2000
+  upload_ppu_2001
 
   ;initialize various modules which require a guaranteed initial state
   jsr sound_initialize

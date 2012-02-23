@@ -3,7 +3,9 @@ PPU_INC = 1
 
 .global fade_in_palette
 .global fade_out_palette
+.global ppu_blank_nmi
 .global ppu_upload_dynamic_palette_ppu
+.global ppu_load_slide
 .global ppu_show_text_slide
 .global ppu_show_slide
 .global ppu_draw_rectangular_region

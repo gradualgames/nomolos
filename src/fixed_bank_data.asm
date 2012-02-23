@@ -34,10 +34,6 @@
 .include "font0_patterns_source.inc"
 .include "title_patterns_source.inc"
 
-title_palette:
-  .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
-  .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
-
 .segment "CODE"
 
 ;level definitions
@@ -1500,10 +1496,11 @@ secret_message_slide:
   .byte 5
 .endif
 
-title_definition:
+title_slide:
   .word title_palette
   .word title_nametable
   .word title_patterns
+  .byte 1
   .byte 14
   .byte 10
 

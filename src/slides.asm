@@ -159,6 +159,10 @@ nintendoage_caption:
 
 .include "title_nametable_source.inc"
 
+title_palette:
+  .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
+  .byte $0d,$20,$0d,$0d,$0d,$16,$20,$10,$0d,$0d,$0d,$0d,$0d,$0d,$0d,$0d
+
 slide1_palette:
   .byte $0d,$11,$28,$20,$0d,$08,$17,$11,$0d,$24,$11,$20,$0d,$08,$11,$20
   .byte $0d,$11,$28,$20,$0d,$08,$17,$11,$0d,$24,$11,$20,$0d,$08,$11,$20
