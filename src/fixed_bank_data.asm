@@ -892,6 +892,65 @@ entity_chr_definition_table:
 banktable:
   .byte $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $0f
 
+gradual_games_logo_music:
+.scope
+
+Song1: 
+  .word Square1
+  .word Square2
+  .word Triangle
+  .word Noise
+  .word volume_envelopes
+  .word pitch_envelopes
+  .word duty_envelopes
+
+volume_envelopes:
+  .word volume_envelope_0
+  .word volume_envelope_1
+  .word volume_envelope_2
+  .word volume_envelope_3
+  .word volume_envelope_4
+
+pitch_envelopes:
+  .word pitch_envelope_0
+
+duty_envelopes:
+  .word duty_envelope_0
+
+volume_envelope_0:
+  .byte 0, ENV_STOP
+
+volume_envelope_1:
+  .byte 15, ENV_LOOP
+volume_envelope_2:
+  .byte 10,9,7,5,4,3,3,5,6,6,6,5,3,2,2,ENV_STOP
+volume_envelope_3:
+  .byte 7,7,6,3,2,0,ENV_STOP
+volume_envelope_4:
+  .byte 8,7,7,6,5,5,4,3,2,1,1,0,0,ENV_STOP
+
+pitch_envelope_0:
+  .byte 0, ENV_LOOP
+
+duty_envelope_0:
+  .byte 0, ENV_LOOP
+
+Square1:
+  .byte STV,2,STP,0,SDU,0,STL,28,G1,F1,STL,7,E1,F1,STL,42,G1,STV,4,STL,255,C1,STL,81
+  .byte C1
+  .byte TRM
+
+Square2:
+  .byte STV,3,STP,0,SDU,0,STL,14,C3,B2,A2,G2,F2,E2,D2,E2,STV,4,STL,255,C2,STL,81,C2
+  .byte TRM
+
+Triangle:
+  .byte TRM
+
+Noise:
+  .byte TRM
+.endscope
+
 .export intro_cut_scene_music
 intro_cut_scene_music:
 .scope
@@ -1073,31 +1132,9 @@ volume_envelopes:
   .word volume_envelope_0
   .word volume_envelope_1
   .word volume_envelope_2
-  .word 0
-  .word 0
-
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-
-  sound_effect_volume_addresses
 
 pitch_envelopes:
   .word pitch_envelope_0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-  .word 0
-
-  sound_effect_pitch_addresses
   
 duty_envelopes:
   .word duty_envelope_0

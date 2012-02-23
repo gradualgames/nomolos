@@ -155,9 +155,36 @@ title_stateRun:
   lda #>ppu_upload_dynamic_palette_ppu
   sta update_ppu+1
 
-  ;show Gradual Games logo
-  show_graphics_slide gradual_games_logo_slide
+  ;load Gradual Games logo
+  lda #<gradual_games_logo_slide
+  sta w2
+  lda #>gradual_games_logo_slide
+  sta w2+1
 
+  jsr ppu_load_slide
+
+  ;fade in the slide
+  jsr fade_in_palette
+
+  ;play the logo music
+.ifdef MUSIC_ENABLE
+  lda #<gradual_games_logo_music
+  sta sound_param_word_1
+  lda #>gradual_games_logo_music
+  sta sound_param_word_1+1
+  jsr song_initialize
+.endif
+
+  ;wait for a few frames
+  ldx #120
+: lda nmi_counter
+  bne :-
+
+  inc nmi_counter
+  dex
+  bne :-
+
+  ;fade out the palette
   jsr fade_out_palette
 
   lda #<title_slide
@@ -172,6 +199,7 @@ title_stateRun:
   lda #>ppu_blank_nmi
   sta update_ppu+1
 
+  wait_vblank
   wait_vblank
   ;write some important strings onto the title screen!
   set_ppu_2006 $20, 19, 10

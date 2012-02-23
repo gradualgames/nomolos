@@ -29,7 +29,7 @@ boss_5_index    = 16
 .global entity_chr_definition_table
 .global level_definition_table
 .global banktable
-.global haltmusic
+.global gradual_games_logo_music
 .global victory_music
 .global title_music
 .global intro_cut_scene_music
