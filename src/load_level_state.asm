@@ -284,7 +284,7 @@ load_level_stateInit:
   lda #LOADLEVELSTATE_LOAD
   sta state_control_params+load_level_stateControl::state
 
-  jmp stateSwitchComplete
+  rts
 
 load_level_stateLoad:
 
@@ -313,7 +313,7 @@ load_level_stateLoad:
 
 load_state_not_done:
 
-  jmp stateSwitchComplete
+  rts
 
 load_level_stateDone:
 
@@ -380,10 +380,6 @@ load_level_stateDone:
 
   ldx #index_play_level_state
   jsr switch_state
-
-  jmp stateSwitchComplete
-
-stateSwitchComplete:
 
   rts
 .endproc

@@ -61,13 +61,13 @@ continue_end_state_init:
   lda #CONTINUEENDSTATE_RUN
   sta state_control_params+continue_end_state_control::state
 
-  jmp stateCommandComplete
+  rts
 
 continue_end_state_run:
 
   jsr continue_end_state_run_handler
 
-  jmp stateCommandComplete
+  rts
 
  
   ;****************************************************************
@@ -79,18 +79,11 @@ continue_end_state_select:
 
   jsr continue_end_state_select_handler
 
-  jmp stateCommandComplete
+  rts
   
 continue_end_state_done:
  
-  lda frame_counter
-  bne stateCommandComplete
- 
   jsr continue_end_state_done_handler
-
-  jmp stateCommandComplete
-
-stateCommandComplete:
 
   rts
 .endproc
@@ -204,9 +197,6 @@ stateCommandComplete:
 
   lda #CONTINUEENDSTATE_SELECT
   sta state_control_params+continue_end_state_control::state
-
-  lda #64
-  sta frame_counter
 
   rts
 
@@ -342,9 +332,7 @@ start_not_pressed:
 
   lda nmi_counter
   beq nmi_counter_zero
-
-  dec frame_counter
-  
+ 
   jsr sprite_update_all
   
   dec nmi_counter

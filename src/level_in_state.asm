@@ -59,7 +59,7 @@ levelInStateInit:
   lda #LEVELINSTATE_RUN
   sta state_control_params+level_in_state_control::state
 
-  jmp stateCommandComplete
+  rts
 
 levelInStateRun:
 
@@ -238,7 +238,7 @@ levelInStateRun:
   lda #LEVELINSTATE_DONE
   sta state_control_params+level_in_state_control::state
 
-  jmp stateCommandComplete
+  rts
 
 levelInStateDone:
 
@@ -264,8 +264,6 @@ levelInStateDone:
 
   ldx #index_load_level_state
   jsr switch_state
-
-stateCommandComplete:
 
   rts
 .endproc
