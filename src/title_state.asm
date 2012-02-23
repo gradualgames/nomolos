@@ -178,6 +178,10 @@ title_state_logo:
 
 title_state_title:
 
+  ;****************************************************************
+  ;Initialize variables used by the menu
+  ;****************************************************************
+
   ;reset the level selector counter
   lda #0
   sta state_control_params+title_stateControl::starting_level
