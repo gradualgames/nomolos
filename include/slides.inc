@@ -1,3 +1,6 @@
+.global gradual_games_logo_chr
+.global gradual_games_logo_nametable
+.global gradual_games_logo_palette
 .global title_nametable
 .global title_palette
 .global slide1_chr

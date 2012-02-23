@@ -155,6 +155,11 @@ title_stateRun:
   lda #>ppu_upload_dynamic_palette_ppu
   sta update_ppu+1
 
+  ;show Gradual Games logo
+  show_graphics_slide gradual_games_logo_slide
+
+  jsr fade_out_palette
+
   lda #<title_slide
   sta w2
   lda #>title_slide

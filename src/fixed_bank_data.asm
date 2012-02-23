@@ -1504,6 +1504,14 @@ title_slide:
   .byte 14
   .byte 10
 
+gradual_games_logo_slide:
+  .word gradual_games_logo_palette
+  .word gradual_games_logo_nametable
+  .word gradual_games_logo_chr
+  .byte 150
+  .byte 11
+  .byte 11
+
 slide1:
   .word slide1_palette
   .word slide1_nametable
