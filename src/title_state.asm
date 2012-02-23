@@ -122,6 +122,7 @@ title_state_logo:
   ;****************************************************************
 
   ;load dynamic palette faded out so that fade in doesn't cause funkiness
+  wait_vblank
   lda #0
   sta b3
   jsr ppu_load_dynamic_palette_brightness

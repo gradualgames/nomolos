@@ -50,6 +50,12 @@ reset:
   lda #0
   sta nmi_counter
 
+  ;install blank nmi routine at first
+  lda #<ppu_blank_nmi
+  sta update_ppu
+  lda #>ppu_blank_nmi
+  sta update_ppu+1
+
   ;initialize ppu registers with settings we're never going to change
   set_ppu_2000_bit PPU0_EXECUTE_NMI
   set_ppu_2001_bit PPU1_SPRITE_CLIPPING
