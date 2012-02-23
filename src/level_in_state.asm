@@ -44,8 +44,6 @@ levelInStateInit:
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
 
-  ;turn off nmi
-  clear_ppu_2000_bit PPU0_EXECUTE_NMI
   ;turn off inc32 since we are manipulating palette in this state
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
@@ -56,7 +54,6 @@ levelInStateInit:
   jmp stateCommandComplete
 
 levelInStateRun:
-
 
   ;****************************************************************
   ;Clear sprites and nametable, then load font graphics and write
@@ -199,7 +196,7 @@ levelInStateRun:
   jsr ppu_display_string
 
   ;****************************************************************
-  ;Wait for vblank, reset VRAM and scroll registers, turn nmi and
+  ;Wait for vblank, reset VRAM and scroll registers, turn
   ;graphics back on, then fade in the current palette.
   ;****************************************************************
 
@@ -218,9 +215,11 @@ levelInStateRun:
   sta ppu_2005+1
   upload_ppu_2005
 
-  ;turn on nmi
-  set_ppu_2000_bit PPU0_EXECUTE_NMI
-  upload_ppu_2000
+  ;load nmi routine for this state
+  lda #<level_in_state_update_ppu
+  sta update_ppu
+  lda #>level_in_state_update_ppu
+  sta update_ppu+1
 
   ;turn on sprite and background visibility
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
@@ -234,9 +233,6 @@ levelInStateRun:
   sta w0+1
   jsr fade_in_palette
 
-  lda #64
-  sta frame_counter
-
   lda #LEVELINSTATE_DONE
   sta state_control_params+level_in_state_control::state
 
@@ -244,8 +240,10 @@ levelInStateRun:
 
 levelInStateDone:
 
-  lda frame_counter
-  bne stateCommandComplete
+  ldx #64
+: wait_vblank
+  dex
+  bne :-
 
   ;fade out the palette
   lda #<(font1+font::palette)
@@ -272,7 +270,6 @@ stateCommandComplete:
 
 .proc level_in_state_update_ppu
 
-  dec frame_counter
-
   rts
+
 .endproc

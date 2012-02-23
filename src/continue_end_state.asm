@@ -37,7 +37,7 @@ continue_end_state_init:
   sta state_control_params+continue_end_state_control::selected_cursor
 
   ;****************************************************************
-  ;Wait for vblank, then turn off nmi and all graphics.
+  ;Wait for vblank, then turn off all graphics.
   ;****************************************************************
   wait_vblank
 
@@ -46,8 +46,6 @@ continue_end_state_init:
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
   upload_ppu_2001
 
-  ;turn off nmi
-  clear_ppu_2000_bit PPU0_EXECUTE_NMI
   ;turn off inc32 since we are manipulating palette in this state
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
@@ -165,7 +163,7 @@ stateCommandComplete:
   jsr ppu_display_string
 
   ;****************************************************************
-  ;Wait for vblank, reset VRAM and scroll registers, turn nmi and
+  ;Wait for vblank, reset VRAM and scroll registers, turn
   ;graphics back on, then fade in the current palette.
   ;****************************************************************
 
@@ -184,10 +182,6 @@ stateCommandComplete:
   sta ppu_2005+1
   upload_ppu_2005
 
-  ;turn on nmi
-  set_ppu_2000_bit PPU0_EXECUTE_NMI
-  upload_ppu_2000
-  
   ;turn on sprite and background visibility
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY

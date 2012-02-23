@@ -81,14 +81,12 @@ use_restart_point:
 load_level_stateInit:
 
   ;****************************************************************
-  ;Wait for vblank, then turn off nmi and all graphics.
+  ;Wait for vblank, then turn off all graphics.
   ;****************************************************************
 
   ;wait for vblank so we can turn off graphics, switch chr banks without graphical glitches
   wait_vblank
 
-  ;turn off nmi while loading level
-  clear_ppu_2000_bit PPU0_EXECUTE_NMI
   ;turn off inc32 for loading palette
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
@@ -357,16 +355,12 @@ load_level_stateDone:
   sta state_control_params+play_level_state_control::palette_cycle_counter
 
   ;****************************************************************
-  ;Wait for vblank, reset VRAM and scroll registers, turn nmi and
+  ;Wait for vblank, reset VRAM and scroll registers, turn
   ;graphics back on, then fade in the current palette.
   ;****************************************************************
   wait_vblank
 
   jsr map_update_scroll_ppu
-
-  ;turn nmi back on
-  set_ppu_2000_bit PPU0_EXECUTE_NMI
-  upload_ppu_2000
 
   ;turn on sprites and background
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
@@ -389,4 +383,5 @@ stateSwitchComplete:
 .proc load_level_state_update_ppu
 
   rts
+
 .endproc
