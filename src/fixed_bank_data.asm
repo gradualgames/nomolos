@@ -894,8 +894,6 @@ banktable:
 
 gradual_games_logo_music:
 .scope
-
-Song1: 
   .word Square1
   .word Square2
   .word Triangle
@@ -923,11 +921,11 @@ volume_envelope_0:
 volume_envelope_1:
   .byte 15, ENV_LOOP
 volume_envelope_2:
-  .byte 10,9,7,5,4,3,3,5,6,6,6,5,3,2,2,ENV_STOP
+  .byte 10,9,7,5,4,3,3,5,6,6,6,5,3,2,1,ENV_STOP
 volume_envelope_3:
   .byte 7,7,6,3,2,0,ENV_STOP
 volume_envelope_4:
-  .byte 8,7,7,6,5,5,4,3,2,1,1,0,0,ENV_STOP
+  .byte 9,8,7,7,6,5,4,3,2,2,5,5,5,5,4,3,2,1,0,0,ENV_STOP
 
 pitch_envelope_0:
   .byte 0, ENV_LOOP
@@ -941,13 +939,16 @@ Square1:
   .byte TRM
 
 Square2:
-  .byte STV,3,STP,0,SDU,0,STL,14,C3,B2,A2,G2,F2,E2,D2,E2,STV,4,STL,255,C2,STL,81,C2
+  .byte STV,2,STP,0,SDU,0,STL,28,G2,F2,STL,7,E2,F2,STL,42,G2,STV,4,STL,255,C2,STL,81
+  .byte C2
   .byte TRM
 
 Triangle:
+  .byte STV,0,STL,255,A0,STL,193,A0
   .byte TRM
 
 Noise:
+  .byte STV,0,STL,255,A0,STL,193,A0
   .byte TRM
 .endscope
 
