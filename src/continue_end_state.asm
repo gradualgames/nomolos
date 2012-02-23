@@ -220,7 +220,7 @@ stateCommandComplete:
   jsr fade_out_palette
 
   ;switch to title state
-  lda #TITLESTATE_INIT
+  lda #TITLESTATE_TITLE
   sta state_control_params+title_stateControl::state
   ldx #index_title_state
   jsr switch_state
@@ -319,7 +319,7 @@ continue_selected:
 end_selected:
   
   ;switch to title state
-  lda #TITLESTATE_INIT
+  lda #TITLESTATE_TITLE
   sta state_control_params+title_stateControl::state
   ldx #index_title_state
   jsr switch_state

@@ -62,7 +62,7 @@ reset:
   jsr nomolos_module_init
   jsr sprite_module_init
 
-  lda #TITLESTATE_INIT
+  lda #TITLESTATE_LOGO
   sta state_control_params+title_stateControl::state
   ldx #index_title_state
   jsr switch_state

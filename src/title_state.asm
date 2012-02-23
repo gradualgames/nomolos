@@ -102,36 +102,20 @@
 .proc title_state_update
 
   lda state_control_params+title_stateControl::state
-  cmp #TITLESTATE_INIT
+  cmp #TITLESTATE_LOGO
   bne :+
-  jmp  title_stateInit
+  jmp  title_state_logo
 :
-  cmp #TITLESTATE_RUN
+  cmp #TITLESTATE_TITLE
   bne :+
-  jmp title_stateRun
+  jmp title_state_title
 :
-  cmp #TITLESTATE_DONE
+  cmp #TITLESTATE_MENU
   bne :+
-  jmp title_stateDone
+  jmp title_state_menu
 :
 
-title_stateInit:
-
-  ;reset the level selector counter
-  lda #0
-  sta state_control_params+title_stateControl::starting_level
-  jsr create_selected_level_string
-  
-  ;reset the difficulty index selector to normal
-  lda #NORMAL_DIFFICULTY_INDEX
-  sta state_control_params+title_stateControl::difficulty_index
-
-  lda #TITLESTATE_RUN
-  sta state_control_params+title_stateControl::state
-
-  rts
-
-title_stateRun:
+title_state_logo:
 
   ;****************************************************************
   ;Load the title screen slide, draw strings, then fade in.
@@ -186,6 +170,26 @@ title_stateRun:
 
   ;fade out the palette
   jsr fade_out_palette
+
+  lda #TITLESTATE_TITLE
+  sta state_control_params+title_stateControl::state
+
+  rts
+
+title_state_title:
+
+  ;reset the level selector counter
+  lda #0
+  sta state_control_params+title_stateControl::starting_level
+  jsr create_selected_level_string
+  
+  ;reset the difficulty index selector to normal
+  lda #NORMAL_DIFFICULTY_INDEX
+  sta state_control_params+title_stateControl::difficulty_index
+
+  ;****************************************************************
+  ;Load the title screen slide, draw strings, then fade in.
+  ;****************************************************************
 
   lda #<title_slide
   sta w2
@@ -272,13 +276,13 @@ title_stateRun:
   clear_ppu_2000_bit PPU0_ADDRESS_INCREMENT
   upload_ppu_2000
 
-  lda #TITLESTATE_DONE
+  lda #TITLESTATE_MENU
   sta state_control_params+title_stateControl::state
 
   rts
 
-title_stateDone:
-  
+title_state_menu:
+
 : lda nmi_counter
   bne :-
 
