@@ -1043,6 +1043,8 @@ input_brightness = b3
   and #%00001111
   sta color_hue
 
+  cmp #$0d
+  beq return_black
   cmp #$0e
   beq return_black
   cmp #$0f
