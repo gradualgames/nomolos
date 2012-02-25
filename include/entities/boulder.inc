@@ -71,8 +71,8 @@ boulder_erase_row_tiles:
 
 ;this palette gets uploaded in the background before we show Princess Snow
 boss5_sprite_palette_after_boulder_dies:
-  .byte $3f,$07,$06,$20,$3f,$04,$24,$20,$3f,$04,$14,$24,$3f,$07,$06,$04
-  .byte $3f,$3f,$27,$20,$3f,$3f,$04,$2a,$3f,$06,$28,$21,$3f,$0d,$15,$20
+  .byte $0d,$07,$06,$20,$0d,$04,$24,$20,$0d,$04,$14,$24,$0d,$07,$06,$04
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$2a,$0d,$06,$28,$21,$0d,$0d,$15,$20
 
 .proc boulder_update
 

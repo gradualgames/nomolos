@@ -17,8 +17,8 @@ boss4_sprite_groups:
   
 .export boss4_palette
 boss4_palette:
-  .byte $3f,$0b,$1b,$12,$3f,$08,$07,$17,$3f,$0a,$00,$2c,$3f,$07,$16,$26
-  .byte $3f,$3f,$27,$20,$3f,$3f,$04,$29,$3f,$3f,$26,$25,$3f,$3f,$15,$25
+  .byte $0d,$0b,$1b,$12,$0d,$08,$07,$17,$0d,$0a,$00,$2c,$0d,$07,$16,$26
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$29,$0d,$0d,$26,$25,$0d,$0d,$15,$25
 
 .export boss4_music
 boss4_music: 

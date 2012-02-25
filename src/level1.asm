@@ -165,9 +165,9 @@ Noise:
 
 .export level1_palette
 level1_palette:
-  .byte $3f,$02,$20,$10,$3f,$0a,$1b,$08,$3f,$00,$10,$0b,$3f,$08,$02,$0b
+  .byte $0d,$02,$20,$10,$0d,$0a,$1b,$08,$0d,$00,$10,$0b,$0d,$08,$02,$0b
 ;spritesheet1_palette
-  .byte $3f,$3f,$27,$20,$3f,$3f,$04,$29,$3f,$3f,$07,$38,$3f,$3f,$0b,$08
+  .byte $0d,$0d,$27,$20,$0d,$0d,$04,$29,$0d,$0d,$07,$38,$0d,$0d,$0b,$08
 
 .export level1_map
 level1_map = Map
