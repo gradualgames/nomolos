@@ -1073,7 +1073,7 @@ input_brightness = b3
 
 return_black:
 
-  lda #$0d
+  lda #$0e
   sta color
   
   ;restore x
@@ -1138,13 +1138,6 @@ return_black:
   sta $2006
   ldx #$00
 : lda (w0),y
-
-  ;ensure we never use $0d
-  cmp #$0d
-  bne skip_load_correct_black
-  lda #$3f
-skip_load_correct_black:
-
   sta $2007
   inx
   iny
@@ -1161,13 +1154,6 @@ skip_load_correct_black:
   sta $2006
   ldx #$00
 : lda (w0),y
-
-  ;ensure we never use $0d
-  cmp #$0d
-  bne skip_load_correct_black
-  lda #$3f
-skip_load_correct_black:
-
   sta $2007
   inx
   iny
@@ -1184,13 +1170,6 @@ skip_load_correct_black:
   sta $2006
   ldx #$00
 : lda (w0),y
-
-  ;ensure we never use $0d
-  cmp #$0d
-  bne skip_load_correct_black
-  lda #$3f
-skip_load_correct_black:
-
   sta $2007
   inx
   iny
