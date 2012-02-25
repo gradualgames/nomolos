@@ -1030,6 +1030,15 @@ input_brightness = b3
   txa
   pha
 
+  ;this color is black but we don't want to use it. (it is
+  ;"blacker than black" and outputs a low enough voltage to
+  ;screw up some TV's)
+  ;return a correct black.
+  lda color
+  cmp #$0d
+  beq return_black
+
+  ;return black for the lowest brightness level
   lda input_brightness
   beq return_black
 
@@ -1043,8 +1052,7 @@ input_brightness = b3
   and #%00001111
   sta color_hue
 
-  cmp #$0d
-  beq return_black
+  ;these hues are always black
   cmp #$0e
   beq return_black
   cmp #$0f
