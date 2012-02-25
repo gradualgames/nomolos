@@ -1073,7 +1073,7 @@ input_brightness = b3
 
 return_black:
 
-  lda #$0d
+  lda #$0e
   sta color
   
   ;restore x
