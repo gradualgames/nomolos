@@ -16,12 +16,6 @@
 
 .segment "CODE"
 
-the_string:
-  .byte $03,$13,$07,$04
-
-end_string:
-  .byte $03,$04,$0d,$03
-
 .proc ending_state_update
 
 .ifndef DEMO_BUILD

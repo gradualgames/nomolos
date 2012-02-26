@@ -51,6 +51,7 @@ boss_5_index    = 16
 .global continue_string
 .global heart
 .global end_string
+.global the_string
 .global spaces_string
 .global title_slide
 .global gradual_games_logo_slide

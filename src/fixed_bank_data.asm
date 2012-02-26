@@ -1405,6 +1405,9 @@ continue_string:
 end_string:
   .byte $03,$04,$0d,$03
 
+the_string:
+  .byte $03,$13,$07,$04
+
 ;heart sprite for menu selections
 heart:
   .byte $01
