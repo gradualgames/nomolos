@@ -16,6 +16,12 @@
 
 .segment "CODE"
 
+the_string:
+  .byte $03,$13,$07,$04
+
+end_string:
+  .byte $03,$04,$0d,$03
+
 .proc ending_state_update
 
 .ifndef DEMO_BUILD
@@ -78,7 +84,43 @@
   show_text_slide secret_message_slide
 :
 
-  show_graphics_slide slide1
+  jsr fade_out_palette
+
+  lda #<slide1
+  sta w2
+  lda #>slide1
+  sta w2+1
+
+  jsr ppu_load_slide
+
+  set_ppu_2006 $20, 22, 13
+  lda #<the_string
+  sta w0
+  lda #>the_string
+  sta w0+1
+
+  jsr ppu_display_string
+
+  set_ppu_2006 $20, 23, 13
+  lda #<end_string
+  sta w0
+  lda #>end_string
+  sta w0+1
+
+  jsr ppu_display_string
+
+  lda #<slide1
+  sta w2
+  lda #>slide1
+  sta w2+1
+  ldy #ppu_slide::palette_address
+  lda (w2),y
+  sta w0
+  iny
+  lda (w2),y
+  sta w0+1
+
+  jsr fade_in_palette
 
 : jmp :-
 

@@ -49,10 +49,8 @@
   sta nomolos_x_velocity+1
   lda #$00
   sta nomolos_y_velocity
-  lda #$00
   sta nomolos_y_velocity+1
 
-  lda #0
   sta nomolos_map_x
   ldy #level_data_struct::nomolos_start_x
   lda (base_address_rom_definition_table),y
@@ -77,10 +75,8 @@
   lda #0
   sta nomolos_counter_attack_rect
 
-  lda #0
   sta nomolos_attack_rect_x
   sta nomolos_attack_rect_x+1
-  lda #0
   sta nomolos_attack_rect_y
   sta nomolos_attack_rect_y+1
 
