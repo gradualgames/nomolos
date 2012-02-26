@@ -28,6 +28,12 @@ GRUBSELIMBOJ_MAXVERTSPEED = 2
 GRUBSELIMBOJ_HORIZSPEED = 10
 GRUBSELIMBOJ_MAXHORIZSPEED = 3
 
+GRUBSELIMBOJ_STATIONARY_STATE_LENGTH_LO = $ff
+GRUBSELIMBOJ_STATIONARY_STATE_LENGTH_HI = $03
+
+GRUBSELIMBOJ_FLY_STATE_LENGTH_LO = $ff
+GRUBSELIMBOJ_FLY_STATE_LENGTH_HI = $03
+
 GOAL_X = 160
 GOAL_Y = 50
 
@@ -145,11 +151,14 @@ do_not_spawn_fireball:
   sbc #0
   sta entity_locals+grubselimboj_locals::counter+1,x
 
+  lda entity_locals+grubselimboj_locals::counter,x
+  bne do_not_switch_to_fly_state
+  lda entity_locals+grubselimboj_locals::counter+1,x
   bne do_not_switch_to_fly_state
   ;set counter to something
-  lda #$ff
+  lda #GRUBSELIMBOJ_FLY_STATE_LENGTH_LO
   sta entity_locals+grubselimboj_locals::counter,x
-  lda #$03
+  lda #GRUBSELIMBOJ_FLY_STATE_LENGTH_HI
   sta entity_locals+grubselimboj_locals::counter+1,x
   lda #GRUBSELIMBOJ_FLYSTATE
   sta entity_instances+entity_instance::state,x
@@ -481,9 +490,9 @@ grubselimboj_initState_handler:
   sta entity_locals+grubselimboj_locals::y_velocity+1,x
 
   ;set counter to something
-  lda #$ff
+  lda #GRUBSELIMBOJ_STATIONARY_STATE_LENGTH_LO
   sta entity_locals+grubselimboj_locals::counter,x
-  lda #$03
+  lda #GRUBSELIMBOJ_STATIONARY_STATE_LENGTH_HI
   sta entity_locals+grubselimboj_locals::counter+1,x
   
   ;switch state to "stationary"
@@ -543,9 +552,9 @@ grubselimboj_returningState_handler:
   bne not_at_goal
   
   ;set counter to something
-  lda #$ff
+  lda #GRUBSELIMBOJ_STATIONARY_STATE_LENGTH_LO
   sta entity_locals+grubselimboj_locals::counter,x
-  lda #$03
+  lda #GRUBSELIMBOJ_STATIONARY_STATE_LENGTH_HI
   sta entity_locals+grubselimboj_locals::counter+1,x
   
   lda #GRUBSELIMBOJ_STATIONARYSTATE
