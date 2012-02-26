@@ -29,6 +29,13 @@ SNEEP_FLAPSTATE = 3
 SNEEP_HIDESTATE = 4
 SNEEP_DYINGSTATE = 5
 
+SNEEP_FEATHER1_X_OFFSET = 75  ;used as a negative offset
+SNEEP_FEATHER2_X_OFFSET = 25  ;used as a negative offset
+SNEEP_FEATHER3_X_OFFSET = 25  ;used as a positive offset
+SNEEP_FEATHER4_X_OFFSET = 75  ;used as a positive offset
+
+SNEEP_FEATHER_Y_OFFSET = 75   ;used as a negative offset
+
 .proc sneep_update
 x_collisionPointBottom = b3 ;and b4, this is a .word
 y_collisionPointBottom = b5 ;and b6, this is a .word
@@ -798,7 +805,7 @@ sneep_spawn_feathers:
   ;get out low byte of position_x
   lda entity_instances+entity_instance::position_x,x
   sec
-  sbc #50
+  sbc #SNEEP_FEATHER1_X_OFFSET
   sta w0
   ;get out high byte of position_x
   lda #0
@@ -808,7 +815,7 @@ sneep_spawn_feathers:
   ;get out position_y
   lda entity_instances+entity_instance::position_y,x
   sec
-  sbc #50
+  sbc #SNEEP_FEATHER_Y_OFFSET
   sta b1
   lda #0
   sta b2
@@ -839,6 +846,50 @@ sneep_spawn_feathers:
 
   ;get out low byte of position_x
   lda entity_instances+entity_instance::position_x,x
+  sec
+  sbc #SNEEP_FEATHER2_X_OFFSET
+  sta w0
+  ;get out high byte of position_x
+  lda #0
+  sbc #0
+  sta w0+1
+
+  ;get out position_y
+  lda entity_instances+entity_instance::position_y,x
+  sec
+  sbc #SNEEP_FEATHER_Y_OFFSET
+  sta b1
+  lda #0
+  sta b2
+
+  jsr entity_spawn
+
+  ;get index of entity just spawned
+  lda b3
+  tay
+  
+  ;parameterize the feather to go direction of sneep
+  lda entity_locals+sneep_locals::velocity_x,x
+  clc
+  adc entity_locals+sneep_locals::velocity_x,x
+  sta entity_locals+feather_locals::x_velocity,y
+  lda entity_locals+sneep_locals::velocity_x+1,x
+  adc entity_locals+sneep_locals::velocity_x+1,x
+  sta entity_locals+feather_locals::x_velocity+1,y
+
+  lda #$02
+  sta entity_locals+feather_locals::y_velocity,y
+  lda #$00
+  sta entity_locals+feather_locals::y_velocity+1,y
+
+  ;****SPAWN AND PARAMETERIZE A FEATHER****
+  lda #entity_index_feather
+  sta b0
+
+  ;get out low byte of position_x
+  lda entity_instances+entity_instance::position_x,x
+  clc
+  adc #SNEEP_FEATHER3_X_OFFSET
   sta w0
   ;get out high byte of position_x
   lda #0
@@ -847,7 +898,7 @@ sneep_spawn_feathers:
   ;get out position_y
   lda entity_instances+entity_instance::position_y,x
   sec
-  sbc #50
+  sbc #SNEEP_FEATHER_Y_OFFSET
   sta b1
   lda #0
   sta b2
@@ -879,7 +930,7 @@ sneep_spawn_feathers:
   ;get out low byte of position_x
   lda entity_instances+entity_instance::position_x,x
   clc
-  adc #50
+  adc #SNEEP_FEATHER4_X_OFFSET
   sta w0
   ;get out high byte of position_x
   lda #0
@@ -889,7 +940,7 @@ sneep_spawn_feathers:
   ;get out position_y
   lda entity_instances+entity_instance::position_y,x
   sec
-  sbc #50
+  sbc #SNEEP_FEATHER_Y_OFFSET
   sta b1
   lda #0
   sta b2
