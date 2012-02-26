@@ -957,6 +957,8 @@ boulder_substate_switch_complete:
   
 do_not_decrement_brightness_counter:
   
+  ;darken the background palette
+  .scope
   ldy #15
 darken_boulder_palette_loop:
   lda dynamic_palette,y
@@ -970,7 +972,15 @@ darken_boulder_palette_loop:
   lda b0
   sta dynamic_palette,y
   
-  lda dynamic_palette+28,y
+  dey
+  bpl darken_boulder_palette_loop
+  .endscope
+
+  ;darken just Boulder's sprite palette
+  .scope
+  ldy #4
+darken_boulder_palette_loop:
+  lda dynamic_palette+8,y
   sta b0
   
   lda entity_locals+boulder_locals::brightness_counter,x
@@ -979,10 +989,11 @@ darken_boulder_palette_loop:
   jsr ppu_adjust_color_brightness
   
   lda b0
-  sta dynamic_palette+28,y
+  sta dynamic_palette+8,y
   
   dey
   bpl darken_boulder_palette_loop
+  .endscope
 
   lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_DYNAMIC_PALETTE
   sta state_control_params+play_level_state_control::upload_ppu_data
