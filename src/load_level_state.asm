@@ -70,15 +70,112 @@ use_restart_point:
   cmp #LOADLEVELSTATE_INIT
   beq load_level_stateInit
   cmp #LOADLEVELSTATE_LOAD
-  bne :+
-  jmp load_level_stateLoad
-:
+  beq load_level_stateLoad
   cmp #LOADLEVELSTATE_DONE
-  bne :+
-  jmp load_level_stateDone
-:
+  beq load_level_stateDone
 
 load_level_stateInit:
+
+  jmp load_level_stateInit_handler
+
+load_level_stateLoad:
+
+  ;left side is always right where the scroll is.
+  jsr map_decode_left_side
+
+  ;directly upload everything to ppu
+  jsr map_update_column_ppu
+  jsr map_update_attribute_ppu
+
+  ;move camera_scroll_x along
+  clc
+  lda camera_scroll_x
+  adc #$10
+  sta camera_scroll_x
+  lda camera_scroll_x+1
+  adc #$00
+  sta camera_scroll_x+1
+
+  ;decrement the column counter until zero
+  dec state_control_params+load_level_stateControl::column_counter
+  bne load_state_not_done
+
+  lda #LOADLEVELSTATE_DONE
+  sta state_control_params+load_level_stateControl::state
+
+load_state_not_done:
+
+  rts
+
+load_level_stateDone:
+
+  ;set camera scroll at starting screen
+  lda #0
+  sta camera_scroll_x
+  jsr get_restart_screen
+  sta camera_scroll_x+1
+
+  ;re-decode the left most column to ensure the correct nametable is being shown.
+  
+  ;left side is always right where the scroll is.
+  jsr map_decode_left_side
+
+  ;directly upload everything to ppu
+  jsr map_update_column_ppu
+  jsr map_update_attribute_ppu
+  
+  ;switch to play level state.
+  ;keep any new entities positioned where they need to be
+  ;switch to the actor and entity bank
+  ldy #level_data_struct::nomolos_entity_bank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
+  jsr entity_update_all
+
+  ldy #level_data_struct::level_music_bank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
+  ldy #level_data_struct::cycling_palette_address
+  lda (base_address_rom_definition_table),y
+  sta state_control_params+play_level_state_control::cycling_palette_address
+  iny
+  lda (base_address_rom_definition_table),y
+  sta state_control_params+play_level_state_control::cycling_palette_address+1
+
+  lda #0
+  sta state_control_params+play_level_state_control::palette_cycle_index
+
+  ldy #level_data_struct::cycling_palette_speed
+  lda (base_address_rom_definition_table),y
+  sta state_control_params+play_level_state_control::cycling_palette_speed
+  sta state_control_params+play_level_state_control::palette_cycle_counter
+
+  ;****************************************************************
+  ;Wait for vblank, reset VRAM and scroll registers, turn
+  ;graphics back on, then fade in the current palette.
+  ;****************************************************************
+  wait_vblank
+
+  jsr map_update_scroll_ppu
+
+  ;turn on sprites and background
+  set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
+  set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
+  upload_ppu_2001
+
+  lda #PLAYLEVELSTATE_INIT
+  sta state_control_params+play_level_state_control::state
+
+  ldx #index_play_level_state
+  jsr switch_state
+
+  rts
+
+load_level_stateInit_handler:
 
   ;****************************************************************
   ;Install nmi routine for this state
@@ -283,103 +380,6 @@ load_level_stateInit:
 
   lda #LOADLEVELSTATE_LOAD
   sta state_control_params+load_level_stateControl::state
-
-  rts
-
-load_level_stateLoad:
-
-  ;left side is always right where the scroll is.
-  jsr map_decode_left_side
-
-  ;directly upload everything to ppu
-  jsr map_update_column_ppu
-  jsr map_update_attribute_ppu
-
-  ;move camera_scroll_x along
-  clc
-  lda camera_scroll_x
-  adc #$10
-  sta camera_scroll_x
-  lda camera_scroll_x+1
-  adc #$00
-  sta camera_scroll_x+1
-
-  ;decrement the column counter until zero
-  dec state_control_params+load_level_stateControl::column_counter
-  bne load_state_not_done
-
-  lda #LOADLEVELSTATE_DONE
-  sta state_control_params+load_level_stateControl::state
-
-load_state_not_done:
-
-  rts
-
-load_level_stateDone:
-
-  ;set camera scroll at starting screen
-  lda #0
-  sta camera_scroll_x
-  jsr get_restart_screen
-  sta camera_scroll_x+1
-
-  ;re-decode the left most column to ensure the correct nametable is being shown.
-  
-  ;left side is always right where the scroll is.
-  jsr map_decode_left_side
-
-  ;directly upload everything to ppu
-  jsr map_update_column_ppu
-  jsr map_update_attribute_ppu
-  
-  ;switch to play level state.
-  ;keep any new entities positioned where they need to be
-  ;switch to the actor and entity bank
-  ldy #level_data_struct::nomolos_entity_bank
-  lda (base_address_rom_definition_table),y
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-
-  jsr entity_update_all
-
-  ldy #level_data_struct::level_music_bank
-  lda (base_address_rom_definition_table),y
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-
-  ldy #level_data_struct::cycling_palette_address
-  lda (base_address_rom_definition_table),y
-  sta state_control_params+play_level_state_control::cycling_palette_address
-  iny
-  lda (base_address_rom_definition_table),y
-  sta state_control_params+play_level_state_control::cycling_palette_address+1
-
-  lda #0
-  sta state_control_params+play_level_state_control::palette_cycle_index
-
-  ldy #level_data_struct::cycling_palette_speed
-  lda (base_address_rom_definition_table),y
-  sta state_control_params+play_level_state_control::cycling_palette_speed
-  sta state_control_params+play_level_state_control::palette_cycle_counter
-
-  ;****************************************************************
-  ;Wait for vblank, reset VRAM and scroll registers, turn
-  ;graphics back on, then fade in the current palette.
-  ;****************************************************************
-  wait_vblank
-
-  jsr map_update_scroll_ppu
-
-  ;turn on sprites and background
-  set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
-  set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
-  upload_ppu_2001
-
-  lda #PLAYLEVELSTATE_INIT
-  sta state_control_params+play_level_state_control::state
-
-  ldx #index_play_level_state
-  jsr switch_state
 
   rts
 .endproc
