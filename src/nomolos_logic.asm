@@ -669,7 +669,7 @@ skipAttackUpdate:
 .proc nomolos_update_attack_flail
 
   ;store size of attack rect for flail
-  lda #$38
+  lda #$39
   sta nomolos_attack_rect_width
   lda #$28
   sta nomolos_attack_rect_height
@@ -682,7 +682,7 @@ nomolos_facing_left:
 
   sec
   lda nomolos_screen_x
-  sbc #16
+  sbc #19
   sta nomolos_attack_rect_x
   lda nomolos_screen_x+1
   sbc #0
@@ -701,7 +701,7 @@ nomolos_facing_right:
 
   sec
   lda nomolos_screen_x
-  sbc #24
+  sbc #27
   sta nomolos_attack_rect_x
   lda nomolos_screen_x+1
   sbc #0
