@@ -22,8 +22,6 @@
 
   lda #0
   sta nomolos_state_secondary
-  
-  lda #0
   sta nomolos_status_lives
 
   lda #NORMAL_DIFFICULTY
@@ -43,11 +41,12 @@
   sta nomolos_state_primary
   sta nomolos_counter_temp_invincibility_blink
   
-  lda #0
-  sta nomolos_x_velocity
+  ;intentionally shaving bytes here instead of writing
+  ;it more clearly (switched lo and hi for x velocity here)
   lda #2
   sta nomolos_x_velocity+1
   lda #$00
+  sta nomolos_x_velocity
   sta nomolos_y_velocity
   sta nomolos_y_velocity+1
 
@@ -426,6 +425,9 @@ skipNomolosFacingRight:
   ora #nomolos_attack_on_set
   sta nomolos_state_primary
 
+  ;clear the location of the hit box
+  jsr nomolos_clear_attack_rect
+  
   ;reset animation
   reset_anim nomolos_animation
 
@@ -455,6 +457,20 @@ skipNomolosFacingRight:
   sta nomolos_state_primary
 
   ;clear the location of the hit box
+  jsr nomolos_clear_attack_rect
+  
+  ;reset animation
+  reset_anim nomolos_animation
+
+  ;reset weapon animation
+  reset_anim nomolos_weapon_animation
+
+  rts
+
+.endproc
+
+.proc nomolos_clear_attack_rect
+
   lda #0
   sta nomolos_attack_rect_x
   sta nomolos_attack_rect_x+1
@@ -462,12 +478,6 @@ skipNomolosFacingRight:
   sta nomolos_attack_rect_y+1
   sta nomolos_attack_rect_width
   sta nomolos_attack_rect_height
-
-  ;reset animation
-  reset_anim nomolos_animation
-
-  ;reset weapon animation
-  reset_anim nomolos_weapon_animation
 
   rts
 
