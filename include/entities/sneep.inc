@@ -110,10 +110,10 @@ sneep_init_state:
   lda difficulty
   cmp #EASY_DIFFICULTY
   bne :+
-  lda #10
+  lda #15
   jmp :++
 :
-  lda #15
+  lda #20
 :
   sta entity_locals+sneep_locals::health,x
   
