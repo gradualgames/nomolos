@@ -695,6 +695,22 @@ snow_init:
   lda #nomolos_invincibility_on_set
   sta nomolos_state_primary
 
+  ;make certain Nomolos' X coordinate is even or the logic
+  ;which aligns him with Snow will fail and he will walk
+  ;at her permanently. The game is designed to always add or
+  ;subtract 2 from Nomolos' coordinate; nevertheless, I am
+  ;putting in this safeguard in case there's some odd way to
+  ;get his coordinate to be odd that I don't know about
+  ;(besides using a hex editor)
+  lda nomolos_map_x+1
+  and #%11111110   ;make sure last bit is 0 (even)
+  sta nomolos_map_x+1
+  ;ensure x velocity is correct
+  lda #0
+  sta nomolos_x_velocity
+  lda #2
+  sta nomolos_x_velocity+1
+  
   reset_anim nomolos_animation
 
   jsr entity_reset_anim
