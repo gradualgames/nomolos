@@ -118,7 +118,7 @@
 title_state_logo:
 
   ;****************************************************************
-  ;Load the title screen slide, draw strings, then fade in.
+  ;Load the Logo graphic, play the logo music, wait a few frames
   ;****************************************************************
 
   ;load dynamic palette faded out so that fade in doesn't cause funkiness
