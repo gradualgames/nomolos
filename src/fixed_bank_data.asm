@@ -1511,8 +1511,13 @@ production_slide:
   .byte 150
   .byte 5
 
-joseph_morgan_slide:
-  .word joseph_morgan_caption
+printed_materials_slide:
+  .word printed_materials_caption
+  .byte 150
+  .byte 5
+  
+promotion_social_media_slide:
+  .word promotion_social_media_caption
   .byte 150
   .byte 5
 

@@ -34,9 +34,7 @@
   lda #>dynamic_palette
   sta w0+1
 
-  ;load blank start button mask (we do not want to escape from these)
-  lda #0
-  sta b7
+  start_slide_sequence
 
   ;switch to nmi routine for uploading the dynamic palette
   lda #<ppu_upload_dynamic_palette_ppu
@@ -67,7 +65,8 @@
   show_text_slide music_by_slide
   show_text_slide beta_testers_slide
   show_text_slide production_slide
-  show_text_slide joseph_morgan_slide
+  show_text_slide printed_materials_slide
+  show_text_slide promotion_social_media_slide
   show_text_slide special_thanks_slide
   show_text_slide nesdev_slide
   show_text_slide nintendoage_slide

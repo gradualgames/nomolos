@@ -458,9 +458,7 @@ start_button_not_hit:
   jsr song_initialize
 .endif
 
-  ;load start button mask (we want to be able to escape from these)
-  lda #1
-  sta b7
+  start_escapable_slide_sequence
 
   ;show some intro cut-scene slides
   show_text_slide_with_escape solomon_snow_watching_birds_slide, skip_intro_cut_scene

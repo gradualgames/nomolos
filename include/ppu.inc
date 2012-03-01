@@ -96,16 +96,21 @@ PPU1_DISPLAY_TYPE = 0
 
 .endmacro
 
+
+.macro start_escapable_slide_sequence
+
+  ;start button mask (enable escapes)
+  lda #1
+  sta b7
+
+.endmacro
+
 .macro show_text_slide_with_escape slide_address, escape_address
 
   lda #<slide_address
   sta w2
   lda #>slide_address
   sta w2+1
-
-  ;start button mask
-  lda #1
-  sta b7
 
   jsr ppu_show_text_slide
   lda b6
@@ -115,16 +120,20 @@ PPU1_DISPLAY_TYPE = 0
 
 .endmacro
 
+.macro start_slide_sequence
+
+  ;start button mask (disable escapes)
+  lda #0
+  sta b7
+
+.endmacro
+
 .macro show_text_slide slide_address
 
   lda #<slide_address
   sta w2
   lda #>slide_address
   sta w2+1
-
-  ;start button mask (disable escapes)
-  lda #0
-  sta b7
 
   jsr ppu_show_text_slide
 

@@ -87,7 +87,8 @@ boss_5_index    = 16
 .global music_by_slide
 .global beta_testers_slide
 .global production_slide
-.global joseph_morgan_slide
+.global printed_materials_slide
+.global promotion_social_media_slide
 .global special_thanks_slide
 .global nesdev_slide
 .global nintendoage_slide
