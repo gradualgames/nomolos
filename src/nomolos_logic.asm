@@ -1390,14 +1390,21 @@ skipJmpNotLeft:
   sbc #0
   sta nomolos_map_x+2
 
-  bpl skip_nomolos_do_not_go_past_zero
-
-  lda #0
-  sta nomolos_map_x
+  ;compare to leftmost coordinate
+  sec
+  lda nomolos_map_x
+  sbc #0
+  lda nomolos_map_x+1
+  sbc #2
+  lda nomolos_map_x+2
+  sbc #0
+  
+  bpl skip_reset_x
+  
+  lda #2
   sta nomolos_map_x+1
-  sta nomolos_map_x+2
-
-skip_nomolos_do_not_go_past_zero:
+  
+skip_reset_x:
 
   lda nomolos_screen_x
   sta w0
