@@ -28,6 +28,8 @@ level1_sprite_groups:
 
 .export level1_music
 level1_music: 
+
+Song1: 
   .word Square1
   .word Square2
   .word Triangle
@@ -48,7 +50,7 @@ volume_envelopes:
   .word 0
   .word 0
   .word 0
-
+  
   sound_effect_volume_addresses
 
 pitch_envelopes:
@@ -57,13 +59,13 @@ pitch_envelopes:
   .word 0
   .word 0
   .word 0
-
+  
   .word 0
   .word 0
   .word 0
   .word 0
   .word 0
-
+  
   sound_effect_pitch_addresses
 
 duty_envelopes:
@@ -72,13 +74,13 @@ duty_envelopes:
   .word 0
   .word 0
   .word 0
-
+  
   .word 0
   .word 0
   .word 0
   .word 0
   .word 0
-
+  
   sound_effect_duty_addresses
 
 volume_envelope_0:
@@ -87,13 +89,13 @@ volume_envelope_0:
 volume_envelope_1:
   .byte 15, ENV_LOOP
 volume_envelope_2:
-  .byte 3,6,7,8,10,11,7,7,7,7,7,7,6,6,6,6,6,6,6,6,6,4,3,2,2,ENV_STOP
+  .byte 9,9,9,8,7,6,6,5,4,3,2,2,2,2,2,2,3,3,4,5,5,1,1,1,1,ENV_STOP
 volume_envelope_3:
   .byte 0,0,0,0,0,0,0,0,0,0,ENV_STOP
 volume_envelope_4:
   .byte 7,5,3,1,0,ENV_STOP
 volume_envelope_5:
-  .byte 13,11,9,7,0,0,ENV_STOP
+  .byte 13,11,9,7,4,0,ENV_STOP
 volume_envelope_6:
   .byte 13,10,6,1,0,ENV_STOP
 
@@ -137,15 +139,14 @@ Square2:
 
 Triangle:
   .byte STV,0,STL,80,A0,STV,5,STP,0,SDU,0,STL,10,FS2,GS2,A2,B2,CS3,CS2,F2,CS2,STL,20,FS2
-  .byte GS2,A2,B2,STV,2,STL,10,CS3,CS2,CS4,CS3,CS3,CS2,CS4,CS3,A2,A1,A3,A2,A2,A1,A3,A2,B2
-  .byte B1,B3,B2,B2,B1,B3,B2,GS2,GS1,GS3,GS2,GS2,GS1,GS3,GS2,A2,A1,A3,A2,A2,A1,A3,A2,FS2
-  .byte FS1,FS3,FS2,FS2,FS1,FS3,FS2,GS2,GS1,GS3,GS2,GS2,GS1,GS3,GS2,STL,5,CS2,CS1,CS2,CS3,CS2,CS1,CS2
-  .byte CS3,CS2,CS1,CS2,CS3,CS2,CS1,CS2,CS3,STV,5,STL,20,FS2,GS2,A2,B2,CS2,DS2,F2,FS2,GS2,A2,B2
-  .byte CS3,DS3,F3,FS3,GS3,STL,10,A3,FS3,D3,B2,GS3,F3,CS3,F3,STV,2,A3,FS3,D3,B2,GS3,F3,CS3
-  .byte F3,STV,5,A3,FS3,D3,B2,GS3,F3,CS3,F3,STV,2,STL,20,FS2,GS2,A2,B2,STV,5,CS3,DS2,F2
-  .byte CS2,FS1,GS1,A1,B1,CS2,DS2,F2,FS2,STL,10,GS1,GS2,FS2,F2,STL,20,FS2,D2,STL,60,CS1,STL,10
-  .byte FS2,DS2,STV,2,F2,CS2,DS2,C2,CS2,GS1,F1,GS1,STV,5,STL,5,CS1,DS1,CS1,DS1,CS1,DS1,CS1,DS1
-  .byte STL,40,CS1
+  .byte GS2,A2,B2,STL,10,CS3,CS2,CS4,CS3,CS3,CS2,CS4,CS3,A2,A1,A3,A2,A2,A1,A3,A2,B2,B1,B3
+  .byte B2,B2,B1,B3,B2,GS2,GS1,GS3,GS2,GS2,GS1,GS3,GS2,A2,A1,A3,A2,A2,A1,A3,A2,FS2,FS1,FS3
+  .byte FS2,FS2,FS1,FS3,FS2,GS2,GS1,GS3,GS2,GS2,GS1,GS3,GS2,STL,5,CS2,CS1,CS2,CS3,CS2,CS1,CS2,CS3,CS2
+  .byte CS1,CS2,CS3,CS2,CS1,CS2,CS3,STL,20,FS2,GS2,A2,B2,CS2,DS2,F2,FS2,GS2,A2,B2,CS3,DS3,F3,FS3
+  .byte GS3,STL,10,A3,FS3,D3,B2,GS3,F3,CS3,F3,STV,2,A3,FS3,D3,B2,GS3,F3,CS3,F3,STV,5,A3
+  .byte FS3,D3,B2,GS3,F3,CS3,F3,STV,2,STL,20,FS2,GS2,A2,B2,STV,5,CS3,DS2,F2,CS2,FS1,GS1,A1
+  .byte B1,CS2,DS2,F2,FS2,STL,10,GS1,GS2,FS2,F2,STL,20,FS2,D2,STL,60,CS1,STL,10,FS2,DS2,STV,2
+  .byte F2,CS2,DS2,C2,CS2,GS1,F1,GS1,STV,5,STL,5,CS2,DS2,CS2,DS2,CS2,DS2,CS2,DS2,STL,40,CS2
   .byte GOT
   .word Triangle
 
