@@ -317,9 +317,9 @@ play_level_state_init:
   jsr sprite_clear_all
 
   jsr nomolos_update
-  jsr entity_update_all
   jsr nomolos_draw
   jsr nomolos_draw_hearts
+  jsr entity_update_all
   jsr map_decode
 
   ;switch to the level and music bank
@@ -403,10 +403,10 @@ do_not_switch_to_level_in_state:
   jsr sprite_clear_all
 
   jsr nomolos_update
-  jsr entity_update_all
   jsr nomolos_draw
   jsr nomolos_draw_hearts
-  
+  jsr entity_update_all
+
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank
   ldy #level_data_struct::level_music_bank
@@ -451,9 +451,9 @@ do_not_switch_to_level_in_state:
   jsr sprite_clear_all
 
   jsr nomolos_update
-  jsr entity_update_all
   jsr nomolos_draw
   jsr nomolos_draw_hearts
+  jsr entity_update_all
 
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank
