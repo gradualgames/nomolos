@@ -693,6 +693,7 @@ snow_init:
 
   ;make certain Nomolos isn't moving until we tell him to
   lda #nomolos_invincibility_on_set
+  ora #nomolos_below_collision_on_set
   sta nomolos_state_primary
 
   ;make certain Nomolos' X coordinate is even or the logic
@@ -731,6 +732,10 @@ snow_init:
 
   rts
 
+snow_walk_onto_screen:
+
+  jmp snow_walk_onto_screen_handler
+  
 snow_aligned_with_nomolos:
 
   dec entity_locals+boulder_locals::state_switch_counter,x
@@ -795,7 +800,7 @@ walk_test_done:
 
   rts
 
-snow_walk_onto_screen:
+snow_walk_onto_screen_handler:
 
   ;compute address of animation object based on current entity index and animation_object
   ;offset
@@ -856,7 +861,7 @@ nomolos_and_snow_aligned:
   sta buffer_controller+buttons::_right
   sta buffer_controller+buttons::_left
 
-  lda #0
+  lda #nomolos_below_collision_on_set
   sta nomolos_state_primary
 
   reset_anim nomolos_animation
