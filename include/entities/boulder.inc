@@ -1351,32 +1351,6 @@ boulder_spawn_lightningbolts:
   lda #0
   sta w0+1
   
-  lda #24
-  sta b1
-  lda #0
-  sta b2
-
-  jsr entity_spawn
-
-  ;get index of entity just spawned
-  lda b3
-  tay
-  
-  ;parameterize/fully initialize the lightningbolt we just spawned
-  lda #LIGHTNINGBOLT_FLASHMASK
-  sta entity_locals+lightningbolt_locals::flash_mask,y
-
-  ;****************************************************************
-  ;Spawn and parameterize a lightning bolt
-  ;****************************************************************
-  lda #entity_index_lightningbolt
-  sta b0
-
-  lda nomolos_screen_x
-  sta w0
-  lda #0
-  sta w0+1
-  
   lda #48
   sta b1
   lda #0

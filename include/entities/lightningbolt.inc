@@ -57,7 +57,7 @@ lightningbolt_fall:
 lightningbolt_draw:
 
   jsr entity_compute_screen_coordinates
-
+  
   jsr entity_test_death_zone
   beq lightningboltDie
 
@@ -75,10 +75,24 @@ lightningbolt_draw:
 :
 
   dec entity_locals+lightningbolt_locals::counter,x
+  ;lda entity_locals+lightningbolt_locals::counter,x
+  ;and entity_locals+lightningbolt_locals::flash_mask,x
+  ;beq do_not_draw
+
   lda entity_locals+lightningbolt_locals::counter,x
   and entity_locals+lightningbolt_locals::flash_mask,x
-  beq do_not_draw
-
+  beq do_not_add_offset
+  
+  lda entity_screen_y
+  clc
+  adc #24
+  sta entity_screen_y
+  lda entity_screen_y+1
+  adc #0
+  sta entity_screen_y+1
+  
+do_not_add_offset:
+  
   lda entity_chr_offsets+(entity_index_lightningbolt-1)
   sta sprite_group_offset
 
@@ -89,7 +103,7 @@ lightningbolt_draw:
   lda #0
   sta b2
   jsr entity_draw_anim
-do_not_draw:
+;do_not_draw:
   
   rts
   
