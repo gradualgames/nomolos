@@ -340,33 +340,33 @@ thanks_for_playing_caption:
 by_gradual_games_caption:
   .byte $10,$01,$18,$1a,$06,$11,$00,$03,$14,$00,$0b,$1a,$06,$00,$0c,$04,$12
 
-;PROGRAMMER,                     LEVEL DESIGNER,                 ARRANGER                                                        DEREK ANDREWS
+;PROGRAMMER,                     LEVEL DESIGNER,                 ARRANGER:                                                       DEREK ANDREWS
 derek_andrews_caption:
   .byte $8d,$0f,$11,$0e,$06,$11,$00,$0c,$0c,$04,$11,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$0b,$04,$15,$04,$0b,$1a,$03,$04,$12,$08,$06,$0d,$04,$11,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$00,$11,$11,$00,$0d,$06,$04,$11,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$00,$11,$11,$00,$0d,$06,$04,$11,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$03,$04,$11,$04,$0a,$1a,$00,$0d,$03,$11,$04,$16,$12
 
-;CONCEPT ARTIST,                 PIXEL ARTIST,                   GRAPHIC DESIGNER                                                LAURIE ANDREWS
+;CONCEPT ARTIST,                 PIXEL ARTIST,                   GRAPHIC DESIGNER:                                               LAURIE ANDREWS
 laurie_andrews_caption:
   .byte $8e,$02,$0e,$0d,$02,$04,$0f,$13,$1a,$00,$11,$13,$08,$12,$13,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$0f,$08,$17,$04,$0b,$1a,$00,$11,$13,$08,$12,$13,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$06,$11,$00,$0f,$07,$08,$02,$1a,$03,$04,$12,$08,$06,$0d,$04,$11,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$06,$11,$00,$0f,$07,$08,$02,$1a,$03,$04,$12,$08,$06,$0d,$04,$11,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$0b,$00,$14,$11,$08,$04,$1a,$00,$0d,$03,$11,$04,$16,$12
 
-;GAMEPLAY CONSULTANT,            CHIEF BETA TESTER,              LEVEL REVIEWER,                                                 DANIEL HWOZDEK
+;GAMEPLAY CONSULTANT,            CHIEF BETA TESTER,              LEVEL REVIEWER:                                                 DANIEL HWOZDEK
 daniel_hwozdek_caption:
   .byte $8e,$06,$00,$0c,$04,$0f,$0b,$00,$18,$1a,$02,$0e,$0d,$12,$14,$0b,$13,$00,$0d,$13,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$02,$07,$08,$04,$05,$1a,$01,$04,$13,$00,$1a,$13,$04,$12,$13,$04,$11,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$0b,$04,$15,$04,$0b,$1a,$11,$04,$15,$08,$04,$16,$04,$11,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$0b,$04,$15,$04,$0b,$1a,$11,$04,$15,$08,$04,$16,$04,$11,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$03,$00,$0d,$08,$04,$0b,$1a,$07,$16,$0e,$19,$03,$04,$0a
 
-;MUSIC BY                                                        SCARLATTI,                      BACH,                           RAMEAU,                         ROYER,                          SOLER,                          COUPERIN
+;MUSIC BY:                                                       SCARLATTI,                      BACH,                           RAMEAU,                         ROYER,                          SOLER,                          COUPERIN
 music_by_caption:
-  .byte $e8,$0c,$14,$12,$08,$02,$1a,$01,$18,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $e8,$0c,$14,$12,$08,$02,$1a,$01,$18,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$12,$02,$00,$11,$0b,$00,$13,$13,$08,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$01,$00,$02,$07,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
@@ -375,15 +375,15 @@ music_by_caption:
   .byte $1a,$12,$0e,$0b,$04,$11,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$02,$0e,$14,$0f,$04,$11,$08,$0d
 
-;BETA TESTERS:                                                   JOSEPH MORGAN,                  FRED ST. LOUIS,                 JOHN WHITE,                     CHRIS HWOZDEK,                  NATE GILLESPIE
+;BETA TESTERS:                                                   JOSEPH MORGAN,                  FRED ST. LOUIS,                 JOHN WHITE,                     CHRIS HWOZDEK,                  NATHAN GILLESPIE
 beta_testers_caption:
-  .byte $ce,$01,$04,$13,$00,$1a,$13,$04,$12,$13,$04,$11,$12,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $d0,$01,$04,$13,$00,$1a,$13,$04,$12,$13,$04,$11,$12,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$09,$0e,$12,$04,$0f,$07,$1a,$0c,$0e,$11,$06,$00,$0d,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$05,$11,$04,$03,$1a,$12,$13,$27,$1a,$0b,$0e,$14,$08,$12,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$09,$0e,$07,$0d,$1a,$16,$07,$08,$13,$04,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$02,$07,$11,$08,$12,$1a,$07,$16,$0e,$19,$03,$04,$0a,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$0d,$00,$13,$04,$1a,$06,$08,$0b,$0b,$04,$12,$0f,$08,$04
+  .byte $1a,$0d,$00,$13,$07,$00,$0d,$1a,$06,$08,$0b,$0b,$04,$12,$0f,$08,$04
 
 ;CART PRODUCTION:                                                RETROZONE
 production_caption:
@@ -397,10 +397,10 @@ printed_materials_caption:
   .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$14,$0d,$02,$0b,$04,$1a,$13,$14,$12,$0a
 
-;PROMOTION,                      SOCIAL MEDIA                                                    JOSEPH MORGAN
+;PROMOTION,                      SOCIAL MEDIA:                                                   JOSEPH MORGAN
 promotion_social_media_caption:
   .byte $6d,$0f,$11,$0e,$0c,$0e,$13,$08,$0e,$0d,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$12,$0e,$02,$08,$00,$0b,$1a,$0c,$04,$03,$08,$00,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$12,$0e,$02,$08,$00,$0b,$1a,$0c,$04,$03,$08,$00,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$09,$0e,$12,$04,$0f,$07,$1a,$0c,$0e,$11,$06,$00,$0d
 
