@@ -398,14 +398,11 @@ spritesheet1_BoulderScepter0:
   .byte $08,$08,$02,$00,$08
   .byte $08,$09,$02,$08,$00
 spritesheet1_BoulderScepter1:
-  .byte $09
+  .byte $06
   .byte $00,$0a,$02,$00,$10
   .byte $00,$0b,$02,$08,$08
-  .byte $00,$0c,$00,$10,$00
-  .byte $08,$0c,$00,$00,$10
   .byte $08,$0d,$02,$08,$08
   .byte $08,$0e,$02,$10,$00
-  .byte $10,$0c,$00,$00,$10
   .byte $10,$0f,$02,$08,$08
   .byte $10,$10,$02,$10,$00
 spritesheet1_SnowWalk0:
