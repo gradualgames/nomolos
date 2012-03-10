@@ -835,10 +835,10 @@ entity_definition_table:
   .byte $00
   .word boulder_update
   .byte $01
-  .byte $00
+  .byte 17
   .word spiraliceball_update
   .byte $05
-  .byte $00
+  .byte $04
   
 entity_chr_definition_table:
   .word spritesheet_common_Nomolos_chr
