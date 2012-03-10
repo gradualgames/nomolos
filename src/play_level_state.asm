@@ -451,9 +451,9 @@ do_not_switch_to_level_in_state:
   jsr sprite_clear_all
 
   jsr nomolos_update
+  jsr entity_update_all
   jsr nomolos_draw
   jsr nomolos_draw_hearts
-  jsr entity_update_all
 
   .ifdef MUSIC_ENABLE
   ;switch to the level and music bank
