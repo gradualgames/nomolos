@@ -781,7 +781,7 @@ entity_definition_table:
   .byte 6
   .word thoguth_update
   .byte $01
-  .byte $00
+  .byte 22
   .word fireballspawner_update
   .byte $03
   .byte $00
