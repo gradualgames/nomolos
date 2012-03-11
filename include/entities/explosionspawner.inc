@@ -30,12 +30,15 @@ explosionspawnerInit:
 
   jsr entity_compute_screen_coordinates
 
-  ;kill if already offscreen
+  ;kill if offscreen horizontally
   lda entity_screen_x+1
   bne kill_explosionspawner
+  ;kill if offscreen positive (so not on 0, but yes on positive)
   lda entity_screen_y+1
-  bne kill_explosionspawner
-
+  beq :+
+  bpl kill_explosionspawner
+:
+  
   ;start counter
   lda #21
   sta entity_locals+explosionspawner_locals::counter,x
