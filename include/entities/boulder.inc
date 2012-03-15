@@ -1351,7 +1351,7 @@ boulder_spawn_lightningbolts:
   lda #0
   sta w0+1
   
-  lda #48
+  lda #32
   sta b1
   lda #0
   sta b2
