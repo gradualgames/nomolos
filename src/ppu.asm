@@ -343,7 +343,7 @@ start_was_pressed = b6
   jsr mapper_switch_bank
 
   ;display string
-  set_ppu_2006 $20, 14, 5
+  set_ppu_2006 $20, 14, 4
   ldy #text_slide::string_address
   lda (w2),y
   sta w0
