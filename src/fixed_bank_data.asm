@@ -1441,7 +1441,7 @@ became_nomolos_slide:
   .word became_nomolos_caption
   .byte 150
   .byte 5
-  .byte 4
+  .byte 3
 
 nomolos_sets_out_slide:
   .word nomolos_sets_out_caption
