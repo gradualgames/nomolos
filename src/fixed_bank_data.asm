@@ -1454,7 +1454,7 @@ thanks_for_playing_demo_slide:
   .word thanks_for_playing_demo_caption
   .byte 250
   .byte 5
-  .byte 4
+  .byte 5
 
 .endif
 
