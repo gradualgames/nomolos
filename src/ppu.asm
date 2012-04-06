@@ -342,8 +342,16 @@ start_was_pressed = b6
   sta mapper_bank_next
   jsr mapper_switch_bank
 
-  ;display string
-  set_ppu_2006 $20, 14, 4
+  ;display string at column specified by slide. row is hard coded.
+  lda #$20
+  sta b0
+  lda #14
+  sta b1
+  ldy #text_slide::column
+  lda (w2),y
+  sta b2
+  set_ppu_2006_abs b0, b1, b2
+  upload_ppu_2006
   ldy #text_slide::string_address
   lda (w2),y
   sta w0

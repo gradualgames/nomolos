@@ -37,6 +37,7 @@ PPU_INC = 1
    string_address .word
    vsyncs .byte
    bank .byte
+   column .byte
 .endstruct
 
 ;bit positions for PPU control register $2000

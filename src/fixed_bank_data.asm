@@ -1417,37 +1417,51 @@ solomon_snow_watching_birds_slide:
   .word solomon_snow_watching_birds_caption
   .byte 150
   .byte 5
+  .byte 3
 
 portal_appears_slide:
   .word portal_appears_caption
   .byte 150
   .byte 5
+  .byte 6
 
 arm_snatches_snow_slide:
   .word arm_snatches_snow_caption
   .byte 150
+  .byte 5
   .byte 5
 
 leapt_through_portal_slide:
   .word leapt_through_portal_caption
   .byte 150
   .byte 5
+  .byte 4
+
+arriving_at_other_side_slide:
+  .word arriving_at_other_side_caption
+  .byte 150
+  .byte 5
+  .byte 3
 
 became_nomolos_slide:
   .word became_nomolos_caption
   .byte 150
   .byte 5
+  .byte 4
 
 nomolos_sets_out_slide:
   .word nomolos_sets_out_caption
   .byte 250
   .byte 5
+  .byte 4
 
 .ifdef DEMO_BUILD
 thanks_for_playing_demo_slide:
   .word thanks_for_playing_demo_caption
   .byte 250
   .byte 5
+  .byte 4
+
 .endif
 
 .ifndef DEMO_BUILD
@@ -1455,91 +1469,104 @@ nomolos_and_snow_reunited_slide:
   .word nomolos_and_snow_reunited_caption
   .byte 150
   .byte 5
+  .byte 5
 
 portal_appears_above_scepter_slide:
   .word portal_appears_above_scepter_caption
   .byte 150
+  .byte 5
   .byte 5
 
 leapt_through_ending_portal_slide:
   .word leapt_through_ending_portal_caption
   .byte 150
   .byte 5
-
-arriving_at_other_side_slide:
-  .word arriving_at_other_side_caption
-  .byte 150
   .byte 5
 
 thanks_for_playing_slide:
   .word thanks_for_playing_caption
   .byte 150
   .byte 5
+  .byte 5
 
 by_gradual_games_slide:
   .word by_gradual_games_caption
   .byte 150
   .byte 5
+  .byte 8
 
 derek_andrews_slide:
   .word derek_andrews_caption
   .byte 150
   .byte 5
+  .byte 9
 
 laurie_andrews_slide:
   .word laurie_andrews_caption
   .byte 150
   .byte 5
+  .byte 8
 
 daniel_hwozdek_slide:
   .word daniel_hwozdek_caption
   .byte 150
   .byte 5
+  .byte 6
 
 music_by_slide:
   .word music_by_caption
   .byte 150
   .byte 5
+  .byte 11
 
 beta_testers_slide:
   .word beta_testers_caption
   .byte 150
   .byte 5
+  .byte 8
 
 production_slide:
   .word production_caption
   .byte 150
   .byte 5
+  .byte 8
 
 printed_materials_slide:
   .word printed_materials_caption
   .byte 150
   .byte 5
-  
+  .byte 7
+
 promotion_social_media_slide:
   .word promotion_social_media_caption
   .byte 150
   .byte 5
+  .byte 9
 
 special_thanks_slide:
   .word special_thanks_caption
   .byte 150
   .byte 5
+  .byte 7
 
 nesdev_slide:
   .word nesdev_caption
   .byte 150
   .byte 5
+  .byte 7
 
 nintendoage_slide:
   .word nintendoage_caption
   .byte 150
   .byte 5
+  .byte 4
 
 secret_message_slide:
   .word secret_message_caption
   .byte 250
   .byte 5
+  .byte 4
+
 .endif
 
 title_slide:
