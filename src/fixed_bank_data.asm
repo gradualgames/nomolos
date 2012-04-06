@@ -1285,7 +1285,7 @@ volume_envelope_1:
 volume_envelope_2:
   .byte 10,10,9,8,7,7,6,5,4,3,3,3,2,2,2,2,1,1,0,ENV_STOP
 volume_envelope_3:
-  .byte 9,9,9,8,8,8,8,7,7,7,6,6,6,5,5,5,4,4,4,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,ENV_STOP
+  .byte 9,9,9,8,8,8,8,7,7,7,6,6,6,5,5,5,4,4,4,3,3,3,2,2,2,2,2,2,ENV_STOP
 volume_envelope_4:
   .byte 4,2,0,ENV_STOP
 
@@ -1389,6 +1389,9 @@ gradual_games_string:
 
 copyright_c_2012_string:
   .byte $10,$02,$0e,$0f,$18,$11,$08,$06,$07,$13,$1a,$2e,$1a,$1d,$1b,$1c,$1d
+
+revision_string:
+  .byte $05,$11,$1c,$1b,$24,$23
 
 level_string:
   .byte $06,$0b,$04,$15,$04,$0b,$1a

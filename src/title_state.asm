@@ -236,6 +236,15 @@ title_state_title:
 
   jsr ppu_display_string
 
+  set_ppu_2006 $20, 24, 10
+
+  lda #<revision_string
+  sta w0
+  lda #>revision_string
+  sta w0+1
+
+  jsr ppu_display_string
+
   jsr display_difficulty_string
 
   ;reset scroll
