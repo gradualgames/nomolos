@@ -1437,12 +1437,6 @@ leapt_through_portal_slide:
   .byte 5
   .byte 4
 
-arriving_at_other_side_slide:
-  .word arriving_at_other_side_caption
-  .byte 150
-  .byte 5
-  .byte 3
-
 became_nomolos_slide:
   .word became_nomolos_caption
   .byte 150
