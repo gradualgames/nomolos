@@ -304,6 +304,8 @@ do_not_vibrate:
   
 switch_state:
   
+  lda #0
+  sta entity_locals+dragonboss_locals::state_switch_counter,x
   lda #DRAGONBOSS_SPITICEBALLSSTATE
   sta entity_instances+entity_instance::state,x
 
@@ -543,6 +545,41 @@ do_not_switch_to_tail_up_state:
 ;****************************************************************
 dragonboss_spiticeballsstate_handler:
 
+  lda entity_locals+dragonboss_locals::state_switch_counter,x
+  bne do_not_switch_to_closemouthstate
+
+  jsr spit_iceballs
+
+  lda #32
+  sta entity_locals+dragonboss_locals::state_switch_counter,x
+  
+  lda #DRAGONBOSS_CLOSEMOUTHSTATE
+  sta entity_instances+entity_instance::state,x
+  
+  ;draw dragon's mouth open
+  lda #12
+  sta b0
+  lda #10
+  sta b1
+  lda #<boss1_mouth_open_tiles
+  sta w0
+  lda #>boss1_mouth_open_tiles
+  sta w0+1
+  jsr ppu_draw_rectangular_region
+  
+  ;make sure the draw routine overlays the open mouth sprite
+  lda #DRAGONBOSS_DRAWSTATE_MOUTH_OPEN
+  sta entity_locals+dragonboss_locals::drawstate,x
+  
+  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
+  sta state_control_params+play_level_state_control::upload_ppu_data
+
+do_not_switch_to_closemouthstate:
+  
+  rts
+
+.proc spit_iceballs
+
   ;****************************************************************
   ;Spawn and parameterize an iceball
   ;****************************************************************
@@ -748,28 +785,8 @@ dragonboss_spiticeballsstate_handler:
   lda #ICEBALL_FLYSTATE
   sta entity_instances+entity_instance::state,y
 
-  lda #DRAGONBOSS_CLOSEMOUTHSTATE
-  sta entity_instances+entity_instance::state,x
-  
-  ;draw dragon's mouth open
-  lda #12
-  sta b0
-  lda #10
-  sta b1
-  lda #<boss1_mouth_open_tiles
-  sta w0
-  lda #>boss1_mouth_open_tiles
-  sta w0+1
-  jsr ppu_draw_rectangular_region
-  
-  ;make sure the draw routine overlays the open mouth sprite
-  lda #DRAGONBOSS_DRAWSTATE_MOUTH_OPEN
-  sta entity_locals+dragonboss_locals::drawstate,x
-  
-  lda #PLAYLEVELSTATE_BOSSMODE_UPLOAD_RECTANGULAR_REGION
-  sta state_control_params+play_level_state_control::upload_ppu_data
-
   rts
+.endproc
   
 ;****************************************************************
 ;The Tail Up State handler
