@@ -1174,6 +1174,8 @@ drawstate_switch_done:
   lda #0
   sta w3+1
   lda #87
+  sec
+  sbc camera_scroll_y
   sta w4
   lda #0
   sta w4+1
