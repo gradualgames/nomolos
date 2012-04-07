@@ -746,6 +746,24 @@ switch_to_flap_state:
 
   jsr sneep_spawn_feathers
 
+  ;play a flap sound
+  txa
+  pha
+
+  lda #<flap_sound
+  sta sound_param_word_0
+  lda #>flap_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_one
+  jsr stream_initialize
+
+  pla
+  tax
+  
   lda #SNEEP_FLAPSTATE
   sta entity_instances+entity_instance::state,x
 
