@@ -1024,6 +1024,7 @@ do_not_switch_to_not_attacked_state:
   sta entity_instances+entity_instance::state,x
   
   lda #$fe
+  sta entity_locals+dragonboss_locals::state_switch_counter,x
   sta entity_locals+dragonboss_locals::substate_switch_counter,x
   
   lda #4
