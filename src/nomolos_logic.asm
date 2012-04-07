@@ -142,7 +142,7 @@
 
   .ifdef INVINCIBLE
   rts
-  .endif
+  .else
 
   ;save x
   txa
@@ -210,6 +210,7 @@ skipHurt:
   tax
 
   rts
+  .endif
 
 .endproc
 
