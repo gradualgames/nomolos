@@ -548,6 +548,24 @@ dragonboss_spiticeballsstate_handler:
   lda entity_locals+dragonboss_locals::state_switch_counter,x
   bne do_not_switch_to_closemouthstate
 
+  ;play a foom sound
+  txa
+  pha
+
+  lda #<foom_sound
+  sta sound_param_word_0
+  lda #>foom_sound
+  sta sound_param_word_0+1
+
+  lda #3
+  sta sound_param_byte_0
+
+  ldx #soundeffect_two
+  jsr stream_initialize
+
+  pla
+  tax
+
   jsr spit_iceballs
 
   lda #32
