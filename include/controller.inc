@@ -1,8 +1,9 @@
 .ifndef CONTROLLER_INC
 CONTROLLER_INC = 1
 
-.import controller_read_start
-.import controller_read
+.global controller_clear
+.global controller_read_start
+.global controller_read
 
 .struct buttons
   _a       .byte

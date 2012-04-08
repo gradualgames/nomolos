@@ -1,9 +1,23 @@
 .include "zp.inc"
+.include "controller.inc"
 
 .segment "CODE"
 
+.proc controller_clear
+
+  lda #%00000000
+  sta buffer_controller+buttons::_a
+  sta buffer_controller+buttons::_b
+  sta buffer_controller+buttons::_left
+  sta buffer_controller+buttons::_right
+  sta buffer_controller+buttons::_select
+  sta buffer_controller+buttons::_start
+
+  rts
+
+.endproc
+
 ;reads only the start button into its buffer byte
-.export controller_read_start
 .proc controller_read_start
 
   lda #$01  ; strobe joypad
@@ -24,7 +38,6 @@
 
 ;deserializes the controller into a buffer
 ;output: buffer_controller
-.export controller_read
 .proc controller_read
   lda #$01  ; strobe joypad
   sta $4016

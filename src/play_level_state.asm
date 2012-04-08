@@ -81,13 +81,7 @@
   sta state_control_params+play_level_state_control::state
 
   ;clear buttons we don't want to respond to during victory mode.
-  lda #%00000000
-  sta buffer_controller+buttons::_a
-  sta buffer_controller+buttons::_b
-  sta buffer_controller+buttons::_left
-  sta buffer_controller+buttons::_right
-  sta buffer_controller+buttons::_select
-  sta buffer_controller+buttons::_start
+  jsr controller_clear
 
   rts
 
@@ -111,11 +105,7 @@
 .endif
 
   ;clear buttons we don't want to respond to during victory mode.
-  lda #%00000010
-  sta buffer_controller+buttons::_a
-  sta buffer_controller+buttons::_b
-  sta buffer_controller+buttons::_left
-  sta buffer_controller+buttons::_right
+  jsr controller_clear
 
   ;load a frame count
   lda #$af
