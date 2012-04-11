@@ -1,4 +1,5 @@
 .include "soundengine.inc"
+.include "controller.inc"
 
 .ifndef EXITENTITY_WIDTH
 EXITENTITY_WIDTH = $20
