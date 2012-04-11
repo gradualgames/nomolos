@@ -29,6 +29,8 @@ exit_level_update:
   rts
 is_touching_nomolos:
 
+  jsr controller_clear
+
   jsr entity_kill
 
   .ifdef MUSIC_ENABLE
