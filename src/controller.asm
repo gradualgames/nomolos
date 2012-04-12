@@ -5,7 +5,7 @@
 
 .proc controller_clear
 
-  lda #%00000000
+  lda #%00000010
   sta buffer_controller+buttons::_a
   sta buffer_controller+buttons::_b
   sta buffer_controller+buttons::_left
