@@ -784,6 +784,8 @@ align_nomolos_with_snow:
 
 walk_right:
 
+  lda #0
+  sta buffer_controller+buttons::_left
   lda #%11111111
   sta buffer_controller+buttons::_right
 
@@ -793,6 +795,8 @@ walk_left:
 
   lda #%11111111
   sta buffer_controller+buttons::_left
+  lda #0
+  sta buffer_controller+buttons::_right
 
 walk_test_done:
 
