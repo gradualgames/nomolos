@@ -1386,19 +1386,19 @@ slide4_chr:
   .byte $0c,$38,$60,$00,$00,$00,$00,$00,$0c,$38,$60,$00,$00,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$01,$03,$07,$0f,$1f,$3f,$7f,$ff
   .byte $80,$e0,$f8,$fc,$ff,$ff,$ff,$ff,$80,$e0,$f8,$fc,$ff,$ff,$ff,$ff
-  .byte $00,$00,$00,$00,$00,$e0,$f0,$f0,$07,$07,$07,$07,$07,$e7,$f7,$f7
+  .byte $00,$00,$00,$00,$00,$e0,$e0,$e0,$07,$07,$0f,$0f,$0f,$ef,$ef,$ef
   .byte $00,$00,$00,$00,$00,$00,$01,$01,$fc,$fc,$fc,$fc,$fc,$fc,$fd,$fd
-  .byte $00,$00,$00,$03,$02,$02,$f0,$f8,$1f,$1f,$1f,$0c,$0d,$05,$f7,$fb
+  .byte $00,$00,$00,$03,$02,$02,$f0,$f0,$1f,$1f,$1f,$0c,$0d,$05,$f7,$f3
   .byte $00,$00,$00,$fc,$00,$01,$01,$01,$fc,$fc,$fc,$00,$fc,$fd,$fd,$fd
   .byte $03,$07,$1f,$3f,$ff,$ff,$ff,$ff,$03,$07,$1f,$3f,$ff,$ff,$ff,$ff
-  .byte $f0,$f0,$f0,$f0,$f0,$f0,$f0,$f0,$f7,$f7,$f7,$f7,$f7,$f7,$f7,$f7
-  .byte $01,$01,$01,$01,$01,$01,$01,$01,$fd,$fd,$fd,$fd,$fd,$fd,$fd,$f5
-  .byte $f8,$f8,$f8,$f8,$f8,$f8,$fc,$fc,$fb,$fb,$fa,$f9,$fb,$f9,$fd,$fd
+  .byte $c0,$c0,$c0,$c0,$c0,$c0,$c0,$e0,$df,$df,$df,$df,$df,$df,$cf,$ef
+  .byte $01,$01,$03,$03,$03,$03,$01,$01,$fd,$f9,$fb,$fb,$fb,$fb,$f9,$fd
+  .byte $f8,$f8,$f8,$f8,$f8,$f8,$f8,$f8,$fb,$fb,$fa,$f9,$fb,$fb,$fb,$fb
   .byte $01,$01,$01,$01,$01,$01,$01,$01,$fd,$1d,$e5,$f1,$f9,$fd,$fd,$fd
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$ff,$ff,$ff,$ff,$ff,$fe,$fe,$fe
-  .byte $06,$04,$05,$06,$06,$07,$07,$06,$f0,$f0,$f1,$f0,$f0,$f0,$f0,$f0
-  .byte $18,$e4,$f6,$f6,$66,$0e,$ff,$73,$01,$e1,$f0,$f0,$60,$00,$00,$00
-  .byte $01,$01,$01,$01,$01,$00,$00,$00,$fc,$fc,$fc,$fc,$fc,$fe,$7e,$7e
+  .byte $0f,$0e,$0d,$0e,$0f,$07,$07,$06,$e0,$e0,$e1,$e0,$e0,$e0,$f0,$f0
+  .byte $1c,$ec,$f6,$f6,$6e,$9e,$ff,$73,$01,$e1,$f0,$f0,$60,$00,$00,$00
+  .byte $03,$03,$01,$01,$01,$00,$00,$00,$f8,$f8,$fc,$fc,$fc,$fc,$7e,$7e
   .byte $fc,$fe,$fe,$ff,$ff,$ff,$ff,$ff,$01,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$ff,$ff,$ff,$7f,$7f,$7f,$7f,$7f
   .byte $ff,$bf,$bf,$df,$df,$ef,$ef,$f7,$ff,$bf,$bf,$df,$df,$ef,$ef,$f7
@@ -1406,11 +1406,11 @@ slide4_chr:
   .byte $00,$00,$00,$3c,$7f,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
   .byte $00,$00,$00,$00,$c0,$f8,$fe,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$fe,$fe,$fe,$fd,$fd,$fd,$fd,$fd
-  .byte $05,$05,$06,$03,$01,$00,$00,$00,$f1,$f1,$f0,$f8,$fc,$fe,$ff,$ff
-  .byte $ad,$ad,$73,$ff,$fe,$f0,$00,$00,$8c,$8c,$00,$00,$00,$01,$0f,$ff
+  .byte $05,$05,$06,$07,$07,$03,$01,$00,$f1,$f1,$f0,$f0,$f0,$f8,$fc,$fe
+  .byte $ad,$ad,$73,$cf,$b6,$b6,$cc,$f8,$8c,$8c,$00,$00,$30,$31,$01,$03
   .byte $00,$00,$00,$00,$00,$00,$00,$00,$7e,$7e,$7e,$7e,$ff,$ff,$ff,$ff
-  .byte $ff,$ff,$ff,$ff,$60,$69,$6f,$67,$00,$00,$00,$00,$00,$09,$0f,$07
-  .byte $80,$80,$c0,$c0,$40,$40,$40,$a0,$3f,$3f,$1f,$1f,$1f,$1f,$1f,$8f
+  .byte $ff,$ff,$ff,$ff,$76,$69,$6f,$77,$00,$00,$00,$00,$00,$09,$0f,$07
+  .byte $80,$80,$c0,$c0,$e0,$60,$60,$b0,$3f,$3f,$1f,$1f,$0f,$0f,$07,$87
   .byte $f7,$fb,$fb,$fd,$fe,$fe,$ff,$ff,$f7,$fb,$fb,$fd,$fe,$fe,$ff,$ff
   .byte $ff,$ff,$ff,$ff,$ff,$ff,$7f,$7f,$ff,$ff,$ff,$ff,$ff,$ff,$7f,$7f
   .byte $03,$01,$00,$00,$00,$00,$00,$00,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
@@ -1421,9 +1421,9 @@ slide4_chr:
   .byte $00,$00,$00,$78,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
   .byte $00,$00,$00,$00,$80,$f0,$fc,$fe,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
   .byte $fd,$fd,$fb,$fb,$fb,$fb,$fb,$f7,$fd,$fd,$fb,$fb,$fb,$fb,$fb,$f7
-  .byte $ff,$ff,$ff,$ff,$ff,$ff,$ff,$df,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$df
-  .byte $77,$3b,$3b,$3c,$3f,$33,$2d,$2d,$07,$83,$83,$80,$80,$80,$8c,$8c
-  .byte $a0,$20,$70,$f0,$98,$68,$68,$98,$8f,$0f,$07,$07,$03,$63,$63,$03
+  .byte $07,$ff,$ff,$ff,$ff,$ff,$ff,$df,$07,$ff,$ff,$ff,$ff,$ff,$ff,$df
+  .byte $77,$3b,$3b,$3c,$3f,$33,$2d,$2d,$07,$03,$83,$80,$80,$80,$8c,$8c
+  .byte $b0,$78,$78,$fc,$cc,$b4,$b4,$cc,$83,$03,$01,$01,$01,$31,$31,$01
   .byte $bf,$bf,$df,$df,$ef,$f7,$f7,$f7,$bf,$bf,$df,$df,$ef,$f7,$f7,$f7
   .byte $07,$03,$00,$00,$00,$00,$00,$00,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
   .byte $ff,$ff,$0f,$01,$00,$00,$00,$00,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
@@ -1431,8 +1431,8 @@ slide4_chr:
   .byte $e0,$f8,$f8,$fc,$38,$00,$00,$00,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff
   .byte $f7,$f7,$f7,$ef,$ef,$df,$bf,$7f,$f7,$f7,$f7,$ef,$ef,$df,$bf,$7f
   .byte $df,$df,$df,$df,$df,$df,$df,$df,$df,$df,$df,$df,$df,$df,$df,$df
-  .byte $2d,$33,$1f,$07,$00,$00,$00,$00,$8c,$80,$c0,$e0,$f8,$ff,$ff,$ff
-  .byte $f0,$e0,$e0,$00,$00,$00,$00,$00,$07,$0f,$0f,$1f,$ff,$ff,$ff,$ff
+  .byte $2d,$32,$1e,$07,$01,$00,$00,$00,$8c,$80,$c0,$e0,$f0,$fc,$ff,$ff
+  .byte $3c,$dc,$d8,$38,$e0,$00,$00,$00,$01,$c1,$c3,$03,$07,$0f,$ff,$ff
   .byte $fb,$fb,$fd,$fd,$fe,$ff,$ff,$ff,$fb,$fb,$fd,$fd,$fe,$ff,$ff,$ff
   .byte $ff,$ff,$ff,$ff,$ff,$7f,$bf,$bf,$ff,$ff,$ff,$ff,$ff,$7f,$bf,$bf
   .byte $fe,$fd,$fb,$f7,$ef,$df,$bf,$7f,$fe,$fd,$fb,$f7,$ef,$df,$bf,$7f
