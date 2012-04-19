@@ -1391,7 +1391,7 @@ copyright_c_2012_string:
   .byte $10,$02,$0e,$0f,$18,$11,$08,$06,$07,$13,$1a,$2e,$1a,$1d,$1b,$1c,$1d
 
 revision_string:
-  .byte $05,$11,$1c,$1c,$1c,$1c
+  .byte $05,$11,$1c,$1c,$1c,$1d
 
 level_string:
   .byte $06,$0b,$04,$15,$04,$0b,$1a

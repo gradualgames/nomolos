@@ -294,12 +294,15 @@ secret_message_caption:
 ;ONLY include this message in demo
 .ifdef DEMO_BUILD
 thanks_for_playing_demo_caption:
-;THANK YOU FOR PLAYING           NOMOLOS:                        STORMING THE CATSLE             WE HOPE YOU ENJOYED             THIS DEMO
-  .byte $89,$13,$07,$00,$0d,$0a,$1a,$18,$0e,$14,$1a,$05,$0e,$11,$1a,$0f,$0b,$00,$18,$08,$0d,$06,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+;THANK YOU FOR PLAYING           NOMOLOS:                        STORMING THE CATSLE                                             TO PURCHASE THE CARTRIDGE,      PLEASE VISIT RETROUSB.COM       OR VISIT                        GRADUALGAMES.BLOGSPOT.COM
+  .byte $f9,$13,$07,$00,$0d,$0a,$1a,$18,$0e,$14,$1a,$05,$0e,$11,$1a,$0f,$0b,$00,$18,$08,$0d,$06,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$12,$13,$0e,$11,$0c,$08,$0d,$06,$1a,$13,$07,$04,$1a,$02,$00,$13,$12,$0b,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$16,$04,$1a,$07,$0e,$0f,$04,$1a,$18,$0e,$14,$1a,$04,$0d,$09,$0e,$18,$04,$03,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$13,$07,$08,$12,$1a,$03,$04,$0c,$0e
+  .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$13,$0e,$1a,$0f,$14,$11,$02,$07,$00,$12,$04,$1a,$13,$07,$04,$1a,$02,$00,$11,$13,$11,$08,$03,$06,$04,$25,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$0f,$0b,$04,$00,$12,$04,$1a,$15,$08,$12,$08,$13,$1a,$11,$04,$13,$11,$0e,$14,$12,$01,$27,$02,$0e,$0c,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$0e,$11,$1a,$15,$08,$12,$08,$13,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$06,$11,$00,$03,$14,$00,$0b,$06,$00,$0c,$04,$12,$27,$01,$0b,$0e,$06,$12,$0f,$0e,$13,$27,$02,$0e,$0c
 
 .endif
 

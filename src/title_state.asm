@@ -452,13 +452,18 @@ start_button_not_hit:
   iny
   lda (w2),y
   sta w0+1
-
+  
   ;switch to nmi routine for uploading the dynamic palette
   lda #<ppu_upload_dynamic_palette_ppu
   sta update_ppu
   lda #>ppu_upload_dynamic_palette_ppu
   sta update_ppu+1
 
+.ifdef DEMO_BUILD
+  start_slide_sequence
+  show_text_slide thanks_for_playing_demo_slide
+.endif
+  
 .ifdef MUSIC_ENABLE
   lda #<intro_cut_scene_music
   sta sound_param_word_1
