@@ -45,7 +45,7 @@ boss_5_index    = 16
 .global unfair_string
 .global gradual_games_string
 .global copyright_c_2012_string
-.global revision_string
+.global version_string
 .global level_string
 .global lives_string
 .global game_over_string

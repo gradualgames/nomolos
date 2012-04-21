@@ -1390,8 +1390,13 @@ gradual_games_string:
 copyright_c_2012_string:
   .byte $10,$02,$0e,$0f,$18,$11,$08,$06,$07,$13,$1a,$2e,$1a,$1d,$1b,$1c,$1d
 
-revision_string:
-  .byte $05,$11,$1c,$1c,$1c,$1d
+.ifndef DEMO_BUILD
+version_string:
+  .byte $05,$15,$1c,$27,$1b,$1b
+.else
+version_string:
+  .byte $0a,$15,$1c,$27,$1b,$1b,$1a,$03,$04,$0c,$0e
+.endif
 
 level_string:
   .byte $06,$0b,$04,$15,$04,$0b,$1a

@@ -238,9 +238,9 @@ title_state_title:
 
   set_ppu_2006 $20, 24, 10
 
-  lda #<revision_string
+  lda #<version_string
   sta w0
-  lda #>revision_string
+  lda #>version_string
   sta w0+1
 
   jsr ppu_display_string
