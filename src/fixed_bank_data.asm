@@ -1395,7 +1395,7 @@ version_string:
   .byte $05,$15,$1c,$27,$1b,$1b
 .else
 version_string:
-  .byte $0a,$15,$1c,$27,$1b,$1b,$1a,$03,$04,$0c,$0e
+  .byte $06,$15,$1c,$27,$1b,$1b,$03
 .endif
 
 level_string:
