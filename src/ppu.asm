@@ -55,11 +55,6 @@
   pha
   txa
   pha
-  
-  ;always upload sound regs at beginning of vblank for precise music playback
-  .ifdef MUSIC_ENABLE
-  jsr sound_upload
-  .endif
 
   ;do all ppu related stuff here. In this case, we just upload the main PPU
   ;control registers, to allow graphics to be turned on and off safely while
@@ -71,12 +66,7 @@
   dec nmi_counter
 :
 
-  ;always update music engine at end of vblank because it never touches the
-  ;PPU so we can safely cross outside of vblank here before returning to
-  ;main engine code
-  .ifdef MUSIC_ENABLE
-  jsr sound_update
-  .endif
+  safe_soundengine_update
 
   ;restore regs
   pla
@@ -201,10 +191,6 @@ fading_loop:
   txa
   pha
 
-  .ifdef MUSIC_ENABLE
-  jsr sound_upload
-  .endif
-
   lda nmi_counter
   beq nmi_counter_zero
 
@@ -241,10 +227,8 @@ fading_loop:
   
   dec nmi_counter
 nmi_counter_zero:
-  
-  .ifdef MUSIC_ENABLE
-  jsr sound_update
-  .endif
+
+  safe_soundengine_update
 
   pla
   tax
@@ -542,6 +526,11 @@ slide_address = w2
   ;make sure start_was_pressed begins as false
   lda #0
   sta start_was_pressed
+
+  ldy #ppu_slide::palette_nametable_bank
+  lda (w2),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
 
   ;fade out
   jsr fade_out_palette

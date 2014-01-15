@@ -31,6 +31,7 @@ ZP_INC = 1
 .globalzp entity_prng_seed
 .globalzp entity_weight_sum
 .globalzp entity_cycling_counter
+.globalzp music_bank
 .globalzp mapper_bank_current
 .globalzp mapper_bank_next
 .globalzp ppu_string_buffer

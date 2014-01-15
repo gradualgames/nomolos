@@ -153,6 +153,11 @@ title_state_logo:
 
   ;play the logo music
 .ifdef MUSIC_ENABLE
+  lda #EXTRA_MUSIC_BANK
+  sta music_bank
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   lda #<gradual_games_logo_music
   sta sound_param_word_1
   lda #>gradual_games_logo_music
@@ -170,6 +175,11 @@ title_state_logo:
   bne :-
 
   ;fade out the palette
+  ldy #ppu_slide::palette_nametable_bank
+  lda (w2),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   jsr fade_out_palette
 
   lda #TITLESTATE_TITLE
@@ -279,6 +289,11 @@ title_state_title:
 
   ;load title screen music
 .ifdef MUSIC_ENABLE
+  lda #EXTRA_MUSIC_BANK
+  sta music_bank
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   lda #<title_music
   sta sound_param_word_1
   lda #>title_music
@@ -301,11 +316,7 @@ title_state_menu:
   bne :-
 
   jsr controller_read
-  
-  .ifdef MUSIC_ENABLE
-  jsr sound_update
-  .endif
-  
+
   .scope
   lda buffer_controller+buttons::_up
   and #%00000011
@@ -475,6 +486,11 @@ start_button_not_hit:
   start_escapable_slide_sequence
 
   ;show some intro cut-scene slides
+  ldy #ppu_slide::palette_nametable_bank
+  lda (w2),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   show_text_slide_with_escape solomon_snow_watching_birds_slide, skip_intro_cut_scene
   show_graphics_slide_with_escape slide1, skip_intro_cut_scene
   show_text_slide_with_escape portal_appears_slide, skip_intro_cut_scene
@@ -501,13 +517,15 @@ skip_intro_cut_scene:
 
 .proc title_state_update_ppu
 
+  pha
+  tya
+  pha
+  txa
+  pha
+
   lda nmi_counter
   beq nmi_counter_zero
 
-  .ifdef MUSIC_ENABLE
-  jsr sound_upload
-  .endif
-  
   .ifdef LEVEL_SELECTOR_ENABLED
   jsr display_selected_level_string
   .endif
@@ -521,6 +539,14 @@ skip_intro_cut_scene:
   dec nmi_counter
   
 nmi_counter_zero:
-  
+
+  safe_soundengine_update
+
+  pla
+  tax
+  pla
+  tay
+  pla
+
   rts
 .endproc

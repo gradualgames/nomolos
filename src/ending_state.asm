@@ -20,6 +20,11 @@
 
 .ifndef DEMO_BUILD
 .ifdef MUSIC_ENABLE
+  lda #EXTRA_MUSIC_BANK
+  sta music_bank
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   lda #<mysterious_barricades
   sta sound_param_word_1
   lda #>mysterious_barricades
@@ -50,6 +55,11 @@
   show_graphics_slide ending_slide3
 
 .ifdef MUSIC_ENABLE
+  lda #EXTRA_MUSIC_BANK
+  sta music_bank
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   lda #<soler_presto
   sta sound_param_word_1
   lda #>soler_presto

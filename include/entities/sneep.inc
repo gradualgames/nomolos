@@ -161,6 +161,7 @@ killSneep:
   jsr entity_kill
 
   jsr play_level_state_init_victory_mode
+  jsr play_level_state_play_victory_music
 
   rts
 

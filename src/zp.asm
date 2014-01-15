@@ -62,6 +62,8 @@ entity_weight_sum: .res 1
 
 entity_cycling_counter: .res 1
 
+music_bank: .res 1
+
 mapper_bank_current: .res 1
 
 mapper_bank_next: .res 1

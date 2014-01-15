@@ -25,6 +25,8 @@ level_6_1_index = 14
 level_6_2_index = 15
 boss_5_index    = 16
 
+EXTRA_MUSIC_BANK = 6
+
 .global entity_definition_table
 .global entity_chr_definition_table
 .global level_definition_table

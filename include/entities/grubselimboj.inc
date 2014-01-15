@@ -362,6 +362,7 @@ do_not_spawn_fireball:
 killGrubselimBoj:
 
   jsr play_level_state_init_victory_mode
+  jsr play_level_state_play_victory_music
 
   ;make it dead
   jsr entity_kill

@@ -87,6 +87,34 @@
 
 .endproc
 
+.proc play_level_state_play_victory_music
+
+  lda mapper_bank_current  ;save current bank
+  pha
+
+  ;load victory music
+.ifdef MUSIC_ENABLE
+  lda #EXTRA_MUSIC_BANK
+  sta music_bank
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
+  lda #<victory_music
+  sta sound_param_word_1
+  lda #>victory_music
+  sta sound_param_word_1+1
+  jsr song_initialize
+.endif
+
+  ;restore previous bank
+  pla
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
+  rts
+
+.endproc
+
 ;initializes victory mode by changing the state param of
 ;the play level state and starts playing victory music located
 ;in the fixed bank
@@ -94,15 +122,6 @@
 
   lda #PLAYLEVELSTATE_VICTORYMODE
   sta state_control_params+play_level_state_control::state
-
-  ;load victory music
-.ifdef MUSIC_ENABLE
-  lda #<victory_music
-  sta sound_param_word_1
-  lda #>victory_music
-  sta sound_param_word_1+1
-  jsr song_initialize
-.endif
 
   ;clear buttons we don't want to respond to during victory mode.
   jsr controller_clear
@@ -119,8 +138,6 @@
 .proc play_level_state_update
 
   lda state_control_params+play_level_state_control::state
-  cmp #PLAYLEVELSTATE_INIT
-  beq play_level_state_init
   cmp #PLAYLEVELSTATE_KEEPPLAYING
   beq keep_playing
   cmp #PLAYLEVELSTATE_PAUSE
@@ -133,6 +150,8 @@
   beq victory_mode
   cmp #PLAYLEVELSTATE_HANDSOFFVICTORYMODE
   beq hands_off_victory_mode
+  cmp #PLAYLEVELSTATE_INIT
+  beq play_level_state_init
 
 keep_playing:
 
@@ -165,6 +184,10 @@ hands_off_victory_mode:
   rts
 
 pause:
+
+  ;upload the sound regs to clear out the volume settings (we're paused,
+  ;so we want sound to be silent during this time)
+  jsr sound_upload
 
 : lda nmi_counter
   bne :-
@@ -200,7 +223,12 @@ switch_to_level_in_state:
   jsr sound_stop
   jsr sound_upload
   .endif
-  
+
+  ldy #level_data_struct::level_music_bank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   ldy #level_data_struct::palette
   lda (base_address_rom_definition_table),y
   sta w0
@@ -266,6 +294,11 @@ play_level_state_init:
   clear_ppu_2001_bit PPU1_DISPLAY_TYPE
 
   ;fade in the palette
+  ldy #level_data_struct::level_music_bank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   ldy #level_data_struct::palette
   lda (base_address_rom_definition_table),y
   sta w0
@@ -311,16 +344,6 @@ play_level_state_init:
   jsr nomolos_draw_hearts
   jsr entity_update_all
   jsr map_decode
-
-  ;switch to the level and music bank
-  ldy #level_data_struct::level_music_bank
-  lda (base_address_rom_definition_table),y
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-  
-  .ifdef MUSIC_ENABLE
-  jsr sound_update
-  .endif
 
   .scope
   lda buffer_controller+buttons::_start
@@ -397,15 +420,6 @@ do_not_switch_to_level_in_state:
   jsr nomolos_draw_hearts
   jsr entity_update_all
 
-  .ifdef MUSIC_ENABLE
-  ;switch to the level and music bank
-  ldy #level_data_struct::level_music_bank
-  lda (base_address_rom_definition_table),y
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-  jsr sound_update
-  .endif
-
   ;indicate to nmi that data has been prepared
   inc nmi_counter
   
@@ -445,15 +459,6 @@ do_not_switch_to_level_in_state:
   jsr nomolos_draw_hearts
   jsr entity_update_all
 
-  .ifdef MUSIC_ENABLE
-  ;switch to the level and music bank
-  ldy #level_data_struct::level_music_bank
-  lda (base_address_rom_definition_table),y
-  sta mapper_bank_next
-  jsr mapper_switch_bank
-  jsr sound_update
-  .endif
-
   ;indicate to nmi that data has been prepared
   inc nmi_counter
   
@@ -484,19 +489,26 @@ do_not_switch_to_level_in_state:
   upload_ppu_2000
   upload_ppu_2001
 
+  ldy #level_data_struct::level_music_bank
+  lda (base_address_rom_definition_table),y
+  sta mapper_bank_next
+  jsr mapper_switch_bank
+
   jsr palette_handler
   jsr sprite_update_all
   jsr map_update_column_ppu
   jsr map_update_attribute_ppu
   jsr map_update_scroll_ppu
 
-  .ifdef MUSIC_ENABLE
-  jsr sound_upload
-  .endif
-  
   dec nmi_counter
 nmi_counter_zero:
 
+  lda state_control_params+play_level_state_control::state
+  cmp #PLAYLEVELSTATE_PAUSE
+  beq :+
+  safe_soundengine_update
+:
+  
   pla
   tax
   pla
@@ -637,17 +649,18 @@ upload_rectangular_region:
   jsr ppu_upload_rectangular_region
 
 upload_ppu_data_switch_complete:
-  
+
   jsr map_update_scroll_ppu
 
-  .ifdef MUSIC_ENABLE
-  jsr sound_upload
-  .endif
-
   dec nmi_counter
-  
+
 nmi_counter_zero:
 
+  lda state_control_params+play_level_state_control::state
+  cmp #PLAYLEVELSTATE_PAUSE
+  beq :+
+  safe_soundengine_update
+:
   pla
   tax
   pla

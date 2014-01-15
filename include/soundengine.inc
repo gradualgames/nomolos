@@ -197,4 +197,23 @@ soundeffect_two = (stream_size * 5)
 
 .endmacro
 
+.macro safe_soundengine_update
+
+  .ifdef MUSIC_ENABLE
+  ;switch to music bank
+  ldy music_bank
+  lda banktable,y
+  sta banktable,y
+
+  jsr sound_update
+  jsr sound_upload
+
+  ;switch back to whatever current bank was before nmi
+  ldy mapper_bank_current
+  lda banktable,y
+  sta banktable,y
+  .endif
+
+.endmacro
+
 .endif

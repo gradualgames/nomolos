@@ -136,6 +136,7 @@ load_level_stateDone:
 
   ldy #level_data_struct::level_music_bank
   lda (base_address_rom_definition_table),y
+  sta music_bank
   sta mapper_bank_next
   jsr mapper_switch_bank
 
@@ -264,6 +265,7 @@ load_level_stateInit_handler:
   ;load PRG bank into $8000
   ldy #level_data_struct::level_music_bank
   lda (base_address_rom_definition_table),y
+  sta music_bank
   sta mapper_bank_next
   jsr mapper_switch_bank
 

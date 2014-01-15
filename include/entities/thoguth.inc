@@ -452,14 +452,7 @@ thoguth_dyingState_handler:
   dec entity_locals+thoguth_locals::dying_counter,x
   bne dying_counter_not_zero
   
-  ;load victory music
-.ifdef MUSIC_ENABLE
-  lda #<victory_music
-  sta sound_param_word_1
-  lda #>victory_music
-  sta sound_param_word_1+1
-  jsr song_initialize
-.endif
+  jsr play_level_state_play_victory_music
   
   ;load up victory state counter
   lda #$af

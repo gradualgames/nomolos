@@ -892,6 +892,8 @@ entity_chr_definition_table:
 banktable:
   .byte $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $0f
 
+.segment "ROM06"
+
 gradual_games_logo_music:
 .scope
   .word Square1
@@ -1352,6 +1354,8 @@ Noise_loop:
   .word Noise_loop
 .endscope
 
+.segment "CODE"
+
 font1:
   .word font0_patterns
   .byte $0E
@@ -1392,10 +1396,10 @@ copyright_c_2012_string:
 
 .ifndef DEMO_BUILD
 version_string:
-  .byte $05,$15,$1c,$27,$1b,$1b
+  .byte $05,$15,$1c,$27,$1b,$1c
 .else
 version_string:
-  .byte $06,$15,$1c,$27,$1b,$1b,$03
+  .byte $06,$15,$1c,$27,$1b,$1c,$03
 .endif
 
 level_string:
