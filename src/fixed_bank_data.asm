@@ -37,8 +37,6 @@
 .segment "CODE"
 
 ;level definitions
-
-.ifndef DEMO_BUILD
 level_definition_table:
   .word level_1_1_data
   .word level_1_2_data
@@ -57,14 +55,8 @@ level_definition_table:
   .word level_6_1_data
   .word level_6_2_data
   .word boss_5_data
-.else
-level_definition_table:
-  .word level_1_1_data
-  .word level_1_2_data
-.endif
 
 ;level intro strings
-.ifndef DEMO_BUILD
 level1_intro_string:
 ;GRAVEYARD:1
   .byte $0b,$06,$11,$00,$15,$04,$18,$00,$11,$03,$2b,$1c
@@ -111,17 +103,8 @@ boss4_intro_string:
   .byte $05,$12,$0d,$04,$04,$0f
 boss5_intro_string:
   .byte $07,$01,$0e,$14,$0b,$03,$04,$11
-.else
-level1_intro_string:
-;GRAVEYARD:1
-  .byte $0b,$06,$11,$00,$15,$04,$18,$00,$11,$03,$2b,$1c
-level1_2_intro_string:
-;GRAVEYARD:2
-  .byte $0b,$06,$11,$00,$15,$04,$18,$00,$11,$03,$2b,$1d
-.endif
 
 ;ROM definition table
-.ifndef DEMO_BUILD
 level_1_1_data:
   .byte spritesheet_1_bank
   .byte level_1_bank
@@ -632,72 +615,6 @@ boss_5_data:
   .word entity_definition_table
   .word boss5_music
   .byte level_1_index
-
-.else
-
-level_1_1_data:
-  .byte spritesheet_1_bank
-  .byte level_1_bank
-  .byte level_1_patterns_bank
-  .word level1_patterns
-  .byte spritesheet_1_patterns_bank
-  .word level1_sprite_groups
-  .word 0 ;cycling_palette_address
-  .byte 0 ;cycling_palette_speed
-
-  .word level1_palette
-
-  .byte 16          ;nomolos_start_x
-  .byte ((11*16)+3) ;nomolos_start_y
-  .byte 0   ;starting_screen
-  
-  .word level1_intro_string
-  .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
-  .word level1_map
-  .word level1_map_column_table
-  .word level1_attribute_column_table
-  .word level1_meta_tile_column_table
-  .word level1_meta_tile_table
-
-  .word entity_definition_table
-
-  .word level1_music
-
-  .byte level_1_2_index
-
-;ROM definition table
-level_1_2_data:
-  .byte spritesheet_1_bank
-  .byte level_1_2bank
-  .byte level_1_2patterns_bank
-  .word level1_patterns
-  .byte spritesheet_1_patterns_bank
-  .word level1_sprite_groups
-  .word 0 ;cycling_palette_address
-  .byte 0 ;cycling_palette_speed
-
-  .word level1_2palette
-
-  .byte 16          ;nomolos_start_x
-  .byte ((9*16)+3)  ;nomolos_start_y
-  .byte 0   ;starting_screen
-  
-  .word level1_2_intro_string
-  .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
-  .word level1_2map
-  .word level1_2map_column_table
-  .word level1_2attribute_column_table
-  .word level1_2meta_tile_column_table
-  .word level1_2meta_tile_table
-
-  .word entity_definition_table
-
-  .word level1_2music
-
-  .byte level_1_index
-.endif
 
 ;Entities
 entity_definition_table:
@@ -1394,13 +1311,8 @@ gradual_games_string:
 copyright_c_2012_string:
   .byte $10,$02,$0e,$0f,$18,$11,$08,$06,$07,$13,$1a,$2e,$1a,$1d,$1b,$1c,$1d
 
-.ifndef DEMO_BUILD
 version_string:
   .byte $05,$15,$1c,$27,$1b,$1c
-.else
-version_string:
-  .byte $06,$15,$1c,$27,$1b,$1c,$03
-.endif
 
 level_string:
   .byte $06,$0b,$04,$15,$04,$0b,$1a
@@ -1461,16 +1373,6 @@ nomolos_sets_out_slide:
   .byte 5
   .byte 4
 
-.ifdef DEMO_BUILD
-thanks_for_playing_demo_slide:
-  .word thanks_for_playing_demo_caption
-  .byte 250
-  .byte 5
-  .byte 5
-
-.endif
-
-.ifndef DEMO_BUILD
 nomolos_and_snow_reunited_slide:
   .word nomolos_and_snow_reunited_caption
   .byte 150
@@ -1573,8 +1475,6 @@ secret_message_slide:
   .byte 5
   .byte 4
 
-.endif
-
 title_slide:
   .word title_palette
   .word title_nametable
@@ -1631,7 +1531,6 @@ slide5:
   .byte 7
   .byte 7
 
-.ifndef DEMO_BUILD
 ending_slide1:
   .word ending_slide1_palette
   .word ending_slide1_nametable
@@ -1655,7 +1554,6 @@ ending_slide3:
   .byte 250
   .byte 12
   .byte 6
-.endif
 
 difficulty_table:
   .byte 1  ;unfair

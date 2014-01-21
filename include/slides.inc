@@ -18,7 +18,6 @@
 .global slide5_chr
 .global slide5_nametable
 .global slide5_palette
-.ifndef DEMO_BUILD
 .global ending_slide1_chr
 .global ending_slide1_nametable
 .global ending_slide1_palette
@@ -28,17 +27,12 @@
 .global ending_slide3_chr
 .global ending_slide3_nametable
 .global ending_slide3_palette
-.endif
 .global solomon_snow_watching_birds_caption
 .global portal_appears_caption
 .global arm_snatches_snow_caption
 .global leapt_through_portal_caption
 .global became_nomolos_caption
 .global nomolos_sets_out_caption
-.ifdef DEMO_BUILD
-.global thanks_for_playing_demo_caption
-.endif
-.ifndef DEMO_BUILD
 .global nomolos_and_snow_reunited_caption
 .global portal_appears_above_scepter_caption
 .global leapt_through_ending_portal_caption
@@ -57,4 +51,3 @@
 .global nesdev_caption
 .global nintendoage_caption
 .global secret_message_caption
-.endif

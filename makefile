@@ -42,11 +42,10 @@ FILES           += zp \
                    statemanager \
                    fixed_bank_data
 
-#level and boss data (conditionally compiles based on DEMO flag)
+#level and boss data
 FILES +=           level1 \
-                   level1_2
-ifndef DEMO
-FILES +=           level2 \
+                   level1_2 \
+                   level2 \
                    level2_2 \
                    boss2 \
                    level3 \
@@ -61,7 +60,7 @@ FILES +=           level2 \
                    level6 \
                    level6_2 \
                    boss5
-endif
+
 OBJECT_FILES    = $(addprefix $(BIN_DIR)/,$(addsuffix .o, $(FILES)))
 LST_FILES = $(addprefix $(SRC_DIR)/,$(addsuffix .lst, $(FILES)))
 CONFIG_FILE     = $(OUTPUT_NAME).cfg
@@ -75,9 +74,6 @@ INCLUDE_FLAGS = -I include \
                 -I include/levels \
                 -I include/fixed_bank_data
 ASSEMBLER_FLAGS = -g -l $(INCLUDE_FLAGS) -o
-ifdef DEMO
-ADDITIONAL_ASSEMBLER_FLAGS += -DDEMO_BUILD
-endif
 ifdef INVINCIBLE
 ADDITIONAL_ASSEMBLER_FLAGS += -DINVINCIBLE
 endif

@@ -1,11 +1,7 @@
 .ifndef FIXEDBANKDATA_INC
 FIXEDBANKDATA_INC = 1
 
-.ifndef DEMO_BUILD
 num_levels                 = 17
-.else
-num_levels = 2
-.endif
 
 level_1_index   = 0
 level_1_2_index = 1
@@ -63,25 +59,19 @@ EXTRA_MUSIC_BANK = 6
 .global slide3
 .global slide4
 .global slide5
-.ifndef DEMO_BUILD
 .global ending_slide1
 .global ending_slide2
 .global ending_slide3
-.endif
 .global solomon_snow_watching_birds_slide
 .global portal_appears_slide
 .global arm_snatches_snow_slide
 .global leapt_through_portal_slide
 .global became_nomolos_slide
 .global nomolos_sets_out_slide
-.ifdef DEMO_BUILD
-.global thanks_for_playing_demo_slide
-.endif
 .global nomolos_and_snow_reunited_slide
 .global portal_appears_above_scepter_slide
 .global leapt_through_ending_portal_slide
 .global arriving_at_other_side_slide
-.ifndef DEMO_BUILD
 .global thanks_for_playing_slide
 .global by_gradual_games_slide
 .global derek_andrews_slide
@@ -96,7 +86,6 @@ EXTRA_MUSIC_BANK = 6
 .global nesdev_slide
 .global nintendoage_slide
 .global secret_message_slide
-.endif
 .global difficulty_table
 
 .struct title

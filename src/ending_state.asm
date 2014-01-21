@@ -18,7 +18,6 @@
 
 .proc ending_state_update
 
-.ifndef DEMO_BUILD
 .ifdef MUSIC_ENABLE
   lda #EXTRA_MUSIC_BANK
   sta music_bank
@@ -126,39 +125,6 @@
   jsr fade_in_palette
 
 : jmp :-
-
-.else
-
-  ;use whatever was last loaded as the palette for the palette
-  ;fade routines (they use w0)
-  lda #<dynamic_palette
-  sta w0
-  lda #>dynamic_palette
-  sta w0+1
-
-  ;load blank start button mask (we do not want to escape from these)
-  lda #0
-  sta b7
-
-  ;switch to nmi routine for uploading the dynamic palette
-  lda #<ppu_upload_dynamic_palette_ppu
-  sta update_ppu
-  lda #>ppu_upload_dynamic_palette_ppu
-  sta update_ppu+1
-
-  jsr fade_out_palette
-
-  show_text_slide thanks_for_playing_demo_slide
-
-  jsr fade_out_palette
-
-  ;switch to title state
-  lda #TITLESTATE_TITLE
-  sta state_control_params+title_stateControl::state
-  ldx #index_title_state
-  jsr switch_state
-
-.endif
 
   rts
 .endproc

@@ -291,22 +291,6 @@ secret_message_caption:
   .byte $1a,$00,$25,$1a,$01,$25,$1a,$13,$07,$04,$0d,$1a,$07,$08,$13,$1a,$14,$0f,$1a,$0e,$11,$1a,$03,$0e,$16,$0d,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$13,$0e,$1a,$12,$04,$0b,$04,$02,$13,$1a,$12,$13,$00,$11,$13,$1a,$0b,$04,$15,$04,$0b
 
-;ONLY include this message in demo
-.ifdef DEMO_BUILD
-thanks_for_playing_demo_caption:
-;THANK YOU FOR PLAYING           NOMOLOS:                        STORMING THE CATSLE                                             TO PURCHASE THE CARTRIDGE,      PLEASE VISIT RETROUSB.COM       OR VISIT                        GRADUALGAMES.BLOGSPOT.COM
-  .byte $f9,$13,$07,$00,$0d,$0a,$1a,$18,$0e,$14,$1a,$05,$0e,$11,$1a,$0f,$0b,$00,$18,$08,$0d,$06,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$0d,$0e,$0c,$0e,$0b,$0e,$12,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$12,$13,$0e,$11,$0c,$08,$0d,$06,$1a,$13,$07,$04,$1a,$02,$00,$13,$12,$0b,$04,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$13,$0e,$1a,$0f,$14,$11,$02,$07,$00,$12,$04,$1a,$13,$07,$04,$1a,$02,$00,$11,$13,$11,$08,$03,$06,$04,$25,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$0f,$0b,$04,$00,$12,$04,$1a,$15,$08,$12,$08,$13,$1a,$11,$04,$13,$11,$0e,$14,$12,$01,$27,$02,$0e,$0c,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$0e,$11,$1a,$15,$08,$12,$08,$13,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$06,$11,$00,$03,$14,$00,$0b,$06,$00,$0c,$04,$12,$27,$01,$0b,$0e,$06,$12,$0f,$0e,$13,$27,$02,$0e,$0c
-
-.endif
-
-.ifndef DEMO_BUILD
 ;SNOW: "SOLOMON! I KNEW          YOU WOULD COME TO               RESCUE ME!"
 nomolos_and_snow_reunited_caption:
   .byte $4b,$12,$0d,$0e,$16,$2b,$1a,$26,$12,$0e,$0b,$0e,$0c,$0e,$0d,$28,$1a,$08,$1a,$0a,$0d,$04,$16,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
@@ -416,7 +400,6 @@ nesdev_caption:
 ;EVERYONE AT NINTENDOAGE
 nintendoage_caption:
   .byte $17,$04,$15,$04,$11,$18,$0e,$0d,$04,$1a,$00,$13,$1a,$0d,$08,$0d,$13,$04,$0d,$03,$0e,$00,$06,$04
-.endif
 
 .segment "ROM10"
 
@@ -1790,7 +1773,6 @@ slide5_nametable:
   .byte $00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00
 
-.ifndef DEMO_BUILD
 ending_slide1_palette:
   .byte $3f,$04,$17,$20,$3f,$17,$24,$20,$3f,$17,$29,$20,$3f,$29,$24,$20
   .byte $3f,$04,$17,$20,$3f,$17,$24,$20,$3f,$17,$29,$20,$3f,$29,$24,$20
@@ -2651,4 +2633,3 @@ ending_slide3_nametable:
   .byte $00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00
   .byte $00,$00,$00,$00,$00,$00,$00,$00
-.endif

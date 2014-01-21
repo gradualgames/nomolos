@@ -52,7 +52,6 @@
 .include "owl.inc"
 .include "snuffer.inc"
 
-.ifndef DEMO_BUILD
 .include "skelekin.inc"
 .include "thoguth.inc"
 .include "lightningbolt.inc"
@@ -66,7 +65,6 @@
 .include "bigfireball.inc"
 .include "boulder.inc"
 .include "spiraliceball.inc"
-.endif
 
 .segment "ROM11"
 
@@ -84,7 +82,6 @@
 .include "flailitem.inc"
 .include "restart.inc"
 
-.ifndef DEMO_BUILD
 .include "spritesheet2_sprites_source.inc"
 .include "spritesheet2_animations_source.inc"
 
@@ -104,4 +101,3 @@
 .include "laser.inc"
 .include "sneep.inc"
 .include "feather.inc"
-.endif
