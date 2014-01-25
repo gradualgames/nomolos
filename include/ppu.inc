@@ -28,6 +28,8 @@ PPU_INC = 1
    palette_address .word
    nametable_address .word
    chr_address .word
+   spr_chr_address .word
+   spr_overlay_address .word
    vsyncs .byte
    chr_bank .byte
    palette_nametable_bank .byte

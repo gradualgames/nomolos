@@ -224,7 +224,7 @@ fading_loop:
   ;restore 2006 and 2005 to what we had written them to previously
   upload_ppu_2006
   upload_ppu_2005
-  
+
   dec nmi_counter
 nmi_counter_zero:
 
@@ -343,7 +343,7 @@ start_was_pressed = b6
   lda (w2),y
   sta w0+1
   jsr ppu_display_string
-  
+
   ;reset scroll
   lda #$20
   sta ppu_2006
@@ -359,7 +359,7 @@ start_was_pressed = b6
   ;turn sprite and background visibility on
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
-  
+
   ;wait for ppu registers to be uploaded safely
   inc nmi_counter
 : lda nmi_counter
@@ -426,6 +426,11 @@ start_button_hit:
   ;turn off background visibility
   clear_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
 
+  ;load background from vram $0000
+  clear_ppu_2000_bit PPU0_BACKGROUND_PATTERN_TABLE_ADDRESS
+  ;load sprites from vram $1000
+  set_ppu_2000_bit PPU0_SPRITE_PATTERN_TABLE_ADDRESS
+
   ;wait for ppu registers to be uploaded safely
   inc nmi_counter
 
@@ -457,6 +462,50 @@ start_button_hit:
   upload_ppu_2006
 
   jsr ppu_load_chr_amount
+
+  ;load spr chr data
+  ldy #ppu_slide::spr_chr_address
+  lda (w2),y
+  sta w0
+  iny
+  lda (w2),y
+  sta w0+1
+  beq no_spr_chr_data
+
+  lda #$10
+  sta ppu_2006
+  lda #$00
+  sta ppu_2006+1
+  upload_ppu_2006
+
+  jsr ppu_load_chr_amount
+no_spr_chr_data:
+
+  ;draw the sprite overlay
+  lda #0
+  sta sprite_group_offset
+  jsr sprite_clear_all
+
+  lda #0
+  sta w3
+  sta w3+1
+  lda #$ff
+  sta w4
+  sta w4+1
+
+  ldy #ppu_slide::spr_overlay_address
+  lda (w2),y
+  sta w0
+  iny
+  lda (w2),y
+  sta w0+1
+
+  lda #0
+  sta b2
+
+  jsr sprite_draw_metasprite_16bit
+
+  jsr sprite_update_all
 
   ;switch to bank that contains nametable and palette data
   ldy #ppu_slide::palette_nametable_bank
@@ -493,7 +542,7 @@ start_button_hit:
   ;turn sprite and background visibility on
   set_ppu_2001_bit PPU1_SPRITE_VISIBILITY
   set_ppu_2001_bit PPU1_BACKGROUND_VISIBILITY
-  
+
   ;wait for ppu registers to be uploaded safely
   inc nmi_counter
 : lda nmi_counter
@@ -592,7 +641,7 @@ tile_index = b4
   sta buffer_rectangle_x
   lda b1
   sta buffer_rectangle_y
-  
+
   ;get width of region
   ldy #0
   lda (w0),y
@@ -604,47 +653,47 @@ tile_index = b4
   sta region_height
   beq do_not_draw
   iny
-  
+
   lda #2
   sta tile_index
-  
+
   ;start copying region to buffer
   ldy region_height
 row_loop:
-  
+
   ldx region_width
 column_loop:
-  
+
   ;save y
   tya
   pha
-  
+
   ldy tile_index
-  
+
   ;get tile value
   lda (w0),y
-  
+
   ;y is 2 ahead of where we need to be. store the tile value in the buffer.
   sta buffer_rectangle-2,y
-  
+
   ;restore y
   pla
   tay
-  
+
   ;next tile.
   inc tile_index
-  
+
   dex
   bne column_loop
-  
+
   dey
   bne row_loop
 do_not_draw:
-  
+
   ;restore x
   pla
   tax
-  
+
   rts
 .endproc
 
@@ -660,11 +709,11 @@ buffer_index = b2
   sta row
   lda buffer_rectangle_x
   sta column
-  
+
   ;point VRAM at first row
   set_ppu_2006_abs name_table_to_view, row, column
   upload_ppu_2006
-  
+
   ;start at beginning of buffer
   lda #0
   sta buffer_index
@@ -680,23 +729,23 @@ column_loop:
   ;save x
   txa
   pha
-  
+
   ;get buffer index
   ldx buffer_index
-  
+
   ;store next tile value in VRAM
   lda buffer_rectangle,x
   sta $2007
-  
+
   inc buffer_index
-  
+
   ;restore x
   pla
   tax
 
   dex
   bne column_loop
-  
+
   ;point VRAM at next row
   clc
   lda ppu_2006+1
@@ -706,7 +755,7 @@ column_loop:
   adc #0
   sta ppu_2006
   upload_ppu_2006
-  
+
   dey
   bne row_loop
 
@@ -714,7 +763,7 @@ do_not_draw:
   lda #0
   sta buffer_rectangle_width
   sta buffer_rectangle_height
-  
+
   rts
 .endproc
 
@@ -1071,7 +1120,7 @@ input_brightness = b3
 
   ;return adjusted color
   sta color
-  
+
   ;restore x
   pla
   tax
@@ -1082,7 +1131,7 @@ return_black:
 
   lda #$0e
   sta color
-  
+
   ;restore x
   pla
   tax
@@ -1101,14 +1150,14 @@ return_black:
   lda (base_address_rom_definition_table),y
   sta mapper_bank_next
   jsr mapper_switch_bank
-  
+
   jsr ppu_load_dynamic_palette_brightness
-  
+
   ;restore previous bank
   pla
   sta mapper_bank_next
   jsr mapper_switch_bank
-  
+
   rts
 
 .endproc

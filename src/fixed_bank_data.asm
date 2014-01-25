@@ -120,10 +120,10 @@ level_1_1_data:
   .byte 16          ;nomolos_start_x
   .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
-  
+
   .word level1_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level1_map
   .word level1_map_column_table
   .word level1_attribute_column_table
@@ -152,10 +152,10 @@ level_1_2_data:
   .byte 16          ;nomolos_start_x
   .byte ((9*16)+3)  ;nomolos_start_y
   .byte 0   ;starting_screen
-  
+
   .word level1_2_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level1_2map
   .word level1_2map_column_table
   .word level1_2attribute_column_table
@@ -184,10 +184,10 @@ level_2_1_data:
   .byte 16          ;nomolos_start_x
   .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
-  
+
   .word level2_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level2_map
   .word level2_map_column_table
   .word level2_attribute_column_table
@@ -214,10 +214,10 @@ level_2_2_data:
   .byte 104 ;nomolos_start_x
   .byte 0   ;nomolos_start_y
   .byte 0   ;starting_screen
-  
+
   .word level2_2intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level2_2map
   .word level2_2map_column_table
   .word level2_2attribute_column_table
@@ -244,10 +244,10 @@ boss_2_data:
   .byte 16          ;nomolos_start_x
   .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
-  
+
   .word boss2_intro_string
   .byte 32 ;columns_to_load
-  .byte 0  ;camera_scroll_enabled  
+  .byte 0  ;camera_scroll_enabled
   .word boss2_map
   .word boss2_map_column_table
   .word boss2_attribute_column_table
@@ -274,10 +274,10 @@ level_3_1_data:
   .byte 104 ;nomolos_start_x
   .byte 0   ;nomolos_start_y
   .byte 0   ;starting_screen
-  
+
   .word level3_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level3_map
   .word level3_map_column_table
   .word level3_attribute_column_table
@@ -304,10 +304,10 @@ level_3_2_data:
   .byte 16          ;nomolos_start_x
   .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
-  
+
   .word level3_2_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level3_2_map
   .word level3_2_map_column_table
   .word level3_2_attribute_column_table
@@ -334,10 +334,10 @@ boss_1_data:
   .byte 16          ;nomolos_start_x
   .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
-  
+
   .word boss1_intro_string
   .byte 32 ;columns_to_load
-  .byte 0  ;camera_scroll_enabled  
+  .byte 0  ;camera_scroll_enabled
   .word boss1_map
   .word boss1_map_column_table
   .word boss1_attribute_column_table
@@ -364,10 +364,10 @@ level_4_1_data:
   .byte 16          ;nomolos_start_x
   .byte ((7*16)+3)  ;nomolos_start_y
   .byte 0 ;starting_screen
-  
+
   .word level4_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level4_map
   .word level4_map_column_table
   .word level4_attribute_column_table
@@ -394,10 +394,10 @@ level_4_2_data:
   .byte 16          ;nomolos_start_x
   .byte ((8*16)+3)  ;nomolos_start_y
   .byte 0 ;starting_screen
-  
+
   .word level_4_2_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level_4_2_map
   .word level_4_2_map_column_table
   .word level_4_2_attribute_column_table
@@ -424,10 +424,10 @@ boss_3_data:
   .byte 16          ;nomolos_start_x
   .byte ((6*16)+3)  ;nomolos_start_y
   .byte 0  ;starting_screen
-  
+
   .word boss3_intro_string
   .byte 32 ;columns_to_load
-  .byte 0  ;camera_scroll_enabled  
+  .byte 0  ;camera_scroll_enabled
   .word boss3_map
   .word boss3_map_column_table
   .word boss3_attribute_column_table
@@ -454,10 +454,10 @@ level_5_1_data:
   .byte 16          ;nomolos_start_x
   .byte ((4*16)+3)  ;nomolos_start_y
   .byte 0 ;starting_screen
-  
+
   .word level5_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level5_map
   .word level5_map_column_table
   .word level5_attribute_column_table
@@ -483,10 +483,10 @@ level_5_2_data:
   .byte 16          ;nomolos_start_x
   .byte ((7*16)+3)  ;nomolos_start_y
   .byte 0 ;starting_screen
-  
+
   .word level_5_2_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level_5_2_map
   .word level_5_2_map_column_table
   .word level_5_2_attribute_column_table
@@ -512,10 +512,10 @@ boss_4_data:
   .byte (16+2)      ;nomolos_start_x
   .byte ((11*16)+3) ;nomolos_start_y
   .byte 0 ;starting_screen
-  
+
   .word boss4_intro_string
   .byte 16 ;columns_to_load
-  .byte 0  ;camera_scroll_enabled  
+  .byte 0  ;camera_scroll_enabled
   .word boss4_map
   .word boss4_map_column_table
   .word boss4_attribute_column_table
@@ -542,10 +542,10 @@ level_6_1_data:
   .byte 16          ;nomolos_start_x
   .byte ((11*16)+3) ;nomolos_start_y
   .byte 0 ;starting_screen
-  
+
   .word level6_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level6_map
   .word level6_map_column_table
   .word level6_attribute_column_table
@@ -572,10 +572,10 @@ level_6_2_data:
   .byte 16          ;nomolos_start_x
   .byte ((11*16)+3) ;nomolos_start_y
   .byte 0 ;starting_screen
-  
+
   .word level_6_2_intro_string
   .byte 16 ;columns_to_load
-  .byte 1  ;camera_scroll_enabled  
+  .byte 1  ;camera_scroll_enabled
   .word level_6_2_map
   .word level_6_2_map_column_table
   .word level_6_2_attribute_column_table
@@ -602,10 +602,10 @@ boss_5_data:
   .byte 16          ;nomolos_start_x
   .byte ((11*16)+3) ;nomolos_start_y
   .byte 0   ;starting_screen
-  
+
   .word boss5_intro_string
   .byte 16 ;columns_to_load
-  .byte 0  ;camera_scroll_enabled  
+  .byte 0  ;camera_scroll_enabled
   .word boss5_map
   .word boss5_map_column_table
   .word boss5_attribute_column_table
@@ -756,7 +756,7 @@ entity_definition_table:
   .word spiraliceball_update
   .byte $05
   .byte $00
-  
+
 entity_chr_definition_table:
   .word spritesheet_common_Nomolos_chr
   .word spritesheet1_Deentle_chr
@@ -875,7 +875,7 @@ Noise:
 intro_cut_scene_music:
 .scope
 
-Song1: 
+Song1:
   .word Square1
   .word Square2
   .word Triangle
@@ -955,7 +955,7 @@ Noise:
 .endscope
 
 .export victory_music
-victory_music: 
+victory_music:
 .scope
   .word Square1
   .word Square2
@@ -971,13 +971,13 @@ volume_envelopes:
   .word volume_envelope_2
   .word 0
   .word 0
-  
+
   .word 0
   .word 0
   .word 0
   .word 0
   .word 0
-  
+
   sound_effect_volume_addresses
 
 pitch_envelopes:
@@ -986,13 +986,13 @@ pitch_envelopes:
   .word 0
   .word 0
   .word 0
-  
+
   .word 0
   .word 0
   .word 0
   .word 0
   .word 0
-  
+
   sound_effect_pitch_addresses
 
 duty_envelopes:
@@ -1037,7 +1037,7 @@ Noise:
   .byte GOT
   .word Noise
 .endscope
-  
+
 title_music:
 .scope
   .word Square1
@@ -1055,7 +1055,7 @@ volume_envelopes:
 
 pitch_envelopes:
   .word pitch_envelope_0
-  
+
 duty_envelopes:
   .word duty_envelope_0
   .word duty_envelope_1
@@ -1109,7 +1109,7 @@ Noise:
   .byte GOT
   .word Noise
 .endscope
-  
+
 mysterious_barricades:
 .scope
   .word Square1
@@ -1173,7 +1173,7 @@ Noise:
 .endscope
 
 soler_presto:
-.scope 
+.scope
   .word Square1
   .word Square2
   .word Triangle
@@ -1286,7 +1286,7 @@ power_table:
 
 spaces_string:
   .byte $03,$1a,$1a,$1a
-  
+
 press_start_string:
   .byte $0b,$0f,$11,$04,$12,$12,$1a,$12,$13,$00,$11,$13
 
@@ -1479,6 +1479,8 @@ title_slide:
   .word title_palette
   .word title_nametable
   .word title_patterns
+  .word 0
+  .word 0
   .byte 1
   .byte 14
   .byte 10
@@ -1487,6 +1489,8 @@ gradual_games_logo_slide:
   .word gradual_games_logo_palette
   .word gradual_games_logo_nametable
   .word gradual_games_logo_chr
+  .word 0
+  .word 0
   .byte 150
   .byte 11
   .byte 11
@@ -1495,14 +1499,18 @@ slide1:
   .word slide1_palette
   .word slide1_nametable
   .word slide1_chr
+  .word slide1_spr_chr
+  .word slide1_spr_overlay
   .byte 150
-  .byte 10
-  .byte 10
+  .byte 15
+  .byte 15
 
 slide2:
   .word slide2_palette
   .word slide2_nametable
   .word slide2_chr
+  .word 0
+  .word 0
   .byte 150
   .byte 10
   .byte 10
@@ -1511,6 +1519,8 @@ slide3:
   .word slide3_palette
   .word slide3_nametable
   .word slide3_chr
+  .word 0
+  .word 0
   .byte 150
   .byte 10
   .byte 10
@@ -1519,6 +1529,8 @@ slide4:
   .word slide4_palette
   .word slide4_nametable
   .word slide4_chr
+  .word 0
+  .word 0
   .byte 150
   .byte 7
   .byte 7
@@ -1527,6 +1539,8 @@ slide5:
   .word slide5_palette
   .word slide5_nametable
   .word slide5_chr
+  .word 0
+  .word 0
   .byte 250
   .byte 7
   .byte 7
@@ -1535,6 +1549,8 @@ ending_slide1:
   .word ending_slide1_palette
   .word ending_slide1_nametable
   .word ending_slide1_chr
+  .word 0
+  .word 0
   .byte 250
   .byte 7
   .byte 7
@@ -1543,6 +1559,8 @@ ending_slide2:
   .word ending_slide2_palette
   .word ending_slide2_nametable
   .word ending_slide2_chr
+  .word 0
+  .word 0
   .byte 250
   .byte 12
   .byte 12
@@ -1551,6 +1569,8 @@ ending_slide3:
   .word ending_slide3_palette
   .word ending_slide3_nametable
   .word ending_slide3_chr
+  .word 0
+  .word 0
   .byte 250
   .byte 12
   .byte 6
