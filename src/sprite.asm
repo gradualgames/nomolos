@@ -667,6 +667,69 @@ skipNextSpriteEntry:
   rts
 .endproc
 
+;this routine uses the same data structure as metasprites, but it
+;is intended for a full screen overlay for cut-scenes.
+;expects w0 to be address to the sprite overlay to draw
+.proc sprite_draw_overlay
+count = b0
+
+  ldy #0
+  lda (w0),y
+  sta count
+
+  clc
+  lda w0
+  adc #1
+  sta w0
+  lda w0+1
+  adc #0
+  sta w0+1
+
+  ldx #0
+
+next_entry:
+
+  ldy #spriteStruct::ycoord
+  sec
+  lda (w0),y
+  sbc #1
+  sta sprite,x
+  inx
+
+  ldy #spriteStruct::tile
+  lda (w0),y
+  sta sprite,x
+  inx
+
+  ldy #spriteStruct::attribute
+  lda (w0),y
+  sta sprite,x
+  inx
+
+  ldy #spriteStruct::xcoord
+  lda (w0),y
+  sta sprite,x
+  inx
+
+  clc
+  lda w0
+  adc #5
+  sta w0
+  lda w0+1
+  adc #0
+  sta w0+1
+
+  dec count
+  bne next_entry
+
+  rts
+
+.endproc
+
+; slide1_spr_overlay:
+  ; .byte 59
+  ; .byte $18,$01,$00,$68,$90
+
 .proc sprite_update_all
   lda #>(sprite)
   sta $4014    ; Jam page $200-$2FF into SPR-RAM

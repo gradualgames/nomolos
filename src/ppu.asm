@@ -486,13 +486,6 @@ no_spr_chr_data:
   sta sprite_group_offset
   jsr sprite_clear_all
 
-  lda #0
-  sta w3
-  sta w3+1
-  lda #$ff
-  sta w4
-  sta w4+1
-
   ldy #ppu_slide::spr_overlay_address
   lda (w2),y
   sta w0
@@ -500,10 +493,7 @@ no_spr_chr_data:
   lda (w2),y
   sta w0+1
 
-  lda #0
-  sta b2
-
-  jsr sprite_draw_metasprite_16bit
+  jsr sprite_draw_overlay
 
   jsr sprite_update_all
 

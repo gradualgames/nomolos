@@ -7,6 +7,7 @@ SPRITE_INC = 1
 .global sprite_update_all
 .global sprite_clear_all
 .global sprite_draw_metasprite_16bit
+.global sprite_draw_overlay
 
 .struct spriteStruct
   ycoord .byte
