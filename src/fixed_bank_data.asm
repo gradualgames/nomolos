@@ -1509,11 +1509,11 @@ slide2:
   .word slide2_palette
   .word slide2_nametable
   .word slide2_chr
-  .word 0
-  .word 0
+  .word slide2_spr_chr
+  .word slide2_spr_overlay
   .byte 150
-  .byte 10
-  .byte 10
+  .byte 15
+  .byte 15
 
 slide3:
   .word slide3_palette
