@@ -492,10 +492,12 @@ no_spr_chr_data:
   iny
   lda (w2),y
   sta w0+1
+  beq no_spr_overlay
 
   jsr sprite_draw_overlay
 
   jsr sprite_update_all
+no_spr_overlay:
 
   ;switch to bank that contains nametable and palette data
   ldy #ppu_slide::palette_nametable_bank
