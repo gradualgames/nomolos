@@ -1,3 +1,4 @@
+.feature force_range
 .include "soundengine.inc"
 .include "spritesheet1.inc"
 .include "entities.inc"

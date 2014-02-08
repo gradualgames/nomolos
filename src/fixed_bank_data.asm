@@ -1,3 +1,4 @@
+.feature force_range
 .include "spritesheet_common.inc"
 .include "spritesheet1.inc"
 .include "spritesheet2.inc"

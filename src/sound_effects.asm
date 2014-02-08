@@ -1,3 +1,4 @@
+.feature force_range
 .include "soundengine.inc"
 .include "sound_effects.inc"
 
