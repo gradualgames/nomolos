@@ -1520,8 +1520,8 @@ slide3:
   .word slide3_palette
   .word slide3_nametable
   .word slide3_chr
-  .word 0
-  .word 0
+  .word slide3_spr_chr
+  .word slide3_spr_overlay
   .byte 150
   .byte 10
   .byte 10

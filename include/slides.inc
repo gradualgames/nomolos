@@ -16,6 +16,8 @@
 .global slide3_chr
 .global slide3_nametable
 .global slide3_palette
+.global slide3_spr_chr
+.global slide3_spr_overlay
 .global slide4_chr
 .global slide4_nametable
 .global slide4_palette
