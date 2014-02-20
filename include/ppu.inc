@@ -25,6 +25,7 @@ PPU_INC = 1
 .global ppu_load_palette
 .global ppu_load_palette_bg
 .global ppu_load_palette_spr
+.global ppu_load_black_palette
 
 .struct ppu_slide
    palette_address .word

@@ -56,6 +56,9 @@ reset:
   lda #>ppu_blank_nmi
   sta update_ppu+1
 
+  ;load all black palette
+  jsr ppu_load_black_palette
+
   ;initialize ppu registers with settings we're never going to change
   set_ppu_2000_bit PPU0_EXECUTE_NMI
   set_ppu_2001_bit PPU1_SPRITE_CLIPPING
