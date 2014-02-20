@@ -8,14 +8,59 @@ nes_file = "nomolos.nes"
 linker_cfg_file = "nomolos.cfg"
 map_file = "nomolos.map"
 debug_file = "nomolos.nes.dbg"
+ndx_file = "nomolos.nes.ndx"
+
+src_path = "src"
+bin_path = "bin"
+
 include_paths = ["include",
                  "include/entities",
                  "include/fixed_bank_data",
                  "include/levels",
                  "include/spritesheets"]
 
-src_path = "src"
-bin_path = "bin"
+files =["boss1.asm",
+        "boss2.asm",
+        "boss3.asm",
+        "boss4.asm",
+        "boss5.asm",
+        "camera.asm",
+        "continue_end_state.asm",
+        "controller.asm",
+        "ending_state.asm",
+        "entities.asm",
+        "entity.asm",
+        "fixed_bank_data.asm",
+        "geotests.asm",
+        "level_in_state.asm",
+        "level1.asm",
+        "level1_2.asm",
+        "level2.asm",
+        "level2_2.asm",
+        "level3.asm",
+        "level3_2.asm",
+        "level4.asm",
+        "level4_2.asm",
+        "level5.asm",
+        "level5_2.asm",
+        "level6.asm",
+        "level6_2.asm",
+        "load_level_state.asm",
+        "map.asm",
+        "mapper.asm",
+        "nomolos.asm",
+        "nomolos_logic.asm",
+        "play_level_state.asm",
+        "ppu.asm",
+        "ram.asm",
+        "slides.asm",
+        "sound_effects.asm",
+        "soundengine.asm",
+        "sprite.asm",
+        "statemanager.asm",
+        "title_state.asm",
+        "zp.asm"]
+
 
 def clean_build():
     if os.path.exists(nes_file):
@@ -24,15 +69,17 @@ def clean_build():
         os.remove(map_file)
     if os.path.exists(debug_file):
         os.remove(debug_file)
+    if os.path.exists(ndx_file):
+        os.remove(ndx_file)
     if os.path.exists(bin_path):
-        shutil.rmtree(bin_path)
+        shutil.rmtree(bin_path, ignore_errors=True)
 
 def make_build(additional_args):
+    global files
     abs_include_paths = []
     for include_path in include_paths:
         abs_include_paths.append(os.path.normpath(include_path))
 
-    files = os.listdir(src_path)
     file_names = [os.path.splitext(file_name)[0]
         for file_name in files]
 
@@ -52,6 +99,7 @@ def make_build(additional_args):
         ca65_args_file_name.append(os.path.normpath("%s/%s.lst" % (bin_path, file_name)))
         ca65_args_file_name.append("-o")
         ca65_args_file_name.append(os.path.normpath("%s/%s.o" % (bin_path, file_name)))
+        ca65_args_file_name.append("-DDEBUG")
         if additional_args != None:
             ca65_args_file_name.extend(additional_args)
         call(ca65_args_file_name)
