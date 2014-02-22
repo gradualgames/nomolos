@@ -1540,8 +1540,8 @@ slide5:
   .word slide5_palette
   .word slide5_nametable
   .word slide5_chr
-  .word 0
-  .word 0
+  .word slide5_spr_chr
+  .word slide5_spr_overlay
   .byte 250
   .byte 7
   .byte 7
