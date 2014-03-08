@@ -17,7 +17,8 @@ include_paths = ["include",
                  "include/entities",
                  "include/fixed_bank_data",
                  "include/levels",
-                 "include/spritesheets"]
+                 "include/spritesheets",
+                 "include/slides"]
 
 files =["boss1.asm",
         "boss2.asm",

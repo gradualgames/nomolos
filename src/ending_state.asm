@@ -54,6 +54,8 @@
   show_graphics_slide ending_slide3
 
 .ifdef MUSIC_ENABLE
+  lda mapper_bank_current
+  pha
   lda #EXTRA_MUSIC_BANK
   sta music_bank
   sta mapper_bank_next
@@ -64,6 +66,9 @@
   lda #>soler_presto
   sta sound_param_word_1+1
   jsr song_initialize
+  pla
+  sta mapper_bank_next
+  jsr mapper_switch_bank
 .endif
 
   show_text_slide thanks_for_playing_slide

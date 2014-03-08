@@ -1573,8 +1573,8 @@ ending_slide3:
   .word 0
   .word 0
   .byte 250
-  .byte 12
-  .byte 6
+  .byte 15
+  .byte 15
 
 difficulty_table:
   .byte 1  ;unfair
