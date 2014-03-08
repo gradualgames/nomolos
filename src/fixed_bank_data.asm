@@ -33,7 +33,6 @@
 .segment "ROM14"
 
 .include "font0_patterns_source.inc"
-.include "title_patterns_source.inc"
 
 .segment "CODE"
 
@@ -809,6 +808,7 @@ entity_chr_definition_table:
 ;miscellaneous data
 banktable:
   .byte $00, $01, $02, $03, $04, $05, $06, $07, $08, $09, $0a, $0b, $0c, $0d, $0e, $0f
+  .byte $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $1a, $1b, $1c, $1d, $1e, $1f
 
 .segment "ROM06"
 
@@ -1341,139 +1341,139 @@ heart:
 solomon_snow_watching_birds_slide:
   .word solomon_snow_watching_birds_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 3
 
 portal_appears_slide:
   .word portal_appears_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 6
 
 arm_snatches_snow_slide:
   .word arm_snatches_snow_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 5
 
 leapt_through_portal_slide:
   .word leapt_through_portal_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 4
 
 became_nomolos_slide:
   .word became_nomolos_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 3
 
 nomolos_sets_out_slide:
   .word nomolos_sets_out_caption
   .byte 250
-  .byte 5
+  .byte 15
   .byte 4
 
 nomolos_and_snow_reunited_slide:
   .word nomolos_and_snow_reunited_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 5
 
 portal_appears_above_scepter_slide:
   .word portal_appears_above_scepter_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 5
 
 leapt_through_ending_portal_slide:
   .word leapt_through_ending_portal_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 5
 
 thanks_for_playing_slide:
   .word thanks_for_playing_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 5
 
 by_gradual_games_slide:
   .word by_gradual_games_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 8
 
 derek_andrews_slide:
   .word derek_andrews_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 9
 
 laurie_andrews_slide:
   .word laurie_andrews_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 8
 
 daniel_hwozdek_slide:
   .word daniel_hwozdek_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 6
 
 music_by_slide:
   .word music_by_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 11
 
 beta_testers_slide:
   .word beta_testers_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 8
 
 production_slide:
   .word production_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 8
 
 printed_materials_slide:
   .word printed_materials_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 7
 
 promotion_social_media_slide:
   .word promotion_social_media_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 9
 
 special_thanks_slide:
   .word special_thanks_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 7
 
 nesdev_slide:
   .word nesdev_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 7
 
 nintendoage_slide:
   .word nintendoage_caption
   .byte 150
-  .byte 5
+  .byte 15
   .byte 4
 
 secret_message_slide:
   .word secret_message_caption
   .byte 250
-  .byte 5
+  .byte 15
   .byte 4
 
 title_slide:
@@ -1483,8 +1483,8 @@ title_slide:
   .word 0
   .word 0
   .byte 1
-  .byte 14
-  .byte 10
+  .byte 15
+  .byte 15
 
 gradual_games_logo_slide:
   .word gradual_games_logo_palette
@@ -1493,8 +1493,8 @@ gradual_games_logo_slide:
   .word 0
   .word 0
   .byte 150
-  .byte 11
-  .byte 11
+  .byte 15
+  .byte 15
 
 slide1:
   .word slide1_palette
@@ -1503,8 +1503,8 @@ slide1:
   .word slide1_spr_chr
   .word slide1_spr_overlay
   .byte 150
-  .byte 15
-  .byte 15
+  .byte 16
+  .byte 16
 
 slide2:
   .word slide2_palette
@@ -1513,8 +1513,8 @@ slide2:
   .word slide2_spr_chr
   .word slide2_spr_overlay
   .byte 150
-  .byte 15
-  .byte 15
+  .byte 16
+  .byte 16
 
 slide3:
   .word slide3_palette
@@ -1523,8 +1523,8 @@ slide3:
   .word slide3_spr_chr
   .word slide3_spr_overlay
   .byte 150
-  .byte 10
-  .byte 10
+  .byte 17
+  .byte 17
 
 slide4:
   .word slide4_palette
@@ -1533,8 +1533,8 @@ slide4:
   .word 0
   .word 0
   .byte 150
-  .byte 7
-  .byte 7
+  .byte 17
+  .byte 17
 
 slide5:
   .word slide5_palette
@@ -1543,8 +1543,8 @@ slide5:
   .word slide5_spr_chr
   .word slide5_spr_overlay
   .byte 250
-  .byte 7
-  .byte 7
+  .byte 18
+  .byte 18
 
 ending_slide1:
   .word ending_slide1_palette
@@ -1553,8 +1553,8 @@ ending_slide1:
   .word 0
   .word 0
   .byte 250
-  .byte 7
-  .byte 7
+  .byte 18
+  .byte 18
 
 ending_slide2:
   .word ending_slide2_palette
@@ -1563,8 +1563,8 @@ ending_slide2:
   .word 0
   .word 0
   .byte 250
-  .byte 12
-  .byte 12
+  .byte 19
+  .byte 19
 
 ending_slide3:
   .word ending_slide3_palette
@@ -1573,8 +1573,8 @@ ending_slide3:
   .word 0
   .word 0
   .byte 250
-  .byte 15
-  .byte 15
+  .byte 19
+  .byte 19
 
 difficulty_table:
   .byte 1  ;unfair

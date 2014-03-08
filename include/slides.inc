@@ -3,6 +3,7 @@
 .global gradual_games_logo_palette
 .global title_nametable
 .global title_palette
+.global title_patterns
 .global slide1_chr
 .global slide1_nametable
 .global slide1_palette
