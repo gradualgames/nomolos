@@ -1560,8 +1560,8 @@ ending_slide2:
   .word ending_slide2_palette
   .word ending_slide2_nametable
   .word ending_slide2_chr
-  .word 0
-  .word 0
+  .word ending_slide2_spr_chr
+  .word ending_slide2_spr_overlay
   .byte 250
   .byte 19
   .byte 19
