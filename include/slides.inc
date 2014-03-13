@@ -42,6 +42,8 @@
 .global ending_slide3_chr
 .global ending_slide3_nametable
 .global ending_slide3_palette
+.global ending_slide3_spr_chr
+.global ending_slide3_spr_overlay
 .global solomon_snow_watching_birds_caption
 .global portal_appears_caption
 .global arm_snatches_snow_caption
