@@ -1530,8 +1530,8 @@ slide4:
   .word slide4_palette
   .word slide4_nametable
   .word slide4_chr
-  .word 0
-  .word 0
+  .word slide4_spr_chr
+  .word slide4_spr_overlay
   .byte 150
   .byte 17
   .byte 17
