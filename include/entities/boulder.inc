@@ -174,7 +174,7 @@ boulder_init:
   lda #20
   jmp :++
 :
-  lda #1;30
+  lda #30
 :
   sta entity_locals+boulder_locals::health,x
 
