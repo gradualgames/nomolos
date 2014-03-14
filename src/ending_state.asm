@@ -93,28 +93,12 @@
 
   jsr fade_out_palette
 
-  lda #<slide1
+  lda #<slide1_ending
   sta w2
-  lda #>slide1
+  lda #>slide1_ending
   sta w2+1
 
   jsr ppu_load_slide
-
-  set_ppu_2006 $20, 22, 13
-  lda #<the_string
-  sta w0
-  lda #>the_string
-  sta w0+1
-
-  jsr ppu_display_string
-
-  set_ppu_2006 $20, 23, 13
-  lda #<end_string
-  sta w0
-  lda #>end_string
-  sta w0+1
-
-  jsr ppu_display_string
 
   lda #<slide1
   sta w2

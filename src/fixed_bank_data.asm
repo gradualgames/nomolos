@@ -1506,6 +1506,16 @@ slide1:
   .byte 16
   .byte 16
 
+slide1_ending:
+  .word slide1_palette
+  .word slide1_nametable
+  .word slide1_chr
+  .word slide1_spr_chr
+  .word slide1_spr_overlay_ending
+  .byte 150
+  .byte 16
+  .byte 16
+
 slide2:
   .word slide2_palette
   .word slide2_nametable

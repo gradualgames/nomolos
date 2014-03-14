@@ -9,6 +9,7 @@
 .global slide1_palette
 .global slide1_spr_chr
 .global slide1_spr_overlay
+.global slide1_spr_overlay_ending
 .global slide2_chr
 .global slide2_nametable
 .global slide2_palette

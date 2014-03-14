@@ -55,6 +55,7 @@ EXTRA_MUSIC_BANK = 6
 .global title_slide
 .global gradual_games_logo_slide
 .global slide1
+.global slide1_ending
 .global slide2
 .global slide3
 .global slide4
