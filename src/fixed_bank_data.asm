@@ -756,9 +756,6 @@ entity_definition_table:
   .word spiraliceball_update
   .byte $05
   .byte $00
-  .word warpzone_update
-  .word $01
-  .byte $00
 
 entity_chr_definition_table:
   .word spritesheet_common_Nomolos_chr
