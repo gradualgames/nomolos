@@ -47,6 +47,7 @@ ENTITIES_INC = 1
 .global feather_update
 .global boulder_update
 .global spiraliceball_update
+.global warpzone_update
 
 ;entity indices
 entity_index_nomolos = 1
@@ -95,6 +96,7 @@ entity_index_sneep = 43
 entity_index_feather = 44
 entity_index_boulder = 45
 entity_index_spiraliceball = 46
+entity_index_warpzone = 47
 
 ;entity structs. Only parameterizable entities have structs here.
 .struct iceball_locals
