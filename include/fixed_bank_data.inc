@@ -20,6 +20,7 @@ boss_4_index    = 13
 level_6_1_index = 14
 level_6_2_index = 15
 boss_5_index    = 16
+level_2_2bonus_index = 17
 
 EXTRA_MUSIC_BANK = 6
 

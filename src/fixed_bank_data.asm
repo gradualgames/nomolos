@@ -6,6 +6,7 @@
 .include "level1_2.inc"
 .include "level2.inc"
 .include "level2_2.inc"
+.include "level2_2bonus.inc"
 .include "boss2.inc"
 .include "level3.inc"
 .include "level3_2.inc"
@@ -55,6 +56,7 @@ level_definition_table:
   .word level_6_1_data
   .word level_6_2_data
   .word boss_5_data
+  .word level_2_2bonus_data
 
 ;level intro strings
 level1_intro_string:
@@ -103,6 +105,9 @@ boss4_intro_string:
   .byte $05,$12,$0d,$04,$04,$0f
 boss5_intro_string:
   .byte $07,$01,$0e,$14,$0b,$03,$04,$11
+level_2_2bonus_intro_string:
+;GRANK GAUNTLET
+  .byte $0e,$06,$11,$00,$0d,$0a,$1a,$06,$00,$14,$0d,$13,$0b,$04,$13
 
 ;ROM definition table
 level_1_1_data:
@@ -615,6 +620,36 @@ boss_5_data:
   .word entity_definition_table
   .word boss5_music
   .byte level_1_index
+
+;ROM definition table
+level_2_2bonus_data:
+  .byte spritesheet_1_bank
+  .byte level2_2bonusbank
+  .byte level_2_patterns_bank
+  .word level2_patterns
+  .byte spritesheet_1_patterns_bank
+  .word level2_sprite_groups
+  .word level2_2bonuscycling_palettes ;cycling_palette_address
+  .byte 5 ;cycling_palette_speed
+
+  .word level2_2bonuspalette
+
+  .byte 104 ;nomolos_start_x
+  .byte 0   ;nomolos_start_y
+  .byte 0   ;starting_screen
+
+  .word level_2_2bonus_intro_string
+  .byte 16 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled
+  .word level2_2bonusmap
+  .word level2_2bonusmap_column_table
+  .word level2_2bonusattribute_column_table
+  .word level2_2bonusmeta_tile_column_table
+  .word level2_2bonusmeta_tile_table
+
+  .word entity_definition_table
+  .word level2_2bonusmusic
+  .byte level_4_index
 
 ;Entities
 entity_definition_table:

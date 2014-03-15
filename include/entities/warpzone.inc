@@ -42,7 +42,7 @@ is_touching_nomolos:
   ;hard coded to jump to the bonus level
   lda #0
   sta state_control_params+play_level_state_control::use_restart_point
-  ldy #0
+  lda #level_2_2bonus_index
   sta level_current
   lda #PLAYLEVELSTATE_SWITCHTOLEVELINSTATE
   sta state_control_params+play_level_state_control::state
