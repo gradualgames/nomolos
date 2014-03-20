@@ -243,9 +243,10 @@ levelInStateRun:
 levelInStateDone:
 
   ldx #64
-: wait_vblank
+wait_before_fade_out:
+  wait_vblank
   dex
-  bne :-
+  bne wait_before_fade_out
 
   ;fade out the palette
   lda #<(font1+font::palette)
