@@ -57,6 +57,7 @@ level_definition_table:
   .word level_6_2_data
   .word boss_5_data
   .word level_2_2bonus_data
+  .word level_2_2_after_bonus_level_data
 
 ;level intro strings
 level1_intro_string:
@@ -140,6 +141,7 @@ level_1_1_data:
   .word level1_music
 
   .byte level_1_2_index
+  .byte level_1_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_1_2_data:
@@ -172,6 +174,7 @@ level_1_2_data:
   .word level1_2music
 
   .byte level_2_index
+  .byte level_1_2_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_2_1_data:
@@ -202,6 +205,7 @@ level_2_1_data:
   .word entity_definition_table
   .word level2_music
   .byte level_2_2_index
+  .byte level_2_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_2_2_data:
@@ -232,6 +236,7 @@ level_2_2_data:
   .word entity_definition_table
   .word level2_2music
   .byte boss_2_index
+  .byte level_2_2_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 boss_2_data:
@@ -262,6 +267,7 @@ boss_2_data:
   .word entity_definition_table
   .word boss2_music
   .byte level_3_index
+  .byte boss_2_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_3_1_data:
@@ -292,6 +298,7 @@ level_3_1_data:
   .word entity_definition_table
   .word level3_music
   .byte level_3_2_index
+  .byte level_3_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_3_2_data:
@@ -322,6 +329,7 @@ level_3_2_data:
   .word entity_definition_table
   .word level3_2_music
   .byte boss_1_index
+  .byte level_3_2_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 boss_1_data:
@@ -352,6 +360,7 @@ boss_1_data:
   .word entity_definition_table
   .word boss1_music
   .byte level_4_index
+  .byte boss_1_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_4_1_data:
@@ -382,6 +391,7 @@ level_4_1_data:
   .word entity_definition_table
   .word level4_music
   .byte level_4_2_index
+  .byte level_4_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_4_2_data:
@@ -412,6 +422,7 @@ level_4_2_data:
   .word entity_definition_table
   .word level_4_2_music
   .byte boss_3_index
+  .byte level_4_2_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 boss_3_data:
@@ -442,6 +453,7 @@ boss_3_data:
   .word entity_definition_table
   .word boss3_music
   .byte level_5_1_index
+  .byte boss_3_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_5_1_data:
@@ -472,6 +484,7 @@ level_5_1_data:
   .word entity_definition_table
   .word level5_music
   .byte level_5_2_index
+  .byte level_5_1_index ;level_to_load_on_game_over .byte
 
 level_5_2_data:
   .byte spritesheet_2_bank
@@ -501,6 +514,7 @@ level_5_2_data:
   .word entity_definition_table
   .word level_5_2_music
   .byte boss_4_index
+  .byte level_5_2_index ;level_to_load_on_game_over .byte
 
 boss_4_data:
   .byte spritesheet_2_bank
@@ -530,6 +544,7 @@ boss_4_data:
   .word entity_definition_table
   .word boss4_music
   .byte level_6_1_index
+  .byte boss_4_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_6_1_data:
@@ -560,6 +575,7 @@ level_6_1_data:
   .word entity_definition_table
   .word level6_music
   .byte level_6_2_index
+  .byte level_6_1_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_6_2_data:
@@ -590,6 +606,7 @@ level_6_2_data:
   .word entity_definition_table
   .word level_6_2_music
   .byte boss_5_index
+  .byte level_6_2_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 boss_5_data:
@@ -620,6 +637,7 @@ boss_5_data:
   .word entity_definition_table
   .word boss5_music
   .byte level_1_index
+  .byte boss_5_index ;level_to_load_on_game_over .byte
 
 ;ROM definition table
 level_2_2bonus_data:
@@ -650,6 +668,38 @@ level_2_2bonus_data:
   .word entity_definition_table
   .word level2_2bonusmusic
   .byte level_4_index
+  .byte level_2_2_after_bonus_level_index ;level_to_load_on_game_over .byte
+
+;ROM definition table
+level_2_2_after_bonus_level_data:
+  .byte spritesheet_1_bank
+  .byte level2_2bank
+  .byte level_2_patterns_bank
+  .word level2_patterns
+  .byte spritesheet_1_patterns_bank
+  .word level2_sprite_groups
+  .word level2_2cycling_palettes ;cycling_palette_address
+  .byte 5 ;cycling_palette_speed
+
+  .word level2_2palette
+
+  .byte 124   ;nomolos_start_x
+  .byte 0     ;nomolos_start_y
+  .byte 20   ;starting_screen
+
+  .word level2_2intro_string
+  .byte 16 ;columns_to_load
+  .byte 1  ;camera_scroll_enabled
+  .word level2_2map
+  .word level2_2map_column_table
+  .word level2_2attribute_column_table
+  .word level2_2meta_tile_column_table
+  .word level2_2meta_tile_table
+
+  .word entity_definition_table
+  .word level2_2music
+  .byte boss_2_index
+  .byte level_2_2_index ;level_to_load_on_game_over .byte
 
 ;Entities
 entity_definition_table:

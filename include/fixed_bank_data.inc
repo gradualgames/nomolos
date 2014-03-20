@@ -21,6 +21,7 @@ level_6_1_index = 14
 level_6_2_index = 15
 boss_5_index    = 16
 level_2_2bonus_index = 17
+level_2_2_after_bonus_level_index = 18
 
 EXTRA_MUSIC_BANK = 6
 
@@ -137,6 +138,7 @@ EXTRA_MUSIC_BANK = 6
   entity_definition_table .word
   music .word
   next_level .byte
+  level_to_load_on_game_over .byte
 
 .endstruct
 

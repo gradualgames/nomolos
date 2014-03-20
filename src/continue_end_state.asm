@@ -69,7 +69,7 @@ continue_end_state_run:
 
   rts
 
- 
+
   ;****************************************************************
   ;Check the select and start buttons for transition from off to
   ;on. Change the location of the cursor; make a decision when the
@@ -80,9 +80,9 @@ continue_end_state_select:
   jsr continue_end_state_select_handler
 
   rts
-  
+
 continue_end_state_done:
- 
+
   jsr continue_end_state_done_handler
 
   rts
@@ -154,7 +154,7 @@ continue_end_state_done:
   lda #>continue_string
   sta w0+1
   jsr ppu_display_string
-  
+
   ;display END string
   set_ppu_2006 $20, 16, 11
   lda #<end_string
@@ -216,7 +216,7 @@ continue_end_state_done:
   sta state_control_params+title_stateControl::state
   ldx #index_title_state
   jsr switch_state
-  
+
   rts
 
 .endproc
@@ -234,17 +234,17 @@ continue_end_state_done:
   and #%00000011
   cmp #%00000001
   bne select_not_pressed
-  
+
   ;flip the state of the selected cursor
   lda state_control_params+continue_end_state_control::selected_cursor
   eor #%00000001
   sta state_control_params+continue_end_state_control::selected_cursor
-  
+
 select_not_pressed:
-  
+
   lda state_control_params+continue_end_state_control::selected_cursor
   bne display_end_cursor
-  
+
   lda #CONTINUE_CURSOR_X
   sta w3
   lda #0
@@ -253,9 +253,9 @@ select_not_pressed:
   sta w4
   lda #0
   sta w4+1
-  
+
   jmp selected_cursor_test_done
-  
+
 display_end_cursor:
   lda #END_CURSOR_X
   sta w3
@@ -265,9 +265,9 @@ display_end_cursor:
   sta w4
   lda #0
   sta w4+1
-  
+
 selected_cursor_test_done:
-  
+
   lda entity_chr_offsets+(entity_index_nomolos-1)
   sta sprite_group_offset
   lda #0
@@ -284,14 +284,14 @@ selected_cursor_test_done:
   and #%00000011
   cmp #%00000001
   bne start_not_pressed
-  
+
   ;fade out the palette
   lda #<(font1+font::palette)
   sta w0
   lda #>(font1+font::palette)
   sta w0+1
   jsr fade_out_palette
-  
+
   ;now make a decision based on which cursor was selected
   .scope
   lda state_control_params+continue_end_state_control::selected_cursor
@@ -301,42 +301,48 @@ continue_selected:
   ;switch to load level state.
   lda #nomolos_starting_lives
   sta nomolos_status_lives
+
   lda #0
   sta state_control_params+level_in_state_control::use_restart_point
+
+  ldy #level_data_struct::level_to_load_on_game_over
+  lda (base_address_rom_definition_table),y
+  sta level_current
+
   lda #LEVELINSTATE_INIT
   sta state_control_params+level_in_state_control::state
   ldx #index_level_in_state
   jsr switch_state
   jmp selected_cursor_test_done
 end_selected:
-  
+
   ;switch to title state
   lda #TITLESTATE_TITLE
   sta state_control_params+title_stateControl::state
   ldx #index_title_state
   jsr switch_state
-  
+
 selected_cursor_test_done:
-  
+
   .endscope
-  
+
 start_not_pressed:
-  
+
   inc nmi_counter
-  
+
   rts
-  
+
 .endproc
 
 .proc continue_end_state_update_ppu
 
   lda nmi_counter
   beq nmi_counter_zero
- 
+
   jsr sprite_update_all
-  
+
   dec nmi_counter
 nmi_counter_zero:
-  
+
   rts
 .endproc
