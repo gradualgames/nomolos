@@ -117,11 +117,11 @@ beta_testers_caption:
   .byte $1a,$02,$07,$11,$08,$12,$1a,$07,$16,$0e,$19,$03,$04,$0a,$25,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
   .byte $1a,$0d,$00,$13,$07,$00,$0d,$1a,$06,$08,$0b,$0b,$04,$12,$0f,$08,$04
 
-;CART PRODUCTION:                                                RETROZONE
+;CART PRODUCTION:                                             INFINITENESLIVES.COM
 production_caption:
-  .byte $49,$02,$00,$11,$13,$1a,$0f,$11,$0e,$03,$14,$02,$13,$08,$0e,$0d,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$11,$04,$13,$11,$0e,$19,$0e,$0d,$04
+  .byte $51,$02,$00,$11,$13,$1a,$0f,$11,$0e,$03,$14,$02,$13,$08,$0e,$0d,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$08,$0d
+  .byte $05,$08,$0d,$08,$13,$04,$0d,$04,$12,$0b,$08,$15,$04,$12,$27,$02,$0e,$0c
 
 ;PRINTED MATERIALS:                                              UNCLE TUSK
 printed_materials_caption:
