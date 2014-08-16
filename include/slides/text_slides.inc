@@ -123,11 +123,11 @@ production_caption:
   .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$08,$0d
   .byte $05,$08,$0d,$08,$13,$04,$0d,$04,$12,$0b,$08,$15,$04,$12,$27,$02,$0e,$0c
 
-;PRINTED MATERIALS:                                              UNCLE TUSK
+;PRINTED MATERIALS:                                            INFINITENESLIVES.COM
 printed_materials_caption:
-  .byte $4a,$0f,$11,$08,$0d,$13,$04,$03,$1a,$0c,$00,$13,$04,$11,$08,$00,$0b,$12,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
-  .byte $1a,$14,$0d,$02,$0b,$04,$1a,$13,$14,$12,$0a
+  .byte $52,$0f,$11,$08,$0d,$13,$04,$03,$1a,$0c,$00,$13,$04,$11,$08,$00,$0b,$12,$2b,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a
+  .byte $1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$1a,$08
+  .byte $0d,$05,$08,$0d,$08,$13,$04,$0d,$04,$12,$0b,$08,$15,$04,$12,$27,$02,$0e,$0c
 
 ;PROMOTION,                      SOCIAL MEDIA:                                                   JOSEPH MORGAN
 promotion_social_media_caption:
