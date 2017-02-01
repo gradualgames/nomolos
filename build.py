@@ -7,8 +7,7 @@ import sys
 nes_file = "nomolos.nes"
 linker_cfg_file = "nomolos.cfg"
 map_file = "nomolos.map"
-debug_file = "nomolos.nes.dbg"
-ndx_file = "nomolos.nes.ndx"
+debug_file = "nomolos.dbg"
 
 src_path = "src"
 bin_path = "bin"
@@ -71,8 +70,6 @@ def clean_build():
         os.remove(map_file)
     if os.path.exists(debug_file):
         os.remove(debug_file)
-    if os.path.exists(ndx_file):
-        os.remove(ndx_file)
     if os.path.exists(bin_path):
         shutil.rmtree(bin_path, ignore_errors=True)
 
